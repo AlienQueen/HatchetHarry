@@ -1,0 +1,183 @@
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to HatchetHarry!</title>
+	<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+	<script wicket:id="jQuery-1.4.4.js" type="text/javascript"></script>
+	<script type="text/javascript" wicket:id="qUnit.js"></script>
+	<script type="text/javascript" wicket:id="codeUnderTest.js"></script>
+	<script type="text/javascript" wicket:id="HomePageTests.js"></script>
+  	<script type="text/javascript" wicket:id="mootools.v1.11"></script>
+ 	<script type="text/javascript" wicket:id="jd.gallery"></script>
+	<script type="text/javascript" wicket:id="jd.gallery.set"></script>
+    <script type="text/javascript" wicket:id="jd.gallery.transitions"></script>
+	<script type="text/javascript" wicket:id="History"></script>
+	<script type="text/javascript" src="javascripts/prototype.js"></script>
+    <script type="text/javascript" src="javascripts/behaviour.js"></script>
+    <script type="text/javascript" src="javascripts/moo.fx.js"></script>
+    <script type="text/javascript" src="javascripts/moo.fx.pack.js"></script>
+    <script type="text/javascript" src="javascripts/application.js"></script>
+    
+    <!-- Standard reset, fonts and grids -->
+        <!-- Page-specific styles -->
+
+        <style type="text/css">
+			.yui-b{
+            
+                z-index: 100;
+            
+            }
+            
+			.bd{
+            
+                z-index: 100;
+            
+            }
+                        
+			.yuimenubaritem{
+            
+                z-index: 100;
+            
+            }
+                                    
+			.yuimenu{
+            
+                z-index: 100;
+            
+            }
+            
+            div.yui-b p {
+            
+                margin: 0 0 .5em 0;
+                color: #999;
+            
+            }
+            
+            div.yui-b p strong {
+            
+                font-weight: bold;
+                color: #000;
+            
+            }
+            
+            div.yui-b p em {
+
+                color: #000;
+            
+            }            
+            
+            h1 {
+
+                font-weight: bold;
+                margin: 0 0 1em 0;
+                padding: .25em .5em;
+                background-color: #ccc;
+
+            }
+
+            #productsandservices {
+
+                margin: 0 0 10px 0;
+                z-index: 100;
+            }
+
+        </style>
+
+
+        <!-- Dependency source files -->
+        <script type="text/javascript" src="http://developer.yahoo.com/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+        <script type="text/javascript" src="http://developer.yahoo.com/yui/build/animation/animation.js"></script>
+        <script type="text/javascript" src="http://developer.yahoo.com/yui/build/utilities/utilities.js"></script>
+        <script type="text/javascript" src="http://developer.yahoo.com/yui/build/container/container_core.js"></script>
+
+        <!-- Menu source file -->
+        <script type="text/javascript" src="http://developer.yahoo.com/yui/build/menu/menu.js"></script>
+</head>
+<body class="yui-skin-sam" id="yahoo-com">
+
+<!-- start: primary column from outer template -->
+    <div id="yui-main">
+          <div class="yui-b">
+              <!-- start: stack grids here -->
+
+              <div id="productsandservices" class="yuimenubar yuimenubarnav">
+                  <div class="bd">
+
+                      <ul class="first-of-type">
+                          <li class="yuimenubaritem first-of-type">
+                              <a class="yuimenubaritemlabel" href="communication">Documentation</a>
+                          </li>
+                          <li class="yuimenubaritem">
+                              <a class="yuimenubaritemlabel" href="http://shopping.yahoo.com">Game</a>
+                          </li>
+                          <li class="yuimenubaritem">
+
+                              <a class="yuimenubaritemlabel" href="http://entertainment.yahoo.com">Entertainment</a>
+                          </li>
+                          <li class="yuimenubaritem">
+                              <a class="yuimenubaritemlabel" href="#">Information</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <!-- end: stack grids here -->
+          </div>
+
+    </div>
+      <!-- end: primary column from outer template -->
+
+	<strong>Welcome to HatchetHarry!</strong>
+	<br/><br/>
+	<span wicket:id="message">message will be here</span><br/><br/>
+  	
+  	<span align="left">
+	  	<span id="header"></span>
+			<span id="nav"></span>
+	        <span id="content">
+	    		<span wicket:id="gallery"></span>
+	  		</span>      
+		<span id="footer"></span>
+	</span><br/>
+  	<span wicket:id="feedback"></span>
+  	<span wicket:id="clockPanel">Clock Panel</span>
+	<br/><br/>
+	<span wicket:id="baldu"></span>
+	
+  		<span align="right">
+
+	  		<span wicket:id="chatPanel">Chat Panel</span>
+
+	  		<h1 id="qunit-header">QUnit example</h1>
+			<h2 id="qunit-banner"></h2>
+			<div id="qunit-testrunner-toolbar"></div>
+			<h2 id="qunit-userAgent"></h2>
+			<ol id="qunit-tests"></ol>
+			<div id="qunit-fixture">test markup, will be hidden</div>
+	
+			<br/>
+	
+	    	<form wicket:id="runForm">
+	      		Name of suite or test to run: 
+	      		<input wicket:id="testClassName" type="text" size="70"  />
+	      
+	      		<input type="submit" value="Run" />
+	    	</form>
+  		</span>
+
+  <div style="width:40em; min-width:40em;">
+    <table wicket:id="summary">    
+      <tr>
+        <td wicket:id="runsSummary">Total tests: 1</td>
+        <td wicket:id="errorsSummary">Errors/Failures: 12</td>
+      </tr>
+      <tr>
+        <td wicket:id="summaryInColor" colspan="2" class="summaryBox"></td>
+      </tr>
+      <tr><td style="line-height: 5px;">&nbsp;</td></tr>
+    </table>
+  </div>
+  
+  <div wicket:id="node" class="testReport"></div>
+  
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+
+	<!-- beans can't come before imports so have to have these in an import -->
+	<import resource="classpath:common.xml"/>
+	<import resource="classpath:persistence.hibernate.xml"/>
+
+	<!-- To mark a bean property as being 'required-to-be-set' (i.e. an annotated (setter) method of a class must be configured
+		to be dependency injected with a value), else an Exception will be thrown by the Spring container at runtime.
+	-->
+	<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+    <!-- setup wicket application -->
+    <bean id="wicketApplication" class="org.alienlabs.hatchetharry.HatchetHarryApplication">
+    </bean>
+        
+</beans>
