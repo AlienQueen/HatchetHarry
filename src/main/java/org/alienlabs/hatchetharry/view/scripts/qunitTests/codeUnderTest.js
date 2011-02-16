@@ -26,7 +26,7 @@ $(document)
 				function() {
 					YAHOO.util.Event
 							.onContentReady(
-									"productsandservices",
+									"menubar",
 									function() {
 
 										/*
@@ -38,7 +38,7 @@ $(document)
 										 */
 
 										var oMenuBar = new YAHOO.widget.MenuBar(
-												"productsandservices", {
+												"menubar", {
 													autosubmenudisplay : true,
 													hidedelay : 750,
 													lazyload : true

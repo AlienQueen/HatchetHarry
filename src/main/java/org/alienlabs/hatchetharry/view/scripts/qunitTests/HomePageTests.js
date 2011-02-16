@@ -21,8 +21,8 @@ jQuery(document)
 										.css('background-image');
 								ok(
 										((cssAttribute.indexOf("url(") != -1) && (cssAttribute
-												.indexOf("/handCards/") != -1)),
-										"the first of these images should have a source URL containing 'url(' and '/handCards/', and it appears to be: "
+												.indexOf("/cards/") != -1)),
+										"the first of these images should have a source URL containing 'url(' and '/cards/', and it appears to be: "
 												+ cssAttribute);
 							});
 					module("menubar");

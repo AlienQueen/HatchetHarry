@@ -128,16 +128,16 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	{
 		final SlidesPanel.Builder builder = new SlidesPanel.Builder("gallery");
 
-		final MagicCard hammerOfBogardan = new MagicCard("handCards/HammerOfBogardan.jpg",
+		final MagicCard hammerOfBogardan = new MagicCard("cards/HammerOfBogardan.jpg",
 				"Hammer of Bogardan", "A red, reccurent nightmare");
-		final MagicCard overrun = new MagicCard("handCards/Overrun.jpg", "Overrun", "Chaaarge!");
-		final MagicCard abeyance = new MagicCard("handCards/Abeyance.jpg", "Abeyance",
+		final MagicCard overrun = new MagicCard("cards/Overrun.jpg", "Overrun", "Chaaarge!");
+		final MagicCard abeyance = new MagicCard("cards/Abeyance.jpg", "Abeyance",
 				"A definitive show-stopper");
-		final MagicCard tradewindRider = new MagicCard("handCards/TradewindRider.jpg",
+		final MagicCard tradewindRider = new MagicCard("cards/TradewindRider.jpg",
 				"Tradewind Rider", "Don't let him pass you by");
-		final MagicCard necropotence = new MagicCard("handCards/Necropotence.jpg", "Necropotence",
+		final MagicCard necropotence = new MagicCard("cards/Necropotence.jpg", "Necropotence",
 				"Your darkest nightmare looks bright");
-		final MagicCard cursedScroll = new MagicCard("handCards/CursedScroll.jpg", "Cursed Scroll",
+		final MagicCard cursedScroll = new MagicCard("cards/CursedScroll.jpg", "Cursed Scroll",
 				"Close your mind to its magic, lest it pry it open in fear");
 
 		builder.addImage(hammerOfBogardan, hammerOfBogardan);
