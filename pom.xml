@@ -4,7 +4,7 @@
 	<groupId>org.alienlabs.hatchetharry</groupId>
 	<artifactId>hatchetharry</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<!-- TODO project name  -->
 	<name>quickstart</name>
 	<description></description>

@@ -8,7 +8,9 @@
 <wicket:head>
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/fonts/fonts-min.css" />
-
+	
+<script type="text/javascript" wicket:id="jQuery.bubbletip-1.0.6.js"></script>
+	
 <style type="text/css">
 
     /*
@@ -158,42 +160,64 @@
 			is the id for the Menu element to be created, the second is an 
 			object literal of configuration properties.
         */
-
-        var oContextMenu = new YAHOO.widget.Menu("contextMenusss", { fixedcenter: true });
-
+        var oContextMenu = new YAHOO.widget.Menu("contextMenus", { X: 150, Y: 450});
 
         /*
             Add items to the Menu instance by passing an array of object literals 
             (each of which represents a set of YAHOO.widget.MenuItem 
             configuration properties) to the "addItems" method.
         */
-
         oContextMenu.addItems(allContextMenuItems);
-
 
         /*
             Since this Menu instance is built completely from script, call the 
             "render" method passing in the DOM element that it should be 
             appended to.
         */
-        
         oContextMenu.render("rendertarget");
+        YAHOO.util.Event.addListener("contextMenu", "click", renderContextMenu, null, oContextMenu);
 
-
-        YAHOO.util.Event.addListener("contextMenu", "click", oContextMenu.show, null, oContextMenu);
-    
+        var displayed = false;
+        
+        function renderContextMenu() {
+        	jQuery('#bubbletip1Placeholder').removeBubbletip();
+        	oContextMenu.show();
+        	displayed = true;
+        	YAHOO.util.Event.addListener("contextMenu", "mouseOutEvent", hideContextMenu, null, oContextMenu);
+            }
+        function hideContextMenu() {
+        	displayed = false;
+        	jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1'));
+        	YAHOO.util.Event.addListener("contextMenu", "click", renderContextMenu, null, oContextMenu)
+        }
     });
     </script>
+    
+    <script type="text/javascript">
+	    jQuery(document).ready(function() { jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1')); });
+	</script>
+    
 </wicket:head>
 <body>
 <wicket:panel>
-
-<ul id="menutoggleImage">
-	<li>
-		<button wicket:id="menutoggleButton" id="contextMenu" type="button"><img wicket:id = "menutoggleImage"></img></button>
-	</li>
-</ul>
-<div id="rendertarget"></div>
+	<a id="bubbletip1Placeholder" href="#">
+	
+		<ul id="menutoggleImage">
+			<li>
+				<button wicket:id="menutoggleButton" id="contextMenu" type="button"><img wicket:id = "menutoggleImage">
+				
+					<div id="cardBubbleTip1" style="display:none;">
+						<pre class="tip"></pre>
+						<img wicket:id="bubbleTipImg1" width="226" height="320"  style="position:relative; z-index: 5000;">
+						</img><br/>
+						<span wicket:id="bubbleTipText1" style="position:relative; z-index: 5000;"></span>
+					</div>
+				
+				</img></button>
+			</li>
+		</ul>
+		<div id="rendertarget"></div>
+	</a>
 
 </wicket:panel>
 </body>

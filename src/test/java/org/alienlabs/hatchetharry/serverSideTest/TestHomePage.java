@@ -67,7 +67,7 @@ public class TestHomePage
 		final Label message = (Label)TestHomePage.tester
 				.getComponentFromLastRenderedPage("message");
 		Assert.assertTrue(message.getDefaultModelObjectAsString().startsWith(
-				"version 0.0.1 built on "));
+				"version 0.0.2 built on "));
 
 		// assert hand is present
 		TestHomePage.tester.assertComponent("gallery", SlidesPanel.class);
