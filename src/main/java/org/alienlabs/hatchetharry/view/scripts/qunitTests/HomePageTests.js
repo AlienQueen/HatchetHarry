@@ -6,18 +6,18 @@ jQuery(document)
 					test(
 							"a basic hand visibility test",
 							function() {
-								ok((jQuery('div#myGallery').length == 1),
-										"a div with id myGallery should be present");
-								var myGalleryContent = jQuery('div#myGallery div');
+								ok((jQuery('span#myGallery').length == 1),
+										"a span with id myGallery should be present");
+								var myGalleryContent = jQuery('span#myGallery div');
 								ok((myGalleryContent.length > 0),
 										"it should itself contain other elements, actually found: "
 												+ myGalleryContent.length);
-								var slideElements = jQuery('div#myGallery div.slideElement');
+								var slideElements = jQuery('span#myGallery div.slideElement');
 								ok((slideElements.length == 6),
 										"these elements should contain the 6 images in the hand, actually found: "
 												+ slideElements.length);
 								var cssAttribute = jQuery(
-										'div#myGallery div.slideElement:first')
+										'span#myGallery div.slideElement:first')
 										.css('background-image');
 								ok(
 										((cssAttribute.indexOf("url(") != -1) && (cssAttribute

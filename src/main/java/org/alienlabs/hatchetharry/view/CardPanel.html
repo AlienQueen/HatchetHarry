@@ -12,6 +12,31 @@
 <script type="text/javascript" wicket:id="jQuery.bubbletip-1.0.6.js"></script>
 	
 <style type="text/css">
+		p, h4, li
+		{
+			font-family: Arial, Tahoma, Verdana;
+		}
+		pre.tip
+		{
+			margin: 0px;
+			padding: 5px;
+			font-size: 0.9em;	
+		}
+		pre.code
+		{
+			margin: 0px;
+			padding: 20px;
+			border: solid 1px #000000;
+			font-size: 1.0em;
+		}
+		em 
+		{
+			font-size: 0.9em;
+			color: #000000;
+		}
+</style>
+
+<style type="text/css">
 
     /*
         Position and hide the Menu instance to prevent a flash of unstyled 
@@ -183,18 +208,17 @@
         	jQuery('#bubbletip1Placeholder').removeBubbletip();
         	oContextMenu.show();
         	displayed = true;
-        	YAHOO.util.Event.addListener("contextMenu", "mouseOutEvent", hideContextMenu, null, oContextMenu);
+        	YAHOO.util.Event.addListener("contextMenu", "hideEvent", hideContextMenu, null, oContextMenu);
             }
         function hideContextMenu() {
         	displayed = false;
-        	jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1'));
-        	YAHOO.util.Event.addListener("contextMenu", "click", renderContextMenu, null, oContextMenu)
-        }
+        	oContextMenu.hide();
+        	jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' });
+        	YAHOO.util.Event.addListener("contextMenu", "click", renderContextMenu, null, oContextMenu);
+        	}
     });
-    </script>
-    
-    <script type="text/javascript">
-	    jQuery(document).ready(function() { jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1')); });
+
+	    jQuery(document).ready(function() { jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
 	</script>
     
 </wicket:head>
@@ -202,8 +226,8 @@
 <wicket:panel>
 	<a id="bubbletip1Placeholder" href="#">
 	
-		<ul id="menutoggleImage">
-			<li>
+		<span id="menutoggleImage">
+			<span>
 				<button wicket:id="menutoggleButton" id="contextMenu" type="button"><img wicket:id = "menutoggleImage">
 				
 					<div id="cardBubbleTip1" style="display:none;">
@@ -214,8 +238,8 @@
 					</div>
 				
 				</img></button>
-			</li>
-		</ul>
+			</span>
+		</span>
 		<div id="rendertarget"></div>
 	</a>
 

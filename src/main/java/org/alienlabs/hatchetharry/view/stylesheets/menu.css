@@ -13,6 +13,7 @@ version: 2.8.2r1
 
 .yuimenubar {
 	position: static;
+	z-index: 10;
 }
 
 .yuimenu .yuimenu,.yuimenubar .yuimenu {
