@@ -8,8 +8,14 @@
 <wicket:head>
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/fonts/fonts-min.css" />
-	
 <script type="text/javascript" wicket:id="jQuery.bubbletip-1.0.6.js"></script>
+
+<script type="text/javascript" wicket:id="jquery.contextMenu.js"></script>
+
+<script type="text/javascript" wicket:id="jquery.ui.core.js"></script>
+<script type="text/javascript" wicket:id="jquery.ui.widget.js"></script>
+<script type="text/javascript" wicket:id="jquery.ui.mouse.js"></script>
+<script type="text/javascript" wicket:id="jquery.ui.draggable.js"></script>
 	
 <style type="text/css">
 		p, h4, li
@@ -61,188 +67,93 @@
         zoom: normal;
     
     }
-</style>
-	
-    <script type="text/javascript">
-    /*
-    Initialize and render the Menu when the element it is to be 
-    rendered into is ready to be scripted.
-	*/
-		YAHOO.util.Event.onAvailable("rendertarget", function () {
-
-   /*
-        Define an array of object literals, each containing 
-        the configuration properties necessary to create a MenuItem and 
-        its corresponding submenu.
-   */
-
-		    var allContextMenuItems = [
-		                  
-		                  {
-		                      text: "Communication", 
-		                      url: "#communication", 
-		                      submenu: { 
-		                      
-		                          id: "communication", 
-		                          itemdata: [ 
-		                  
-		                              { text: "360", url: "http://360.yahoo.com" },
-		                              { text: "Alerts", url: "http://alerts.yahoo.com" },
-		                              { text: "Avatars", url: "http://avatars.yahoo.com" },
-		                              { text: "Groups", url: "http://groups.yahoo.com " },
-		                              { text: "Internet Access", url: "http://promo.yahoo.com/broadband" },
-		                              {
-		                                  text: "PIM", 
-		                                  url: "#pim", 
-		                                  submenu: {
-		                                      id: "pim", 
-		                                      itemdata: [
-		              
-		                                          { text: "Yahoo! Mail", url: "http://mail.yahoo.com" },
-		                                          { text: "Yahoo! Address Book", url: "http://addressbook.yahoo.com" },
-		                                          { text: "Yahoo! Calendar",  url: "http://calendar.yahoo.com" },
-		                                          { text: "Yahoo! Notepad", url: "http://notepad.yahoo.com" }
-		              
-		                                      ] 
-		                                  }
-		                              
-		                              }, 
-		                              { text: "Member Directory", url: "http://members.yahoo.com" },
-		                              { text: "Messenger", url: "http://messenger.yahoo.com" },
-		                              { text: "Mobile", url: "http://mobile.yahoo.com" },
-		                              { text: "Flickr Photo Sharing", url: "http://www.flickr.com" }
-		                  
-		                          ] 
-		                      
-		                      } 
-		                  
-		                  },
-		
-		                  {
-		                      text: "Shopping", 
-		                      url: "http://shopping.yahoo.com", 
-		                      submenu: {
-		                          id: "shopping", 
-		                          itemdata: [
-		
-		                              { text: "Auctions", url: "http://auctions.shopping.yahoo.com" },
-		                              { text: "Autos", url: "http://autos.yahoo.com" },
-		                              { text: "Classifieds", url: "http://classifieds.yahoo.com" },
-		                              { text: "Flowers & Gifts", url: "http://shopping.yahoo.com/b:Flowers%20%26%20Gifts:20146735" },
-		                              { text: "Real Estate", url: "http://realestate.yahoo.com" },
-		                              { text: "Travel", url: "http://travel.yahoo.com" },
-		                              { text: "Wallet", url: "http://wallet.yahoo.com" },
-		                              { text: "Yellow Pages", url: "http://yp.yahoo.com" }
-		                  
-		                          ] 
-		                      } 
-		                  },
-		
-		                  {
-		                      text: "Entertainment", 
-		                      url: "http://entertainment.yahoo.com", 
-		                      submenu: { 
-		                          id: "entertainment", 
-		                          itemdata: [
-		                  
-		                              { text: "Fantasy Sports", url: "http://fantasysports.yahoo.com" },
-		                              { text: "Games", url: "http://games.yahoo.com" },
-		                              { text: "Kids", url: "http://www.yahooligans.com" },
-		                              { text: "Music", url: "http://music.yahoo.com" },
-		                              { text: "Movies", url: "http://movies.yahoo.com" },
-		                              { text: "Radio", url: "http://music.yahoo.com/launchcast" },
-		                              { text: "Travel", url: "http://travel.yahoo.com" },
-		                              { text: "TV", url: "http://tv.yahoo.com" }              
-		                          ] 
-		                      } 
-		                  },
-		
-		                  {
-		                      text: "Information", 
-		                      url: "#information", 
-		                      submenu: {
-		                          id: "information", 
-		                          itemdata: [
-		                  
-		                              { text: "Downloads", url: "http://downloads.yahoo.com" },
-		                              { text: "Finance", url: "http://finance.yahoo.com" },
-		                              { text: "Health", url: "http://health.yahoo.com" },
-		                              { text: "Local", url: "http://local.yahoo.com" },
-		                              { text: "Maps & Directions", url: "http://maps.yahoo.com" },
-		                              { text: "My Yahoo!", url: "http://my.yahoo.com" },
-		                              { text: "News", url: "http://news.yahoo.com" },
-		                              { text: "Search", url: "http://search.yahoo.com" },
-		                              { text: "Small Business", url: "http://smallbusiness.yahoo.com" },
-		                              { text: "Weather", url: "http://weather.yahoo.com" }
-		                  
-		                          ]
-		                      } 
-		                  }            
-		              ];  
-            
-	        /*
-			Instantiate a Menu:  The first argument passed to the constructor
-			is the id for the Menu element to be created, the second is an 
-			object literal of configuration properties.
-        */
-        var oContextMenu = new YAHOO.widget.Menu("contextMenus", { X: 150, Y: 450});
-
-        /*
-            Add items to the Menu instance by passing an array of object literals 
-            (each of which represents a set of YAHOO.widget.MenuItem 
-            configuration properties) to the "addItems" method.
-        */
-        oContextMenu.addItems(allContextMenuItems);
-
-        /*
-            Since this Menu instance is built completely from script, call the 
-            "render" method passing in the DOM element that it should be 
-            appended to.
-        */
-        oContextMenu.render("rendertarget");
-        YAHOO.util.Event.addListener("contextMenu", "click", renderContextMenu, null, oContextMenu);
-
-        var displayed = false;
-        
-        function renderContextMenu() {
-        	jQuery('#bubbletip1Placeholder').removeBubbletip();
-        	oContextMenu.show();
-        	displayed = true;
-        	YAHOO.util.Event.addListener("contextMenu", "hideEvent", hideContextMenu, null, oContextMenu);
-            }
-        function hideContextMenu() {
-        	displayed = false;
-        	oContextMenu.hide();
-        	jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' });
-        	YAHOO.util.Event.addListener("contextMenu", "click", renderContextMenu, null, oContextMenu);
-        	}
-    });
-
-	    jQuery(document).ready(function() { jQuery('#bubbletip1Placeholder').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
-	</script>
     
+    #myDiv {
+				width: 150px;
+				border: solid 1px #2AA7DE;
+				background: #6CC8EF;
+				text-align: center;
+				padding: 4em .5em;
+				margin: 1em;
+				float: left;
+			}
+			
+			#options {
+				clear: left;
+			}
+			
+			#options INPUT {
+				font-family: Verdana, Arial, Helvetica, sans-serif;
+				font-size: 11px;
+				width: 150px;
+			}
+			.ui-widget-header { cursor: move; border: 1px solid #000000; background: #464646
+								50% 50% repeat-x; color: #ffffff; font-weight: bold;
+								width: 20px; height: 20px
+							  }
+			
+</style>
+	<script type="text/javascript">
+		jQuery(document).ready(function() { jQuery('#tooltip').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
+	</script>
+    <script type="text/javascript">
+		jQuery(document).ready( function() {
+			
+			// Show menu when #myDiv is clicked
+			jQuery("#contextMenu").contextMenu({
+				menu: 'myMenu'
+			},
+				function(action, el, pos) {
+				jQuery('#bubbletip1Placeholder').removeBubbletip();
+				alert(
+					'Action: ' + action + '\n\n' +
+					'Element ID: ' + jQuery(el).attr('id') + '\n\n' + 
+					'X: ' + pos.x + '  Y: ' + pos.y + ' (relative to element)\n\n' + 
+					'X: ' + pos.docX + '  Y: ' + pos.docY+ ' (relative to document)'
+					);
+				jQuery(document).ready(function() { jQuery('#tooltip').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
+			});			
+		});
+	</script>
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery("#contextMenu").draggable( { handle : "img"});
+			jQuery( "div, img" ).disableSelection();
+			alert('data("draggable")' + draggable.data("draggable"));
+			jQuery('#bubbletip1Placeholder').removeBubbletip();
+		});
+	</script>
 </wicket:head>
 <body>
 <wicket:panel>
 	<a id="bubbletip1Placeholder" href="#">
-	
 		<span id="menutoggleImage">
 			<span>
-				<button wicket:id="menutoggleButton" id="contextMenu" type="button"><img wicket:id = "menutoggleImage">
-				
-					<div id="cardBubbleTip1" style="display:none;">
-						<pre class="tip"></pre>
-						<img wicket:id="bubbleTipImg1" width="226" height="320"  style="position:relative; z-index: 5000;">
-						</img><br/>
-						<span wicket:id="bubbleTipText1" style="position:relative; z-index: 5000;"></span>
-					</div>
-				
-				</img></button>
+				<div wicket:id="menutoggleButton" id="contextMenu">
+					<img wicket:id="handleImage" id="draggable" class="ui-widget-header"></img>
+					<img wicket:id = "menutoggleImage" id="tooltip">				
+						<span id="cardBubbleTip1" style="display:none;">
+							<pre class="tip"></pre>
+							<img wicket:id="bubbleTipImg1" width="226" height="320"  style="position:relative; z-index: 5000;">
+							</img><br/>
+							<span wicket:id="bubbleTipText1" style="position:relative; z-index: 5000;"></span>
+						</span>
+					</img>
+				</div>
+				<ul id="myMenu" class="contextMenu">
+
+					<li class="edit"><a href="#edit">Edit</a></li>
+					<li class="cut separator"><a href="#cut">Cut</a></li>
+					<li class="copy"><a href="#copy">Copy</a></li>
+					<li class="paste"><a href="#paste">Paste</a></li>
+					<li class="delete"><a href="#delete">Delete</a></li>
+					<li class="quit separator"><a href="#quit">Quit</a></li>
+		
+				</ul>
 			</span>
 		</span>
 		<div id="rendertarget"></div>
 	</a>
-
 </wicket:panel>
 </body>
 </html>

@@ -3,8 +3,8 @@ package org.alienlabs.hatchetharry.view;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -27,7 +27,7 @@ public class CardPanel extends Panel
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "scripts/bubbletip/bubbletip.css")));
 
-		final Button menutoggleButton = new Button("menutoggleButton", new Model<String>(""));
+		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		final Image img = new Image("menutoggleImage", new ResourceReference(
 				"cards/BalduvianHorde_small.jpg"));
 		menutoggleButton.add(img);
@@ -49,5 +49,22 @@ public class CardPanel extends Panel
 		bubbleTipText1.add(new SimpleAttributeModifier("style", "color=white;"));
 		bubbleTipText1.setOutputMarkupPlaceholderTag(true).setEscapeModelStrings(false);
 		menutoggleButton.add(bubbleTipImg1, bubbleTipText1);
+
+		this.add(new JavaScriptReference("jquery.contextMenu.js", HomePage.class,
+				"scripts/contextmenu/jquery.contextMenu.js"));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "scripts/contextmenu/jquery.contextMenu.css")));
+
+		this.add(new JavaScriptReference("jquery.ui.core.js", HomePage.class,
+				"scripts/draggableHandle/jquery.ui.core.js"));
+		this.add(new JavaScriptReference("jquery.ui.widget.js", HomePage.class,
+				"scripts/draggableHandle/jquery.ui.widget.js"));
+		this.add(new JavaScriptReference("jquery.ui.mouse.js", HomePage.class,
+				"scripts/draggableHandle/jquery.ui.mouse.js"));
+		this.add(new JavaScriptReference("jquery.ui.draggable.js", HomePage.class,
+				"scripts/draggableHandle/jquery.ui.draggable.js"));
+
+		final Image handle = new Image("handleImage", new ResourceReference("images/arrow.png"));
+		menutoggleButton.add(handle);
 	}
 }

@@ -88,7 +88,6 @@ public class ChatPanel extends Panel
 		form.add(message);
 		final AjaxButton button = new AjaxButton("submit")
 		{
-
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
@@ -96,7 +95,7 @@ public class ChatPanel extends Panel
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
 				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 				final String jsessionid = request.getRequestedSessionId();
-				
+
 				final Meteor meteor = Meteor.build(request, ChatPanel.this.list, null);
 				ChatPanel.logger.info("meteor: " + meteor);
 
