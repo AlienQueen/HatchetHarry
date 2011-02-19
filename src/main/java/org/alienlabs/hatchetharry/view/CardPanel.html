@@ -94,7 +94,7 @@
 			
 </style>
 	<script type="text/javascript">
-		jQuery(document).ready(function() { jQuery('#tooltip').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
+	jQuery(document).ready(function() { jQuery('#tooltip').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
 	</script>
     <script type="text/javascript">
 		jQuery(document).ready( function() {
@@ -116,29 +116,35 @@
 		});
 	</script>
 	<script type="text/javascript">
-		jQuery(function() {
-			jQuery("#contextMenu").draggable( { handle : "img"});
-			jQuery( "div, img" ).disableSelection();
-			alert('data("draggable")' + draggable.data("draggable"));
-			jQuery('#bubbletip1Placeholder').removeBubbletip();
-		});
+	jQuery(function() {
+		jQuery( "#contextMenu" ).draggable({ handle: "img" });
+		jQuery( "div, img" ).disableSelection();
+	});
+		
 	</script>
 </wicket:head>
-<body>
 <wicket:panel>
+	<br/>
+	<h2 id="status2"/>
+	<br/><br/>
 	<a id="bubbletip1Placeholder" href="#">
+		<!-- <span wicket:id="cardMoveChannel"></span>    -->
 		<span id="menutoggleImage">
-			<span>
+			<span id="special">
 				<div wicket:id="menutoggleButton" id="contextMenu">
-					<img wicket:id="handleImage" id="draggable" class="ui-widget-header"></img>
+				<form wicket:id="form">
+					<a wicket:id="handleButton" href="#">	
+						<img wicket:id="handleImage" id="draggable" class="ui-widget-header"></img>
+					</a>
 					<img wicket:id = "menutoggleImage" id="tooltip">				
-						<span id="cardBubbleTip1" style="display:none;">
-							<pre class="tip"></pre>
-							<img wicket:id="bubbleTipImg1" width="226" height="320"  style="position:relative; z-index: 5000;">
-							</img><br/>
-							<span wicket:id="bubbleTipText1" style="position:relative; z-index: 5000;"></span>
-						</span>
 					</img>
+					<span id="cardBubbleTip1" style="display:none;">
+						<pre class="tip" id="status2"></pre>
+						<img wicket:id="bubbleTipImg1" width="226" height="320"  style="position:relative; z-index: 5000;">
+						</img><br/>
+						<span wicket:id="bubbleTipText1" style="position:relative; z-index: 5000;"></span>
+					</span>
+				</form>
 				</div>
 				<ul id="myMenu" class="contextMenu">
 
@@ -155,5 +161,4 @@
 		<div id="rendertarget"></div>
 	</a>
 </wicket:panel>
-</body>
 </html>

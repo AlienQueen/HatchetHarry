@@ -58,9 +58,6 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 
 	private static final Logger logger = LoggerFactory.getLogger(ChatPage.class);
 
-	// TODO is this necessary??
-	// private final AtomicBoolean scheduleStarted = new AtomicBoolean(false);
-
 	public ChatPage()
 	{
 	}

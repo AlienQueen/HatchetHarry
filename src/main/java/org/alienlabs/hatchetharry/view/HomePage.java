@@ -85,7 +85,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.addHeadResources();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.2 built on Thursday, 17th of February 2011"));
+		this.add(new Label("message", "version 0.0.2 built on Friday, 18th of February 2011"));
 
 		// Hand
 		this.buildHand();
@@ -93,18 +93,21 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
 
-		// Comet chat channel
-		this.add(new ChatPanel("chatPanel"));
+		// Card move Comet channel
+		// this.add(new CardMoveChannelPanel("cardMoveStart"));
 
 		// Balduvian Horde
 		final CardPanel baldu = new CardPanel("baldu");
 		this.add(baldu);
+
+		// Comet chat channel
+		this.add(new ChatPanel("chatPanel"));
 	}
 
 	protected void addHeadResources()
 	{
 		this.add(new JavaScriptReference("jQuery-1.4.4.js", HomePage.class,
-				"scripts/jQuery-1.4.4.js"));
+				"scripts/jquery/jQuery-1.4.4.js"));
 		this.add(new JavaScriptReference("qUnit.js", HomePage.class, "scripts/qunitTests/qUnit.js"));
 		this.add(new JavaScriptReference("codeUnderTest.js", HomePage.class,
 				"scripts/qunitTests/codeUnderTest.js"));
@@ -112,13 +115,15 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				"scripts/qunitTests/HomePageTests.js"));
 
 		this.add(new JavaScriptReference("mootools.v1.11", HomePage.class,
-				"scripts/mootools.v1.11.js"));
-		this.add(new JavaScriptReference("jd.gallery", HomePage.class, "scripts/jd.gallery.js"));
+				"scripts/jquery/mootools.v1.11.js"));
+		this.add(new JavaScriptReference("jd.gallery", HomePage.class,
+				"scripts/gallery/jd.gallery.js"));
 		this.add(new JavaScriptReference("jd.gallery.set", HomePage.class,
-				"scripts/jd.gallery.set.js"));
+				"scripts/gallery/jd.gallery.set.js"));
 		this.add(new JavaScriptReference("jd.gallery.transitions", HomePage.class,
-				"scripts/jd.gallery.transitions.js"));
-		this.add(new JavaScriptReference("History", HomePage.class, "scripts/HistoryManager.js"));
+				"scripts/gallery/jd.gallery.transitions.js"));
+		this.add(new JavaScriptReference("History", HomePage.class,
+				"scripts/gallery/HistoryManager.js"));
 
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/menu.css")));

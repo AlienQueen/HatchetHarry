@@ -59,7 +59,7 @@ public class ClockPanel extends Panel
 		super(id);
 
 		this.add(new JavaScriptReference("jquery.atmosphere.js", HomePage.class,
-				"scripts/jquery.atmosphere.js"));
+				"scripts/jquery/jquery.atmosphere.js"));
 
 		this.add(new BookmarkablePageLink<ClockPage>("cometStart", ClockPage.class));
 		this.add(new Label("clock", new AbstractReadOnlyModel<String>()
