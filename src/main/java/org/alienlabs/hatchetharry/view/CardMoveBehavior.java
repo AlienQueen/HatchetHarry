@@ -38,7 +38,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final String _mouseX = request.getParameter("posX");
 		final String _mouseY = request.getParameter("posY");
-		final String message = request.getRequestedSessionId() + "$$$" + _mouseX + "$$$" + _mouseY;
+		final String message = request.getRequestedSessionId() + "$$$"
+				+ (Integer.parseInt(_mouseX) - 16) + "$$$" + (Integer.parseInt(_mouseY) - 16);
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardMoveBehavior.logger.info("meteor: " + meteor);

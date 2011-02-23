@@ -208,7 +208,7 @@ $.widget("ui.draggable", $.ui.mouse, {
 		// helper is set to "original"
 		if((!this.element[0] || !this.element[0].parentNode) && this.options.helper == "original") {
 			wicketAjaxGet('${url}&posX=' + event.pageX + '&posY=' + event.pageY, function() {}, null, null);
-			return false;
+			return true;
 		}
 
 		if((this.options.revert == "invalid" && !dropped) || (this.options.revert == "valid" && dropped) || this.options.revert === true || ($.isFunction(this.options.revert) && this.options.revert.call(this.element, dropped))) {
@@ -225,7 +225,7 @@ $.widget("ui.draggable", $.ui.mouse, {
 		}
 
 		wicketAjaxGet('${url}&posX=' + event.pageX + '&posY=' + event.pageY, function() {}, null, null);
-		return false;
+		return true;
 	},
 	
 	cancel: function() {

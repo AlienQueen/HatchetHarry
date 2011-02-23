@@ -24,7 +24,7 @@ jQuery(document).ready(
 							// if ((data.split("$$$")[0].toString()) !=
 							// (jQuery("jsessionid")
 							// .val())) {
-							var card = jQuery("#contextMenu");
+							var card = jQuery("#menutoggleButton");
 							card.css("position", "absolute");
 							card.css("left", data.split("$$$")[1]);
 							card.css("top", data.split("$$$")[2]);

@@ -51,11 +51,13 @@ public class CardPanel extends Panel
 				HomePage.class, "scripts/bubbletip/bubbletip.css")));
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
-		final Image menutoggleImage = new Image("menutoggleImage", new ResourceReference(
-				"cards/BalduvianHorde_small.jpg"));
 		menutoggleButton.setOutputMarkupId(true);
-		menutoggleButton.setMarkupId("contextMenu");
+		menutoggleButton.setMarkupId("menutoggleButton");
 
+		final Image cardImage = new Image("cardImage", new ResourceReference(
+				"cards/BalduvianHorde_small.jpg"));
+		cardImage.setOutputMarkupId(true);
+		cardImage.setMarkupId("card");
 
 		final Image bubbleTipImg1 = new Image("bubbleTipImg1", new ResourceReference(
 				"cards/BalduvianHorde.jpg"));
@@ -93,8 +95,7 @@ public class CardPanel extends Panel
 		final Image handleImage = new Image("handleImage",
 				new ResourceReference("images/arrow.png"));
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, menutoggleImage, bubbleTipImg1,
-				bubbleTipText1);
+		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, bubbleTipImg1, bubbleTipText1);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
 	}

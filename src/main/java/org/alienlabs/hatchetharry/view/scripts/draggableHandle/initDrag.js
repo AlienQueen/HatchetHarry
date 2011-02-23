@@ -1,6 +1,5 @@
 jQuery(function() {
-	jQuery("#contextMenu").draggable({
+	jQuery("#menutoggleButton").draggable({
 		handle : "img"
 	});
-	jQuery("div img").disableSelection();
 });
