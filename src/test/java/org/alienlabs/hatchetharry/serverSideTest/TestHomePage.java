@@ -93,18 +93,18 @@ public class TestHomePage
 		Assert.assertEquals(1, images.size());
 
 		// assert URL of a thumbnail
-		TagTester tagTester = TagTester.createTagByAttribute(TestHomePage.tester
-				.getServletResponse().getDocument(), "class", "thumbnail");
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(TestHomePage.tester
+				.getServletResponse().getDocument(), "class", "thumbnail", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertNotNull(tagTester.getAttribute("src"));
-		Assert.assertTrue(tagTester.getAttribute("src").contains("HammerOfBogardan.jpg"));
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("HammerOfBogardan.jpg"));
 
 		// assert URL of an image
-		tagTester = TagTester.createTagByAttribute(TestHomePage.tester.getServletResponse()
-				.getDocument(), "class", "full");
+		tagTester = TagTester.createTagsByAttribute(TestHomePage.tester.getServletResponse()
+				.getDocument(), "class", "full", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertNotNull(tagTester.getAttribute("src"));
-		Assert.assertTrue(tagTester.getAttribute("src").contains("HammerOfBogardan.jpg"));
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("HammerOfBogardan.jpg"));
 	}
 
 	@Test

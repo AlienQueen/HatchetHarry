@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -81,6 +82,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	 */
 	public HomePage(final PageParameters parameters)
 	{
+		Session.findOrCreate();
 		// Resources
 		this.addHeadResources();
 
@@ -92,9 +94,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
-
-		// Card move Comet channel
-		// this.add(new CardMoveChannelPanel("cardMoveStart"));
 
 		// Balduvian Horde
 		final CardPanel baldu = new CardPanel("baldu");

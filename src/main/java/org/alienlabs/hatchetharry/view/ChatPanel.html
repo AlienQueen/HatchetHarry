@@ -9,7 +9,7 @@
     <script>
 
     jQuery(document).ready(function() {
-            function callback(response) {
+            function callbackChatPanel(response) {
                 // Websocket events.
                 jQuery.atmosphere.log('info', ["response.state: " + response.state]);
                 jQuery.atmosphere.log('info', ["response.transport: " + response.transport]);
@@ -17,7 +17,7 @@
                 	jQuery.atmosphere.log('info', ["response.responseBody: " + response.responseBody]);
                     if (response.status == 200) {
                         var data = response.responseBody;
-                        if (typeof(data.split("###")[1]) != "undefined") { // We're in the chat Meteor
+                        if ((typeof(data.split("###")[1]) != "undefined") && (typeof(data.split("$$$")[1]) == "undefined")) { // We're in the chat Meteor
                         	document.getElementById('chat').innerHTML =
                         		document.getElementById('chat').innerHTML + "\n" + data.split("###")[1];
                         }
@@ -27,12 +27,11 @@
 
             // You can set websocket, streaming or long-polling here.
             jQuery.atmosphere.subscribe(document.getElementById('chatStart').href,
-            		callback,
+            		callbackChatPanel,
                     jQuery.atmosphere.request = {transport: 'streaming'});
         });
     </script>
 </wicket:head>
-<body>
 <wicket:panel>
     <a wicket:id="chatStart" id="chatStart"></a>
 	<form wicket:id="chatForm" action="">
@@ -45,5 +44,4 @@
 	<iframe id="comet-frame" style="display: none;"></iframe>
     </div>
 </wicket:panel>
-</body>
 </html>

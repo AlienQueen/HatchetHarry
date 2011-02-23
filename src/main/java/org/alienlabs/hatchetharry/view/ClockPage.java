@@ -78,7 +78,6 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		// Grap a Meteor
 		final Meteor meteor = Meteor.build(req);
 		final String jsessionid = req.getRequestedSessionId();
-		ClockPage.logger.info("jsessionid= " + jsessionid);
 
 		// Start scheduling update.
 		if ((!this.scheduleStarted.getAndSet(true))
@@ -115,7 +114,6 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		final String jsessionid = event.getResource().getRequest().getRequestedSessionId();
 		if (!jsessionid.equals(((String)event.getMessage()).split("###")[0]))
 		{
-			ClockPage.logger.info("onBroadcast() ClockPage: {}", event.getMessage());
 			// If we are using long-polling, resume the connection as soon as we
 			// get an event.
 			final String transport = event.getResource().getRequest()

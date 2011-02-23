@@ -37,11 +37,6 @@
  */
 package org.alienlabs.hatchetharry.view;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -62,10 +57,6 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 {
 
 	private static final Logger logger = LoggerFactory.getLogger(CardMovePage.class);
-	static final Map<String, Callable<String>> connectedJSessionIds = new HashMap<String, Callable<String>>();
-
-	// TODO is this necessary??
-	private final AtomicBoolean scheduleStarted = new AtomicBoolean(false);
 
 	public CardMovePage()
 	{

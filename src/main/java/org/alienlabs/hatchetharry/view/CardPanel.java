@@ -6,21 +6,21 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +34,16 @@ public class CardPanel extends Panel
 	 */
 	final List<BroadcastFilter> list;
 
+	final BookmarkablePageLink<CardMovePage> cardMovePage;
+
 	public CardPanel(final String id)
 	{
 		super(id);
+
+		Session.findOrCreate();
+
+		this.cardMovePage = new BookmarkablePageLink<CardMovePage>("cardMove", CardMovePage.class);
+		this.add(this.cardMovePage);
 
 		this.add(new JavaScriptReference("jQuery.bubbletip-1.0.6.js", HomePage.class,
 				"scripts/bubbletip/jQuery.bubbletip-1.0.6.js"));
@@ -49,6 +56,7 @@ public class CardPanel extends Panel
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("contextMenu");
 
+
 		final Image bubbleTipImg1 = new Image("bubbleTipImg1", new ResourceReference(
 				"cards/BalduvianHorde.jpg"));
 		final Label bubbleTipText1 = new Label("bubbleTipText1", new Model<String>(
@@ -60,7 +68,7 @@ public class CardPanel extends Panel
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;into play,sacrifice it<br/>"
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless you discard a card<br/>"
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at random from your hand</b>"));
-		bubbleTipText1.add(new SimpleAttributeModifier("style", "color=white;"));
+		bubbleTipText1.add(new SimpleAttributeModifier("style", "color: white;"));
 		bubbleTipText1.setOutputMarkupPlaceholderTag(true).setEscapeModelStrings(false);
 
 		this.add(new JavaScriptReference("jquery.contextMenu.js", HomePage.class,
@@ -68,50 +76,34 @@ public class CardPanel extends Panel
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "scripts/contextmenu/jquery.contextMenu.css")));
 
-		this.add(new JavaScriptReference("jquery.ui.core.js", HomePage.class,
-				"scripts/draggableHandle/jquery.ui.core.js"));
-		this.add(new JavaScriptReference("jquery.ui.widget.js", HomePage.class,
-				"scripts/draggableHandle/jquery.ui.widget.js"));
-		this.add(new JavaScriptReference("jquery.ui.mouse.js", HomePage.class,
-				"scripts/draggableHandle/jquery.ui.mouse.js"));
-		this.add(new JavaScriptReference("jquery.ui.draggable.js", HomePage.class,
-				"scripts/draggableHandle/jquery.ui.draggable.js"));
-
 		this.list = new LinkedList<BroadcastFilter>();
 
 		final Form<String> form = new Form<String>("form");
-		final AjaxSubmitLink handleButton = new AjaxSubmitLink("handleButton")
-		{
-			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
-				if (target != null)
-				{
-					final String message = "jQuery(function() { "
-							+ "jQuery('#yahoo-com').click(function(e){ "
-							+ "pageX = e.pageX; pageY = e.pageY'})" + "})";
+		menutoggleButton.add(new CardMoveBehavior(this, form));
 
-					final ServletWebRequest servletWebRequest = (ServletWebRequest)this
-							.getRequest();
-					final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
-					request.getRequestedSessionId();
-
-					final Meteor meteor = Meteor.build(request, CardPanel.this.list, null);
-					CardPanel.logger.info("meteor: " + meteor);
-
-					meteor.broadcast(message);
-				}
-			}
-
-		};
+		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
+				((ServletWebRequest)this.getRequest()).getHttpServletRequest()
+						.getRequestedSessionId()));
+		CardPanel.logger.info("jsessionid: "
+				+ ((ServletWebRequest)this.getRequest()).getHttpServletRequest()
+						.getRequestedSessionId());
+		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
+		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
 
 		final Image handleImage = new Image("handleImage",
 				new ResourceReference("images/arrow.png"));
 
-		handleButton.add(handleImage);
-		form.add(handleButton, menutoggleImage, bubbleTipImg1, bubbleTipText1);
+		form.add(jsessionid, mouseX, mouseY, handleImage, menutoggleImage, bubbleTipImg1,
+				bubbleTipText1);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
+	}
+
+	public HttpServletRequest getHttpServletRequest()
+	{
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
+		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		return request;
 	}
 
 }
