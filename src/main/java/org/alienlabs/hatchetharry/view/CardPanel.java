@@ -49,6 +49,8 @@ public class CardPanel extends Panel
 				"scripts/bubbletip/jQuery.bubbletip-1.0.6.js"));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "scripts/bubbletip/bubbletip.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/menu.css")));
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);

@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry;
 
 import org.alienlabs.hatchetharry.view.HomePage;
 import org.apache.wicket.Request;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -41,6 +42,8 @@ public class HatchetHarryApplication extends WebApplication
 		super.init();
 
 		MockableSpringBeanInjector.installInjector(this);
+		this.mountSharedResource("images/logo32_32.png", new ResourceReference(HomePage.class,
+				"images/logo32_32.png").getSharedResourceKey());
 	}
 
 	@Override

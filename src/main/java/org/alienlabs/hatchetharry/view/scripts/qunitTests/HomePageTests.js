@@ -31,34 +31,33 @@ jQuery(document)
 							function() {
 								var menubaritem1 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
 								ok(
-										(menubaritem1.href
-												.indexOf("communication") != -1),
+										(menubaritem1.href.indexOf("logo") != -1),
 										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
-												+ "whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and point to './communication', and it appears to be: "
+												+ " whose parent is a ul class first-of-type whose parent is a div class bd"
+												+ " should exist and point to 'logo', and it appears to be: "
 												+ menubaritem1.href);
 								menubaritem1 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
 								ok(
-										(menubaritem1.innerHTML == "Documentation"),
+										(menubaritem1.innerHTML == "<em id=\"logo\">HatchetHarry</em>"),
 										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
-												+ "whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and contain 'Documentation', and it appears to be: "
+												+ " whose parent is a ul class first-of-type whose parent is a div class bd"
+												+ " should exist and contain '<em id=\"logo\">HatchetHarry</em>', and it appears to be: "
 												+ menubaritem1.innerHTML);
 
 								var menubaritem2 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel')[1];
 								ok(
 										(menubaritem2.href
-												.indexOf("http://shopping.yahoo.com") != -1),
+												.indexOf("Documentation") != -1),
 										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
-												+ "whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and point to 'http://shopping.yahoo.com', and it appears to be: "
+												+ " whose parent is a ul class first-of-type whose parent is a div class bd"
+												+ " should exist and point to 'Documentation', and it appears to be: "
 												+ menubaritem2.href);
 								menubaritem2 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel')[1];
 								ok(
-										(menubaritem2.innerHTML == "Game"),
+										(menubaritem2.innerHTML == "Documentation"),
 										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
 												+ "whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and contain 'Game', and it appears to be: "
+												+ " should exist and contain '<em id=\"logo\">HatchetHarry</em>', and it appears to be: "
 												+ menubaritem2.innerHTML);
 
 								var allLinks = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel-hassubmenu:first');

@@ -8,12 +8,12 @@ version: 2.8.2r1
 	top: -999em;
 	left: -999em;
 	position: relative;
-	z-index: 10;
+	z-index: 300;
 }
 
 .yuimenubar {
 	position: static;
-	z-index: 10;
+	z-index: 300;
 }
 
 .yuimenu .yuimenu,.yuimenubar .yuimenu {

@@ -37,13 +37,6 @@ $(document)
 										 * literal of configuration properties.
 										 */
 
-										var oMenuBar = new YAHOO.widget.MenuBar(
-												"menubar", {
-													autosubmenudisplay : true,
-													hidedelay : 750,
-													lazyload : true
-												});
-
 										/*
 										 * Define an array of object literals,
 										 * each containing the data necessary to
@@ -52,183 +45,160 @@ $(document)
 
 										var aSubmenuData = [
 												{
-													id : "Documentation",
-													itemdata : [
-															{
-																text : "Official Magic(tm) rules",
-																url : "http://360.yahoo.com"
-															},
-															{
-																text : "HatchetHarry documentation",
-																url : "http://alerts.yahoo.com"
-															},
-															{
-																text : "Browse cards database",
-																url : "http://avatars.yahoo.com"
-															} ]
+													text : "<em id=\"logo\">HatchetHarry</em>",
+													submenu : {
+														id : "logo",
+														itemdata : [
+																[ {
+																	text : "About HatchetHarry",
+																	url : "#"
+																} ],
+																[ {
+																	text : "HatchetHarry Team Info",
+																	url : "#"
+																} ],
+																[ {
+																	text : "Preferences",
+																	url : "#"
+																} ] ]
+													}
 												},
 												{
-													id : "Game",
-													itemdata : [
-															{
-																text : "Your life",
-																submenu : {
-																	id : "life",
-																	itemdata : [
-																			{
-																				text : "Gain 1 life",
-																				url : "http://mail.yahoo.com"
-																			},
-																			{
-																				text : "Loose 1 life",
-																				url : "http://addressbook.yahoo.com"
-																			},
-																			{
-																				text : "Gain an infinity of life",
-																				url : "http://calendar.yahoo.com"
-																			},
-																			{
-																				text : "Give up the game",
-																				url : "http://notepad.yahoo.com"
-																			} ]
-																}
-
-															},
-															{
-																text : "Mana",
-																submenu : {
-																	id : "mana",
-																	itemdata : [
-																			{
-																				text : "Add 1 coloured mana to pool",
-																				url : "http://mail.yahoo.com"
-																			},
-																			{
-																				text : "Remove 1 coloured mana from pool",
-																				url : "http://addressbook.yahoo.com"
-																			},
-																			{
-																				text : "Add 1 colorless mana to pool",
-																				url : "http://calendar.yahoo.com"
-																			},
-																			{
-																				text : "Remove 1 colorless mana from pool",
-																				url : "http://notepad.yahoo.com"
-																			},
-																			{
-																				text : "flush mana pool",
-																				url : "http://calendar.yahoo.com"
-																			} ]
-																}
-
-															},
-															{
-																text : "Cards",
-																submenu : {
-																	id : "cards",
-																	itemdata : [
-																			{
-																				text : "Put top library card to graveyard",
-																				url : "http://mail.yahoo.com"
-																			},
-																			{
-																				text : "Discard a card at random",
-																				url : "http://addressbook.yahoo.com"
-																			},
-																			{
-																				text : "Put top graveyard card to top of library",
-																				url : "http://calendar.yahoo.com"
-																			},
-																			{
-																				text : "Remove top graveyard card from the game",
-																				url : "http://notepad.yahoo.com"
-																			} ]
-																}
-
-															} ]
+													text : "Documentation",
+													submenu : {
+														id : "Documentation",
+														itemdata : [
+																[ {
+																	text : "Official Magic(tm) rules",
+																	url : "http://360.yahoo.com"
+																} ],
+																[ {
+																	text : "HatchetHarry documentation",
+																	url : "http://alerts.yahoo.com"
+																} ],
+																[ {
+																	text : "Browse cards database",
+																	url : "http://avatars.yahoo.com"
+																} ],
+																[ {
+																	text : "New & old rules",
+																	submenu : {
+																		id : "newrules",
+																		itemdata : [
+																				{
+																					text : "Layers",
+																					url : "http://mail.yahoo.com"
+																				},
+																				{
+																					text : "Mana pool",
+																					url : "http://addressbook.yahoo.com"
+																				},
+																				{
+																					text : "Stack",
+																					url : "http://calendar.yahoo.com"
+																				},
+																				{
+																					text : "The game wins",
+																					url : "http://notepad.yahoo.com"
+																				},
+																				{
+																					text : "Infinite manas, life, tokens and combo",
+																					url : "http://notepad.yahoo.com"
+																				} ]
+																	}
+																} ] ]
+													}
 												},
-
 												{
-													id : "entertainment",
-													itemdata : [
-															{
-																text : "Fantasy Sports",
-																url : "http://fantasysports.yahoo.com"
-															},
-															{
-																text : "Games",
-																url : "http://games.yahoo.com"
-															},
-															{
-																text : "Kids",
-																url : "http://www.yahooligans.com"
-															},
-															{
-																text : "Music",
-																url : "http://music.yahoo.com"
-															},
-															{
-																text : "Movies",
-																url : "http://movies.yahoo.com"
-															},
-															{
-																text : "Radio",
-																url : "http://music.yahoo.com/launchcast"
-															},
-															{
-																text : "Travel",
-																url : "http://travel.yahoo.com"
-															},
-															{
-																text : "TV",
-																url : "http://tv.yahoo.com"
-															} ]
-												},
+													text : "Game",
+													submenu : {
+														id : "Game",
+														itemdata : [
+																{
+																	text : "Your life",
+																	submenu : {
+																		id : "life",
+																		itemdata : [
+																				{
+																					text : "Gain 1 life",
+																					url : "http://mail.yahoo.com"
+																				},
+																				{
+																					text : "Loose 1 life",
+																					url : "http://addressbook.yahoo.com"
+																				},
+																				{
+																					text : "Gain an infinity of life",
+																					url : "http://calendar.yahoo.com"
+																				},
+																				{
+																					text : "Give up the game",
+																					url : "http://notepad.yahoo.com"
+																				} ]
+																	}
 
-												{
-													id : "information",
-													itemdata : [
-															{
-																text : "Downloads",
-																url : "http://downloads.yahoo.com"
-															},
-															{
-																text : "Finance",
-																url : "http://finance.yahoo.com"
-															},
-															{
-																text : "Health",
-																url : "http://health.yahoo.com"
-															},
-															{
-																text : "Local",
-																url : "http://local.yahoo.com"
-															},
-															{
-																text : "Maps & Directions",
-																url : "http://maps.yahoo.com"
-															},
-															{
-																text : "My Yahoo!",
-																url : "http://my.yahoo.com"
-															},
-															{
-																text : "News",
-																url : "http://news.yahoo.com"
-															},
-															{
-																text : "Search",
-																url : "http://search.yahoo.com"
-															},
-															{
-																text : "Small Business",
-																url : "http://smallbusiness.yahoo.com"
-															},
-															{
-																text : "Weather",
-																url : "http://weather.yahoo.com"
-															} ]
+																},
+																{
+																	text : "Mana",
+																	submenu : {
+																		id : "mana",
+																		itemdata : [
+																				{
+																					text : "Add 1 coloured mana to pool",
+																					url : "http://mail.yahoo.com"
+																				},
+																				{
+																					text : "Remove 1 coloured mana from pool",
+																					url : "http://addressbook.yahoo.com"
+																				},
+																				{
+																					text : "Add 1 colorless mana to pool",
+																					url : "http://calendar.yahoo.com"
+																				},
+																				{
+																					text : "Remove 1 colorless mana from pool",
+																					url : "http://notepad.yahoo.com"
+																				},
+																				{
+																					text : "flush mana pool",
+																					url : "http://calendar.yahoo.com"
+																				} ]
+																	}
+
+																},
+																{
+																	text : "Cards",
+																	submenu : {
+																		id : "cards",
+																		itemdata : [
+																				{
+																					text : "Put top library card to graveyard",
+																					url : "http://mail.yahoo.com"
+																				},
+																				{
+																					text : "Discard a card at random",
+																					url : "http://addressbook.yahoo.com"
+																				},
+																				{
+																					text : "Put top graveyard card to top of library",
+																					url : "http://calendar.yahoo.com"
+																				},
+																				{
+																					text : "Remove top graveyard card from the game",
+																					url : "http://notepad.yahoo.com"
+																				} ]
+																	}
+																} ]
+													}
 												} ];
+
+										var oMenuBar = new YAHOO.widget.MenuBar(
+												"menubar", {
+													autosubmenudisplay : true,
+													hidedelay : 750,
+													lazyload : true,
+													itemdata : aSubmenuData
+												});
 
 										var ua = YAHOO.env.ua, oAnim; // Animation
 										// instance
