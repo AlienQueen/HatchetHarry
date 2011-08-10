@@ -50,8 +50,8 @@ public class HatchetHarryApplication extends WebApplication
 				"images/hand.gif").getSharedResourceKey());
 		this.mountSharedResource("images/eMail.png", new ResourceReference(HomePage.class,
 				"images/eMail.png").getSharedResourceKey());
-		this.mountSharedResource("images/Instant_Messaging.png", new ResourceReference(
-				HomePage.class, "images/Instant_Messaging.png").getSharedResourceKey());
+		this.mountSharedResource("images/graveyard.gif", new ResourceReference(HomePage.class,
+				"images/graveyard.gif").getSharedResourceKey());
 		this.mountSharedResource("images/Safari.png", new ResourceReference(HomePage.class,
 				"images/Safari.png").getSharedResourceKey());
 		this.mountSharedResource("images/Terminal.png", new ResourceReference(HomePage.class,
