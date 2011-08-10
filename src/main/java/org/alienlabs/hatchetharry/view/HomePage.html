@@ -3,7 +3,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Welcome to HatchetHarry!</title>
 	<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
-	<script wicket:id="jQuery-1.4.4.js" type="text/javascript"></script>
+	
+	<script wicket:id="jQuery-1.6.2.js" type="text/javascript"></script>
+    <!-- Dock -->
+    <script type="text/javascript" wicket:id="jqDock.js" src="scripts/menubar/jquery.jqDock.js"></script>
+    <script wicket:id="jquery-ui-1.8.15.position.min.js" type="text/javascript"></script>
 	<script type="text/javascript" wicket:id="qUnit.js"></script>
 	<script type="text/javascript" wicket:id="codeUnderTest.js"></script>
 	<script type="text/javascript" wicket:id="HomePageTests.js"></script>
@@ -85,7 +89,7 @@
             
             text-indent: -6em; 
 		    display: block; 
-		    background: url("/hatchetharry/images/logo32_32.png") center center no-repeat; 
+		    background: url("/images/logo32_32.png") center center no-repeat; 
 	    	width: 2em; 
 		    overflow: hidden; 
 			}
@@ -106,53 +110,44 @@
 </head>
 <body class="yui-skin-sam" id="yahoo-com">
 
-<!-- start: primary column from outer template -->
-    <div id="yui-main">
-          <div class="yui-b">
-              <!-- start: stack grids here -->
-
-              <div id="menubar" class="yuimenubar yuimenubarnav">
-                  <div class="bd">
-
-                      <ul class="first-of-type">
-                          <li class="yuimenubaritem first-of-type">
-                          </li>
-                          <li class="yuimenubaritem">
-                          </li>
-                          <li class="yuimenubaritem">
-                          </li>
-                          <li class="yuimenubaritem">
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-              <!-- end: stack grids here -->
-          </div>
-
-    </div>
-      <!-- end: primary column from outer template -->
-
+	<span wicket:id="menubar"></span><br/><br/>
+	
 	<strong>Welcome to HatchetHarry!</strong>
 	<br/><br/>
-	<span wicket:id="message">message will be here</span><br/><br/>
+	<span wicket:id="message" id="message">message will be here</span><br/><br/>
   	
   	<span align="left" >
 	  	<span id="header"></span>
 			<span id="nav"></span>
 	        <span id="content">
-	    		<span wicket:id="gallery"></span>
+	    		<span wicket:id="gallery"></span><br/><br/>
 	  		</span>      
 	</span>
 	<br/>
   	<span wicket:id="feedback"></span>
-  	<span wicket:id="clockPanel">Clock Panel</span>
-  	<br/>
-	<span wicket:id="baldu"></span>
-	<br/><br/>
+  	<span wicket:id="clockPanel" id="clock">Clock Panel</span>
+	<br/>
+	<span wicket:id="baldu" id="baldu"></span>
+	
+	<div id="dock">
+	    <a href='#' title="Library">
+		    <img src="/images/library.gif" alt="library"  title="Library"/>
+	    </a>
+	    <img src="/images/hand.gif" alt="Hand" title="Hand"/>
+	    <a href="#" title="eMail">
+	      <img src="/images/eMail.png" alt="eMail" />
+	
+	    </a>
+	    <img src="/images/Instant_Messaging.png" alt="Instant_Messaging" title="Instant Messaging" />
+	    <a href="#" title="Safari">
+	      <img src="/images/Safari.png" alt="Safari" />
+	    </a>
+	    <img src="/images/Terminal.png" alt="Terminal" title="Terminal" />
+  	</div>
 	
   		<span>
 
-	  		<span wicket:id="chatPanel">Chat Panel</span>
+	  		<span wicket:id="chatPanel" id="chatPanel">Chat Panel</span>
 
 	  		<h1 id="qunit-header">QUnit example</h1>
 			<h2 id="qunit-banner"></h2>

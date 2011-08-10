@@ -86,8 +86,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		// Resources
 		this.addHeadResources();
 
+		// Menu bar
+		final YuiMenuBar menubar = new YuiMenuBar("menubar", this);
+		this.add(menubar);
+
 		// Welcome message
-		this.add(new Label("message", "version 0.0.2 built on Thursday, 24th of February 2011"));
+		this.add(new Label("message", "version 0.0.2 built on Wednesday, 10th of August 2011"));
 
 		// Hand
 		this.buildHand();
@@ -105,8 +109,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void addHeadResources()
 	{
-		this.add(new JavaScriptReference("jQuery-1.4.4.js", HomePage.class,
-				"scripts/jquery/jQuery-1.4.4.js"));
+		this.add(new JavaScriptReference("jQuery-1.6.2.js", HomePage.class,
+				"scripts/jquery/jquery-1.6.2.min.js"));
+		this.add(new JavaScriptReference("jqDock.js", HomePage.class,
+				"scripts/menubar/jquery.jqDock.js"));
+		this.add(new JavaScriptReference("jquery-ui-1.8.15.position.min.js", HomePage.class,
+				"scripts/jquery/jquery-ui-1.8.15.position.min.js"));
 		this.add(new JavaScriptReference("qUnit.js", HomePage.class, "scripts/qunitTests/qUnit.js"));
 		this.add(new JavaScriptReference("codeUnderTest.js", HomePage.class,
 				"scripts/qunitTests/codeUnderTest.js"));
@@ -126,6 +134,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/menu.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/layout.css")));
 	}
 
 	protected void buildHand()

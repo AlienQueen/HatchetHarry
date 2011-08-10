@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 	var myGallery = new gallery($('myGallery'), {
 		timed : true,
 		fadeDuration : 1000,
@@ -812,4 +813,19 @@ $(document).ready(
 				oFieldContextMenu.subscribe("render", onFieldMenuRender);
 
 			});
+
 		});
+
+$(document).ready(function() {
+	jQuery('#dock').jqDock({
+		align : 'middle',
+	});
+});
+//
+// $(document).ready(function() {
+// jQuery("#baldu").position({
+// "my" : "left bottom",
+// "at" : "center top",
+// "of" : jQuery("#clock")
+// });
+// });

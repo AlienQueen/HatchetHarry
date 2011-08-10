@@ -44,6 +44,20 @@ public class HatchetHarryApplication extends WebApplication
 		MockableSpringBeanInjector.installInjector(this);
 		this.mountSharedResource("images/logo32_32.png", new ResourceReference(HomePage.class,
 				"images/logo32_32.png").getSharedResourceKey());
+		this.mountSharedResource("images/library.gif", new ResourceReference(HomePage.class,
+				"images/library.gif").getSharedResourceKey());
+		this.mountSharedResource("images/hand.gif", new ResourceReference(HomePage.class,
+				"images/hand.gif").getSharedResourceKey());
+		this.mountSharedResource("images/eMail.png", new ResourceReference(HomePage.class,
+				"images/eMail.png").getSharedResourceKey());
+		this.mountSharedResource("images/Instant_Messaging.png", new ResourceReference(
+				HomePage.class, "images/Instant_Messaging.png").getSharedResourceKey());
+		this.mountSharedResource("images/Safari.png", new ResourceReference(HomePage.class,
+				"images/Safari.png").getSharedResourceKey());
+		this.mountSharedResource("images/Terminal.png", new ResourceReference(HomePage.class,
+				"images/Terminal.png").getSharedResourceKey());
+		this.mountSharedResource("images/gradient1.jpg", new ResourceReference(HomePage.class,
+				"images/gradient1.jpg").getSharedResourceKey());
 	}
 
 	@Override
