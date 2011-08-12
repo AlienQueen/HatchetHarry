@@ -250,17 +250,6 @@
     <a class="{action: 'showMessage(\'sub_menu_3.5\')'}">Blah2</a>
   </div>
 
-  <div id="conext_menu_1" class="mbmenu">
-    <a rel="text" >
-      <img src="browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/><br/>
-      <br/>immagini che vuoi ed altro testo che ti pare Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi felis leo, consequat et, lacinia a, facilisis sit amet,<br/><br/>
-    </a>
-    <a rel="separator"> </a>
-    <a class="{action: 'testForContextMenu()',img: 'iconDone.png'}" >test: get opener ID</a>
-    <a id="bbb" class="{menu:'sub_menu_2'}" >submenu</a>
-    <a class="{action: 'showMessage(\'conext_menu_1.4\')'}" >conext_menu_1.4 con testo veramente molto lungo</a>
-  </div>
-
   <div id="box_menu" class="mbmenu boxMenu">
     <table style="border:0;" >
       <tr>
@@ -276,9 +265,7 @@
 
   <!-- end menus -->
 	
-	<strong>Welcome to HatchetHarry!</strong>
-	<br/><br/>
-	<span wicket:id="message" id="message">message will be here</span><br/><br/>
+	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span><br/><br/>
   	
   	<span align="left" >
 	  	<span id="header"></span>
@@ -294,41 +281,44 @@
 	<span wicket:id="baldu" id="baldu"></span>
 	
 	<div id="dock">
+	    <a href='#' title="Hand">
+	    	<img src="/images/hand.gif" alt="Hand" title="Hand"/>
+	    </a>
+	    <a href='#' title="Graveyard">
+	    	<img src="/images/graveyard.gif" alt="Graveyard" title="Graveyard"/>
+	    </a>
+	    <a href='#' title="Exiled">
+	    	<img src="/images/exiled.gif" alt="Exiled" title="Exiled"/>
+	    </a>
+	    <a href="#" title="Battlefield">
+	      <img src="/images/battlefield.gif" alt="Battlefield" />
+	    </a>
 	    <a href='#' title="Library">
 		    <img src="/images/library.gif" alt="library"  title="Library"/>
 	    </a>
-	    <img src="/images/hand.gif" alt="Hand" title="Hand"/>
-	    <a href="#" title="eMail">
-	      <img src="/images/eMail.png" alt="eMail" />
-	
-	    </a>
-	    <img src="/images/graveyard.gif" alt="Graveyard" title="Graveyard" />
-	    <a href="#" title="Safari">
-	      <img src="/images/Safari.png" alt="Safari" />
-	    </a>
-	    <img src="/images/Terminal.png" alt="Terminal" title="Terminal" />
   	</div>
+  	<br/>
 	
-  		<span>
+  	<span>
 
-	  		<span wicket:id="chatPanel" id="chatPanel">Chat Panel</span>
+  		<span wicket:id="chatPanel" id="chatPanel">Chat Panel</span>
 
-	  		<h1 id="qunit-header">QUnit example</h1>
-			<h2 id="qunit-banner"></h2>
-			<div id="qunit-testrunner-toolbar"></div>
-			<h2 id="qunit-userAgent"></h2>
-			<ol id="qunit-tests"></ol>
-			<div id="qunit-fixture">test markup, will be hidden</div>
-	
-			<br/>
-	
-	    	<form wicket:id="runForm">
-	      		Name of suite or test to run: 
-	      		<input wicket:id="testClassName" type="text" size="70"  />
-	      
-	      		<input type="submit" value="Run" />
-	    	</form>
-  		</span>
+  		<h1 id="qunit-header">QUnit example</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+
+		<br/>
+
+    	<form wicket:id="runForm">
+      		Name of suite or test to run: 
+      		<input wicket:id="testClassName" type="text" size="70"  />
+      
+      		<input type="submit" value="Run" />
+    	</form>
+    </span>
 
   <div style="width:40em; min-width:40em;">
     <table wicket:id="summary">    

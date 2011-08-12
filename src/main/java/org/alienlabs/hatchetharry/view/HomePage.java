@@ -87,7 +87,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.addHeadResources();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.2 built on Friday, 12th of August 2011"));
+		this.add(new Label("message", "version 0.0.2 built on Saturday, 13th of August 2011"));
 
 		// Hand
 		this.buildHand();
