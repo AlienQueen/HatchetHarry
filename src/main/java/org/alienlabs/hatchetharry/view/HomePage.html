@@ -3,11 +3,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Welcome to HatchetHarry!</title>
 	<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/menu_black.css" media="screen" />
 	
 	<script wicket:id="jQuery-1.6.2.js" type="text/javascript"></script>
     <!-- Dock -->
     <script type="text/javascript" wicket:id="jqDock.js" src="scripts/menubar/jquery.jqDock.js"></script>
     <script wicket:id="jquery-ui-1.8.15.position.min.js" type="text/javascript"></script>
+    <script type="text/javascript" wicket:id="jquery.metadata.js" src="scripts/menubar/jquery.metadata.js"></script>
+	<script type="text/javascript" wicket:id="jquery.hoverIntent.js" src="scripts/menubar/jquery.hoverIntent.js"></script>
+	<script type="text/javascript" wicket:id="mbMenu.js" src="scripts/menubar/mbMenu.js"></script>
 	<script type="text/javascript" wicket:id="qUnit.js"></script>
 	<script type="text/javascript" wicket:id="codeUnderTest.js"></script>
 	<script type="text/javascript" wicket:id="HomePageTests.js"></script>
@@ -94,6 +98,63 @@
 		    overflow: hidden; 
 			}
 
+		  .wrapper h1{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:26px;
+  }
+  button{
+    padding:4px;
+    display:inline-block;
+    cursor:pointer;
+    font:12px/14px Arial, Helvetica, sans-serif;
+    color:#666;
+    border:1px solid #999;
+    background-color:#eee;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;
+    margin-bottom:4px;
+  }
+  button:hover{
+    color:#aaa;
+    background-color:#000;
+  }
+  :focus {
+    outline: 0;
+  }
+
+  span.btn{
+    padding:10px;
+    display:inline-block;
+    cursor:pointer;
+    font:12px/14px Arial, Helvetica, sans-serif;
+    color:#aaa;
+    background-color:#eee;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;
+  }
+  span.btn:hover{
+    background-color:#000;
+  }
+  
+  .msgBox{
+    position:absolute;
+    width:250px;
+    height:60px;
+    background:black;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;    
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    padding:10px;
+    padding-top:30px;
+    top:10px;
+    right:10px;
+    font:20px/24px Arial, Helvetica, sans-serif;
+  }
         </style>
 
 
@@ -110,7 +171,110 @@
 </head>
 <body class="yui-skin-sam" id="yahoo-com">
 
-	<span wicket:id="menubar"></span><br/><br/>
+
+  <table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#989898">
+    <tr>
+      <td valign="bottom">
+        <table  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000" class="container">
+          <tr>
+            <td class="myMenu">
+
+              <!-- start horizontal menu -->
+
+              <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'><tr>
+                <td class="rootVoice {menu: 'box_menu'}" ><img src="/images/logo32_32.png" alt="HH" width="32"></td>
+                <td class="rootVoice {menu: 'menu_2'}" >Documentation</td>
+                <td class="rootVoice {menu: 'menu_3'}" >Game</td>
+              </tr></table>
+
+              <!-- end horizontal menu -->
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <br/>
+  <!-- menues -->
+  <div id="menu_2" class="mbmenu">
+    <a class="{action: 'showMessage(\'menu_2.1\')', img: 'icon_13.png'}">Official Magic(tm) rules</a>
+    <a class="{action: 'showMessage(\'menu_2.2\')'}">HatchetHarry documentation</a>
+    <a class="{menu: 'sub_menu_1', img: 'icon_14.png'}">Browse cards database</a>
+    <a rel="separator"> </a>
+    <a class="{menu: 'sub_menu_2', img: '24-tag-add.png'}">New and old rules</a>
+  </div>
+
+  <div id="menu_3" class="mbmenu">
+    <a  class="{action: 'showMessage(\'menu_2.2\')'}">
+        <img src="browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your life<br/>
+    </a>
+    <a rel="separator"> </a>
+    <a id="aaa" class="{menu:'sub_menu_3'}">Mana</a>
+    <a class="{menu:'sub_menu_4', action: 'showMessage(\'menu_3.4\')'}">Cards</a>
+  </div>
+
+  <div id="sub_menu_1" class="mbmenu">
+    <a class="{action: 'showMessage(\'sub_menu_1.1\')'}">sub_menu_1.1</a>
+    <a rel="separator"> </a>
+    <a class="{action: 'showMessage(\'sub_menu_1.2\')'}">sub_menu_1.2</a>
+    <a class="{action: 'showMessage(\'sub_menu_1.3\')', img: 'bgColor.gif'}">sub_menu_1.3</a>
+    <a class="{action: 'showMessage(\'sub_menu_1.4\')',img: 'Applet.gif'}">sub_menu_1.4</a>
+  </div>
+
+  <div id="sub_menu_2" class="mbmenu">
+    <a class="{action: 'showMessage(\'sub_menu_2.1\')', img: 'buttonfind.gif'}" target="_blank" >Layers</a>
+    <a class="{action: 'showMessage(\'sub_menu_2.2\')'}">The game wins</a>
+    <a class="{action: 'showMessage(\'sub_menu_2.3\')'}" >Infinite manas, life, tokens and combo</a>
+    <a rel="separator"> </a>
+    <a class="{img: 'buttonfind.gif'}" target="_self" >Mana pool</a>
+    <a class="{action: 'showMessage(\'sub_menu_2.5\')'}">Stack</a>
+  </div>
+
+  <div id="sub_menu_3" class="mbmenu">
+    <a class="{action: 'showMessage(\'sub_menu_3.1\')', img: 'buttonfind.gif'}" target="_blank" >Blah</a>
+    <a class="{action: 'showMessage(\'sub_menu_3.2\')'}">Blah</a>
+    <a class="{action: 'showMessage(\'sub_menu_3.3\')'}" >Blah</a>
+    <a rel="separator"> </a>
+    <a class="{img: 'buttonfind.gif'}" target="_self" >Blah</a>
+    <a class="{action: 'showMessage(\'sub_menu_3.5\')'}">Blah</a>
+  </div>
+
+  <div id="sub_menu_4" class="mbmenu">
+    <a class="{action: 'showMessage(\'sub_menu_3.1\')', img: 'buttonfind.gif'}" target="_blank" >Blah2</a>
+    <a class="{action: 'showMessage(\'sub_menu_3.2\')'}">Blah2</a>
+    <a class="{action: 'showMessage(\'sub_menu_3.3\')'}" >Blah2</a>
+    <a rel="separator"> </a>
+    <a class="{img: 'buttonfind.gif'}" target="_self" >Blah2</a>
+    <a class="{action: 'showMessage(\'sub_menu_3.5\')'}">Blah2</a>
+  </div>
+
+  <div id="conext_menu_1" class="mbmenu">
+    <a rel="text" >
+      <img src="browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/><br/>
+      <br/>immagini che vuoi ed altro testo che ti pare Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi felis leo, consequat et, lacinia a, facilisis sit amet,<br/><br/>
+    </a>
+    <a rel="separator"> </a>
+    <a class="{action: 'testForContextMenu()',img: 'iconDone.png'}" >test: get opener ID</a>
+    <a id="bbb" class="{menu:'sub_menu_2'}" >submenu</a>
+    <a class="{action: 'showMessage(\'conext_menu_1.4\')'}" >conext_menu_1.4 con testo veramente molto lungo</a>
+  </div>
+
+  <div id="box_menu" class="mbmenu boxMenu">
+    <table style="border:0;" >
+      <tr>
+        <td>
+          <div style="height:130px"><img src="/images/logo32_32.png" alt="HH" width="64"></div>
+          <a href="#" target="_blank">About HatychetHarry</a>
+          <a href="#" target="_blank">HatchetHarry team info</a>
+          <a href="#" target="_blank">Preferences</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- end menus -->
 	
 	<strong>Welcome to HatchetHarry!</strong>
 	<br/><br/>

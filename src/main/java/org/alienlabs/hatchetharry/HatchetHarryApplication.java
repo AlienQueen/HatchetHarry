@@ -58,6 +58,45 @@ public class HatchetHarryApplication extends WebApplication
 				"images/Terminal.png").getSharedResourceKey());
 		this.mountSharedResource("images/gradient1.jpg", new ResourceReference(HomePage.class,
 				"images/gradient1.jpg").getSharedResourceKey());
+
+		this.mountSharedResource("images/bgnd_sel_1.jpg", new ResourceReference(HomePage.class,
+				"images/bgnd_sel_1.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/bgnd_sel_2.jpg", new ResourceReference(HomePage.class,
+				"images/bgnd_sel_2.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/bgnd_sel_3.jpg", new ResourceReference(HomePage.class,
+				"images/bgnd_sel_3.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/bgnd_sel_4.png", new ResourceReference(HomePage.class,
+				"images/bgnd_sel_4.png").getSharedResourceKey());
+		this.mountSharedResource("images/box_menu_over.png", new ResourceReference(HomePage.class,
+				"images/box_menu_over.png").getSharedResourceKey());
+		this.mountSharedResource("images/box_top.png", new ResourceReference(HomePage.class,
+				"images/box_top.png").getSharedResourceKey());
+		this.mountSharedResource("images/browser.png", new ResourceReference(HomePage.class,
+				"images/browser.png").getSharedResourceKey());
+		this.mountSharedResource("images/DV_Tools.jpg", new ResourceReference(HomePage.class,
+				"images/DV_Tools.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/header_bgnd.jpg", new ResourceReference(HomePage.class,
+				"images/header_bgnd.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/menuArrow.gif", new ResourceReference(HomePage.class,
+				"images/menuArrow.gif").getSharedResourceKey());
+		this.mountSharedResource("images/menuArrow_w.gif", new ResourceReference(HomePage.class,
+				"images/menuArrow_w.gif").getSharedResourceKey());
+		this.mountSharedResource("images/24-tag-add.png", new ResourceReference(HomePage.class,
+				"images/24-tag-add.png").getSharedResourceKey());
+		this.mountSharedResource("images/Applet.gif", new ResourceReference(HomePage.class,
+				"images/Applet.gif").getSharedResourceKey());
+		this.mountSharedResource("images/bgColor.gif", new ResourceReference(HomePage.class,
+				"images/bgColor.gif").getSharedResourceKey());
+		this.mountSharedResource("images/buttonfind.gif", new ResourceReference(HomePage.class,
+				"images/buttonfind.gif").getSharedResourceKey());
+		this.mountSharedResource("images/iconDone.png", new ResourceReference(HomePage.class,
+				"images/iconDone.png").getSharedResourceKey());
+		this.mountSharedResource("images/icon_13.png", new ResourceReference(HomePage.class,
+				"images/icon_13.png").getSharedResourceKey());
+		this.mountSharedResource("images/icon_14.png", new ResourceReference(HomePage.class,
+				"images/icon_14.png").getSharedResourceKey());
+		this.mountSharedResource("images/blank.gif", new ResourceReference(HomePage.class,
+				"images/blank.gif").getSharedResourceKey());
 	}
 
 	@Override
