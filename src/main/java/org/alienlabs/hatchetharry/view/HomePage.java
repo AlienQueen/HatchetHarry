@@ -147,6 +147,21 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				HomePage.class, "stylesheets/jquery.jquerytour.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/myStyle.css")));
+
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/fixed4all.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/fixed4ie.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/prettyPhoto.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/toolbarStyle.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/tipsy.css")));
+		this.add(new JavaScriptReference("jquery.prettyPhoto.js", HomePage.class,
+				"scripts/toolbar/jquery.prettyPhoto.js"));
+		this.add(new JavaScriptReference("jquery.tipsy.js", HomePage.class,
+				"scripts/toolbar/jquery.tipsy.js"));
 	}
 
 	protected void buildHand()

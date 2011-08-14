@@ -41,7 +41,17 @@
     <!-- Menu source file -->
     <script type="text/javascript" src="http://developer.yahoo.com/yui/build/menu/menu.js"></script>
     <script type="text/javascript" src="http://yui.yahooapis.com/2.8.2r1/build/element/element.js"></script>
-        
+    
+    <!-- The toolbar at the bottom of the page -->
+    <link type="text/css"  rel="stylesheet" href="stylesheets/fixed4all.css"/> 
+	<link href="stylesheets/fixed4ie.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript">onload = function() { content.focus() }</script>
+		
+	<link rel="stylesheet" href="stylesheets/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+	<script wicket:id="jquery.prettyPhoto.js" src="scripts/toolbar/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+	 <link rel="stylesheet" href="stylesheets/toolbarStyle.css" type="text/css" /> 
+	<link rel="stylesheet" href="stylesheets/tipsy.css" type="text/css" /> 
+	<script wicket:id="jquery.tipsy.js" type="text/javascript" src="scripts/toolbar/jquery.tipsy.js"></script> 
 </head>
 <body class="yui-skin-sam" id="yahoo-com">
 
@@ -213,6 +223,42 @@
   </div>
   
   <div wicket:id="node" class="testReport"></div>
+
+
+	<!-- The toolbar -->
+	<div id='content'> 
+	</div>
+
+ 
+	<div id='floatingbar'> 
+
+         <ul class="gallery clearfix">
+				<li>
+				<a class="toolbarLink" title="Untap your permanents & draw a card "  id="twitterlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/tweet.png"></img> Untap & draw</a>
+				</li>
+				
+				<li>
+				<a  class="toolbarLink" title="Untall all your permanents " id="buzzlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/googlebuzz.png"></img> Untap all</a>
+				</li>
+				
+				<li>
+				<a  class="toolbarLink" title="Draw a card " id="videoslink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/youtube.png"></img> Draw a card</a>
+				</li>
+				
+				<li>
+				<a class="toolbarLink" title="Play the card shown in your hand "  id="playlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/playCard.png"></img> Play card</a>
+				</li>
+				
+				<li>
+				<a class="toolbarLink" title="Declare a combat phase "  id="combatlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/battle.png"></img> Declare combat</a>
+				</li>
+				
+				<li>
+				<a  class="toolbarLink" title="End of your turn " id="emaillink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/contact.png"></img> End of turn</a>
+				</li>
+		</ul>
+
+	</div> 
   
 </body>
 </html>

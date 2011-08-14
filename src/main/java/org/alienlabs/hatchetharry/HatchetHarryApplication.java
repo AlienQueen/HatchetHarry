@@ -107,6 +107,20 @@ public class HatchetHarryApplication extends WebApplication
 				"images/leftright.png").getSharedResourceKey());
 		this.mountSharedResource("images/topbottom.png", new ResourceReference(HomePage.class,
 				"images/topbottom.png").getSharedResourceKey());
+		this.mountSharedResource("images/contact.png", new ResourceReference(HomePage.class,
+				"images/contact.png").getSharedResourceKey());
+		this.mountSharedResource("images/googlebuzz.png", new ResourceReference(HomePage.class,
+				"images/googlebuzz.png").getSharedResourceKey());
+		this.mountSharedResource("images/youtube.png", new ResourceReference(HomePage.class,
+				"images/youtube.png").getSharedResourceKey());
+		this.mountSharedResource("images/playCard.png", new ResourceReference(HomePage.class,
+				"images/playCard.png").getSharedResourceKey());
+		this.mountSharedResource("images/battle.png", new ResourceReference(HomePage.class,
+				"images/battle.png").getSharedResourceKey());
+		this.mountSharedResource("images/tweet.png", new ResourceReference(HomePage.class,
+				"images/tweet.png").getSharedResourceKey());
+		this.mountSharedResource("images/tui.png", new ResourceReference(HomePage.class,
+				"images/tui.png").getSharedResourceKey());
 	}
 
 	@Override

@@ -20,7 +20,7 @@ $(document).ready(function() {
 	myGallery.showCarousel();
 });
 
-// The context menu, which appears when clicking on a card
+// The context menu, which appears when clicking on a card (a YUI widget)
 $(document).ready(
 		function() {
 			// Maintain a reference to the "clones" <ul>
@@ -352,7 +352,7 @@ $(document)
 									"name" : "tour_3",
 									"bgcolor" : "#444444",
 									"color" : "white",
-									"text" : "This the reference clock. It displays the hour on the server, so it's the same hour for every player.",
+									"text" : "This is the reference clock. It displays the hour on the server, so it's the same hour for every player.",
 									"position" : "BL",
 									"time" : 10000
 								},
@@ -425,3 +425,23 @@ $(document)
 					jQuery.tour.start(config);
 					// }
 				});
+
+// The toolbar, a jQuery plugin
+$(function() {
+
+	jQuery('#floatingbar').css({
+		height : 0
+	}).animate({
+		height : '38'
+	}, 'slow');
+	jQuery('.toolbarLink').tipsy({
+		gravity : 's'
+	});
+
+});
+
+$(document).ready(function() {
+	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({
+		theme : 'facebook'
+	});
+});
