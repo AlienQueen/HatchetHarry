@@ -26,51 +26,72 @@ jQuery(document)
 												+ cssAttribute);
 							});
 					module("menubar");
-					test(
-							"a basic menubar visibility test",
-							function() {
-								var menubaritem1 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
-								ok(
-										(menubaritem1.href.indexOf("logo") != -1),
-										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
-												+ " whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and point to 'logo', and it appears to be: "
-												+ menubaritem1.href);
-								menubaritem1 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
-								ok(
-										(menubaritem1.innerHTML == "<em id=\"logo\">HatchetHarry</em>"),
-										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
-												+ " whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and contain '<em id=\"logo\">HatchetHarry</em>', and it appears to be: "
-												+ menubaritem1.innerHTML);
-
-								var menubaritem2 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel')[1];
-								ok(
-										(menubaritem2.href
-												.indexOf("Documentation") != -1),
-										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
-												+ " whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and point to 'Documentation', and it appears to be: "
-												+ menubaritem2.href);
-								menubaritem2 = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel')[1];
-								ok(
-										(menubaritem2.innerHTML == "Documentation"),
-										"a link Object with class yuimenubaritemlabel whose parent is a li class yuimenubaritem"
-												+ "whose parent is a ul class first-of-type whose parent is a div class bd"
-												+ " should exist and contain '<em id=\"logo\">HatchetHarry</em>', and it appears to be: "
-												+ menubaritem2.innerHTML);
-
-								var allLinks = jQuery('div.bd ul.first-of-type li.yuimenubaritem a.yuimenubaritemlabel-hassubmenu:first');
-								var found = false;
-
-								found = allLinks
-										.css('background-image')
-										.indexOf(
-												"menubaritem_submenuindicator.png") != -1;
-								ok(
-										found,
-										"at least a link with the image 'menubaritem_submenuindicator.png' "
-												+ "should be present in the page if the menubar is rendered, and it appears to be: "
-												+ found);
-							});
+					// test(
+					// "a basic menubar visibility test",
+					// function() {
+					// var menubaritem1 = jQuery('div.bd ul.first-of-type
+					// li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
+					// ok(
+					// (menubaritem1.href.indexOf("logo") != -1),
+					// "a link Object with class yuimenubaritemlabel whose
+					// parent is a li class yuimenubaritem"
+					// + " whose parent is a ul class first-of-type whose parent
+					// is a div class bd"
+					// + " should exist and point to 'logo', and it appears to
+					// be: "
+					// + menubaritem1.href);
+					// menubaritem1 = jQuery('div.bd ul.first-of-type
+					// li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
+					// ok(
+					// (menubaritem1.innerHTML == "<em
+					// id=\"logo\">HatchetHarry</em>"),
+					// "a link Object with class yuimenubaritemlabel whose
+					// parent is a li class yuimenubaritem"
+					// + " whose parent is a ul class first-of-type whose parent
+					// is a div class bd"
+					// + " should exist and contain '<em
+					// id=\"logo\">HatchetHarry</em>', and it appears to be: "
+					// + menubaritem1.innerHTML);
+					//
+					// var menubaritem2 = jQuery('div.bd ul.first-of-type
+					// li.yuimenubaritem a.yuimenubaritemlabel')[1];
+					// ok(
+					// (menubaritem2.href
+					// .indexOf("Documentation") != -1),
+					// "a link Object with class yuimenubaritemlabel whose
+					// parent is a li class yuimenubaritem"
+					// + " whose parent is a ul class first-of-type whose parent
+					// is a div class bd"
+					// + " should exist and point to 'Documentation', and it
+					// appears to be: "
+					// + menubaritem2.href);
+					// menubaritem2 = jQuery('div.bd ul.first-of-type
+					// li.yuimenubaritem a.yuimenubaritemlabel')[1];
+					// ok(
+					// (menubaritem2.innerHTML == "Documentation"),
+					// "a link Object with class yuimenubaritemlabel whose
+					// parent is a li class yuimenubaritem"
+					// + "whose parent is a ul class first-of-type whose parent
+					// is a div class bd"
+					// + " should exist and contain '<em
+					// id=\"logo\">HatchetHarry</em>', and it appears to be: "
+					// + menubaritem2.innerHTML);
+					//
+					// var allLinks = jQuery('div.bd ul.first-of-type
+					// li.yuimenubaritem
+					// a.yuimenubaritemlabel-hassubmenu:first');
+					// var found = false;
+					//
+					// found = allLinks
+					// .css('background-image')
+					// .indexOf(
+					// "menubaritem_submenuindicator.png") != -1;
+					// ok(
+					// found,
+					// "at least a link with the image
+					// 'menubaritem_submenuindicator.png' "
+					// + "should be present in the page if the menubar is
+					// rendered, and it appears to be: "
+					// + found);
+					// });
 				});

@@ -42,8 +42,8 @@ public class HatchetHarryApplication extends WebApplication
 		super.init();
 
 		MockableSpringBeanInjector.installInjector(this);
-		this.mountSharedResource("images/logo32_32.png", new ResourceReference(HomePage.class,
-				"images/logo32_32.png").getSharedResourceKey());
+		this.mountSharedResource("images/logoh2.gif", new ResourceReference(HomePage.class,
+				"images/logoh2.gif").getSharedResourceKey());
 		this.mountSharedResource("images/library.gif", new ResourceReference(HomePage.class,
 				"images/library.gif").getSharedResourceKey());
 		this.mountSharedResource("images/hand.gif", new ResourceReference(HomePage.class,
@@ -101,6 +101,12 @@ public class HatchetHarryApplication extends WebApplication
 				"images/battlefield.gif").getSharedResourceKey());
 		this.mountSharedResource("images/exiled.gif", new ResourceReference(HomePage.class,
 				"images/exiled.gif").getSharedResourceKey());
+		this.mountSharedResource("images/close.gif", new ResourceReference(HomePage.class,
+				"images/close.gif").getSharedResourceKey());
+		this.mountSharedResource("images/leftright.png", new ResourceReference(HomePage.class,
+				"images/leftright.png").getSharedResourceKey());
+		this.mountSharedResource("images/topbottom.png", new ResourceReference(HomePage.class,
+				"images/topbottom.png").getSharedResourceKey());
 	}
 
 	@Override

@@ -87,7 +87,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.addHeadResources();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.2 built on Saturday, 13th of August 2011"));
+		this.add(new Label("message", "version 0.0.2 built on Sunday, 14th of August 2011"));
 
 		// Hand
 		this.buildHand();
@@ -107,15 +107,19 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	{
 		this.add(new JavaScriptReference("jQuery-1.6.2.js", HomePage.class,
 				"scripts/jquery/jquery-1.6.2.min.js"));
-		this.add(new JavaScriptReference("jqDock.js", HomePage.class,
-				"scripts/menubar/jquery.jqDock.js"));
-		this.add(new JavaScriptReference("jquery-ui-1.8.15.position.min.js", HomePage.class,
-				"scripts/jquery/jquery-ui-1.8.15.position.min.js"));
+		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
+				"scripts/tour/jquery.easing.1.3.js"));
+		this.add(new JavaScriptReference("jquery.storage.js", HomePage.class,
+				"scripts/tour/jquery.storage.js"));
+		this.add(new JavaScriptReference("jquery.tour.js", HomePage.class,
+				"scripts/tour/jquery.tour.js"));
 		this.add(new JavaScriptReference("jquery.metadata.js", HomePage.class,
 				"scripts/menubar/jquery.metadata.js"));
 		this.add(new JavaScriptReference("jquery.hoverIntent.js", HomePage.class,
 				"scripts/menubar/jquery.hoverIntent.js"));
 		this.add(new JavaScriptReference("mbMenu.js", HomePage.class, "scripts/menubar/mbMenu.js"));
+		this.add(new JavaScriptReference("jqDock.js", HomePage.class,
+				"scripts/menubar/jquery.jqDock.js"));
 		this.add(new JavaScriptReference("qUnit.js", HomePage.class, "scripts/qunitTests/qUnit.js"));
 		this.add(new JavaScriptReference("codeUnderTest.js", HomePage.class,
 				"scripts/qunitTests/codeUnderTest.js"));
@@ -139,6 +143,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				HomePage.class, "stylesheets/layout.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/menu_black.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/jquery.jquerytour.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/myStyle.css")));
 	}
 
 	protected void buildHand()
