@@ -88,7 +88,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 				@Override
 				public String call()
 				{
-					final String s = new Date().toString();
+					final String s = "1###" + new Date().toString();
 					return s;
 				}
 			};
@@ -111,20 +111,20 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		final String jsessionid = event.getResource().getRequest().getRequestedSessionId();
-		if (!jsessionid.equals(((String)event.getMessage()).split("###")[0]))
+		event.getResource().getRequest().getRequestedSessionId();
+		// if (!jsessionid.equals(((String)event.getMessage()).split("###")[0]))
+		// {
+		// If we are using long-polling, resume the connection as soon as we
+		// get an event.
+		final String transport = event.getResource().getRequest()
+				.getHeader("X-Atmosphere-Transport");
+		if ((transport != null) && transport.equalsIgnoreCase("long-polling"))
 		{
-			// If we are using long-polling, resume the connection as soon as we
-			// get an event.
-			final String transport = event.getResource().getRequest()
-					.getHeader("X-Atmosphere-Transport");
-			if ((transport != null) && transport.equalsIgnoreCase("long-polling"))
-			{
-				final Meteor meteor = Meteor.lookup(event.getResource().getRequest());
-				meteor.removeListener(this);
-				meteor.resume();
-			}
+			final Meteor meteor = Meteor.lookup(event.getResource().getRequest());
+			meteor.removeListener(this);
+			meteor.resume();
 		}
+		// }
 	}
 
 	@Override

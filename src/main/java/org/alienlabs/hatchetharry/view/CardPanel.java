@@ -35,6 +35,7 @@ public class CardPanel extends Panel
 	final List<BroadcastFilter> list;
 
 	final BookmarkablePageLink<CardMovePage> cardMovePage;
+	final BookmarkablePageLink<CardRotatePage> cardRotatePage;
 
 	public CardPanel(final String id)
 	{
@@ -43,7 +44,9 @@ public class CardPanel extends Panel
 		Session.findOrCreate();
 
 		this.cardMovePage = new BookmarkablePageLink<CardMovePage>("cardMove", CardMovePage.class);
-		this.add(this.cardMovePage);
+		this.cardRotatePage = new BookmarkablePageLink<CardRotatePage>("cardRotate",
+				CardRotatePage.class);
+		this.add(this.cardMovePage, this.cardRotatePage);
 
 		this.add(new JavaScriptReference("jQuery.bubbletip-1.0.6.js", HomePage.class,
 				"scripts/bubbletip/jQuery.bubbletip-1.0.6.js"));
@@ -84,6 +87,7 @@ public class CardPanel extends Panel
 
 		final Form<String> form = new Form<String>("form");
 		menutoggleButton.add(new CardMoveBehavior(this, form));
+		menutoggleButton.add(new CardRotateBehavior(this, form));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				((ServletWebRequest)this.getRequest()).getHttpServletRequest()
@@ -96,8 +100,11 @@ public class CardPanel extends Panel
 
 		final Image handleImage = new Image("handleImage",
 				new ResourceReference("images/arrow.png"));
+		final Image tapHandleImage = new Image("tapHandleImage", new ResourceReference(
+				"images/rightArrow.png"));
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, bubbleTipImg1, bubbleTipText1);
+		form.add(jsessionid, mouseX, mouseY, handleImage, tapHandleImage, cardImage, bubbleTipImg1,
+				bubbleTipText1);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
 	}

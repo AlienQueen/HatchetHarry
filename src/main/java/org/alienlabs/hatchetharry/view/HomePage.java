@@ -136,6 +136,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				"scripts/gallery/jd.gallery.transitions.js"));
 		this.add(new JavaScriptReference("History", HomePage.class,
 				"scripts/gallery/HistoryManager.js"));
+		this.add(new JavaScriptReference("jQueryRotate.2.1.js", HomePage.class,
+				"scripts/rotate/jQueryRotate.2.1.js"));
 
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/menu.css")));

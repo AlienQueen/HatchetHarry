@@ -1,19 +1,13 @@
 jQuery(document).ready(
 		function() {
 			function callbackCardMove(response) {
-				// Websocket events.
-				jQuery.atmosphere.log('info', [ "response.state: "
-						+ response.state ]);
-				jQuery.atmosphere.log('info', [ "response.transport: "
-						+ response.transport ]);
 				if (response.transport != 'polling'
 						&& response.state != 'connected'
 						&& response.state != 'closed') {
-					jQuery.atmosphere.log('info', [ "response.responseBody: "
-							+ response.responseBody ]);
 					if (response.status == 200) {
 						var data = response.responseBody;
-						if ((typeof (data.split("$$$")[1]) != "undefined")
+						var s = data.split("$$$")[1];
+						if ((typeof s != "undefined")
 								&& (jQuery('#jsessionid').val() != data
 										.split("$$$")[0])) { // We're
 							// in

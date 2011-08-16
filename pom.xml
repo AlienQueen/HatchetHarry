@@ -21,6 +21,7 @@
 	</licenses>
 	<properties>
 		<wicket.version>1.4.18</wicket.version>
+		<atmosphere.version>0.7.2</atmosphere.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.5.8</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
@@ -133,7 +134,7 @@
         <dependency>
         	<groupId>org.atmosphere</groupId>
         	<artifactId>atmosphere-runtime</artifactId>
-        	<version>0.7.2</version>
+        	<version>${atmosphere.version}</version>
         	<exclusions>
         	    <exclusion>
           			<groupId>org.atmosphere</groupId>
@@ -148,7 +149,7 @@
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-jgroups</artifactId>
-            <version>0.7.2</version>
+            <version>${atmosphere.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
