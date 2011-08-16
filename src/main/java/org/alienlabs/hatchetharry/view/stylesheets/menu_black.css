@@ -6,6 +6,9 @@
 
 @charset "UTF-8";
 
+#menubar {
+  position:fixed;
+}
 body{
   font-family:"Lucida Sans Unicode","Lucida Grande",Helvetica,Arial,sans-serif;
   font-size:14px;
@@ -71,7 +74,7 @@ body{
 
 .menuContainer{
 /*overflow:hidden;*/
-  position:absolute;
+  position:fixed;
   background-color:black;
   border-top:5px solid black;
   padding:0;
