@@ -1,0 +1,53 @@
+/*
+	Featured Content Slider
+	by: Chris Coyier
+*/			  				  
+/*
+	UTILITY STYLES
+*/				  				  
+					  				  
+.floatLeft 									{ float: left; margin-right: 10px;}
+.floatRight									{ float: right; }
+.clear 										{ clear: both; }
+a											{ outline: none; }
+
+
+/*
+	PAGE STRUCTURE
+*/
+#page-wrap 									{ width: 262px; margin: 25px auto; position: relative; min-height: 420px;
+											  background: url(/images/bg.png) top center; }
+
+
+/*
+	TYPOGRAPHY
+*/
+ul											{ list-style: square inside; }
+a, a:visited								{ color: #729dff; text-decoration: none; }
+a:hover, a:active							{ color: white; }
+blockquote									{ padding: 0 20px; margin-left: 20px; border-left: 20px solid #ccc; font-size: 14px; 
+									  		  font-family: Georgia, serif; font-style: italic; margin-top: 10px;}
+
+/*
+	SLIDER
+*/
+.slider-wrap								{ width: 419px; position: absolute; top: 30px; left: 20px; }			
+.stripViewer .panelContainer 
+.panel ul									{ text-align: left; margin: 0 15px 0 30px; }
+.stripViewer								{ position: relative; overflow: hidden; width: 419px; height: 320px; }
+.stripViewer .panelContainer				{ position: relative; left: -1px; top: 0; }
+.stripViewer .panelContainer .panel			{ float: left; height: 360px; position: relative; width: 440px; }
+.stripNavL, .stripNavR, .stripNav			{ display: none; }
+.nav-thumb 									{ border: 1px solid black; margin-right: 5px; }
+#movers-row									{ margin: 30px 0 0 0; }
+#movers-row div								{ width: 7%; float: left; }
+#movers-row div a.cross-link 				{ float: right; }
+.photo-meta-data							{ background: url(/images/transpBlack.png); padding: 5px; height: 65px; 
+											  margin-top: -40px; width: 214px; position: relative; z-index: 3; color: white; }
+.photo-meta-data span 						{ font-size: 13px; }
+.cross-link									{ display: block; width: 23px; margin-top: 0px; 
+											  position: relative; padding-top: 0px; z-index: 2; }
+.active-thumb 								{ background: transparent url(/images/icon-uparrowsmallwhite.png) top center no-repeat; }
+
+.play-card									{ margin: 150px 0px 0px -120px; z-index:3;position:absolute; visibility:hidden; }
+.wrapper-image								{ position:relative; }
