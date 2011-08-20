@@ -1,25 +1,3 @@
-// The hand: a gallery
-$(document).ready(function() {
-
-	var myGallery = new gallery($('myGallery'), {
-		timed : true,
-		fadeDuration : 1000,
-		delay : 10000,
-		useHistoryManager : true,
-		thumbWidth : 23,
-		thumbHeight : 32,
-		showInfopane : true,
-		embedLinks : true,
-		thumbCloseCarousel : true,
-		showCarouselLabel : true,
-		textShowCarousel : 'Hand',
-		showArrows : true,
-		showCarousel : true
-	});
-	HistoryManager.start();
-	myGallery.showCarousel();
-});
-
 // The context menu, which appears when clicking on a card (a YUI widget)
 $(document).ready(
 		function() {
@@ -441,7 +419,5 @@ $(function() {
 });
 
 $(document).ready(function() {
-	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({
-		theme : 'facebook'
-	});
+	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({});
 });

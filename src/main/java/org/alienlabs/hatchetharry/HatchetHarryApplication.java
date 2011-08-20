@@ -42,6 +42,43 @@ public class HatchetHarryApplication extends WebApplication
 		super.init();
 
 		MockableSpringBeanInjector.installInjector(this);
+
+		this.mountSharedResource("favicon.ico",
+				new ResourceReference("images/favicon.ico").getSharedResourceKey());
+		this.mountSharedResource("images/ajax-loader.gif", new ResourceReference(
+				"images/ajax-loader.gif").getSharedResourceKey());
+
+		this.mountSharedResource("images/HammerOfBogardan.jpg", new ResourceReference(
+				HomePage.class, "images/HammerOfBogardan.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/Overrun.jpg", new ResourceReference(HomePage.class,
+				"images/Overrun.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/Abeyance.jpg", new ResourceReference(HomePage.class,
+				"images/Abeyance.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/TradewindRider.jpg", new ResourceReference(HomePage.class,
+				"images/TradewindRider.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/Necropotence.jpg", new ResourceReference(HomePage.class,
+				"images/Necropotence.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/CursedScroll.jpg", new ResourceReference(HomePage.class,
+				"images/CursedScroll.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/HammerOfBogardanThumb.jpg", new ResourceReference(
+				HomePage.class, "images/HammerOfBogardanThumb.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/OverrunThumb.jpg", new ResourceReference(HomePage.class,
+				"images/OverrunThumb.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/AbeyanceThumb.jpg", new ResourceReference(HomePage.class,
+				"images/AbeyanceThumb.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/TradewindRiderThumb.jpg", new ResourceReference(
+				HomePage.class, "images/TradewindRiderThumb.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/NecropotenceThumb.jpg", new ResourceReference(
+				HomePage.class, "images/NecropotenceThumb.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/CursedScrollThumb.jpg", new ResourceReference(
+				HomePage.class, "images/CursedScrollThumb.jpg").getSharedResourceKey());
+		this.mountSharedResource("images/bg.png", new ResourceReference(HomePage.class,
+				"images/bg.png").getSharedResourceKey());
+		this.mountSharedResource("images/icon-uparrowsmallwhite.png", new ResourceReference(
+				HomePage.class, "images/icon-uparrowsmallwhite.png").getSharedResourceKey());
+		this.mountSharedResource("images/transpBlack.png", new ResourceReference(HomePage.class,
+				"images/transpBlack.png").getSharedResourceKey());
+
 		this.mountSharedResource("images/logoh2.gif", new ResourceReference(HomePage.class,
 				"images/logoh2.gif").getSharedResourceKey());
 		this.mountSharedResource("images/library.gif", new ResourceReference(HomePage.class,

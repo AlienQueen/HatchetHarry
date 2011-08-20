@@ -38,15 +38,18 @@
 package org.alienlabs.hatchetharry.view;
 
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.alienlabs.hatchetharry.model.MagicCard;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Session;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
@@ -56,8 +59,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
-
-import com.googlecode.wicketslides.SlidesPanel;
 
 /**
  * Bootstrap class
@@ -87,7 +88,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.addHeadResources();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.2 built on Tuesday, 16th of August 2011"));
+		this.add(new Label("message", "version 0.0.2 built on Friday, 19th of August 2011"));
 
 		// Hand
 		this.buildHand();
@@ -128,14 +129,14 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.add(new JavaScriptReference("mootools.v1.11", HomePage.class,
 				"scripts/jquery/mootools.v1.11.js"));
-		this.add(new JavaScriptReference("jd.gallery", HomePage.class,
-				"scripts/gallery/jd.gallery.js"));
-		this.add(new JavaScriptReference("jd.gallery.set", HomePage.class,
-				"scripts/gallery/jd.gallery.set.js"));
-		this.add(new JavaScriptReference("jd.gallery.transitions", HomePage.class,
-				"scripts/gallery/jd.gallery.transitions.js"));
-		this.add(new JavaScriptReference("History", HomePage.class,
-				"scripts/gallery/HistoryManager.js"));
+		this.add(new JavaScriptReference("jquery-easing-1.3.pack.js", HomePage.class,
+				"scripts/gallery/jquery-easing-1.3.pack.js"));
+		this.add(new JavaScriptReference("jquery-easing-compatibility.1.2.pack.js", HomePage.class,
+				"scripts/gallery/jquery-easing-compatibility.1.2.pack.js"));
+		this.add(new JavaScriptReference("coda-slider.1.1.1.pack.js", HomePage.class,
+				"scripts/gallery/coda-slider.1.1.1.pack.js"));
+		this.add(new JavaScriptReference("gallery.js", HomePage.class, "scripts/gallery/gallery.js"));
+
 		this.add(new JavaScriptReference("jQueryRotate.2.1.js", HomePage.class,
 				"scripts/rotate/jQueryRotate.2.1.js"));
 
@@ -149,6 +150,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				HomePage.class, "stylesheets/jquery.jquerytour.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/myStyle.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "stylesheets/galleryStyle.css")));
 
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/fixed4all.css")));
@@ -168,29 +171,53 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void buildHand()
 	{
-		final SlidesPanel.Builder builder = new SlidesPanel.Builder("gallery");
+		final Image handImagePlaceholder1 = new Image("handImagePlaceholder1");
+		final UUID uuid = UUID.randomUUID();
+		handImagePlaceholder1.add(new SimpleAttributeModifier("id", uuid.toString()));
+		this.add(handImagePlaceholder1);
 
-		final MagicCard hammerOfBogardan = new MagicCard("cards/HammerOfBogardan.jpg",
-				"Hammer of Bogardan", "A red, reccurent nightmare");
-		final MagicCard overrun = new MagicCard("cards/Overrun.jpg", "Overrun", "Chaaarge!");
-		final MagicCard abeyance = new MagicCard("cards/Abeyance.jpg", "Abeyance",
-				"A definitive show-stopper");
-		final MagicCard tradewindRider = new MagicCard("cards/TradewindRider.jpg",
-				"Tradewind Rider", "Don't let him pass you by");
-		final MagicCard necropotence = new MagicCard("cards/Necropotence.jpg", "Necropotence",
-				"Your darkest nightmare looks bright");
-		final MagicCard cursedScroll = new MagicCard("cards/CursedScroll.jpg", "Cursed Scroll",
-				"Close your mind to its magic, lest it pry it open in fear");
+		final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(uuid);
+		handImagePlaceholder1.add(b);
 
-		builder.addImage(hammerOfBogardan, hammerOfBogardan);
-		builder.addImage(overrun, overrun);
-		builder.addImage(abeyance, abeyance);
-		builder.addImage(tradewindRider, tradewindRider);
-		builder.addImage(necropotence, necropotence);
-		builder.addImage(cursedScroll, cursedScroll);
+		final Image handImageLink1 = new Image("handImageLink1", new ResourceReference(
+				HomePage.class, "images/playCard.png"));
 
-		this.add(builder.timed(true).delay(10000).fadeDuration(500).showArrow(true).size(226, 320)
-				.showThumbs(true).thumbSize(23, 32).historyManager(true).build());
+		handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
+		this.add(handImageLink1);
+
+
+		// final SlidesPanel.Builder builder = new
+		// SlidesPanel.Builder("gallery");
+		//
+		// final MagicCard hammerOfBogardan = new
+		// MagicCard("cards/HammerOfBogardan.jpg",
+		// "Hammer of Bogardan", "A red, reccurent nightmare");
+		// final MagicCard overrun = new MagicCard("cards/Overrun.jpg",
+		// "Overrun", "Chaaarge!");
+		// final MagicCard abeyance = new MagicCard("cards/Abeyance.jpg",
+		// "Abeyance",
+		// "A definitive show-stopper");
+		// final MagicCard tradewindRider = new
+		// MagicCard("cards/TradewindRider.jpg",
+		// "Tradewind Rider", "Don't let him pass you by");
+		// final MagicCard necropotence = new
+		// MagicCard("cards/Necropotence.jpg", "Necropotence",
+		// "Your darkest nightmare looks bright");
+		// final MagicCard cursedScroll = new
+		// MagicCard("cards/CursedScroll.jpg", "Cursed Scroll",
+		// "Close your mind to its magic, lest it pry it open in fear");
+		//
+		// builder.addImage(hammerOfBogardan, hammerOfBogardan);
+		// builder.addImage(overrun, overrun);
+		// builder.addImage(abeyance, abeyance);
+		// builder.addImage(tradewindRider, tradewindRider);
+		// builder.addImage(necropotence, necropotence);
+		// builder.addImage(cursedScroll, cursedScroll);
+		//
+		// this.add(builder.timed(true).delay(10000).fadeDuration(500).showArrow(true).size(226,
+		// 320)
+		// .showThumbs(true).thumbSize(23, 32).historyManager(true).build());
+
 	}
 
 	@Override
