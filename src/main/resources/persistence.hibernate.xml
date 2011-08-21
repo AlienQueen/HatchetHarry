@@ -13,6 +13,7 @@
         http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">	
+
 	
 
 					<!--  
@@ -71,36 +72,22 @@
     </bean>
 	
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />	
+	
 	<!-- This tells Spring to activate annotation-driven transactions -->
     <tx:annotation-driven/>
+	
 	<!-- setup DAOs  -->
-	<bean id="magicCardDaoTarget" class="org.alienlabs.hatchetharry.persistence.dao.MagicCardDaoImpl">
+	<bean id="magicCardDao" class="org.alienlabs.hatchetharry.persistence.dao.MagicCardDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
+	
 <!--	<bean id="playerDaoTarget" class="org.alienlabs.ajax.persistence.dao.PlayerDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="userDaoTarget" class="org.alienlabs.ajax.persistence.dao.UserDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	<bean id="loginDaoTarget" class="org.alienlabs.ajax.persistence.dao.LoginDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean> -->
+-->
 	
 	<!-- setup transactions -->
 
-	<!-- this is a transactional proxy for DAOs which ensures proper transaction handling -->
-	<bean id="magicCardDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager"><ref bean="transactionManager"/></property>
-		<property name="target"><ref bean="magicCardDaoTarget"/></property>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="save">PROPAGATION_REQUIRED</prop>
-				<prop key="delete">PROPAGATION_REQUIRED</prop>
-				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>
-		</property>
-	</bean>
 <!--	<bean id="playerDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target" ref="playerDaoTarget"/>
@@ -112,28 +99,7 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="userDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager"/>
-		<property name="target" ref="userDaoTarget"/>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="save">PROPAGATION_REQUIRED</prop>
-				<prop key="delete">PROPAGATION_REQUIRED</prop>
-				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>
-		</property>
-	</bean>
-	<bean id="loginDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager"/>
-		<property name="target" ref="loginDaoTarget"/>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="save">PROPAGATION_REQUIRED</prop>
-				<prop key="delete">PROPAGATION_REQUIRED</prop>
-				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>
-		</property>
-	</bean>	-->
+-->
 	
 	
 	
@@ -146,6 +112,6 @@
 						
 					 -->
  	<bean id="persistenceService" class="org.alienlabs.hatchetharry.service.PersistenceService">
-		<property name="magicCardDao" ref="magicCardDaoTarget"/>
+		<property name="magicCardDao" ref="magicCardDao"/>
 	</bean>
 </beans>
