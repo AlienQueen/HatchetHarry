@@ -6,13 +6,14 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
@@ -20,6 +21,7 @@ import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 @SuppressWarnings("serial")
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
@@ -27,6 +29,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 	private final UUID uuid;
 	private final WebMarkupContainer parent;
+
+	@SpringBean
+	private PersistenceService persistenceService;
 
 	public PlayCardFromHandBehavior(final UUID _uuid, final WebMarkupContainer _parent)
 	{
@@ -39,22 +44,17 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		PlayCardFromHandBehavior.logger.info("respond");
+
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final MagicCard card = this.persistenceService.getCardFromUuid(this.getUuid());
 
-		final UUID uuidToLookFor = UUID.fromString(request.getParameter("card"));
-
-
-		final MagicCard card = (MagicCard)HatchetHarrySession.get().getAllCards()
-				.get(uuidToLookFor);
-		PlayCardFromHandBehavior.logger.info("size: "
-				+ HatchetHarrySession.get().getAllCards().size());
 		if (null != card)
 		{
-			PlayCardFromHandBehavior.logger.info("new card");
+			PlayCardFromHandBehavior.logger.info("card!");
 			final CardPanel cp = new CardPanel("cardPlaceholder", card.getSmallImageFilename(),
-					card.getBigImageFilename(), uuidToLookFor);
+					card.getBigImageFilename(), this.getUuid());
 			cp.setOutputMarkupId(true);
 			this.parent.addOrReplace(cp);
 			target.addComponent(this.parent);
@@ -93,4 +93,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		return this.uuid;
 	}
 
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
+	}
 }

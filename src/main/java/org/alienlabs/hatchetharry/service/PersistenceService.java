@@ -1,7 +1,10 @@
 package org.alienlabs.hatchetharry.service;
 
+import java.util.UUID;
+
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
+import org.alienlabs.hatchetharry.persistence.dao.QueryParam;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -27,6 +30,14 @@ public class PersistenceService
 	{
 
 		this.magicCardDao.save(c);
+	}
+
+	public MagicCard getCardFromUuid(final UUID uuid)
+	{
+		final MagicCard c = new MagicCard();
+		c.setUuidObject(uuid);
+
+		return this.magicCardDao.find(new QueryParam(0, 0), c).next();
 	}
 
 	@Required
