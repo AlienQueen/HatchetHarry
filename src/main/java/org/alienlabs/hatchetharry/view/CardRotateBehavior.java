@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,10 +24,12 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 {
 	static final Logger logger = LoggerFactory.getLogger(CardRotateBehavior.class);
 	private final CardPanel panel;
+	private final UUID uuid;
 
-	public CardRotateBehavior(final CardPanel cp, final Form<String> _form)
+	public CardRotateBehavior(final CardPanel cp, final Form<String> _form, final UUID _uuid)
 	{
 		this.panel = cp;
+		this.uuid = _uuid;
 	}
 
 	@Override
@@ -37,7 +40,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
 		final String tapped = request.getParameter("tapped");
-		final String message = request.getRequestedSessionId() + "&tapped=" + tapped;
+		final String uuid = request.getParameter("uuid");
+		final String message = request.getRequestedSessionId() + "&tapped=" + tapped + "___" + uuid;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardRotateBehavior.logger.info("meteor: " + meteor);
@@ -53,6 +57,9 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
+		variables.put("uuid", this.uuid);
+		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+
 		final TextTemplate template = new PackagedTextTemplate(CardPanel.class,
 				"scripts/rotate/cardRotate.js");
 		template.interpolate(variables);

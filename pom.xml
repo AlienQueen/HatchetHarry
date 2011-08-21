@@ -38,6 +38,17 @@
 			<artifactId>wicket-extensions</artifactId>
 			<version>${wicket.version}</version> </dependency>
 		-->
+		
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-core</artifactId>
+        	<version>3.6.5.Final</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-commons-annotations</artifactId>
+        	<version>3.2.0.Final</version>
+        </dependency>
 
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
@@ -107,11 +118,6 @@
         	<version>3.0.3.RELEASE</version>
         </dependency>
         <dependency>
-        	<groupId>org.hibernate</groupId>
-        	<artifactId>hibernate-annotations</artifactId>
-        	<version>3.3.1.GA</version>
-        </dependency>
-        <dependency>
         	<groupId>commons-dbcp</groupId>
         	<artifactId>commons-dbcp</artifactId>
         	<version>1.4</version>
@@ -125,11 +131,6 @@
         	<groupId>antlr</groupId>
         	<artifactId>antlr</artifactId>
         	<version>2.7.6</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.hibernate</groupId>
-        	<artifactId>hibernate-core</artifactId>
-        	<version>3.3.2.GA</version>
         </dependency>
         <dependency>
         	<groupId>org.atmosphere</groupId>
@@ -228,6 +229,16 @@
         	<groupId>org.apache.wicket</groupId>
         	<artifactId>wicket-extensions</artifactId>
         	<version>${wicket.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>net.sf.ehcache</groupId>
+        	<artifactId>ehcache-core</artifactId>
+        	<version>2.0.1</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.javassist</groupId>
+        	<artifactId>javassist</artifactId>
+        	<version>3.15.0-GA</version>
         </dependency>
 	</dependencies>
 	

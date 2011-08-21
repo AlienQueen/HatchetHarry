@@ -22,3 +22,8 @@ canHideLink = function() {
 
 jQuery("#${uuid}_l").mouseenter(dontHideLink).mouseleave(canHideLink);
 jQuery("#${uuid}").mouseenter(showLink).mouseleave(hideLink);
+
+jQuery("#${uuid}_l").click(function() {
+	wicketAjaxGet('${url}&card=${uuid}', function() {
+	}, null, null);
+});

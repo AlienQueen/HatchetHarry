@@ -1,27 +1,51 @@
 jQuery(document).ready(
 		function() {
-			function callbackCardMove(response) {
+
+			jQuery(document).ready(function() {
+				jQuery('#card${uuid}').bubbletip(jQuery('#cardBubbleTip1'), {
+					deltaDirection : 'right'
+				});
+			});
+
+			// Show menu when #myDiv is clicked
+			jQuery("#card${uuid}").contextMenu(
+					{
+						menu : 'myMenu'
+					},
+					function(action, el, pos) {
+						jQuery('#cardBubbleTip1').removeBubbletip();
+						alert('Action: ' + action + '\n\n' + 'Element ID: '
+								+ jQuery(el).attr('id') + '\n\n' + 'X: '
+								+ pos.x + '  Y: ' + pos.y
+								+ ' (relative to element)\n\n' + 'X: '
+								+ pos.docX + '  Y: ' + pos.docY
+								+ ' (relative to document)');
+						jQuery(document).ready(
+								function() {
+									jQuery('#card').bubbletip(
+											jQuery('#cardBubbleTip1'), {
+												deltaDirection : 'right'
+											});
+								});
+					});
+
+			function callbackCardMove${uuidValidForJs}(response) {
 				if (response.transport != 'polling'
 						&& response.state != 'connected'
 						&& response.state != 'closed') {
 					if (response.status == 200) {
 						var data = response.responseBody;
-						var s = data.split("$$$")[1];
+						var s = data.split("&&&")[1];
 						if ((typeof s != "undefined")
-								&& (jQuery('#jsessionid').val() != data
-										.split("$$$")[0])) { // We're
-							// in
-							// the
-							// card
-							// move
-							// Meteor
-							// if ((data.split("$$$")[0].toString()) !=
-							// (jQuery("jsessionid")
-							// .val())) {
-							var card = jQuery("#menutoggleButton");
+								&& (jQuery('#jsessionid${uuid}').val() != data
+										.split("&&&")[0])
+								&& (typeof data.split("&&&")[3] != 'undefined')
+								&& (data.split("&&&")[3] == '${uuid}')) {
+							// We're in the card move Meteor
+							var card = jQuery("#menutoggleButton${uuid}");
 							card.css("position", "absolute");
-							card.css("left", data.split("$$$")[1]);
-							card.css("top", data.split("$$$")[2]);
+							card.css("left", data.split("&&&")[1]);
+							card.css("top", data.split("&&&")[2]);
 							// }
 						}
 					}
@@ -29,7 +53,7 @@ jQuery(document).ready(
 			}
 			// You can set websocket, streaming or long-polling here.
 			jQuery.atmosphere.subscribe(
-					document.getElementById('cardMove').href, callbackCardMove,
+					document.getElementById('cardMove').href, callbackCardMove${uuidValidForJs},
 					jQuery.atmosphere.request = {
 						transport : 'streaming'
 					});

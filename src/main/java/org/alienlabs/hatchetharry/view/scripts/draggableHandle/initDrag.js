@@ -1,5 +1,5 @@
 jQuery(function() {
-	jQuery("#menutoggleButton").draggable({
+	jQuery("#menutoggleButton${uuid}").draggable({
 		handle : "img"
 	});
 });

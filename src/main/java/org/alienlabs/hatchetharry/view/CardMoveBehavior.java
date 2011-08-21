@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,10 +24,12 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 {
 	static final Logger logger = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
+	private final UUID uuid;
 
-	public CardMoveBehavior(final CardPanel cp, final Form<String> _form)
+	public CardMoveBehavior(final CardPanel cp, final Form<String> _form, final UUID _uuid)
 	{
 		this.panel = cp;
+		this.uuid = _uuid;
 	}
 
 	@Override
@@ -38,8 +41,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final String _mouseX = request.getParameter("posX");
 		final String _mouseY = request.getParameter("posY");
-		final String message = request.getRequestedSessionId() + "$$$"
-				+ (Integer.parseInt(_mouseX) - 16) + "$$$" + (Integer.parseInt(_mouseY) - 16);
+		final String uuid = request.getParameter("uuid");
+		final String message = request.getRequestedSessionId() + "&&&"
+				+ (Integer.parseInt(_mouseX) - 16) + "&&&" + (Integer.parseInt(_mouseY) - 16)
+				+ "&&&" + uuid;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardMoveBehavior.logger.info("meteor: " + meteor);
@@ -67,6 +72,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
+		variables.put("uuid", this.uuid);
+		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+
 		final TextTemplate template4 = new PackagedTextTemplate(CardPanel.class,
 				"scripts/draggableHandle/jquery.ui.draggable.js");
 		template4.interpolate(variables);
@@ -74,10 +82,12 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final TextTemplate template5 = new PackagedTextTemplate(CardPanel.class,
 				"scripts/draggableHandle/cardMove.js");
+		template5.interpolate(variables);
 		js = js.append("\n" + template5.asString());
 
 		final TextTemplate template6 = new PackagedTextTemplate(CardPanel.class,
 				"scripts/draggableHandle/initDrag.js");
+		template6.interpolate(variables);
 		js = js.append("\n" + template6.asString());
 
 		response.renderOnDomReadyJavascript(js.toString());

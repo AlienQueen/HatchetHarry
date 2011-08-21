@@ -6,10 +6,9 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
-
-import com.ttdev.wicketpagetest.MockableSpringBeanInjector;
 
 /**
  * Application object for your web application. If you want to run this
@@ -41,7 +40,7 @@ public class HatchetHarryApplication extends WebApplication
 	{
 		super.init();
 
-		MockableSpringBeanInjector.installInjector(this);
+		this.addComponentInstantiationListener(new SpringComponentInjector(this));
 
 		this.mountSharedResource("favicon.ico",
 				new ResourceReference("images/favicon.ico").getSharedResourceKey());

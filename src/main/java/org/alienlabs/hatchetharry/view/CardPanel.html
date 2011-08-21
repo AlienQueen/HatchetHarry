@@ -84,37 +84,11 @@
 			}
 			.ui-widget-header { border: 1px solid #000000; background: #464646
 								50% 50% repeat-x; color: #000000; font-weight: bold;
-								width: 20px; height: 20px
+								width: 20px; height: 20px; cursor: move;
 							  }
-			#handle{ cursor: move; }				 
-			#tapHandleImage{ cursor: ne-resize; }			 
+			.tap-handle-image{ cursor: ne-resize; }			 
 			
 </style>
-
-    <!--  <script wicket:id="cardMove.js" type="text/javascript"></script> -->
-
-	<script type="text/javascript">
-	jQuery(document).ready(function() { jQuery('#card').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
-	</script>
-    <script type="text/javascript">
-		jQuery(document).ready( function() {
-			
-			// Show menu when #myDiv is clicked
-			jQuery("#card").contextMenu({
-				menu: 'myMenu'
-			},
-				function(action, el, pos) {
-				jQuery('#cardBubbleTip1').removeBubbletip();
-				alert(
-					'Action: ' + action + '\n\n' +
-					'Element ID: ' + jQuery(el).attr('id') + '\n\n' + 
-					'X: ' + pos.x + '  Y: ' + pos.y + ' (relative to element)\n\n' + 
-					'X: ' + pos.docX + '  Y: ' + pos.docY+ ' (relative to document)'
-					);
-				jQuery(document).ready(function() { jQuery('#card').bubbletip(jQuery('#cardBubbleTip1'), { deltaDirection: 'right' }); });
-			});			
-		});
-	</script>
 </wicket:head>
 <wicket:panel>
 	<a wicket:id="cardMove" id="cardMove"></a>
@@ -131,8 +105,8 @@
 					<input wicket:id="mouseX" id="mouseX" type="text" style="display: none;"></input>
 					<input wicket:id="mouseY" id="mouseY" type="text" style="display: none;"></input>
 					<img wicket:id="handleImage" id="handle" class="ui-widget-header"></img>
-					<img wicket:id = "cardImage" id="card"></img>
-					<img wicket:id = "tapHandleImage" id="tapHandleImage"></img>
+					<img wicket:id="cardImage" id="card"></img>
+					<img wicket:id="tapHandleImage" id="tapHandleImage" class="tap-handle-image"></img>
 					<span id="cardBubbleTip1" style="display:none;">
 						<pre class="tip" id="status2"></pre>
 						<img wicket:id="bubbleTipImg1" width="226" height="320"  style="position:relative; z-index: 5000;">

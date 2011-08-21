@@ -42,8 +42,12 @@ public class TestHomePage
 						this.context, true));
 			}
 		};
-		// WicketTester app=new WicketTester();
+
 		TestHomePage.tester = new WicketTester(TestHomePage.webApp);
+		final ApplicationContext context = new ClassPathXmlApplicationContext(
+				new String[] { "applicationContext.xml" });
+		TestHomePage.tester.getApplication().addComponentInstantiationListener(
+				new SpringComponentInjector(TestHomePage.tester.getApplication(), context, true));
 	}
 
 

@@ -240,7 +240,8 @@
 							if ((!this.element[0] || !this.element[0].parentNode)
 									&& this.options.helper == "original") {
 								wicketAjaxGet('${url}&posX=' + event.pageX
-										+ '&posY=' + event.pageY, function() {
+										+ '&posY=' + event.pageY
+										+ '&uuid=${uuid}', function() {
 								}, null, null);
 								return true;
 							}
@@ -270,8 +271,9 @@
 							}
 
 							wicketAjaxGet('${url}&posX=' + event.pageX
-									+ '&posY=' + event.pageY, function() {
-							}, null, null);
+									+ '&posY=' + event.pageY + '&uuid=${uuid}',
+									function() {
+									}, null, null);
 							return true;
 						},
 

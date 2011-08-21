@@ -19,9 +19,9 @@ public class HandCardImageLoader<T> extends ListItem<MagicCard>
 	public void populate(final ListItem<MagicCard> item)
 	{
 		item.add(new Image("image").add(new AttributeModifier("src", true, new Model<String>(item
-				.getModelObject().getFilename()))));
+				.getModelObject().getBigImageFilename()))));
 		item.add(new Image("thumb").add(new AttributeModifier("src", true, new Model<String>(item
-				.getModelObject().getFilename()))));
+				.getModelObject().getSmallImageFilename()))));
 		item.add(new Label("title", item.getModelObject().getTitle()));
 		item.add(new Label("description", item.getModelObject().getDescription()));
 	}

@@ -6,10 +6,12 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.MagicCard;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
@@ -23,30 +25,52 @@ import org.slf4j.LoggerFactory;
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
 	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
-	private final Panel panel = null;
 	private final UUID uuid;
+	private final WebMarkupContainer parent;
 
-	public PlayCardFromHandBehavior(final UUID _uuid)
+	public PlayCardFromHandBehavior(final UUID _uuid, final WebMarkupContainer _parent)
 	{
 		super();
 		this.uuid = _uuid;
+		this.parent = _parent;
 	}
 
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
 		PlayCardFromHandBehavior.logger.info("respond");
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
-		final String tapped = request.getParameter("tapped");
-		final String message = request.getRequestedSessionId() + "&tapped=" + tapped;
+		final UUID uuidToLookFor = UUID.fromString(request.getParameter("card"));
+
+
+		final MagicCard card = (MagicCard)HatchetHarrySession.get().getAllCards()
+				.get(uuidToLookFor);
+		PlayCardFromHandBehavior.logger.info("size: "
+				+ HatchetHarrySession.get().getAllCards().size());
+		if (null != card)
+		{
+			PlayCardFromHandBehavior.logger.info("new card");
+			final CardPanel cp = new CardPanel("cardPlaceholder", card.getSmallImageFilename(),
+					card.getBigImageFilename(), uuidToLookFor);
+			cp.setOutputMarkupId(true);
+			this.parent.addOrReplace(cp);
+			target.addComponent(this.parent);
+		}
+		else
+		{
+			PlayCardFromHandBehavior.logger.info("null!");
+		}
+
+		final String message = "PlayCardFromHand";
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-		PlayCardFromHandBehavior.logger.info("meteor: " + meteor);
 		PlayCardFromHandBehavior.logger.info(message);
-		meteor.addListener((AtmosphereResourceEventListener)this.panel.getPage());
+		meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 		meteor.broadcast(message);
+
 	}
 
 	@Override
@@ -64,7 +88,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		response.renderOnDomReadyJavascript(template.asString());
 	}
 
-	public UUID getUuid()
+	protected UUID getUuid()
 	{
 		return this.uuid;
 	}

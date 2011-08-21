@@ -2,11 +2,11 @@ package org.alienlabs.hatchetharry.view;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Session;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -34,14 +34,15 @@ public class CardPanel extends Panel
 	 */
 	final List<BroadcastFilter> list;
 
-	final BookmarkablePageLink<CardMovePage> cardMovePage;
-	final BookmarkablePageLink<CardRotatePage> cardRotatePage;
+	BookmarkablePageLink<CardMovePage> cardMovePage = null;
+	BookmarkablePageLink<CardRotatePage> cardRotatePage = null;
 
-	public CardPanel(final String id)
+	public CardPanel(final String id, final String smallImage, final String bigImage,
+			final UUID uuid)
 	{
 		super(id);
 
-		Session.findOrCreate();
+		this.setOutputMarkupId(true);
 
 		this.cardMovePage = new BookmarkablePageLink<CardMovePage>("cardMove", CardMovePage.class);
 		this.cardRotatePage = new BookmarkablePageLink<CardRotatePage>("cardRotate",
@@ -55,53 +56,63 @@ public class CardPanel extends Panel
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheets/menu.css")));
 
+		this.add(new JavaScriptReference("jquery.contextMenu.js", HomePage.class,
+				"scripts/contextmenu/jquery.contextMenu.js"));
+		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
+				HomePage.class, "scripts/contextmenu/jquery.contextMenu.css")));
+
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
-		menutoggleButton.setMarkupId("menutoggleButton");
+		menutoggleButton.setMarkupId("menutoggleButton" + uuid.toString());
 
-		final Image cardImage = new Image("cardImage", new ResourceReference(
-				"cards/BalduvianHorde_small.jpg"));
+		final Image cardImage = new Image("cardImage", new ResourceReference(smallImage));
 		cardImage.setOutputMarkupId(true);
-		cardImage.setMarkupId("card");
+		cardImage.setMarkupId("card" + uuid.toString());
 
-		final Image bubbleTipImg1 = new Image("bubbleTipImg1", new ResourceReference(
-				"cards/BalduvianHorde.jpg"));
+		final Image bubbleTipImg1 = new Image("bubbleTipImg1", new ResourceReference(bigImage));
 		final Label bubbleTipText1 = new Label("bubbleTipText1", new Model<String>(
 				"<b><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 						+ "5/5<br/><br/>"
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When Balduvian Horde comes<br/>"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;into play,sacrifice it<br/>"
+						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;into play, sacrifice it<br/>"
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless you discard a card<br/>"
 						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at random from your hand</b>"));
 		bubbleTipText1.add(new SimpleAttributeModifier("style", "color: white;"));
 		bubbleTipText1.setOutputMarkupPlaceholderTag(true).setEscapeModelStrings(false);
-
-		this.add(new JavaScriptReference("jquery.contextMenu.js", HomePage.class,
-				"scripts/contextmenu/jquery.contextMenu.js"));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "scripts/contextmenu/jquery.contextMenu.css")));
+		bubbleTipImg1.setOutputMarkupId(true);
 
 		this.list = new LinkedList<BroadcastFilter>();
 
 		final Form<String> form = new Form<String>("form");
-		menutoggleButton.add(new CardMoveBehavior(this, form));
-		menutoggleButton.add(new CardRotateBehavior(this, form));
+		form.setOutputMarkupId(true);
+		menutoggleButton.add(new CardMoveBehavior(this, form, uuid));
+		menutoggleButton.add(new CardRotateBehavior(this, form, uuid));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				((ServletWebRequest)this.getRequest()).getHttpServletRequest()
 						.getRequestedSessionId()));
+		jsessionid.setMarkupId("jsessionid" + uuid);
+		jsessionid.setOutputMarkupId(true);
+
 		CardPanel.logger.info("jsessionid: "
 				+ ((ServletWebRequest)this.getRequest()).getHttpServletRequest()
 						.getRequestedSessionId());
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
+		mouseX.setMarkupId("mouseX" + uuid);
+		mouseY.setMarkupId("mouseY" + uuid);
+		mouseX.setOutputMarkupId(true);
+		mouseY.setOutputMarkupId(true);
 
 		final Image handleImage = new Image("handleImage",
 				new ResourceReference("images/arrow.png"));
 		final Image tapHandleImage = new Image("tapHandleImage", new ResourceReference(
 				"images/rightArrow.png"));
+		handleImage.setOutputMarkupId(true);
+		tapHandleImage.setMarkupId("tapHandleImage" + uuid.toString());
+		tapHandleImage.setOutputMarkupId(true);
 
 		form.add(jsessionid, mouseX, mouseY, handleImage, tapHandleImage, cardImage, bubbleTipImg1,
 				bubbleTipText1);

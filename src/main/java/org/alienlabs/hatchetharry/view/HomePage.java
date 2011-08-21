@@ -43,20 +43,25 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Session;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
 
@@ -69,6 +74,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomePage.class);
+	private WebMarkupContainer cardPlaceholder;
+	private WebMarkupContainer cardParent;
+	private Long gameId;
+
+	@SpringBean
+	private PersistenceService persistenceService;
 
 	public HomePage()
 	{
@@ -83,25 +94,50 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	 */
 	public HomePage(final PageParameters parameters)
 	{
-		Session.findOrCreate();
+		// InjectorHolder.getInjector().inject(this);
+
+		this.setOutputMarkupId(true);
+
 		// Resources
 		this.addHeadResources();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.2 built on Friday, 19th of August 2011"));
-
-		// Hand
-		this.buildHand();
+		this.add(new Label("message", "version 0.0.2 built on Saturday, 20th of August 2011"));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
 
 		// Balduvian Horde
-		final CardPanel baldu = new CardPanel("baldu");
+		final UUID balduUuid;
+		MagicCard firstCardOfGame = this.persistenceService.getFirstCardOfGame();
+		if (firstCardOfGame != null)
+		{
+			balduUuid = firstCardOfGame.getUuidObject();
+			HomePage.logger.info("retrieving from db, with uuid=" + balduUuid);
+		}
+		else
+		{
+			balduUuid = UUID.randomUUID();
+			firstCardOfGame = new MagicCard();
+			firstCardOfGame.setBigImageFilename("cards/BalduvianHorde.jpg");
+			firstCardOfGame.setSmallImageFilename("cards/BalduvianHorde_small.jpg");
+			firstCardOfGame.setGameId(1l);
+			HomePage.logger.info("new baldu");
+		}
+		this.setGameId(firstCardOfGame.getGameId());
+
+		final CardPanel baldu = new CardPanel("baldu", firstCardOfGame.getSmallImageFilename(),
+				firstCardOfGame.getBigImageFilename(), balduUuid);
 		this.add(baldu);
+
+		this.persistenceService.saveCard(firstCardOfGame);
+		HomePage.logger.info("HP UUID: " + balduUuid);
 
 		// Comet chat channel
 		this.add(new ChatPanel("chatPanel"));
+
+		// Hand
+		this.buildHand();
 	}
 
 	protected void addHeadResources()
@@ -176,7 +212,14 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		handImagePlaceholder1.add(new SimpleAttributeModifier("id", uuid.toString()));
 		this.add(handImagePlaceholder1);
 
-		final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(uuid);
+		this.cardParent = new WebMarkupContainer("cardParent");
+		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
+		this.cardParent.add(this.cardPlaceholder);
+		this.cardParent.setOutputMarkupId(true);
+		this.cardPlaceholder.setOutputMarkupId(true);
+		this.add(this.cardParent);
+
+		final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(uuid, this.cardParent);
 		handImagePlaceholder1.add(b);
 
 		final Image handImageLink1 = new Image("handImageLink1", new ResourceReference(
@@ -185,39 +228,14 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
 		this.add(handImageLink1);
 
+		final MagicCard card = new MagicCard();
+		card.setUuidObject(uuid);
+		card.setSmallImageFilename("cards/HammerOfBogardan_small.jpg");
+		card.setBigImageFilename("cards/HammerOfBogardan.jpg");
+		card.setGameId(this.getGameId());
 
-		// final SlidesPanel.Builder builder = new
-		// SlidesPanel.Builder("gallery");
-		//
-		// final MagicCard hammerOfBogardan = new
-		// MagicCard("cards/HammerOfBogardan.jpg",
-		// "Hammer of Bogardan", "A red, reccurent nightmare");
-		// final MagicCard overrun = new MagicCard("cards/Overrun.jpg",
-		// "Overrun", "Chaaarge!");
-		// final MagicCard abeyance = new MagicCard("cards/Abeyance.jpg",
-		// "Abeyance",
-		// "A definitive show-stopper");
-		// final MagicCard tradewindRider = new
-		// MagicCard("cards/TradewindRider.jpg",
-		// "Tradewind Rider", "Don't let him pass you by");
-		// final MagicCard necropotence = new
-		// MagicCard("cards/Necropotence.jpg", "Necropotence",
-		// "Your darkest nightmare looks bright");
-		// final MagicCard cursedScroll = new
-		// MagicCard("cards/CursedScroll.jpg", "Cursed Scroll",
-		// "Close your mind to its magic, lest it pry it open in fear");
-		//
-		// builder.addImage(hammerOfBogardan, hammerOfBogardan);
-		// builder.addImage(overrun, overrun);
-		// builder.addImage(abeyance, abeyance);
-		// builder.addImage(tradewindRider, tradewindRider);
-		// builder.addImage(necropotence, necropotence);
-		// builder.addImage(cursedScroll, cursedScroll);
-		//
-		// this.add(builder.timed(true).delay(10000).fadeDuration(500).showArrow(true).size(226,
-		// 320)
-		// .showThumbs(true).thumbSize(23, 32).historyManager(true).build());
-
+		this.persistenceService.saveCard(card);
+		HomePage.logger.info("buildHand UUID: " + uuid);
 	}
 
 	@Override
@@ -284,14 +302,30 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	@Override
 	protected void configureResponse()
 	{
-		final Locale originalLocale = this.getSession().getLocale();
-		this.getSession().setLocale(Locale.ENGLISH);
+		final Locale originalLocale = HatchetHarrySession.get().getLocale();
+		HatchetHarrySession.get().setLocale(Locale.ENGLISH);
 		super.configureResponse();
 
 		final String encoding = "text/html;charset=utf-8";
 
 		this.getResponse().setContentType(encoding);
-		this.getSession().setLocale(originalLocale);
+		HatchetHarrySession.get().setLocale(originalLocale);
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
+	}
+
+	public Long getGameId()
+	{
+		return this.gameId;
+	}
+
+	public void setGameId(final Long _gameId)
+	{
+		this.gameId = _gameId;
 	}
 
 }
