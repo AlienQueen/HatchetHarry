@@ -122,6 +122,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			firstCardOfGame.setBigImageFilename("cards/BalduvianHorde.jpg");
 			firstCardOfGame.setSmallImageFilename("cards/BalduvianHorde_small.jpg");
 			firstCardOfGame.setGameId(1l);
+			firstCardOfGame.setUuidObject(balduUuid);
 			HomePage.logger.info("new baldu");
 		}
 		this.setGameId(firstCardOfGame.getGameId());

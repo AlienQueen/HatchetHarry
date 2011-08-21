@@ -43,9 +43,7 @@ public class MagicCardFinderQueryBuilder
 		final StringBuilder hql = new StringBuilder();
 		this.addCountClause(hql);
 		hql.append("from MagicCard target where 1=1 ");
-		this.addMatchingCondition(hql, this.filter.getTitle(), "title");
-		this.addMatchingCondition(hql, this.filter.getDescription(), "description");
-		this.addMatchingCondition(hql, this.filter.getUuid(), "uuid");
+		this.addMatchingCondition(hql, Long.toString(this.filter.getGameId()), "gameId");
 		this.addOrderByClause(hql);
 		return hql.toString();
 	}
@@ -62,9 +60,9 @@ public class MagicCardFinderQueryBuilder
 	{
 		if (value != null)
 		{
-			hql.append("and upper(target.");
+			hql.append("and target.");
 			hql.append(name);
-			hql.append(") like (?)");
+			hql.append(" = (?)");
 			this.parameters.add("%" + value.toUpperCase() + "%");
 			this.types.add(StandardBasicTypes.STRING);
 		}

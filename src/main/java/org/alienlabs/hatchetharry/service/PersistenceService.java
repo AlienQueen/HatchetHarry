@@ -1,10 +1,7 @@
 package org.alienlabs.hatchetharry.service;
 
-import java.util.Iterator;
-
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
-import org.alienlabs.hatchetharry.persistence.dao.QueryParam;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -21,14 +18,9 @@ public class PersistenceService
 	public MagicCard getFirstCardOfGame()
 	{
 		final MagicCard c = new MagicCard();
-		c.setUuid("*");
+		c.setGameId(1l);
 
-		final Iterator<MagicCard> it = this.magicCardDao.find(new QueryParam(0, 1), c);
-		if (it.hasNext())
-		{
-			return it.next();
-		}
-		return null;
+		return this.magicCardDao.load(1l);
 	}
 
 	public void saveCard(final MagicCard c)

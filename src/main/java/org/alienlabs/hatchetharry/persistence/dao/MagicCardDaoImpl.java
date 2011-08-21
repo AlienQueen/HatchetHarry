@@ -76,6 +76,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 * @return MagicCard
 	 */
 	@Override
+	@Transactional
 	public MagicCard load(final long id)
 	{
 		return (MagicCard)this.getSession().get(MagicCard.class, Long.valueOf(id));
