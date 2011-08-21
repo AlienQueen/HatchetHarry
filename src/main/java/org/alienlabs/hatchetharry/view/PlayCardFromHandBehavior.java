@@ -10,6 +10,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -36,6 +37,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	public PlayCardFromHandBehavior(final UUID _uuid, final WebMarkupContainer _parent)
 	{
 		super();
+		InjectorHolder.getInjector().inject(this);
 		this.uuid = _uuid;
 		this.parent = _parent;
 	}

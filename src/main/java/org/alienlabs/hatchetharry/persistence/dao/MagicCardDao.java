@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.hibernate.Session;
 
 /**
  * The implementation-independent DAO interface. Defines the operations required
@@ -31,6 +32,8 @@ import org.alienlabs.hatchetharry.model.MagicCard;
  */
 public interface MagicCardDao
 {
+	public Session getSession();
+
 	/**
 	 * Load a {@link MagicCard} from the DB, given it's <tt>id</tt>.
 	 * 

@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
-import org.alienlabs.hatchetharry.persistence.dao.QueryParam;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 public class PersistenceService
 {
@@ -22,7 +24,7 @@ public class PersistenceService
 	{
 		final MagicCard c = new MagicCard();
 		c.setGameId(1l);
-
+		c.setUuidObject(UUID.randomUUID());
 		return this.magicCardDao.load(1l);
 	}
 
@@ -32,12 +34,16 @@ public class PersistenceService
 		this.magicCardDao.save(c);
 	}
 
+	@Transactional
 	public MagicCard getCardFromUuid(final UUID uuid)
 	{
-		final MagicCard c = new MagicCard();
-		c.setUuidObject(uuid);
+		final Session session = this.magicCardDao.getSession();
+		final Query query = session
+				.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid=?");
+		query.setString(0, uuid.toString());
+		final MagicCard c = (MagicCard)query.uniqueResult();
 
-		return this.magicCardDao.find(new QueryParam(0, 0), c).next();
+		return c;
 	}
 
 	@Required

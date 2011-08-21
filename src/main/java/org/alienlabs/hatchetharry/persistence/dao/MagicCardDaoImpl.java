@@ -63,7 +63,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 * 
 	 * @return hibernate session
 	 */
-	protected Session getSession()
+	public Session getSession()
 	{
 		return this.factory.getCurrentSession();
 	}
