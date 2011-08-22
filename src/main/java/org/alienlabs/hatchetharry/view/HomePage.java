@@ -124,6 +124,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			firstCardOfGame.setGameId(1l);
 			firstCardOfGame.setUuidObject(balduUuid);
 			HomePage.logger.info("new baldu");
+			this.persistenceService.saveCard(firstCardOfGame);
 		}
 		this.setGameId(firstCardOfGame.getGameId());
 
@@ -131,7 +132,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				firstCardOfGame.getBigImageFilename(), balduUuid);
 		this.add(baldu);
 
-		this.persistenceService.saveCard(firstCardOfGame);
 		HomePage.logger.info("HP UUID: " + balduUuid);
 
 		// Comet chat channel
@@ -209,7 +209,19 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	protected void buildHand()
 	{
 		final Image handImagePlaceholder1 = new Image("handImagePlaceholder1");
-		final UUID uuid = UUID.randomUUID();
+
+		final MagicCard hammer = this.persistenceService.getSecondCardOfGame();
+		final UUID uuid;
+
+		if (null == hammer)
+		{
+			uuid = UUID.randomUUID();
+		}
+		else
+		{
+			uuid = hammer.getUuidObject();
+		}
+
 		handImagePlaceholder1.add(new SimpleAttributeModifier("id", uuid.toString()));
 		this.add(handImagePlaceholder1);
 
@@ -229,13 +241,17 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
 		this.add(handImageLink1);
 
-		final MagicCard card = new MagicCard();
-		card.setUuidObject(uuid);
-		card.setSmallImageFilename("cards/HammerOfBogardan_small.jpg");
-		card.setBigImageFilename("cards/HammerOfBogardan.jpg");
-		card.setGameId(this.getGameId());
+		if (null == hammer)
+		{
 
-		this.persistenceService.saveCard(card);
+			final MagicCard card = new MagicCard();
+			card.setUuidObject(uuid);
+			card.setSmallImageFilename("cards/HammerOfBogardan_small.jpg");
+			card.setBigImageFilename("cards/HammerOfBogardan.jpg");
+			card.setGameId(this.getGameId());
+
+			this.persistenceService.saveCard(card);
+		}
 		HomePage.logger.info("buildHand UUID: " + uuid);
 	}
 

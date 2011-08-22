@@ -28,6 +28,19 @@ public class PersistenceService
 		return this.magicCardDao.load(1l);
 	}
 
+	@Transactional
+	public MagicCard getSecondCardOfGame()
+	{
+		final Session session = this.magicCardDao.getSession();
+		final Query query = session
+				.createQuery("from MagicCard magiccard0_ where magiccard0_.id=?");
+		query.setLong(0, 2);
+		final MagicCard c = (MagicCard)query.uniqueResult();
+
+		return c;
+
+	}
+
 	public void saveCard(final MagicCard c)
 	{
 

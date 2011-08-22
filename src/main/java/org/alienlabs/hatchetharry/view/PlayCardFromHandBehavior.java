@@ -50,6 +50,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final String jsessionid = request.getRequestedSessionId();
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.getUuid());
 
 		if (null != card)
@@ -66,13 +67,16 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			PlayCardFromHandBehavior.logger.info("null!");
 		}
 
-		final String message = "PlayCardFromHand";
-
-		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
+		final String message = jsessionid + "~~~" + this.getUuid();
 		PlayCardFromHandBehavior.logger.info(message);
-		meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-		meteor.broadcast(message);
 
+		final String stop = request.getParameter("stop");
+		if (!"true".equals(stop))
+		{
+			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
+			meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+			meteor.broadcast(message);
+		}
 	}
 
 	@Override
@@ -83,6 +87,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuid", this.getUuid());
+		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+
 		final TextTemplate template = new PackagedTextTemplate(PlayCardFromHandBehavior.class,
 				"scripts/playCard/playCard.js");
 		template.interpolate(variables);

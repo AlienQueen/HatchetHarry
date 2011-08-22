@@ -14,11 +14,6 @@ jQuery(document).ready(
 						&& response.state != 'connected'
 						&& response.state != 'closed') {
 					if (response.status == 200) {
-						// we
-						// in
-						// the
-						// clock
-						// meteor?
 
 						if ((response.responseBody.indexOf("false") != -1)
 								|| (response.responseBody.indexOf("true") != -1)) {
@@ -51,4 +46,4 @@ jQuery(document).ready(
 					callbackCardRotate${uuidValidForJs}, jQuery.atmosphere.request = {
 						transport : 'streaming'
 					});
-		});
+});

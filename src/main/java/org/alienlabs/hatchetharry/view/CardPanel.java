@@ -36,6 +36,7 @@ public class CardPanel extends Panel
 
 	BookmarkablePageLink<CardMovePage> cardMovePage = null;
 	BookmarkablePageLink<CardRotatePage> cardRotatePage = null;
+	BookmarkablePageLink<PlayCardPage> playCardPage = null;
 
 	public CardPanel(final String id, final String smallImage, final String bigImage,
 			final UUID uuid)
@@ -47,7 +48,9 @@ public class CardPanel extends Panel
 		this.cardMovePage = new BookmarkablePageLink<CardMovePage>("cardMove", CardMovePage.class);
 		this.cardRotatePage = new BookmarkablePageLink<CardRotatePage>("cardRotate",
 				CardRotatePage.class);
-		this.add(this.cardMovePage, this.cardRotatePage);
+		this.playCardPage = new BookmarkablePageLink<PlayCardPage>("playCard", PlayCardPage.class);
+
+		this.add(this.cardMovePage, this.cardRotatePage, this.playCardPage);
 
 		this.add(new JavaScriptReference("jQuery.bubbletip-1.0.6.js", HomePage.class,
 				"scripts/bubbletip/jQuery.bubbletip-1.0.6.js"));
@@ -91,14 +94,12 @@ public class CardPanel extends Panel
 		menutoggleButton.add(new CardRotateBehavior(this, form, uuid));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-				((ServletWebRequest)this.getRequest()).getHttpServletRequest()
-						.getRequestedSessionId()));
+				(this.getHttpServletRequest().getRequestedSessionId())));
 		jsessionid.setMarkupId("jsessionid" + uuid);
 		jsessionid.setOutputMarkupId(true);
 
-		CardPanel.logger.info("jsessionid: "
-				+ ((ServletWebRequest)this.getRequest()).getHttpServletRequest()
-						.getRequestedSessionId());
+		CardPanel.logger
+				.info("jsessionid: " + this.getHttpServletRequest().getRequestedSessionId());
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
 		mouseX.setMarkupId("mouseX" + uuid);

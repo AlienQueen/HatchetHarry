@@ -27,3 +27,27 @@ jQuery("#${uuid}_l").click(function() {
 	wicketAjaxGet('${url}&card=${uuid}', function() {
 	}, null, null);
 });
+
+function callbackPlayCard${uuidValidForJs}(response) {
+	if (response.transport != 'polling'
+			&& response.state != 'connected'
+			&& response.state != 'closed') {
+		if (response.status == 200) {
+			var data = response.responseBody;
+			var s = data.split("~~~")[1];
+			if ((typeof s != "undefined")
+					&& (typeof jQuery('#jsessionid${uuid}').val() == 'undefined')) {
+				// We're in the play card Meteor
+				wicketAjaxGet('${url}&card=${uuid}&stop=true', function() { }, null, null);
+			};
+		};
+	};
+};
+
+// You can set websocket, streaming or long-polling here.
+jQuery.atmosphere.subscribe(
+		document.getElementById('playCard').href, callbackPlayCard${uuidValidForJs},
+		jQuery.atmosphere.request = {
+			transport : 'streaming'
+		}
+);

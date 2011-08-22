@@ -40,8 +40,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
 		final String tapped = request.getParameter("tapped");
-		final String uuid = request.getParameter("uuid");
-		final String message = request.getRequestedSessionId() + "&tapped=" + tapped + "___" + uuid;
+		final String uuidToLookFor = request.getParameter("uuid");
+		final String message = request.getRequestedSessionId() + "&tapped=" + tapped + "___" + uuidToLookFor;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardRotateBehavior.logger.info("meteor: " + meteor);
