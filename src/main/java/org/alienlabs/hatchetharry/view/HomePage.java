@@ -102,7 +102,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.addHeadResources();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.2 built on Sunday, 21st of August 2011"));
+		this.add(new Label("message", "version 0.0.3 built on Monday, 22nd of August 2011"));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -208,6 +208,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void buildHand()
 	{
+
 		final Image handImagePlaceholder1 = new Image("handImagePlaceholder1");
 
 		final MagicCard hammer = this.persistenceService.getSecondCardOfGame();
@@ -222,8 +223,13 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			uuid = hammer.getUuidObject();
 		}
 
+		final WebMarkupContainer firstImage = new WebMarkupContainer("firstImage");
+		firstImage.setMarkupId("image" + uuid);
+		firstImage.setOutputMarkupId(true);
+		this.add(firstImage);
+
 		handImagePlaceholder1.add(new SimpleAttributeModifier("id", uuid.toString()));
-		this.add(handImagePlaceholder1);
+		firstImage.add(handImagePlaceholder1);
 
 		this.cardParent = new WebMarkupContainer("cardParent");
 		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
@@ -239,7 +245,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				HomePage.class, "images/playCard.png"));
 
 		handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
-		this.add(handImageLink1);
+		firstImage.add(handImageLink1);
 
 		if (null == hammer)
 		{
@@ -252,6 +258,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 			this.persistenceService.saveCard(card);
 		}
+
 		HomePage.logger.info("buildHand UUID: " + uuid);
 	}
 

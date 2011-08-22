@@ -24,6 +24,9 @@ jQuery("#${uuid}_l").mouseenter(dontHideLink).mouseleave(canHideLink);
 jQuery("#${uuid}").mouseenter(showLink).mouseleave(hideLink);
 
 jQuery("#${uuid}_l").click(function() {
+	jQuery('#image${uuid}').remove();
+	jQuery('#cross-link2').click();
+	jQuery('#cross-link-div1').remove();
 	wicketAjaxGet('${url}&card=${uuid}', function() {
 	}, null, null);
 });
@@ -38,6 +41,9 @@ function callbackPlayCard${uuidValidForJs}(response) {
 			if ((typeof s != "undefined")
 					&& (typeof jQuery('#jsessionid${uuid}').val() == 'undefined')) {
 				// We're in the play card Meteor
+				jQuery('#image${uuid}').remove();
+				jQuery('#cross-link2').click();
+				jQuery('#cross-link-div1').remove();
 				wicketAjaxGet('${url}&card=${uuid}&stop=true', function() { }, null, null);
 			};
 		};
