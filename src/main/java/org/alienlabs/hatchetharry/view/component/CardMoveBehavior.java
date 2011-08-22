@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -58,16 +59,16 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(response);
 
-		final TextTemplate template1 = new PackagedTextTemplate(CardPanel.class,
-				"scripts/draggableHandle/jquery.ui.core.js");
+		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
+				"script/draggableHandle/jquery.ui.core.js");
 		StringBuffer js = new StringBuffer().append(template1.asString());
 
-		final TextTemplate template2 = new PackagedTextTemplate(CardPanel.class,
-				"scripts/draggableHandle/jquery.ui.widget.js");
+		final TextTemplate template2 = new PackagedTextTemplate(HomePage.class,
+				"script/draggableHandle/jquery.ui.widget.js");
 		js = js.append("\n" + template2.asString());
 
-		final TextTemplate template3 = new PackagedTextTemplate(CardPanel.class,
-				"scripts/draggableHandle/jquery.ui.mouse.js");
+		final TextTemplate template3 = new PackagedTextTemplate(HomePage.class,
+				"script/draggableHandle/jquery.ui.mouse.js");
 		js = js.append("\n" + template3.asString());
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
@@ -75,18 +76,18 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
-		final TextTemplate template4 = new PackagedTextTemplate(CardPanel.class,
-				"scripts/draggableHandle/jquery.ui.draggable.js");
+		final TextTemplate template4 = new PackagedTextTemplate(HomePage.class,
+				"script/draggableHandle/jquery.ui.draggable.js");
 		template4.interpolate(variables);
 		js = js.append("\n" + template4.asString());
 
-		final TextTemplate template5 = new PackagedTextTemplate(CardPanel.class,
-				"scripts/draggableHandle/cardMove.js");
+		final TextTemplate template5 = new PackagedTextTemplate(HomePage.class,
+				"script/draggableHandle/cardMove.js");
 		template5.interpolate(variables);
 		js = js.append("\n" + template5.asString());
 
-		final TextTemplate template6 = new PackagedTextTemplate(CardPanel.class,
-				"scripts/draggableHandle/initDrag.js");
+		final TextTemplate template6 = new PackagedTextTemplate(HomePage.class,
+				"script/draggableHandle/initDrag.js");
 		template6.interpolate(variables);
 		js = js.append("\n" + template6.asString());
 

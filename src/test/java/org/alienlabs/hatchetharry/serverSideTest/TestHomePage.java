@@ -3,8 +3,8 @@ package org.alienlabs.hatchetharry.serverSideTest;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
-import org.alienlabs.hatchetharry.view.CardPanel;
-import org.alienlabs.hatchetharry.view.HomePage;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;

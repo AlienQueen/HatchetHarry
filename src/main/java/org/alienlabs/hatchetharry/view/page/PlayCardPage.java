@@ -35,19 +35,11 @@
  * holder.
  *
  */
-package org.alienlabs.hatchetharry.view;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
+package org.alienlabs.hatchetharry.view.page;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
@@ -61,61 +53,23 @@ import org.slf4j.LoggerFactory;
  * @author Andrey Belyaev
  * @author Jeanfrancois Arcand
  */
-public class ClockPage extends WebPage implements AtmosphereResourceEventListener
+public class PlayCardPage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(ClockPage.class);
-	static final Map<String, Callable<String>> connectedJSessionIds = new HashMap<String, Callable<String>>();
+	private static final Logger logger = LoggerFactory.getLogger(PlayCardPage.class);
 
-	// TODO is this necessary??
-	private final AtomicBoolean scheduleStarted = new AtomicBoolean(false);
-
-	public ClockPage()
+	public PlayCardPage()
 	{
-		final HttpServletRequest req = this.getWebRequestCycle().getWebRequest()
-				.getHttpServletRequest();
-
-		// Grap a Meteor
-		final Meteor meteor = Meteor.build(req);
-		final String jsessionid = req.getRequestedSessionId();
-
-		// Start scheduling update.
-		if ((!this.scheduleStarted.getAndSet(true))
-				&& !(ClockPage.connectedJSessionIds.containsKey(jsessionid)))
-		{
-			final Callable<String> callable = new Callable<String>()
-			{
-				@Override
-				public String call()
-				{
-					final String s = "1###" + new Date().toString();
-					return s;
-				}
-			};
-			ClockPage.connectedJSessionIds.put(jsessionid, callable);
-			((HatchetHarrySession)Session.get()).setCometUser(jsessionid);
-			meteor.schedule(callable, 1); // 1 second
-		}
-
-		// Add us to the listener list.
-		meteor.addListener(this);
-
-		final String transport = req.getHeader("X-Atmosphere-Transport");
-
-		// Suspend the connection. Could be long-polling, streaming or
-		// websocket.
-		meteor.suspend(-1, !((transport != null) && transport.equalsIgnoreCase("long-polling")));
 	}
 
 	@Override
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		event.getResource().getRequest().getRequestedSessionId();
-		// if (!jsessionid.equals(((String)event.getMessage()).split("###")[0]))
-		// {
-		// If we are using long-polling, resume the connection as soon as we
-		// get an event.
+		PlayCardPage.logger.info("onBroadcast(): {}", event.getMessage());
+
+		// If we are using long-polling, resume the connection as soon as we get
+		// an event.
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		if ((transport != null) && transport.equalsIgnoreCase("long-polling"))
@@ -124,7 +78,6 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 			meteor.removeListener(this);
 			meteor.resume();
 		}
-		// }
 	}
 
 	@Override
@@ -134,7 +87,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.logger.info("Suspending the %s response from ip {}:{}",
+		PlayCardPage.logger.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -146,7 +99,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.logger.info("Resuming the {} response from ip {}:{}",
+		PlayCardPage.logger.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -158,7 +111,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.logger.info("{} connection dropped from ip {}:{}",
+		PlayCardPage.logger.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -167,7 +120,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		ClockPage.logger.info("onThrowable()", event.throwable());
+		PlayCardPage.logger.info("onThrowable()", event.throwable());
 	}
 
 }

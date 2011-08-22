@@ -1,7 +1,8 @@
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
 
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -40,18 +41,18 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url_for_team_info", this.getCallbackUrl());
 		final TextTemplate template1 = new PackagedTextTemplate(TeamInfoBehavior.class,
-				"scripts/menubar/menubar.js");
+				"script/menubar/menubar.js");
 		template1.interpolate(variables);
 		final String js1 = template1.asString();
 		response.renderJavascript(js1, "menubar.js");
 
 		final TextTemplate template2 = new PackagedTextTemplate(TeamInfoBehavior.class,
-				"scripts/qunitTests/HomePageTests.js");
+				"script/qunitTests/HomePageTests.js");
 		final String js2 = template2.asString();
 		response.renderJavascript(js2, "codeUnderTest.js");
 
 		final TextTemplate template3 = new PackagedTextTemplate(TeamInfoBehavior.class,
-				"scripts/qunitTests/HomePageTests.js");
+				"script/qunitTests/HomePageTests.js");
 		final String js3 = template3.asString();
 		response.renderJavascript(js3, "HomePageTests.js");
 	}

@@ -6,10 +6,10 @@
 	<title>Welcome to HatchetHarry!</title>
 	
 	<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheets/menu_black.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheets/jquery.jquerytour.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheets/myStyle.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheets/galleryStyle.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="stylesheet/menu_black.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="stylesheet/jquery.jquerytour.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="stylesheet/myStyle.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="stylesheet/galleryStyle.css" media="screen" />
 	<link rel="shortcut icon" href="http://hatchetharry.net/favicon.ico" />
  
 	<script wicket:id="jQuery-1.6.2.js" type="text/javascript"></script>
@@ -18,11 +18,11 @@
     <script wicket:id="jquery.storage.js" type="text/javascript"></script>
 	<script wicket:id="jquery.tour.js" type="text/javascript"></script>
 
-    <script type="text/javascript" wicket:id="jquery.metadata.js" src="scripts/menubar/jquery.metadata.js"></script>
-	<script type="text/javascript" wicket:id="jquery.hoverIntent.js" src="scripts/menubar/jquery.hoverIntent.js"></script>
-	<script type="text/javascript" wicket:id="mbMenu.js" src="scripts/menubar/mbMenu.js"></script>
+    <script type="text/javascript" wicket:id="jquery.metadata.js" src="script/menubar/jquery.metadata.js"></script>
+	<script type="text/javascript" wicket:id="jquery.hoverIntent.js" src="script/menubar/jquery.hoverIntent.js"></script>
+	<script type="text/javascript" wicket:id="mbMenu.js" src="script/menubar/mbMenu.js"></script>
     <!-- Dock -->
-    <script type="text/javascript" wicket:id="jqDock.js" src="scripts/menubar/jquery.jqDock.js"></script>
+    <script type="text/javascript" wicket:id="jqDock.js" src="script/menubar/jquery.jqDock.js"></script>
 
 	<script type="text/javascript" wicket:id="qUnit.js"></script>
 	<script type="text/javascript" wicket:id="codeUnderTest.js"></script>
@@ -34,11 +34,11 @@
     <script type="text/javascript" wicket:id="coda-slider.1.1.1.pack.js"></script>
  	<script type="text/javascript" wicket:id="gallery.js"></script>
  
-	<script type="text/javascript" src="scripts/atmosphere/prototype.js"></script>
-    <script type="text/javascript" src="scripts/atmosphere/behaviour.js"></script>
-    <script type="text/javascript" src="scripts/atmosphere/moo.fx.js"></script>
-    <script type="text/javascript" src="scripts/atmosphere/moo.fx.pack.js"></script>
-    <script type="text/javascript" src="scripts/atmosphere/application.js"></script>
+	<script type="text/javascript" src="script/atmosphere/prototype.js"></script>
+    <script type="text/javascript" src="script/atmosphere/behaviour.js"></script>
+    <script type="text/javascript" src="script/atmosphere/moo.fx.js"></script>
+    <script type="text/javascript" src="script/atmosphere/moo.fx.pack.js"></script>
+    <script type="text/javascript" src="script/atmosphere/application.js"></script>
 	<script type="text/javascript"  wicket:id="jQueryRotate.2.1.js"></script>
 
     <!-- Dependency source files -->
@@ -52,15 +52,15 @@
     <script type="text/javascript" src="http://yui.yahooapis.com/2.8.2r1/build/element/element.js"></script>
     
     <!-- The toolbar at the bottom of the page -->
-    <link type="text/css"  rel="stylesheet" href="stylesheets/fixed4all.css"/> 
-	<link href="stylesheets/fixed4ie.css" rel="stylesheet" type="text/css">
+    <link type="text/css"  rel="stylesheet" href="stylesheet/fixed4all.css"/> 
+	<link href="stylesheet/fixed4ie.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript">onload = function() { content.focus() }</script>
 		
-	<link rel="stylesheet" href="stylesheets/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
-	<script wicket:id="jquery.prettyPhoto.js" src="scripts/toolbar/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
-	 <link rel="stylesheet" href="stylesheets/toolbarStyle.css" type="text/css" /> 
-	<link rel="stylesheet" href="stylesheets/tipsy.css" type="text/css" /> 
-	<script wicket:id="jquery.tipsy.js" type="text/javascript" src="scripts/toolbar/jquery.tipsy.js"></script> 
+	<link rel="stylesheet" href="stylesheet/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+	<script wicket:id="jquery.prettyPhoto.js" src="script/toolbar/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+	 <link rel="stylesheet" href="stylesheet/toolbarStyle.css" type="text/css" /> 
+	<link rel="stylesheet" href="stylesheet/tipsy.css" type="text/css" /> 
+	<script wicket:id="jquery.tipsy.js" type="text/javascript" src="script/toolbar/jquery.tipsy.js"></script> 
 </head>
 <body class="yui-skin-sam" id="yahoo-com">
 
@@ -76,7 +76,7 @@
 
               <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'>
               <tr>
-                <td class="rootVoice {menu: 'box_menu'}" ><img src="/images/logoh2.gif" alt="HH" width="32"></td>
+                <td class="rootVoice {menu: 'box_menu'}" ><img src="/image/logoh2.gif" alt="HH" width="32"></td>
                 <td class="rootVoice {menu: 'menu_2'}" >Documentation</td>
                 <td class="rootVoice {menu: 'menu_3'}" >Game</td>
               </tr>
@@ -104,7 +104,7 @@
 
   <div id="menu_3" class="mbmenu">
     <a  class="{action: 'showMessage(\'menu_2.2\')'}">
-        <img src="/images/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your life<br/>
+        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your life<br/>
     </a>
     <a rel="separator"> </a>
     <a id="aaa" class="{menu:'sub_menu_3'}">Mana</a>
@@ -150,7 +150,7 @@
     <table style="border:0;" >
       <tr>
         <td>
-          <div style="height:130px"><img src="/images/logoh2.gif" alt="HH" width="64"></div>
+          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64"></div>
           <a href="#" target="_blank">About HatychetHarry</a>
           <a href="#" target="_blank">HatchetHarry team info</a>
           <a href="#" target="_blank">Preferences</a>
@@ -179,7 +179,7 @@
 				<div class="panel">
 					<div class="wrapper">
 						<span wicket:id="firstImage" id="image">
-							<img wicket:id="handImagePlaceholder1" id="#" class="wrapper-image" src="images/HammerOfBogardan.jpg" alt="Hammer of Bogardan"></img>
+							<img wicket:id="handImagePlaceholder1" id="#" class="wrapper-image" src="image/HammerOfBogardan.jpg" alt="Hammer of Bogardan"></img>
 							<a href="#" title="Play card"><img wicket:id="handImageLink1" id="#" class="play-card"/></a>
 							<div class="photo-meta-data">
 								Hammer of Bogardan<br/>
@@ -190,7 +190,7 @@
 				</div>
 				<div class="panel">
 					<div class="wrapper">
-						<img src="images/Overrun.jpg" alt="Overrun"/>
+						<img src="image/Overrun.jpg" alt="Overrun"/>
 						<div class="photo-meta-data">
 							Overrun<br/>
 							<span>Chaaarge!</span>
@@ -199,7 +199,7 @@
 				</div>		
 				<div class="panel">
 					<div class="wrapper">
-						<img src="images/Abeyance.jpg" alt="Abeyance" class="floatLeft"/>	
+						<img src="image/Abeyance.jpg" alt="Abeyance" class="floatLeft"/>	
 						<div class="photo-meta-data">
 							Abeyance<br/>
 							<span>A good show-stopper</span>
@@ -208,7 +208,7 @@
 				</div>
 				<div class="panel">
 					<div class="wrapper">
-						<img src="images/TradewindRider.jpg" alt="Tradewind Rider"/>
+						<img src="image/TradewindRider.jpg" alt="Tradewind Rider"/>
 						<div class="photo-meta-data">
 							Tradewind Rider<br/>
 							<span>Don't let it pass you by</span>
@@ -217,7 +217,7 @@
 				</div>
 				<div class="panel">
 					<div class="wrapper">
-						<img src="images/Necropotence.jpg" alt="Necropotence"/>
+						<img src="image/Necropotence.jpg" alt="Necropotence"/>
 						<div class="photo-meta-data">
 							Necropotence<br/>
 							<span>Your darkest nightmare looks bright</span>
@@ -226,7 +226,7 @@
 				</div>
 				<div class="panel">
 					<div class="wrapper">
-						<img src="images/CursedScroll.jpg" alt="Cursed Scroll"/>
+						<img src="image/CursedScroll.jpg" alt="Cursed Scroll"/>
 						Cursed Scroll<br/>
 						<span>Close your mind to its magic, lest it pry it open in fear</span>
 					</div>
@@ -236,12 +236,12 @@
 		</div>
 
 		<div id="movers-row">
-			<div id="cross-link-div1"><a href="#1" id="cross-link1" class="cross-link"><img src="/images/HammerOfBogardanThumb.jpg" class="nav-thumb" alt="Hammer of Bogardan"/></a></div>
-			<div id="cross-link-div2"><a href="#2" id="cross-link2" class="cross-link"><img src="/images/OverrunThumb.jpg" class="nav-thumb" alt="Overrun"/></a></div>
-			<div id="cross-link-div3"><a href="#3" id="cross-link3" class="cross-link"><img src="/images/AbeyanceThumb.jpg" class="nav-thumb" alt="Abeyance"/></a></div>
-			<div id="cross-link-div4"><a href="#4" id="cross-link4" class="cross-link"><img src="/images/TradewindRiderThumb.jpg" class="nav-thumb" alt="Tradewind Rider"/></a></div>
-			<div id="cross-link-div5"><a href="#5" id="cross-link5" class="cross-link"><img src="/images/NecropotenceThumb.jpg" class="nav-thumb" alt="Necropotence"/></a></div>
-			<div id="cross-link-div6"><a href="#6" id="cross-link6" class="cross-link"><img src="/images/CursedScrollThumb.jpg" class="nav-thumb" alt="Cursed Scroll"/></a></div>
+			<div id="cross-link-div1"><a href="#1" id="cross-link1" class="cross-link"><img src="/image/HammerOfBogardanThumb.jpg" class="nav-thumb" alt="Hammer of Bogardan"/></a></div>
+			<div id="cross-link-div2"><a href="#2" id="cross-link2" class="cross-link"><img src="/image/OverrunThumb.jpg" class="nav-thumb" alt="Overrun"/></a></div>
+			<div id="cross-link-div3"><a href="#3" id="cross-link3" class="cross-link"><img src="/image/AbeyanceThumb.jpg" class="nav-thumb" alt="Abeyance"/></a></div>
+			<div id="cross-link-div4"><a href="#4" id="cross-link4" class="cross-link"><img src="/image/TradewindRiderThumb.jpg" class="nav-thumb" alt="Tradewind Rider"/></a></div>
+			<div id="cross-link-div5"><a href="#5" id="cross-link5" class="cross-link"><img src="/image/NecropotenceThumb.jpg" class="nav-thumb" alt="Necropotence"/></a></div>
+			<div id="cross-link-div6"><a href="#6" id="cross-link6" class="cross-link"><img src="/image/CursedScrollThumb.jpg" class="nav-thumb" alt="Cursed Scroll"/></a></div>
 		</div>
 
 	</div>
@@ -260,19 +260,19 @@
 	<span class="tour_5">
 		<div id="dock">
 		    <a href='#' title="Hand" class="tour_6">
-		    	<img src="/images/hand.gif" alt="Hand" title="Hand"/>
+		    	<img src="/image/hand.gif" alt="Hand" title="Hand"/>
 		    </a>
 		    <a href='#' title="Graveyard" class="tour_7">
-		    	<img src="/images/graveyard.gif" alt="Graveyard" title="Graveyard"/>
+		    	<img src="/image/graveyard.gif" alt="Graveyard" title="Graveyard"/>
 		    </a>
 		    <a href='#' title="Exiled" class="tour_8">
-		    	<img src="/images/exiled.gif" alt="Exiled" title="Exiled"/>
+		    	<img src="/image/exiled.gif" alt="Exiled" title="Exiled"/>
 		    </a>
 		    <a href="#" title="Battlefield" class="tour_9">
-		      <img src="/images/battlefield.gif" alt="Battlefield" />
+		      <img src="/image/battlefield.gif" alt="Battlefield" />
 		    </a>
 		    <a href='#' title="Library" class="tour_10">
-			    <img src="/images/library.gif" alt="library"  title="Library"/>
+			    <img src="/image/library.gif" alt="library"  title="Library"/>
 		    </a>
 	  	</div>
   	</span>
@@ -324,27 +324,27 @@
 
          <ul class="gallery clearfix">
 				<li>
-				<a class="toolbarLink" title="Untap your permanents & draw a card "  id="twitterlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/tweet.png"></img> Untap & draw</a>
+				<a class="toolbarLink" title="Untap your permanents & draw a card "  id="twitterlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/tweet.png"></img> Untap & draw</a>
 				</li>
 				
 				<li>
-				<a  class="toolbarLink" title="Untall all your permanents " id="buzzlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/googlebuzz.png"></img> Untap all</a>
+				<a  class="toolbarLink" title="Untall all your permanents " id="buzzlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/googlebuzz.png"></img> Untap all</a>
 				</li>
 				
 				<li>
-				<a  class="toolbarLink" title="Draw a card " id="videoslink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/youtube.png"></img> Draw a card</a>
+				<a  class="toolbarLink" title="Draw a card " id="videoslink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/youtube.png"></img> Draw a card</a>
 				</li>
 				
 				<li>
-				<a class="toolbarLink" title="Play the card shown in your hand "  id="playlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/playCard.png"></img> Play card</a>
+				<a class="toolbarLink" title="Play the card shown in your hand "  id="playlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/playCard.png"></img> Play card</a>
 				</li>
 				
 				<li>
-				<a class="toolbarLink" title="Declare a combat phase "  id="combatlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/battle.png"></img> Declare combat</a>
+				<a class="toolbarLink" title="Declare a combat phase "  id="combatlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/battle.png"></img> Declare combat</a>
 				</li>
 				
 				<li>
-				<a  class="toolbarLink" title="End of your turn " id="emaillink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="images/contact.png"></img> End of turn</a>
+				<a  class="toolbarLink" title="End of your turn " id="emaillink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/contact.png"></img> End of turn</a>
 				</li>
 		</ul>
 

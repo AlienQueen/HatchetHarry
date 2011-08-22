@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -41,7 +42,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 
 		final String tapped = request.getParameter("tapped");
 		final String uuidToLookFor = request.getParameter("uuid");
-		final String message = request.getRequestedSessionId() + "&tapped=" + tapped + "___" + uuidToLookFor;
+		final String message = request.getRequestedSessionId() + "&tapped=" + tapped + "___"
+				+ uuidToLookFor;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardRotateBehavior.logger.info("meteor: " + meteor);
@@ -60,8 +62,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
-		final TextTemplate template = new PackagedTextTemplate(CardPanel.class,
-				"scripts/rotate/cardRotate.js");
+		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+				"script/rotate/cardRotate.js");
 		template.interpolate(variables);
 
 		response.renderOnDomReadyJavascript(template.asString());

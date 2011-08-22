@@ -1,5 +1,6 @@
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.panel.Panel;
 
 @SuppressWarnings("serial")

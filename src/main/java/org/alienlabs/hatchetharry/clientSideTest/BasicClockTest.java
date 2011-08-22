@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.clientSideTest;
 
-import org.alienlabs.hatchetharry.view.HomePage;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Assert;

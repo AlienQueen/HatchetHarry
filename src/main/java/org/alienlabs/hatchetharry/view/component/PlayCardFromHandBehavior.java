@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.web.InjectorHolder;
@@ -89,8 +90,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuid", this.getUuid());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
-		final TextTemplate template = new PackagedTextTemplate(PlayCardFromHandBehavior.class,
-				"scripts/playCard/playCard.js");
+		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+				"script/playCard/playCard.js");
 		template.interpolate(variables);
 
 		response.renderOnDomReadyJavascript(template.asString());

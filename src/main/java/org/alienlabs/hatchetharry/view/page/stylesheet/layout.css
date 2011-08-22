@@ -3,7 +3,7 @@ body {
 	font-family: "Trebuchet MS", "Lucida Grande", Arial, Helvetica, sans-serif;
 	margin: 0 auto;
 	padding: 0;
-	background: #000000 url('/images/gradient1.jpg') top left repeat-x;
+	background: #000000 url('/image/gradient1.jpg') top left repeat-x;
 }
 
 h1
@@ -58,14 +58,14 @@ h2
 /*.content p.linkage a
 {
 	color: #fff;
-	background: url('../images/bg/biglink_off.gif') center right no-repeat;
+	background: url('../image/bg/biglink_off.gif') center right no-repeat;
 	padding: 10px 20px;
 	text-decoration: none;
 }
 
 .content p.linkage a:hover
 {
-	background: url('../images/bg/biglink_on.gif') center right no-repeat;
+	background: url('../image/bg/biglink_on.gif') center right no-repeat;
 	font-style: italic;
 }*/
 

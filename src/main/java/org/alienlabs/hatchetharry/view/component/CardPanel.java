@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,6 +6,10 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.view.page.CardMovePage;
+import org.alienlabs.hatchetharry.view.page.CardRotatePage;
+import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.alienlabs.hatchetharry.view.page.PlayCardPage;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -53,16 +57,16 @@ public class CardPanel extends Panel
 		this.add(this.cardMovePage, this.cardRotatePage, this.playCardPage);
 
 		this.add(new JavaScriptReference("jQuery.bubbletip-1.0.6.js", HomePage.class,
-				"scripts/bubbletip/jQuery.bubbletip-1.0.6.js"));
+				"script/bubbletip/jQuery.bubbletip-1.0.6.js"));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "scripts/bubbletip/bubbletip.css")));
+				HomePage.class, "script/bubbletip/bubbletip.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/menu.css")));
+				HomePage.class, "stylesheet/menu.css")));
 
 		this.add(new JavaScriptReference("jquery.contextMenu.js", HomePage.class,
-				"scripts/contextmenu/jquery.contextMenu.js"));
+				"script/contextmenu/jquery.contextMenu.js"));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "scripts/contextmenu/jquery.contextMenu.css")));
+				HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);

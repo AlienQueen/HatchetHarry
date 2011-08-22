@@ -35,10 +35,12 @@
  * holder.
  *
  */
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
 import java.util.Date;
 
+import org.alienlabs.hatchetharry.view.page.ClockPage;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -59,7 +61,7 @@ public class ClockPanel extends Panel
 		super(id);
 
 		this.add(new JavaScriptReference("jquery.atmosphere.js", HomePage.class,
-				"scripts/jquery/jquery.atmosphere.js"));
+				"script/jquery/jquery.atmosphere.js"));
 
 		this.add(new BookmarkablePageLink<ClockPage>("cometStart", ClockPage.class));
 		this.add(new Label("clock", new AbstractReadOnlyModel<String>()

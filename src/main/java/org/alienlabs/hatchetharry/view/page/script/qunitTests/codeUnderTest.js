@@ -283,7 +283,7 @@ $(document).ready(function() {
 		menuWidth : 200,
 		openOnRight : false,
 		menuSelector : ".menuContainer",
-		iconPath : "/images/",
+		iconPath : "/image/",
 		hasImages : true,
 		fadeInTime : 100,
 		fadeOutTime : 300,

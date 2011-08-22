@@ -35,7 +35,7 @@
  * holder.
  *
  */
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.page;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -46,6 +46,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
+import org.alienlabs.hatchetharry.view.component.ChatPanel;
+import org.alienlabs.hatchetharry.view.component.ClockPanel;
+import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -144,66 +148,66 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	protected void addHeadResources()
 	{
 		this.add(new JavaScriptReference("jQuery-1.6.2.js", HomePage.class,
-				"scripts/jquery/jquery-1.6.2.min.js"));
+				"script/jquery/jquery-1.6.2.min.js"));
 		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
-				"scripts/tour/jquery.easing.1.3.js"));
+				"script/tour/jquery.easing.1.3.js"));
 		this.add(new JavaScriptReference("jquery.storage.js", HomePage.class,
-				"scripts/tour/jquery.storage.js"));
+				"script/tour/jquery.storage.js"));
 		this.add(new JavaScriptReference("jquery.tour.js", HomePage.class,
-				"scripts/tour/jquery.tour.js"));
+				"script/tour/jquery.tour.js"));
 		this.add(new JavaScriptReference("jquery.metadata.js", HomePage.class,
-				"scripts/menubar/jquery.metadata.js"));
+				"script/menubar/jquery.metadata.js"));
 		this.add(new JavaScriptReference("jquery.hoverIntent.js", HomePage.class,
-				"scripts/menubar/jquery.hoverIntent.js"));
-		this.add(new JavaScriptReference("mbMenu.js", HomePage.class, "scripts/menubar/mbMenu.js"));
+				"script/menubar/jquery.hoverIntent.js"));
+		this.add(new JavaScriptReference("mbMenu.js", HomePage.class, "script/menubar/mbMenu.js"));
 		this.add(new JavaScriptReference("jqDock.js", HomePage.class,
-				"scripts/menubar/jquery.jqDock.js"));
-		this.add(new JavaScriptReference("qUnit.js", HomePage.class, "scripts/qunitTests/qUnit.js"));
+				"script/menubar/jquery.jqDock.js"));
+		this.add(new JavaScriptReference("qUnit.js", HomePage.class, "script/qunitTests/qUnit.js"));
 		this.add(new JavaScriptReference("codeUnderTest.js", HomePage.class,
-				"scripts/qunitTests/codeUnderTest.js"));
+				"script/qunitTests/codeUnderTest.js"));
 		this.add(new JavaScriptReference("HomePageTests.js", HomePage.class,
-				"scripts/qunitTests/HomePageTests.js"));
+				"script/qunitTests/HomePageTests.js"));
 
 		this.add(new JavaScriptReference("mootools.v1.11", HomePage.class,
-				"scripts/jquery/mootools.v1.11.js"));
+				"script/jquery/mootools.v1.11.js"));
 		this.add(new JavaScriptReference("jquery-easing-1.3.pack.js", HomePage.class,
-				"scripts/gallery/jquery-easing-1.3.pack.js"));
+				"script/gallery/jquery-easing-1.3.pack.js"));
 		this.add(new JavaScriptReference("jquery-easing-compatibility.1.2.pack.js", HomePage.class,
-				"scripts/gallery/jquery-easing-compatibility.1.2.pack.js"));
+				"script/gallery/jquery-easing-compatibility.1.2.pack.js"));
 		this.add(new JavaScriptReference("coda-slider.1.1.1.pack.js", HomePage.class,
-				"scripts/gallery/coda-slider.1.1.1.pack.js"));
-		this.add(new JavaScriptReference("gallery.js", HomePage.class, "scripts/gallery/gallery.js"));
+				"script/gallery/coda-slider.1.1.1.pack.js"));
+		this.add(new JavaScriptReference("gallery.js", HomePage.class, "script/gallery/gallery.js"));
 
 		this.add(new JavaScriptReference("jQueryRotate.2.1.js", HomePage.class,
-				"scripts/rotate/jQueryRotate.2.1.js"));
+				"script/rotate/jQueryRotate.2.1.js"));
 
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/menu.css")));
+				HomePage.class, "stylesheet/menu.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/layout.css")));
+				HomePage.class, "stylesheet/layout.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/menu_black.css")));
+				HomePage.class, "stylesheet/menu_black.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/jquery.jquerytour.css")));
+				HomePage.class, "stylesheet/jquery.jquerytour.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/myStyle.css")));
+				HomePage.class, "stylesheet/myStyle.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/galleryStyle.css")));
+				HomePage.class, "stylesheet/galleryStyle.css")));
 
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/fixed4all.css")));
+				HomePage.class, "stylesheet/fixed4all.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/fixed4ie.css")));
+				HomePage.class, "stylesheet/fixed4ie.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/prettyPhoto.css")));
+				HomePage.class, "stylesheet/prettyPhoto.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/toolbarStyle.css")));
+				HomePage.class, "stylesheet/toolbarStyle.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheets/tipsy.css")));
+				HomePage.class, "stylesheet/tipsy.css")));
 		this.add(new JavaScriptReference("jquery.prettyPhoto.js", HomePage.class,
-				"scripts/toolbar/jquery.prettyPhoto.js"));
+				"script/toolbar/jquery.prettyPhoto.js"));
 		this.add(new JavaScriptReference("jquery.tipsy.js", HomePage.class,
-				"scripts/toolbar/jquery.tipsy.js"));
+				"script/toolbar/jquery.tipsy.js"));
 	}
 
 	protected void buildHand()
@@ -242,7 +246,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		handImagePlaceholder1.add(b);
 
 		final Image handImageLink1 = new Image("handImageLink1", new ResourceReference(
-				HomePage.class, "images/playCard.png"));
+				HomePage.class, "image/playCard.png"));
 
 		handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
 		firstImage.add(handImageLink1);

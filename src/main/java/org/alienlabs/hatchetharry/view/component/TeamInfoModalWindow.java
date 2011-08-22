@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.view;
+package org.alienlabs.hatchetharry.view.component;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -23,7 +23,7 @@ public class TeamInfoModalWindow extends ModalWindow
 		this.setTitle("HatchetHarry Team info");
 
 		final Image img1 = new Image("img1", new PackageResourceReference(
-				TeamInfoModalWindow.class, "images/logo.png"));
+				TeamInfoModalWindow.class, "image/logo.png"));
 
 		final Form<String> form = new Form<String>("form");
 
@@ -46,7 +46,7 @@ public class TeamInfoModalWindow extends ModalWindow
 		submit.setOutputMarkupId(true);
 
 		final Image img2 = new Image("img2", new PackageResourceReference(
-				TeamInfoModalWindow.class, "images/logo.png"));
+				TeamInfoModalWindow.class, "image/logo.png"));
 
 		this.add(img1);
 		form.add(founder, lead, tester1, submit);
