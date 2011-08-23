@@ -48,15 +48,12 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
+import org.alienlabs.hatchetharry.view.component.ClickableGalleryImage;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
-import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -213,57 +210,81 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	protected void buildHand()
 	{
 
-		final Image handImagePlaceholder1 = new Image("handImagePlaceholder1");
-
-		final MagicCard hammer = this.persistenceService.getSecondCardOfGame();
-		final UUID uuid;
-
-		if (null == hammer)
-		{
-			uuid = UUID.randomUUID();
-		}
-		else
-		{
-			uuid = hammer.getUuidObject();
-		}
-
-		final WebMarkupContainer firstImage = new WebMarkupContainer("firstImage");
-		firstImage.setMarkupId("image" + uuid);
-		firstImage.setOutputMarkupId(true);
-		this.add(firstImage);
-
-		handImagePlaceholder1.add(new SimpleAttributeModifier("id", uuid.toString()));
-		firstImage.add(handImagePlaceholder1);
-
 		this.cardParent = new WebMarkupContainer("cardParent");
-		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
-		this.cardParent.add(this.cardPlaceholder);
 		this.cardParent.setOutputMarkupId(true);
+		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
 		this.cardPlaceholder.setOutputMarkupId(true);
+		this.cardParent.add(this.cardPlaceholder);
 		this.add(this.cardParent);
 
-		final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(uuid, this.cardParent);
-		handImagePlaceholder1.add(b);
+		final ClickableGalleryImage cgi1 = new ClickableGalleryImage(
+				"clickableGalleryImagePlaceholder1", this.cardParent, "image/HammerOfBogardan.jpg",
+				"image/HammerOfBogardan.jpg", "cards/HammerOfBogardan_small.jpg",
+				"Hammer of Bogardan", "A red, recurring nightmare", 2l, 1, 2);
+		this.add(cgi1);
 
-		final Image handImageLink1 = new Image("handImageLink1", new ResourceReference(
-				HomePage.class, "image/playCard.png"));
+		final ClickableGalleryImage cgi2 = new ClickableGalleryImage(
+				"clickableGalleryImagePlaceholder2", this.cardParent, "image/Overrun.jpg",
+				"image/Overrun.jpg", "cards/Overrun_small.jpg", "Overrun", "Chaaarge!", 3l, 2, 3);
+		this.add(cgi2);
 
-		handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
-		firstImage.add(handImageLink1);
-
-		if (null == hammer)
-		{
-
-			final MagicCard card = new MagicCard();
-			card.setUuidObject(uuid);
-			card.setSmallImageFilename("cards/HammerOfBogardan_small.jpg");
-			card.setBigImageFilename("cards/HammerOfBogardan.jpg");
-			card.setGameId(this.getGameId());
-
-			this.persistenceService.saveCard(card);
-		}
-
-		HomePage.logger.info("buildHand UUID: " + uuid);
+		// final Image handImagePlaceholder1 = new
+		// Image("handImagePlaceholder1");
+		//
+		// final MagicCard hammer =
+		// this.persistenceService.getSecondCardOfGame();
+		// final UUID uuid;
+		//
+		// if (null == hammer)
+		// {
+		// uuid = UUID.randomUUID();
+		// }
+		// else
+		// {
+		// uuid = hammer.getUuidObject();
+		// }
+		//
+		// final WebMarkupContainer firstImage = new
+		// WebMarkupContainer("firstImage");
+		// firstImage.setMarkupId("image" + uuid);
+		// firstImage.setOutputMarkupId(true);
+		// this.add(firstImage);
+		//
+		// handImagePlaceholder1.add(new SimpleAttributeModifier("id",
+		// uuid.toString()));
+		// firstImage.add(handImagePlaceholder1);
+		//
+		// this.cardParent = new WebMarkupContainer("cardParent");
+		// this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
+		// this.cardParent.add(this.cardPlaceholder);
+		// this.cardParent.setOutputMarkupId(true);
+		// this.cardPlaceholder.setOutputMarkupId(true);
+		// this.add(this.cardParent);
+		//
+		// final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(uuid,
+		// this.cardParent);
+		// handImagePlaceholder1.add(b);
+		//
+		// final Image handImageLink1 = new Image("handImageLink1", new
+		// ResourceReference(
+		// HomePage.class, "image/playCard.png"));
+		//
+		// handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
+		// firstImage.add(handImageLink1);
+		//
+		// if (null == hammer)
+		// {
+		//
+		// final MagicCard card = new MagicCard();
+		// card.setUuidObject(uuid);
+		// card.setSmallImageFilename("cards/HammerOfBogardan_small.jpg");
+		// card.setBigImageFilename("cards/HammerOfBogardan.jpg");
+		// card.setGameId(this.getGameId());
+		//
+		// this.persistenceService.saveCard(card);
+		// }
+		//
+		// HomePage.logger.info("buildHand UUID: " + uuid);
 	}
 
 	@Override

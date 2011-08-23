@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +22,6 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.atmosphere.cpr.BroadcastFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +29,6 @@ import org.slf4j.LoggerFactory;
 public class CardPanel extends Panel
 {
 	static final Logger logger = LoggerFactory.getLogger(CardPanel.class);
-
-	/**
-	 * List of {@link BroadcastFilter}
-	 */
-	final List<BroadcastFilter> list;
 
 	BookmarkablePageLink<CardMovePage> cardMovePage = null;
 	BookmarkablePageLink<CardRotatePage> cardRotatePage = null;
@@ -90,8 +82,6 @@ public class CardPanel extends Panel
 		bubbleTipText1.setOutputMarkupPlaceholderTag(true).setEscapeModelStrings(false);
 		bubbleTipImg1.setOutputMarkupId(true);
 
-		this.list = new LinkedList<BroadcastFilter>();
-
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 		menutoggleButton.add(new CardMoveBehavior(this, form, uuid));
@@ -115,6 +105,7 @@ public class CardPanel extends Panel
 				new ResourceReference("images/arrow.png"));
 		final Image tapHandleImage = new Image("tapHandleImage", new ResourceReference(
 				"images/rightArrow.png"));
+		handleImage.setMarkupId("handleImage" + uuid.toString());
 		handleImage.setOutputMarkupId(true);
 		tapHandleImage.setMarkupId("tapHandleImage" + uuid.toString());
 		tapHandleImage.setOutputMarkupId(true);

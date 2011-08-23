@@ -75,7 +75,8 @@
 
 						_mouseCapture : function(event) {
 
-							jQuery('#bubbletip1Placeholder').removeBubbletip();
+							jQuery('#bubbletip1Placeholder${uuid}')
+									.removeBubbletip();
 							var o = this.options;
 
 							// among others, prevent a drag on a
@@ -97,7 +98,8 @@
 
 						_mouseStart : function(event) {
 
-							jQuery('#bubbletip1Placeholder').removeBubbletip();
+							jQuery('#bubbletip1Placeholder${uuid}')
+									.removeBubbletip();
 							var o = this.options;
 
 							// Create and append the visible helper
@@ -190,7 +192,8 @@
 
 						_mouseDrag : function(event, noPropagation) {
 
-							jQuery('#bubbletip1Placeholder').removeBubbletip();
+							jQuery('#bubbletip1Placeholder${uuid}')
+									.removeBubbletip();
 							// Compute the helpers position
 							this.position = this._generatePosition(event);
 							this.positionAbs = this
@@ -916,7 +919,8 @@
 						},
 						drag : function(event, ui) {
 
-							jQuery('#bubbletip1Placeholder').removeBubbletip();
+							jQuery('#bubbletip1Placeholder${uuid}')
+									.removeBubbletip();
 							var inst = $(this).data("draggable"), self = this;
 
 							var checkPos = function(o) {

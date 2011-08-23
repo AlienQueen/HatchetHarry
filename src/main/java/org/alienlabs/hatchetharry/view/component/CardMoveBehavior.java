@@ -42,10 +42,15 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final String _mouseX = request.getParameter("posX");
 		final String _mouseY = request.getParameter("posY");
-		final String uuid = request.getParameter("uuid");
+		final UUID id = UUID.fromString(request.getParameter("uuid"));
+		if (!this.uuid.equals(id))
+		{
+			throw new IllegalArgumentException(
+					"The UUID provided in request should be the same than the UUID provided at instantiation time");
+		}
 		final String message = request.getRequestedSessionId() + "&&&"
 				+ (Integer.parseInt(_mouseX) - 16) + "&&&" + (Integer.parseInt(_mouseY) - 16)
-				+ "&&&" + uuid;
+				+ "&&&" + this.uuid;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardMoveBehavior.logger.info("meteor: " + meteor);

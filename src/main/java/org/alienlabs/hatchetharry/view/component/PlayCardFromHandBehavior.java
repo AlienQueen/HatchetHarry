@@ -34,13 +34,19 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 	@SpringBean
 	private PersistenceService persistenceService;
+	private final int indexOfClickedCard;
+	private final int indexOfNextCard;
 
-	public PlayCardFromHandBehavior(final UUID _uuid, final WebMarkupContainer _parent)
+	public PlayCardFromHandBehavior(final UUID _uuid, final WebMarkupContainer _parent,
+			final int _indexOfClickedCard, final int _indexOfNextCard)
 	{
 		super();
 		InjectorHolder.getInjector().inject(this);
+
 		this.uuid = _uuid;
 		this.parent = _parent;
+		this.indexOfClickedCard = _indexOfClickedCard;
+		this.indexOfNextCard = _indexOfNextCard;
 	}
 
 	@Override
@@ -52,31 +58,38 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		final MagicCard card = this.persistenceService.getCardFromUuid(this.getUuid());
+		final UUID id = UUID.fromString(request.getParameter("card"));
+		PlayCardFromHandBehavior.logger.info("card= " + id.toString());
 
-		if (null != card)
+		if (this.uuid.toString().equals(id.toString()))
 		{
-			PlayCardFromHandBehavior.logger.info("card!");
-			final CardPanel cp = new CardPanel("cardPlaceholder", card.getSmallImageFilename(),
-					card.getBigImageFilename(), this.getUuid());
-			cp.setOutputMarkupId(true);
-			this.parent.addOrReplace(cp);
-			target.addComponent(this.parent);
-		}
-		else
-		{
-			PlayCardFromHandBehavior.logger.info("null!");
-		}
+			final MagicCard card = this.persistenceService.getCardFromUuid(this.uuid);
 
-		final String message = jsessionid + "~~~" + this.getUuid();
-		PlayCardFromHandBehavior.logger.info(message);
+			if (null != card)
+			{
+				PlayCardFromHandBehavior.logger.info("card!");
+				final CardPanel cp = new CardPanel("cardPlaceholder", card.getSmallImageFilename(),
+						card.getBigImageFilename(), this.uuid);
+				cp.setOutputMarkupId(true);
+				this.parent.addOrReplace(cp);
+				target.addComponent(this.parent);
+			}
+			else
+			{
+				PlayCardFromHandBehavior.logger.info("null!");
+			}
 
-		final String stop = request.getParameter("stop");
-		if (!"true".equals(stop))
-		{
-			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-			meteor.broadcast(message);
+			final String message = jsessionid + "~~~" + this.getUuid();
+			PlayCardFromHandBehavior.logger.info(message);
+
+			final String stop = request.getParameter("stop");
+			if (!"true".equals(stop))
+			{
+				final Meteor meteor = Meteor
+						.build(request, new LinkedList<BroadcastFilter>(), null);
+				meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+				meteor.broadcast(message);
+			}
 		}
 	}
 
@@ -89,6 +102,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuid", this.getUuid());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+		variables.put("clicked", this.indexOfClickedCard);
+		variables.put("next", this.indexOfNextCard);
 
 		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
 				"script/playCard/playCard.js");
