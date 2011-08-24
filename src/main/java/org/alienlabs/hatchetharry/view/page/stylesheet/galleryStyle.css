@@ -49,5 +49,6 @@ blockquote									{ padding: 0 20px; margin-left: 20px; border-left: 20px solid
 											  position: relative; padding-top: 0px; z-index: 2; }
 .active-thumb 								{ background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat; }
 
-.play-card									{ margin: 150px 0px 0px -120px; z-index:3;position:absolute; visibility:hidden; }
+.play-card-hidden							{ margin: 150px 0px 0px -120px; z-index:555;position:absolute; visibility:hidden; }
+.play-card-shown							{ margin: 150px 0px 0px -120px; z-index: 5555; position: absolute; cursor: pointer;}
 .wrapper-image								{ position:relative; }

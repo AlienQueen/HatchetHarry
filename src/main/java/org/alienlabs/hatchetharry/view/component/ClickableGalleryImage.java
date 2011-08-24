@@ -6,6 +6,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -94,8 +95,9 @@ public class ClickableGalleryImage extends Panel
 
 		final Image handImageLink = new Image("handImageLink", new ResourceReference(
 				HomePage.class, "image/playCard.png"));
-		handImageLink.setOutputMarkupId(true);
 		handImageLink.setMarkupId("placeholder" + uuid.toString().replace("-", "_") + "_l");
+		handImageLink.add(new SimpleAttributeModifier("class", "play-card-shown"));
+		handImageLink.setOutputMarkupId(true);
 		image.add(handImageLink);
 
 		if (null == hammer)

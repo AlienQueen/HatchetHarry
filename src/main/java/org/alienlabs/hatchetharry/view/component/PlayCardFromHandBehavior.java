@@ -101,7 +101,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				"script/playCard/playCard.js");
 		template.interpolate(variables);
 
-		response.renderOnDomReadyJavascript(template.asString());
+		response.renderJavascript(template.asString(), null);
 	}
 
 	protected UUID getUuid()
