@@ -1,29 +1,29 @@
-var canHideLink = true;
+var canHideLink${uuidValidForJs} = true;
 
-showLink = function() {
-	jQuery("#${uuid}_l").css("visibility", "visible");
+showLink${uuidValidForJs} = function() {
+	jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "visible");
 };
 
-hideLink = function() {
-	if (canHideLink) {
-		jQuery("#${uuid}_l").css("visibility", "hidden");
+hideLink${uuidValidForJs} = function() {
+	if (canHideLink${uuidValidForJs}) {
+		jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "hidden");
 	}
 };
 
-dontHideLink = function() {
-	jQuery("#${uuid}_l").css("visibility", "visible");
-	canHideLink = false;
-	jQuery("#${uuid}_l").css("visibility", "visible");
+dontHideLink${uuidValidForJs} = function() {
+	jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "visible");
+	canHideLink${uuidValidForJs} = false;
+	jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "visible");
 };
 
-canHideLink = function() {
-	canHideLink = true;
+canHideLink${uuidValidForJs} = function() {
+	canHideLink${uuidValidForJs} = true;
 };
 
-jQuery("#${uuid}_l").mouseenter(dontHideLink).mouseleave(canHideLink);
-jQuery("#${uuid}").mouseenter(showLink).mouseleave(hideLink);
+jQuery("#placeholder${uuidValidForJs}_l").mouseenter(dontHideLink${uuidValidForJs}).mouseleave(canHideLink${uuidValidForJs});
+jQuery("#placeholder${uuidValidForJs}").mouseenter(showLink${uuidValidForJs}).mouseleave(hideLink${uuidValidForJs});
 
-jQuery("#${uuid}_l").click(function() {
+jQuery("#placeholder${uuidValidForJs}_l").click(function() {
 	wicketAjaxGet('${url}&card=${uuid}', function() {
 	}, null, null);
 });

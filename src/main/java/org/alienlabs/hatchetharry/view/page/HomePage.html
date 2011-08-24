@@ -171,7 +171,6 @@
 	    		<span id="gallery" class="tour_4">
 	    			<div id="page-wrap">
 						
-						&nbsp;&nbsp;&nbsp;&nbsp;<span wicket:id="cardParent"><span wicket:id="cardPlaceholder"></span></span>
 	<!-- Gallery -->					
 	<div class="slider-wrap">
 		<div id="main-photo-slider" class="csw">
@@ -179,12 +178,16 @@
 
 				<div class="panel">
 					<div class="wrapper">
-						<span wicket:id="clickableGalleryImagePlaceholder1"></span>
+						<span wicket:id="handImagePlaceholder1" id="#" class="wrapper-image"></span>
 					</div>
 				</div>
 				<div class="panel">
 					<div class="wrapper">
-						<span wicket:id="clickableGalleryImagePlaceholder2"></span>
+						<img src="image/Overrun.jpg" alt="Overrun"/>
+						<div class="photo-meta-data">
+							Overrun<br/>
+							<span>Chaaarge!</span>
+						</div>
 					</div>
 				</div>		
 				<div class="panel">
@@ -245,6 +248,7 @@
   	<span wicket:id="clockPanel" id="clock" class="tour_3">Clock Panel</span>
 	<br/>
 	<span wicket:id="baldu" id="baldu"></span>
+	<span wicket:id="cardParent"><span wicket:id="cardPlaceholder"></span></span>
 	
 	<span class="tour_5">
 		<div id="dock">

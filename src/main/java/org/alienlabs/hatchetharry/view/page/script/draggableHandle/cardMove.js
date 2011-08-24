@@ -1,11 +1,9 @@
 jQuery(document).ready(
 		function() {
 
-			jQuery(document).ready(function() {
 				jQuery('#card${uuid}').bubbletip(jQuery('#cardBubbleTip1'), {
 					deltaDirection : 'right'
 				});
-			});
 
 			// Show menu when #myDiv is clicked
 			jQuery("#card${uuid}").contextMenu(

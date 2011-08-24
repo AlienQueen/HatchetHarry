@@ -1,9 +1,5 @@
 jQuery(document).ready(
 		function() {
-			jQuery("#menutoggleButton${uuid}").draggable({
-				handle : "img"
-			});
-
 			// The context menu, which appears when clicking on a card (a YUI
 			// widget)
 			// Maintain a reference to the "clones" <ul>
@@ -268,6 +264,11 @@ jQuery(document).ready(
 					});
 
 			// Add a "render" event handler to the field context menu
-
 			oFieldContextMenu.subscribe("render", onFieldMenuRender);
+
+			// DnD
+			jQuery("#menutoggleButton${uuid}").draggable({
+				handle : "#handleImage${uuid}"
+			});
+
 		});

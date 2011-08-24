@@ -120,8 +120,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		{
 			balduUuid = UUID.randomUUID();
 			firstCardOfGame = new MagicCard();
-			firstCardOfGame.setBigImageFilename("cards/BalduvianHorde.jpg");
-			firstCardOfGame.setSmallImageFilename("cards/BalduvianHorde_small.jpg");
+			firstCardOfGame.setBigImageFilename("image/BalduvianHorde.jpg");
+			firstCardOfGame.setSmallImageFilename("image/BalduvianHorde_small.jpg");
 			firstCardOfGame.setGameId(1l);
 			firstCardOfGame.setUuidObject(balduUuid);
 			HomePage.logger.info("new baldu");
@@ -209,25 +209,17 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void buildHand()
 	{
-
 		this.cardParent = new WebMarkupContainer("cardParent");
 		this.cardParent.setOutputMarkupId(true);
+		this.add(this.cardParent);
 		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
 		this.cardPlaceholder.setOutputMarkupId(true);
 		this.cardParent.add(this.cardPlaceholder);
-		this.add(this.cardParent);
 
-		final ClickableGalleryImage cgi1 = new ClickableGalleryImage(
-				"clickableGalleryImagePlaceholder1", this.cardParent, "image/HammerOfBogardan.jpg",
-				"image/HammerOfBogardan.jpg", "cards/HammerOfBogardan_small.jpg",
-				"Hammer of Bogardan", "A red, recurring nightmare", 2l, 1, 2);
-		this.add(cgi1);
-
-		final ClickableGalleryImage cgi2 = new ClickableGalleryImage(
-				"clickableGalleryImagePlaceholder2", this.cardParent, "image/Overrun.jpg",
-				"image/Overrun.jpg", "cards/Overrun_small.jpg", "Overrun", "Chaaarge!", 3l, 2, 3);
-		this.add(cgi2);
-
+		this.add(new ClickableGalleryImage("handImagePlaceholder1", this.cardParent,
+				"image/HammerOfBogardan.jpg", "image/HammerOfBogardan.jpg",
+				"image/HammerOfBogardan_small.jpg", "Hammer of Bogardan",
+				"A red, reccurent nightmare", 2l, 1, 2));
 		// final Image handImagePlaceholder1 = new
 		// Image("handImagePlaceholder1");
 		//

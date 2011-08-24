@@ -6,7 +6,6 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -55,9 +54,6 @@ public class ClickableGalleryImage extends Panel
 		this.indexOfClickedCard = _indexOfClickedCard;
 		this.indexOfNextCard = _indexOfNextCard;
 
-		final Image handImagePlaceholder = new Image("handImagePlaceholder", new ResourceReference(
-				HomePage.class, this.bigImage));
-
 		final MagicCard hammer = this.persistenceService.getNthCardOfGame(this.cardToLookFor);
 		final UUID uuid;
 
@@ -75,7 +71,10 @@ public class ClickableGalleryImage extends Panel
 		image.setOutputMarkupId(true);
 		this.add(image);
 
-		handImagePlaceholder.add(new SimpleAttributeModifier("id", uuid.toString()));
+		final Image handImagePlaceholder = new Image("handImagePlaceholder", new ResourceReference(
+				HomePage.class, this.bigImage));
+		handImagePlaceholder.setMarkupId("placeholder" + uuid.toString().replace("-", "_"));
+		handImagePlaceholder.setOutputMarkupId(true);
 		image.add(handImagePlaceholder);
 
 		final Label nameLabel = new Label("name", this.name);
@@ -87,7 +86,6 @@ public class ClickableGalleryImage extends Panel
 		this.cardParent.add(this.cardPlaceholder);
 		this.cardParent.setOutputMarkupId(true);
 		this.cardPlaceholder.setOutputMarkupId(true);
-		this.cardParent.add(this.cardPlaceholder);
 		image.add(this.cardParent);
 
 		final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(uuid, this.parent,
@@ -97,7 +95,7 @@ public class ClickableGalleryImage extends Panel
 		final Image handImageLink = new Image("handImageLink", new ResourceReference(
 				HomePage.class, "image/playCard.png"));
 		handImageLink.setOutputMarkupId(true);
-		handImageLink.add(new SimpleAttributeModifier("id", uuid + "_l"));
+		handImageLink.setMarkupId("placeholder" + uuid.toString().replace("-", "_") + "_l");
 		image.add(handImageLink);
 
 		if (null == hammer)
