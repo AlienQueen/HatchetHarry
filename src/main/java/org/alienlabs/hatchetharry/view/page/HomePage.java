@@ -220,63 +220,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				"image/HammerOfBogardan.jpg", "image/HammerOfBogardan.jpg",
 				"image/HammerOfBogardan_small.jpg", "Hammer of Bogardan",
 				"A red, reccurent nightmare", 2l, 1, 2));
-		// final Image handImagePlaceholder1 = new
-		// Image("handImagePlaceholder1");
-		//
-		// final MagicCard hammer =
-		// this.persistenceService.getSecondCardOfGame();
-		// final UUID uuid;
-		//
-		// if (null == hammer)
-		// {
-		// uuid = UUID.randomUUID();
-		// }
-		// else
-		// {
-		// uuid = hammer.getUuidObject();
-		// }
-		//
-		// final WebMarkupContainer firstImage = new
-		// WebMarkupContainer("firstImage");
-		// firstImage.setMarkupId("image" + uuid);
-		// firstImage.setOutputMarkupId(true);
-		// this.add(firstImage);
-		//
-		// handImagePlaceholder1.add(new SimpleAttributeModifier("id",
-		// uuid.toString()));
-		// firstImage.add(handImagePlaceholder1);
-		//
-		// this.cardParent = new WebMarkupContainer("cardParent");
-		// this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
-		// this.cardParent.add(this.cardPlaceholder);
-		// this.cardParent.setOutputMarkupId(true);
-		// this.cardPlaceholder.setOutputMarkupId(true);
-		// this.add(this.cardParent);
-		//
-		// final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(uuid,
-		// this.cardParent);
-		// handImagePlaceholder1.add(b);
-		//
-		// final Image handImageLink1 = new Image("handImageLink1", new
-		// ResourceReference(
-		// HomePage.class, "image/playCard.png"));
-		//
-		// handImageLink1.add(new SimpleAttributeModifier("id", uuid + "_l"));
-		// firstImage.add(handImageLink1);
-		//
-		// if (null == hammer)
-		// {
-		//
-		// final MagicCard card = new MagicCard();
-		// card.setUuidObject(uuid);
-		// card.setSmallImageFilename("cards/HammerOfBogardan_small.jpg");
-		// card.setBigImageFilename("cards/HammerOfBogardan.jpg");
-		// card.setGameId(this.getGameId());
-		//
-		// this.persistenceService.saveCard(card);
-		// }
-		//
-		// HomePage.logger.info("buildHand UUID: " + uuid);
 	}
 
 	@Override
