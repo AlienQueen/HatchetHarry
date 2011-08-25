@@ -50,7 +50,7 @@ jQuery(document).ready(function() {
 				} else if ((typeof s != "undefined")
 						&& (getCookie('JSESSIONID') != sessionId)) 
 				{
-							wicketAjaxGet('${url}&card=' + s + '&stop=true', function() { }, null, null);
+							wicketAjaxGet('${url}&card=' + s + '&stop=true' + '&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
 				}
 			};
 		};

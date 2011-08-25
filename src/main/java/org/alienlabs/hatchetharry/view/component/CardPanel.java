@@ -42,6 +42,10 @@ public class CardPanel extends Panel
 	BookmarkablePageLink<CardRotatePage> cardRotatePage = null;
 	BookmarkablePageLink<PlayCardPage> playCardPage = null;
 
+	private final WebMarkupContainer cardParent;
+
+	private final WebMarkupContainer cardPlaceholder;
+
 	public CardPanel(final String id, final String smallImage, final String bigImage,
 			final UUID uuid)
 	{
@@ -125,6 +129,14 @@ public class CardPanel extends Panel
 				bubbleTipText1);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
+
+		// Placeholders for CardPanel-adding with AjaxRequestTarget
+		this.cardParent = new WebMarkupContainer("cardParent1");
+		this.cardParent.setOutputMarkupId(true);
+		this.add(this.cardParent);
+		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder1");
+		this.cardPlaceholder.setOutputMarkupId(true);
+		this.cardParent.add(this.cardPlaceholder);
 	}
 
 	public HttpServletRequest getHttpServletRequest()

@@ -58,6 +58,16 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
 		final String uuidToLookFor = request.getParameter("card");
+
+		int _indexOfClickedCard;
+		try
+		{
+			_indexOfClickedCard = Integer.parseInt(request.getParameter("indexOfClickedCard"));
+		}
+		catch (final NumberFormatException e)
+		{
+			_indexOfClickedCard = 0;
+		}
 		this.uuid = UUID.fromString(uuidToLookFor);
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
@@ -66,8 +76,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		if (null != card)
 		{
 			PlayCardFromHandBehavior.logger.info("card!");
-			final CardPanel cp = new CardPanel("cardPlaceholder", card.getSmallImageFilename(),
-					card.getBigImageFilename(), this.uuid);
+			final CardPanel cp = new CardPanel("cardPlaceholder"
+					+ (_indexOfClickedCard == 0 ? this.indexOfClickedCard : _indexOfClickedCard),
+					card.getSmallImageFilename(), card.getBigImageFilename(), this.uuid);
 			cp.setOutputMarkupId(true);
 			this.parent.addOrReplace(cp);
 			target.addComponent(this.parent);
@@ -77,7 +88,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			PlayCardFromHandBehavior.logger.info("null!");
 		}
 
-		final String message = jsessionid + "~~~" + uuidToLookFor;
+		final String message = jsessionid + "~~~" + uuidToLookFor + "~~~"
+				+ (_indexOfClickedCard == 0 ? this.indexOfClickedCard : _indexOfClickedCard);
 		PlayCardFromHandBehavior.logger.info(message);
 
 		final String stop = request.getParameter("stop");

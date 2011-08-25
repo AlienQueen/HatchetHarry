@@ -79,13 +79,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomePage.class);
-	private final WebMarkupContainer cardPlaceholder;
 	protected final WebMarkupContainer cardParent;
 	private Long gameId;
 
 	@SpringBean
 	private PersistenceService persistenceService;
-	private boolean handCardHaveBeenBuilt;
 
 	public HomePage()
 	{
@@ -109,9 +107,33 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.cardParent = new WebMarkupContainer("cardParent");
 		this.cardParent.setOutputMarkupId(true);
 		this.add(this.cardParent);
-		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
-		this.cardPlaceholder.setOutputMarkupId(true);
-		this.cardParent.add(this.cardPlaceholder);
+		final WebMarkupContainer cardPlaceholder1 = new WebMarkupContainer("cardPlaceholder1");
+		cardPlaceholder1.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder2 = new WebMarkupContainer("cardPlaceholder2");
+		cardPlaceholder2.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder3 = new WebMarkupContainer("cardPlaceholder3");
+		cardPlaceholder3.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder4 = new WebMarkupContainer("cardPlaceholder4");
+		cardPlaceholder4.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder5 = new WebMarkupContainer("cardPlaceholder5");
+		cardPlaceholder5.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder6 = new WebMarkupContainer("cardPlaceholder6");
+		cardPlaceholder6.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder7 = new WebMarkupContainer("cardPlaceholder7");
+		cardPlaceholder7.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder8 = new WebMarkupContainer("cardPlaceholder8");
+		cardPlaceholder8.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder9 = new WebMarkupContainer("cardPlaceholder9");
+		cardPlaceholder9.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder10 = new WebMarkupContainer("cardPlaceholder10");
+		cardPlaceholder10.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder11 = new WebMarkupContainer("cardPlaceholder11");
+		cardPlaceholder11.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder12 = new WebMarkupContainer("cardPlaceholder12");
+		cardPlaceholder12.setOutputMarkupId(true);
+		this.cardParent.add(cardPlaceholder1, cardPlaceholder2, cardPlaceholder3, cardPlaceholder4,
+				cardPlaceholder5, cardPlaceholder6, cardPlaceholder7, cardPlaceholder8,
+				cardPlaceholder9, cardPlaceholder10, cardPlaceholder11, cardPlaceholder12);
 
 		// Resources
 		this.addHeadResources();
