@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.apache.wicket.model.Model;
@@ -18,8 +19,8 @@ public class MagicCard implements SlideshowImage, Serializable
 	private static final long serialVersionUID = -5115712217304615521L;
 
 	@Id
-	@GeneratedValue
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	@Column
 	private String smallImageFilename = "";
 	@Column
@@ -46,12 +47,12 @@ public class MagicCard implements SlideshowImage, Serializable
 		this.description = _description;
 	}
 
-	public long getId()
+	public Long getId()
 	{
 		return this.id;
 	}
 
-	public void setId(final long _id)
+	public void setId(final Long _id)
 	{
 		this.id = _id;
 	}
@@ -143,4 +144,5 @@ public class MagicCard implements SlideshowImage, Serializable
 	{
 		this.gameId = _gameId;
 	}
+
 }

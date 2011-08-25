@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
 	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
-	private final UUID uuid;
+	private UUID uuid;
 	private final WebMarkupContainer parent;
 
 	@SpringBean
@@ -57,13 +57,17 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		final MagicCard card = this.persistenceService.getCardFromUuid(this.getUuid());
+		final String uuidToLookFor = request.getParameter("card");
+		this.uuid = UUID.fromString(uuidToLookFor);
+
+		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
+				.fromString(uuidToLookFor));
 
 		if (null != card)
 		{
 			PlayCardFromHandBehavior.logger.info("card!");
 			final CardPanel cp = new CardPanel("cardPlaceholder", card.getSmallImageFilename(),
-					card.getBigImageFilename(), this.getUuid());
+					card.getBigImageFilename(), this.uuid);
 			cp.setOutputMarkupId(true);
 			this.parent.addOrReplace(cp);
 			target.addComponent(this.parent);
@@ -73,7 +77,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			PlayCardFromHandBehavior.logger.info("null!");
 		}
 
-		final String message = jsessionid + "~~~" + this.getUuid();
+		final String message = jsessionid + "~~~" + uuidToLookFor;
 		PlayCardFromHandBehavior.logger.info(message);
 
 		final String stop = request.getParameter("stop");
@@ -92,7 +96,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.getUuid());
+		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 		variables.put("next", this.indexOfNextCard);
 		variables.put("clicked", this.indexOfClickedCard);
@@ -104,10 +108,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		response.renderJavascript(template.asString(), null);
 	}
 
-	protected UUID getUuid()
-	{
-		return this.uuid;
-	}
 
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)

@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -17,7 +18,6 @@ public class PersistenceService
 
 	public PersistenceService()
 	{
-		// InjectorHolder.getInjector().inject(this);
 	}
 
 	public MagicCard getFirstCardOfGame()
@@ -29,19 +29,6 @@ public class PersistenceService
 	}
 
 	@Transactional
-	public MagicCard getSecondCardOfGame()
-	{
-		final Session session = this.magicCardDao.getSession();
-		final Query query = session
-				.createQuery("from MagicCard magiccard0_ where magiccard0_.id=?");
-		query.setLong(0, 2);
-		final MagicCard c = (MagicCard)query.uniqueResult();
-
-		return c;
-
-	}
-
-	@Transactional
 	public MagicCard getNthCardOfGame(final Long index)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -50,6 +37,21 @@ public class PersistenceService
 		query.setLong(0, index);
 		final MagicCard c = (MagicCard)query.uniqueResult();
 
+		return c;
+
+	}
+
+
+	@Transactional
+	public MagicCard saveCardByGeneratingItsUuid(final MagicCard _c)
+	{
+		final MagicCard c = _c;
+		c.setUuid(UUID.randomUUID().toString());
+		c.setGameId(1l);
+
+		final Session session = this.magicCardDao.getSession();
+		final Long id = (Long)session.save(c);
+		c.setId(id);
 		return c;
 
 	}
@@ -70,6 +72,22 @@ public class PersistenceService
 		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
+	}
+
+
+	@Transactional
+	public List<MagicCard> getFirstHand()
+	{
+		final Session session = this.magicCardDao.getSession();
+		final Query query = session
+				.createQuery("from MagicCard magiccard0_ where magiccard0_.gameId=?");
+		query.setLong(0, 1);
+		query.setFirstResult(1);
+		query.setMaxResults(6);
+		@SuppressWarnings("unchecked")
+		final List<MagicCard> cards = query.list();
+
+		return cards;
 	}
 
 	@Required

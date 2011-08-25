@@ -24,8 +24,6 @@ public class ClickableGalleryImage extends Panel
 	private final WebMarkupContainer cardPlaceholder;
 	private final WebMarkupContainer parent;
 	private final String bigImage;
-	private final String smallImage;
-	private final String imageInHand;
 	private final String name;
 	private final String comment;
 	private final Long cardToLookFor;
@@ -46,8 +44,6 @@ public class ClickableGalleryImage extends Panel
 		super(id);
 		this.parent = _parent;
 		this.bigImage = _bigImage;
-		this.smallImage = _smallImage;
-		this.imageInHand = _imageInHand;
 		this.name = _name;
 		this.comment = _comment;
 		this.cardToLookFor = _cardToLookFor;
@@ -98,17 +94,6 @@ public class ClickableGalleryImage extends Panel
 		handImageLink.setOutputMarkupId(true);
 		image.add(handImageLink);
 
-		if (null == hammer)
-		{
-
-			final MagicCard card = new MagicCard();
-			card.setUuidObject(uuid);
-			card.setSmallImageFilename(this.smallImage);
-			card.setBigImageFilename(this.imageInHand);
-			card.setGameId(1l);
-
-			this.persistenceService.saveCard(card);
-		}
 
 		ClickableGalleryImage.logger.info("buildHand UUID: " + uuid);
 	}

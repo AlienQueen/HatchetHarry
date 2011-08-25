@@ -37,6 +37,8 @@
  */
 package org.alienlabs.hatchetharry.view.page;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -54,6 +56,8 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -75,12 +79,13 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomePage.class);
-	private WebMarkupContainer cardPlaceholder;
-	private WebMarkupContainer cardParent;
+	private final WebMarkupContainer cardPlaceholder;
+	protected final WebMarkupContainer cardParent;
 	private Long gameId;
 
 	@SpringBean
 	private PersistenceService persistenceService;
+	private boolean handCardHaveBeenBuilt;
 
 	public HomePage()
 	{
@@ -98,6 +103,15 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		// InjectorHolder.getInjector().inject(this);
 
 		this.setOutputMarkupId(true);
+
+
+		// Placeholders for CardPanel-adding with AjaxRequestTarget
+		this.cardParent = new WebMarkupContainer("cardParent");
+		this.cardParent.setOutputMarkupId(true);
+		this.add(this.cardParent);
+		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
+		this.cardPlaceholder.setOutputMarkupId(true);
+		this.cardParent.add(this.cardPlaceholder);
 
 		// Resources
 		this.addHeadResources();
@@ -209,17 +223,79 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void buildHand()
 	{
-		this.cardParent = new WebMarkupContainer("cardParent");
-		this.cardParent.setOutputMarkupId(true);
-		this.add(this.cardParent);
-		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
-		this.cardPlaceholder.setOutputMarkupId(true);
-		this.cardParent.add(this.cardPlaceholder);
+		List<MagicCard> allCardsFromHand;
 
-		this.add(new ClickableGalleryImage("handImagePlaceholder1", this.cardParent,
-				"image/HammerOfBogardan.jpg", "image/HammerOfBogardan.jpg",
-				"image/HammerOfBogardan_small.jpg", "Hammer of Bogardan",
-				"A red, reccurent nightmare", 2l, 1, 2));
+		if (HatchetHarrySession.get().getHandCardsHaveBeenBuilt())
+		{
+			// allCardsFromHand =
+			// HatchetHarrySession.get().getFirstCardsInHand();
+			allCardsFromHand = this.persistenceService.getFirstHand();
+		}
+		else
+		{
+			allCardsFromHand = this.createFirstCards();
+		}
+
+		final ListView<MagicCard> cards = new ListView<MagicCard>("handCards", allCardsFromHand)
+		{
+			private static final long serialVersionUID = -7874661839855866875L;
+
+			@Override
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
+				final MagicCard card = item.getModelObject();
+				item.add(new ClickableGalleryImage("handImagePlaceholder",
+						HomePage.this.cardParent, card.getBigImageFilename(), card
+								.getBigImageFilename(), card.getSmallImageFilename(), card
+								.getTitle(), card.getDescription(), card.getId(),
+						item.getIndex() + 1, item.getIndex() == 5 ? 0 : item.getIndex() + 2));
+			}
+		};
+		this.add(cards);
+		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
+	}
+
+	protected List<MagicCard> createFirstCards()
+	{
+		final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+		MagicCard c1 = new MagicCard("image/HammerOfBogardan_small.jpg",
+				"image/HammerOfBogardan.jpg", "Hammer of Bogardan", "A red, reccurent nightmare");
+		c1.setGameId(1l);
+		c1 = this.persistenceService.saveCardByGeneratingItsUuid(c1);
+		cards.add(c1);
+
+		MagicCard c2 = new MagicCard("image/Overrun_small.jpg", "image/Overrun.jpg", "Overrun",
+				"Chaaarge!");
+		c2.setGameId(1l);
+		c2 = this.persistenceService.saveCardByGeneratingItsUuid(c2);
+		cards.add(c2);
+
+		MagicCard c3 = new MagicCard("image/Abeyance_small.jpg", "image/Abeyance.jpg", "Abeyance",
+				"A good show-stopper");
+		c3.setGameId(1l);
+		c3 = this.persistenceService.saveCardByGeneratingItsUuid(c3);
+		cards.add(c3);
+
+		MagicCard c4 = new MagicCard("image/TradewindRider_small.jpg", "image/TradewindRider.jpg",
+				"Tradewind Rider", "Don't let it pass you by");
+		c4.setGameId(1l);
+		c4 = this.persistenceService.saveCardByGeneratingItsUuid(c4);
+		cards.add(c4);
+
+		MagicCard c5 = new MagicCard("image/Necropotence_small.jpg", "image/Necropotence.jpg",
+				"Necropotence", "Your darkest nightmare looks bright");
+		c5.setGameId(1l);
+		c5 = this.persistenceService.saveCardByGeneratingItsUuid(c5);
+		cards.add(c5);
+
+		MagicCard c6 = new MagicCard("image/CursedScroll_small.jpg", "image/CursedScroll.jpg",
+				"Cursed Scroll", "Close your mind to its magic, lest it pry it open in fear");
+		c6.setGameId(1l);
+		c6 = this.persistenceService.saveCardByGeneratingItsUuid(c6);
+		cards.add(c6);
+
+		HatchetHarrySession.get().setFirstCardsInHand(cards);
+		return cards;
 	}
 
 	@Override
