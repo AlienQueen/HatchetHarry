@@ -1,7 +1,40 @@
 jQuery(document).ready(function() {
 	
-// var canHideLink${uuidValidForJs} = false;
-	
+// var canHideLink${uuidValidForJs} = true;
+//
+// showLink${uuidValidForJs} = function() {
+// jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "visible");
+// };
+//
+// hideLink${uuidValidForJs} = function() {
+// if (canHideLink${uuidValidForJs}) {
+// jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "hidden");
+// }
+// };
+//
+// dontHideLink${uuidValidForJs} = function() {
+// jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "visible");
+// canHideLink${uuidValidForJs} = false;
+// jQuery("#placeholder${uuidValidForJs}_l").css("visibility", "visible");
+// };
+//
+// canHideLink${uuidValidForJs} = function() {
+// canHideLink${uuidValidForJs} = true;
+// };
+
+	jQuery("#placeholder${uuidValidForJs}").hover(function(){
+		jQuery("#placeholder${uuidValidForJs}_l").css("margin", "150px 0px 0px -120px");
+	}, function() {
+		jQuery("#placeholder${uuidValidForJs}_l").css("margin", "-1000px 0px 0px -1000px");
+	});
+
+	jQuery("#placeholder${uuidValidForJs}_l").hover(function(){
+		jQuery("#placeholder${uuidValidForJs}_l").css("margin", "150px 0px 0px -120px");
+	}, function() {
+			jQuery("#placeholder${uuidValidForJs}_l").css("margin", "150px 0px 0px -120px");
+	});
+ 
+// mouseenter(showLink${uuidValidForJs}()).mouseleave(hideLink${uuidValidForJs}());
 	
 	jQuery("#placeholder${uuidValidForJs}_l").click(function() {
 		wicketAjaxGet('${url}&card=${uuid}', function() {
@@ -54,4 +87,5 @@ jQuery(document).ready(function() {
 				transport : 'streaming'
 			}
 	);
+	
 });
