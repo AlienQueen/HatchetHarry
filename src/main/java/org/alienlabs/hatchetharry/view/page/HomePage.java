@@ -48,11 +48,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClickableGalleryImage;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
+import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -84,6 +89,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	@SpringBean
 	private PersistenceService persistenceService;
+	ModalWindow teamInfoWindow;
+	ModalWindow aboutWindow;
 
 	public HomePage()
 	{
@@ -139,7 +146,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.addHeadResources();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.3 built on Thursday, 25nd of August 2011"));
+		this.add(new Label("message", "version 0.0.3 built on Friday, 26nd of August 2011"));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -176,6 +183,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		// Hand
 		this.buildHand();
+
+		this.generateAboutLink();
+		this.generateTemInfoLink();
 	}
 
 	protected void addHeadResources()
@@ -318,6 +328,62 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		HatchetHarrySession.get().setFirstCardsInHand(cards);
 		return cards;
+	}
+
+	protected void generateAboutLink()
+	{
+		this.aboutWindow = new ModalWindow("aboutWindow");
+		this.aboutWindow.setInitialWidth(450);
+		this.aboutWindow.setInitialHeight(675);
+		this.aboutWindow.setTitle("About HatchetHarry");
+		this.aboutWindow.setContent(new AboutModalWindow(this.aboutWindow.getContentId()));
+		this.aboutWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.aboutWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.add(this.aboutWindow);
+
+		final AjaxLink<Void> aboutLink = new AjaxLink<Void>("aboutLink")
+		{
+			private static final long serialVersionUID = 8140325977385015896L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavascript("Wicket.Window.unloadConfirmation = false;");
+				HomePage.this.aboutWindow.show(target);
+			}
+		};
+
+		aboutLink.setOutputMarkupId(true);
+		this.aboutWindow.setOutputMarkupId(true);
+		this.add(aboutLink);
+	}
+
+	protected void generateTemInfoLink()
+	{
+		this.teamInfoWindow = new ModalWindow("teamInfoWindow");
+		this.teamInfoWindow.setInitialWidth(475);
+		this.teamInfoWindow.setInitialHeight(500);
+		this.teamInfoWindow.setTitle("HatchetHarry Team info");
+		this.teamInfoWindow.setContent(new TeamInfoModalWindow(this.teamInfoWindow.getContentId()));
+		this.teamInfoWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.teamInfoWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.add(this.teamInfoWindow);
+
+		final AjaxLink<Void> teamInfoLink = new AjaxLink<Void>("teamInfoLink")
+		{
+			private static final long serialVersionUID = 8140325977385015896L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavascript("Wicket.Window.unloadConfirmation = false;");
+				HomePage.this.teamInfoWindow.show(target);
+			}
+		};
+
+		teamInfoLink.setOutputMarkupId(true);
+		this.teamInfoWindow.setOutputMarkupId(true);
+		this.add(teamInfoLink);
 	}
 
 	@Override
