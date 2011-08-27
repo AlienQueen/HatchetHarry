@@ -407,7 +407,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	{
 		this.teamInfoWindow = new ModalWindow("teamInfoWindow");
 		this.teamInfoWindow.setInitialWidth(475);
-		this.teamInfoWindow.setInitialHeight(500);
+		this.teamInfoWindow.setInitialHeight(528);
 		this.teamInfoWindow.setTitle("HatchetHarry Team info");
 		this.teamInfoWindow.setContent(new TeamInfoModalWindow(this.teamInfoWindow.getContentId()));
 		this.teamInfoWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
