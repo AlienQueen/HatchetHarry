@@ -34,6 +34,9 @@
         <property name="annotatedClasses">
             <list>
                 <value>org.alienlabs.hatchetharry.model.MagicCard</value>
+				<value>org.alienlabs.hatchetharry.model.Player</value>
+				<value>org.alienlabs.hatchetharry.model.CollectibleCard</value>
+				<value>org.alienlabs.hatchetharry.model.Deck</value>
 			<!--	<value>org.alienlabs.ajax.model.Player</value>
                 <value>org.alienlabs.ajax.model.User</value>
                 <value>org.alienlabs.ajax.model.Login</value>-->
@@ -77,7 +80,16 @@
     <tx:annotation-driven/>
 	
 	<!-- setup DAOs  -->
+	<bean id="deckDao" class="org.alienlabs.hatchetharry.persistence.dao.DeckDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="collectibleCardDao" class="org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
 	<bean id="magicCardDao" class="org.alienlabs.hatchetharry.persistence.dao.MagicCardDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="playerDao" class="org.alienlabs.hatchetharry.persistence.dao.PlayerDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
@@ -113,5 +125,8 @@
 					 -->
  	<bean id="persistenceService" class="org.alienlabs.hatchetharry.service.PersistenceService">
 		<property name="magicCardDao" ref="magicCardDao"/>
+		<property name="deckDao" ref="deckDao"/>
+		<property name="collectibleCardDao" ref="collectibleCardDao"/>
+		<property name="playerDao" ref="playerDao"/>
 	</bean>
 </beans>

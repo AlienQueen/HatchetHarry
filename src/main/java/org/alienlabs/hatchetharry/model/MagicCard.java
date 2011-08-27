@@ -3,11 +3,14 @@ package org.alienlabs.hatchetharry.model;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.apache.wicket.model.Model;
 
@@ -26,6 +29,8 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private String bigImageFilename = "";
 	@Column
+	private String thumbnailFilename = "";
+	@Column
 	private String title = "";
 	@Column
 	private String description = "";
@@ -33,16 +38,20 @@ public class MagicCard implements SlideshowImage, Serializable
 	private String uuid;
 	@Column
 	private Long gameId;
+	@ManyToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "deckId")
+	private Deck deck;
 
 	public MagicCard()
 	{
 	}
 
 	public MagicCard(final String _smallImageFilename, final String _bigImageFilename,
-			final String _title, final String _description)
+			final String _thumbnailFilename, final String _title, final String _description)
 	{
 		this.smallImageFilename = _smallImageFilename;
 		this.bigImageFilename = _bigImageFilename;
+		this.thumbnailFilename = _thumbnailFilename;
 		this.title = _title;
 		this.description = _description;
 	}
@@ -143,6 +152,26 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setGameId(final Long _gameId)
 	{
 		this.gameId = _gameId;
+	}
+
+	public Deck getDeck()
+	{
+		return this.deck;
+	}
+
+	public void setDeck(final Deck _deck)
+	{
+		this.deck = _deck;
+	}
+
+	public String getThumbnailFilename()
+	{
+		return this.thumbnailFilename;
+	}
+
+	public void setThumbnailFilename(final String _thumbnailFilename)
+	{
+		this.thumbnailFilename = _thumbnailFilename;
 	}
 
 }

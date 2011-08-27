@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
 					// We're in the play card Meteor
 					jQuery('#image${uuid}').remove();
 					jQuery('#cross-link${next}').click();
-					jQuery('#cross-link-div${clicked}').remove();
+					jQuery('#cross-link${clicked}').remove();
 				} else if ((typeof s != "undefined")
 						&& (getCookie('JSESSIONID') != sessionId)) 
 				{

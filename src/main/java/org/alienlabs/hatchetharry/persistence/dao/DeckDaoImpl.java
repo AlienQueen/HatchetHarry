@@ -1,5 +1,5 @@
 /*
- * $Id: MagicCardDaoImpl.java 1056 2006-10-27 22:49:28Z ivaynberg $
+ * $Id: DeckDaoImpl.java 1056 2006-10-27 22:49:28Z ivaynberg $
  * $Revision: 1056 $
  * $Date: 2006-10-27 15:49:28 -0700 (Fri, 27 Oct 2006) $
  *
@@ -21,7 +21,7 @@ package org.alienlabs.hatchetharry.persistence.dao;
 import java.util.Iterator;
 import java.util.List;
 
-import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Deck;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -31,17 +31,17 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * implements {@link MagicCardDao}.
+ * implements {@link DeckDao}.
  * 
  * @author igor
  */
-public class MagicCardDaoImpl implements MagicCardDao
+public class DeckDaoImpl implements DeckDao
 {
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public MagicCardDaoImpl()
+	public DeckDaoImpl()
 	{
 		// InjectorHolder.getInjector().inject(this);
 	}
@@ -50,7 +50,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
 	 * 
-	 * @param factory
+	 * @param _factory
 	 *            hibernate session factory
 	 */
 	@Required
@@ -71,37 +71,37 @@ public class MagicCardDaoImpl implements MagicCardDao
 	}
 
 	/**
-	 * Load a {@link MagicCard} from the DB, given it's <tt>id</tt> .
+	 * Load a {@link Deck} from the DB, given it's <tt>id</tt> .
 	 * 
 	 * @param id
-	 *            The id of the MagicCard to load.
-	 * @return MagicCard
+	 *            The id of the Deck to load.
+	 * @return Deck
 	 */
 	@Override
 	@Transactional
-	public MagicCard load(final long id)
+	public Deck load(final long id)
 	{
-		return (MagicCard)this.getSession().get(MagicCard.class, Long.valueOf(id));
+		return (Deck)this.getSession().get(Deck.class, Long.valueOf(id));
 	}
 
 	/**
-	 * Save the MagicCard to the DB
+	 * Save the Deck to the DB
 	 * 
-	 * @param MagicCard
-	 * @return persistent instance of MagicCard
+	 * @param Deck
+	 * @return persistent instance of Deck
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public MagicCard save(final MagicCard MagicCard)
+	public Deck save(final Deck Deck)
 	{
-		return (MagicCard)this.getSession().merge(MagicCard);
+		return (Deck)this.getSession().merge(Deck);
 	}
 
 	/**
-	 * Delete a {@link MagicCard} from the DB, given it's <tt>id</tt>.
+	 * Delete a {@link Deck} from the DB, given it's <tt>id</tt>.
 	 * 
 	 * @param id
-	 *            The id of the MagicCard to delete.
+	 *            The id of the Deck to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -120,20 +120,20 @@ public class MagicCardDaoImpl implements MagicCardDao
 	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Iterator<MagicCard> find(final QueryParam qp, final MagicCard filter)
+	public Iterator<Deck> find(final QueryParam qp, final Deck filter)
 	{
 		return this.buildFindQuery(qp, filter, false).list().iterator();
 
 	}
 
 	/**
-	 * Return the number of MagicCards in the DB.
+	 * Return the number of Decks in the DB.
 	 * 
 	 * @return count
 	 */
 	@Override
 	@Transactional
-	public int count(final MagicCard filter)
+	public int count(final Deck filter)
 	{
 		return ((Long)this.buildFindQuery(null, filter, true).uniqueResult()).intValue();
 	}
@@ -150,7 +150,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 				.getSession()
 				.createQuery(
 						"select distinct target.lastname "
-								+ " from MagicCard target order by target.lastname").list();
+								+ " from Deck target order by target.lastname").list();
 	}
 
 	/**
@@ -164,9 +164,9 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 *            true if this is a query meant to retrieve the number of rows
 	 * @return query object that satisfies the provided criteria
 	 */
-	protected Query buildFindQuery(final QueryParam qp, final MagicCard filter, final boolean count)
+	protected Query buildFindQuery(final QueryParam qp, final Deck filter, final boolean count)
 	{
-		final MagicCardFinderQueryBuilder builder = new MagicCardFinderQueryBuilder();
+		final DeckFinderQueryBuilder builder = new DeckFinderQueryBuilder();
 		builder.setQueryParam(qp);
 		builder.setFilter(filter);
 		builder.setCount(count);

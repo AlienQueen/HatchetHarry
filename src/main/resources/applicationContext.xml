@@ -16,4 +16,11 @@
     <bean id="wicketApplication" class="org.alienlabs.hatchetharry.HatchetHarryApplication">
     </bean>
         
+	<!-- setup data generator that will add some data into the db when the app starts up -->
+	<bean id="dataGenerator" class="org.alienlabs.hatchetharry.service.DataGenerator">
+		<property name="deckDao" ref="deckDao"/>
+		<property name="collectibleCardDao" ref="collectibleCardDao"/>
+		<property name="magicCardDao" ref="magicCardDao"/>
+		<property name="persistenceService" ref="persistenceService"/>
+	</bean>
 </beans>

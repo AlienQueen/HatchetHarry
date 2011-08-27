@@ -1,25 +1,25 @@
-var theInt = null;
-var $crosslink, $navthumb;
-var curclicked = 0;
-
-theInterval = function(cur) {
-	if (typeof cur != 'undefined')
-		curclicked = cur;
-
-	$crosslink.removeClass("active-thumb");
-	$navthumb.eq(curclicked).parent().addClass("active-thumb");
-	jQuery(".stripNav ul li a").eq(curclicked).trigger('click');
-
-	$crosslink.removeClass("active-thumb");
-	$navthumb.eq(curclicked).parent().addClass("active-thumb");
-	jQuery(".stripNav ul li a").eq(curclicked).trigger('click');
-	curclicked++;
-	if (6 == curclicked)
-		curclicked = 0;
-
-};
-
 jQuery(function() {
+
+	var theInt = null;
+	var $crosslink, $navthumb;
+	var curclicked = 1;
+
+	theInterval = function(cur) {
+		if (typeof cur != 'undefined')
+			curclicked = cur;
+
+		$crosslink.removeClass("active-thumb");
+		$navthumb.eq(curclicked).parent().addClass("active-thumb");
+		jQuery(".stripNav ul li a").eq(curclicked).trigger('click');
+
+		$crosslink.removeClass("active-thumb");
+		$navthumb.eq(curclicked).parent().addClass("active-thumb");
+		jQuery(".stripNav ul li a").eq(curclicked).trigger('click');
+		curclicked++;
+		if (7 == curclicked)
+			curclicked = 1;
+
+	};
 
 	jQuery("#main-photo-slider").codaSlider();
 

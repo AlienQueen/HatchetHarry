@@ -161,6 +161,8 @@
   <div wicket:id="aboutWindow"></div>
   <div wicket:id="teamInfoWindow"></div>
   <!-- end menus -->
+
+	<a wicket:id="playCard" id="playCard"></a>
 	
 	<br/><br/><br/><br/><br/>
 	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span><br/><br/>
@@ -187,13 +189,8 @@
 			</div>
 		</div>
 
-		<div id="movers-row">
-			<div id="cross-link-div1"><a href="#1" id="cross-link1" class="cross-link"><img src="/image/HammerOfBogardanThumb.jpg" class="nav-thumb" alt="Hammer of Bogardan"/></a></div>
-			<div id="cross-link-div2"><a href="#2" id="cross-link2" class="cross-link"><img src="/image/OverrunThumb.jpg" class="nav-thumb" alt="Overrun"/></a></div>
-			<div id="cross-link-div3"><a href="#3" id="cross-link3" class="cross-link"><img src="/image/AbeyanceThumb.jpg" class="nav-thumb" alt="Abeyance"/></a></div>
-			<div id="cross-link-div4"><a href="#4" id="cross-link4" class="cross-link"><img src="/image/TradewindRiderThumb.jpg" class="nav-thumb" alt="Tradewind Rider"/></a></div>
-			<div id="cross-link-div5"><a href="#5" id="cross-link5" class="cross-link"><img src="/image/NecropotenceThumb.jpg" class="nav-thumb" alt="Necropotence"/></a></div>
-			<div id="cross-link-div6"><a href="#6" id="cross-link6" class="cross-link"><img src="/image/CursedScrollThumb.jpg" class="nav-thumb" alt="Cursed Scroll"/></a></div>
+		<div wicket:id="thumbs" id="movers-row">
+			<div wicket:id="crossLinkDiv"><a wicket:id="crossLink" href="#" class="cross-link"><img wicket:id="thumbPlaceholder" class="nav-thumb"></a></div>
 		</div>
 
 	</div>
@@ -206,7 +203,6 @@
   	<span wicket:id="feedback"></span>
   	<span wicket:id="clockPanel" id="clock" class="tour_3">Clock Panel</span>
 	<br/>
-	<span wicket:id="baldu" id="baldu"></span>
 	<span wicket:id="cardParent">
 		<span wicket:id="cardPlaceholder1"></span><span wicket:id="cardPlaceholder2"></span>
 		<span wicket:id="cardPlaceholder3"></span><span wicket:id="cardPlaceholder4"></span>

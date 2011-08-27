@@ -3,14 +3,13 @@ package org.alienlabs.hatchetharry.serverSideTest;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
-import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,8 +24,8 @@ public class TestHomePage
 	private static HatchetHarryApplication webApp;
 	List<Image> img;
 
-	@BeforeClass
-	public static void setUp()
+	@Before
+	public void setUp()
 	{
 		TestHomePage.webApp = new HatchetHarryApplication()
 		{
@@ -118,7 +117,5 @@ public class TestHomePage
 		// assert rendered page class
 		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
-		// assert rendered label component
-		TestHomePage.tester.assertComponent("baldu", CardPanel.class);
 	}
 }

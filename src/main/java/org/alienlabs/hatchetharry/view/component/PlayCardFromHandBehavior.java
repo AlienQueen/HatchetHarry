@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -63,10 +64,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		try
 		{
 			_indexOfClickedCard = Integer.parseInt(request.getParameter("indexOfClickedCard"));
+			HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard);
 		}
 		catch (final NumberFormatException e)
 		{
-			_indexOfClickedCard = 0;
+			_indexOfClickedCard = HatchetHarrySession.get().getFirstCardIdInHand();
 		}
 		this.uuid = UUID.fromString(uuidToLookFor);
 
@@ -77,8 +79,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		{
 			PlayCardFromHandBehavior.logger.info("card!");
 			final CardPanel cp = new CardPanel("cardPlaceholder"
-					+ (_indexOfClickedCard == 0 ? this.indexOfClickedCard : _indexOfClickedCard),
-					card.getSmallImageFilename(), card.getBigImageFilename(), this.uuid);
+					+ (_indexOfClickedCard == 7 ? this.indexOfClickedCard : HatchetHarrySession
+							.get().getFirstCardIdInHand()), card.getSmallImageFilename(),
+					card.getBigImageFilename(), this.uuid);
 			cp.setOutputMarkupId(true);
 			this.parent.addOrReplace(cp);
 			target.addComponent(this.parent);
@@ -88,8 +91,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			PlayCardFromHandBehavior.logger.info("null!");
 		}
 
-		final String message = jsessionid + "~~~" + uuidToLookFor + "~~~"
-				+ (_indexOfClickedCard == 0 ? this.indexOfClickedCard : _indexOfClickedCard);
+		final String message = jsessionid
+				+ "~~~"
+				+ uuidToLookFor
+				+ "~~~"
+				+ (_indexOfClickedCard == 0 ? this.indexOfClickedCard : HatchetHarrySession.get()
+						.getFirstCardIdInHand());
 		PlayCardFromHandBehavior.logger.info(message);
 
 		final String stop = request.getParameter("stop");

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.view.page.CardMovePage;
 import org.alienlabs.hatchetharry.view.page.CardRotatePage;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.alienlabs.hatchetharry.view.page.PlayCardPage;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -40,7 +39,6 @@ public class CardPanel extends Panel
 
 	BookmarkablePageLink<CardMovePage> cardMovePage = null;
 	BookmarkablePageLink<CardRotatePage> cardRotatePage = null;
-	BookmarkablePageLink<PlayCardPage> playCardPage = null;
 
 	private final WebMarkupContainer cardParent;
 
@@ -56,9 +54,8 @@ public class CardPanel extends Panel
 		this.cardMovePage = new BookmarkablePageLink<CardMovePage>("cardMove", CardMovePage.class);
 		this.cardRotatePage = new BookmarkablePageLink<CardRotatePage>("cardRotate",
 				CardRotatePage.class);
-		this.playCardPage = new BookmarkablePageLink<PlayCardPage>("playCard", PlayCardPage.class);
 
-		this.add(this.cardMovePage, this.cardRotatePage, this.playCardPage);
+		this.add(this.cardMovePage, this.cardRotatePage);
 
 		this.add(new JavaScriptReference("jQuery.bubbletip-1.0.6.js", HomePage.class,
 				"script/bubbletip/jQuery.bubbletip-1.0.6.js"));

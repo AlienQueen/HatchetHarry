@@ -40,31 +40,34 @@ package org.alienlabs.hatchetharry.view.page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
-import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClickableGalleryImage;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
@@ -84,7 +87,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomePage.class);
-	protected final WebMarkupContainer cardParent;
+	protected WebMarkupContainer cardParent;
 	private Long gameId;
 
 	@SpringBean
@@ -92,25 +95,102 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
 
-	public HomePage()
-	{
-		this(new PageParameters());
-	}
+	Player player;
+	Deck deck;
+	private final BookmarkablePageLink<PlayCardPage> playCardPage;
+	private List<MagicCard> hand;
 
-	/**
-	 * Constructor that is invoked when page is invoked without a session.
-	 * 
-	 * @param parameters
-	 *            Page parameters
-	 */
-	public HomePage(final PageParameters parameters)
+	public HomePage()
 	{
 		// InjectorHolder.getInjector().inject(this);
 
 		this.setOutputMarkupId(true);
 
+		this.createPlayer();
+
+		// Resources
+		this.addHeadResources();
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
+		this.createCardPanelPlaceholders();
+
+		// Welcome message
+		this.add(new Label("message", "version 0.0.3 built on Saturday, 27nd of August 2011"));
+
+		// Comet clock channel
+		this.add(new ClockPanel("clockPanel"));
+
+		// Comet chat channel
+		this.add(new ChatPanel("chatPanel"));
+
+		// Comet calback
+		this.playCardPage = new BookmarkablePageLink<PlayCardPage>("playCard", PlayCardPage.class);
+		this.add(this.playCardPage);
+
+		// Hand
+		if (HatchetHarrySession.get().getHandHasBeenCreated())
+		{
+			this.hand = HatchetHarrySession.get().getFirstCardsInHand();
+		}
+		else
+		{
+			this.hand = this.createFirstCards();
+		}
+
+		this.buildHand();
+		this.generateAboutLink();
+		this.generateTemInfoLink();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void createPlayer()
+	{
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
+		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final String jsessionid = request.getRequestedSessionId();
+
+		if ((!HatchetHarrySession.get().getPlayerHasBeenCreated() && (!this.persistenceService
+				.getPlayerByGame(1l))))
+		{
+			this.player = new Player();
+			this.player.setLifePoints(20l);
+			this.player.setSide("infrared");
+			this.player.setName("infrared");
+			this.player.setJsessionid(jsessionid);
+			this.player.setGameId(1l);
+			this.player.setId(this.persistenceService.savePlayer(this.player));
+			HatchetHarrySession.get().setPlayerHasBeenCreated(true);
+			HatchetHarrySession.get().setPlayer(this.player);
+
+			this.deck = new Deck();
+			this.deck.setCards((List<MagicCard>)this.persistenceService
+					.getAllCardsFromDeck(this.player.getId()));
+			this.deck.shuffleLibrary();
+			this.deck = this.persistenceService.saveDeck(this.deck);
+		}
+		else if ((!HatchetHarrySession.get().getPlayerHasBeenCreated())
+				&& (!this.persistenceService.getPlayerByJsessionId(jsessionid)))
+		{
+			this.player = new Player();
+			this.player.setLifePoints(20l);
+			this.player.setSide("ultraviolet");
+			this.player.setName("ultraviolet");
+			this.player.setJsessionid(jsessionid);
+			this.player.setGameId(1l);
+			this.player.setId(this.persistenceService.savePlayer(this.player));
+			HatchetHarrySession.get().setPlayerHasBeenCreated(true);
+			HatchetHarrySession.get().setPlayer(this.player);
+
+			this.deck = new Deck();
+			this.deck.setCards((List<MagicCard>)this.persistenceService
+					.getAllCardsFromDeck(this.player.getId()));
+			this.deck.shuffleLibrary();
+			this.deck = this.persistenceService.saveDeck(this.deck);
+		}
+	}
+
+	protected void createCardPanelPlaceholders()
+	{
 		this.cardParent = new WebMarkupContainer("cardParent");
 		this.cardParent.setOutputMarkupId(true);
 		this.add(this.cardParent);
@@ -141,51 +221,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.cardParent.add(cardPlaceholder1, cardPlaceholder2, cardPlaceholder3, cardPlaceholder4,
 				cardPlaceholder5, cardPlaceholder6, cardPlaceholder7, cardPlaceholder8,
 				cardPlaceholder9, cardPlaceholder10, cardPlaceholder11, cardPlaceholder12);
-
-		// Resources
-		this.addHeadResources();
-
-		// Welcome message
-		this.add(new Label("message", "version 0.0.3 built on Friday, 26nd of August 2011"));
-
-		// Comet clock channel
-		this.add(new ClockPanel("clockPanel"));
-
-		// Balduvian Horde
-		final UUID balduUuid;
-		MagicCard firstCardOfGame = this.persistenceService.getFirstCardOfGame();
-		if (firstCardOfGame != null)
-		{
-			balduUuid = firstCardOfGame.getUuidObject();
-			HomePage.logger.info("retrieving from db, with uuid=" + balduUuid);
-		}
-		else
-		{
-			balduUuid = UUID.randomUUID();
-			firstCardOfGame = new MagicCard();
-			firstCardOfGame.setBigImageFilename("image/BalduvianHorde.jpg");
-			firstCardOfGame.setSmallImageFilename("image/BalduvianHorde_small.jpg");
-			firstCardOfGame.setGameId(1l);
-			firstCardOfGame.setUuidObject(balduUuid);
-			HomePage.logger.info("new baldu");
-			this.persistenceService.saveCard(firstCardOfGame);
-		}
-		this.setGameId(firstCardOfGame.getGameId());
-
-		final CardPanel baldu = new CardPanel("baldu", firstCardOfGame.getSmallImageFilename(),
-				firstCardOfGame.getBigImageFilename(), balduUuid);
-		this.add(baldu);
-
-		HomePage.logger.info("HP UUID: " + balduUuid);
-
-		// Comet chat channel
-		this.add(new ChatPanel("chatPanel"));
-
-		// Hand
-		this.buildHand();
-
-		this.generateAboutLink();
-		this.generateTemInfoLink();
 	}
 
 	protected void addHeadResources()
@@ -255,78 +290,88 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void buildHand()
 	{
-		List<MagicCard> allCardsFromHand;
 
-		if (HatchetHarrySession.get().getHandCardsHaveBeenBuilt())
-		{
-			// allCardsFromHand =
-			// HatchetHarrySession.get().getFirstCardsInHand();
-			allCardsFromHand = this.persistenceService.getFirstHand();
-		}
-		else
-		{
-			allCardsFromHand = this.createFirstCards();
-		}
-
-		final ListView<MagicCard> cards = new ListView<MagicCard>("handCards", allCardsFromHand)
+		final ListView<MagicCard> cards = new ListView<MagicCard>("handCards", this.hand)
 		{
 			private static final long serialVersionUID = -7874661839855866875L;
 
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)
 			{
+				HatchetHarrySession.get().addCardIdInHand(item.getIndex() + 1);
 				final MagicCard card = item.getModelObject();
-				item.add(new ClickableGalleryImage("handImagePlaceholder",
-						HomePage.this.cardParent, card.getBigImageFilename(), card
-								.getBigImageFilename(), card.getSmallImageFilename(), card
-								.getTitle(), card.getDescription(), card.getId(),
-						item.getIndex() + 1, item.getIndex() == 5 ? 0 : item.getIndex() + 2));
+				final ClickableGalleryImage clickableGalleryImage = new ClickableGalleryImage(
+						"handImagePlaceholder", HomePage.this.cardParent,
+						card.getBigImageFilename(), card.getBigImageFilename(),
+						card.getSmallImageFilename(), card.getTitle(), card.getDescription(),
+						card.getId(), item.getIndex() + 1, item.getIndex() == 6
+								? HatchetHarrySession.get().getFirstCardIdInHand()
+								: item.getIndex() + 2);
+				clickableGalleryImage.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
+				clickableGalleryImage.setOutputMarkupId(true);
+				item.add(clickableGalleryImage);
+
 			}
 		};
 		this.add(cards);
+
+		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", this.hand)
+		{
+			private static final long serialVersionUID = -787466183866875L;
+
+			@Override
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
+				final MagicCard card = item.getModelObject();
+
+				final WebMarkupContainer crossLinkDiv = new WebMarkupContainer("crossLinkDiv");
+				crossLinkDiv.setMarkupId("cross-link-div" + (item.getIndex() + 1));
+				crossLinkDiv.setOutputMarkupId(true);
+
+				final WebMarkupContainer crossLink = new WebMarkupContainer("crossLink");
+				crossLink.setMarkupId("cross-link" + (item.getIndex() + 1));
+				crossLink.setOutputMarkupId(true);
+
+				final Image thumb = new Image("thumbPlaceholder", new ResourceReference(
+						HomePage.class, card.getThumbnailFilename()));
+				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_l");
+				thumb.setOutputMarkupId(true);
+
+
+				crossLink.add(thumb);
+				crossLinkDiv.add(crossLink);
+				item.add(crossLinkDiv);
+			}
+		};
+
+		this.add(thumbs);
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected List<MagicCard> createFirstCards()
 	{
-		final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
-		MagicCard c1 = new MagicCard("image/HammerOfBogardan_small.jpg",
-				"image/HammerOfBogardan.jpg", "Hammer of Bogardan", "A red, reccurent nightmare");
-		c1.setGameId(1l);
-		c1 = this.persistenceService.saveCardByGeneratingItsUuid(c1);
-		cards.add(c1);
+		this.player = HatchetHarrySession.get().getPlayer();
+		this.deck = this.persistenceService.getDeck(this.player.getId());
+		this.deck.setCards((List<MagicCard>)this.persistenceService.getAllCardsFromDeck(this.deck
+				.getId()));
+		if (!HatchetHarrySession.get().getHandCardsHaveBeenBuilt())
+		{
+			this.deck.shuffleLibrary();
+		}
+		final List<MagicCard> cards = new ArrayList<MagicCard>();
 
-		MagicCard c2 = new MagicCard("image/Overrun_small.jpg", "image/Overrun.jpg", "Overrun",
-				"Chaaarge!");
-		c2.setGameId(1l);
-		c2 = this.persistenceService.saveCardByGeneratingItsUuid(c2);
-		cards.add(c2);
+		for (int i = 0; i < 7; i++)
+		{
+			cards.add(this.deck.getCards().get(i));
+			HatchetHarrySession.get().addCardIdInHand(i + 1);
 
-		MagicCard c3 = new MagicCard("image/Abeyance_small.jpg", "image/Abeyance.jpg", "Abeyance",
-				"A good show-stopper");
-		c3.setGameId(1l);
-		c3 = this.persistenceService.saveCardByGeneratingItsUuid(c3);
-		cards.add(c3);
-
-		MagicCard c4 = new MagicCard("image/TradewindRider_small.jpg", "image/TradewindRider.jpg",
-				"Tradewind Rider", "Don't let it pass you by");
-		c4.setGameId(1l);
-		c4 = this.persistenceService.saveCardByGeneratingItsUuid(c4);
-		cards.add(c4);
-
-		MagicCard c5 = new MagicCard("image/Necropotence_small.jpg", "image/Necropotence.jpg",
-				"Necropotence", "Your darkest nightmare looks bright");
-		c5.setGameId(1l);
-		c5 = this.persistenceService.saveCardByGeneratingItsUuid(c5);
-		cards.add(c5);
-
-		MagicCard c6 = new MagicCard("image/CursedScroll_small.jpg", "image/CursedScroll.jpg",
-				"Cursed Scroll", "Close your mind to its magic, lest it pry it open in fear");
-		c6.setGameId(1l);
-		c6 = this.persistenceService.saveCardByGeneratingItsUuid(c6);
-		cards.add(c6);
+		}
 
 		HatchetHarrySession.get().setFirstCardsInHand(cards);
+		HatchetHarrySession.get().setHandHasBeenCreated();
+
+		this.hand = cards;
 		return cards;
 	}
 
