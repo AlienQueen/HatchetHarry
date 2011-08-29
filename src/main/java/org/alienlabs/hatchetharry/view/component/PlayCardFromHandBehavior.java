@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
 	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
-	private UUID uuid;
+	private final UUID uuid;
 	private final WebMarkupContainer parent;
 
 	@SpringBean
@@ -47,6 +47,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.parent = _parent;
 		this.indexOfClickedCard = _indexOfClickedCard;
 		this.indexOfNextCard = _indexOfNextCard;
+		PlayCardFromHandBehavior.logger.info("###### PlayCardFromHandBehavior uuid="
+				+ _uuid.toString());
+
 	}
 
 	@Override
@@ -64,24 +67,24 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		try
 		{
 			_indexOfClickedCard = Integer.parseInt(request.getParameter("indexOfClickedCard"));
-			HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard);
+			HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard, _indexOfClickedCard);
 		}
 		catch (final NumberFormatException e)
 		{
-			_indexOfClickedCard = HatchetHarrySession.get().getFirstCardIdInHand();
+			// _indexOfClickedCard =
+			// HatchetHarrySession.get().getFirstCardIdInHand();
+			PlayCardFromHandBehavior.logger.info("Error which should never happen!");
 		}
-		this.uuid = UUID.fromString(uuidToLookFor);
 
-		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
-				.fromString(uuidToLookFor));
+		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuid);
 
 		if (null != card)
 		{
-			PlayCardFromHandBehavior.logger.info("card!");
+			PlayCardFromHandBehavior.logger.info("card: " + uuidToLookFor);
 			final CardPanel cp = new CardPanel("cardPlaceholder"
-					+ (_indexOfClickedCard == 7 ? this.indexOfClickedCard : HatchetHarrySession
-							.get().getFirstCardIdInHand()), card.getSmallImageFilename(),
-					card.getBigImageFilename(), this.uuid);
+					+ (this.indexOfClickedCard == 6 ? 0 : (this.indexOfClickedCard + 1)),
+					card.getSmallImageFilename(), card.getBigImageFilename(),
+					UUID.fromString(uuidToLookFor));
 			cp.setOutputMarkupId(true);
 			this.parent.addOrReplace(cp);
 			target.addComponent(this.parent);
@@ -91,20 +94,21 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			PlayCardFromHandBehavior.logger.info("null!");
 		}
 
-		final String message = jsessionid
-				+ "~~~"
-				+ uuidToLookFor
-				+ "~~~"
-				+ (_indexOfClickedCard == 0 ? this.indexOfClickedCard : HatchetHarrySession.get()
-						.getFirstCardIdInHand());
+		final String message = jsessionid + "~~~" + this.uuid.toString() + "~~~"
+				+ (this.indexOfClickedCard == 6 ? 0 : this.indexOfClickedCard + 1);
 		PlayCardFromHandBehavior.logger.info(message);
 
 		final String stop = request.getParameter("stop");
 		if (!"true".equals(stop))
 		{
+			PlayCardFromHandBehavior.logger.info("continue!");
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 			meteor.broadcast(message);
+		}
+		else
+		{
+			PlayCardFromHandBehavior.logger.info("stop!");
 		}
 	}
 
@@ -115,16 +119,16 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.uuid);
+		variables.put("uuid", this.uuid.toString());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 		variables.put("next", this.indexOfNextCard);
 		variables.put("clicked", this.indexOfClickedCard);
 
-		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
 				"script/playCard/playCard.js");
-		template.interpolate(variables);
+		template1.interpolate(variables);
 
-		response.renderJavascript(template.asString(), null);
+		response.renderJavascript(template1.asString(), null);
 	}
 
 

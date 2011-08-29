@@ -1,12 +1,12 @@
 // The dock: a jQuery plugin
-$(document).ready(function() {
+jQuery(document).ready(function() {
 	jQuery('#dock').jqDock({
 		align : 'middle'
 	});
 });
 
 // The menubar, a jQuery plugin
-$(document).ready(function() {
+jQuery(document).ready(function() {
 
 	jQuery(".myMenu").buildMenu({
 		additionalData : "pippo=1",
@@ -32,7 +32,7 @@ $(document).ready(function() {
 });
 
 // The website tour, a jQuery plugin
-$(document)
+jQuery(document)
 		.ready(
 				function() {
 					// if (!(jQuery.Storage.get("tour") == "true")) {
@@ -135,7 +135,7 @@ $(document)
 				});
 
 // The toolbar, a jQuery plugin
-$(function() {
+jQuery(function() {
 
 	jQuery('#floatingbar').css({
 		height : 0
@@ -148,6 +148,6 @@ $(function() {
 
 });
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
 	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({});
 });

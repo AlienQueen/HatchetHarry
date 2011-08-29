@@ -2,9 +2,6 @@ package org.alienlabs.hatchetharry.view.component;
 
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
@@ -45,21 +42,7 @@ public class AboutModalWindow extends Panel
 		final ExternalLink whyLink = new ExternalLink("whyLink",
 				"http://www.gnu.org/licenses/why-affero-gpl.html");
 
-
-		final AjaxButton submit = new AjaxButton("submit", new Model<String>("OK"))
-		{
-			private static final long serialVersionUID = 181448499864L;
-
-			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
-				ModalWindow.closeCurrent(target);
-			}
-
-		};
-		submit.setOutputMarkupId(true);
-
-		form.add(text1, text2, text3, text4, link, whyLink, submit);
+		form.add(text1, text2, text3, text4, link, whyLink);
 		this.add(img1, form);
 	}
 }

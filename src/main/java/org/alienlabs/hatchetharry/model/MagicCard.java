@@ -11,18 +11,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.apache.wicket.model.Model;
 
 import com.googlecode.wicketslides.SlideshowImage;
 
 @Entity
+@Table(name = "MagicCard")
 public class MagicCard implements SlideshowImage, Serializable
 {
 	private static final long serialVersionUID = -5115712217304615521L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "magicCardId")
 	private Long id;
 	@Column
 	private String smallImageFilename = "";
@@ -39,7 +42,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private Long gameId;
 	@ManyToOne(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "deckId")
+	@JoinColumn(name = "card_deck")
 	private Deck deck;
 
 	public MagicCard()

@@ -1,35 +1,45 @@
+function click${uuidValidForJs}(uuid) {
+	wicketAjaxGet('${url}&card=' + uuid, function() {
+	}, null, null);
+}
+
 jQuery(document).ready(function() {
 
-	jQuery("#placeholder${uuidValidForJs}").hover(function(){
-		jQuery("#placeholder${uuidValidForJs}_l").css("margin", "150px 0px 0px -120px");
-	}, function() {
-		jQuery("#placeholder${uuidValidForJs}_l").css("margin", "-1000px 0px 0px -1000px");
-	});
-
-	jQuery("#placeholder${uuidValidForJs}_l").hover(function(){
-		jQuery("#placeholder${uuidValidForJs}_l").css("margin", "150px 0px 0px -120px");
-	}, function() {
-			jQuery("#placeholder${uuidValidForJs}_l").css("margin", "150px 0px 0px -120px");
-	});
+// jQuery("#page-wrap").hover(function(){
+// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "150px 0px 0px
+// -120px");
+// }, function() {
+// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "-1000px 0px 0px
+// -1000px");
+// });
+//
+// jQuery("#placeholder${uuidValidForJs}_img").hover(function(){
+// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "150px 0px 0px
+// -120px");
+// }, function() {
+// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "150px 0px 0px
+// -120px");
+// });
  
-	jQuery("#placeholder${uuidValidForJs}_l").click(function() {
-		wicketAjaxGet('${url}&card=${uuid}', function() {
-		}, null, null);
-	});
+// jQuery("#cross-link${clicked}").click(function() {
+// wicketAjaxGet('${url}&card=${uuid}', function() {
+// }, null, null);
+// });
+	
 	
 	function getCookie(c_name)
 	{
-	var i,x,y,ARRcookies=document.cookie.split(";");
-	for (i=0;i<ARRcookies.length;i++)
-	{
-	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-	  x=x.replace(/^\s+|\s+$/g,"");
-	  if (x==c_name)
-	    {
-	    return unescape(y);
-	    }
-	  }
+		var i,x,y,ARRcookies=document.cookie.split(";");
+		for (i=0;i<ARRcookies.length;i++)
+		{
+		  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		  x=x.replace(/^\s+|\s+$/g,"");
+		  if (x==c_name)
+		    {
+		    return unescape(y);
+		    }
+		  }
 	}
 	
 	function callbackPlayCard${uuidValidForJs}(response) {
@@ -40,18 +50,22 @@ jQuery(document).ready(function() {
 				var data = response.responseBody;
 				var s = data.split("~~~")[1];
 				var sessionId = data.split("~~~")[0];
-				if ((typeof s != "undefined")
-						&& (getCookie('JSESSIONID') == sessionId)
-						&& (s == '${uuid}')) {
-					// We're in the play card Meteor
-					jQuery('#image${uuid}').remove();
-					jQuery('#cross-link${next}').click();
-					jQuery('#cross-link${clicked}').remove();
-				} else if ((typeof s != "undefined")
-						&& (getCookie('JSESSIONID') != sessionId)) 
-				{
-							wicketAjaxGet('${url}&card=' + s + '&stop=true' + '&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
-				}
+				
+				if (data.split("~~~").lenght > 0) {
+					if ((typeof s != "undefined") 
+							&& (getCookie('JSESSIONID') == sessionId))
+							{
+							// We're in the play card Meteor
+							jQuery('#cross-link${next}').click();
+		// jQuery('#cross-link-div${clicked}').remove();
+		// jQuery('#cross-link${clicked}').remove();
+		
+						} else if ((typeof s != "undefined")
+								&& (getCookie('JSESSIONID') != sessionId)) 
+						{
+									wicketAjaxGet('${url}&card=' + s + '&stop=true' + '&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
+						};
+					};
 			};
 		};
 	};

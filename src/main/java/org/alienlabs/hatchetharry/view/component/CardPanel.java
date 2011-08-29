@@ -73,10 +73,42 @@ public class CardPanel extends Panel
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("menutoggleButton" + uuid.toString());
 
+
+		this.list = new LinkedList<BroadcastFilter>();
+
+		final Form<String> form = new Form<String>("form");
+		form.setOutputMarkupId(true);
+		menutoggleButton.add(new CardMoveBehavior(this, form, uuid));
+		menutoggleButton.add(new CardRotateBehavior(this, form, uuid));
+
+		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
+				(this.getHttpServletRequest().getRequestedSessionId())));
+		jsessionid.setMarkupId("jsessionid" + uuid);
+		jsessionid.setOutputMarkupId(true);
+
+		CardPanel.logger
+				.info("jsessionid: " + this.getHttpServletRequest().getRequestedSessionId());
+		CardPanel.logger.info("uuid: " + uuid);
+		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
+		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
+		mouseX.setMarkupId("mouseX" + uuid);
+		mouseY.setMarkupId("mouseY" + uuid);
+		mouseX.setOutputMarkupId(true);
+		mouseY.setOutputMarkupId(true);
+
+		final Image handleImage = new Image("handleImage",
+				new ResourceReference("images/arrow.png"));
+		final Image tapHandleImage = new Image("tapHandleImage", new ResourceReference(
+				"images/rightArrow.png"));
+		handleImage.setOutputMarkupId(true);
+
 		final Image cardImage = new Image("cardImage", new ResourceReference(HomePage.class,
 				smallImage));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + uuid.toString());
+
+		tapHandleImage.setMarkupId("tapHandleImage" + uuid.toString());
+		tapHandleImage.setOutputMarkupId(true);
 
 		final Image bubbleTipImg1 = new Image("bubbleTipImg1", new ResourceReference(
 				HomePage.class, bigImage));
@@ -93,47 +125,18 @@ public class CardPanel extends Panel
 		bubbleTipText1.setOutputMarkupPlaceholderTag(true).setEscapeModelStrings(false);
 		bubbleTipImg1.setOutputMarkupId(true);
 
-		this.list = new LinkedList<BroadcastFilter>();
-
-		final Form<String> form = new Form<String>("form");
-		form.setOutputMarkupId(true);
-		menutoggleButton.add(new CardMoveBehavior(this, form, uuid));
-		menutoggleButton.add(new CardRotateBehavior(this, form, uuid));
-
-		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-				(this.getHttpServletRequest().getRequestedSessionId())));
-		jsessionid.setMarkupId("jsessionid" + uuid);
-		jsessionid.setOutputMarkupId(true);
-
-		CardPanel.logger
-				.info("jsessionid: " + this.getHttpServletRequest().getRequestedSessionId());
-		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
-		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
-		mouseX.setMarkupId("mouseX" + uuid);
-		mouseY.setMarkupId("mouseY" + uuid);
-		mouseX.setOutputMarkupId(true);
-		mouseY.setOutputMarkupId(true);
-
-		final Image handleImage = new Image("handleImage",
-				new ResourceReference("images/arrow.png"));
-		final Image tapHandleImage = new Image("tapHandleImage", new ResourceReference(
-				"images/rightArrow.png"));
-		handleImage.setOutputMarkupId(true);
-		tapHandleImage.setMarkupId("tapHandleImage" + uuid.toString());
-		tapHandleImage.setOutputMarkupId(true);
-
-		form.add(jsessionid, mouseX, mouseY, handleImage, tapHandleImage, cardImage, bubbleTipImg1,
+		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, bubbleTipImg1,
 				bubbleTipText1);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
-		this.cardParent = new WebMarkupContainer("cardParent1");
+		this.cardParent = new WebMarkupContainer("cardParent4");
 		this.cardParent.setOutputMarkupId(true);
-		this.add(this.cardParent);
-		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder1");
+		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder4");
 		this.cardPlaceholder.setOutputMarkupId(true);
 		this.cardParent.add(this.cardPlaceholder);
+		this.add(this.cardParent);
 	}
 
 	public HttpServletRequest getHttpServletRequest()

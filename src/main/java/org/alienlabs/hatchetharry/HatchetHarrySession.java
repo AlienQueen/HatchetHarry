@@ -19,9 +19,9 @@ public class HatchetHarrySession extends WebSession
 	private static String HAND_CARDS_HAVE_BEEN_BUILT = "HAND_CARDS_HAVE_BEEN_BUILT";
 	private static String ALL_CARDS_IN_HAND = "ALL_CARDS_IN_HAND";
 	private static String PLAYER_HAS_BEEN_CREATED = "PLAYER_HAS_BEEN_CREATED";
-	private static String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
 	private static String PLAYER = "PLAYER";
-
+	private static String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
+	private static String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -29,7 +29,6 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT, false);
 		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, false);
-		this.setAttribute(HatchetHarrySession.PLAYER, new Player());
 	}
 
 	public static HatchetHarrySession get()
@@ -86,13 +85,13 @@ public class HatchetHarrySession extends WebSession
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized void addCardIdInHand(final int id)
+	public synchronized void addCardIdInHand(final int index, final int id)
 	{
 		if (this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND) == null)
 		{
 			this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, new ArrayList<Integer>());
 		}
-		((List<Integer>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(id);
+		((List<Integer>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -101,14 +100,15 @@ public class HatchetHarrySession extends WebSession
 		((List<Integer>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).remove(c.getId());
 	}
 
-	public synchronized boolean getPlayerHasBeenCreated()
+	public synchronized boolean setPlayerHasBeenCreated()
 	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED);
+		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, true);
+		return true;
 	}
 
-	public synchronized void setPlayerHasBeenCreated(final boolean hasBeenCreated)
+	public synchronized boolean isPlayerCreated()
 	{
-		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, hasBeenCreated);
+		return (Boolean)this.getAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED);
 	}
 
 	public synchronized boolean getHandHasBeenCreated()
@@ -129,6 +129,16 @@ public class HatchetHarrySession extends WebSession
 	public synchronized void setPlayer(final Player player)
 	{
 		this.setAttribute(HatchetHarrySession.PLAYER, player);
+	}
+
+	public synchronized int getIndexOfCurrentCard()
+	{
+		return (Integer)this.getAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD);
+	}
+
+	public synchronized void setIndexOfCurrentCard(final int card)
+	{
+		this.setAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD, card);
 	}
 
 }

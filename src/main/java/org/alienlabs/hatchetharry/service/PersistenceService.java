@@ -32,6 +32,7 @@ public class PersistenceService
 	{
 	}
 
+	@Transactional
 	public MagicCard getFirstCardOfGame()
 	{
 		final MagicCard c = new MagicCard();
@@ -64,10 +65,12 @@ public class PersistenceService
 		final Session session = this.magicCardDao.getSession();
 		final Long id = (Long)session.save(c);
 		c.setId(id);
+
 		return c;
 
 	}
 
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public void saveCard(final MagicCard c)
 	{
 
@@ -103,21 +106,28 @@ public class PersistenceService
 		return cards;
 	}
 
-	@Transactional
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public void saveOrUpdatePlayer(final Player p)
+	{
+		final Session session = this.playerDao.getSession();
+		session.update(p);
+	}
+
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public Long savePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
-		final Long id = (Long)session.save(p);
-		p.setId(id);
-		return id;
+		final Long l = (Long)session.save(p);
+
+		return (l);
 	}
 
-	@Transactional
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public Deck saveDeck(final Deck d)
 	{
 		final Session session = this.deckDao.getSession();
-		final Long id = (Long)session.save(d);
-		d.setId(id);
+		session.update(d);
+
 		return d;
 	}
 
@@ -128,6 +138,7 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from Player player0_ where player0_.gameId=?");
 		query.setLong(0, l);
+
 		return query.list().size() > 0;
 	}
 
@@ -138,6 +149,7 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from Player player0_ where player0_.jsessionid=?");
 		query.setString(0, jsessionid);
+
 		return query.list().size() > 0;
 	}
 
@@ -148,7 +160,8 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from CollectibleCard cc0_ where cc0_.title=?");
 		query.setString(0, title);
-		return query.list().size() > 0;
+		final List<?> list = query.list();
+		return list.size() > 0;
 	}
 
 	@Transactional
@@ -158,6 +171,7 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from Deck deck0_ where deck0_.playerId=?");
 		query.setLong(0, l);
+
 		return (Deck)query.uniqueResult();
 	}
 
@@ -168,6 +182,7 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from MagicCard card0_ where card0_.deck=?");
 		query.setLong(0, l);
+
 		return query.list();
 	}
 
@@ -193,6 +208,17 @@ public class PersistenceService
 	public void setMagicCardDao(final MagicCardDao _magicCardDao)
 	{
 		this.magicCardDao = _magicCardDao;
+	}
+
+	@Transactional
+	public List<?> getCardsByDeckId(final long gameId)
+	{
+		final Session session = this.magicCardDao.getSession();
+		final Query query = session
+				.createQuery("select card0_ from MagicCard card0_ , Deck deck0_ where card0_.deck  = deck0_.deckId  and deck0_.deckId = ?");
+		query.setLong(0, gameId);
+
+		return query.list();
 	}
 
 

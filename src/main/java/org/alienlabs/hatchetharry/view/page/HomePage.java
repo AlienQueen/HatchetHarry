@@ -38,8 +38,10 @@
 package org.alienlabs.hatchetharry.view.page;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,12 +52,14 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
-import org.alienlabs.hatchetharry.view.component.ClickableGalleryImage;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
+import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -71,6 +75,7 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
+import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,19 +91,21 @@ import ch.qos.mistletoe.wicket.TestReportPage;
 public class HomePage extends TestReportPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomePage.class);
+	static final Logger logger = LoggerFactory.getLogger(HomePage.class);
 	protected WebMarkupContainer cardParent;
 	private Long gameId;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
 
 	Player player;
 	Deck deck;
-	private final BookmarkablePageLink<PlayCardPage> playCardPage;
-	private List<MagicCard> hand;
+	BookmarkablePageLink<PlayCardPage> playCardPage;
+	List<MagicCard> hand;
+	private WebMarkupContainer parentPlaceholder;
+	AjaxFallbackLink<MagicCard> playCardLink;
 
 	public HomePage()
 	{
@@ -115,17 +122,13 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.createCardPanelPlaceholders();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.3 built on Saturday, 27nd of August 2011"));
+		this.add(new Label("message", "version 0.0.3 built on Sunday, 28th of August 2011"));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
 
 		// Comet chat channel
 		this.add(new ChatPanel("chatPanel"));
-
-		// Comet calback
-		this.playCardPage = new BookmarkablePageLink<PlayCardPage>("playCard", PlayCardPage.class);
-		this.add(this.playCardPage);
 
 		// Hand
 		if (HatchetHarrySession.get().getHandHasBeenCreated())
@@ -140,6 +143,115 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.buildHand();
 		this.generateAboutLink();
 		this.generateTemInfoLink();
+		this.generatePlayCardLink(this.hand.get(0));
+		this.generatePlayCardsBehaviorsForAllOpponents();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void generatePlayCardsBehaviorsForAnOpponent(final Long opponentId)
+	{
+		final List<MagicCard> list = new ArrayList<MagicCard>();
+		list.addAll((List<MagicCard>)this.persistenceService.getCardsByDeckId(opponentId));
+
+		final ListView<MagicCard> allCards = new ListView<MagicCard>("playCardParent" + opponentId,
+				list)
+		{
+			private static final long serialVersionUID = 12981489148949L;
+
+			@Override
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
+				final MagicCard card = (MagicCard)item.getDefaultModelObject();
+				final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
+						+ opponentId);
+				final PlayCardFromHandBehavior behavior = new PlayCardFromHandBehavior(
+						card.getUuidObject(), HomePage.this.cardParent, item.getIndex(),
+						(item.getIndex() == 6 ? 0 : item.getIndex() + 1));
+				cardPlaceholder.add(behavior);
+				item.add(cardPlaceholder);
+			}
+		};
+		HomePage.this.cardParent.add(allCards);
+	}
+
+	private void generatePlayCardsBehaviorsForAllOpponents()
+	{
+		this.generatePlayCardsBehaviorsForAnOpponent(1l);
+		this.generatePlayCardsBehaviorsForAnOpponent(2l);
+	}
+
+	private void generatePlayCardLink(final MagicCard mc)
+	{
+		final WebMarkupContainer playCardPlaceholder = new WebMarkupContainer("playCardPlaceholder");
+		playCardPlaceholder.setMarkupId("playCardPlaceholder0");
+		playCardPlaceholder.setOutputMarkupId(true);
+		HomePage.logger.info("Generating link");
+
+		this.playCardLink = new AjaxFallbackLink<MagicCard>("playCardLink")
+		{
+			private static final long serialVersionUID = 6590465665519989765L;
+			private CardPanel cp;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+						.getRequest();
+				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+				final String jsessionid = request.getRequestedSessionId();
+				final String uuidToLookFor = mc.getUuid();
+
+				HatchetHarrySession.get().addCardIdInHand(0, 0);
+
+				final MagicCard card = HomePage.this.persistenceService.getCardFromUuid(UUID
+						.fromString(uuidToLookFor));
+
+				if (null != card)
+				{
+					HomePage.logger.info("card!");
+					this.cp = new CardPanel("cardPlaceholder3", card.getSmallImageFilename(),
+							card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
+					this.cp.setOutputMarkupId(true);
+
+					this.cp.add(new PlayCardFromHandBehavior(UUID.fromString(uuidToLookFor),
+							HomePage.this.cardParent, 0, 1));
+				}
+				else
+				{
+					HomePage.logger.info("null!");
+				}
+
+
+				final String message = jsessionid + "~~~" + uuidToLookFor + "~~~" + 1;
+				HomePage.logger.info(message);
+
+				final String stop = request.getParameter("stop");
+				if (!"true".equals(stop))
+				{
+					HomePage.logger.info("continue!");
+					final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(),
+							null);
+					meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+					meteor.broadcast(message);
+				}
+				else
+				{
+					HomePage.logger.info("stop!");
+				}
+
+				HomePage.this.cardParent.addOrReplace(this.cp);
+				target.addComponent(HomePage.this.cardParent);
+				target.appendJavascript("click" + uuidToLookFor.replace("-", "_") + "("
+						+ UUID.fromString(uuidToLookFor) + ")");
+			}
+
+		};
+
+		this.playCardLink.setMarkupId("playCardLink0");
+		this.playCardLink.setOutputMarkupId(true);
+		playCardPlaceholder.add(this.playCardLink);
+
+		this.add(playCardPlaceholder);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -149,8 +261,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
 
-		if ((!HatchetHarrySession.get().getPlayerHasBeenCreated() && (!this.persistenceService
-				.getPlayerByGame(1l))))
+		if (!HatchetHarrySession.get().isPlayerCreated())
 		{
 			this.player = new Player();
 			this.player.setLifePoints(20l);
@@ -159,32 +270,35 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			this.player.setJsessionid(jsessionid);
 			this.player.setGameId(1l);
 			this.player.setId(this.persistenceService.savePlayer(this.player));
-			HatchetHarrySession.get().setPlayerHasBeenCreated(true);
+			HatchetHarrySession.get().setPlayerHasBeenCreated();
 			HatchetHarrySession.get().setPlayer(this.player);
 
-			this.deck = new Deck();
+			this.deck = this.persistenceService.getDeck(this.player.getId());
 			this.deck.setCards((List<MagicCard>)this.persistenceService
 					.getAllCardsFromDeck(this.player.getId()));
-			this.deck.shuffleLibrary();
+			this.deck.setCards(this.deck.shuffleLibrary());
+			this.deck.setPlayerId(this.player.getId());
+			this.deck.setId(this.player.getId());
 			this.deck = this.persistenceService.saveDeck(this.deck);
 		}
-		else if ((!HatchetHarrySession.get().getPlayerHasBeenCreated())
-				&& (!this.persistenceService.getPlayerByJsessionId(jsessionid)))
+		else
 		{
-			this.player = new Player();
+			this.player = HatchetHarrySession.get().getPlayer();
 			this.player.setLifePoints(20l);
 			this.player.setSide("ultraviolet");
 			this.player.setName("ultraviolet");
 			this.player.setJsessionid(jsessionid);
 			this.player.setGameId(1l);
-			this.player.setId(this.persistenceService.savePlayer(this.player));
-			HatchetHarrySession.get().setPlayerHasBeenCreated(true);
+			this.persistenceService.saveOrUpdatePlayer(this.player);
+			HatchetHarrySession.get().setPlayerHasBeenCreated();
 			HatchetHarrySession.get().setPlayer(this.player);
 
-			this.deck = new Deck();
+			// this.deck = new Deck();
+			this.deck = this.persistenceService.getDeck(this.player.getId());
 			this.deck.setCards((List<MagicCard>)this.persistenceService
 					.getAllCardsFromDeck(this.player.getId()));
-			this.deck.shuffleLibrary();
+			this.deck.setCards(this.deck.shuffleLibrary());
+			this.deck.setPlayerId(this.player.getId());
 			this.deck = this.persistenceService.saveDeck(this.deck);
 		}
 	}
@@ -193,34 +307,23 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	{
 		this.cardParent = new WebMarkupContainer("cardParent");
 		this.cardParent.setOutputMarkupId(true);
-		this.add(this.cardParent);
-		final WebMarkupContainer cardPlaceholder1 = new WebMarkupContainer("cardPlaceholder1");
-		cardPlaceholder1.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder2 = new WebMarkupContainer("cardPlaceholder2");
-		cardPlaceholder2.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
 		final WebMarkupContainer cardPlaceholder3 = new WebMarkupContainer("cardPlaceholder3");
-		cardPlaceholder3.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder4 = new WebMarkupContainer("cardPlaceholder4");
-		cardPlaceholder4.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder5 = new WebMarkupContainer("cardPlaceholder5");
-		cardPlaceholder5.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder6 = new WebMarkupContainer("cardPlaceholder6");
-		cardPlaceholder6.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder7 = new WebMarkupContainer("cardPlaceholder7");
-		cardPlaceholder7.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder8 = new WebMarkupContainer("cardPlaceholder8");
-		cardPlaceholder8.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder9 = new WebMarkupContainer("cardPlaceholder9");
-		cardPlaceholder9.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder10 = new WebMarkupContainer("cardPlaceholder10");
-		cardPlaceholder10.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder11 = new WebMarkupContainer("cardPlaceholder11");
-		cardPlaceholder11.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder12 = new WebMarkupContainer("cardPlaceholder12");
-		cardPlaceholder12.setOutputMarkupId(true);
-		this.cardParent.add(cardPlaceholder1, cardPlaceholder2, cardPlaceholder3, cardPlaceholder4,
-				cardPlaceholder5, cardPlaceholder6, cardPlaceholder7, cardPlaceholder8,
-				cardPlaceholder9, cardPlaceholder10, cardPlaceholder11, cardPlaceholder12);
+		this.setOutputMarkupId(true);
+		this.add(this.cardParent);
+		this.cardParent.add(cardPlaceholder3);
+		this.setParentPlaceholder(this.cardParent);
+		this.add(cardPlaceholder);
+	}
+
+	private void setParentPlaceholder(final WebMarkupContainer _cardParent)
+	{
+		this.parentPlaceholder = _cardParent;
+	}
+
+	WebMarkupContainer getParentPlaceholder()
+	{
+		return this.parentPlaceholder;
 	}
 
 	protected void addHeadResources()
@@ -291,52 +394,78 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	protected void buildHand()
 	{
 
-		final ListView<MagicCard> cards = new ListView<MagicCard>("handCards", this.hand)
+		this.playCardPage = new BookmarkablePageLink<PlayCardPage>("playCardPage",
+				PlayCardPage.class);
+		this.add(this.playCardPage);
+
+		final ListView<MagicCard> cards = new ListView<MagicCard>("handCards", HatchetHarrySession
+				.get().getFirstCardsInHand())
 		{
 			private static final long serialVersionUID = -7874661839855866875L;
 
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)
 			{
-				HatchetHarrySession.get().addCardIdInHand(item.getIndex() + 1);
+				HatchetHarrySession.get().addCardIdInHand(item.getIndex(), item.getIndex());
 				final MagicCard card = item.getModelObject();
-				final ClickableGalleryImage clickableGalleryImage = new ClickableGalleryImage(
-						"handImagePlaceholder", HomePage.this.cardParent,
-						card.getBigImageFilename(), card.getBigImageFilename(),
-						card.getSmallImageFilename(), card.getTitle(), card.getDescription(),
-						card.getId(), item.getIndex() + 1, item.getIndex() == 6
-								? HatchetHarrySession.get().getFirstCardIdInHand()
-								: item.getIndex() + 2);
-				clickableGalleryImage.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
-				clickableGalleryImage.setOutputMarkupId(true);
-				item.add(clickableGalleryImage);
+
+				final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
+				wrapper.setMarkupId("wrapper" + item.getIndex());
+				wrapper.setOutputMarkupId(true);
+
+				final Image handImagePlaceholder = new Image("handImagePlaceholder",
+						new ResourceReference(HomePage.class, card.getBigImageFilename()));
+				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
+				handImagePlaceholder.setOutputMarkupId(true);
+
+				final PlayCardFromHandBehavior b = new PlayCardFromHandBehavior(
+						card.getUuidObject(), HomePage.this.cardParent, item.getIndex(),
+						(item.getIndex() == 6 ? 0 : item.getIndex() + 1));
+				handImagePlaceholder.add(b);
+
+				final Label titlePlaceholder = new Label("titlePlaceholder", card.getTitle());
+				titlePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_")
+						+ "_placeholder");
+				titlePlaceholder.setOutputMarkupId(true);
+
+
+				HomePage.logger.info("###### cardTitle: " + card.getTitle() + ", uuid: "
+						+ card.getUuid());
+
+				wrapper.add(handImagePlaceholder, titlePlaceholder);
+				item.add(wrapper);
 
 			}
 		};
+		// cards.setRenderBodyOnly(false);
 		this.add(cards);
 
-		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", this.hand)
+		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", HatchetHarrySession
+				.get().getFirstCardsInHand())
 		{
 			private static final long serialVersionUID = -787466183866875L;
 
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)
 			{
+				HomePage.logger.info("###### item.getIndex(): " + item.getIndex());
 				final MagicCard card = item.getModelObject();
 
 				final WebMarkupContainer crossLinkDiv = new WebMarkupContainer("crossLinkDiv");
-				crossLinkDiv.setMarkupId("cross-link-div" + (item.getIndex() + 1));
+				crossLinkDiv.setMarkupId("cross-link-div" + item.getIndex());
 				crossLinkDiv.setOutputMarkupId(true);
 
 				final WebMarkupContainer crossLink = new WebMarkupContainer("crossLink");
-				crossLink.setMarkupId("cross-link" + (item.getIndex() + 1));
+				crossLink.setMarkupId("cross-link" + item.getIndex());
 				crossLink.setOutputMarkupId(true);
 
 				final Image thumb = new Image("thumbPlaceholder", new ResourceReference(
 						HomePage.class, card.getThumbnailFilename()));
-				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_l");
+				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
 				thumb.setOutputMarkupId(true);
 
+				HomePage.logger.info("###### thumbTitle: " + card.getThumb() + ", uuid: "
+						+ card.getUuid());
 
 				crossLink.add(thumb);
 				crossLinkDiv.add(crossLink);
@@ -363,8 +492,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		for (int i = 0; i < 7; i++)
 		{
-			cards.add(this.deck.getCards().get(i));
-			HatchetHarrySession.get().addCardIdInHand(i + 1);
+			cards.add(i, this.deck.getCards().get(i));
+			HatchetHarrySession.get().addCardIdInHand(i, i);
 
 		}
 

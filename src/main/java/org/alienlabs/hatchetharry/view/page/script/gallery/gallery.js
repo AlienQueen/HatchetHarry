@@ -1,8 +1,8 @@
-jQuery(function() {
+jQuery(document).ready(function() {
 
 	var theInt = null;
 	var $crosslink, $navthumb;
-	var curclicked = 1;
+	var curclicked = 0;
 
 	theInterval = function(cur) {
 		if (typeof cur != 'undefined')
@@ -16,8 +16,8 @@ jQuery(function() {
 		$navthumb.eq(curclicked).parent().addClass("active-thumb");
 		jQuery(".stripNav ul li a").eq(curclicked).trigger('click');
 		curclicked++;
-		if (7 == curclicked)
-			curclicked = 1;
+		if (6 == curclicked)
+			curclicked = 0;
 
 	};
 

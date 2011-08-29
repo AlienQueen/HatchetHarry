@@ -28,7 +28,7 @@
 	<script type="text/javascript" wicket:id="codeUnderTest.js"></script>
 	<script type="text/javascript" wicket:id="HomePageTests.js"></script>
   	<script type="text/javascript" wicket:id="mootools.v1.11"></script>
-  	<!-- G -->
+  	<!-- Gallery -->
  	<script type="text/javascript" wicket:id="jquery-easing-1.3.pack.js"></script>
 	<script type="text/javascript" wicket:id="jquery-easing-compatibility.1.2.pack.js"></script>
     <script type="text/javascript" wicket:id="coda-slider.1.1.1.pack.js"></script>
@@ -158,11 +158,12 @@
       </tr>
     </table>
   </div>
+  
   <div wicket:id="aboutWindow"></div>
   <div wicket:id="teamInfoWindow"></div>
   <!-- end menus -->
 
-	<a wicket:id="playCard" id="playCard"></a>
+	<a wicket:id="playCardPage" id="playCard"></a>
 	
 	<br/><br/><br/><br/><br/>
 	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span><br/><br/>
@@ -171,46 +172,51 @@
 	  	<span id="header"></span>
 			<span id="nav"></span>
 	        <span id="content">
-	    		<span id="gallery" class="tour_4">
-	    			<div id="page-wrap">
-						
 	<!-- Gallery -->					
-	<div class="slider-wrap">
-		<div id="main-photo-slider" class="csw">
-			<div class="panelContainer">
-
-				<span wicket:id="handCards">
-					<div class="panel">
-						<div class="wrapper">
-							<span wicket:id="handImagePlaceholder" id="#" class="wrapper-image"></span>
+    		<span id="gallery" class="tour_4">
+	   			<div id="page-wrap">
+						
+					<div class="slider-wrap">
+						<div id="main-photo-slider" class="csw">
+							<div class="panelContainer">
+				
+								<span wicket:id="handCards">
+									<div class="panel">
+										<div wicket:id="wrapper" class="wrapper">
+											<img wicket:id="handImagePlaceholder" id="#" class="wrapper-image"></img>
+											<div wicket:id="titlePlaceholder" class="photo-meta-data"></div>
+										</div>
+									</div>
+								</span>
+							</div>
 						</div>
+							<div wicket:id="thumbs" id="movers-row">
+								<div wicket:id="crossLinkDiv"><a wicket:id="crossLink" href="#" class="cross-link"><img wicket:id="thumbPlaceholder" class="nav-thumb"></a></div>
+							</div>
 					</div>
-				</span>
-			</div>
-		</div>
+				</div>
+			</span>
+			</span>
+			</span>
 
-		<div wicket:id="thumbs" id="movers-row">
-			<div wicket:id="crossLinkDiv"><a wicket:id="crossLink" href="#" class="cross-link"><img wicket:id="thumbPlaceholder" class="nav-thumb"></a></div>
-		</div>
-
-	</div>
-	
-	</div>
-	    		</span><br/><br/>
-	  		</span>      
-	</span>
+	    <br/><br/>
 	<br/>
   	<span wicket:id="feedback"></span>
   	<span wicket:id="clockPanel" id="clock" class="tour_3">Clock Panel</span>
 	<br/>
+	
 	<span wicket:id="cardParent">
-		<span wicket:id="cardPlaceholder1"></span><span wicket:id="cardPlaceholder2"></span>
-		<span wicket:id="cardPlaceholder3"></span><span wicket:id="cardPlaceholder4"></span>
-		<span wicket:id="cardPlaceholder5"></span><span wicket:id="cardPlaceholder6"></span>
-		<span wicket:id="cardPlaceholder7"></span><span wicket:id="cardPlaceholder8"></span>
-		<span wicket:id="cardPlaceholder9"></span><span wicket:id="cardPlaceholder10"></span>
-		<span wicket:id="cardPlaceholder11"></span><span wicket:id="cardPlaceholder12"></span>
+		<span wicket:id="cardPlaceholder3"></span>
+		<span wicket:id="playCardParent1">
+			<span wicket:id="cardPlaceholder1"></span>
+		</span>
+		<span wicket:id="playCardParent2">
+			<span wicket:id="cardPlaceholder2"></span>
+		</span>
+		
 	</span>
+	
+	<span wicket:id="cardPlaceholder"></span>
 	
 	<span class="tour_5">
 		<div id="dock">
@@ -290,8 +296,8 @@
 				<a  class="toolbarLink" title="Draw a card " id="videoslink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/youtube.png"></img> Draw a card</a>
 				</li>
 				
-				<li>
-				<a class="toolbarLink" title="Play the card shown in your hand "  id="playlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/playCard.png"></img> Play card</a>
+				<li wicket:id="playCardPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Play the card currently shown in your hand">
+					<a wicket:id= playCardLink" href="#"><img style="color: white;" src="image/playCard.png"> Play card</img></a>
 				</li>
 				
 				<li>

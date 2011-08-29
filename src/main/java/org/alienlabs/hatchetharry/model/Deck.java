@@ -11,25 +11,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Deck")
 public class Deck implements Serializable
 {
 	private static final long serialVersionUID = 5336828396327485268L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "deckId")
 	private Long deckId;
 	@Column
 	private Long playerId;
 	@OneToMany(mappedBy = "deck")
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
-	public void shuffleLibrary()
+	public List<MagicCard> shuffleLibrary()
 	{
 		Collections.shuffle(this.cards);
 		Collections.shuffle(this.cards);
 		Collections.shuffle(this.cards);
+		Collections.shuffle(this.cards);
+		Collections.shuffle(this.cards);
+		return this.cards;
 	}
 
 	public Long getId()
