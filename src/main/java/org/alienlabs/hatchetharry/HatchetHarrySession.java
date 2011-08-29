@@ -22,6 +22,7 @@ public class HatchetHarrySession extends WebSession
 	private static String PLAYER = "PLAYER";
 	private static String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
 	private static String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
+	private static String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -29,6 +30,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT, false);
 		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, false);
+		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
 	}
 
 	public static HatchetHarrySession get()
@@ -108,7 +110,7 @@ public class HatchetHarrySession extends WebSession
 
 	public synchronized boolean isPlayerCreated()
 	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED);
+		return (Boolean)this.getAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED);
 	}
 
 	public synchronized boolean getHandHasBeenCreated()
@@ -126,9 +128,10 @@ public class HatchetHarrySession extends WebSession
 		return (Player)this.getAttribute(HatchetHarrySession.PLAYER);
 	}
 
-	public synchronized void setPlayer(final Player player)
+	public synchronized void setPlayer(final Player _player)
 	{
-		this.setAttribute(HatchetHarrySession.PLAYER, player);
+		this.setPlayerHasBeenCreated();
+		this.setAttribute(HatchetHarrySession.PLAYER, _player);
 	}
 
 	public synchronized int getIndexOfCurrentCard()
@@ -140,5 +143,6 @@ public class HatchetHarrySession extends WebSession
 	{
 		this.setAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD, card);
 	}
+
 
 }

@@ -1,7 +1,3 @@
-function click${uuidValidForJs}(uuid) {
-	wicketAjaxGet('${url}&card=' + uuid, function() {
-	}, null, null);
-}
 
 jQuery(document).ready(function() {
 
@@ -26,6 +22,10 @@ jQuery(document).ready(function() {
 // }, null, null);
 // });
 	
+	jQuery("#playCardLink${clicked}").click(function () {
+		wicketAjaxGet('${url}&card=${uuid}&indexOfClickedCard=${clicked}' , function() {
+		}, null, null);
+	});
 	
 	function getCookie(c_name)
 	{
@@ -47,12 +47,13 @@ jQuery(document).ready(function() {
 				&& response.state != 'connected'
 				&& response.state != 'closed') {
 			if (response.status == 200) {
+				
 				var data = response.responseBody;
-				var s = data.split("~~~")[1];
+				var uuid = data.split("~~~")[1];
 				var sessionId = data.split("~~~")[0];
 				
-				if (data.split("~~~").lenght > 0) {
-					if ((typeof s != "undefined") 
+				if (data.split("~~~").length > 0) {
+					if ((typeof uuid != "undefined") 
 							&& (getCookie('JSESSIONID') == sessionId))
 							{
 							// We're in the play card Meteor
@@ -60,10 +61,10 @@ jQuery(document).ready(function() {
 		// jQuery('#cross-link-div${clicked}').remove();
 		// jQuery('#cross-link${clicked}').remove();
 		
-						} else if ((typeof s != "undefined")
+						} else if ((typeof uuid != "undefined")
 								&& (getCookie('JSESSIONID') != sessionId)) 
 						{
-									wicketAjaxGet('${url}&card=' + s + '&stop=true' + '&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
+									wicketAjaxGet('${url}&card=' + uuid + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
 						};
 					};
 			};

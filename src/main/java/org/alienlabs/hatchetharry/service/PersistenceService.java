@@ -89,7 +89,6 @@ public class PersistenceService
 		return c;
 	}
 
-
 	@Transactional
 	public List<MagicCard> getFirstHand()
 	{
@@ -106,6 +105,19 @@ public class PersistenceService
 		return cards;
 	}
 
+	@Transactional
+	public Player getFirstPlayer()
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final Query query = session.createQuery("from Player player0_");
+		query.setFirstResult(0);
+		query.setMaxResults(1);
+		final Object mc = query.uniqueResult();
+
+		return (mc == null ? null : (Player)mc);
+	}
+
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public void saveOrUpdatePlayer(final Player p)
 	{
@@ -120,6 +132,17 @@ public class PersistenceService
 		final Long l = (Long)session.save(p);
 
 		return (l);
+	}
+
+	@Transactional
+	public int countPlayers(final long l)
+	{
+		final Session session = this.playerDao.getSession();
+
+		final Query query = session.createQuery("from Player player0_ where player0_.gameId=?");
+		query.setLong(0, l);
+
+		return query.list().size();
 	}
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
@@ -220,6 +243,5 @@ public class PersistenceService
 
 		return query.list();
 	}
-
 
 }

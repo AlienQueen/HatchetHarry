@@ -47,9 +47,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.parent = _parent;
 		this.indexOfClickedCard = _indexOfClickedCard;
 		this.indexOfNextCard = _indexOfNextCard;
-		PlayCardFromHandBehavior.logger.info("###### PlayCardFromHandBehavior uuid="
-				+ _uuid.toString());
-
 	}
 
 	@Override
@@ -62,12 +59,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
 		final String uuidToLookFor = request.getParameter("card");
+		final String stop = request.getParameter("stop");
 
-		int _indexOfClickedCard;
+		int _indexOfClickedCard = 0;
 		try
 		{
 			_indexOfClickedCard = Integer.parseInt(request.getParameter("indexOfClickedCard"));
-			HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard, _indexOfClickedCard);
 		}
 		catch (final NumberFormatException e)
 		{
@@ -75,40 +72,41 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			// HatchetHarrySession.get().getFirstCardIdInHand();
 			PlayCardFromHandBehavior.logger.info("Error which should never happen!");
 		}
+		HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard, _indexOfClickedCard);
 
-		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuid);
+		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
+				.fromString(uuidToLookFor));
 
-		if (null != card)
+		if (("true".equals(stop)) && (null != uuidToLookFor))
 		{
-			PlayCardFromHandBehavior.logger.info("card: " + uuidToLookFor);
-			final CardPanel cp = new CardPanel("cardPlaceholder"
-					+ (this.indexOfClickedCard == 6 ? 0 : (this.indexOfClickedCard + 1)),
-					card.getSmallImageFilename(), card.getBigImageFilename(),
-					UUID.fromString(uuidToLookFor));
+			PlayCardFromHandBehavior.logger.info("stopping round-trips");
+
+			final CardPanel cp = new CardPanel("cardPlaceholder1", card.getSmallImageFilename(),
+					card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
 			cp.setOutputMarkupId(true);
+
 			this.parent.addOrReplace(cp);
 			target.addComponent(this.parent);
 		}
-		else
+		else if ((null != card) && (null != uuidToLookFor) && (!"undefined".equals(uuidToLookFor)))
 		{
-			PlayCardFromHandBehavior.logger.info("null!");
-		}
+			PlayCardFromHandBehavior.logger.info("card: " + uuidToLookFor);
+			final CardPanel cp = new CardPanel("cardPlaceholder1", card.getSmallImageFilename(),
+					card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
+			cp.setOutputMarkupId(true);
 
-		final String message = jsessionid + "~~~" + this.uuid.toString() + "~~~"
-				+ (this.indexOfClickedCard == 6 ? 0 : this.indexOfClickedCard + 1);
-		PlayCardFromHandBehavior.logger.info(message);
-
-		final String stop = request.getParameter("stop");
-		if (!"true".equals(stop))
-		{
 			PlayCardFromHandBehavior.logger.info("continue!");
+
+			final String message = jsessionid + "~~~" + this.uuid.toString() + "~~~"
+					+ (this.indexOfClickedCard == 6 ? 0 : this.indexOfClickedCard + 1);
+			PlayCardFromHandBehavior.logger.info(message);
+
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 			meteor.broadcast(message);
-		}
-		else
-		{
-			PlayCardFromHandBehavior.logger.info("stop!");
+
+			this.parent.addOrReplace(cp);
+			target.addComponent(this.parent);
 		}
 	}
 
