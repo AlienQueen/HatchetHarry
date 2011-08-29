@@ -58,8 +58,8 @@ jQuery(document).ready(function() {
 							{
 							// We're in the play card Meteor
 							jQuery('#cross-link${next}').click();
-		// jQuery('#cross-link-div${clicked}').remove();
-		// jQuery('#cross-link${clicked}').remove();
+							jQuery('#cross-link-div${clicked}').remove();
+							jQuery('#placeholder${uuidValidForJs}').remove();
 		
 						} else if ((typeof uuid != "undefined")
 								&& (getCookie('JSESSIONID') != sessionId)) 

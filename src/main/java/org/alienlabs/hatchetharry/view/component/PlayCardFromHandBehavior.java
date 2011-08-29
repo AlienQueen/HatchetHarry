@@ -68,8 +68,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final NumberFormatException e)
 		{
-			// _indexOfClickedCard =
-			// HatchetHarrySession.get().getFirstCardIdInHand();
 			PlayCardFromHandBehavior.logger.info("Error which should never happen!");
 		}
 		HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard, _indexOfClickedCard);
@@ -81,7 +79,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		{
 			PlayCardFromHandBehavior.logger.info("stopping round-trips");
 
-			final CardPanel cp = new CardPanel("cardPlaceholder1", card.getSmallImageFilename(),
+			final String id = "cardPlaceholder" + HatchetHarrySession.get().getPlayerLetter()
+					+ HatchetHarrySession.get().getPlaceholderNumber();
+			HatchetHarrySession.get().setPlaceholderNumber(
+					HatchetHarrySession.get().getPlaceholderNumber() + 1);
+
+			final CardPanel cp = new CardPanel(id, card.getSmallImageFilename(),
 					card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
 			cp.setOutputMarkupId(true);
 
@@ -91,7 +94,13 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		else if ((null != card) && (null != uuidToLookFor) && (!"undefined".equals(uuidToLookFor)))
 		{
 			PlayCardFromHandBehavior.logger.info("card: " + uuidToLookFor);
-			final CardPanel cp = new CardPanel("cardPlaceholder1", card.getSmallImageFilename(),
+
+			final String id = "cardPlaceholder" + HatchetHarrySession.get().getPlayerLetter()
+					+ HatchetHarrySession.get().getPlaceholderNumber();
+			HatchetHarrySession.get().setPlaceholderNumber(
+					HatchetHarrySession.get().getPlaceholderNumber() + 1);
+
+			final CardPanel cp = new CardPanel(id, card.getSmallImageFilename(),
 					card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
 			cp.setOutputMarkupId(true);
 

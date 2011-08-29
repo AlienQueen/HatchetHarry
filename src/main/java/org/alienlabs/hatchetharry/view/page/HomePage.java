@@ -58,6 +58,7 @@ import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -102,7 +103,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	private final WebMarkupContainer parentPlaceholder;
 	WebMarkupContainer playCardLink;
 	WebMarkupContainer playCardParent1;
-	WebMarkupContainer cardPlaceholder1;
 
 	public HomePage()
 	{
@@ -120,9 +120,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.playCardParent1 = new WebMarkupContainer("playCardParentPlaceholder1");
 		this.playCardParent1.setOutputMarkupId(true);
-		this.cardPlaceholder1 = new WebMarkupContainer("cardPlaceholder1");
-		this.cardPlaceholder1.setOutputMarkupId(true);
-		this.playCardParent1.add(this.cardPlaceholder1);
 		this.parentPlaceholder.add(this.playCardParent1);
 		this.add(this.parentPlaceholder);
 
@@ -190,6 +187,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		p.setId(this.persistenceService.savePlayer(p));
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
 		HatchetHarrySession.get().setPlayer(p);
+		HatchetHarrySession.get().setPlayerLetter(p.getId() == 1 ? "a" : "b");
+		HatchetHarrySession.get().setPlaceholderNumber(1);
 
 		this.deck = this.persistenceService.getDeck(p.getId());
 		this.deck.setCards((List<MagicCard>)this.persistenceService.getAllCardsFromDeck(p.getId()));
@@ -201,38 +200,20 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@SuppressWarnings("unchecked")
-	private void generatePlayCardsBehaviorsForAnOpponent(final Long opponentId)
+	private void generatePlayCardsBehaviorsForAnOpponent(final String opponentId)
 	{
-		final List<MagicCard> list = new ArrayList<MagicCard>();
-		list.addAll((List<MagicCard>)this.persistenceService.getCardsByDeckId(opponentId));
-
-		final ListView<MagicCard> allCards = new ListView<MagicCard>("playCardParentList"
-				+ opponentId, list)
+		for (int i = 1; i < 61; i++)
 		{
-			private static final long serialVersionUID = 12981489148949L;
-
-			@Override
-			protected void populateItem(final ListItem<MagicCard> item)
-			{
-				item.getDefaultModelObject();
-				final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
-						+ opponentId);
-				// final PlayCardFromHandBehavior behavior = new
-				// PlayCardFromHandBehavior(
-				// card.getUuidObject(), HomePage.this.cardParent,
-				// item.getIndex(),
-				// (item.getIndex() == 6 ? 0 : item.getIndex() + 1));
-				// cardPlaceholder.add(behavior);
-				item.add(cardPlaceholder);
-			}
-		};
-		HomePage.this.playCardParent1.add(allCards);
+			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
+					+ opponentId + i);
+			this.playCardParent1.add(cardPlaceholder);
+		}
 	}
 
 	private void generatePlayCardsBehaviorsForAllOpponents()
 	{
-		this.generatePlayCardsBehaviorsForAnOpponent(1l);
-		this.generatePlayCardsBehaviorsForAnOpponent(2l);
+		this.generatePlayCardsBehaviorsForAnOpponent("a");
+		this.generatePlayCardsBehaviorsForAnOpponent("b");
 	}
 
 	private void generatePlayCardLink(final MagicCard mc)
@@ -249,17 +230,17 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		request.getRequestedSessionId();
-		final UUID uuidToLookFor = mc.getUuidObject();
+		final String uuidToLookFor = mc.getUuid();
 
-		HomePage.this.persistenceService.getCardFromUuid(uuidToLookFor);
+		HomePage.this.persistenceService.getCardFromUuid(UUID.fromString(uuidToLookFor));
 
 		// this.cp = new CardPanel("cardPlaceholder3",
 		// card.getSmallImageFilename(),
 		// card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
 		// this.cp.setOutputMarkupId(true);
 
-		this.playCardLink.add(new PlayCardFromHandBehavior(uuidToLookFor, this.playCardParent1, 0,
-				1));
+		this.playCardLink.add(new PlayCardFromHandBehavior(UUID.fromString(uuidToLookFor),
+				this.playCardParent1, 0, 1));
 		this.playCardLink.setMarkupId("playCardLink0");
 		this.playCardLink.setOutputMarkupId(true);
 		playCardPlaceholder.add(this.playCardLink);
@@ -401,6 +382,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				crossLinkDiv.setOutputMarkupId(true);
 
 				final WebMarkupContainer crossLink = new WebMarkupContainer("crossLink");
+				crossLink.add(new SimpleAttributeModifier("href", "#" + (item.getIndex() + 1)));
 				crossLink.setMarkupId("cross-link" + item.getIndex());
 				crossLink.setOutputMarkupId(true);
 

@@ -23,6 +23,8 @@ public class HatchetHarrySession extends WebSession
 	private static String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
 	private static String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
 	private static String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
+	private static String PLAYER_LETTER = "PLAYER_LETTER";
+	private static String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -142,6 +144,26 @@ public class HatchetHarrySession extends WebSession
 	public synchronized void setIndexOfCurrentCard(final int card)
 	{
 		this.setAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD, card);
+	}
+
+	public synchronized void setPlayerLetter(final String _string)
+	{
+		this.setAttribute(HatchetHarrySession.PLAYER_LETTER, _string);
+	}
+
+	public synchronized String getPlayerLetter()
+	{
+		return (String)this.getAttribute(HatchetHarrySession.PLAYER_LETTER);
+	}
+
+	public synchronized void setPlaceholderNumber(final int _index)
+	{
+		this.setAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER, _index);
+	}
+
+	public synchronized int getPlaceholderNumber()
+	{
+		return (Integer)this.getAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER);
 	}
 
 
