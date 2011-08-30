@@ -1,29 +1,38 @@
 
 jQuery(document).ready(function() {
+	
+ jQuery("#placeholder${uuidValidForJs}").hover(function(){
+	 jQuery("#linkOnCard").css("margin", "150px 0px 0px -120px");
+ }, function() {
+	 jQuery("#linkOnCard").css("margin", "-1000px 0px 0px -1000px");
+ });
 
-// jQuery("#page-wrap").hover(function(){
-// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "150px 0px 0px
-// -120px");
-// }, function() {
-// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "-1000px 0px 0px
-// -1000px");
-// });
-//
-// jQuery("#placeholder${uuidValidForJs}_img").hover(function(){
-// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "150px 0px 0px
-// -120px");
-// }, function() {
-// jQuery("#placeholder${uuidValidForJs}_img").css("margin", "150px 0px 0px
-// -120px");
-// });
+ jQuery("#linkOnCard").hover(function(){
+	 jQuery("#linkOnCard").css("margin", "150px 0px 0px -120px");
+ }, function() {
+	 jQuery("#linkOnCard").css("margin", "150px 0px 0px -120px");
+ });
  
-// jQuery("#cross-link${clicked}").click(function() {
-// wicketAjaxGet('${url}&card=${uuid}', function() {
+// jQuery("#linkOnCard").click(function() {
+// var img = jQuery(".active-thumb img");
+// var id = img.attr('id');
+// var withoutPlaceholder = id.split('placeholder')[1];
+// var withoutImg = withoutPlaceholder.split('_img')[0];
+// var uuid = withoutImg.replace(/_/g,"-");
+//		
+// wicketAjaxGet('${url}&card=' + uuid + '&indexOfClickedCard=${clicked}',
+// function() {
 // }, null, null);
 // });
 	
 	jQuery("#playCardLink${clicked}").click(function () {
-		wicketAjaxGet('${url}&card=${uuid}&indexOfClickedCard=${clicked}' , function() {
+		var img = jQuery(".active-thumb img");
+		var id = img.attr('id');
+		var withoutPlaceholder = id.split('placeholder')[1];
+		var withoutImg = withoutPlaceholder.split('_img')[0];
+		var uuid = withoutImg.replace(/_/g,"-");
+		
+		wicketAjaxGet('${url}&card='+ uuid + '&indexOfClickedCard=${clicked}' , function() {
 		}, null, null);
 	});
 	
@@ -49,22 +58,22 @@ jQuery(document).ready(function() {
 			if (response.status == 200) {
 				
 				var data = response.responseBody;
-				var uuid = data.split("~~~")[1];
+				var id = data.split("~~~")[1];
 				var sessionId = data.split("~~~")[0];
 				
 				if (data.split("~~~").length > 0) {
-					if ((typeof uuid != "undefined") 
+					if ((typeof id != "undefined") 
 							&& (getCookie('JSESSIONID') == sessionId))
 							{
 							// We're in the play card Meteor
 							jQuery('#cross-link${next}').click();
 							jQuery('#cross-link-div${clicked}').remove();
 							jQuery('#placeholder${uuidValidForJs}').remove();
-		
-						} else if ((typeof uuid != "undefined")
+							jQuery('#cross-link${next}').addClass("active-thumb");
+						} else if ((typeof id != "undefined")
 								&& (getCookie('JSESSIONID') != sessionId)) 
 						{
-									wicketAjaxGet('${url}&card=' + uuid + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
+							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
 						};
 					};
 			};

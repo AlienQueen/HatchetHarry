@@ -43,7 +43,7 @@ blockquote									{ padding: 0 20px; margin-left: 20px; border-left: 20px solid
 #movers-row div								{ width: 7%; float: left; }
 #movers-row div a.cross-link 				{ float: right; }
 .photo-meta-data							{ background: url(/image/transpBlack.png); padding: 5px; height: 65px; 
-											  margin-top: -40px; width: 214px; z-index:555; color: white; }
+											  margin-top: -40px; width: 214px; z-index:555; color: black; }
 .photo-meta-data span 						{ font-size: 13px; }
 .cross-link									{ display: block; width: 23px; margin-top: 0px; 
 											  position: relative; padding-top: 0px; z-index: 2; }

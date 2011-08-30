@@ -166,5 +166,4 @@ public class HatchetHarrySession extends WebSession
 		return (Integer)this.getAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER);
 	}
 
-
 }

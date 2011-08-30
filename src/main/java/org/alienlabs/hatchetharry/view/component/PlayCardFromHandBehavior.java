@@ -38,6 +38,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	private final int indexOfClickedCard;
 	private final int indexOfNextCard;
 
+	static MagicCard card;
+
 	public PlayCardFromHandBehavior(final UUID _uuid, final WebMarkupContainer _parent,
 			final int _indexOfClickedCard, final int _indexOfNextCard)
 	{
@@ -72,10 +74,15 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 		HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard, _indexOfClickedCard);
 
-		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
+		PlayCardFromHandBehavior.card = this.persistenceService.getCardFromUuid(UUID
 				.fromString(uuidToLookFor));
 
-		if (("true".equals(stop)) && (null != uuidToLookFor))
+		PlayCardFromHandBehavior.logger.info("card title: "
+				+ PlayCardFromHandBehavior.card.getTitle() + ", uuid: "
+				+ PlayCardFromHandBehavior.card.getUuidObject() + ", filename: "
+				+ PlayCardFromHandBehavior.card.getBigImageFilename());
+
+		if ("true".equals(stop))
 		{
 			PlayCardFromHandBehavior.logger.info("stopping round-trips");
 
@@ -84,14 +91,16 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			HatchetHarrySession.get().setPlaceholderNumber(
 					HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-			final CardPanel cp = new CardPanel(id, card.getSmallImageFilename(),
-					card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
+			final CardPanel cp = new CardPanel(id,
+					PlayCardFromHandBehavior.card.getSmallImageFilename(),
+					PlayCardFromHandBehavior.card.getBigImageFilename(),
+					PlayCardFromHandBehavior.card.getUuidObject());
 			cp.setOutputMarkupId(true);
 
 			this.parent.addOrReplace(cp);
 			target.addComponent(this.parent);
 		}
-		else if ((null != card) && (null != uuidToLookFor) && (!"undefined".equals(uuidToLookFor)))
+		else if ((null != uuidToLookFor) && (!"undefined".equals(uuidToLookFor)))
 		{
 			PlayCardFromHandBehavior.logger.info("card: " + uuidToLookFor);
 
@@ -100,13 +109,15 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			HatchetHarrySession.get().setPlaceholderNumber(
 					HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-			final CardPanel cp = new CardPanel(id, card.getSmallImageFilename(),
-					card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
+			final CardPanel cp = new CardPanel(id,
+					PlayCardFromHandBehavior.card.getSmallImageFilename(),
+					PlayCardFromHandBehavior.card.getBigImageFilename(),
+					UUID.fromString(uuidToLookFor));
 			cp.setOutputMarkupId(true);
 
 			PlayCardFromHandBehavior.logger.info("continue!");
 
-			final String message = jsessionid + "~~~" + this.uuid.toString() + "~~~"
+			final String message = jsessionid + "~~~" + uuidToLookFor + "~~~"
 					+ (this.indexOfClickedCard == 6 ? 0 : this.indexOfClickedCard + 1);
 			PlayCardFromHandBehavior.logger.info(message);
 

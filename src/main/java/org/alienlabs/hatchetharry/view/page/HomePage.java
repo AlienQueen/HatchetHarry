@@ -127,7 +127,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.createCardPanelPlaceholders();
 
 		// Welcome message
-		this.add(new Label("message", "version 0.0.3 built on Monday, 29th of August 2011"));
+		this.add(new Label("message", "version 0.0.3 built on Tuesday, 30th of August 2011"));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -196,6 +196,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck.setPlayerId(p.getId());
 		this.deck = this.persistenceService.saveDeck(this.deck);
 
+		HatchetHarrySession.get().setPlayer(p);
 		this.player = p;
 	}
 
@@ -233,11 +234,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final String uuidToLookFor = mc.getUuid();
 
 		HomePage.this.persistenceService.getCardFromUuid(UUID.fromString(uuidToLookFor));
-
-		// this.cp = new CardPanel("cardPlaceholder3",
-		// card.getSmallImageFilename(),
-		// card.getBigImageFilename(), UUID.fromString(uuidToLookFor));
-		// this.cp.setOutputMarkupId(true);
 
 		this.playCardLink.add(new PlayCardFromHandBehavior(UUID.fromString(uuidToLookFor),
 				this.playCardParent1, 0, 1));
@@ -341,6 +337,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
 				wrapper.setMarkupId("wrapper" + item.getIndex());
 				wrapper.setOutputMarkupId(true);
+
+				// final WebMarkupContainer linkOnCard = new
+				// WebMarkupContainer("linkOnCard");
+				// linkOnCard.setMarkupId("linkOnCard");
+				// linkOnCard.setOutputMarkupId(true);
+				// wrapper.add(linkOnCard);
 
 				final Image handImagePlaceholder = new Image("handImagePlaceholder",
 						new ResourceReference(HomePage.class, card.getBigImageFilename()));
