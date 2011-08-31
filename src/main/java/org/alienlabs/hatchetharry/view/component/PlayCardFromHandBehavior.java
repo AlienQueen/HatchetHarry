@@ -149,7 +149,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		response.renderJavascript(template1.asString(), null);
 	}
 
-
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{

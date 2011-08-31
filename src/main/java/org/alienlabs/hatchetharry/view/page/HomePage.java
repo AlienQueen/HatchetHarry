@@ -53,6 +53,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
+import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.apache.wicket.ResourceReference;
@@ -144,6 +145,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.generateTemInfoLink();
 		this.generatePlayCardLink(this.hand.get(0));
 		this.generatePlayCardsBehaviorsForAllOpponents();
+		this.buildDataBox(1l);
+	}
+
+	private void buildDataBox(final long _gameId)
+	{
+		this.add(new DataBox("dataBox", _gameId));
 	}
 
 	public synchronized void buildHandCards()

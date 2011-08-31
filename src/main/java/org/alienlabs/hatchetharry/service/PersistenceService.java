@@ -165,6 +165,18 @@ public class PersistenceService
 		return query.list().size() > 0;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Player> getAllPlayersOfGame(final long l)
+	{
+		final Session session = this.playerDao.getSession();
+
+		final Query query = session.createQuery("from Player player0_ where player0_.gameId=?");
+		query.setLong(0, l);
+
+		return query.list();
+	}
+
 	@Transactional
 	public boolean getPlayerByJsessionId(final String jsessionid)
 	{

@@ -104,7 +104,10 @@
 
   <div id="menu_3" class="mbmenu">
     <a  class="{action: 'showMessage(\'menu_2.2\')'}">
-        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your life<br/>
+        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
+    </a>
+	    <a  class="{action: 'showMessage(\'menu_2.3\')'}">
+        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
     </a>
     <a rel="separator"> </a>
     <a id="aaa" class="{menu:'sub_menu_3'}">Mana</a>
@@ -167,7 +170,9 @@
 	
 	<br/><br/><br/><br/><br/>
 	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span><br/><br/>
-  	
+  	<br/><br/>
+	<span wicket:id="dataBox"></span> 
+	
   	<span align="left">
 	  	<span id="header"></span>
 			<span id="nav"></span>
@@ -394,11 +399,11 @@
 
 
 	<!-- The toolbar -->
-	<div id='content'> 
+	<div id="content"> 
 	</div>
 
  
-	<div id='floatingbar'> 
+	<div id="floatingbar"> 
 
          <ul class="gallery clearfix">
 				<li>
