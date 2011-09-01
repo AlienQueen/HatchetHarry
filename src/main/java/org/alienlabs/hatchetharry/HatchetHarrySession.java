@@ -25,6 +25,7 @@ public class HatchetHarrySession extends WebSession
 	private static String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
 	private static String PLAYER_LETTER = "PLAYER_LETTER";
 	private static String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
+	private static String GAME_CREATED = "GAME_CREATED";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -33,6 +34,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
+		this.setAttribute(HatchetHarrySession.GAME_CREATED, false);
 	}
 
 	public static HatchetHarrySession get()
@@ -166,4 +168,13 @@ public class HatchetHarrySession extends WebSession
 		return (Integer)this.getAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER);
 	}
 
+	public synchronized void setGameCreated()
+	{
+		this.setAttribute(HatchetHarrySession.GAME_CREATED, true);
+	}
+
+	public synchronized boolean isGameCreated()
+	{
+		return (Boolean)this.getAttribute(HatchetHarrySession.GAME_CREATED);
+	}
 }

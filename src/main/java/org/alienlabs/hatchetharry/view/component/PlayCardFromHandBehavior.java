@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +11,16 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackagedTextTemplate;
@@ -30,25 +36,25 @@ import org.springframework.beans.factory.annotation.Required;
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
 	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
-	private final UUID uuid;
-	private final WebMarkupContainer parent;
 
 	@SpringBean
 	private PersistenceService persistenceService;
-	private final int indexOfClickedCard;
-	private final int indexOfNextCard;
 
-	static MagicCard card;
+	private final WebMarkupContainer thumbParent;
+	private final WebMarkupContainer cardParent;
 
-	public PlayCardFromHandBehavior(final UUID _uuid, final WebMarkupContainer _parent,
-			final int _indexOfClickedCard, final int _indexOfNextCard)
+	private UUID uuidToLookFor;
+	private int currentCard;
+
+	public PlayCardFromHandBehavior(final WebMarkupContainer _thumbParent,
+			final WebMarkupContainer _cardParent, final UUID _uuidToLookFor, final int _currentCard)
 	{
 		super();
 		InjectorHolder.getInjector().inject(this);
-		this.uuid = _uuid;
-		this.parent = _parent;
-		this.indexOfClickedCard = _indexOfClickedCard;
-		this.indexOfNextCard = _indexOfNextCard;
+		this.thumbParent = _thumbParent;
+		this.cardParent = _cardParent;
+		this.uuidToLookFor = _uuidToLookFor;
+		this.currentCard = _currentCard;
 	}
 
 	@Override
@@ -60,10 +66,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		final String uuidToLookFor = request.getParameter("card");
+		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 		final String stop = request.getParameter("stop");
+		PlayCardFromHandBehavior.logger.info("url: " + request.getQueryString());
 
-		int _indexOfClickedCard = 0;
+		int _indexOfClickedCard = -1;
 		try
 		{
 			_indexOfClickedCard = Integer.parseInt(request.getParameter("indexOfClickedCard"));
@@ -72,61 +79,98 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		{
 			PlayCardFromHandBehavior.logger.info("Error which should never happen!");
 		}
-		HatchetHarrySession.get().addCardIdInHand(_indexOfClickedCard, _indexOfClickedCard);
 
-		PlayCardFromHandBehavior.card = this.persistenceService.getCardFromUuid(UUID
-				.fromString(uuidToLookFor));
+		this.currentCard = _indexOfClickedCard;
 
-		PlayCardFromHandBehavior.logger.info("card title: "
-				+ PlayCardFromHandBehavior.card.getTitle() + ", uuid: "
-				+ PlayCardFromHandBehavior.card.getUuidObject() + ", filename: "
-				+ PlayCardFromHandBehavior.card.getBigImageFilename());
+		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
+		final List<MagicCard> all = HatchetHarrySession.get().getFirstCardsInHand();
+		all.remove(card);
+		HatchetHarrySession.get().setFirstCardsInHand(all);
 
-		if ("true".equals(stop))
+		if (null != card)
 		{
-			PlayCardFromHandBehavior.logger.info("stopping round-trips");
+			PlayCardFromHandBehavior.logger.info("card title: " + card.getTitle() + ", uuid: "
+					+ card.getUuidObject() + ", filename: " + card.getBigImageFilename());
 
-			final String id = "cardPlaceholder" + HatchetHarrySession.get().getPlayerLetter()
-					+ HatchetHarrySession.get().getPlaceholderNumber();
-			HatchetHarrySession.get().setPlaceholderNumber(
-					HatchetHarrySession.get().getPlaceholderNumber() + 1);
+			if ("true".equals(stop))
+			{
+				PlayCardFromHandBehavior.logger.info("stopping round-trips");
 
-			final CardPanel cp = new CardPanel(id,
-					PlayCardFromHandBehavior.card.getSmallImageFilename(),
-					PlayCardFromHandBehavior.card.getBigImageFilename(),
-					PlayCardFromHandBehavior.card.getUuidObject());
-			cp.setOutputMarkupId(true);
+				final String id = "cardPlaceholdera"
+						+ HatchetHarrySession.get().getPlaceholderNumber();
+				HatchetHarrySession.get().setPlaceholderNumber(
+						HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-			this.parent.addOrReplace(cp);
-			target.addComponent(this.parent);
-		}
-		else if ((null != uuidToLookFor) && (!"undefined".equals(uuidToLookFor)))
-		{
-			PlayCardFromHandBehavior.logger.info("card: " + uuidToLookFor);
+				final CardPanel cp = new CardPanel(id, card.getSmallImageFilename(),
+						card.getBigImageFilename(), card.getUuidObject());
+				cp.setOutputMarkupId(true);
 
-			final String id = "cardPlaceholder" + HatchetHarrySession.get().getPlayerLetter()
-					+ HatchetHarrySession.get().getPlaceholderNumber();
-			HatchetHarrySession.get().setPlaceholderNumber(
-					HatchetHarrySession.get().getPlaceholderNumber() + 1);
+				this.thumbParent.addOrReplace(cp);
+				target.addComponent(this.thumbParent);
+			}
+			else if ((null != this.uuidToLookFor) && (!"undefined".equals(this.uuidToLookFor)))
+			{
+				PlayCardFromHandBehavior.logger.info("card: " + this.uuidToLookFor);
 
-			final CardPanel cp = new CardPanel(id,
-					PlayCardFromHandBehavior.card.getSmallImageFilename(),
-					PlayCardFromHandBehavior.card.getBigImageFilename(),
-					UUID.fromString(uuidToLookFor));
-			cp.setOutputMarkupId(true);
+				final String id = "cardPlaceholdera"
+						+ HatchetHarrySession.get().getPlaceholderNumber();
+				HatchetHarrySession.get().setPlaceholderNumber(
+						HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-			PlayCardFromHandBehavior.logger.info("continue!");
+				final CardPanel cp = new CardPanel(id, card.getSmallImageFilename(),
+						card.getBigImageFilename(), this.uuidToLookFor);
+				cp.setOutputMarkupId(true);
 
-			final String message = jsessionid + "~~~" + uuidToLookFor + "~~~"
-					+ (this.indexOfClickedCard == 6 ? 0 : this.indexOfClickedCard + 1);
-			PlayCardFromHandBehavior.logger.info(message);
+				PlayCardFromHandBehavior.logger.info("continue!");
 
-			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-			meteor.broadcast(message);
+				final String message = jsessionid + "~~~" + this.uuidToLookFor + "~~~"
+						+ (_indexOfClickedCard == 6 ? 0 : _indexOfClickedCard + 1);
+				PlayCardFromHandBehavior.logger.info(message);
 
-			this.parent.addOrReplace(cp);
-			target.addComponent(this.parent);
+				final Meteor meteor = Meteor
+						.build(request, new LinkedList<BroadcastFilter>(), null);
+				meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+				meteor.broadcast(message);
+
+				final ListView<MagicCard> allCards = new ListView<MagicCard>("handCards",
+						HatchetHarrySession.get().getFirstCardsInHand())
+				{
+					private static final long serialVersionUID = -7874661839855866875L;
+
+					@Override
+					protected void populateItem(final ListItem<MagicCard> item)
+					{
+						HatchetHarrySession.get().addCardIdInHand(item.getIndex(), item.getIndex());
+						final MagicCard _card = item.getModelObject();
+
+						final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
+						wrapper.setMarkupId("wrapper" + item.getIndex());
+						wrapper.setOutputMarkupId(true);
+
+						final Image handImagePlaceholder = new Image("handImagePlaceholder",
+								new ResourceReference(HomePage.class, _card.getBigImageFilename()));
+						handImagePlaceholder.setMarkupId("placeholder"
+								+ _card.getUuid().replace("-", "_"));
+						handImagePlaceholder.setOutputMarkupId(true);
+
+						final Label titlePlaceholder = new Label("titlePlaceholder",
+								_card.getTitle());
+						titlePlaceholder.setMarkupId("placeholder"
+								+ _card.getUuid().replace("-", "_") + "_placeholder");
+						titlePlaceholder.setOutputMarkupId(true);
+
+						wrapper.add(handImagePlaceholder, titlePlaceholder);
+						item.add(wrapper);
+
+					}
+				};
+				allCards.setOutputMarkupId(true);
+				this.cardParent.addOrReplace(allCards);
+				target.addComponent(this.cardParent);
+
+				this.thumbParent.addOrReplace(cp);
+				target.addComponent(this.thumbParent);
+			}
 		}
 	}
 
@@ -137,10 +181,10 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.uuid.toString());
-		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
-		variables.put("next", this.indexOfNextCard);
-		variables.put("clicked", this.indexOfClickedCard);
+		variables.put("uuid", this.uuidToLookFor.toString());
+		variables.put("uuidValidForJs", this.uuidToLookFor.toString().replace("-", "_"));
+		variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));
+		variables.put("clicked", this.currentCard);
 
 		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
 				"script/playCard/playCard.js");

@@ -27,6 +27,8 @@ public class Deck implements Serializable
 	private Long playerId;
 	@OneToMany(mappedBy = "deck")
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
+	@Column
+	private String deckName;
 
 	public List<MagicCard> shuffleLibrary()
 	{
@@ -66,6 +68,22 @@ public class Deck implements Serializable
 	public void setCards(final List<MagicCard> _cards)
 	{
 		this.cards = _cards;
+	}
+
+	public String getDeckName()
+	{
+		return this.deckName;
+	}
+
+	public void setDeckName(final String _deckName)
+	{
+		this.deckName = _deckName;
+	}
+
+	@Override
+	public String toString()
+	{
+		return this.getDeckName();
 	}
 
 }

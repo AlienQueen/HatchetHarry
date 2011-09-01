@@ -1,23 +1,27 @@
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Player")
 public class Player implements Serializable
 {
 	private static final long serialVersionUID = 7963755937946852379L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	@Column
-	private Long gameId;
+	private Long playerId;
+	@ManyToMany(mappedBy = "players")
+	private List<Game> game;
 	@Column
 	private String side;
 	@Column
@@ -29,12 +33,12 @@ public class Player implements Serializable
 
 	public Long getId()
 	{
-		return this.id;
+		return this.playerId;
 	}
 
 	public void setId(final Long _id)
 	{
-		this.id = _id;
+		this.playerId = _id;
 	}
 
 	public String getSide()
@@ -77,13 +81,13 @@ public class Player implements Serializable
 		this.lifePoints = _lifePoints;
 	}
 
-	public Long getGameId()
+	public List<Game> getGame()
 	{
-		return this.gameId;
+		return this.game;
 	}
 
-	public void setGameId(final Long _gameId)
+	public void setGame(final List<Game> _game)
 	{
-		this.gameId = _gameId;
+		this.game = _game;
 	}
 }

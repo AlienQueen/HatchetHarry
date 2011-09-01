@@ -15,7 +15,7 @@
 // to get the element that is fireing a contextMenu event you have
 // $.mbMenu.lastContextMenuEl that returns an object.
 (function($) {
-	$.mbMenu = {
+	jQuery.mbMenu = {
 		name : "mbMenu",
 		author : "Matteo Bicocchi",
 		version : "2.8.5rc5",
@@ -59,20 +59,20 @@
 						thisMenu.id = !this.id ? "menu_"
 								+ Math.floor(Math.random() * 1000) : this.id;
 						this.options = {};
-						$.extend(this.options, $.mbMenu.options);
-						$.extend(this.options, options);
+						jQuery.extend(this.options, jQuery.mbMenu.options);
+						jQuery.extend(this.options, options);
 
-						$(".mbmenu").hide();
+						jQuery(".mbmenu").hide();
 						thisMenu.clicked = false;
 						thisMenu.rootMenu = false;
 						thisMenu.actualOpenedMenu = false;
 						thisMenu.menuvoice = false;
-						var root = $(this);
+						var root = jQuery(this);
 						var openOnClick = this.options.openOnClick;
 						var closeOnMouseOut = this.options.closeOnMouseOut;
 
 						// build roots
-						$(root)
+						jQuery(root)
 								.each(
 										function() {
 
@@ -83,149 +83,171 @@
 											 * ex: class="rootVoice
 											 * {menu:'menu_2'}"
 											 */
-											if ($.metadata) {
-												$.metadata.setType("class");
-												thisMenu.menuvoice = $(this)
+											if (jQuery.metadata) {
+												jQuery.metadata
+														.setType("class");
+												thisMenu.menuvoice = jQuery(
+														this)
 														.find(".rootVoice");
-												$(thisMenu.menuvoice)
+												jQuery(thisMenu.menuvoice)
 														.each(
 																function() {
-																	if ($(this)
+																	if (jQuery(
+																			this)
 																			.metadata().menu)
-																		$(this)
+																		jQuery(
+																				this)
 																				.attr(
 																						"menu",
-																						$(
+																						jQuery(
 																								this)
 																								.metadata().menu);
-																	if ($(this)
+																	if (jQuery(
+																			this)
 																			.metadata().disabled)
-																		$(this)
+																		jQuery(
+																				this)
 																				.attr(
 																						"isDisable",
-																						$(
+																						jQuery(
 																								this)
 																								.metadata().disabled);
 																});
 											}
 
-											thisMenu.menuvoice = $(this).find(
-													"[menu]").add(
-													$(this).filter("[menu]"));
+											thisMenu.menuvoice = jQuery(this)
+													.find("[menu]")
+													.add(
+															jQuery(this)
+																	.filter(
+																			"[menu]"));
 											thisMenu.menuvoice.filter(
 													"[isDisable]").addClass(
 													"disabled");
 
-											$(thisMenu.menuvoice).css(
+											jQuery(thisMenu.menuvoice).css(
 													"white-space", "nowrap");
 
 											if (openOnClick) {
-												$(thisMenu.menuvoice)
+												jQuery(thisMenu.menuvoice)
 														.bind(
 																"click",
 																function() {
-																	$(document)
+																	jQuery(
+																			document)
 																			.unbind(
 																					"click.closeMbMenu");
-																	if (!$(this)
+																	if (!jQuery(
+																			this)
 																			.attr(
 																					"isOpen")) {
-																		$(this)
+																		jQuery(
+																				this)
 																				.buildMbMenu(
 																						thisMenu,
-																						$(
+																						jQuery(
 																								this)
 																								.attr(
 																										"menu"));
-																		$(this)
+																		jQuery(
+																				this)
 																				.attr(
 																						"isOpen",
 																						"true");
 																	} else {
-																		$(this)
+																		jQuery(
+																				this)
 																				.removeMbMenu(
 																						thisMenu,
 																						true);
-																		$(this)
+																		jQuery(
+																				this)
 																				.addClass(
 																						"selected");
 																	}
 
 																	// empty
-																	if ($(this)
+																	if (jQuery(
+																			this)
 																			.attr(
 																					"menu") == "empty") {
 																		if (thisMenu.actualOpenedMenu) {
-																			$(
+																			jQuery(
 																					"[isOpen]")
 																					.removeAttr(
 																							"isOpen");
 																		}
-																		$(this)
+																		jQuery(
+																				this)
 																				.removeMbMenu(
 																						thisMenu);
 																	}
-																	$(document)
+																	jQuery(
+																			document)
 																			.unbind(
 																					"click.closeMbMenu");
 																});
 											}
-											var mouseOver = $.browser.msie ? "mouseenter"
+											var mouseOver = jQuery.browser.msie ? "mouseenter"
 													: "mouseover";
-											var mouseOut = $.browser.msie ? "mouseleave"
+											var mouseOut = jQuery.browser.msie ? "mouseleave"
 													: "mouseout";
 
-											$(thisMenu.menuvoice)
+											jQuery(thisMenu.menuvoice)
 													.mb_hover(
 															this.options.hoverIntent,
 															function() {
-																if (!$(this)
+																if (!jQuery(
+																		this)
 																		.attr(
 																				"isOpen"))
-																	$(
+																	jQuery(
 																			"[isOpen]")
 																			.removeAttr(
 																					"isOpen");
 																if (closeOnMouseOut)
-																	clearTimeout($.mbMenu.deleteOnMouseOut);
+																	clearTimeout(jQuery.mbMenu.deleteOnMouseOut);
 																if (!openOnClick)
-																	$(thisMenu)
+																	jQuery(
+																			thisMenu)
 																			.find(
 																					".selected")
 																			.removeClass(
 																					"selected");
 																if (thisMenu.actualOpenedMenu) {
-																	$(
+																	jQuery(
 																			thisMenu.actualOpenedMenu)
 																			.removeClass(
 																					"selected");
 																}
-																$(this)
+																jQuery(this)
 																		.addClass(
 																				"selected");
 																if ((thisMenu.clicked || !openOnClick)
-																		&& !$(
+																		&& !jQuery(
 																				this)
 																				.attr(
 																						"isOpen")) {
-																	$(this)
+																	jQuery(this)
 																			.removeMbMenu(
 																					thisMenu);
-																	$(this)
+																	jQuery(this)
 																			.buildMbMenu(
 																					thisMenu,
-																					$(
+																					jQuery(
 																							this)
 																							.attr(
 																									"menu"));
-																	if ($(this)
+																	if (jQuery(
+																			this)
 																			.attr(
 																					"menu") == "empty") {
-																		$(this)
+																		jQuery(
+																				this)
 																				.removeMbMenu(
 																						thisMenu);
 																	}
-																	$(this)
+																	jQuery(this)
 																			.attr(
 																					"isOpen",
 																					"true");
@@ -233,44 +255,44 @@
 															},
 															function() {
 																if (closeOnMouseOut)
-																	$.mbMenu.deleteOnMouseOut = setTimeout(
+																	jQuery.mbMenu.deleteOnMouseOut = setTimeout(
 																			function() {
-																				$(
+																				jQuery(
 																						this)
 																						.removeMbMenu(
 																								thisMenu,
 																								true);
-																				$(
+																				jQuery(
 																						document)
 																						.unbind(
 																								"click.closeMbMenu");
 																			},
-																			$(root)[0].options.closeAfter);
+																			jQuery(root)[0].options.closeAfter);
 
-																if ($(this)
+																if (jQuery(this)
 																		.attr(
 																				"menu") == "empty") {
-																	$(this)
+																	jQuery(this)
 																			.removeClass(
 																					"selected");
 																}
 																if (!thisMenu.clicked)
-																	$(this)
+																	jQuery(this)
 																			.removeClass(
 																					"selected");
-																$(document)
+																jQuery(document)
 																		.one(
 																				"click.closeMbMenu",
 																				function() {
-																					$(
+																					jQuery(
 																							"[isOpen]")
 																							.removeAttr(
 																									"isOpen");
-																					$(
+																					jQuery(
 																							this)
 																							.removeClass(
 																									"selected");
-																					$(
+																					jQuery(
 																							this)
 																							.removeMbMenu(
 																									thisMenu,
@@ -287,9 +309,9 @@
 					.each(function() {
 						var thisMenu = this;
 						thisMenu.options = {};
-						$.extend(thisMenu.options, $.mbMenu.options);
-						$.extend(thisMenu.options, options);
-						$(".mbmenu").hide();
+						jQuery.extend(thisMenu.options, jQuery.mbMenu.options);
+						jQuery.extend(thisMenu.options, options);
+						jQuery(".mbmenu").hide();
 						thisMenu.clicked = false;
 						thisMenu.rootMenu = false;
 						thisMenu.actualOpenedMenu = false;
@@ -301,23 +323,27 @@
 						 * class="rootVoice {menu:'menu_2'}"
 						 */
 						var cMenuEls;
-						if ($.metadata) {
-							$.metadata.setType("class");
-							cMenuEls = $(this).find(".cmVoice");
-							$(cMenuEls).each(
-									function() {
-										if ($(this).metadata().cMenu)
-											$(this).attr("cMenu",
-													$(this).metadata().cMenu);
-									});
+						if (jQuery.metadata) {
+							jQuery.metadata.setType("class");
+							cMenuEls = jQuery(this).find(".cmVoice");
+							jQuery(cMenuEls)
+									.each(
+											function() {
+												if (jQuery(this).metadata().cMenu)
+													jQuery(this)
+															.attr(
+																	"cMenu",
+																	jQuery(this)
+																			.metadata().cMenu);
+											});
 						}
-						cMenuEls = $(this).find("[cMenu]").add(
-								$(this).filter("[cMenu]"));
+						cMenuEls = jQuery(this).find("[cMenu]").add(
+								jQuery(this).filter("[cMenu]"));
 
-						$(cMenuEls)
+						jQuery(cMenuEls)
 								.each(
 										function() {
-											$(this).css({
+											jQuery(this).css({
 												"-webkit-user-select" : "none",
 												"-moz-user-select" : "none"
 											});
@@ -327,10 +353,10 @@
 															.floor(Math
 																	.random() * 100)
 													: cm.id;
-											$(cm).css({
+											jQuery(cm).css({
 												cursor : "default"
 											});
-											$(cm)
+											jQuery(cm)
 													.bind(
 															"contextmenu",
 															"mousedown",
@@ -341,12 +367,13 @@
 																		.stopPropagation();
 																event.cancelBubble = true;
 
-																$.mbMenu.lastContextMenuEl = cm;
+																jQuery.mbMenu.lastContextMenuEl = cm;
 
-																if ($.mbMenu.options.actualMenuOpener) {
-																	$(thisMenu)
+																if (jQuery.mbMenu.options.actualMenuOpener) {
+																	jQuery(
+																			thisMenu)
 																			.removeMbMenu(
-																					$.mbMenu.options.actualMenuOpener);
+																					jQuery.mbMenu.options.actualMenuOpener);
 																}
 																/*
 																 * add custom
@@ -381,16 +408,16 @@
 																				this,
 																				event);
 
-																$(this)
+																jQuery(this)
 																		.buildMbMenu(
 																				thisMenu,
-																				$(
+																				jQuery(
 																						this)
 																						.attr(
 																								"cMenu"),
 																				"cm",
 																				event);
-																$(this)
+																jQuery(this)
 																		.attr(
 																				"isOpen",
 																				"true");
@@ -400,96 +427,85 @@
 					});
 		}
 	};
-	$.fn
+	jQuery.fn
 			.extend({
 				buildMbMenu : function(op, m, type, e) {
-					var msie6 = $.browser.msie && $.browser.version == "6.0";
-					var mouseOver = $.browser.msie ? "mouseenter" : "mouseover";
-					var mouseOut = $.browser.msie ? "mouseleave" : "mouseout";
+					var msie6 = jQuery.browser.msie
+							&& jQuery.browser.version == "6.0";
+					var mouseOver = jQuery.browser.msie ? "mouseenter"
+							: "mouseover";
+					var mouseOut = jQuery.browser.msie ? "mouseleave"
+							: "mouseout";
 					if (e) {
-						this.mouseX = $(this).getMouseX(e);
-						this.mouseY = $(this).getMouseY(e);
+						this.mouseX = jQuery(this).getMouseX(e);
+						this.mouseY = jQuery(this).getMouseY(e);
 					}
 
-					if ($.mbMenu.options.actualMenuOpener
-							&& $.mbMenu.options.actualMenuOpener != op)
-						$(op).removeMbMenu($.mbMenu.options.actualMenuOpener);
-					$.mbMenu.options.actualMenuOpener = op;
+					if (jQuery.mbMenu.options.actualMenuOpener
+							&& jQuery.mbMenu.options.actualMenuOpener != op)
+						jQuery(op).removeMbMenu(
+								jQuery.mbMenu.options.actualMenuOpener);
+					jQuery.mbMenu.options.actualMenuOpener = op;
 					if (!type || type == "cm") {
 						if (op.rootMenu) {
-							$(op.rootMenu).removeMbMenu(op);
-							$(op.actualOpenedMenu).removeAttr("isOpen");
-							$("[isOpen]").removeAttr("isOpen");
+							jQuery(op.rootMenu).removeMbMenu(op);
+							jQuery(op.actualOpenedMenu).removeAttr("isOpen");
+							jQuery("[isOpen]").removeAttr("isOpen");
 						}
 						op.clicked = true;
 						op.actualOpenedMenu = this;
-						$(op.actualOpenedMenu).attr("isOpen", "true");
-						$(op.actualOpenedMenu).addClass("selected");
+						jQuery(op.actualOpenedMenu).attr("isOpen", "true");
+						jQuery(op.actualOpenedMenu).addClass("selected");
 					}
 
 					// empty
-					if ($(this).attr("menu") == "empty") {
+					if (jQuery(this).attr("menu") == "empty") {
 						return;
 					}
 
 					var opener = this;
-					var where = (!type || type == "cm") ? $(document.body) : $(
-							this).parent().parent();
+					var where = (!type || type == "cm") ? jQuery(document.body)
+							: jQuery(this).parent().parent();
 
 					var menuClass = op.options.menuSelector.replace(".", "");
 
 					if (op.rootMenu)
 						menuClass += " submenuContainer";
-					if (!op.rootMenu && $(opener).attr("isDisable"))
+					if (!op.rootMenu && jQuery(opener).attr("isDisable"))
 						menuClass += " disabled";
 
 					where.append("<div class='menuDiv'><div class='"
 							+ menuClass + " '></div></div>");
 					this.menu = where.find(".menuDiv");
-					$(this.menu).css({
+					jQuery(this.menu).css({
 						width : 0,
 						height : 0
 					});
 					if (op.options.minZindex != "auto") {
-						$(this.menu).css({
+						jQuery(this.menu).css({
 							zIndex : op.options.minZindex++
 						});
 					} else {
-						$(this.menu).mb_bringToFront();
+						jQuery(this.menu).mb_bringToFront();
 					}
-					this.menuContainer = $(this.menu).find(
+					this.menuContainer = jQuery(this.menu).find(
 							op.options.menuSelector);
 
-					$(this.menuContainer).bind(mouseOver, function() {
-						$(opener).addClass("selected");
+					jQuery(this.menuContainer).bind(mouseOver, function() {
+						jQuery(opener).addClass("selected");
 					});
-					$(this.menuContainer).css({
+					jQuery(this.menuContainer).css({
 						position : "absolute",
 						opacity : op.options.opacity
 					});
-					if (!$("#" + m).html()) {
-						$.ajax({
-							type : "POST",
-							url : op.options.template,
-							cache : false,
-							async : false,
-							data : "menuId="
-									+ m
-									+ (op.options.additionalData != "" ? "&"
-											+ op.options.additionalData : ""),
-							success : function(html) {
-								$("body").append(html);
-								$("#" + m).hide();
-							}
-						});
-					}
-					$(this.menuContainer).attr("id", "mb_" + m).hide();
+
+					jQuery(this.menuContainer).attr("id", "mb_" + m).hide();
 
 					// LITERAL MENU SUGGESTED BY SvenDowideit
-					var isBoxmenu = $("#" + m).hasClass("boxMenu");
+					var isBoxmenu = jQuery("#" + m).hasClass("boxMenu");
 
 					if (isBoxmenu) {
-						this.voices = $("#" + m).clone(true);
+						this.voices = jQuery("#" + m).clone(true);
 						this.voices.css({
 							display : "block"
 						});
@@ -497,7 +513,7 @@
 					} else {
 						// TODO this will break <a rel=text> - if there are
 						// nested a's
-						this.voices = $("#" + m).find("a").clone(true);
+						this.voices = jQuery("#" + m).find("a").clone(true);
 					}
 
 					/*
@@ -505,50 +521,65 @@
 					 * inside the class attr with a JSON sintax for ex:
 					 * class="rootVoice {menu:'menu_2'}"
 					 */
-					if ($.metadata) {
-						$.metadata.setType("class");
-						$(this.voices).each(
-								function() {
-									if ($(this).metadata().disabled)
-										$(this).attr("isdisable",
-												$(this).metadata().disabled);
-									if ($(this).metadata().img)
-										$(this).attr("img",
-												$(this).metadata().img);
-									if ($(this).metadata().menu)
-										$(this).attr("menu",
-												$(this).metadata().menu);
-									if ($(this).metadata().action)
-										$(this).attr("action",
-												$(this).metadata().action);
-								});
+					if (jQuery.metadata) {
+						jQuery.metadata.setType("class");
+						jQuery(this.voices)
+								.each(
+										function() {
+											if (jQuery(this).metadata().disabled)
+												jQuery(this)
+														.attr(
+																"isdisable",
+																jQuery(this)
+																		.metadata().disabled);
+											if (jQuery(this).metadata().img)
+												jQuery(this)
+														.attr(
+																"img",
+																jQuery(this)
+																		.metadata().img);
+											if (jQuery(this).metadata().menu)
+												jQuery(this)
+														.attr(
+																"menu",
+																jQuery(this)
+																		.metadata().menu);
+											if (jQuery(this).metadata().action)
+												jQuery(this)
+														.attr(
+																"action",
+																jQuery(this)
+																		.metadata().action);
+										});
 					}
 
 					// build each voices of the menu
-					$(this.voices)
+					jQuery(this.voices)
 							.each(
 									function(i) {
 
 										var voice = this;
 										var imgPlace = "";
 
-										var isText = $(voice).attr("rel") == "text";
-										var isTitle = $(voice).attr("rel") == "title";
-										var isDisabled = $(voice).is(
+										var isText = jQuery(voice).attr("rel") == "text";
+										var isTitle = jQuery(voice).attr("rel") == "title";
+										var isDisabled = jQuery(voice).is(
 												"[isdisable]");
 										if (!op.rootMenu
-												&& $(opener).attr("isDisable"))
+												&& jQuery(opener).attr(
+														"isDisable"))
 											isDisabled = true;
 
-										var isSeparator = $(voice).attr("rel") == "separator";
+										var isSeparator = jQuery(voice).attr(
+												"rel") == "separator";
 
 										// boxMenu SUGGESTED by Sven Dowideit
 										if (op.options.hasImages && !isText
 												&& !isBoxmenu) {
 
-											var imgPath = $(voice).attr("img") ? $(
-													voice).attr("img")
-													: "";
+											var imgPath = jQuery(voice).attr(
+													"img") ? jQuery(voice)
+													.attr("img") : "";
 											imgPath = (imgPath.length > 3 && imgPath
 													.indexOf(".") > -1) ? "<img class='imgLine' src='"
 													+ op.options.iconPath
@@ -586,14 +617,16 @@
 													+ i
 													+ "'><div class='voice'></div></div>";
 
-										$(opener.menuContainer).append(line);
+										jQuery(opener.menuContainer).append(
+												line);
 
-										var menuLine = $(opener.menuContainer)
-												.find("#" + m + "_" + i);
+										var menuLine = jQuery(
+												opener.menuContainer).find(
+												"#" + m + "_" + i);
 										var menuVoice = menuLine.find(".voice");
 										if (!isSeparator) {
 											menuVoice.append(this);
-											if ($(this).attr("menu")
+											if (jQuery(this).attr("menu")
 													&& !isDisabled) {
 												menuLine
 														.find(".voice a")
@@ -610,7 +643,7 @@
 											}
 											if (isText) {
 												menuVoice.addClass("textBox");
-												if ($.browser.msie)
+												if (jQuery.browser.msie)
 													menuVoice
 															.css({
 																maxWidth : op.options.menuWidth
@@ -634,8 +667,8 @@
 														.bind(
 																"mouseover",
 																function() {
-																	clearTimeout($.mbMenu.deleteOnMouseOut);
-																	$(this)
+																	clearTimeout(jQuery.mbMenu.deleteOnMouseOut);
+																	jQuery(this)
 																			.addClass(
 																					"selected");
 																});
@@ -644,7 +677,7 @@
 														.bind(
 																"mouseout",
 																function() {
-																	$(this)
+																	jQuery(this)
 																			.removeClass(
 																					"selected");
 																});
@@ -654,42 +687,43 @@
 																op.options.submenuHoverIntent,
 																function(event) {
 																	if (opener.menuContainer.actualSubmenu
-																			&& !$(
+																			&& !jQuery(
 																					voice)
 																					.attr(
 																							"menu")) {
-																		$(
+																		jQuery(
 																				opener.menu)
 																				.find(
 																						".menuDiv")
 																				.remove();
-																		$(
+																		jQuery(
 																				opener.menuContainer.actualSubmenu)
 																				.removeClass(
 																						"selected");
 																		opener.menuContainer.actualSubmenu = false;
 																	}
-																	if ($(voice)
+																	if (jQuery(
+																			voice)
 																			.attr(
 																					"menu")) {
 																		if (opener.menuContainer.actualSubmenu
 																				&& opener.menuContainer.actualSubmenu != this) {
-																			$(
+																			jQuery(
 																					opener.menu)
 																					.find(
 																							".menuDiv")
 																					.remove();
-																			$(
+																			jQuery(
 																					opener.menuContainer.actualSubmenu)
 																					.removeClass(
 																							"selected");
 																			opener.menuContainer.actualSubmenu = false;
 																		}
-																		if (!$(
+																		if (!jQuery(
 																				voice)
 																				.attr(
 																						"action"))
-																			$(
+																			jQuery(
 																					opener.menuContainer)
 																					.find(
 																							"#"
@@ -701,18 +735,18 @@
 																							"default");
 																		if (!opener.menuContainer.actualSubmenu
 																				|| opener.menuContainer.actualSubmenu != this) {
-																			$(
+																			jQuery(
 																					opener.menu)
 																					.find(
 																							".menuDiv")
 																					.remove();
 
 																			opener.menuContainer.actualSubmenu = false;
-																			$(
+																			jQuery(
 																					this)
 																					.buildMbMenu(
 																							op,
-																							$(
+																							jQuery(
 																									voice)
 																									.attr(
 																											"menu"),
@@ -720,7 +754,8 @@
 																							event);
 																			opener.menuContainer.actualSubmenu = this;
 																		}
-																		$(this)
+																		jQuery(
+																				this)
 																				.attr(
 																						"isOpen",
 																						"true");
@@ -731,15 +766,15 @@
 											}
 											if (isDisabled || isTitle || isText
 													|| isBoxmenu) {
-												$(this).removeAttr("href");
+												jQuery(this).removeAttr("href");
 												menuLine
 														.bind(
 																mouseOver,
 																function() {
 																	if (closeOnMouseOut)
-																		clearTimeout($.mbMenu.deleteOnMouseOut);
+																		clearTimeout(jQuery.mbMenu.deleteOnMouseOut);
 																	if (opener.menuContainer.actualSubmenu) {
-																		$(
+																		jQuery(
 																				opener.menu)
 																				.find(
 																						".menuDiv")
@@ -754,36 +789,39 @@
 													.bind(
 															"click",
 															function() {
-																if (($(voice)
+																if ((jQuery(
+																		voice)
 																		.attr(
-																				"action") || $(
+																				"action") || jQuery(
 																		voice)
 																		.attr(
 																				"href"))
 																		&& !isDisabled
 																		&& !isBoxmenu
 																		&& !isText) {
-																	var target = $(
+																	var target = jQuery(
 																			voice)
 																			.attr(
-																					"target") ? $(
+																					"target") ? jQuery(
 																			voice)
 																			.attr(
 																					"target")
 																			: "_self";
-																	if ($(voice)
+																	if (jQuery(
+																			voice)
 																			.attr(
 																					"href")
-																			&& $(
+																			&& jQuery(
 																					voice)
 																					.attr(
 																							"href")
 																					.indexOf(
 																							"javascript:") > -1) {
-																		$(voice)
+																		jQuery(
+																				voice)
 																				.attr(
 																						"action",
-																						$(
+																						jQuery(
 																								voice)
 																								.attr(
 																										"href")
@@ -791,31 +829,33 @@
 																										"javascript:",
 																										""));
 																	}
-																	var link = $(
+																	var link = jQuery(
 																			voice)
 																			.attr(
-																					"action") ? $(
+																					"action") ? jQuery(
 																			voice)
 																			.attr(
 																					"action")
 																			: "window.open('"
-																					+ $(
+																					+ jQuery(
 																							voice)
 																							.attr(
 																									"href")
 																					+ "', '"
 																					+ target
 																					+ "')";
-																	$(voice)
+																	jQuery(
+																			voice)
 																			.removeAttr(
 																					"href");
 																	eval(link);
-																	$(this)
+																	jQuery(this)
 																			.removeMbMenu(
 																					op,
 																					true);
 																} else {
-																	$(document)
+																	jQuery(
+																			document)
 																			.unbind(
 																					"click.closeMbMenu");
 																}
@@ -825,43 +865,47 @@
 
 					// Close on Mouseout
 
-					var closeOnMouseOut = $(op)[0].options.closeOnMouseOut;
+					var closeOnMouseOut = jQuery(op)[0].options.closeOnMouseOut;
 					if (closeOnMouseOut) {
-						$(opener.menuContainer).bind("mouseenter", function() {
-							clearTimeout($.mbMenu.deleteOnMouseOut);
-						});
-						$(opener.menuContainer)
+						jQuery(opener.menuContainer)
+								.bind(
+										"mouseenter",
+										function() {
+											clearTimeout(jQuery.mbMenu.deleteOnMouseOut);
+										});
+						jQuery(opener.menuContainer)
 								.bind(
 										"mouseleave",
 										function() {
-											var menuToRemove = $.mbMenu.options.actualMenuOpener;
-											$.mbMenu.deleteOnMouseOut = setTimeout(
+											var menuToRemove = jQuery.mbMenu.options.actualMenuOpener;
+											jQuery.mbMenu.deleteOnMouseOut = setTimeout(
 													function() {
-														$(this).removeMbMenu(
-																menuToRemove,
-																true);
-														$(document)
+														jQuery(this)
+																.removeMbMenu(
+																		menuToRemove,
+																		true);
+														jQuery(document)
 																.unbind(
 																		"click.closeMbMenu");
 													},
-													$(op)[0].options.closeAfter);
+													jQuery(op)[0].options.closeAfter);
 										});
 					}
 
 					// positioning opened
 					var t = 0, l = 0;
-					$(this.menuContainer).css({
+					jQuery(this.menuContainer).css({
 						minWidth : op.options.menuWidth
 					});
-					if ($.browser.msie)
-						$(this.menuContainer).css("width",
-								$(this.menuContainer).width() + 2);
+					if (jQuery.browser.msie)
+						jQuery(this.menuContainer).css("width",
+								jQuery(this.menuContainer).width() + 2);
 
 					switch (type) {
 					case "sm":
-						t = $(this).position().top + op.options.submenuTop;
+						t = jQuery(this).position().top + op.options.submenuTop;
 
-						l = $(this).position().left + $(this).width()
+						l = jQuery(this).position().left + jQuery(this).width()
 								- op.options.submenuLeft;
 						break;
 					case "cm":
@@ -870,21 +914,25 @@
 						break;
 					default:
 						if (op.options.openOnRight) {
-							t = $(this).offset().top - ($.browser.msie ? 2 : 0)
+							t = jQuery(this).offset().top
+									- (jQuery.browser.msie ? 2 : 0)
 									+ op.options.menuTop;
-							l = $(this).offset().left + $(this).outerWidth()
+							l = jQuery(this).offset().left
+									+ jQuery(this).outerWidth()
 									- op.options.menuLeft
-									- ($.browser.msie ? 2 : 0);
+									- (jQuery.browser.msie ? 2 : 0);
 						} else {
-							t = $(this).offset().top + $(this).outerHeight()
-									- (!$.browser.mozilla ? 2 : 0)
+							t = jQuery(this).offset().top
+									+ jQuery(this).outerHeight()
+									- (!jQuery.browser.mozilla ? 2 : 0)
 									+ op.options.menuTop;
-							l = $(this).offset().left + op.options.menuLeft;
+							l = jQuery(this).offset().left
+									+ op.options.menuLeft;
 						}
 						break;
 					}
 
-					$(this.menu).css({
+					jQuery(this.menu).css({
 						position : "absolute",
 						top : t,
 						left : l
@@ -892,34 +940,35 @@
 
 					if (!type || type == "cm")
 						op.rootMenu = this.menu;
-					$(this.menuContainer).bind(mouseOut, function() {
-						$(document).one("click.closeMbMenu", function() {
-							$(document).removeMbMenu(op, true);
+					jQuery(this.menuContainer).bind(mouseOut, function() {
+						jQuery(document).one("click.closeMbMenu", function() {
+							jQuery(document).removeMbMenu(op, true);
 						});
 					});
 
 					if (op.options.fadeInTime > 0)
-						$(this.menuContainer).fadeIn(op.options.fadeInTime);
+						jQuery(this.menuContainer)
+								.fadeIn(op.options.fadeInTime);
 					else
-						$(this.menuContainer).show();
+						jQuery(this.menuContainer).show();
 
-					var wh = (op.options.containment == "window") ? $(window)
-							.height() : $("#" + op.options.containment)
-							.offset().top
-							+ $("#" + op.options.containment).outerHeight();
-					var ww = (op.options.containment == "window") ? $(window)
-							.width()
-							: $("#" + op.options.containment).offset().left
-									+ $("#" + op.options.containment)
-											.outerWidth();
+					var wh = (op.options.containment == "window") ? jQuery(
+							window).height() : jQuery(
+							"#" + op.options.containment).offset().top
+							+ jQuery("#" + op.options.containment)
+									.outerHeight();
+					var ww = (op.options.containment == "window") ? jQuery(
+							window).width() : jQuery(
+							"#" + op.options.containment).offset().left
+							+ jQuery("#" + op.options.containment).outerWidth();
 
-					var mh = $(this.menuContainer).outerHeight();
-					var mw = $(this.menuContainer).outerWidth();
+					var mh = jQuery(this.menuContainer).outerHeight();
+					var mw = jQuery(this.menuContainer).outerWidth();
 
-					var actualX = $(where.find(".menuDiv:first")).offset().left
-							- $(window).scrollLeft();
-					var actualY = $(where.find(".menuDiv:first")).offset().top
-							- $(window).scrollTop();
+					var actualX = jQuery(where.find(".menuDiv:first")).offset().left
+							- jQuery(window).scrollLeft();
+					var actualY = jQuery(where.find(".menuDiv:first")).offset().top
+							- jQuery(window).scrollTop();
 					switch (type) {
 					case "sm":
 						if ((actualX + mw) >= ww && mw < ww) {
@@ -934,7 +983,7 @@
 						break;
 					default:
 						if ((actualX + mw) >= ww && mw < ww) {
-							l -= ($(this.menuContainer).offset().left + mw)
+							l -= (jQuery(this.menuContainer).offset().left + mw)
 									- ww + 18;
 						}
 						break;
@@ -943,7 +992,7 @@
 						t -= ((actualY + mh) - wh) + 10;
 					}
 
-					$(this.menu).css({
+					jQuery(this.menu).css({
 						top : t,
 						left : l
 					});
@@ -951,24 +1000,24 @@
 
 				removeMbMenu : function(op, fade) {
 					if (!op)
-						op = $.mbMenu.options.actualMenuOpener;
+						op = jQuery.mbMenu.options.actualMenuOpener;
 					if (!op)
 						return;
 					if (op.rootMenu) {
-						$(op.actualOpenedMenu).removeAttr("isOpen")
+						jQuery(op.actualOpenedMenu).removeAttr("isOpen")
 								.removeClass("selected");
-						$("[isOpen]").removeAttr("isOpen");
-						$(op.rootMenu).css({
+						jQuery("[isOpen]").removeAttr("isOpen");
+						jQuery(op.rootMenu).css({
 							width : 1,
 							height : 1
 						});
 						if (fade)
-							$(op.rootMenu).fadeOut(op.options.fadeOutTime,
+							jQuery(op.rootMenu).fadeOut(op.options.fadeOutTime,
 									function() {
-										$(this).remove();
+										jQuery(this).remove();
 									});
 						else
-							$(op.rootMenu).remove();
+							jQuery(op.rootMenu).remove();
 						op.rootMenu = false;
 						op.clicked = false;
 					}
@@ -977,7 +1026,7 @@
 				// mouse Position
 				getMouseX : function(e) {
 					var mouseX;
-					if ($.browser.msie)
+					if (jQuery.browser.msie)
 						mouseX = e.clientX
 								+ document.documentElement.scrollLeft;
 					else
@@ -988,7 +1037,7 @@
 				},
 				getMouseY : function(e) {
 					var mouseY;
-					if ($.browser.msie)
+					if (jQuery.browser.msie)
 						mouseY = e.clientY + document.documentElement.scrollTop;
 					else
 						mouseY = e.pageY;
@@ -999,23 +1048,25 @@
 				// get max z-inedex of the page
 				mb_bringToFront : function() {
 					var zi = 10;
-					$('*').each(
-							function() {
-								if ($(this).css("position") == "absolute"
-										|| $(this).css("position") == "fixed") {
-									var cur = parseInt($(this).css('zIndex'));
-									zi = cur > zi ? parseInt($(this).css(
-											'zIndex')) : zi;
-								}
-							});
+					jQuery('*')
+							.each(
+									function() {
+										if (jQuery(this).css("position") == "absolute"
+												|| jQuery(this).css("position") == "fixed") {
+											var cur = parseInt(jQuery(this)
+													.css('zIndex'));
+											zi = cur > zi ? parseInt(jQuery(
+													this).css('zIndex')) : zi;
+										}
+									});
 
-					$(this).css('zIndex', zi += 10);
+					jQuery(this).css('zIndex', zi += 10);
 				},
 				mb_hover : function(hoverIntent, fn1, fn2) {
 					if (hoverIntent == 0)
-						$(this).hover(fn1, fn2);
+						jQuery(this).hover(fn1, fn2);
 					else
-						$(this).hoverIntent({
+						jQuery(this).hoverIntent({
 							sensitivity : 30,
 							interval : hoverIntent,
 							timeout : 0,
@@ -1024,6 +1075,6 @@
 						});
 				}
 			});
-	$.fn.buildMenu = $.mbMenu.buildMenu;
-	$.fn.buildContextualMenu = $.mbMenu.buildContextualMenu;
+	jQuery.fn.buildMenu = jQuery.mbMenu.buildMenu;
+	jQuery.fn.buildContextualMenu = jQuery.mbMenu.buildContextualMenu;
 })(jQuery);

@@ -54,7 +54,7 @@
     <!-- The toolbar at the bottom of the page -->
     <link type="text/css"  rel="stylesheet" href="stylesheet/fixed4all.css"/> 
 	<link href="stylesheet/fixed4ie.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript">onload = function() { content.focus() }</script>
+	<!--<script type="text/javascript">onload = function() { content.focus() }</script>-->
 		
 	<link rel="stylesheet" href="stylesheet/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
 	<script wicket:id="jquery.prettyPhoto.js" src="script/toolbar/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
@@ -103,7 +103,7 @@
   </div>
 
   <div id="menu_3" class="mbmenu">
-    <a  class="{action: 'showMessage(\'menu_2.2\')'}">
+    <a  wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
         <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
     </a>
 	    <a  class="{action: 'showMessage(\'menu_2.3\')'}">
@@ -164,6 +164,7 @@
   
   <div wicket:id="aboutWindow"></div>
   <div wicket:id="teamInfoWindow"></div>
+  <div wicket:id="createGameWindow"></div>
   <!-- end menus -->
 
 	<a wicket:id="playCardPage" id="playCard"></a>
@@ -184,7 +185,7 @@
 					<div class="slider-wrap">
 						<div id="main-photo-slider" class="csw">
 							<div class="panelContainer">
-				
+							<span wicket:id="handCardsPlaceholder">
 								<span wicket:id="handCards">
 									<div class="panel">
 										<div wicket:id="wrapper" class="wrapper">
@@ -194,6 +195,7 @@
 										</div>
 									</div>
 								</span>
+							</span>
 							</div>
 						</div>
 							<div wicket:id="thumbs" id="movers-row">

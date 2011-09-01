@@ -1,13 +1,16 @@
 package org.alienlabs.hatchetharry.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
+import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -27,18 +30,20 @@ public class PersistenceService
 	private CollectibleCardDao collectibleCardDao;
 	@SpringBean
 	private MagicCardDao magicCardDao;
+	@SpringBean
+	private GameDao gameDao;
 
 	public PersistenceService()
 	{
 	}
 
 	@Transactional
-	public MagicCard getFirstCardOfGame()
+	public MagicCard getFirstCardOfGame(final long gameId)
 	{
-		final MagicCard c = new MagicCard();
-		c.setGameId(1l);
-		c.setUuidObject(UUID.randomUUID());
-		return this.magicCardDao.load(1l);
+		// final MagicCard c = new MagicCard();
+		// c.setGameId(1l);
+		// c.setUuidObject(UUID.randomUUID());
+		return this.magicCardDao.load(gameId);
 	}
 
 	@Transactional
@@ -56,11 +61,11 @@ public class PersistenceService
 
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public MagicCard saveCardByGeneratingItsUuid(final MagicCard _c)
+	public MagicCard saveCardByGeneratingItsUuid(final MagicCard _c, final long gameId)
 	{
 		final MagicCard c = _c;
 		c.setUuid(UUID.randomUUID().toString());
-		c.setGameId(1l);
+		c.setGameId(gameId);
 
 		final Session session = this.magicCardDao.getSession();
 		final Long id = (Long)session.save(c);
@@ -90,14 +95,14 @@ public class PersistenceService
 	}
 
 	@Transactional
-	public List<MagicCard> getFirstHand()
+	public List<MagicCard> getFirstHand(final long gameId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session
 				.createQuery("from MagicCard magiccard0_ where magiccard0_.gameId=?");
-		query.setLong(0, 1);
-		query.setFirstResult(1);
+		query.setLong(0, gameId);
+		query.setFirstResult(0);
 		query.setMaxResults(7);
 		@SuppressWarnings("unchecked")
 		final List<MagicCard> cards = query.list();
@@ -171,9 +176,9 @@ public class PersistenceService
 	{
 		final Session session = this.playerDao.getSession();
 
-		final Query query = session.createQuery("from Player player0_ where player0_.gameId=?");
+		final Query query = session
+				.createQuery("select player0_ from Player player0_ join player0_.game as g where g.gameId=?");
 		query.setLong(0, l);
-
 		return query.list();
 	}
 
@@ -245,6 +250,12 @@ public class PersistenceService
 		this.magicCardDao = _magicCardDao;
 	}
 
+	@Required
+	public void setGameDao(final GameDao _gameDao)
+	{
+		this.gameDao = _gameDao;
+	}
+
 	@Transactional
 	public List<?> getCardsByDeckId(final long gameId)
 	{
@@ -254,6 +265,30 @@ public class PersistenceService
 		query.setLong(0, gameId);
 
 		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Deck> getAllDecks()
+	{
+		final Session session = this.deckDao.getSession();
+		final Query query = session.createQuery("from Deck deck0_ ");
+
+		return query.list();
+	}
+
+	@Transactional
+	public Game createNewGame(final Player player)
+	{
+		this.gameDao.getSession();
+
+		final Game game = new Game();
+
+		final List<Player> list = new ArrayList<Player>();
+		list.add(player);
+		game.setPlayers(list);
+
+		return this.gameDao.save(game);
 	}
 
 }

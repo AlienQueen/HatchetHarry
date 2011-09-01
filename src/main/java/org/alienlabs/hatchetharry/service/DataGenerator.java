@@ -92,10 +92,12 @@ public class DataGenerator implements InitializingBean
 	{
 		Deck deck1 = new Deck();
 		deck1.setPlayerId(1l);
+		deck1.setDeckName("aggro-combo Red / Black");
 		deck1 = this.deckDao.save(deck1);
 
 		Deck deck2 = new Deck();
 		deck2.setPlayerId(2l);
+		deck2.setDeckName("aggro-combo Red / Black");
 		deck2 = this.deckDao.save(deck2);
 
 		final List<Deck> decks = new ArrayList<Deck>();

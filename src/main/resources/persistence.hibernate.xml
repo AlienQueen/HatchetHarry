@@ -37,9 +37,7 @@
 				<value>org.alienlabs.hatchetharry.model.Player</value>
 				<value>org.alienlabs.hatchetharry.model.CollectibleCard</value>
 				<value>org.alienlabs.hatchetharry.model.Deck</value>
-			<!--	<value>org.alienlabs.ajax.model.Player</value>
-                <value>org.alienlabs.ajax.model.User</value>
-                <value>org.alienlabs.ajax.model.Login</value>-->
+				<value>org.alienlabs.hatchetharry.model.Game</value>
             </list> 
         </property>
 
@@ -92,6 +90,9 @@
 	<bean id="playerDao" class="org.alienlabs.hatchetharry.persistence.dao.PlayerDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
+	<bean id="gameDao" class="org.alienlabs.hatchetharry.persistence.dao.GameDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
 	
 <!--	<bean id="playerDaoTarget" class="org.alienlabs.ajax.persistence.dao.PlayerDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
@@ -128,5 +129,6 @@
 		<property name="deckDao" ref="deckDao"/>
 		<property name="collectibleCardDao" ref="collectibleCardDao"/>
 		<property name="playerDao" ref="playerDao"/>
+		<property name="gameDao" ref="gameDao"/>
 	</bean>
 </beans>

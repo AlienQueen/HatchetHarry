@@ -216,7 +216,7 @@
 					'<div>',
 					{
 						id : 'tour_tooltip',
-						class : 'tooltip',
+						'class' : 'tooltip',
 						html : '<p>' + step_config.text
 								+ '</p><span class="tooltip_arrow"></span>'
 					}).css({
