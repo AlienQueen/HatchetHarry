@@ -291,4 +291,14 @@ public class PersistenceService
 		return this.gameDao.save(game);
 	}
 
+	@Transactional
+	public MagicCard findCardByName(final String _name)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final Query query = session.createQuery("from MagicCard m where m.title = ?");
+		query.setString(0, _name);
+		return (MagicCard)query.uniqueResult();
+
+	}
 }

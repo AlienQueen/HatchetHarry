@@ -51,6 +51,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
@@ -158,6 +159,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.generateCreateGameLink(this.player);
 
 		this.buildDataBox(HatchetHarrySession.get().getGameId());
+
+		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
+		this.add(new CardPanel("baldu", card.getSmallImageFilename(), card.getBigImageFilename(),
+				card.getUuidObject()));
 	}
 
 	private void buildDataBox(final long _gameId)
@@ -185,14 +190,14 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		if (this.persistenceService.getFirstPlayer() == null)
 		{
-			return this.createPlayerAndDeck(jsessionid, "infrared", "infrared", 20l);
+			return this.createPlayerAndDeck(jsessionid, "infrared", "infrared", 20l, 1l);
 		}
-		return this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet", 20l);
+		return this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet", 20l, 2l);
 	}
 
 	@SuppressWarnings("unchecked")
 	private Long createPlayerAndDeck(final String _jsessionid, final String _side,
-			final String _name, final Long _lifePoints)
+			final String _name, final Long _lifePoints, final Long id)
 	{
 		final Player p = new Player();
 		p.setSide(_side);
@@ -210,10 +215,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		HatchetHarrySession.get().setPlayerLetter(p.getId() == 1 ? "a" : "b");
 		HatchetHarrySession.get().setPlaceholderNumber(1);
 
-		this.deck = this.persistenceService.getDeck(p.getId());
-		this.deck.setCards((List<MagicCard>)this.persistenceService.getAllCardsFromDeck(p.getId()));
+		this.deck = this.persistenceService.getDeck(id);
+		this.deck.setCards((List<MagicCard>)this.persistenceService.getAllCardsFromDeck(id));
 		this.deck.setCards(this.deck.shuffleLibrary());
-		this.deck.setPlayerId(p.getId());
+		this.deck.setPlayerId(id);
 		this.deck = this.persistenceService.saveDeck(this.deck);
 
 		HatchetHarrySession.get().setPlayer(p);
@@ -414,13 +419,18 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		{
 			this.player = HatchetHarrySession.get().getPlayer();
 			this.deck = this.persistenceService.getDeck(this.player.getId());
+			if (this.deck == null)
+			{
+				this.deck = this.persistenceService.getDeck(1l);
+			}
 			this.deck.setCards((List<MagicCard>)this.persistenceService
 					.getAllCardsFromDeck(this.deck.getId()));
+			final List<MagicCard> cards = new ArrayList<MagicCard>();
+
 			if (!HatchetHarrySession.get().getHandCardsHaveBeenBuilt())
 			{
 				this.deck.shuffleLibrary();
 			}
-			final List<MagicCard> cards = new ArrayList<MagicCard>();
 
 			for (int i = 0; i < 7; i++)
 			{
