@@ -1,15 +1,19 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
+import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -26,11 +30,15 @@ public class CreateGameModalWindow extends Panel
 	private static final long serialVersionUID = -5432292812819537705L;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
-	static final Logger logger = LoggerFactory.getLogger(CardRotateBehavior.class);
+	static final Logger logger = LoggerFactory.getLogger(CreateGameModalWindow.class);
 
-	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player)
+	final DropDownChoice<Deck> decks;
+
+	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
+			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
+			final WebMarkupContainer _thumbsParent, final CharSequence _url)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
@@ -41,8 +49,7 @@ public class CreateGameModalWindow extends Panel
 
 		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService.getAllDecks();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
-		final DropDownChoice<Deck> decks = new DropDownChoice<Deck>("decks", new Model<Deck>(),
-				decksModel);
+		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
 
 		final Game game = _player.getGame().get(0);
 		final Label gameId = new Label("gameId", "The id of this game is: " + game.getId()
@@ -67,13 +74,39 @@ public class CreateGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				final Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
+				@SuppressWarnings("unchecked")
+				final List<MagicCard> allCards = (List<MagicCard>)CreateGameModalWindow.this.persistenceService
+						.getAllCardsFromDeck(deck.getId());
+				deck.setCards(allCards);
+				deck.shuffleLibrary();
+
+				final List<MagicCard> firstCards = new ArrayList<MagicCard>();
+
+				for (int i = 0; i < 7; i++)
+				{
+					firstCards.add(i, allCards.get(i));
+					HatchetHarrySession.get().addCardIdInHand(i, i);
+				}
+
+				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
+
+				final HandComponent gallery = new HandComponent("gallery");
+				_handCardsParent.addOrReplace(gallery);
+				target.addComponent(_handCardsParent);
+
 				_modal.close(target);
-				target.appendJavascript("jQuery(document).ready(function() { jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); })");
+
+				target.appendJavascript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
+						+ _url + "&text=1&title=1', function() { }, null, null);");
 
 				CreateGameModalWindow.logger.info("close!");
 			}
 		};
-		form.add(chooseDeck, decks, gameId, nameLabel, name, sideLabel, sideInput, submit);
+		submit.setOutputMarkupId(true);
+		submit.setMarkupId("createSubmit" + _player.getId());
+
+		form.add(chooseDeck, this.decks, gameId, nameLabel, name, sideLabel, sideInput, submit);
 
 		this.add(form);
 	}

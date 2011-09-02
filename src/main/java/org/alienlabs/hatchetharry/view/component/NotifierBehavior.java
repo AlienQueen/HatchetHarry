@@ -1,0 +1,79 @@
+package org.alienlabs.hatchetharry.view.component;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.TextTemplate;
+import org.atmosphere.cpr.AtmosphereResourceEventListener;
+import org.atmosphere.cpr.BroadcastFilter;
+import org.atmosphere.cpr.Meteor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@SuppressWarnings("serial")
+public class NotifierBehavior extends AbstractDefaultAjaxBehavior
+{
+	static final Logger logger = LoggerFactory.getLogger(NotifierBehavior.class);
+	private final WebPage page;
+
+	public NotifierBehavior(final WebPage _p)
+	{
+		this.page = _p;
+	}
+
+	@Override
+	protected void respond(final AjaxRequestTarget target)
+	{
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.page.getRequest();
+		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+
+		NotifierBehavior.logger.info("respond to: " + request.getQueryString());
+
+		final String title = request.getParameter("title");
+		final String text = request.getParameter("text");
+		final String stop = request.getParameter("stop");
+
+		if ((!"true".equals(stop)) && (null != text))
+		{
+			final String message = ("1".equals(title)
+					? "You've created a game"
+					: "You have requested to join a game")
+					+ "§§§"
+					+ ("1".equals(text)
+							? "As soon as a player is connected, you'll be able to play."
+							: "You can start right now!") + "§§§" + request.getRequestedSessionId();
+			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
+			NotifierBehavior.logger.info("meteor: " + meteor);
+			NotifierBehavior.logger.info(message);
+			meteor.addListener((AtmosphereResourceEventListener)this.page);
+			meteor.broadcast(message);
+		}
+	}
+
+	@Override
+	public void renderHead(final IHeaderResponse response)
+	{
+		super.renderHead(response);
+
+		final String url = this.getCallbackUrl().toString();
+
+		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		variables.put("url", url);
+
+		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+				"script/notifier/notifier.js");
+		template.interpolate(variables);
+
+		response.renderOnDomReadyJavascript(template.asString());
+	}
+
+}

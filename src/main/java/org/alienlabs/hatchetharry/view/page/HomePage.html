@@ -5,11 +5,13 @@
     
 	<title>Welcome to HatchetHarry!</title>
 	
-	<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheet/menu_black.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheet/jquery.jquerytour.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheet/myStyle.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="stylesheet/galleryStyle.css" media="screen" />
+	<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheet/menu_black.css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheet/jquery.jquerytour.css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheet/myStyle.css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheet/galleryStyle.css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheet/jquery.gritter.css"/> 
+	
 	<link rel="shortcut icon" href="http://hatchetharry.net/favicon.ico" />
  
 	<script wicket:id="jQuery-1.6.2.js" type="text/javascript"></script>
@@ -58,9 +60,11 @@
 		
 	<link rel="stylesheet" href="stylesheet/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
 	<script wicket:id="jquery.prettyPhoto.js" src="script/toolbar/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
-	 <link rel="stylesheet" href="stylesheet/toolbarStyle.css" type="text/css" /> 
+	<link rel="stylesheet" href="stylesheet/toolbarStyle.css" type="text/css" /> 
 	<link rel="stylesheet" href="stylesheet/tipsy.css" type="text/css" /> 
 	<script wicket:id="jquery.tipsy.js" type="text/javascript" src="script/toolbar/jquery.tipsy.js"></script> 
+	<script wicket:id="jquery.gritter.min.js" type="text/javascript" src="script/notifier/jquery.gritter.min.js"></script> 
+	
 </head>
 <body class="yui-skin-sam" id="yahoo-com">
 
@@ -318,6 +322,8 @@
 		
 	
 	<span wicket:id="cardPlaceholder"></span>
+	
+	<a wicket:id="notifierStart" id="notifierStart"></a>
 	
 	<span class="tour_5">
 		<div id="dock">

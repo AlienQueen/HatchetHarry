@@ -123,3 +123,7 @@
     right:10px;
     font:20px/24px Arial, Helvetica, sans-serif;
   } 
+#container {
+		width:600px;
+		background:#333;
+		padding:10px;

@@ -58,8 +58,10 @@ import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
+import org.alienlabs.hatchetharry.view.component.NotifierBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -67,7 +69,6 @@ import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -115,6 +116,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		// Resources
 		this.addHeadResources();
 
+		this.add(new BookmarkablePageLink<NotifierPage>("notifierStart", NotifierPage.class));
+
 		this.parentPlaceholder = new WebMarkupContainer("cardParent");
 		this.parentPlaceholder.setOutputMarkupId(true);
 
@@ -160,13 +163,18 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(balduParent);
 
 		this.player = HatchetHarrySession.get().getPlayer();
-		this.generateCreateGameLink(this.player);
-		this.generateJoinGameLink(this.player, balduParent, this.handCardsPlaceholder);
+		final NotifierBehavior notif = new NotifierBehavior(this);
+		this.add(notif);
+		this.generateCreateGameLink(this.player, balduParent, this.handCardsPlaceholder,
+				notif.getCallbackUrl());
+		this.generateJoinGameLink(this.player, balduParent, this.handCardsPlaceholder,
+				notif.getCallbackUrl());
 
 		// Comet chat channel
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
 
 		this.buildDataBox(HatchetHarrySession.get().getGameId());
+
 	}
 
 	private void buildDataBox(final long _gameId)
@@ -311,33 +319,37 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(new JavaScriptReference("jQueryRotate.2.1.js", HomePage.class,
 				"script/rotate/jQueryRotate.2.1.js"));
 
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/menu.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/layout.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/menu_black.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/jquery.jquerytour.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/myStyle.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/galleryStyle.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/menu.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/layout.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/menu_black.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/jquery.jquerytour.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/myStyle.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/galleryStyle.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/jquery.gritter.css")));
 
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/fixed4all.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/fixed4ie.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/prettyPhoto.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/toolbarStyle.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/tipsy.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/fixed4all.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/fixed4ie.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/prettyPhoto.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/toolbarStyle.css")));
+		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
+				"stylesheet/tipsy.css")));
 		this.add(new JavaScriptReference("jquery.prettyPhoto.js", HomePage.class,
 				"script/toolbar/jquery.prettyPhoto.js"));
 		this.add(new JavaScriptReference("jquery.tipsy.js", HomePage.class,
 				"script/toolbar/jquery.tipsy.js"));
+		this.add(new JavaScriptReference("jquery.gritter.min.js", HomePage.class,
+				"script/notifier/jquery.gritter.min.js"));
 	}
 
 	protected void buildHandMarkup()
@@ -440,7 +452,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(teamInfoLink);
 	}
 
-	protected void generateCreateGameLink(final Player _player)
+	protected void generateCreateGameLink(final Player _player,
+			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
+			final CharSequence _url)
 	{
 		this.createGameWindow = new ModalWindow("createGameWindow");
 		this.createGameWindow.setInitialWidth(475);
@@ -448,7 +462,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.createGameWindow.setTitle("Create a game");
 
 		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
-				this.createGameWindow.getContentId(), _player));
+				this.createGameWindow.getContentId(), _player, _balduParent, _handCardsParent,
+				this.thumbsPlaceholder, _url));
 		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.createGameWindow);
@@ -471,7 +486,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	protected void generateJoinGameLink(final Player _player,
-			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent)
+			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
+			final CharSequence _url)
 	{
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
 		this.joinGameWindow.setInitialWidth(475);
@@ -480,7 +496,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
 				this.joinGameWindow.getContentId(), _player, _balduParent, _handCardsParent,
-				this.thumbsPlaceholder));
+				this.thumbsPlaceholder, _url));
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);

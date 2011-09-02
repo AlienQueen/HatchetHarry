@@ -31,13 +31,13 @@ public class JoinGameModalWindow extends Panel
 	@SpringBean
 	PersistenceService persistenceService;
 
-	static final Logger logger = LoggerFactory.getLogger(CardRotateBehavior.class);
+	static final Logger logger = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
 	final DropDownChoice<Deck> decks;
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
-			final WebMarkupContainer _thumbsParent)
+			final WebMarkupContainer _thumbsParent, final CharSequence _url)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
@@ -71,7 +71,7 @@ public class JoinGameModalWindow extends Panel
 
 		final AjaxButton submit = new AjaxButton("submit", form)
 		{
-			private static final long serialVersionUID = 5612763286127668L;
+			private static final long serialVersionUID = 561276328198198L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
@@ -99,11 +99,15 @@ public class JoinGameModalWindow extends Panel
 
 				_modal.close(target);
 
-				target.appendJavascript("jQuery(document).ready(function() { jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+				target.appendJavascript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
+						+ _url + "&text=2&title=2', function() { }, null, null);");
 
 				JoinGameModalWindow.logger.info("close!");
 			}
 		};
+		submit.setOutputMarkupId(true);
+		submit.setMarkupId("joinSubmit" + _player.getId());
+
 		form.add(chooseDeck, this.decks, nameLabel, name, sideLabel, sideInput, gameIdLabel,
 				gameIdInput, submit);
 
