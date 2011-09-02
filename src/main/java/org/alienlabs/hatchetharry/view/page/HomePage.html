@@ -106,7 +106,7 @@
     <a  wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
         <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
     </a>
-	    <a  class="{action: 'showMessage(\'menu_2.3\')'}">
+	    <a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
         <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
     </a>
     <a rel="separator"> </a>
@@ -165,49 +165,25 @@
   <div wicket:id="aboutWindow"></div>
   <div wicket:id="teamInfoWindow"></div>
   <div wicket:id="createGameWindow"></div>
+   <div wicket:id="joinGameWindow"></div>
   <!-- end menus -->
-
-	<a wicket:id="playCardPage" id="playCard"></a>
 	
 	<br/><br/><br/><br/><br/>
 	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span><br/><br/>
   	<br/><br/>
 	<span wicket:id="dataBox"></span>
 	
-	<span wicket:id="baldu"></span>
+	<span wicket:id="balduParent">
+		<span wicket:id="baldu"></span>
+	</span>
 	
   	<span align="left">
 	  	<span id="header"></span>
 			<span id="nav"></span>
-	        <span id="content">
-	<!-- Gallery -->					
-    		<span id="gallery" class="tour_4">
-	   			<div id="page-wrap">
-						
-					<div class="slider-wrap">
-						<div id="main-photo-slider" class="csw">
-							<div class="panelContainer">
-							<span wicket:id="handCardsPlaceholder">
-								<span wicket:id="handCards">
-									<div class="panel">
-										<div wicket:id="wrapper" class="wrapper">
-											<!--<a wicket:id="linkOnCard" id="#" href="#"><img src="image/playCard.png"></img></a>-->
-											<img wicket:id="handImagePlaceholder" id="#"></img>
-											<div wicket:id="titlePlaceholder" class="photo-meta-data"></div>
-										</div>
-									</div>
-								</span>
-							</span>
-							</div>
-						</div>
-							<div wicket:id="thumbs" id="movers-row">
-								<div wicket:id="crossLinkDiv"><a wicket:id="crossLink" href="#" class="cross-link"><img wicket:id="thumbPlaceholder" class="nav-thumb"></img></a></div>
-							</div>
-					</div>
-				</div>
-			</span>
-			</span>
-			</span>
+					<span wicket:id="handCardsPlaceholder" id="#">
+		        		<span wicket:id="gallery"></span>
+					</span>
+	</span>
 
 	    <br/><br/>
 	<br/>

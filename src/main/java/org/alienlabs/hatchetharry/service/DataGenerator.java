@@ -53,6 +53,20 @@ public class DataGenerator implements InitializingBean
 			"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
 			"Swamp" };
 
+	private static final String[] TITLES2 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
+			"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
+			"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
+			"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
+			"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
+			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
+			"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
+			"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
+			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+			"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
+			"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain" };
+
 	@SpringBean
 	private DeckDao deckDao;
 	@SpringBean
@@ -97,7 +111,7 @@ public class DataGenerator implements InitializingBean
 
 		Deck deck2 = new Deck();
 		deck2.setPlayerId(2l);
-		deck2.setDeckName("aggro-combo Red / Black");
+		deck2.setDeckName("burn mono-Red");
 		deck2 = this.deckDao.save(deck2);
 
 		final List<Deck> decks = new ArrayList<Deck>();
@@ -110,24 +124,44 @@ public class DataGenerator implements InitializingBean
 			{
 
 				final CollectibleCard c = new CollectibleCard();
-				c.setTitle(DataGenerator.TITLES1[i]);
+				c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
 				if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
 				{
 					this.collectibleCardDao.save(c);
 				}
 
-				MagicCard card = new MagicCard("image/" + DataGenerator.TITLES1[i] + "_small.jpg",
-						"image/" + DataGenerator.TITLES1[i] + ".jpg", "image/"
-								+ DataGenerator.TITLES1[i] + "Thumb.jpg", DataGenerator.TITLES1[i],
-						"");
-				card.setGameId(1l);
-				card.setDeck(decks.get(j - 1));
-				card.setUuidObject(UUID.randomUUID());
-				card = this.magicCardDao.save(card);
+				if (j == 1l)
+				{
+					MagicCard card = new MagicCard("image/"
+							+ DataGenerator.TITLES1[i].replace(" ", "") + "_small.jpg", "image/"
+							+ DataGenerator.TITLES1[i].replace(" ", "") + ".jpg", "image/"
+							+ DataGenerator.TITLES1[i].replace(" ", "") + "Thumb.jpg",
+							DataGenerator.TITLES1[i], "");
+					card.setGameId(1l);
+					card.setDeck(decks.get(j - 1));
+					card.setUuidObject(UUID.randomUUID());
+					card = this.magicCardDao.save(card);
 
-				final List<MagicCard> cards = decks.get(j - 1).getCards();
-				cards.add(card);
-				decks.get(j - 1).setCards(cards);
+					final List<MagicCard> cards = decks.get(j - 1).getCards();
+					cards.add(card);
+					decks.get(j - 1).setCards(cards);
+				}
+				else
+				{
+					MagicCard card = new MagicCard("image/"
+							+ DataGenerator.TITLES2[i].replace(" ", "") + "_small.jpg", "image/"
+							+ DataGenerator.TITLES2[i].replace(" ", "") + ".jpg", "image/"
+							+ DataGenerator.TITLES2[i].replace(" ", "") + "Thumb.jpg",
+							DataGenerator.TITLES2[i], "");
+					card.setGameId(1l);
+					card.setDeck(decks.get(j - 1));
+					card.setUuidObject(UUID.randomUUID());
+					card = this.magicCardDao.save(card);
+
+					final List<MagicCard> cards = decks.get(j - 1).getCards();
+					cards.add(card);
+					decks.get(j - 1).setCards(cards);
+				}
 			}
 		}
 

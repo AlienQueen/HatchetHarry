@@ -272,7 +272,7 @@ public class PersistenceService
 	public List<Deck> getAllDecks()
 	{
 		final Session session = this.deckDao.getSession();
-		final Query query = session.createQuery("from Deck deck0_ ");
+		final Query query = session.createQuery("from Deck deck0_ where deck0_.playerId != -1");
 
 		return query.list();
 	}

@@ -72,7 +72,7 @@ public class ChatPanel extends Panel
 	 */
 	final List<BroadcastFilter> list;
 
-	public ChatPanel(final String id)
+	public ChatPanel(final String id, final Long _playerId)
 	{
 		super(id);
 
@@ -83,6 +83,8 @@ public class ChatPanel extends Panel
 		final Form<String> form = new Form<String>("chatForm");
 		final RequiredTextField<String> user = new RequiredTextField<String>("user",
 				new Model<String>(""));
+		user.setMarkupId("user" + _playerId);
+		user.setOutputMarkupId(true);
 		form.add(user);
 		final RequiredTextField<String> message = new RequiredTextField<String>("message",
 				new Model<String>(""));

@@ -11,16 +11,11 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackagedTextTemplate;
@@ -84,11 +79,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 		final List<MagicCard> all = HatchetHarrySession.get().getFirstCardsInHand();
-		all.remove(card);
-		HatchetHarrySession.get().setFirstCardsInHand(all);
 
 		if (null != card)
 		{
+			PlayCardFromHandBehavior.logger.info("Removed? " + all.remove(card));
+			HatchetHarrySession.get().setFirstCardsInHand(all);
+
 			PlayCardFromHandBehavior.logger.info("card title: " + card.getTitle() + ", uuid: "
 					+ card.getUuidObject() + ", filename: " + card.getBigImageFilename());
 
@@ -132,44 +128,17 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 				meteor.broadcast(message);
 
-				final ListView<MagicCard> allCards = new ListView<MagicCard>("handCards",
-						HatchetHarrySession.get().getFirstCardsInHand())
-				{
-					private static final long serialVersionUID = -7874661839855866875L;
+				final HandComponent gallery = new HandComponent("gallery");
+				gallery.setOutputMarkupId(true);
 
-					@Override
-					protected void populateItem(final ListItem<MagicCard> item)
-					{
-						HatchetHarrySession.get().addCardIdInHand(item.getIndex(), item.getIndex());
-						final MagicCard _card = item.getModelObject();
-
-						final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
-						wrapper.setMarkupId("wrapper" + item.getIndex());
-						wrapper.setOutputMarkupId(true);
-
-						final Image handImagePlaceholder = new Image("handImagePlaceholder",
-								new ResourceReference(HomePage.class, _card.getBigImageFilename()));
-						handImagePlaceholder.setMarkupId("placeholder"
-								+ _card.getUuid().replace("-", "_"));
-						handImagePlaceholder.setOutputMarkupId(true);
-
-						final Label titlePlaceholder = new Label("titlePlaceholder",
-								_card.getTitle());
-						titlePlaceholder.setMarkupId("placeholder"
-								+ _card.getUuid().replace("-", "_") + "_placeholder");
-						titlePlaceholder.setOutputMarkupId(true);
-
-						wrapper.add(handImagePlaceholder, titlePlaceholder);
-						item.add(wrapper);
-
-					}
-				};
-				allCards.setOutputMarkupId(true);
-				this.cardParent.addOrReplace(allCards);
-				target.addComponent(this.cardParent);
-
+				this.cardParent.addOrReplace(gallery);
 				this.thumbParent.addOrReplace(cp);
+				target.addComponent(this.cardParent);
 				target.addComponent(this.thumbParent);
+
+				target.appendJavascript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+				// this.thumbParent.addOrReplace(cp);
+				// target.addComponent(this.thumbParent);
 			}
 		}
 	}
