@@ -68,6 +68,8 @@ public class CreateGameModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				_modal.close(target);
+				target.appendJavascript("jQuery(document).ready(function() { jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); })");
+
 				CreateGameModalWindow.logger.info("close!");
 			}
 		};

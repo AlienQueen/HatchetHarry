@@ -1,10 +1,12 @@
 package org.alienlabs.hatchetharry;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
@@ -26,6 +28,7 @@ public class HatchetHarrySession extends WebSession
 	private static String PLAYER_LETTER = "PLAYER_LETTER";
 	private static String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
 	private static String GAME_CREATED = "GAME_CREATED";
+	private static String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -35,6 +38,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
 		this.setAttribute(HatchetHarrySession.GAME_CREATED, false);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
 	}
 
 	public static HatchetHarrySession get()
@@ -177,4 +181,38 @@ public class HatchetHarrySession extends WebSession
 	{
 		return (Boolean)this.getAttribute(HatchetHarrySession.GAME_CREATED);
 	}
+
+	public synchronized void addCardInBattleField(final CardPanel cp)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
+				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
+		cards.add(cp);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
+	}
+
+
+	public synchronized CardPanel removeACardFromBattleField()
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
+				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
+
+		final Iterator<CardPanel> it = cards.iterator();
+		final boolean next = it.hasNext();
+		boolean success;
+
+		if (next)
+		{
+			final CardPanel cp = it.next();
+			success = cards.remove(cp);
+			if (success)
+			{
+				this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
+				return cp;
+			}
+		}
+		return null;
+	}
+
 }
