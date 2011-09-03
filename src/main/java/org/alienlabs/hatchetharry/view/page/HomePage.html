@@ -411,9 +411,11 @@
 				<a class="toolbarLink" title="Declare a combat phase "  id="combatlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/battle.png"></img> Declare combat</a>
 				</li>
 				
-				<li>
-				<a  class="toolbarLink" title="End of your turn " id="emaillink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/contact.png"></img> End of turn</a>
+				<li wicket:id="endTurnPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Put an end to your turn">
+					<a wicket:id="endTurnLink" class="#" href="#"><img class="toolbarIcon" src="image/contact.png"></img> End of turn</a>
+					<span wicket:id="notifierPanel"></span>
 				</li>
+				
 		</ul>
 
 	</div> 

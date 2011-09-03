@@ -19,15 +19,20 @@ import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("serial")
 public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 {
+	private static final long serialVersionUID = -1301311949498369085L;
+
 	static final Logger logger = LoggerFactory.getLogger(NotifierBehavior.class);
 	private final WebPage page;
+	private final String title;
+	private final String text;
 
-	public NotifierBehavior(final WebPage _p)
+	public NotifierBehavior(final WebPage _page, final String _title, final String _text)
 	{
-		this.page = _p;
+		this.page = _page;
+		this.title = _title;
+		this.text = _text;
 	}
 
 	@Override
@@ -38,25 +43,16 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 
 		NotifierBehavior.logger.info("respond to: " + request.getQueryString());
 
-		final String title = request.getParameter("title");
-		final String text = request.getParameter("text");
-		final String stop = request.getParameter("stop");
+		final String _title = request.getParameter("title");
+		final String _text = request.getParameter("text");
 
-		if ((!"true".equals(stop)) && (null != text))
-		{
-			final String message = ("1".equals(title)
-					? "You've created a game"
-					: "You have requested to join a game")
-					+ "§§§"
-					+ ("1".equals(text)
-							? "As soon as a player is connected, you'll be able to play."
-							: "You can start right now!") + "§§§" + request.getRequestedSessionId();
-			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			NotifierBehavior.logger.info("meteor: " + meteor);
-			NotifierBehavior.logger.info(message);
-			meteor.addListener((AtmosphereResourceEventListener)this.page);
-			meteor.broadcast(message);
-		}
+		final String message = _title + ":::" + _text + ":::" + request.getRequestedSessionId();
+		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
+		NotifierBehavior.logger.info("meteor: " + meteor);
+		NotifierBehavior.logger.info(message);
+		meteor.addListener((AtmosphereResourceEventListener)this.page);
+		meteor.broadcast(message);
+		// }
 	}
 
 	@Override
@@ -68,6 +64,8 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", url);
+		variables.put("title", this.title);
+		variables.put("text", this.text);
 
 		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
 				"script/notifier/notifier.js");

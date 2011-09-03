@@ -56,9 +56,10 @@ import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
+import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
-import org.alienlabs.hatchetharry.view.component.NotifierBehavior;
+import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.apache.wicket.ResourceReference;
@@ -109,6 +110,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	private final WebMarkupContainer handCardsPlaceholder;
 	WebMarkupContainer thumbsPlaceholder;
 
+	private AjaxLink<Void> endTurnLink;
+
+	WebMarkupContainer endTurnPlaceholder;
+
+	NotifierPanel notifierPanel;
+
 	public HomePage()
 	{
 		this.setOutputMarkupId(true);
@@ -131,7 +138,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
-		this.add(new Label("message", "version 0.0.3 built on Thursday, 1st of September 2011"));
+		this.add(new Label("message", "version 0.0.3 built on Friday, 2nd of September 2011"));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -163,7 +170,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(balduParent);
 
 		this.player = HatchetHarrySession.get().getPlayer();
-		final NotifierBehavior notif = new NotifierBehavior(this);
+		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
 		this.generateCreateGameLink(this.player, balduParent, this.handCardsPlaceholder,
 				notif.getCallbackUrl());
@@ -175,6 +182,39 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.buildDataBox(HatchetHarrySession.get().getGameId());
 
+		this.buildEndTurnLink();
+
+	}
+
+	private void buildEndTurnLink()
+	{
+		this.endTurnPlaceholder = new WebMarkupContainer("endTurnPlaceholder");
+		this.endTurnPlaceholder.setMarkupId("endTurnPlaceholder");
+		this.endTurnPlaceholder.setOutputMarkupId(true);
+
+		this.notifierPanel = new NotifierPanel("notifierPanel", HomePage.this, HatchetHarrySession
+				.get().getPlayer().getName(), "has declared the end of his turn.");
+		this.notifierPanel.setOutputMarkupId(true);
+
+		this.endTurnLink = new AjaxLink<Void>("endTurnLink")
+		{
+			private static final long serialVersionUID = 6590465665519989765L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavascript("wicketAjaxGet('"
+						+ HomePage.this.notifierPanel.getCallbackUrl() + "&title="
+						+ HatchetHarrySession.get().getPlayer().getName()
+						+ "&text=has declared the end of his turn.', function() { }, null, null);");
+			}
+
+		};
+		this.endTurnLink.setMarkupId("endTurnLink");
+		this.endTurnLink.setOutputMarkupId(true);
+
+		this.endTurnPlaceholder.add(this.endTurnLink, this.notifierPanel);
+		this.add(this.endTurnPlaceholder);
 	}
 
 	private void buildDataBox(final long _gameId)
