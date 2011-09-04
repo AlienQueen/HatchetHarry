@@ -5,10 +5,13 @@ import java.util.List;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.alienlabs.hatchetharry.view.page.UpdateDataBoxPage;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -25,10 +28,16 @@ public class DataBox extends Panel
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public DataBox(final String id, final long _gameId)
+	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
+
+	public DataBox(final String id, final long _gameId, final WebMarkupContainer _dataBoxParent)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
+
+		this.updateDataBox = new BookmarkablePageLink<UpdateDataBoxPage>("updateDataBox",
+				UpdateDataBoxPage.class);
+		this.add(this.updateDataBox);
 
 		final List<Player> players = this.persistenceService.getAllPlayersOfGame(_gameId);
 

@@ -40,9 +40,6 @@ public class PersistenceService
 	@Transactional
 	public MagicCard getFirstCardOfGame(final long gameId)
 	{
-		// final MagicCard c = new MagicCard();
-		// c.setGameId(1l);
-		// c.setUuidObject(UUID.randomUUID());
 		return this.magicCardDao.load(gameId);
 	}
 
@@ -56,9 +53,7 @@ public class PersistenceService
 		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
-
 	}
-
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public MagicCard saveCardByGeneratingItsUuid(final MagicCard _c, final long gameId)
@@ -123,19 +118,29 @@ public class PersistenceService
 		return (mc == null ? null : (Player)mc);
 	}
 
-	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
-	public void saveOrUpdatePlayer(final Player p)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public Player updatePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
-		session.update(p);
+		session.merge(p);
+		session.flush();
+		return p;
 	}
 
-	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public Game updateGame(final Game g)
+	{
+		final Session session = this.gameDao.getSession();
+		session.merge(g);
+		session.flush();
+		return g;
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Long savePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
 		final Long l = (Long)session.save(p);
-
 		return (l);
 	}
 
@@ -300,5 +305,11 @@ public class PersistenceService
 		query.setString(0, _name);
 		return (MagicCard)query.uniqueResult();
 
+	}
+
+	@Transactional
+	public Game getGame(final Long _id)
+	{
+		return this.gameDao.load(_id);
 	}
 }

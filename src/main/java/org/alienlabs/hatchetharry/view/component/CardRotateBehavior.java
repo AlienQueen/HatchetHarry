@@ -20,9 +20,10 @@ import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("serial")
 public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 {
+	private static final long serialVersionUID = -9164073767944851883L;
+
 	static final Logger logger = LoggerFactory.getLogger(CardRotateBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;

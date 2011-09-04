@@ -62,6 +62,7 @@ import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
+import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -114,7 +115,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	WebMarkupContainer endTurnPlaceholder;
 
-	NotifierPanel notifierPanel;
+	public NotifierPanel notifierPanel;
+
+	private WebMarkupContainer dataBoxParent;
+
+	private DataBox dataBox;
 
 	public HomePage()
 	{
@@ -138,17 +143,20 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
-		this.add(new Label("message", "version 0.0.3 built on Friday, 2nd of September 2011"));
+		this.add(new Label("message",
+				"version 0.0.3 (release Sulaco), built on Sunday, 4th of September 2011"));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
 
-		this.generateAboutLink();
-		this.generateTeamInfoLink();
 
 		if (!HatchetHarrySession.get().isGameCreated())
 		{
 			HatchetHarrySession.get().setGameId(this.createPlayer());
+		}
+		else
+		{
+			this.player = HatchetHarrySession.get().getPlayer();
 		}
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
@@ -159,9 +167,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.buildHandMarkup();
 
 
-		this.generatePlayCardLink(this.hand);
-		this.generatePlayCardsBehaviorsForAllOpponents();
-
 		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
 		balduParent.setOutputMarkupId(true);
 		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
@@ -169,21 +174,26 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				.getBigImageFilename(), card.getUuidObject()));
 		this.add(balduParent);
 
-		this.player = HatchetHarrySession.get().getPlayer();
+		this.buildDataBox(HatchetHarrySession.get().getGameId());
+
+		this.generateAboutLink();
+		this.generateTeamInfoLink();
+
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
+
 		this.generateCreateGameLink(this.player, balduParent, this.handCardsPlaceholder,
 				notif.getCallbackUrl());
 		this.generateJoinGameLink(this.player, balduParent, this.handCardsPlaceholder,
 				notif.getCallbackUrl());
 
+		this.generatePlayCardLink(this.hand);
+		this.generatePlayCardsBehaviorsForAllOpponents();
+
 		// Comet chat channel
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
 
-		this.buildDataBox(HatchetHarrySession.get().getGameId());
-
 		this.buildEndTurnLink();
-
 	}
 
 	private void buildEndTurnLink()
@@ -219,7 +229,15 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	private void buildDataBox(final long _gameId)
 	{
-		this.add(new DataBox("dataBox", _gameId));
+		this.dataBoxParent = new WebMarkupContainer("dataBoxParent");
+		this.dataBoxParent.setOutputMarkupId(true);
+
+		this.dataBox = new DataBox("dataBox", _gameId, this.dataBoxParent);
+		this.dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, _gameId, this));
+		this.dataBox.setOutputMarkupId(true);
+		this.dataBoxParent.add(this.dataBox);
+
+		this.add(this.dataBoxParent);
 	}
 
 	public synchronized void buildHandCards()
@@ -536,7 +554,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
 				this.joinGameWindow.getContentId(), _player, _balduParent, _handCardsParent,
-				this.thumbsPlaceholder, _url));
+				this.thumbsPlaceholder, _url, this.dataBoxParent, this));
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);

@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -34,13 +36,21 @@ public class JoinGameModalWindow extends Panel
 	static final Logger logger = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
 	final DropDownChoice<Deck> decks;
+	final RequiredTextField<Long> gameIdInput;
+
+	Player player;
+	HomePage hp;
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
-			final WebMarkupContainer _thumbsParent, final CharSequence _url)
+			final WebMarkupContainer _thumbsParent, final CharSequence _url,
+			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
+
+		this.player = _player;
+		this.hp = _hp;
 
 		final Form<String> form = new Form<String>("form");
 
@@ -62,12 +72,11 @@ public class JoinGameModalWindow extends Panel
 		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
 				new Model<String>(), sidesModel);
 
-		_player.getGame().get(0);
+		this.player.getGame().get(0);
 		final Label gameIdLabel = new Label("gameIdLabel",
 				"Please provide the game id given by your opponent: ");
-		final Model<String> gameId = new Model<String>("");
-		final RequiredTextField<String> gameIdInput = new RequiredTextField<String>("gameIdInput",
-				gameId);
+		final Model<Long> gameId = new Model<Long>(0l);
+		this.gameIdInput = new RequiredTextField<Long>("gameIdInput", gameId);
 
 		final AjaxButton submit = new AjaxButton("submit", form)
 		{
@@ -93,6 +102,27 @@ public class JoinGameModalWindow extends Panel
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
 
+				final Game g = JoinGameModalWindow.this.persistenceService.getGame(Long
+						.valueOf(JoinGameModalWindow.this.gameIdInput
+								.getDefaultModelObjectAsString()));
+				final List<Player> players = g.getPlayers();
+				players.add(JoinGameModalWindow.this.player);
+				final List<Game> games = new ArrayList<Game>();
+				games.add(g);
+				JoinGameModalWindow.this.player.setGame(games);
+				JoinGameModalWindow.this.persistenceService.updateGame(g);
+				JoinGameModalWindow.this.persistenceService
+						.updatePlayer(JoinGameModalWindow.this.player);
+
+				final DataBox d = new DataBox("dataBox",
+						Long.valueOf(JoinGameModalWindow.this.gameIdInput
+								.getDefaultModelObjectAsString()), _dataBoxParent);
+				final UpdateDataBoxBehavior b = new UpdateDataBoxBehavior(_dataBoxParent,
+						g.getId(), JoinGameModalWindow.this.hp);
+				d.add(b);
+				_dataBoxParent.addOrReplace(d);
+				target.addComponent(_dataBoxParent);
+
 				final HandComponent gallery = new HandComponent("gallery");
 				_handCardsParent.addOrReplace(gallery);
 				target.addComponent(_handCardsParent);
@@ -100,7 +130,12 @@ public class JoinGameModalWindow extends Panel
 				_modal.close(target);
 
 				target.appendJavascript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
-						+ _url + "&text=2&title=2', function() { }, null, null);");
+						+ _url
+						+ "&text=2&title=2', function() { }, null, null); wicketAjaxGet('"
+						+ b.getUrl()
+						+ "&jsessionid="
+						+ this.getParent().getPage().getSession().getId()
+						+ "', function() { }, null, null);");
 
 				JoinGameModalWindow.logger.info("close!");
 			}
@@ -109,7 +144,7 @@ public class JoinGameModalWindow extends Panel
 		submit.setMarkupId("joinSubmit" + _player.getId());
 
 		form.add(chooseDeck, this.decks, nameLabel, name, sideLabel, sideInput, gameIdLabel,
-				gameIdInput, submit);
+				this.gameIdInput, submit);
 
 		this.add(form);
 	}

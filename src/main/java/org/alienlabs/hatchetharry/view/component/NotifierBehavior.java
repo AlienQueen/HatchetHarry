@@ -52,7 +52,6 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 		NotifierBehavior.logger.info(message);
 		meteor.addListener((AtmosphereResourceEventListener)this.page);
 		meteor.broadcast(message);
-		// }
 	}
 
 	@Override

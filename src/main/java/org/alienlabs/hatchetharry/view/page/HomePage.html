@@ -166,27 +166,32 @@
     </table>
   </div>
   
-  <div wicket:id="aboutWindow"></div>
-  <div wicket:id="teamInfoWindow"></div>
-  <div wicket:id="createGameWindow"></div>
-   <div wicket:id="joinGameWindow"></div>
   <!-- end menus -->
 	
 	<br/><br/><br/><br/><br/>
 	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span><br/><br/>
-  	<br/><br/>
-	<span wicket:id="dataBox"></span>
-	
+
 	<span wicket:id="balduParent">
 		<span wicket:id="baldu"></span>
 	</span>
 	
+  	<br/><br/>
+	<span wicket:id="dataBoxParent">
+		<span wicket:id="dataBox"></span>
+	</span>
+
+	<div wicket:id="aboutWindow"></div>
+	<div wicket:id="teamInfoWindow"></div>
+	<a wicket:id="notifierStart" id="notifierStart"></a>
+	<div wicket:id="createGameWindow"></div>
+	<div wicket:id="joinGameWindow"></div>
+	
   	<span align="left">
 	  	<span id="header"></span>
-			<span id="nav"></span>
-					<span wicket:id="handCardsPlaceholder" id="#">
-		        		<span wicket:id="gallery"></span>
-					</span>
+		<span id="nav"></span>
+		<span wicket:id="handCardsPlaceholder" id="#">
+			<span wicket:id="gallery"></span>
+		</span>
 	</span>
 
 	<br/><br/><br/>
@@ -323,8 +328,6 @@
 	
 	<span wicket:id="cardPlaceholder"></span>
 	
-	<a wicket:id="notifierStart" id="notifierStart"></a>
-	
 	<span class="tour_5">
 		<div id="dock">
 		    <a href='#' title="Hand" class="tour_6">
@@ -361,9 +364,8 @@
 
     	<form wicket:id="runForm">
       		Name of suite or test to run: 
-      		<input wicket:id="testClassName" type="text" size="70"  />
-      
-      		<input type="submit" value="Run" />
+      		<input wicket:id="testClassName" type="text" size="70"></input>
+      		<input type="submit" value="Run"></input>
     	</form>
     </span>
 

@@ -36,12 +36,18 @@ public class CreateGameModalWindow extends Panel
 
 	final DropDownChoice<Deck> decks;
 
+	final Player player;
+
+	final Game game;
+
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer _thumbsParent, final CharSequence _url)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
+
+		this.player = _player;
 
 		final Form<String> form = new Form<String>("form");
 
@@ -51,8 +57,8 @@ public class CreateGameModalWindow extends Panel
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
 
-		final Game game = _player.getGame().get(0);
-		final Label gameId = new Label("gameId", "The id of this game is: " + game.getId()
+		this.game = _player.getGame().get(0);
+		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
 				+ ". You'll have to provide it to your opponent(s).");
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
@@ -74,6 +80,14 @@ public class CreateGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				final Game g = CreateGameModalWindow.this.persistenceService
+						.getGame(CreateGameModalWindow.this.game.getId());
+				final List<Game> games = new ArrayList<Game>();
+				games.add(g);
+				CreateGameModalWindow.this.player.setGame(games);
+				CreateGameModalWindow.this.persistenceService
+						.updatePlayer(CreateGameModalWindow.this.player);
+
 				final Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
 				@SuppressWarnings("unchecked")
 				final List<MagicCard> allCards = (List<MagicCard>)CreateGameModalWindow.this.persistenceService
