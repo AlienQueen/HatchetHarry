@@ -305,6 +305,30 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
+			<plugin>
+			  <groupId>org.zeroturnaround</groupId>
+			  <artifactId>jrebel-maven-plugin</artifactId>
+			  <executions>
+			    <execution>
+			      <id>generate-rebel-xml</id>
+			      <phase>process-resources</phase>
+			      <goals>
+				<goal>generate</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			  <configuration>
+			  <!--
+			    root is 2 directories up from the jar/war modules
+			  -->
+			 	<relativePath>target/hatchetharry-0.0.3-SNAPSHOT</relativePath>
+			  <!--
+			    use a custom property for specifing root directory (note the double $)
+			    set the property in JRebel configuration or as -Dmyproject.root=c:/projects/
+			  -->
+			 	<rootPath>/home/nostromo/Documents/Programmation/workspace/hatchetharry</rootPath>
+			  </configuration>
+			</plugin>
 		</plugins>
 	</build>
 	</project>
