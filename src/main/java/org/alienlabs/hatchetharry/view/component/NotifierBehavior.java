@@ -45,32 +45,57 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 
 		final String _title = request.getParameter("title");
 		final String _text = request.getParameter("text");
+		
+		final String jsessionid = request.getParameter("jsessionid");
 
+		final boolean isSameSessionId = (request.getRequestedSessionId().equals(jsessionid));
 		final String message = _title + ":::" + _text + ":::" + request.getRequestedSessionId();
-		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-		NotifierBehavior.logger.info("meteor: " + meteor);
-		NotifierBehavior.logger.info(message);
-		meteor.addListener((AtmosphereResourceEventListener)this.page);
-		meteor.broadcast(message);
+
+		if (isSameSessionId)
+		{
+			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
+			NotifierBehavior.logger.info("meteor: " + meteor);
+			NotifierBehavior.logger.info(message);
+			meteor.addListener((AtmosphereResourceEventListener)this.page);
+			meteor.broadcast(message);
+		}
 	}
 
 	@Override
 	public void renderHead(final IHeaderResponse response)
 	{
 		super.renderHead(response);
+		final int before = this.getCallbackUrl().toString().indexOf("&jsessionid=");
+		final int after = this.getCallbackUrl().toString().indexOf("&random=");
+		boolean isSameSessionId = false;
+		NotifierBehavior.logger.info("render head?");
 
-		final String url = this.getCallbackUrl().toString();
+		if ((before != -1) && (after != -1))
+		{
+			isSameSessionId = (this.page.getSession().getId().equals(this.getCallbackUrl()
+					.subSequence(before, after)));
+		}
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
-		variables.put("url", url);
-		variables.put("title", this.title);
-		variables.put("text", this.text);
+		if (!isSameSessionId)
+		{
+			final String url = this.getCallbackUrl().toString();
 
-		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
-				"script/notifier/notifier.js");
-		template.interpolate(variables);
+			final HashMap<String, Object> variables = new HashMap<String, Object>();
+			variables.put("url", url);
+			variables.put("title", this.title);
+			variables.put("text", this.text);
 
-		response.renderOnDomReadyJavascript(template.asString());
+			final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+					"script/notifier/notifier.js");
+			template.interpolate(variables);
+
+			response.renderOnDomReadyJavascript(template.asString());
+			NotifierBehavior.logger.info("yes!");
+		}
+		else
+		{
+			NotifierBehavior.logger.info("No!");
+		}
 	}
 
 }

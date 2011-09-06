@@ -1,6 +1,18 @@
 jQuery(document).ready(
 		function() {
 
+			function getCookie(c_name) {
+				var i, x, y, ARRcookies = document.cookie.split(";");
+				for (i = 0; i < ARRcookies.length; i++) {
+					x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+					y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+					x = x.replace(/^\s+|\s+$/g, "");
+					if (x == c_name) {
+						return unescape(y);
+					}
+				}
+			}
+
 			function callbackNotifier(response) {
 				if (response.transport != 'polling'
 						&& response.state != 'connected'
@@ -8,7 +20,8 @@ jQuery(document).ready(
 					if (response.status == 200) {
 						var data = response.responseBody;
 						var sessionId = data.split(":::")[2];
-						if (typeof sessionId != "undefined") {
+						if ((typeof sessionId != "undefined")
+								&& (getCookie('JSESSIONID') == sessionId)) {
 							// We're
 							// in
 							// the

@@ -57,10 +57,11 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		if (("true".equals(notify))
 				&& (UpdateDataBoxBehavior.this.hp.getSession().getId().equals(jsessionid)))
 		{
-			UpdateDataBoxBehavior.logger.info("notify");
-			target.appendJavascript("wicketAjaxGet('"
-					+ this.hp.notifierPanel.getCallbackUrl()
-					+ "&title=A player joined in!&text=Ready to play?', function() { }, null, null);");
+			UpdateDataBoxBehavior.logger.info("notify with jsessionid="
+					+ UpdateDataBoxBehavior.this.hp.getSession().getId());
+			target.appendJavascript("wicketAjaxGet('" + this.hp.notifierPanel.getCallbackUrl()
+					+ "&title=A player joined in!&text=Ready to play?&jsessionid=" + jsessionid
+					+ "', function() { }, null, null);");
 		}
 
 		if (!"true".equals(stop))
