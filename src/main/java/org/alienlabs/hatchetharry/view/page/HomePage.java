@@ -214,9 +214,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavascript("wicketAjaxGet('"
-						+ HomePage.this.notifierPanel.getCallbackUrl() + "&title="
+						+ HomePage.this.notifierPanel.getCallbackUrl()
+						+ "&title="
 						+ HatchetHarrySession.get().getPlayer().getName()
-						+ "&text=has declared the end of his turn.', function() { }, null, null);");
+						+ "&text=has declared the end of his turn.&show=true', function() { }, null, null);");
 			}
 
 		};

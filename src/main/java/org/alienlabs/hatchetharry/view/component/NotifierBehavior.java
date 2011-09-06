@@ -45,14 +45,26 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 
 		final String _title = request.getParameter("title");
 		final String _text = request.getParameter("text");
-		
+		final String _show = request.getParameter("show");
+		final boolean show = ("true".equals(_show));
+
 		final String jsessionid = request.getParameter("jsessionid");
 
 		final boolean isSameSessionId = (request.getRequestedSessionId().equals(jsessionid));
-		final String message = _title + ":::" + _text + ":::" + request.getRequestedSessionId();
 
 		if (isSameSessionId)
 		{
+			final String message = _title + ":::" + _text + ":::" + request.getRequestedSessionId();
+			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
+			NotifierBehavior.logger.info("meteor: " + meteor);
+			NotifierBehavior.logger.info(message);
+			meteor.addListener((AtmosphereResourceEventListener)this.page);
+			meteor.broadcast(message);
+		}
+		else if (show)
+		{
+			final String message = _title + ":::" + _text + ":::" + request.getRequestedSessionId()
+					+ ":::show";
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			NotifierBehavior.logger.info("meteor: " + meteor);
 			NotifierBehavior.logger.info(message);
