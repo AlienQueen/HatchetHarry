@@ -144,6 +144,14 @@ public class PersistenceService
 		return (l);
 	}
 
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public void saveOrUpdatePlayer(final Player p)
+	{
+		final Session session = this.playerDao.getSession();
+		session.saveOrUpdate(p);
+	}
+
 	@Transactional
 	public int countPlayers(final long l)
 	{

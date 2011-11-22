@@ -7,6 +7,7 @@ import java.util.List;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
+import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
@@ -29,6 +30,7 @@ public class HatchetHarrySession extends WebSession
 	private static String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
 	private static String GAME_CREATED = "GAME_CREATED";
 	private static String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
+	private static String DATA_BOX = "DATA_BOX";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -170,6 +172,16 @@ public class HatchetHarrySession extends WebSession
 	public int getPlaceholderNumber()
 	{
 		return (Integer)this.getAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER);
+	}
+
+	public void setDataBox(final DataBox _dataBox)
+	{
+		this.setAttribute(HatchetHarrySession.DATA_BOX, _dataBox);
+	}
+
+	public DataBox getDataBox()
+	{
+		return (DataBox)this.getAttribute(HatchetHarrySession.DATA_BOX);
 	}
 
 	public void setGameCreated()

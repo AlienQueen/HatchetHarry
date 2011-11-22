@@ -21,7 +21,7 @@
 	</licenses>
 	<properties>
 		<wicket.version>1.4.18</wicket.version>
-		<atmosphere.version>0.7.2</atmosphere.version>
+		<atmosphere.version>0.9-SNAPSHOT</atmosphere.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.5.8</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
@@ -94,7 +94,7 @@
 		<dependency>
 			<groupId>com.googlecode</groupId>
 			<artifactId>wicket-slides</artifactId>
-			<version>0.8.2-smoothgallery2.1dev</version>
+			<version>0.8.3-smoothgallery2.1dev</version>
 		</dependency>
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
@@ -137,15 +137,20 @@
         	<artifactId>atmosphere-runtime</artifactId>
         	<version>${atmosphere.version}</version>
         	<exclusions>
-        	    <exclusion>
+        	   <!-- <exclusion>
           			<groupId>org.atmosphere</groupId>
           			<artifactId>atmosphere-compat-tomcat</artifactId>
-        		</exclusion>
+        		</exclusion>-->
         		<exclusion>
           			<groupId>org.atmosphere</groupId>
           			<artifactId>atmosphere-ping</artifactId>
         		</exclusion>
         	</exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>org.atmosphere</groupId>
+        	<artifactId>atmosphere-compat-tomcat</artifactId>
+        	<version>${atmosphere.version}</version>
         </dependency>
         <dependency>
             <groupId>org.atmosphere</groupId>

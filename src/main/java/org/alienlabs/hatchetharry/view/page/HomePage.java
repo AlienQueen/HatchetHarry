@@ -144,7 +144,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.3 (release Sulaco), built on Tuesday, 6th of September 2011."));
+				"version 0.0.3 (release Sulaco), built on Thursday, 8th of September 2011."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -233,8 +233,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.dataBoxParent = new WebMarkupContainer("dataBoxParent");
 		this.dataBoxParent.setOutputMarkupId(true);
 
-		this.dataBox = new DataBox("dataBox", _gameId, this.dataBoxParent);
-		this.dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, _gameId, this));
+		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.dataBoxParent,
+				_gameId, this);
+		this.dataBox = new DataBox("dataBox", _gameId, this.dataBoxParent, behavior, this);
+		HatchetHarrySession.get().setDataBox(this.dataBox);
+		this.dataBox.add(behavior);
 		this.dataBox.setOutputMarkupId(true);
 		this.dataBoxParent.add(this.dataBox);
 
@@ -344,8 +347,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void addHeadResources()
 	{
-		this.add(new JavaScriptReference("jQuery-1.6.2.js", HomePage.class,
-				"script/jquery/jquery-1.6.2.min.js"));
 		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
 				"script/tour/jquery.easing.1.3.js"));
 		this.add(new JavaScriptReference("jquery.storage.js", HomePage.class,

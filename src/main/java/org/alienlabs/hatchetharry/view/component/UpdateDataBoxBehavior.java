@@ -50,15 +50,20 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		final String jsessionid = request.getParameter("jsessionid");
 		final String notify = request.getParameter("notify");
 
-		final DataBox d = new DataBox("dataBox", this.gameId, this.dataBoxParent);
-		this.dataBoxParent.addOrReplace(d);
+		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent, this,
+				this.hp);
+		// HatchetHarrySession.get().getDataBox().remove(this);
+		// this.detach(HatchetHarrySession.get().getDataBox());
+		// dataBox.add(this);
+		// HatchetHarrySession.get().setDataBox(dataBox);
+
+		this.dataBoxParent.addOrReplace(dataBox);
 		target.addComponent(this.dataBoxParent);
 
-		if (("true".equals(notify))
-				&& (UpdateDataBoxBehavior.this.hp.getSession().getId().equals(jsessionid)))
+		if (("true".equals(notify)) && (this.hp.getSession().getId().equals(jsessionid)))
 		{
 			UpdateDataBoxBehavior.logger.info("notify with jsessionid="
-					+ UpdateDataBoxBehavior.this.hp.getSession().getId());
+					+ this.hp.getSession().getId());
 			target.appendJavascript("wicketAjaxGet('" + this.hp.notifierPanel.getCallbackUrl()
 					+ "&title=A player joined in!&text=Ready to play?&jsessionid=" + jsessionid
 					+ "', function() { }, null, null);");

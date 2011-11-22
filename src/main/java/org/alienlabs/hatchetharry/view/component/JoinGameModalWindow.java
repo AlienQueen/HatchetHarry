@@ -114,13 +114,15 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 
-				final DataBox d = new DataBox("dataBox",
-						Long.valueOf(JoinGameModalWindow.this.gameIdInput
-								.getDefaultModelObjectAsString()), _dataBoxParent);
-				final UpdateDataBoxBehavior b = new UpdateDataBoxBehavior(_dataBoxParent,
+				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(_dataBoxParent,
 						g.getId(), JoinGameModalWindow.this.hp);
-				d.add(b);
-				_dataBoxParent.addOrReplace(d);
+				final DataBox dataBox = new DataBox("dataBox",
+						Long.valueOf(JoinGameModalWindow.this.gameIdInput
+								.getDefaultModelObjectAsString()), _dataBoxParent, behavior,
+						JoinGameModalWindow.this.hp);
+				HatchetHarrySession.get().setDataBox(dataBox);
+				dataBox.add(behavior);
+				_dataBoxParent.addOrReplace(dataBox);
 				target.addComponent(_dataBoxParent);
 
 				final HandComponent gallery = new HandComponent("gallery");
@@ -132,7 +134,7 @@ public class JoinGameModalWindow extends Panel
 				target.appendJavascript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
 						+ _url
 						+ "&text=2&title=2', function() { }, null, null); wicketAjaxGet('"
-						+ b.getUrl()
+						+ behavior.getUrl()
 						+ "&jsessionid="
 						+ this.getParent().getPage().getSession().getId()
 						+ "', function() { }, null, null);");

@@ -110,7 +110,6 @@ public class MagicCard implements SlideshowImage, Serializable
 		this.smallImageFilename = _smallImagefilename;
 	}
 
-	@Override
 	public Model<String> getModel()
 	{
 		return new Model<String>(this.smallImageFilename);

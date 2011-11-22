@@ -64,7 +64,7 @@ import org.slf4j.LoggerFactory;
 public class ClockPage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(ClockPage.class);
+	static final Logger logger = LoggerFactory.getLogger(ClockPage.class);
 	static final Map<String, Callable<String>> connectedJSessionIds = new HashMap<String, Callable<String>>();
 
 	// TODO is this necessary??
@@ -89,6 +89,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 				public String call()
 				{
 					final String s = "1###" + new Date().toString();
+					ClockPage.logger.debug(s);
 					return s;
 				}
 			};
@@ -135,7 +136,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
 		ClockPage.logger.info("Suspending the %s response from ip {}:{}",
-				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
+				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
 
@@ -147,7 +148,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
 		ClockPage.logger.info("Resuming the {} response from ip {}:{}",
-				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
+				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
 
@@ -159,7 +160,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
 		ClockPage.logger.info("{} connection dropped from ip {}:{}",
-				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
+				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
 

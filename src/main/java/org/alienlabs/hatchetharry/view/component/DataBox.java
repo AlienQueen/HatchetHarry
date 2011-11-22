@@ -7,6 +7,8 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.alienlabs.hatchetharry.view.page.UpdateDataBoxPage;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -26,11 +28,12 @@ public class DataBox extends Panel
 	private static final long serialVersionUID = -9102861929848438800L;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
 
-	public DataBox(final String id, final long _gameId, final WebMarkupContainer _dataBoxParent)
+	public DataBox(final String id, final long _gameId, final WebMarkupContainer _dataBoxParent,
+			final UpdateDataBoxBehavior _behavior, final HomePage _hp)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
@@ -59,15 +62,61 @@ public class DataBox extends Panel
 				playerLifePoints.setOutputMarkupId(true);
 				item.add(playerLifePoints);
 
+				final AjaxLink<Void> plus = new AjaxLink<Void>("playerPlusLink")
+				{
+					private static final long serialVersionUID = -2987998457733835993L;
+
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						player.setLifePoints(player.getLifePoints() + 1);
+						DataBox.this.persistenceService.saveOrUpdatePlayer(player);
+
+						final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(
+								_dataBoxParent, _gameId, _hp);
+						_dataBoxParent.add(behavior);
+
+						_dataBoxParent.addOrReplace(DataBox.this);
+						target.addComponent(_dataBoxParent);
+
+						target.appendJavascript("wicketAjaxGet('" + behavior.getUrl()
+								+ "&jsessionid=" + this.getParent().getPage().getSession().getId()
+								+ "', function() { }, null, null);");
+					}
+				};
 				final Image playerPlus = new Image("playerPlus", new ResourceReference(
 						HomePage.class, "image/plusLife.png"));
 				playerPlus.setOutputMarkupId(true);
-				item.add(playerPlus);
+				plus.add(playerPlus);
+				item.add(plus);
 
+				final AjaxLink<Void> minus = new AjaxLink<Void>("playerMinusLink")
+				{
+					private static final long serialVersionUID = -2987999764313835993L;
+
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						player.setLifePoints(player.getLifePoints() - 1);
+						DataBox.this.persistenceService.saveOrUpdatePlayer(player);
+
+						final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(
+								_dataBoxParent, _gameId, _hp);
+						DataBox.this.add(behavior);
+
+						_dataBoxParent.addOrReplace(DataBox.this);
+						target.addComponent(_dataBoxParent);
+
+						target.appendJavascript("wicketAjaxGet('" + behavior.getUrl()
+								+ "&jsessionid=" + this.getParent().getPage().getSession().getId()
+								+ "', function() { }, null, null);");
+					}
+				};
 				final Image playerMinus = new Image("playerMinus", new ResourceReference(
 						HomePage.class, "image/minusLife.png"));
 				playerMinus.setOutputMarkupId(true);
-				item.add(playerMinus);
+				minus.add(playerMinus);
+				item.add(minus);
 			}
 		};
 
