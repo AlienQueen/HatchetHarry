@@ -12,18 +12,6 @@ jQuery(document).ready(function() {
  }, function() {
 	 jQuery("#linkOnCard").css("margin", "150px 0px 0px -120px");
  });
- 
-// jQuery("#linkOnCard").click(function() {
-// var img = jQuery(".active-thumb img");
-// var id = img.attr('id');
-// var withoutPlaceholder = id.split('placeholder')[1];
-// var withoutImg = withoutPlaceholder.split('_img')[0];
-// var uuid = withoutImg.replace(/_/g,"-");
-//		
-// wicketAjaxGet('${url}&card=' + uuid + '&indexOfClickedCard=${clicked}',
-// function() {
-// }, null, null);
-// });
 	
 	jQuery("#playCardLink${clicked}").click(function () {
 		var img = jQuery(".active-thumb img");
@@ -75,7 +63,7 @@ jQuery(document).ready(function() {
 							var currentCard = aId.split("cross-link")[1];
 							var nextCard = (currentCard == 6 ? 0 : (currentCard + 1));
 							
-							jQuery('#cross-link' + nextCard).click();
+// jQuery('#cross-link' + nextCard).click();
 							jQuery('#cross-link-div' + currentCard).remove();
 							jQuery('#placeholder' + currentCard).remove();
 							jQuery('#cross-link' + nextCard).addClass("active-thumb");

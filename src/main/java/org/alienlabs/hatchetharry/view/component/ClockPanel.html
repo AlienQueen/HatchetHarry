@@ -15,7 +15,7 @@
                 if (response.transport != 'polling' && response.state != 'connected' && response.state != 'closed') {
                     if (response.status == 200) {
                         var data = response.responseBody;
-                        var s = data.split("###")[1];
+                        var s = data.split("1###")[1];
                         if (typeof s != "undefined") { // We're in the chat Meteor
                         	document.getElementById('clock').innerHTML = s;
                         }

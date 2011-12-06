@@ -110,14 +110,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			{
 				PlayCardFromHandBehavior.logger.info("card: " + this.uuidToLookFor);
 
-				final String id = "cardPlaceholdera"
-						+ HatchetHarrySession.get().getPlaceholderNumber();
 				HatchetHarrySession.get().setPlaceholderNumber(
 						HatchetHarrySession.get().getPlaceholderNumber() + 1);
-
-				this.cp = new CardPanel(id, card.getSmallImageFilename(),
-						card.getBigImageFilename(), this.uuidToLookFor);
-				this.cp.setOutputMarkupId(true);
 
 				PlayCardFromHandBehavior.logger.info("continue!");
 
@@ -134,9 +128,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				gallery.setOutputMarkupId(true);
 
 				this.cardParent.addOrReplace(gallery);
-				this.thumbParent.addOrReplace(this.cp);
 				target.addComponent(this.cardParent);
-				target.addComponent(this.thumbParent);
 
 				target.appendJavascript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
 			}

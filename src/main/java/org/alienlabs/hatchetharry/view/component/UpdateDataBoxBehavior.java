@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
-import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
@@ -48,7 +47,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String stop = request.getParameter("stop");
 		final String jsessionid = request.getParameter("jsessionid");
-		final String notify = request.getParameter("notify");
+		request.getParameter("notify");
 
 		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent, this,
 				this.hp);
@@ -60,7 +59,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		this.dataBoxParent.addOrReplace(dataBox);
 		target.addComponent(this.dataBoxParent);
 
-		if (("true".equals(notify)) && (this.hp.getSession().getId().equals(jsessionid)))
+		if (this.hp.getSession().getId().equals(jsessionid))
 		{
 			UpdateDataBoxBehavior.logger.info("notify with jsessionid="
 					+ this.hp.getSession().getId());
@@ -77,8 +76,8 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			UpdateDataBoxBehavior.logger.info("meteor: " + meteor);
 			UpdateDataBoxBehavior.logger.info(message);
-			meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-			meteor.broadcast(message);
+			// meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+			// meteor.broadcast(message);
 		}
 	}
 

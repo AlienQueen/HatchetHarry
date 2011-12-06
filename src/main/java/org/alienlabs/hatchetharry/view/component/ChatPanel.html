@@ -15,7 +15,9 @@
                     if (response.status == 200) {
                         var data = response.responseBody;
                         var s= data.split("said")[1];
-                        if (typeof s != "undefined") { // We're in the chat Meteor
+						var t = data.split("###")[1];
+						
+                        if ((typeof s != "undefined") && (typeof t != "undefined")) { // We're in the chat Meteor
                         	document.getElementById('chat').innerHTML =
                         		document.getElementById('chat').innerHTML + "\n" + data.split("###")[1];
                         }
