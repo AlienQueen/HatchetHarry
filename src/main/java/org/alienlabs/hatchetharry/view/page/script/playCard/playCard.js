@@ -67,6 +67,7 @@ jQuery(document).ready(function() {
 							jQuery('#cross-link-div' + currentCard).remove();
 							jQuery('#placeholder' + currentCard).remove();
 							jQuery('#cross-link' + nextCard).addClass("active-thumb");
+							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
 						} else if ((typeof id != "undefined")
 								&& (getCookie('JSESSIONID') != sessionId)) 
 						{

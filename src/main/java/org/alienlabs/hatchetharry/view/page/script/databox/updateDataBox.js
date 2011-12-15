@@ -29,6 +29,17 @@ jQuery(document).ready(
 							// We're in the DataBox Meteor
 							wicketAjaxGet('${url}&stop=true&notify=true&jsessionid=' + getCookie('JSESSIONID'), function() { }, null, null);
 						}
+						
+						var t = data.split("§§§")[1];
+						if (typeof t != "undefined") {
+							jQuery.gritter.add({
+								title : data.split("§§§")[0],
+								text : data.split("§§§")[1],
+								image : 'image/logoh2.gif',
+								sticky : false,
+								time : ''
+							});
+						}
 					}
 				}
 			}

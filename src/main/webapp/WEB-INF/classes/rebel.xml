@@ -11,6 +11,9 @@
     <link target="/">
       <dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/src/main/webapp"/>
     </link>
+	<link target="static/">
+          <dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/src/main/java"/>
+    </link>
   </web>
 </application>
  

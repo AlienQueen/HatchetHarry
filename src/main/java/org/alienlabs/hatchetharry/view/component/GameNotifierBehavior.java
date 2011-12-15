@@ -9,7 +9,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
@@ -50,7 +49,7 @@ public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			GameNotifierBehavior.logger.info("meteor: " + meteor);
 			GameNotifierBehavior.logger.info(message);
-			meteor.addListener((AtmosphereResourceEventListener)this.page);
+			// meteor.addListener((AtmosphereResourceEventListener)this.page);
 			meteor.broadcast(message);
 		}
 	}

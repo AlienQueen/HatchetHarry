@@ -24,7 +24,7 @@ jQuery(document)
 								var data = response.responseBody;
 								var sessionId = data.split(":::")[2];
 								if ((typeof sessionId != "undefined")
-										&& (getCookie('JSESSIONID') == sessionId)) {
+										&& (getCookie('JSESSIONID') != sessionId)) {
 									// We're
 									// in
 									// the
