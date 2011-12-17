@@ -104,6 +104,7 @@ public class CreateGameModalWindow extends Panel
 				}
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
+				HatchetHarrySession.get().setDeck(deck);
 
 				final HandComponent gallery = new HandComponent("gallery");
 				_handCardsParent.addOrReplace(gallery);

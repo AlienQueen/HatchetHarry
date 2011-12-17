@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
@@ -31,6 +32,7 @@ public class HatchetHarrySession extends WebSession
 	private static String GAME_CREATED = "GAME_CREATED";
 	private static String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
 	private static String DATA_BOX = "DATA_BOX";
+	private static String DECK = "DECK";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -182,6 +184,16 @@ public class HatchetHarrySession extends WebSession
 	public DataBox getDataBox()
 	{
 		return (DataBox)this.getAttribute(HatchetHarrySession.DATA_BOX);
+	}
+
+	public void setDeck(final Deck _deck)
+	{
+		this.setAttribute(HatchetHarrySession.DECK, _deck);
+	}
+
+	public Deck getDeck()
+	{
+		return (Deck)this.getAttribute(HatchetHarrySession.DECK);
 	}
 
 	public void setGameCreated()

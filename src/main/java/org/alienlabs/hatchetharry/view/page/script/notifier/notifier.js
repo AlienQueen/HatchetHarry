@@ -23,36 +23,41 @@ jQuery(document)
 							if (response.status == 200) {
 								var data = response.responseBody;
 								var sessionId = data.split(":::")[2];
-								if ((typeof sessionId != "undefined")
-										&& (getCookie('JSESSIONID') != sessionId)) {
-									// We're
-									// in
-									// the
-									// notifier
-									// Meteor and should NOT display this
-									// message in every browser
-									jQuery.gritter.add({
-										title : data.split(":::")[0],
-										text : data.split(":::")[1],
-										image : 'image/logoh2.gif',
-										sticky : false,
-										time : ''
-									});
-								} else if ((typeof sessionId != "undefined")
-										&& (typeof data.split(":::")[3] != "undefined")) {
-									// We're
-									// in
-									// the
-									// notifier
-									// Meteor and SHOULD display this message in
-									// every browser
-									jQuery.gritter.add({
-										title : data.split(":::")[0],
-										text : data.split(":::")[1],
-										image : 'image/logoh2.gif',
-										sticky : false,
-										time : ''
-									});
+								var s = data.split("#####")[1];
+
+								if (typeof s == "undefined") {
+									if ((typeof sessionId != "undefined")
+											&& (getCookie('JSESSIONID') != sessionId)) {
+										// We're
+										// in
+										// the
+										// notifier
+										// Meteor and should NOT display this
+										// message in every browser
+										jQuery.gritter.add({
+											title : data.split(":::")[0],
+											text : data.split(":::")[1],
+											image : 'image/logoh2.gif',
+											sticky : false,
+											time : ''
+										});
+									} else if ((typeof sessionId != "undefined")
+											&& (typeof data.split(":::")[3] != "undefined")) {
+										// We're
+										// in
+										// the
+										// notifier
+										// Meteor and SHOULD display this
+										// message in
+										// every browser
+										jQuery.gritter.add({
+											title : data.split(":::")[0],
+											text : data.split(":::")[1],
+											image : 'image/logoh2.gif',
+											sticky : false,
+											time : ''
+										});
+									}
 								}
 							}
 						}

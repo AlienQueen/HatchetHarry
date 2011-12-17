@@ -59,6 +59,7 @@ public class JoinGameModalWindow extends Panel
 		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService.getAllDecks();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
+		this.decks.setRequired(true);
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
 		final Model<String> inputName = new Model<String>("");
@@ -71,6 +72,7 @@ public class JoinGameModalWindow extends Panel
 		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
 		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
 				new Model<String>(), sidesModel);
+		sideInput.setRequired(true);
 
 		this.player.getGame().get(0);
 		final Label gameIdLabel = new Label("gameIdLabel",
@@ -98,9 +100,11 @@ public class JoinGameModalWindow extends Panel
 				{
 					firstCards.add(i, allCards.get(i));
 					HatchetHarrySession.get().addCardIdInHand(i, i);
+					deck.getCards().remove(allCards.get(i));
 				}
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
+				HatchetHarrySession.get().setDeck(deck);
 
 				final Game g = JoinGameModalWindow.this.persistenceService.getGame(Long
 						.valueOf(JoinGameModalWindow.this.gameIdInput

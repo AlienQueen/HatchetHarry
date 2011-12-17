@@ -38,12 +38,14 @@
 package org.alienlabs.hatchetharry.view.page;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
@@ -63,6 +65,7 @@ import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
+import org.apache.wicket.Application;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -76,6 +79,7 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
+import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +112,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	WebMarkupContainer playCardLink;
 	WebMarkupContainer playCardParent1;
 
-	private final WebMarkupContainer handCardsPlaceholder;
+	final WebMarkupContainer handCardsPlaceholder;
 	WebMarkupContainer thumbsPlaceholder;
 
 	private AjaxLink<Void> endTurnLink;
@@ -189,6 +193,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.generatePlayCardLink(this.hand);
 		this.generatePlayCardsBehaviorsForAllOpponents();
+
+		this.generateDrawCardLink(this.hand);
 
 		// Comet chat channel
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
@@ -339,6 +345,64 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		playCardPlaceholder.add(this.playCardLink);
 
 		this.add(playCardPlaceholder);
+	}
+
+	private void generateDrawCardLink(final List<MagicCard> mc)
+	{
+		final AjaxLink<String> drawCardLink = new AjaxLink<String>("drawCardLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				if ((HatchetHarrySession.get().getDeck() != null)
+						&& (HatchetHarrySession.get().getDeck().getCards() != null))
+				{
+					if (HatchetHarrySession.get().getDeck().getCards().size() > 0)
+					{
+						final MagicCard card = HatchetHarrySession.get().getDeck().getCards()
+								.get(0);
+						final List<MagicCard> list = HatchetHarrySession.get()
+								.getFirstCardsInHand();
+						list.add(card);
+
+						final Deck d = HatchetHarrySession.get().getDeck();
+						final List<MagicCard> deckList = d.getCards();
+						deckList.remove(card);
+						d.setCards(deckList);
+
+						HatchetHarrySession.get().setFirstCardsInHand(list);
+						HatchetHarrySession.get().setDeck(d);
+
+						final HandComponent gallery = new HandComponent("gallery");
+						gallery.setOutputMarkupId(true);
+
+						((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession
+								.get().getPlayer());
+
+						HomePage.this.handCardsPlaceholder.addOrReplace(gallery);
+						target.addComponent(HomePage.this.handCardsPlaceholder);
+						target.appendJavascript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+
+						final ServletWebRequest servletWebRequest = (ServletWebRequest)target
+								.getPage().getRequest();
+						final HttpServletRequest request = servletWebRequest
+								.getHttpServletRequest();
+						final Meteor meteor = Meteor.build(request,
+								new LinkedList<BroadcastFilter>(), null);
+						meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+						final String message = HatchetHarrySession.get().getPlayer().getSide()
+								+ ":::" + "has drawn a card!" + ":::"
+								+ request.getRequestedSessionId() + ":::padding";
+						meteor.broadcast(message);
+					}
+				}
+			}
+		};
+		this.add(drawCardLink);
+
+
 	}
 
 	protected void createCardPanelPlaceholders()
