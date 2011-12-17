@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.atmosphere.cpr.BroadcastFilter;
@@ -17,12 +16,12 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 {
-	static final Logger logger = LoggerFactory.getLogger(GameNotifierBehavior.class);
+	private static final Logger logger = LoggerFactory.getLogger(GameNotifierBehavior.class);
 	private final WebPage page;
 
-	public GameNotifierBehavior(final WebPage _p)
+	public GameNotifierBehavior(final WebPage _page)
 	{
-		this.page = _p;
+		this.page = _page;
 	}
 
 	@Override
@@ -52,12 +51,6 @@ public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 			// meteor.addListener((AtmosphereResourceEventListener)this.page);
 			meteor.broadcast(message);
 		}
-	}
-
-	@Override
-	public void renderHead(final IHeaderResponse response)
-	{
-		super.renderHead(response);
 	}
 
 }

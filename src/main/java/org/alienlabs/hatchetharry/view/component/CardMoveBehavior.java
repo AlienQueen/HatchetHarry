@@ -10,7 +10,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
@@ -23,11 +22,11 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 {
-	static final Logger logger = LoggerFactory.getLogger(CardMoveBehavior.class);
+	private static final Logger logger = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
 
-	public CardMoveBehavior(final CardPanel cp, final Form<String> _form, final UUID _uuid)
+	public CardMoveBehavior(final CardPanel cp, final UUID _uuid)
 	{
 		this.panel = cp;
 		this.uuid = _uuid;
@@ -42,10 +41,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final String _mouseX = request.getParameter("posX");
 		final String _mouseY = request.getParameter("posY");
-		final String uuid = request.getParameter("uuid");
+		final String uniqueid = request.getParameter("uuid");
 		final String message = request.getRequestedSessionId() + "&&&"
 				+ (Integer.parseInt(_mouseX) - 16) + "&&&" + (Integer.parseInt(_mouseY) - 16)
-				+ "&&&" + uuid;
+				+ "&&&" + uniqueid;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardMoveBehavior.logger.info("meteor: " + meteor);

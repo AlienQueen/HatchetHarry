@@ -10,7 +10,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
@@ -24,11 +23,11 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = -9164073767944851883L;
 
-	static final Logger logger = LoggerFactory.getLogger(CardRotateBehavior.class);
+	private static final Logger logger = LoggerFactory.getLogger(CardRotateBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
 
-	public CardRotateBehavior(final CardPanel cp, final Form<String> _form, final UUID _uuid)
+	public CardRotateBehavior(final CardPanel cp, final UUID _uuid)
 	{
 		this.panel = cp;
 		this.uuid = _uuid;

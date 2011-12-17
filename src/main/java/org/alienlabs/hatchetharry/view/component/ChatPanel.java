@@ -67,9 +67,6 @@ public class ChatPanel extends Panel
 {
 	static final Logger logger = LoggerFactory.getLogger(ChatPanel.class);
 
-	/**
-	 * List of {@link BroadcastFilter}
-	 */
 	final List<BroadcastFilter> list;
 
 	public ChatPanel(final String id, final Long _playerId)

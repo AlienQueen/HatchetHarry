@@ -122,7 +122,7 @@ public class JoinGameModalWindow extends Panel
 						g.getId(), JoinGameModalWindow.this.hp);
 				final DataBox dataBox = new DataBox("dataBox",
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
-								.getDefaultModelObjectAsString()), _dataBoxParent, behavior,
+								.getDefaultModelObjectAsString()), _dataBoxParent,
 						JoinGameModalWindow.this.hp);
 				HatchetHarrySession.get().setDataBox(dataBox);
 				dataBox.add(behavior);

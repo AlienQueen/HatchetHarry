@@ -20,19 +20,19 @@ public class HatchetHarrySession extends WebSession
 
 	private static final String MY_GAME = "MY_GAME";
 	private static final String FIRST_CARDS_IN_HAND = "FIRST_CARDS_IN_HAND";
-	private static String HAND_CARDS_HAVE_BEEN_BUILT = "HAND_CARDS_HAVE_BEEN_BUILT";
-	private static String ALL_CARDS_IN_HAND = "ALL_CARDS_IN_HAND";
-	private static String PLAYER_HAS_BEEN_CREATED = "PLAYER_HAS_BEEN_CREATED";
-	private static String PLAYER = "PLAYER";
-	private static String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
-	private static String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
-	private static String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
-	private static String PLAYER_LETTER = "PLAYER_LETTER";
-	private static String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
-	private static String GAME_CREATED = "GAME_CREATED";
-	private static String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
-	private static String DATA_BOX = "DATA_BOX";
-	private static String DECK = "DECK";
+	private static final String HAND_CARDS_HAVE_BEEN_BUILT = "HAND_CARDS_HAVE_BEEN_BUILT";
+	private static final String ALL_CARDS_IN_HAND = "ALL_CARDS_IN_HAND";
+	private static final String PLAYER_HAS_BEEN_CREATED = "PLAYER_HAS_BEEN_CREATED";
+	private static final String PLAYER = "PLAYER";
+	private static final String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
+	private static final String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
+	private static final String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
+	private static final String PLAYER_LETTER = "PLAYER_LETTER";
+	private static final String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
+	private static final String GAME_CREATED = "GAME_CREATED";
+	private static final String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
+	private static final String DATA_BOX = "DATA_BOX";
+	private static final String DECK = "DECK";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -71,7 +71,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_GAME, _gameId);
 	}
 
-	public boolean getHandCardsHaveBeenBuilt()
+	public boolean isHandCardsHaveBeenBuilt()
 	{
 		return (Boolean)this.getAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT);
 	}
@@ -125,7 +125,7 @@ public class HatchetHarrySession extends WebSession
 		return (Boolean)this.getAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED);
 	}
 
-	public boolean getHandHasBeenCreated()
+	public boolean isHandHasBeenCreated()
 	{
 		return (Boolean)this.getAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED);
 	}
@@ -216,10 +216,10 @@ public class HatchetHarrySession extends WebSession
 	}
 
 
-	public ArrayList<CardPanel> getAllCardsInBattleField()
+	public List<CardPanel> getAllCardsInBattleField()
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
+		final List<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
 		return cards;
 	}

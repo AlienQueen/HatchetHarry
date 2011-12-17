@@ -241,7 +241,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.dataBoxParent,
 				_gameId, this);
-		this.dataBox = new DataBox("dataBox", _gameId, this.dataBoxParent, behavior, this);
+		this.dataBox = new DataBox("dataBox", _gameId, this.dataBoxParent, this);
 		HatchetHarrySession.get().setDataBox(this.dataBox);
 		this.dataBox.add(behavior);
 		this.dataBox.setOutputMarkupId(true);
@@ -252,7 +252,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	public synchronized void buildHandCards()
 	{
-		if (HatchetHarrySession.get().getHandHasBeenCreated())
+		if (HatchetHarrySession.get().isHandHasBeenCreated())
 		{
 			this.hand = HatchetHarrySession.get().getFirstCardsInHand();
 		}
@@ -506,7 +506,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 					.getAllCardsFromDeck(this.deck.getId()));
 			final List<MagicCard> cards = new ArrayList<MagicCard>();
 
-			if (!HatchetHarrySession.get().getHandCardsHaveBeenBuilt())
+			if (!HatchetHarrySession.get().isHandCardsHaveBeenBuilt())
 			{
 				this.deck.shuffleLibrary();
 			}
@@ -593,8 +593,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.createGameWindow.setTitle("Create a game");
 
 		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
-				this.createGameWindow.getContentId(), _player, _balduParent, _handCardsParent,
-				this.thumbsPlaceholder, _url));
+				this.createGameWindow.getContentId(), _player, _handCardsParent, _url));
 		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.createGameWindow);

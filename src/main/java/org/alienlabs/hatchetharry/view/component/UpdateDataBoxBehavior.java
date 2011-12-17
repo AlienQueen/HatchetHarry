@@ -49,8 +49,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		final String jsessionid = request.getParameter("jsessionid");
 		request.getParameter("notify");
 
-		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent, this,
-				this.hp);
+		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent, this.hp);
 		// HatchetHarrySession.get().getDataBox().remove(this);
 		// this.detach(HatchetHarrySession.get().getDataBox());
 		// dataBox.add(this);

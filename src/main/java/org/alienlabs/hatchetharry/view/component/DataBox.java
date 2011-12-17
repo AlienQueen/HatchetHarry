@@ -33,7 +33,7 @@ public class DataBox extends Panel
 	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
 
 	public DataBox(final String id, final long _gameId, final WebMarkupContainer _dataBoxParent,
-			final UpdateDataBoxBehavior _behavior, final HomePage _hp)
+			final HomePage _hp)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);

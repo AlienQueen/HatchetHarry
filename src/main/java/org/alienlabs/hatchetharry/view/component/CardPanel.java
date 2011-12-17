@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,25 +20,17 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.atmosphere.cpr.BroadcastFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("serial")
 public class CardPanel extends Panel
 {
-	static final Logger logger = LoggerFactory.getLogger(CardPanel.class);
+	private static final long serialVersionUID = 1L;
 
-	/**
-	 * List of {@link BroadcastFilter}
-	 */
-	final List<BroadcastFilter> list;
+	private static final Logger logger = LoggerFactory.getLogger(CardPanel.class);
 
-	BookmarkablePageLink<CardMovePage> cardMovePage = null;
-	BookmarkablePageLink<CardRotatePage> cardRotatePage = null;
-
-	private final WebMarkupContainer cardParent;
-	private final WebMarkupContainer cardPlaceholder;
+	private final BookmarkablePageLink<CardMovePage> cardMovePage;
+	private final BookmarkablePageLink<CardRotatePage> cardRotatePage;
 
 	private final UUID uuid;
 
@@ -74,16 +64,13 @@ public class CardPanel extends Panel
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("menutoggleButton" + this.uuid.toString());
 
-
-		this.list = new LinkedList<BroadcastFilter>();
-
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
-		menutoggleButton.add(new CardMoveBehavior(this, form, this.uuid));
-		menutoggleButton.add(new CardRotateBehavior(this, form, this.uuid));
+		menutoggleButton.add(new CardMoveBehavior(this, this.uuid));
+		menutoggleButton.add(new CardRotateBehavior(this, this.uuid));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-				(this.getHttpServletRequest().getRequestedSessionId())));
+				this.getHttpServletRequest().getRequestedSessionId()));
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
@@ -121,19 +108,18 @@ public class CardPanel extends Panel
 		this.add(menutoggleButton);
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
-		this.cardParent = new WebMarkupContainer("cardParent4");
-		this.cardParent.setOutputMarkupId(true);
-		this.cardPlaceholder = new WebMarkupContainer("cardPlaceholder4");
-		this.cardPlaceholder.setOutputMarkupId(true);
-		this.cardParent.add(this.cardPlaceholder);
-		this.add(this.cardParent);
+		final WebMarkupContainer cardParent = new WebMarkupContainer("cardParent4");
+		cardParent.setOutputMarkupId(true);
+		final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder4");
+		cardPlaceholder.setOutputMarkupId(true);
+		cardParent.add(cardPlaceholder);
+		this.add(cardParent);
 	}
 
 	public HttpServletRequest getHttpServletRequest()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
-		return request;
+		return servletWebRequest.getHttpServletRequest();
 	}
 
 	public UUID getUuid()

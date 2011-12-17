@@ -41,8 +41,7 @@ public class CreateGameModalWindow extends Panel
 	final Game game;
 
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
-			final WebMarkupContainer _thumbsParent, final CharSequence _url)
+			final WebMarkupContainer _handCardsParent, final CharSequence _url)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
