@@ -13,7 +13,6 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
@@ -41,13 +40,15 @@ public class CardPanel extends Panel
 	BookmarkablePageLink<CardRotatePage> cardRotatePage = null;
 
 	private final WebMarkupContainer cardParent;
-
 	private final WebMarkupContainer cardPlaceholder;
 
+	private final UUID uuid;
+
 	public CardPanel(final String id, final String smallImage, final String bigImage,
-			final UUID uuid)
+			final UUID _uuid)
 	{
 		super(id);
+		this.uuid = _uuid;
 
 		this.setOutputMarkupId(true);
 
@@ -71,28 +72,28 @@ public class CardPanel extends Panel
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
-		menutoggleButton.setMarkupId("menutoggleButton" + uuid.toString());
+		menutoggleButton.setMarkupId("menutoggleButton" + this.uuid.toString());
 
 
 		this.list = new LinkedList<BroadcastFilter>();
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
-		menutoggleButton.add(new CardMoveBehavior(this, form, uuid));
-		menutoggleButton.add(new CardRotateBehavior(this, form, uuid));
+		menutoggleButton.add(new CardMoveBehavior(this, form, this.uuid));
+		menutoggleButton.add(new CardRotateBehavior(this, form, this.uuid));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				(this.getHttpServletRequest().getRequestedSessionId())));
-		jsessionid.setMarkupId("jsessionid" + uuid);
+		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
 		CardPanel.logger
 				.info("jsessionid: " + this.getHttpServletRequest().getRequestedSessionId());
-		CardPanel.logger.info("uuid: " + uuid);
+		CardPanel.logger.info("uuid: " + this.uuid);
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
-		mouseX.setMarkupId("mouseX" + uuid);
-		mouseY.setMarkupId("mouseY" + uuid);
+		mouseX.setMarkupId("mouseX" + this.uuid);
+		mouseY.setMarkupId("mouseY" + this.uuid);
 		mouseX.setOutputMarkupId(true);
 		mouseY.setOutputMarkupId(true);
 
@@ -102,31 +103,20 @@ public class CardPanel extends Panel
 				"images/rightArrow.png"));
 		handleImage.setOutputMarkupId(true);
 
+		final TooltipPanel cardBubbleTip = new TooltipPanel("cardBubbleTip", bigImage);
+		cardBubbleTip.setOutputMarkupId(true);
+		cardBubbleTip.setMarkupId("cardBubbleTip" + this.uuid);
+		cardBubbleTip.add(new SimpleAttributeModifier("style", "display:none;"));
+
 		final Image cardImage = new Image("cardImage", new ResourceReference(HomePage.class,
 				smallImage));
 		cardImage.setOutputMarkupId(true);
-		cardImage.setMarkupId("card" + uuid.toString());
+		cardImage.setMarkupId("card" + this.uuid.toString());
 
-		tapHandleImage.setMarkupId("tapHandleImage" + uuid.toString());
+		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString());
 		tapHandleImage.setOutputMarkupId(true);
 
-		final Image bubbleTipImg1 = new Image("bubbleTipImg1", new ResourceReference(
-				HomePage.class, bigImage));
-		final Label bubbleTipText1 = new Label("bubbleTipText1", new Model<String>(
-				"<b><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-						+ "5/5<br/><br/>"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When Balduvian Horde comes<br/>"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;into play, sacrifice it<br/>"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unless you discard a card<br/>"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at random from your hand</b>"));
-		bubbleTipText1.add(new SimpleAttributeModifier("style", "color: white;"));
-		bubbleTipText1.setOutputMarkupPlaceholderTag(true).setEscapeModelStrings(false);
-		bubbleTipImg1.setOutputMarkupId(true);
-
-		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, bubbleTipImg1,
-				bubbleTipText1);
+		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, cardBubbleTip);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
 
@@ -144,6 +134,11 @@ public class CardPanel extends Panel
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		return request;
+	}
+
+	public UUID getUuid()
+	{
+		return this.uuid;
 	}
 
 }

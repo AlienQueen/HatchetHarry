@@ -16,10 +16,14 @@
                         var data = response.responseBody;
                         var s= data.split("said")[1];
 						var t = data.split("###")[1];
+						var u = data.split("1#####")[1];
+
 						
-                        if ((typeof s != "undefined") && (typeof t != "undefined")) { // We're in the chat Meteor
+                        if ((typeof s != "undefined")
+							&& (typeof t != "undefined")
+							&& (typeof u == "undefined")) { // We're in the chat Meteor
                         	document.getElementById('chat').innerHTML =
-                        		document.getElementById('chat').innerHTML + "\n" + data.split("###")[1];
+                        		document.getElementById('chat').innerHTML + "\n" + t;
                         }
                     }
                 }

@@ -88,7 +88,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 				@Override
 				public String call()
 				{
-					final String s = "1###" + new Date().toString();
+					final String s = "1#####" + new Date().toString();
 					ClockPage.logger.debug(s);
 					return s;
 				}

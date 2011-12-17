@@ -204,6 +204,14 @@ public class HatchetHarrySession extends WebSession
 	}
 
 
+	public ArrayList<CardPanel> getAllCardsInBattleField()
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
+				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
+		return cards;
+	}
+
 	public CardPanel removeACardFromBattleField()
 	{
 		@SuppressWarnings("unchecked")

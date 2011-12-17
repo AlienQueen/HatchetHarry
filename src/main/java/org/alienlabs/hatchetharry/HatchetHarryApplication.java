@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry;
 
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
@@ -18,6 +19,7 @@ import ch.qos.mistletoe.wicket.TestReportPage;
  */
 public class HatchetHarryApplication extends WebApplication
 {
+	private Player player;
 
 	/**
 	 * Constructor
@@ -171,6 +173,16 @@ public class HatchetHarryApplication extends WebApplication
 	public Session newSession(final Request request, final Response response)
 	{
 		return new HatchetHarrySession(request);
+	}
+
+	public Player getPlayer()
+	{
+		return this.player;
+	}
+
+	public void setPlayer(final Player _player)
+	{
+		this.player = _player;
 	}
 
 }

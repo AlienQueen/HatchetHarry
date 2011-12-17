@@ -1,7 +1,7 @@
 jQuery(document).ready(
 		function() {
 
-				jQuery('#card${uuid}').bubbletip(jQuery('#cardBubbleTip1'), {
+				jQuery('#card${uuid}').bubbletip(jQuery('#cardBubbleTip${uuid}'), {
 					deltaDirection : 'right'
 				});
 
@@ -11,7 +11,7 @@ jQuery(document).ready(
 						menu : 'myMenu'
 					},
 					function(action, el, pos) {
-						jQuery('#cardBubbleTip1').removeBubbletip();
+						jQuery('#cardBubbleTip${uuid}').removeBubbletip();
 						alert('Action: ' + action + '\n\n' + 'Element ID: '
 								+ jQuery(el).attr('id') + '\n\n' + 'X: '
 								+ pos.x + '  Y: ' + pos.y
@@ -20,8 +20,8 @@ jQuery(document).ready(
 								+ ' (relative to document)');
 						jQuery(document).ready(
 								function() {
-									jQuery('#card').bubbletip(
-											jQuery('#cardBubbleTip1'), {
+									jQuery('#card${uuid}').bubbletip(
+											jQuery('#cardBubbleTip${uuid}'), {
 												deltaDirection : 'right'
 											});
 								});

@@ -64,7 +64,7 @@ public class ClockPanel extends Panel
 			@Override
 			public String getObject()
 			{
-				return "1###" + new Date().toString();
+				return "1#####" + new Date().toString();
 			}
 		}));
 	}

@@ -144,7 +144,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.3 (release Sulaco), built on Thursday, 15th of December 2011."));
+				"version 0.0.3 (release Sulaco), built on Friday, 16th of December 2011."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -328,8 +328,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.playCardLink.setMarkupId("playCardPlaceholder0");
 		this.playCardLink.setOutputMarkupId(true);
 
-		this.playCardLink.add(new PlayCardFromHandBehavior(this.playCardParent1,
-				this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0));
+		if (mc.size() > 0)
+		{
+			this.playCardLink.add(new PlayCardFromHandBehavior(this.playCardParent1,
+					this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0));
+		}
 
 		this.playCardLink.setMarkupId("playCardLink0");
 		this.playCardLink.setOutputMarkupId(true);
@@ -347,6 +350,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void addHeadResources()
 	{
+		this.add(new JavaScriptReference("jquery-1.6.4.js", HomePage.class,
+				"script/jquery-1.6.4.js"));
+		this.add(new JavaScriptReference("jquery.atmosphere.js", HomePage.class,
+				"script/jquery.atmosphere.js"));
 		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
 				"script/tour/jquery.easing.1.3.js"));
 		this.add(new JavaScriptReference("jquery.storage.js", HomePage.class,
