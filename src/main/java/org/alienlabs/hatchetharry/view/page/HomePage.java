@@ -622,7 +622,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
 		this.joinGameWindow.setInitialWidth(475);
 		this.joinGameWindow.setInitialHeight(290);
-		this.joinGameWindow.setTitle("Create a game");
+		this.joinGameWindow.setTitle("Join a game");
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
 				this.joinGameWindow.getContentId(), _player, _balduParent, _handCardsParent,
