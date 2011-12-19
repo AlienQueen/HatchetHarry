@@ -1,0 +1,5 @@
+- to enable the jQuery-tour again :
+	- issue jQuery.Storage.set("tour", "blah"); in the FireBugs console of Firefox
+	- delete navigation data in other browsers
+	
+- to hide the jQuery-tour temporarily: target.appendJavascript("jQuery('#tourcontrols').remove());

@@ -323,6 +323,24 @@
 				};
 				tooltip.find('span.tooltip_arrow').addClass('tooltip_arrow_L');
 				break;
+			case 'BOTTOML':
+				properties = {
+					'left' : '0px',
+					'top' : (jQuery(window).height()
+							+ jQuery(window).scrollTop() - tooltip.height())
+							+ 'px'
+				};
+				tooltip.find('span.tooltip_arrow').addClass('tooltip_arrow_R');
+				break;
+			case 'BOTTOM':
+				properties = {
+					'left' : '530px',
+					'top' : (jQuery(window).height()
+							+ jQuery(window).scrollTop() - tooltip.height())
+							+ 'px'
+				};
+				tooltip.find('span.tooltip_arrow').addClass('tooltip_arrow_L');
+				break;
 			}
 
 			/*

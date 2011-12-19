@@ -148,7 +148,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.3 (release Sulaco), built on Saturday, 17th of December 2011."));
+				"version 0.0.4 (release Auriga), built on Monday, 19th of December 2011."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
