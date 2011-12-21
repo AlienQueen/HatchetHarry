@@ -95,7 +95,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 			};
 			ClockPage.connectedJSessionIds.put(jsessionid, callable);
 			((HatchetHarrySession)Session.get()).setCometUser(jsessionid);
-			meteor.schedule(callable, 1); // 1 second
+			meteor.schedule(callable, 5); // 5 seconds
 		}
 
 		// Add us to the listener list.
