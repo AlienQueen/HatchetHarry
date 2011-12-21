@@ -33,6 +33,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
 	private static final String DATA_BOX = "DATA_BOX";
 	private static final String DECK = "DECK";
+	private static final String TO_REMOVE = "TO_REMOVE";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -215,6 +216,35 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
 	}
 
+	@SuppressWarnings("unchecked")
+	public void addCardInToRemoveList(final CardPanel cp)
+	{
+		ArrayList<CardPanel> cards;
+
+		if (this.getAttribute(HatchetHarrySession.TO_REMOVE) == null)
+		{
+			cards = new ArrayList<CardPanel>();
+		}
+		else
+		{
+			cards = (ArrayList<CardPanel>)this.getAttribute(HatchetHarrySession.TO_REMOVE);
+		}
+		cards.add(cp);
+		this.setAttribute(HatchetHarrySession.TO_REMOVE, cards);
+	}
+
+	public List<CardPanel> getAllCardsToRemove()
+	{
+		@SuppressWarnings("unchecked")
+		final List<CardPanel> cards = (ArrayList<CardPanel>)this
+				.getAttribute(HatchetHarrySession.TO_REMOVE);
+		return cards;
+	}
+
+	public void removeAllCardsFromBattleField()
+	{
+		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
+	}
 
 	public List<CardPanel> getAllCardsInBattleField()
 	{

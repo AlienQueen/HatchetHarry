@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -13,15 +14,22 @@ import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
+import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class PersistenceService
 {
+	static final Logger logger = LoggerFactory.getLogger(JoinGameModalWindow.class);
+
 	@SpringBean
 	private PlayerDao playerDao;
 	@SpringBean
@@ -84,6 +92,7 @@ public class PersistenceService
 		final Query query = session
 				.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid=?");
 		query.setString(0, uuid.toString());
+		PersistenceService.logger.debug("card UUID: " + uuid.toString());
 		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
@@ -229,6 +238,7 @@ public class PersistenceService
 	}
 
 	@Transactional
+	@SuppressWarnings("unchecked")
 	public List<?> getAllCardsFromDeck(final long l)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -236,7 +246,16 @@ public class PersistenceService
 		final Query query = session.createQuery("from MagicCard card0_ where card0_.deck=?");
 		query.setLong(0, l);
 
-		return query.list();
+		List<MagicCard> list = new ArrayList<MagicCard>();
+		try
+		{
+			list = (List)query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.logger.error("error!", e);
+		}
+		return list;
 	}
 
 	@Required
@@ -319,5 +338,41 @@ public class PersistenceService
 	public Game getGame(final Long _id)
 	{
 		return this.gameDao.load(_id);
+	}
+
+	@Transactional
+	public void deleteMagicCard(final MagicCard mc)
+	{
+		this.magicCardDao.delete(mc.getId());
+	}
+
+	@Transactional
+	public void deleteAllCardsInBattleField()
+	{
+		final List<CardPanel> inBattleField = HatchetHarrySession.get().getAllCardsInBattleField();
+
+		if ((null != inBattleField) && (inBattleField.size() > 0))
+		{
+			for (int i = 0; i < inBattleField.size(); i++)
+			{
+				final CardPanel cp = inBattleField.get(i);
+				if (null != cp)
+				{
+					try
+					{
+						PersistenceService.logger.debug("card uuid= " + cp.getUuid());
+						final MagicCard mc = this.getCardFromUuid(cp.getUuid());
+						if (null != mc)
+						{
+							this.deleteMagicCard(mc);
+						}
+					}
+					catch (final ObjectNotFoundException e)
+					{
+						PersistenceService.logger.error("card doesn't exist", e);
+					}
+				}
+			}
+		}
 	}
 }

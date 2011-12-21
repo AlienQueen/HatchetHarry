@@ -156,6 +156,8 @@ public class DataGenerator implements InitializingBean
 					card.setGameId(1l);
 					card.setDeck(decks.get(j - 1));
 					card.setUuidObject(UUID.randomUUID());
+					card.setX(16l);
+					card.setY(16l);
 					card = this.magicCardDao.save(card);
 
 					final List<MagicCard> cards = decks.get(j - 1).getCards();

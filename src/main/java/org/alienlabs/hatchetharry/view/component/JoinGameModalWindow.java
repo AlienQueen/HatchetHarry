@@ -103,6 +103,20 @@ public class JoinGameModalWindow extends Panel
 					deck.getCards().remove(allCards.get(i));
 				}
 
+				final List<CardPanel> toRemove = HatchetHarrySession.get()
+						.getAllCardsInBattleField();
+				if ((null != toRemove) && (toRemove.size() > 0))
+				{
+					for (final CardPanel cp : toRemove)
+					{
+						target.appendJavascript("jQuery('#" + cp.getMarkupId() + "').remove();");
+						JoinGameModalWindow.logger.info("cp.getMarkupId(): " + cp.getMarkupId());
+						HatchetHarrySession.get().addCardInToRemoveList(cp);
+					}
+					JoinGameModalWindow.this.persistenceService.deleteAllCardsInBattleField();
+					HatchetHarrySession.get().removeAllCardsFromBattleField();
+				}
+
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
 				HatchetHarrySession.get().setDeck(deck);
 

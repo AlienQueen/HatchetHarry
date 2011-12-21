@@ -41,9 +41,13 @@ public class MagicCard implements SlideshowImage, Serializable
 	private String uuid;
 	@Column
 	private Long gameId;
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
+	@Column
+	private Long x = 64l; // x coordinate
+	@Column
+	private Long y = 64l; // y coordinate
 
 	public MagicCard()
 	{
@@ -225,6 +229,26 @@ public class MagicCard implements SlideshowImage, Serializable
 			return false;
 		}
 		return true;
+	}
+
+	public Long getX()
+	{
+		return this.x;
+	}
+
+	public void setX(final Long _x)
+	{
+		this.x = _x;
+	}
+
+	public Long getY()
+	{
+		return this.y;
+	}
+
+	public void setY(final Long _y)
+	{
+		this.y = _y;
 	}
 
 }

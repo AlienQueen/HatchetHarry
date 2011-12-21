@@ -65,7 +65,14 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
+		try
+		{
+			this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
+		}
+		catch (final IllegalArgumentException e)
+		{
+			PlayCardFromHandBehavior.logger.error("bad uuid: " + request.getParameter("card"), e);
+		}
 		final String stop = request.getParameter("stop");
 		PlayCardFromHandBehavior.logger.info("url: " + request.getQueryString());
 
@@ -121,6 +128,33 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 					target.appendJavascript("jQuery('#card" + aCard.getUuid()
 							+ "').bubbletip(jQuery('#cardBubbleTip" + aCard.getUuid()
 							+ "'), {deltaDirection : 'right'});");
+					try
+					{
+						final MagicCard mc = this.persistenceService.getCardFromUuid(aCard
+								.getUuid());
+						if (null != mc)
+						{
+							target.appendJavascript("var card = jQuery(\"#menutoggleButton"
+									+ aCard.getUuid() + "\"); "
+									+ "card.css(\"position\", \"absolute\"); "
+									+ "card.css(\"left\", \"" + mc.getX() + "px\");"
+									+ "card.css(\"top\", \"" + mc.getY() + "px\");");
+						}
+					}
+					catch (final IllegalArgumentException e)
+					{
+						PlayCardFromHandBehavior.logger
+								.error("error parsing UUID of moved card", e);
+					}
+				}
+
+				final List<CardPanel> toRemove = HatchetHarrySession.get().getAllCardsToRemove();
+				if ((null != toRemove) && (toRemove.size() > 0))
+				{
+					for (final CardPanel c : toRemove)
+					{
+						target.appendJavascript("jQuery('#" + c.getMarkupId() + "').remove();");
+					}
 				}
 			}
 			else if ((null != this.uuidToLookFor) && (!"undefined".equals(this.uuidToLookFor)))

@@ -102,6 +102,20 @@ public class CreateGameModalWindow extends Panel
 					HatchetHarrySession.get().addCardIdInHand(i, i);
 				}
 
+				final List<CardPanel> toRemove = HatchetHarrySession.get()
+						.getAllCardsInBattleField();
+				if ((null != toRemove) && (toRemove.size() > 0))
+				{
+					for (final CardPanel cp : toRemove)
+					{
+						target.appendJavascript("jQuery('#" + cp.getMarkupId() + "').remove();");
+						CreateGameModalWindow.logger.info("cp.getMarkupId(): " + cp.getMarkupId());
+						HatchetHarrySession.get().addCardInToRemoveList(cp);
+					}
+					CreateGameModalWindow.this.persistenceService.deleteAllCardsInBattleField();
+					HatchetHarrySession.get().removeAllCardsFromBattleField();
+				}
+
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
 				HatchetHarrySession.get().setDeck(deck);
 
