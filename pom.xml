@@ -342,4 +342,24 @@
 			</plugin>
 		</plugins>
 	</build>
-	</project>
+	<reporting>
+    		<plugins>
+      			<plugin>
+        			<groupId>org.codehaus.mojo</groupId>
+        			<artifactId>jdepend-maven-plugin</artifactId>
+      			</plugin>
+			<plugin>
+				<groupId>emma</groupId>
+                                <artifactId>maven-emma-plugin</artifactId>
+			</plugin>
+		        <plugin>
+        			<groupId>org.apache.maven.plugins</groupId>
+        			<artifactId>maven-pmd-plugin</artifactId>
+      			</plugin>
+			<plugin>
+        			<groupId>org.codehaus.mojo</groupId>
+        			<artifactId>findbugs-maven-plugin</artifactId>
+      			</plugin>
+    		</plugins>
+  	</reporting>
+</project>
