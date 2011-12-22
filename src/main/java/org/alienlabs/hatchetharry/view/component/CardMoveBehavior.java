@@ -32,7 +32,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private final UUID uuid;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	private transient PersistenceService persistenceService;
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid)
 	{

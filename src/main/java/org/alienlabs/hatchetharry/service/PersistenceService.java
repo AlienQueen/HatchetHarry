@@ -239,7 +239,7 @@ public class PersistenceService
 
 	@Transactional
 	@SuppressWarnings("unchecked")
-	public List<?> getAllCardsFromDeck(final long l)
+	public List<MagicCard> getAllCardsFromDeck(final long l)
 	{
 		final Session session = this.magicCardDao.getSession();
 
@@ -249,7 +249,7 @@ public class PersistenceService
 		List<MagicCard> list = new ArrayList<MagicCard>();
 		try
 		{
-			list = (List)query.list();
+			list = query.list();
 		}
 		catch (final ObjectNotFoundException e)
 		{

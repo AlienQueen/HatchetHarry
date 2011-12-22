@@ -30,7 +30,7 @@ public class CreateGameModalWindow extends Panel
 	private static final long serialVersionUID = -5432292812819537705L;
 
 	@SpringBean
-	PersistenceService persistenceService;
+	transient PersistenceService persistenceService;
 
 	static final Logger logger = LoggerFactory.getLogger(CreateGameModalWindow.class);
 
@@ -88,8 +88,7 @@ public class CreateGameModalWindow extends Panel
 						.updatePlayer(CreateGameModalWindow.this.player);
 
 				final Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
-				@SuppressWarnings("unchecked")
-				final List<MagicCard> allCards = (List<MagicCard>)CreateGameModalWindow.this.persistenceService
+				final List<MagicCard> allCards = CreateGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
 				deck.setCards(allCards);
 				deck.shuffleLibrary();

@@ -31,7 +31,7 @@ public class JoinGameModalWindow extends Panel
 	private static final long serialVersionUID = -5432292812819537705L;
 
 	@SpringBean
-	PersistenceService persistenceService;
+	transient PersistenceService persistenceService;
 
 	static final Logger logger = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
@@ -87,8 +87,7 @@ public class JoinGameModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
-				@SuppressWarnings("unchecked")
-				final List<MagicCard> allCards = (List<MagicCard>)JoinGameModalWindow.this.persistenceService
+				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
 				deck.setCards(allCards);
 				deck.shuffleLibrary();

@@ -35,7 +35,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	private transient PersistenceService persistenceService;
 
 	private final WebMarkupContainer thumbParent;
 	private final WebMarkupContainer cardParent;
@@ -157,7 +157,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 					}
 				}
 			}
-			else if ((null != this.uuidToLookFor) && (!"undefined".equals(this.uuidToLookFor)))
+			else if ((null != this.uuidToLookFor) && (!"".equals(this.uuidToLookFor.toString())))
 			{
 				PlayCardFromHandBehavior.logger.info("card: " + this.uuidToLookFor);
 

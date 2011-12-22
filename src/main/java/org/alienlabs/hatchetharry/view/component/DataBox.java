@@ -28,7 +28,7 @@ public class DataBox extends Panel
 	private static final long serialVersionUID = -9102861929848438800L;
 
 	@SpringBean
-	PersistenceService persistenceService;
+	transient PersistenceService persistenceService;
 
 	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
 

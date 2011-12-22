@@ -9,30 +9,30 @@ import org.junit.Test;
 public class BasicClockTest
 {
 
-	private static WicketTester tester;
+	private WicketTester tester;
 
 	@Test
 	public void clockShouldAppearAndDisplaySomethingThenDisplaySomethingDifferentAfter10SecondsTest()
 	{
-		BasicClockTest.tester = new WicketTester(HomePage.class);
-		BasicClockTest.tester.startPage(HomePage.class);
+		this.tester = new WicketTester(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
-		BasicClockTest.tester.assertComponent("clockPanel:clock", Label.class);
-		final Label clockBefore = (Label)BasicClockTest.tester
+		this.tester.assertComponent("clockPanel:clock", Label.class);
+		final Label clockBefore = (Label)this.tester
 				.getComponentFromLastRenderedPage("clockPanel:clock");
 		final String before = clockBefore.getDefaultModelObjectAsString();
 		Assert.assertFalse(before.equals(""));
 
 		try
 		{
-			Thread.sleep(3000);
+			Thread.sleep(10000);
 		}
 		catch (final InterruptedException e)
 		{
 			e.printStackTrace();
 		}
 
-		final Label clockAfter = (Label)BasicClockTest.tester
+		final Label clockAfter = (Label)this.tester
 				.getComponentFromLastRenderedPage("clockPanel:clock");
 		Assert.assertFalse(before.equals(""));
 

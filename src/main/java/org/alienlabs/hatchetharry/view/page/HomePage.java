@@ -98,7 +98,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	static final Logger logger = LoggerFactory.getLogger(HomePage.class);
 
 	@SpringBean
-	PersistenceService persistenceService;
+	transient PersistenceService persistenceService;
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
 	ModalWindow createGameWindow;
@@ -248,7 +248,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.dataBoxParent);
 	}
 
-	public synchronized void buildHandCards()
+	public void buildHandCards()
 	{
 		if (HatchetHarrySession.get().isHandHasBeenCreated())
 		{
@@ -260,7 +260,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		}
 	}
 
-	protected synchronized long createPlayer()
+	protected long createPlayer()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
@@ -273,7 +273,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		return this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet", 20l, 2l);
 	}
 
-	@SuppressWarnings("unchecked")
 	private Long createPlayerAndDeck(final String _jsessionid, final String _side,
 			final String _name, final Long _lifePoints, final Long id)
 	{
@@ -294,7 +293,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		HatchetHarrySession.get().setPlaceholderNumber(1);
 
 		this.deck = this.persistenceService.getDeck(id);
-		this.deck.setCards((List<MagicCard>)this.persistenceService.getAllCardsFromDeck(id));
+		this.deck.setCards(this.persistenceService.getAllCardsFromDeck(id));
 		this.deck.setCards(this.deck.shuffleLibrary());
 		this.deck.setPlayerId(id);
 		this.deck = this.persistenceService.saveDeck(this.deck);
@@ -485,7 +484,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.handCardsPlaceholder.add(gallery);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected List<MagicCard> createFirstCards()
 	{
 		if (HatchetHarrySession.get().isPlayerCreated())
@@ -496,8 +494,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			{
 				this.deck = this.persistenceService.getDeck(1l);
 			}
-			this.deck.setCards((List<MagicCard>)this.persistenceService
-					.getAllCardsFromDeck(this.deck.getId()));
+			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getId()));
 			final List<MagicCard> cards = new ArrayList<MagicCard>();
 
 			if (!HatchetHarrySession.get().isHandCardsHaveBeenBuilt())
