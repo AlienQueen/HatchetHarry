@@ -23,8 +23,10 @@
 		<wicket.version>1.4.19</wicket.version>
 		<atmosphere.version>0.8.2</atmosphere.version>
 		<jetty.version>6.1.25</jetty.version>
-		<slf4j.version>1.5.8</slf4j.version>
+		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<targetJdk>1.6</targetJdk>
 	</properties>
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
@@ -294,6 +296,7 @@
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -313,6 +316,7 @@
 			<plugin>
 			  <groupId>org.zeroturnaround</groupId>
 			  <artifactId>jrebel-maven-plugin</artifactId>
+			  <version>1.1.2</version>
 			  <executions>
 			    <execution>
 			      <id>generate-rebel-xml</id>
@@ -337,23 +341,30 @@
 		</plugins>
 	</build>
 	<reporting>
-    		<plugins>
-      			<plugin>
-        			<groupId>org.codehaus.mojo</groupId>
-        			<artifactId>jdepend-maven-plugin</artifactId>
-      			</plugin>
+   		<plugins>
+     			<plugin>
+       			<groupId>org.codehaus.mojo</groupId>
+       			<artifactId>jdepend-maven-plugin</artifactId>
+       			<version>2.0-beta-2</version>
+     			</plugin>
 			<plugin>
 				<groupId>emma</groupId>
-                                <artifactId>maven-emma-plugin</artifactId>
+                <artifactId>maven-emma-plugin</artifactId>
+                <version>0.5</version>
 			</plugin>
-		        <plugin>
-        			<groupId>org.apache.maven.plugins</groupId>
-        			<artifactId>maven-pmd-plugin</artifactId>
-      			</plugin>
+	        <plugin>
+       			<groupId>org.apache.maven.plugins</groupId>
+       			<artifactId>maven-pmd-plugin</artifactId>
+       			<version>2.6</version>
+       			<configuration>
+         				<targetJdk>1.6</targetJdk>
+       			</configuration>
+     			</plugin>
 			<plugin>
-        			<groupId>org.codehaus.mojo</groupId>
-        			<artifactId>findbugs-maven-plugin</artifactId>
-      			</plugin>
-    		</plugins>
+       			<groupId>org.codehaus.mojo</groupId>
+       			<artifactId>findbugs-maven-plugin</artifactId>
+       			<version>2.3.3</version>
+   			</plugin>
+   		</plugins>
   	</reporting>
 </project>
