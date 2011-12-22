@@ -94,6 +94,7 @@ import ch.qos.mistletoe.wicket.TestReportPage;
  */
 public class HomePage extends TestReportPage implements AtmosphereResourceEventListener
 {
+	private static final long serialVersionUID = 1L;
 
 	static final Logger logger = LoggerFactory.getLogger(HomePage.class);
 
