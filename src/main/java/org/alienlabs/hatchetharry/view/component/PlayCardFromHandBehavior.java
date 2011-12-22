@@ -32,6 +32,8 @@ import org.springframework.beans.factory.annotation.Required;
 @SuppressWarnings("serial")
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
+	private static final long serialVersionUID = 1L;
+
 	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 
 	@SpringBean

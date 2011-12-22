@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Required;
 @SuppressWarnings("serial")
 public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger logger = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
