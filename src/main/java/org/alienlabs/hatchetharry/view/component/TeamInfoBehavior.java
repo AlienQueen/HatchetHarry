@@ -2,7 +2,6 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
 
-import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -18,7 +17,7 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 	static final Logger logger = LoggerFactory.getLogger(TeamInfoBehavior.class);
 	ModalWindow modal;
 
-	public TeamInfoBehavior(final HomePage _hp, final ModalWindow _modal)
+	public TeamInfoBehavior(final ModalWindow _modal)
 	{
 		this.modal = _modal;
 	}

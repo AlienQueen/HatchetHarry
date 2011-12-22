@@ -42,8 +42,7 @@ public class JoinGameModalWindow extends Panel
 	HomePage hp;
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
-			final WebMarkupContainer _thumbsParent, final CharSequence _url,
+			final WebMarkupContainer _handCardsParent, final CharSequence _url,
 			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);

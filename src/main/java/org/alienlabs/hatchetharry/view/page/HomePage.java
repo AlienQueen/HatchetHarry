@@ -186,15 +186,13 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
 
-		this.generateCreateGameLink(this.player, balduParent, this.handCardsPlaceholder,
-				notif.getCallbackUrl());
-		this.generateJoinGameLink(this.player, balduParent, this.handCardsPlaceholder,
-				notif.getCallbackUrl());
+		this.generateCreateGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl());
+		this.generateJoinGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl());
 
 		this.generatePlayCardLink(this.hand);
 		this.generatePlayCardsBehaviorsForAllOpponents();
 
-		this.generateDrawCardLink(this.hand);
+		this.generateDrawCardLink();
 
 		// Comet chat channel
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
@@ -347,7 +345,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(playCardPlaceholder);
 	}
 
-	private void generateDrawCardLink(final List<MagicCard> mc)
+	private void generateDrawCardLink()
 	{
 		final AjaxLink<String> drawCardLink = new AjaxLink<String>("drawCardLink")
 		{
@@ -357,46 +355,41 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			public void onClick(final AjaxRequestTarget target)
 			{
 				if ((HatchetHarrySession.get().getDeck() != null)
-						&& (HatchetHarrySession.get().getDeck().getCards() != null))
+						&& (HatchetHarrySession.get().getDeck().getCards() != null)
+						&& (HatchetHarrySession.get().getDeck().getCards().size() > 0))
 				{
-					if (HatchetHarrySession.get().getDeck().getCards().size() > 0)
-					{
-						final MagicCard card = HatchetHarrySession.get().getDeck().getCards()
-								.get(0);
-						final List<MagicCard> list = HatchetHarrySession.get()
-								.getFirstCardsInHand();
-						list.add(card);
+					final MagicCard card = HatchetHarrySession.get().getDeck().getCards().get(0);
+					final List<MagicCard> list = HatchetHarrySession.get().getFirstCardsInHand();
+					list.add(card);
 
-						final Deck d = HatchetHarrySession.get().getDeck();
-						final List<MagicCard> deckList = d.getCards();
-						deckList.remove(card);
-						d.setCards(deckList);
+					final Deck d = HatchetHarrySession.get().getDeck();
+					final List<MagicCard> deckList = d.getCards();
+					deckList.remove(card);
+					d.setCards(deckList);
 
-						HatchetHarrySession.get().setFirstCardsInHand(list);
-						HatchetHarrySession.get().setDeck(d);
+					HatchetHarrySession.get().setFirstCardsInHand(list);
+					HatchetHarrySession.get().setDeck(d);
 
-						final HandComponent gallery = new HandComponent("gallery");
-						gallery.setOutputMarkupId(true);
+					final HandComponent gallery = new HandComponent("gallery");
+					gallery.setOutputMarkupId(true);
 
-						((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession
-								.get().getPlayer());
+					((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession
+							.get().getPlayer());
 
-						HomePage.this.handCardsPlaceholder.addOrReplace(gallery);
-						target.addComponent(HomePage.this.handCardsPlaceholder);
-						target.appendJavascript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+					HomePage.this.handCardsPlaceholder.addOrReplace(gallery);
+					target.addComponent(HomePage.this.handCardsPlaceholder);
+					target.appendJavascript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
 
-						final ServletWebRequest servletWebRequest = (ServletWebRequest)target
-								.getPage().getRequest();
-						final HttpServletRequest request = servletWebRequest
-								.getHttpServletRequest();
-						final Meteor meteor = Meteor.build(request,
-								new LinkedList<BroadcastFilter>(), null);
-						meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-						final String message = HatchetHarrySession.get().getPlayer().getSide()
-								+ ":::" + "has drawn a card!" + ":::"
-								+ request.getRequestedSessionId() + ":::padding";
-						meteor.broadcast(message);
-					}
+					final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+							.getRequest();
+					final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+					final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(),
+							null);
+					meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+					final String message = HatchetHarrySession.get().getPlayer().getSide() + ":::"
+							+ "has drawn a card!" + ":::" + request.getRequestedSessionId()
+							+ ":::padding";
+					meteor.broadcast(message);
 				}
 			}
 		};
@@ -585,8 +578,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	protected void generateCreateGameLink(final Player _player,
-			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
-			final CharSequence _url)
+			final WebMarkupContainer _handCardsParent, final CharSequence _url)
 	{
 		this.createGameWindow = new ModalWindow("createGameWindow");
 		this.createGameWindow.setInitialWidth(475);
@@ -617,8 +609,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	protected void generateJoinGameLink(final Player _player,
-			final WebMarkupContainer _balduParent, final WebMarkupContainer _handCardsParent,
-			final CharSequence _url)
+			final WebMarkupContainer _handCardsParent, final CharSequence _url)
 	{
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
 		this.joinGameWindow.setInitialWidth(475);
@@ -626,8 +617,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.joinGameWindow.setTitle("Join a game");
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
-				this.joinGameWindow.getContentId(), _player, _balduParent, _handCardsParent,
-				this.thumbsPlaceholder, _url, this.dataBoxParent, this));
+				this.joinGameWindow.getContentId(), _player, _handCardsParent, _url,
+				this.dataBoxParent, this));
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);
