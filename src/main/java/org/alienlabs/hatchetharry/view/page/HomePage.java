@@ -148,7 +148,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.4 (release Auriga), built on Wednesday, 21th of December 2011."));
+				"version 0.0.4 (release Auriga), built on Thursday, 22nd of December 2011."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -414,10 +414,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void addHeadResources()
 	{
-		this.add(new JavaScriptReference("jquery-1.6.4.js", HomePage.class,
-				"script/jquery-1.6.4.js"));
-		this.add(new JavaScriptReference("jquery.atmosphere.js", HomePage.class,
-				"script/jquery.atmosphere.js"));
+		// this.add(new JavaScriptReference("jquery-1.6.4.js", HomePage.class,
+		// "script/jquery-1.6.4.js"));
+		// this.add(new JavaScriptReference("jquery.atmosphere.js",
+		// HomePage.class,
+		// "script/jquery.atmosphere.js"));
 		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
 				"script/tour/jquery.easing.1.3.js"));
 		this.add(new JavaScriptReference("jquery.storage.js", HomePage.class,
