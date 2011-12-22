@@ -102,7 +102,11 @@
 	</listener>
 	
 	<session-config>
-  		<session-timeout>120</session-timeout>
+  		<session-timeout>15</session-timeout>
+		<tracking-mode>COOKIE</tracking-mode>
+		<cookie-config>
+			<http-only>false</http-only>
+		</cookie-config>
 	</session-config>
 
 </web-app>
