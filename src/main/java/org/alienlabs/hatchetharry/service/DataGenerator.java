@@ -74,7 +74,7 @@ public class DataGenerator implements InitializingBean
 	@SpringBean
 	private MagicCardDao magicCardDao;
 	@SpringBean
-	private PersistenceService persistenceService;
+	private transient PersistenceService persistenceService;
 
 	@Required
 	public void setDeckDao(final DeckDao _deckDao)
