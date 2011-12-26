@@ -745,10 +745,11 @@ public class HomePage extends TestReportPage
 	 * This method is called from within the ApplicationContext once it is done
 	 * starting up, it will stick a reference to itself into this bean.
 	 * 
-	 * @param context
+	 * @param _context
 	 *            a reference to the ApplicationContext.
 	 */
 	@Override
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "Spring requires this for HomePage.CONTEXT.getBean(\"dataGenerator\");")
 	public void setApplicationContext(final ApplicationContext _context) throws BeansException
 	{
 		HomePage.CONTEXT = _context;
