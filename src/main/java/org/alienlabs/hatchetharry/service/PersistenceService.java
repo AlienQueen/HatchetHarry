@@ -330,7 +330,14 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from MagicCard m where m.title = ?");
 		query.setString(0, _name);
-		return (MagicCard)query.uniqueResult();
+		try
+		{
+			return (MagicCard)query.uniqueResult();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			return null;
+		}
 
 	}
 

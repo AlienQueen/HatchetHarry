@@ -51,6 +51,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
@@ -83,7 +84,10 @@ import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
 
@@ -92,7 +96,10 @@ import ch.qos.mistletoe.wicket.TestReportPage;
  * 
  * @author Andrey Belyaev
  */
-public class HomePage extends TestReportPage implements AtmosphereResourceEventListener
+public class HomePage extends TestReportPage
+		implements
+			AtmosphereResourceEventListener,
+			ApplicationContextAware
 {
 	private static final long serialVersionUID = 1L;
 
@@ -100,6 +107,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	@SpringBean
 	transient PersistenceService persistenceService;
+	private static transient ApplicationContext CONTEXT;
+
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
 	ModalWindow createGameWindow;
@@ -174,9 +183,17 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
 		balduParent.setOutputMarkupId(true);
+
 		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
-		balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-				.getBigImageFilename(), card.getUuidObject()));
+		if (null != card)
+		{
+			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
+					.getBigImageFilename(), card.getUuidObject()));
+		}
+		else
+		{
+			balduParent.add(new WebMarkupContainer("baldu"));
+		}
 		this.add(balduParent);
 
 		this.buildDataBox(HatchetHarrySession.get().getGameId());
@@ -294,6 +311,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		HatchetHarrySession.get().setPlaceholderNumber(1);
 
 		this.deck = this.persistenceService.getDeck(id);
+		if (null == this.deck)
+		{
+			final DataGenerator dg = (DataGenerator)HomePage.CONTEXT.getBean("dataGenerator");
+			dg.afterPropertiesSet();
+			this.deck = this.persistenceService.getDeck(id);
+		}
 		this.deck.setCards(this.persistenceService.getAllCardsFromDeck(id));
 		this.deck.setCards(this.deck.shuffleLibrary());
 		this.deck.setPlayerId(id);
@@ -716,6 +739,19 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	/**
+	 * This method is called from within the ApplicationContext once it is done
+	 * starting up, it will stick a reference to itself into this bean.
+	 * 
+	 * @param context
+	 *            a reference to the ApplicationContext.
+	 */
+	@Override
+	public void setApplicationContext(final ApplicationContext _context) throws BeansException
+	{
+		HomePage.CONTEXT = _context;
 	}
 
 }
