@@ -23,7 +23,7 @@
 		<wicket.version>1.4.19</wicket.version>
 		<atmosphere.version>0.8.2</atmosphere.version>
 		<jetty.version>6.1.25</jetty.version>
-		<slf4j.version>1.5.11</slf4j.version>
+		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<targetJdk>1.6</targetJdk>
@@ -112,6 +112,12 @@
         	<groupId>org.springframework</groupId>
         	<artifactId>spring-core</artifactId>
         	<version>3.0.3.RELEASE</version>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>
         </dependency>
         <dependency>
         	<groupId>commons-dbcp</groupId>
@@ -153,6 +159,12 @@
             <artifactId>atmosphere-jgroups</artifactId>
             <version>${atmosphere.version}</version>
             <scope>compile</scope>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>
         </dependency>
         <dependency>
         	<groupId>org.apache.geronimo.specs</groupId>
@@ -164,6 +176,12 @@
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-firefox-driver</artifactId>
         	<version>2.0b2</version>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>        	
         </dependency>
         <dependency>
         	<groupId>org.jvnet.hudson</groupId>
@@ -179,6 +197,12 @@
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-android-client</artifactId>
         	<version>2.0b1</version>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>        	
         </dependency>
         <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
@@ -199,11 +223,23 @@
         	<groupId>org.seleniumhq.webdriver</groupId>
         	<artifactId>webdriver-chrome</artifactId>
         	<version>0.9.7376</version>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>
         </dependency>
         <dependency>
         	<groupId>org.seleniumhq.webdriver</groupId>
         	<artifactId>webdriver-firefox</artifactId>
         	<version>0.9.7376</version>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>        	
         </dependency>
         <dependency>
         	<groupId>org.seleniumhq.webdriver</groupId>
@@ -219,6 +255,12 @@
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-server</artifactId>
         	<version>2.0b2</version>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>        	
         </dependency>
         <dependency>
         	<groupId>org.jvnet.hudson.plugins</groupId>
@@ -252,6 +294,12 @@
         	<artifactId>maven-site-plugin</artifactId>
         	<version>3.0</version>
         	<type>maven-plugin</type>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>        	
         </dependency>
         <dependency>
         	<groupId>org.apache.maven.skins</groupId>
@@ -274,14 +322,12 @@
         	<groupId>org.codehaus.sonar-plugins</groupId>
         	<artifactId>sonar-emma-plugin</artifactId>
         	<version>1.2.1</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
         </dependency>
         <dependency>
         	<groupId>org.codehaus.sonar-plugins</groupId>
         	<artifactId>sonar-useless-code-tracker-plugin</artifactId>
         	<version>0.4</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
         </dependency>
         <dependency>
@@ -289,19 +335,27 @@
         	<artifactId>sonarncss</artifactId>
         	<version>0.1</version>
         	<scope>compile</scope>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+        		<exclusion>
+          			<groupId>ch.qos.logback</groupId>
+          			<artifactId>logback-classic</artifactId>
+        		</exclusion>
+      		</exclusions>        	
         </dependency>
         <dependency>
         	<groupId>org.codehaus.sonar.plugins</groupId>
         	<artifactId>sonar-pmd-plugin</artifactId>
         	<version>2.12</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
         </dependency>
         <dependency>
         	<groupId>org.codehaus.sonar.plugins</groupId>
         	<artifactId>sonar-findbugs-plugin</artifactId>
         	<version>2.12</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
         </dependency>
         <dependency>
@@ -310,27 +364,40 @@
         	<version>1.6.1</version>
         	<type>hpi</type>
         	<scope>compile</scope>
+           	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+      		</exclusions>        	
         </dependency>
         <dependency>
         	<groupId>org.codehaus.sonar.plugins</groupId>
         	<artifactId>sonar-surefire-plugin</artifactId>
         	<version>2.12</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
         </dependency>
         <dependency>
         	<groupId>org.codehaus.sonar.plugins</groupId>
         	<artifactId>sonar-cpd-plugin</artifactId>
         	<version>2.12</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
         </dependency>
         <dependency>
         	<groupId>org.codehaus.sonar-plugins.l10n</groupId>
         	<artifactId>sonar-l10n-fr-plugin</artifactId>
         	<version>1.2</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
+        	<exclusions>
+        		<exclusion>
+          			<groupId>commons-logging</groupId>
+          			<artifactId>commons-logging</artifactId>
+        		</exclusion>
+        		<exclusion>
+          			<groupId>ch.qos.logback</groupId>
+          			<artifactId>logback-classic</artifactId>
+        		</exclusion>
+      		</exclusions>      		
         </dependency>
         <dependency>
         	<groupId>org.codehaus.sonar-plugins.jmeter</groupId>
@@ -348,8 +415,12 @@
         	<groupId>org.codehaus.sonar-plugins.jmeter</groupId>
         	<artifactId>sonar-jmeter-plugin</artifactId>
         	<version>0.2</version>
-        	<type>sonar-plugin</type>
         	<scope>compile</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-api</artifactId>
+        	<version>${slf4j.version}</version>
         </dependency>
 	</dependencies>
 	
