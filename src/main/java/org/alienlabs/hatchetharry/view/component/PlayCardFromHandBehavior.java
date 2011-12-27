@@ -158,6 +158,20 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 						target.appendJavascript("jQuery('#" + c.getMarkupId() + "').remove();");
 					}
 				}
+
+				final int posX = ("infrared".equals(((HatchetHarryApplication)Application.get())
+						.getPlayer().getSide())) ? 300 : 900;
+				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#menutoggleButton"
+						+ this.cp.getUuid()
+						+ "\"); "
+						+ "card.css(\"position\", \"absolute\"); "
+						+ "card.css(\"left\", \""
+						+ posX
+						+ "px\"); "
+						+ "card.css(\"top\", \"500px\"); });");
+				card.setX((long)posX);
+				card.setY((long)500);
+				this.persistenceService.saveCard(card);
 			}
 			else if ((null != this.uuidToLookFor) && (!"".equals(this.uuidToLookFor.toString())))
 			{
