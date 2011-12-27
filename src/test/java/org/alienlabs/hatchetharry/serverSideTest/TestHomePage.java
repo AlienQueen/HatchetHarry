@@ -60,8 +60,6 @@ public class TestHomePage
 		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
 		// assert rendered label component
-		TestHomePage.tester.assertComponent("message", Label.class);
-
 		final Label message = (Label)TestHomePage.tester
 				.getComponentFromLastRenderedPage("message");
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));

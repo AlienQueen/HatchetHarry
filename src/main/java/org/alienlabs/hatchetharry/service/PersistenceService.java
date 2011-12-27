@@ -233,7 +233,7 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from Deck deck0_ where deck0_.playerId=?");
 		query.setLong(0, l);
-
+		query.setMaxResults(1);
 		return (Deck)query.uniqueResult();
 	}
 
@@ -330,9 +330,10 @@ public class PersistenceService
 
 		final Query query = session.createQuery("from MagicCard m where m.title = ?");
 		query.setString(0, _name);
+		query.setMaxResults(1);
 		try
 		{
-			return (MagicCard)query.uniqueResult();
+			return (MagicCard)query.list().get(0);
 		}
 		catch (final ObjectNotFoundException e)
 		{

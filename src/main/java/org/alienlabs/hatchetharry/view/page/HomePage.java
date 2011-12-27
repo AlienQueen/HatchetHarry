@@ -45,14 +45,15 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.alienlabs.hatchetharry.ApplicationContextHolder;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
@@ -84,10 +85,7 @@ import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
 
@@ -96,10 +94,7 @@ import ch.qos.mistletoe.wicket.TestReportPage;
  * 
  * @author Andrey Belyaev
  */
-public class HomePage extends TestReportPage
-		implements
-			AtmosphereResourceEventListener,
-			ApplicationContextAware
+public class HomePage extends TestReportPage implements AtmosphereResourceEventListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -107,7 +102,6 @@ public class HomePage extends TestReportPage
 
 	@SpringBean
 	transient PersistenceService persistenceService;
-	private static transient ApplicationContext CONTEXT;
 
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
@@ -158,7 +152,7 @@ public class HomePage extends TestReportPage
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.4 (release Auriga), built on Thursday, 22nd of December 2011."));
+				"version 0.0.4 (release Auriga), built on Tuesday, 27th of December 2011."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -171,6 +165,26 @@ public class HomePage extends TestReportPage
 		else
 		{
 			this.player = HatchetHarrySession.get().getPlayer();
+		}
+
+		this.deck = this.persistenceService.getDeck(1l);
+		if (null == this.deck)
+		{
+			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
+					.getContext().getBean("runtimeDataGenerator");
+			dg.generateData();
+			this.deck = this.persistenceService.getDeck(1l);
+			this.persistenceService.saveDeck(this.deck);
+		}
+
+		this.deck = this.persistenceService.getDeck(2l);
+		if (null == this.deck)
+		{
+			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
+					.getContext().getBean("runtimeDataGenerator");
+			dg.generateData();
+			this.deck = this.persistenceService.getDeck(2l);
+			this.persistenceService.saveDeck(this.deck);
 		}
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
@@ -313,8 +327,9 @@ public class HomePage extends TestReportPage
 		this.deck = this.persistenceService.getDeck(id);
 		if (null == this.deck)
 		{
-			final DataGenerator dg = (DataGenerator)HomePage.CONTEXT.getBean("dataGenerator");
-			dg.afterPropertiesSet();
+			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
+					.getContext().getBean("runtimeDataGenerator");
+			dg.generateData();
 			this.deck = this.persistenceService.getDeck(id);
 		}
 		this.deck.setCards(this.persistenceService.getAllCardsFromDeck(id));
@@ -739,20 +754,6 @@ public class HomePage extends TestReportPage
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
-	}
-
-	/**
-	 * This method is called from within the ApplicationContext once it is done
-	 * starting up, it will stick a reference to itself into this bean.
-	 * 
-	 * @param _context
-	 *            a reference to the ApplicationContext.
-	 */
-	@Override
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "Spring requires this for HomePage.CONTEXT.getBean(\"dataGenerator\");")
-	public void setApplicationContext(final ApplicationContext _context) throws BeansException
-	{
-		HomePage.CONTEXT = _context;
 	}
 
 }

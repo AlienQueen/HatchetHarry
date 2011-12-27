@@ -29,6 +29,7 @@ import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,13 +69,21 @@ public class DataGenerator implements InitializingBean
 			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
-	private DeckDao deckDao;
+	private transient DeckDao deckDao;
 	@SpringBean
-	private CollectibleCardDao collectibleCardDao;
+	private transient CollectibleCardDao collectibleCardDao;
 	@SpringBean
-	private MagicCardDao magicCardDao;
+	private transient MagicCardDao magicCardDao;
 	@SpringBean
 	private transient PersistenceService persistenceService;
+	@SpringBean
+	private transient SessionFactory sessionFactory;
+
+	@Required
+	public void setSessionFactory(final SessionFactory _sessionFactory)
+	{
+		this.sessionFactory = _sessionFactory;
+	}
 
 	@Required
 	public void setDeckDao(final DeckDao _deckDao)
