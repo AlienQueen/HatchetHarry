@@ -1,7 +1,11 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
@@ -21,7 +25,10 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.atmosphere.cpr.BroadcastFilter;
+import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -43,7 +50,8 @@ public class JoinGameModalWindow extends Panel
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _handCardsParent, final CharSequence _url,
-			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
+			final WebMarkupContainer _dataBoxParent, final HomePage _hp,
+			final WebMarkupContainer sidePlaceholderParent)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
@@ -156,6 +164,31 @@ public class JoinGameModalWindow extends Panel
 						+ "', function() { }, null, null);");
 
 				JoinGameModalWindow.logger.info("close!");
+
+				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
+						.getRequest();
+				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+				final String jsessionid = request.getRequestedSessionId();
+
+				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
+						JoinGameModalWindow.this.player.getSide(), JoinGameModalWindow.this.hp,
+						UUID.randomUUID());
+				spp.setOutputMarkupId(true);
+				spp.add(new SidePlaceholderMoveBehavior(sidePlaceholderParent, spp.getUuid(),
+						jsessionid, JoinGameModalWindow.this.hp));
+
+				final HatchetHarrySession h = ((HatchetHarrySession.get()));
+				h.putMySidePlaceholderInSesion(JoinGameModalWindow.this.player.getSide());
+
+
+				sidePlaceholderParent.addOrReplace(spp);
+				target.addComponent(sidePlaceholderParent);
+
+				final Meteor meteor = Meteor
+						.build(request, new LinkedList<BroadcastFilter>(), null);
+				// meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+				meteor.broadcast(sideInput.getModelObject() + "|||||" + jsessionid + "|||||"
+						+ spp.getUuid());
 			}
 		};
 		submit.setOutputMarkupId(true);

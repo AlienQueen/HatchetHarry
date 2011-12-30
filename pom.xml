@@ -435,6 +435,16 @@
         	<artifactId>slf4j-api</artifactId>
         	<version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-ehcache</artifactId>
+        	<version>3.6.5.Final</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-entitymanager</artifactId>
+        	<version>3.6.5.Final</version>
+        </dependency>
 	</dependencies>
 	
     <repositories>

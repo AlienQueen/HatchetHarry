@@ -191,14 +191,23 @@
 	<div wicket:id="createGameWindow"></div>
 	<div wicket:id="joinGameWindow"></div>
 	
-  	<span align="left">
+	<a wicket:id="sidePlaceholderMove" id="sidePlaceholderMove"></a>
+	
+	<span wicket:id="secondSidePlaceholderParent"><span wicket:id="secondSidePlaceholder"></span></span>
+  	
+	<span align="left">
 	  	<span id="header"></span>
 		<span id="nav"></span>
 		<span wicket:id="handCardsPlaceholder" id="#">
 			<span wicket:id="gallery"></span>
 		</span>
 	</span>
-
+	
+	<span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
+	
+	<iframe id="cometFrame" name="cometFrame" width="0" height="0" border="0" style="border-width: 0px">
+    </iframe>
+	
 	<br/><br/><br/>
   	<span wicket:id="feedback"></span>
   	<span wicket:id="clockPanel" id="clock" class="tour_5">Clock Panel</span>

@@ -71,6 +71,7 @@ import org.apache.wicket.Application;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -129,6 +130,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	private DataBox dataBox;
 
+	private final BookmarkablePageLink<SidePlaceholderMovePage> sidePlaceholderMove;
+
+	private final WebMarkupContainer firstSidePlaceholderParent;
+	private final WebMarkupContainer secondSidePlaceholderParent;
+
 	public HomePage()
 	{
 		this.setOutputMarkupId(true);
@@ -152,7 +158,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.4 (release Auriga), built on Tuesday, 27th of December 2011."));
+				"version 0.0.4 (release Auriga), built on Friday, 30th of December 2011."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -218,8 +224,40 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
 
-		this.generateCreateGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl());
-		this.generateJoinGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl());
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
+		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		request.getRequestedSessionId();
+
+		this.sidePlaceholderMove = new BookmarkablePageLink<SidePlaceholderMovePage>(
+				"sidePlaceholderMove", SidePlaceholderMovePage.class);
+		this.sidePlaceholderMove.add(new SimpleAttributeModifier("id", "sidePlaceholderMove"));
+		this.add(this.sidePlaceholderMove);
+
+		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
+		this.secondSidePlaceholderParent.setOutputMarkupId(true);
+		// secondSidePlaceholderParent.add(new SidePlaceholderMoveBehavior(
+		// secondSidePlaceholderParent, UUID.randomUUID(), jsessionid, this));
+		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
+				"secondSidePlaceholder");
+		secondSidePlaceholder.setOutputMarkupId(true);
+		this.secondSidePlaceholderParent.add(secondSidePlaceholder);
+
+		this.firstSidePlaceholderParent = new WebMarkupContainer("firstSidePlaceholderParent");
+		this.firstSidePlaceholderParent.setOutputMarkupId(true);
+		// firstSidePlaceholderParent.add(new
+		// SidePlaceholderMoveBehavior(firstSidePlaceholderParent,
+		// UUID.randomUUID(), jsessionid, this));
+		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
+				"firstSidePlaceholder");
+		firstSidePlaceholder.setOutputMarkupId(true);
+		this.firstSidePlaceholderParent.add(firstSidePlaceholder);
+
+		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
+
+		this.generateCreateGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl(),
+				this.firstSidePlaceholderParent);
+		this.generateJoinGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl(),
+				this.secondSidePlaceholderParent);
 
 		this.generatePlayCardLink(this.hand);
 		this.generatePlayCardsBehaviorsForAllOpponents();
@@ -250,10 +288,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavascript("wicketAjaxGet('"
-						+ HomePage.this.notifierPanel.getCallbackUrl()
-						+ "&title="
+						+ HomePage.this.notifierPanel.getCallbackUrl() + "&title="
 						+ HatchetHarrySession.get().getPlayer().getName()
-						+ "&text=has declared the end of his turn.&show=true', function() { }, null, null);");
+						+ "&text=has declared the end of his turn.', function() { }, null, null);");
 			}
 
 		};
@@ -614,7 +651,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	protected void generateCreateGameLink(final Player _player,
-			final WebMarkupContainer _handCardsParent, final CharSequence _url)
+			final WebMarkupContainer _handCardsParent, final CharSequence _url,
+			final WebMarkupContainer sidePlaceholderParent)
 	{
 		this.createGameWindow = new ModalWindow("createGameWindow");
 		this.createGameWindow.setInitialWidth(475);
@@ -622,7 +660,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.createGameWindow.setTitle("Create a game");
 
 		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
-				this.createGameWindow.getContentId(), _player, _handCardsParent, _url));
+				this.createGameWindow.getContentId(), _player, _handCardsParent, _url,
+				sidePlaceholderParent, this));
 		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.createGameWindow);
@@ -645,7 +684,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	protected void generateJoinGameLink(final Player _player,
-			final WebMarkupContainer _handCardsParent, final CharSequence _url)
+			final WebMarkupContainer _handCardsParent, final CharSequence _url,
+			final WebMarkupContainer sidePlaceholderParent)
 	{
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
 		this.joinGameWindow.setInitialWidth(475);
@@ -654,7 +694,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
 				this.joinGameWindow.getContentId(), _player, _handCardsParent, _url,
-				this.dataBoxParent, this));
+				this.dataBoxParent, this, sidePlaceholderParent));
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);
@@ -754,6 +794,16 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	public WebMarkupContainer getFirstSidePlaceholderParent()
+	{
+		return this.firstSidePlaceholderParent;
+	}
+
+	public WebMarkupContainer getSecondSidePlaceholderParent()
+	{
+		return this.secondSidePlaceholderParent;
 	}
 
 }

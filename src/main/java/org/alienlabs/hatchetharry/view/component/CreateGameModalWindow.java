@@ -2,6 +2,9 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
@@ -9,6 +12,7 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -20,6 +24,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,18 +40,22 @@ public class CreateGameModalWindow extends Panel
 	static final Logger logger = LoggerFactory.getLogger(CreateGameModalWindow.class);
 
 	final DropDownChoice<Deck> decks;
-
 	final Player player;
-
 	final Game game;
+	final WebMarkupContainer sidePlaceholderParent;
+
+	final HomePage homePage;
 
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _handCardsParent, final CharSequence _url)
+			final WebMarkupContainer _handCardsParent, final CharSequence _url,
+			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
 
 		this.player = _player;
+		this.sidePlaceholderParent = _sidePlaceholderParent;
+		this.homePage = hp;
 
 		final Form<String> form = new Form<String>("form");
 
@@ -56,7 +65,7 @@ public class CreateGameModalWindow extends Panel
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
 
-		this.game = _player.getGame().get(0);
+		this.game = this.player.getGame().get(0);
 		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
 				+ ". You'll have to provide it to your opponent(s).");
 
@@ -128,6 +137,29 @@ public class CreateGameModalWindow extends Panel
 						+ _url + "&text=1&title=1', function() { }, null, null);");
 
 				CreateGameModalWindow.logger.info("close!");
+
+				final SidePlaceholderPanel spp = new SidePlaceholderPanel("firstSidePlaceholder",
+						CreateGameModalWindow.this.player.getSide(), hp, UUID.randomUUID());
+				final HatchetHarrySession h = ((HatchetHarrySession.get()));
+				h.putMySidePlaceholderInSesion(CreateGameModalWindow.this.player.getSide());
+
+				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
+						.getRequest();
+				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+				final String jsessionid = request.getRequestedSessionId();
+				spp.add(new SidePlaceholderMoveBehavior(
+						CreateGameModalWindow.this.sidePlaceholderParent, spp.getUuid(),
+						jsessionid, CreateGameModalWindow.this.homePage));
+				spp.setOutputMarkupId(true);
+
+				CreateGameModalWindow.this.sidePlaceholderParent.addOrReplace(spp);
+				target.addComponent(CreateGameModalWindow.this.sidePlaceholderParent);
+
+				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
+						+ spp.getUuid()
+						+ "\"); "
+						+ "card.css(\"position\", \"absolute\"); "
+						+ "card.css(\"left\", \"900px\"); " + "card.css(\"top\", \"500px\"); });");
 			}
 		};
 		submit.setOutputMarkupId(true);

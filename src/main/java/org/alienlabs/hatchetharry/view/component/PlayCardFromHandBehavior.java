@@ -13,6 +13,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.web.InjectorHolder;
@@ -29,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-@SuppressWarnings("serial")
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
@@ -120,7 +120,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 				target.appendJavascript("jQuery(document).ready(function() { "
 						+ "jQuery.gritter.add({ title : '"
-						+ ((HatchetHarryApplication)Application.get()).getPlayer().getSide()
+						+ ((HatchetHarrySession)Session.get()).getPlayer().getSide()
 						+ "', text : \"has played \'" + card.getTitle()
 						+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); });");
 
@@ -159,7 +159,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 					}
 				}
 
-				final int posX = ("infrared".equals(((HatchetHarryApplication)Application.get())
+				final int posX = ("infrared".equals(((HatchetHarrySession)Session.get())
 						.getPlayer().getSide())) ? 300 : 900;
 				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#menutoggleButton"
 						+ this.cp.getUuid()

@@ -9,6 +9,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
+import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
@@ -34,6 +35,8 @@ public class HatchetHarrySession extends WebSession
 	private static final String DATA_BOX = "DATA_BOX";
 	private static final String DECK = "DECK";
 	private static final String TO_REMOVE = "TO_REMOVE";
+	private static String MY_SIDE_PLACEHOLDER = "MY_SIDE_PLACEHOLDER";
+	private static String IS_SIDE_PLACEHOLDER_IN_SESSION = "IS_SIDE_PLACEHOLDER_IN_SESSION";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -44,6 +47,9 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
 		this.setAttribute(HatchetHarrySession.GAME_CREATED, false);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
+		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER,
+				new ArrayList<SidePlaceholderPanel>());
+
 	}
 
 	public static HatchetHarrySession get()
@@ -275,6 +281,38 @@ public class HatchetHarrySession extends WebSession
 			}
 		}
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SidePlaceholderPanel> getMySidePlaceholder()
+	{
+		return (List<SidePlaceholderPanel>)this
+				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
+	}
+
+	public void setMySidePlaceholder(final SidePlaceholderPanel _mySidePlaceholder)
+	{
+		@SuppressWarnings("unchecked")
+		final List<SidePlaceholderPanel> l = (List<SidePlaceholderPanel>)this
+				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
+		l.add(_mySidePlaceholder);
+		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, l);
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean isMySidePlaceholderInSesion(final String side)
+	{
+		return ((List<String>)this.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER))
+				.contains(side);
+	}
+
+	public void putMySidePlaceholderInSesion(final String side)
+	{
+		@SuppressWarnings("unchecked")
+		final List<String> l = (List<String>)this
+				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
+		l.add(side);
+		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, l);
 	}
 
 }

@@ -9,8 +9,6 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
-import ch.qos.mistletoe.wicket.TestReportPage;
-
 /**
  * Application object for your web application. If you want to run this
  * application without deploying, run the Start class.
@@ -32,7 +30,7 @@ public class HatchetHarryApplication extends WebApplication
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
-	public Class<? extends TestReportPage> getHomePage()
+	public Class<HomePage> getHomePage()
 	{
 		return HomePage.class;
 	}
@@ -167,6 +165,10 @@ public class HatchetHarryApplication extends WebApplication
 				HomePage.class, "image/gritter.png").getSharedResourceKey());
 		this.mountSharedResource("stylesheet/jquery.gritter.css", new CompressedResourceReference(
 				HomePage.class, "stylesheet/jquery.gritter.css").getSharedResourceKey());
+		this.mountSharedResource("image/logobouclierrouge.png", new CompressedResourceReference(
+				HomePage.class, "image/logobouclierrouge.png").getSharedResourceKey());
+		this.mountSharedResource("image/logobouclierviolet.png", new CompressedResourceReference(
+				HomePage.class, "image/logobouclierviolet.png").getSharedResourceKey());
 	}
 
 	@Override
