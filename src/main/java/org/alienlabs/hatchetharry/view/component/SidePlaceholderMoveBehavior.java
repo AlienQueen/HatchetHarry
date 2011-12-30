@@ -26,11 +26,10 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = LoggerFactory.getLogger(SidePlaceholderMoveBehavior.class);
-	private final UUID uuid;
+	private UUID uuid;
 	private String jsessionid;
 	private final WebMarkupContainer parent;
 
-	private UUID toShow;
 	private final HomePage homePage;
 
 	public SidePlaceholderMoveBehavior(final WebMarkupContainer _parent, final UUID _uuid,
@@ -53,9 +52,9 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.jsessionid = request.getRequestedSessionId();
 		final String _sideX = request.getParameter("posX");
 		final String _sideY = request.getParameter("posY");
-		this.toShow = UUID.fromString(request.getParameter("uuid"));
+		this.uuid = UUID.fromString(request.getParameter("uuid"));
 		final String _side = request.getParameter("side");
-		final String _uuid = request.getParameter("uuid");
+		// final String _uuid = request.getParameter("uuid");
 
 		// if (!this.jsessionid.equals(request.getParameter("requestingId")))
 		// {
@@ -81,9 +80,9 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		if ((_sideX == null) || (_sideY == null))
 		{
 			final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
-					_side, this.homePage, UUID.randomUUID());
-			spp.add(new SidePlaceholderMoveBehavior(this.parent, UUID.fromString(_uuid),
-					this.jsessionid, this.homePage));
+					_side, this.homePage, this.uuid);
+			spp.add(new SidePlaceholderMoveBehavior(this.parent, this.uuid, this.jsessionid,
+					this.homePage));
 			spp.setOutputMarkupId(true);
 
 			final HatchetHarrySession h = ((HatchetHarrySession.get()));
@@ -94,20 +93,17 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			target.addComponent(this.homePage.getSecondSidePlaceholderParent());
 
 			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
-					+ this.toShow
+					+ this.uuid
 					+ "\"); "
 					+ "card.css(\"position\", \"absolute\"); "
-					+ "card.css(\"left\", \""
-					+ ((_sideX != null) ? _sideX : 300)
-					+ "px\"); "
-					+ "card.css(\"top\", \"" + ((_sideY != null) ? _sideY : 500) + "px\"); });");
+					+ "card.css(\"left\", \"300px\"); " + "card.css(\"top\", \"500px\"); });");
 			// }
 			// }
 		}
-		else
+		else if (!this.jsessionid.equals(request.getParameter("requestingId")))
 		{
 			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
-					+ this.toShow
+					+ this.uuid
 					+ "\"); "
 					+ "card.css(\"position\", \"absolute\"); "
 					+ "card.css(\"left\", \""
@@ -118,8 +114,10 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			// meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-			meteor.broadcast(_side + "|||||" + this.jsessionid + "|||||" + this.uuid + "|||||"
-					+ _sideX + "|||||" + _sideY);
+			final String message = _side + "|||||" + this.jsessionid + "|||||" + this.uuid
+					+ "|||||" + _sideX + "|||||" + _sideY;
+			SidePlaceholderMoveBehavior.logger.info("### message: " + message);
+			meteor.broadcast(message);
 		}
 	}
 

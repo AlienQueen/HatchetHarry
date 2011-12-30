@@ -36,13 +36,13 @@ function() {
 				if ((typeof data.split("|||||")[1] != "undefined")
 						&& (getCookie('JSESSIONID') != data.split("|||||")[1])
 						&& (data.split("|||||").length == 5)
-						&& (typeof data.split("|||")[3] != 'undefined')
-						&& (data.split("|||")[3] == '${uuid}')) {
+						&& (typeof data.split("|||||")[3] != 'undefined')
+						&& (data.split("|||||")[2] == '${uuid}')) {
 					// We're in the card move Meteor
 					var card = jQuery("#sidePlaceholder${uuid}");
 					card.css("position", "absolute");
-					card.css("left", data.split("|||")[3]);
-					card.css("top", data.split("|||")[4]);
+					card.css("left", data.split("|||||")[3]);
+					card.css("top", data.split("|||||")[4]);
 					// }
 				}
 			}
