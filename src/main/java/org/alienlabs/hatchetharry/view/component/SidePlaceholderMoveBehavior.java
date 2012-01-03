@@ -92,13 +92,13 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			this.homePage.getSecondSidePlaceholderParent().addOrReplace(spp);
 			target.addComponent(this.homePage.getSecondSidePlaceholderParent());
 
-			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
+			SidePlaceholderMoveBehavior.logger.info("### " + this.uuid);
+
+			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
 					+ this.uuid
-					+ "\"); "
-					+ "card.css(\"position\", \"absolute\"); "
-					+ "card.css(\"left\", \"300px\"); " + "card.css(\"top\", \"500px\"); });");
-			// }
-			// }
+					+ "'); "
+					+ "card.css('position', 'absolute'); "
+					+ "card.css('left', '300px'); " + "card.css('top', '500px'); });");
 		}
 		else if (!this.jsessionid.equals(request.getParameter("requestingId")))
 		{

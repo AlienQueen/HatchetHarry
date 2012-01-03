@@ -158,7 +158,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.4 (release Auriga), built on Friday, 30th of December 2011."));
+				"version 0.0.5 (release Birthday), built on Monday, 2nd of January 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -288,7 +288,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavascript("wicketAjaxGet('"
-						+ HomePage.this.notifierPanel.getCallbackUrl() + "&title="
+						+ HomePage.this.notifierPanel.getCallbackUrl()
+						+ "&title="
 						+ HatchetHarrySession.get().getPlayer().getName()
 						+ "&text=has declared the end of his turn.&show=true', function() { }, null, null);");
 			}

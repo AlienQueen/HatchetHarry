@@ -184,9 +184,14 @@ public class JoinGameModalWindow extends Panel
 				sidePlaceholderParent.addOrReplace(spp);
 				target.addComponent(sidePlaceholderParent);
 
+				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
+						+ spp.getUuid()
+						+ "'); "
+						+ "card.css('position', 'absolute'); "
+						+ "card.css('left', '300px'); " + "card.css('top', '500px'); });");
+
 				final Meteor meteor = Meteor
 						.build(request, new LinkedList<BroadcastFilter>(), null);
-				// meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 				meteor.broadcast(sideInput.getModelObject() + "|||||" + jsessionid + "|||||"
 						+ spp.getUuid());
 			}
