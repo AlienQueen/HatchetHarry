@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.serverSideTest;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,216 +28,217 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TestHomePage
 {
 
-    private static WicketTester tester;
-    private static HatchetHarryApplication webApp;
-    List<Image> img;
+	private static WicketTester tester;
+	private static HatchetHarryApplication webApp;
+	List<Image> img;
 
-    @Before
-    public void setUp()
-    {
-        TestHomePage.webApp = new HatchetHarryApplication()
-        {
-            // note in this case the application context is in the default
-            // package
-            ApplicationContext context = new ClassPathXmlApplicationContext(
-                    new String[] { "applicationContext.xml" });
+	@Before
+	public void setUp()
+	{
+		TestHomePage.webApp = new HatchetHarryApplication()
+		{
+			private static final long serialVersionUID = 1L;
+			// note in this case the application context is in the default
+			// package
+			ApplicationContext context = new ClassPathXmlApplicationContext(
+					new String[] { "applicationContext.xml" });
 
-            @Override
-            public void init()
-            {
-                this.addComponentInstantiationListener(new SpringComponentInjector(this,
-                        this.context, true));
-            }
-        };
+			@Override
+			public void init()
+			{
+				this.addComponentInstantiationListener(new SpringComponentInjector(this,
+						this.context, true));
+			}
+		};
 
-        TestHomePage.tester = new WicketTester(TestHomePage.webApp);
-        final ApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[] { "applicationContext.xml" });
-        TestHomePage.tester.getApplication().addComponentInstantiationListener(
-                new SpringComponentInjector(TestHomePage.tester.getApplication(), context, true));
-    }
+		TestHomePage.tester = new WicketTester(TestHomePage.webApp);
+		final ApplicationContext context = new ClassPathXmlApplicationContext(
+				new String[] { "applicationContext.xml" });
+		TestHomePage.tester.getApplication().addComponentInstantiationListener(
+				new SpringComponentInjector(TestHomePage.tester.getApplication(), context, true));
+	}
 
 
-    @Test
-    public void testRenderMyPage()
-    {
-        // start and render the test page
-        TestHomePage.tester.startPage(HomePage.class);
+	@Test
+	public void testRenderMyPage()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
 
-        // assert rendered page class
-        TestHomePage.tester.assertRenderedPage(HomePage.class);
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
-        // assert rendered label component
-        final Label message = (Label)TestHomePage.tester
-                .getComponentFromLastRenderedPage("message");
-        Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
-        Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
+		// assert rendered label component
+		final Label message = (Label)TestHomePage.tester
+				.getComponentFromLastRenderedPage("message");
+		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
+		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
 
-    }
+	}
 
-    @Test
-    public void testRenderHand()
-    {
-        // start and render the test page
-        TestHomePage.tester.startPage(HomePage.class);
+	@Test
+	public void testRenderHand()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
 
-        // assert rendered page class
-        TestHomePage.tester.assertRenderedPage(HomePage.class);
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
-        // assert hand is present
-        TestHomePage.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
+		// assert hand is present
+		TestHomePage.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
 
-        // assert hand content
-        final HandComponent gallery = (HandComponent)TestHomePage.tester
-                .getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
+		// assert hand content
+		final HandComponent gallery = (HandComponent)TestHomePage.tester
+				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
 
-        this.img = new ArrayList<Image>();
-        @SuppressWarnings("unchecked")
-        final List<Image> images =
-        (List<Image>)gallery.visitChildren(Image.class,
-                new IVisitor<Image>()
-                {
-            @Override
-            public List<Image> component(final Image component)
-            {
-                TestHomePage.this.img.add(component);
-                return TestHomePage.this.img;
-            }
-                });
+		this.img = new ArrayList<Image>();
+		@SuppressWarnings("unchecked")
+		final List<Image> images = (List<Image>)gallery.visitChildren(Image.class,
+				new IVisitor<Image>()
+				{
+					@Override
+					public List<Image> component(final Image component)
+					{
+						TestHomePage.this.img.add(component);
+						return TestHomePage.this.img;
+					}
+				});
 
-        // assert 1 image
-        Assert.assertNotNull(images.get(0));
-        Assert.assertEquals(1, images.size());
+		// assert 1 image
+		Assert.assertNotNull(images.get(0));
+		Assert.assertEquals(1, images.size());
 
-        // assert URL of a thumbnail
-        List<TagTester> tagTester =
-                TagTester.createTagsByAttribute(TestHomePage.tester
-                        .getServletResponse().getDocument(), "class", "nav-thumb", false);
-        Assert.assertNotNull(tagTester);
-        Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
-        Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+		// assert URL of a thumbnail
+		final List<TagTester> tagTester = TagTester.createTagsByAttribute(TestHomePage.tester
+				.getServletResponse().getDocument(), "class", "nav-thumb", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
-        // assert number of thumbnails
-        Assert.assertEquals(7, tagTester.size());
-    }
+		// assert number of thumbnails
+		Assert.assertEquals(7, tagTester.size());
+	}
 
-    @Test
-    public void testRenderClock()
-    {
-        // start and render the test page
-        TestHomePage.tester.startPage(HomePage.class);
+	@Test
+	public void testRenderClock()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
 
-        // assert rendered page class
-        TestHomePage.tester.assertRenderedPage(HomePage.class);
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
-        // assert clock is present
-        TestHomePage.tester.assertComponent("clockPanel", ClockPanel.class);
+		// assert clock is present
+		TestHomePage.tester.assertComponent("clockPanel", ClockPanel.class);
 
-        // assert clock content
-        final ClockPanel clock = (ClockPanel)TestHomePage.tester
-                .getComponentFromLastRenderedPage("clockPanel");
-        System.out.println("###" + clock.getTime().getObject());
-        Assert.assertTrue(clock.getTime().getObject().contains("###"));
-    }
+		// assert clock content
+		final ClockPanel clock = (ClockPanel)TestHomePage.tester
+				.getComponentFromLastRenderedPage("clockPanel");
+		System.out.println("###" + clock.getTime().getObject());
+		Assert.assertTrue(clock.getTime().getObject().contains("###"));
+	}
 
-    @Test
-    public void testRenderMenuBar()
-    {
-        // start and render the test page
-        TestHomePage.tester.startPage(HomePage.class);
+	@Test
+	public void testRenderMenuBar()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
 
-        // assert rendered page class
-        TestHomePage.tester.assertRenderedPage(HomePage.class);
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
-        // Assert menubar
-        List<TagTester> tagTester =
-                TagTester.createTagsByAttribute(TestHomePage.tester
-                        .getServletResponse().getDocument(), "class", "rootVoices", false);
-        Assert.assertNotNull(tagTester);
-        Assert.assertEquals(1, tagTester.size());
+		// Assert menubar
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(TestHomePage.tester
+				.getServletResponse().getDocument(), "class", "rootVoices", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
 
-        // Assert menu entries
-        tagTester =
-                TagTester.createTagsByAttribute(TestHomePage.tester
-                        .getServletResponse().getDocument(), "class", "mbmenu", false);
-        Assert.assertNotNull(tagTester);
-        Assert.assertTrue(tagTester.size() > 1);
+		// Assert menu entries
+		tagTester = TagTester.createTagsByAttribute(TestHomePage.tester.getServletResponse()
+				.getDocument(), "class", "mbmenu", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertTrue(tagTester.size() > 1);
 
-        // Assert 'the game wins' entry exists
-        boolean containsText = false;
-        for (TagTester tt : tagTester) {
-            if ((null != tt.getMarkup() && tt.getMarkup().contains("The game wins")))  {
-                containsText = true;
-                break;
-            }
-        }
-        Assert.assertTrue(containsText);
-    }
+		// Assert 'the game wins' entry exists
+		boolean containsText = false;
+		for (final TagTester tt : tagTester)
+		{
+			if (((null != tt.getMarkup()) && tt.getMarkup().contains("The game wins")))
+			{
+				containsText = true;
+				break;
+			}
+		}
+		Assert.assertTrue(containsText);
+	}
 
-    @Test
-    public void testRenderDataBox()
-    {
-        // start and render the test page
-        TestHomePage.tester.startPage(HomePage.class);
+	@Test
+	public void testRenderDataBox()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
 
-        // assert rendered page class
-        TestHomePage.tester.assertRenderedPage(HomePage.class);
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
-        // assert DataBox is present
-        TestHomePage.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
-        
-        // assert DataBox content
-        TestHomePage.tester.assertLabel("dataBoxParent:dataBox:box:0:playerLifePoints", "20 life points");
-    }
-    
-    @Test
-    public void testRenderChat()
-    {
-        // start and render the test page
-        TestHomePage.tester.startPage(HomePage.class);
+		// assert DataBox is present
+		TestHomePage.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
 
-        // assert rendered page class
-        TestHomePage.tester.assertRenderedPage(HomePage.class);
+		// assert DataBox content
+		TestHomePage.tester.assertLabel("dataBoxParent:dataBox:box:0:playerLifePoints",
+				"20 life points");
+	}
 
-        // assert chat is present
-        TestHomePage.tester.assertComponent("chatPanel", ChatPanel.class);
-        TestHomePage.tester.assertComponent("chatPanel:chatForm:user", RequiredTextField.class);
-        TestHomePage.tester.assertComponent("chatPanel:chatForm:message", RequiredTextField.class);
-    }
-    
-    @Test
-    public void testRenderDock()
-    {
-        // start and render the test page
-        TestHomePage.tester.startPage(HomePage.class);
+	@Test
+	public void testRenderChat()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
 
-        // assert rendered page class
-        TestHomePage.tester.assertRenderedPage(HomePage.class);
-        
-        // Assert hand
-        testDockElement("Hand");
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
 
-        // Assert graveyard
-        testDockElement("Graveyard");
-        
-        // Assert exiled
-        testDockElement("Exiled");
+		// assert chat is present
+		TestHomePage.tester.assertComponent("chatPanel", ChatPanel.class);
+		TestHomePage.tester.assertComponent("chatPanel:chatForm:user", RequiredTextField.class);
+		TestHomePage.tester.assertComponent("chatPanel:chatForm:message", RequiredTextField.class);
+	}
 
-        // Assert battlefield
-        testDockElement("Battlefield");
+	@Test
+	public void testRenderDock()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
 
-        // Assert library
-        testDockElement("Library");
-    }
-    
-    // Assert dock element is present and contains a .gif
-    private void testDockElement(final String name) {
-        List<TagTester> tagTester = TagTester.createTagsByAttribute(TestHomePage.tester
-                .getServletResponse().getDocument(), "title", name, false);
-        Assert.assertNotNull(tagTester);
-        Assert.assertEquals(1, tagTester.size());
-        
-        TagTester tt = tagTester.get(0);
-        assertTrue(tt.getMarkup().contains(".gif"));
-    }
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
+
+		// Assert hand
+		this.testDockElement("Hand");
+
+		// Assert graveyard
+		this.testDockElement("Graveyard");
+
+		// Assert exiled
+		this.testDockElement("Exiled");
+
+		// Assert battlefield
+		this.testDockElement("Battlefield");
+
+		// Assert library
+		this.testDockElement("Library");
+	}
+
+	// Assert dock element is present and contains a .gif
+	private void testDockElement(final String name)
+	{
+		final List<TagTester> tagTester = TagTester.createTagsByAttribute(TestHomePage.tester
+				.getServletResponse().getDocument(), "title", name, false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
+
+		final TagTester tt = tagTester.get(0);
+		Assert.assertTrue(tt.getMarkup().contains(".gif"));
+	}
 }

@@ -76,6 +76,9 @@ public class DataGenerator implements InitializingBean
 	@SpringBean
 	private transient PersistenceService persistenceService;
 
+	@SpringBean
+	private transient boolean generateData;
+
 	@Required
 	public void setDeckDao(final DeckDao _deckDao)
 	{
@@ -104,6 +107,10 @@ public class DataGenerator implements InitializingBean
 	@Transactional
 	public void afterPropertiesSet()
 	{
+		if (!this.generateData)
+		{
+			return;
+		}
 		Deck deck1 = new Deck();
 		deck1.setPlayerId(1l);
 		deck1.setDeckName("aggro-combo Red / Black");
@@ -177,6 +184,11 @@ public class DataGenerator implements InitializingBean
 		card.setDeck(fake);
 		card.setGameId(-1l);
 		this.magicCardDao.save(card);
+	}
+
+	public void setGenerateData(final boolean _generateData)
+	{
+		this.generateData = _generateData;
 	}
 
 }
