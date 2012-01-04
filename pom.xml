@@ -544,6 +544,15 @@
 			 	<rootPath>/home/nostromo/Documents/Programmation/workspace/hatchetharry</rootPath>
 			  </configuration>
 			</plugin>
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>tomcat-maven-plugin</artifactId>
+		        <configuration>
+		                <server>myserver</server>
+		                <url>http://hatchetharry.net:8080/manager</url>
+		                <contextFile>${project.build.directory}/${project.build.finalName}/META-INF/ROOT.xml</contextFile>
+		        </configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>
