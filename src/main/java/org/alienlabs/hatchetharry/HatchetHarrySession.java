@@ -36,7 +36,6 @@ public class HatchetHarrySession extends WebSession
 	private static final String DECK = "DECK";
 	private static final String TO_REMOVE = "TO_REMOVE";
 	private static String MY_SIDE_PLACEHOLDER = "MY_SIDE_PLACEHOLDER";
-	private static String IS_SIDE_PLACEHOLDER_IN_SESSION = "IS_SIDE_PLACEHOLDER_IN_SESSION";
 
 	public HatchetHarrySession(final Request request)
 	{

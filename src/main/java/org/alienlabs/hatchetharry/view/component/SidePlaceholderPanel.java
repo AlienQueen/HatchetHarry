@@ -42,7 +42,7 @@ public class SidePlaceholderPanel extends Panel
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, hp));
+		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage));
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
@@ -77,13 +77,6 @@ public class SidePlaceholderPanel extends Panel
 		form.add(jsessionidTextField, mouseX, mouseY, handleImage, handleImage, cardImage);
 		sidePlaceholder.add(form);
 		this.add(sidePlaceholder);
-
-		// final Meteor meteor = Meteor.build(request, new
-		// LinkedList<BroadcastFilter>(), null);
-		// meteor.addListener(this.homePage);
-		// meteor.broadcast(side + "|||||" +
-		// this.getHttpServletRequest().getRequestedSessionId()
-		// + "|||||" + this.uuid);
 	}
 
 	public HttpServletRequest getHttpServletRequest()
