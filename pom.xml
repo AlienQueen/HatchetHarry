@@ -549,7 +549,7 @@
 		        <artifactId>tomcat-maven-plugin</artifactId>
 		        <configuration>
 		                <server>myserver</server>
-		                <url>http://hatchetharry.net:8080/manager/html</url>
+		                <url>http://hatchetharry.net:8080/manager/text</url>
 		                <contextFile>${project.build.directory}/${project.build.finalName}/META-INF/ROOT.xml</contextFile>
 		                <path>ROOT</path>
 		        </configuration>
