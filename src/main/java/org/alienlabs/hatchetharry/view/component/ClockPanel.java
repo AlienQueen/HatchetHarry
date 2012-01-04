@@ -53,19 +53,26 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 @SuppressWarnings("serial")
 public class ClockPanel extends Panel
 {
-
+    private AbstractReadOnlyModel<String> time;
+    
 	public ClockPanel(final String id)
 	{
 		super(id);
 
 		this.add(new BookmarkablePageLink<ClockPage>("cometStart", ClockPage.class));
-		this.add(new Label("clock", new AbstractReadOnlyModel<String>()
-		{
-			@Override
-			public String getObject()
-			{
-				return "1#####" + new Date().toString();
-			}
-		}));
+		time = new AbstractReadOnlyModel<String>()
+        {
+            @Override
+            public String getObject()
+            {
+                return "1#####" + new Date().toString();
+            }
+        };
+		this.add(new Label("clock", time));
 	}
+
+    public AbstractReadOnlyModel<String> getTime() {
+        return time;
+    }
+	
 }
