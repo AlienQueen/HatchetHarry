@@ -439,6 +439,11 @@
         	<artifactId>spring-web</artifactId>
         	<version>3.0.3.RELEASE</version>
         </dependency>
+        <dependency>
+        	<groupId>com.zenika</groupId>
+        	<artifactId>wicket-component-debug</artifactId>
+        	<version>0.1</version>
+        </dependency>
 	</dependencies>
 	
     <repositories>

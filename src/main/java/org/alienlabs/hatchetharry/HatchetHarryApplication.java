@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry;
 
+import java.io.Serializable;
+
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Request;
@@ -15,7 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
  * 
  * 
  */
-public class HatchetHarryApplication extends WebApplication
+public class HatchetHarryApplication extends WebApplication implements Serializable
 {
 	private Player player;
 
@@ -41,7 +43,8 @@ public class HatchetHarryApplication extends WebApplication
 		super.init();
 
 		this.addComponentInstantiationListener(new SpringComponentInjector(this));
-
+//		this.addPostComponentOnBeforeRenderListener(new WicketDebugListener());
+		
 		this.mountSharedResource("favicon.ico", new CompressedResourceReference(HomePage.class,
 				"image/favicon.ico").getSharedResourceKey());
 		this.mountSharedResource("image/ajax-loader.gif", new CompressedResourceReference(
