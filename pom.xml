@@ -551,6 +551,7 @@
 		                <server>myserver</server>
 		                <url>http://hatchetharry.net:8080/manager/text</url>
 		                <contextFile>${project.build.directory}/${project.build.finalName}/META-INF/ROOT.xml</contextFile>
+		                <mode>context</mode>
 		                <path>/</path>
 		        </configuration>
 			</plugin>
