@@ -1,15 +1,19 @@
 package org.alienlabs.hatchetharry.serverSideTest;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.TagTester;
@@ -74,7 +78,7 @@ public class TestHomePage
     }
 
     @Test
-    public void testRenderHands()
+    public void testRenderHand()
     {
         // start and render the test page
         TestHomePage.tester.startPage(HomePage.class);
@@ -188,4 +192,54 @@ public class TestHomePage
         TestHomePage.tester.assertLabel("dataBoxParent:dataBox:box:0:playerLifePoints", "20 life points");
     }
     
+    @Test
+    public void testRenderChat()
+    {
+        // start and render the test page
+        TestHomePage.tester.startPage(HomePage.class);
+
+        // assert rendered page class
+        TestHomePage.tester.assertRenderedPage(HomePage.class);
+
+        // assert chat is present
+        TestHomePage.tester.assertComponent("chatPanel", ChatPanel.class);
+        TestHomePage.tester.assertComponent("chatPanel:chatForm:user", RequiredTextField.class);
+        TestHomePage.tester.assertComponent("chatPanel:chatForm:message", RequiredTextField.class);
+    }
+    
+    @Test
+    public void testRenderDock()
+    {
+        // start and render the test page
+        TestHomePage.tester.startPage(HomePage.class);
+
+        // assert rendered page class
+        TestHomePage.tester.assertRenderedPage(HomePage.class);
+        
+        // Assert hand
+        testDockElement("Hand");
+
+        // Assert graveyard
+        testDockElement("Graveyard");
+        
+        // Assert exiled
+        testDockElement("Exiled");
+
+        // Assert battlefield
+        testDockElement("Battlefield");
+
+        // Assert library
+        testDockElement("Library");
+    }
+    
+    // Assert dock element is present and contains a .gif
+    private void testDockElement(final String name) {
+        List<TagTester> tagTester = TagTester.createTagsByAttribute(TestHomePage.tester
+                .getServletResponse().getDocument(), "title", name, false);
+        Assert.assertNotNull(tagTester);
+        Assert.assertEquals(1, tagTester.size());
+        
+        TagTester tt = tagTester.get(0);
+        assertTrue(tt.getMarkup().contains(".gif"));
+    }
 }
