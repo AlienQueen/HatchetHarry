@@ -459,31 +459,8 @@
                    <id>atmosphere</id>
                    <url>http://oss.sonatype.org/content/repositories/releases</url>
            </repository>
-            <repository>
-              <id>people.apache.snapshots</id>
-              <url>http://repository.apache.org/content/groups/snapshots-group/</url>
-              <releases>
-                <enabled>false</enabled>
-              </releases>
-              <snapshots>
-                <enabled>true</enabled>
-              </snapshots>
-            </repository>
     </repositories>
-	<pluginRepositories>
-        <pluginRepository>
-          <id>apache.snapshots</id>
-          <name>Apache Snapshots</name>
-          <url>http://repository.apache.org/content/groups/snapshots-group/</url>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
+	
 	
 	<build>
 		<resources>
@@ -568,11 +545,16 @@
 			  </configuration>
 			</plugin>
 			<plugin>
-		        <groupId>org.apache.tomcat.maven</groupId>
-		        <artifactId>tomcat7-maven-plugin</artifactId>
-		        <version>2.0-SNAPSHOT</version>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>tomcat-maven-plugin</artifactId>
 		        <configuration>
-	                <path>/</path>
+		                <server>myserver</server>
+		                <url>http://hatchetharry.net:8080/manager/html</url>
+		                <contextFile>${project.build.directory}/${project.build.finalName}/META-INF/ROOT.xml</contextFile>
+		                <mode>context</mode>
+		                <path>/</path>
+		                <username>maraxus</username>
+		                <password>Lordofchqos</password>
 		        </configuration>
 			</plugin>
 		</plugins>
