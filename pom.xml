@@ -538,7 +538,7 @@
 			  <!--
 			    root is 2 directories up from the jar/war modules
 			  -->
-			 	<relativePath>target/hatchetharry-0.0.3-SNAPSHOT</relativePath>
+			 	<relativePath>target/hatchetharry-0.0.5-SNAPSHOT</relativePath>
 			  <!--
 			    use a custom property for specifing root directory (note the double $)
 			    set the property in JRebel configuration or as -Dmyproject.root=c:/projects/
