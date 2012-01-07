@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component.IVisitor;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.image.Image;
@@ -27,10 +33,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class TestHomePage
 {
-
 	private static WicketTester tester;
 	private static HatchetHarryApplication webApp;
-	List<Image> img;
 
 	@Before
 	public void setUp()
@@ -57,7 +61,6 @@ public class TestHomePage
 		TestHomePage.tester.getApplication().addComponentInstantiationListener(
 				new SpringComponentInjector(TestHomePage.tester.getApplication(), context, true));
 	}
-
 
 	@Test
 	public void testRenderMyPage()
@@ -92,7 +95,7 @@ public class TestHomePage
 		final HandComponent gallery = (HandComponent)TestHomePage.tester
 				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
 
-		this.img = new ArrayList<Image>();
+		final List<Image> img = new ArrayList<Image>();
 		@SuppressWarnings("unchecked")
 		final List<Image> images = (List<Image>)gallery.visitChildren(Image.class,
 				new IVisitor<Image>()
@@ -100,8 +103,8 @@ public class TestHomePage
 					@Override
 					public List<Image> component(final Image component)
 					{
-						TestHomePage.this.img.add(component);
-						return TestHomePage.this.img;
+						img.add(component);
+						return img;
 					}
 				});
 
@@ -239,6 +242,86 @@ public class TestHomePage
 		Assert.assertEquals(1, tagTester.size());
 
 		final TagTester tt = tagTester.get(0);
-		Assert.assertTrue(tt.getMarkup().contains(".gif"));
+		Assert.assertNotNull(tt);
+		final TagTester tt2 = tt.getChild("alt", name);
+		Assert.assertNotNull(tt2);
+		Assert.assertFalse(tt.equals(tt2));
+		Assert.assertNotNull(tt2.getAttribute("src"));
+		Assert.assertTrue(tt2.getAttribute("src").contains(".gif"));
 	}
+
+	@Test
+	public void testRenderModalWindows()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
+
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
+
+		this.testModalWindow("aboutWindow", "aboutLink");
+		this.testModalWindow("teamInfoWindow", "teamInfoLink");
+		this.testModalWindow("createGameWindow", "createGameLink");
+		this.testModalWindow("joinGameWindow", "joinGameLink");
+	}
+
+	public void testModalWindow(final String _window, final String linkToActivateWindow)
+	{
+		// assert about modal window is in the page
+		TestHomePage.tester.assertComponent(_window, ModalWindow.class);
+		final ModalWindow window = (ModalWindow)TestHomePage.tester
+				.getComponentFromLastRenderedPage(_window);
+		TestHomePage.tester.assertInvisible(window.getPageRelativePath() + ":"
+				+ window.getContentId());
+
+		@SuppressWarnings("unchecked")
+		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)TestHomePage.tester
+				.getComponentFromLastRenderedPage(linkToActivateWindow);
+		Assert.assertNotNull(aboutLink);
+		final IBehavior b = aboutLink.getBehaviors().get(0);
+		Assert.assertNotNull(b);
+		TestHomePage.tester.executeBehavior((AbstractAjaxBehavior)b);
+		TestHomePage.tester.assertVisible(window.getPageRelativePath() + ":"
+				+ window.getContentId());
+	}
+
+	@Test
+	public void testRenderBaldu()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
+
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
+
+		// Test the baldu and its different children
+		TestHomePage.tester.assertComponent("balduParent:baldu", CardPanel.class);
+		final CardPanel baldu = (CardPanel)TestHomePage.tester
+				.getComponentFromLastRenderedPage("balduParent:baldu");
+		final Image tapHandleImage = (Image)baldu.get("menutoggleButton:form:tapHandleImage");
+		Assert.assertNotNull(tapHandleImage);
+		final Image handleImage = (Image)baldu.get("menutoggleButton:form:handleImage");
+		Assert.assertNotNull(handleImage);
+		final Image cardImage = (Image)baldu.get("menutoggleButton:form:cardImage");
+		Assert.assertNotNull(cardImage);
+	}
+
+	@Test
+	public void testRenderToolbar()
+	{
+		// start and render the test page
+		TestHomePage.tester.startPage(HomePage.class);
+
+		// assert rendered page class
+		TestHomePage.tester.assertRenderedPage(HomePage.class);
+
+		// Test the baldu and its different children
+		TestHomePage.tester.assertComponent("drawCardLink", AjaxLink.class);
+		TestHomePage.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
+		TestHomePage.tester.assertComponent("playCardPlaceholder:playCardLink",
+				WebMarkupContainer.class);
+		TestHomePage.tester.assertComponent("endTurnPlaceholder", WebMarkupContainer.class);
+		TestHomePage.tester.assertComponent("endTurnPlaceholder:endTurnLink", AjaxLink.class);
+	}
+
 }
