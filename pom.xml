@@ -28,6 +28,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<targetJdk>1.6</targetJdk>
 		<project.build.finalName>ROOT</project.build.finalName>
+		<selenium.version>2.14.0</selenium.version>
 	</properties>
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
@@ -170,7 +171,7 @@
         <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-firefox-driver</artifactId>
-        	<version>2.0b2</version>
+        	<version>${selenium.version}</version>
            	<exclusions>
         		<exclusion>
           			<groupId>commons-logging</groupId>
@@ -202,17 +203,17 @@
         <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-chrome-driver</artifactId>
-        	<version>2.0b2</version>
+        	<version>${selenium.version}</version>
         </dependency>
         <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-ie-driver</artifactId>
-        	<version>2.0b2</version>
+        	<version>${selenium.version}</version>
         </dependency>
         <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-iphone-driver</artifactId>
-        	<version>2.0b2</version>
+        	<version>${selenium.version}</version>
         </dependency>
         <dependency>
         	<groupId>org.seleniumhq.webdriver</groupId>
@@ -242,26 +243,21 @@
         	<version>0.9.7376</version>
         </dependency>
         <dependency>
-        	<groupId>org.testatoo.openqa</groupId>
-        	<artifactId>selenium-java-client-driver</artifactId>
-        	<version>1.0.2_20090715</version>
+            <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+            <artifactId>selenium-java-client-driver</artifactId>
+            <version>1.0.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-server</artifactId>
-        	<version>2.0b2</version>
+        	<version>${selenium.version}</version>
            	<exclusions>
         		<exclusion>
           			<groupId>commons-logging</groupId>
           			<artifactId>commons-logging</artifactId>
         		</exclusion>
       		</exclusions>        	
-        </dependency>
-        <dependency>
-        	<groupId>org.jvnet.hudson.plugins</groupId>
-        	<artifactId>seleniumhtmlreport</artifactId>
-        	<version>0.91</version>
-        	<type>hpi</type>
         </dependency>
         <dependency>
         	<groupId>org.apache.wicket</groupId>
@@ -455,6 +451,21 @@
         	<artifactId>javancss-maven-plugin</artifactId>
         	<version>2.0</version>
         </dependency>
+        <dependency>
+        	<groupId>org.seleniumhq.webdriver</groupId>
+        	<artifactId>webdriver-selenium</artifactId>
+        	<version>0.9.7089</version>
+        </dependency>
+        <dependency>
+	        <groupId>org.seleniumhq.selenium</groupId>
+	        <artifactId>selenium</artifactId>
+	        <version>2.0a1</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.seleniumhq.selenium</groupId>
+	        <artifactId>selenium-java</artifactId>
+	        <version>${selenium.version}</version>
+	    </dependency>
 	</dependencies>
 	
     <repositories>
@@ -471,7 +482,6 @@
                    <url>http://oss.sonatype.org/content/repositories/releases</url>
            </repository>
     </repositories>
-	
 	
 	<build>
 	    <finalName>ROOT</finalName>
@@ -593,6 +603,60 @@
                                 <loadfile property="emma.txt" srcFile="${project.build.directory}/emma/coverage.txt" failonerror="false" />
                                 <echo>${emma.txt}</echo>
                             </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>selenium-maven-plugin</artifactId>
+                <version>2.1</version>
+                        <executions>
+				            <execution>
+				                <id>xvfb</id>
+				                <phase>pre-integration-test</phase>
+				                <goals>
+				                    <goal>xvfb</goal>
+				                </goals>
+				            </execution>
+				            
+				            <execution>
+				                <id>selenium</id>
+				                <phase>pre-integration-test</phase>
+				                <goals>
+				                    <goal>start-server</goal>
+				                </goals>
+				                <configuration>
+				                    <background>true</background>
+				                </configuration>
+				            </execution>
+				        </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Skip the normal tests, we'll run them in the integration-test phase -->
+                    <skip>false</skip>
+					<excludes>
+						<exclude>**/integrationTest/*.java</exclude> <!-- Les tests selenium sont exclus de la phase de test -->
+					</excludes>
+                </configuration>
+                
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                           	<excludes>
+								<exclude>none</exclude>
+							</excludes>
+							<includes>
+								<include>**/integrationTest/*.java</include>
+							</includes>
                         </configuration>
                     </execution>
                 </executions>

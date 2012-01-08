@@ -1,97 +1,56 @@
-jQuery(document).ready(function() {
+jQuery(document)
+		.ready(
+				function() {
 
-	module("hand");
-	// test(
-	// "a basic hand visibility test",
-	// function() {
-	// ok((jQuery('span#myGallery').length == 1),
-	// "a span with id myGallery should be present");
-	// var myGalleryContent = jQuery('span#myGallery div');
-	// ok((myGalleryContent.length > 0),
-	// "it should itself contain other elements, actually found: "
-	// + myGalleryContent.length);
-	// var slideElements = jQuery('span#myGallery div.slideElement');
-	// ok((slideElements.length == 6),
-	// "these elements should contain the 6 images in the hand, actually found:
-	// "
-	// + slideElements.length);
-	// var cssAttribute = jQuery(
-	// 'span#myGallery div.slideElement:first')
-	// .css('background-image');
-	// ok(
-	// ((cssAttribute.indexOf("url(") != -1) && (cssAttribute
-	// .indexOf("/cards/") != -1)),
-	// "the first of these images should have a source URL containing 'url(' and
-	// '/cards/', and it appears to be: "
-	// + cssAttribute);
-	// });
-	module("menubar");
-	// test(
-	// "a basic menubar visibility test",
-	// function() {
-	// var menubaritem1 = jQuery('div.bd ul.first-of-type
-	// li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
-	// ok(
-	// (menubaritem1.href.indexOf("logo") != -1),
-	// "a link Object with class yuimenubaritemlabel whose
-	// parent is a li class yuimenubaritem"
-	// + " whose parent is a ul class first-of-type whose parent
-	// is a div class bd"
-	// + " should exist and point to 'logo', and it appears to
-	// be: "
-	// + menubaritem1.href);
-	// menubaritem1 = jQuery('div.bd ul.first-of-type
-	// li.yuimenubaritem a.yuimenubaritemlabel:first')[0];
-	// ok(
-	// (menubaritem1.innerHTML == "<em
-	// id=\"logo\">HatchetHarry</em>"),
-	// "a link Object with class yuimenubaritemlabel whose
-	// parent is a li class yuimenubaritem"
-	// + " whose parent is a ul class first-of-type whose parent
-	// is a div class bd"
-	// + " should exist and contain '<em
-	// id=\"logo\">HatchetHarry</em>', and it appears to be: "
-	// + menubaritem1.innerHTML);
-	//
-	// var menubaritem2 = jQuery('div.bd ul.first-of-type
-	// li.yuimenubaritem a.yuimenubaritemlabel')[1];
-	// ok(
-	// (menubaritem2.href
-	// .indexOf("Documentation") != -1),
-	// "a link Object with class yuimenubaritemlabel whose
-	// parent is a li class yuimenubaritem"
-	// + " whose parent is a ul class first-of-type whose parent
-	// is a div class bd"
-	// + " should exist and point to 'Documentation', and it
-	// appears to be: "
-	// + menubaritem2.href);
-	// menubaritem2 = jQuery('div.bd ul.first-of-type
-	// li.yuimenubaritem a.yuimenubaritemlabel')[1];
-	// ok(
-	// (menubaritem2.innerHTML == "Documentation"),
-	// "a link Object with class yuimenubaritemlabel whose
-	// parent is a li class yuimenubaritem"
-	// + "whose parent is a ul class first-of-type whose parent
-	// is a div class bd"
-	// + " should exist and contain '<em
-	// id=\"logo\">HatchetHarry</em>', and it appears to be: "
-	// + menubaritem2.innerHTML);
-	//
-	// var allLinks = jQuery('div.bd ul.first-of-type
-	// li.yuimenubaritem
-	// a.yuimenubaritemlabel-hassubmenu:first');
-	// var found = false;
-	//
-	// found = allLinks
-	// .css('background-image')
-	// .indexOf(
-	// "menubaritem_submenuindicator.png") != -1;
-	// ok(
-	// found,
-	// "at least a link with the image
-	// 'menubaritem_submenuindicator.png' "
-	// + "should be present in the page if the menubar is
-	// rendered, and it appears to be: "
-	// + found);
-	// });
-});
+					module("hand");
+					test(
+							"a basic hand visibility test",
+							function() {
+								ok((jQuery('span#handGallery').length == 1),
+										"a span with id handGallery should be present and be unique");
+								ok((jQuery('span#gallery').length == 1),
+										"a span with id gallery should be present and be unique");
+								var myGalleryContent = jQuery('span#gallery div');
+								ok((myGalleryContent.length > 0),
+										"it should itself contain other elements, actually found: "
+												+ myGalleryContent.length);
+								var slideElements = jQuery('span#gallery a.cross-link');
+								ok((slideElements.length == 7),
+										"these elements should contain the 7 images in the hand, actually found: "
+												+ slideElements.length);
+								var attribute = jQuery(
+										'span#gallery a.cross-link:first img')
+										.attr('src');
+								ok(
+										((attribute.indexOf("resources") != -1)
+												&& (attribute.indexOf("image") != -1) && (attribute
+												.indexOf("jpg") != -1)),
+										"the first of these images should have a source URL containing 'resources', 'image' and 'jpg', and it appears to be: "
+												+ attribute);
+							});
+					module("menubar");
+					test(
+							"a basic menubar visibility test",
+							function() {
+								var menubaritem1 = jQuery('td.myMenu table.rootVoices tr td.rootVoice:first img:first');
+								ok(
+										("/image/logoh2.gif" === menubaritem1
+												.attr('src')),
+										"the first menubar option is the first image of a td class myMenu containing a table class rootVoices containing a tr which contains "
+												+ "the first td class rootVoice should exist and point to '/image/logoh2.gif', and it appears to be: "
+												+ menubaritem1.attr('src'));
+								menubaritem1 = jQuery('div#box_menu table tr td div:first img:first');
+								ok(
+										(menubaritem1.attr('src') === "/image/logoh2.gif"),
+										"the very first menubar entry is the first image contained in the div which id is box_menu and contains a table, a tr, a td and a div"
+												+ ", should exist and point to '/image/logoh2.gif', and it appears to be: "
+												+ menubaritem1.attr('src'));
+
+								var menubaritem2 = jQuery('td.myMenu table.rootVoices tr td.rootVoice:nth-child(2)');
+								ok(
+										(menubaritem2.html() === "Documentation"),
+										"the second menubar option is the second td of class rootVoice of the td of class myMenu which contains a table of class rootVoices and a tr."
+												+ " It should exist and point to 'Documentation', and it appears to be: "
+												+ menubaritem2.html());
+							});
+				});
