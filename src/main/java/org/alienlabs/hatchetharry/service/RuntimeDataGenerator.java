@@ -14,7 +14,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-public class RuntimeDataGenerator implements IDataGenerator
+public class RuntimeDataGenerator
 {
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
 			"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
@@ -77,8 +77,7 @@ public class RuntimeDataGenerator implements IDataGenerator
 		this.persistenceService = _persistenceService;
 	}
 
-	@Override
-    @Transactional
+	@Transactional
 	public void generateData()
 	{
 		Deck deck1 = new Deck();

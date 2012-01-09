@@ -674,10 +674,8 @@
 		          <instrumentation>
 		            <ignores>
 		              <ignore>org.alienlabs.hatchetharry.integrationTest.*</ignore>
+		              <ignore>org.alienlabs.hatchetharry.serverSideTest.*$*.class</ignore>
 		            </ignores>
-		            <excludes>
-		              <exclude>org/alienlabs/hatchetharry/integrationTest/*.class</exclude>
-		            </excludes>
 		          </instrumentation>
 		        </configuration>
 		        <executions>

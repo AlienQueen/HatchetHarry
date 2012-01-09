@@ -10,6 +10,7 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
+import org.apache.wicket.Application;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
@@ -49,6 +50,15 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER,
 				new ArrayList<SidePlaceholderPanel>());
 
+	}
+
+	public static HatchetHarrySession get(final Request request)
+	{
+		if (((HatchetHarryApplication)Application.get()).isMistletoeTest())
+		{
+			return new HatchetHarrySession(request);
+		}
+		return (HatchetHarrySession)Session.get();
 	}
 
 	public static HatchetHarrySession get()

@@ -19,7 +19,9 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
  */
 public class HatchetHarryApplication extends WebApplication implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private Player player;
+	private boolean mistletoeTest = false;
 
 	/**
 	 * Constructor
@@ -43,8 +45,9 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 		super.init();
 
 		this.addComponentInstantiationListener(new SpringComponentInjector(this));
-//		this.addPostComponentOnBeforeRenderListener(new WicketDebugListener());
-		
+		// this.addPostComponentOnBeforeRenderListener(new
+		// WicketDebugListener());
+
 		this.mountSharedResource("favicon.ico", new CompressedResourceReference(HomePage.class,
 				"image/favicon.ico").getSharedResourceKey());
 		this.mountSharedResource("image/ajax-loader.gif", new CompressedResourceReference(
@@ -188,6 +191,16 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 	public void setPlayer(final Player _player)
 	{
 		this.player = _player;
+	}
+
+	public boolean isMistletoeTest()
+	{
+		return this.mistletoeTest;
+	}
+
+	public void setMistletoeTest(final boolean _mistletoeTest)
+	{
+		this.mistletoeTest = _mistletoeTest;
 	}
 
 }

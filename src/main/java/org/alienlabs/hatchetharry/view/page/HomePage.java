@@ -51,8 +51,8 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.service.IDataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
@@ -103,8 +103,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	@SpringBean
 	transient PersistenceService persistenceService;
 	@SpringBean
-	transient IDataGenerator runtimeDataGenerator;
-	
+	transient RuntimeDataGenerator runtimeDataGenerator;
+
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
 	ModalWindow createGameWindow;
@@ -776,14 +776,15 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	@Override
 	protected void configureResponse()
 	{
-		final Locale originalLocale = HatchetHarrySession.get().getLocale();
-		HatchetHarrySession.get().setLocale(Locale.ENGLISH);
-		super.configureResponse();
+		if (HatchetHarrySession.get() != null)
+		{
+			final Locale originalLocale = HatchetHarrySession.get().getLocale();
+			HatchetHarrySession.get().setLocale(originalLocale);
+		}
 
 		final String encoding = "text/html;charset=utf-8";
-
 		this.getResponse().setContentType(encoding);
-		HatchetHarrySession.get().setLocale(originalLocale);
+		super.configureResponse();
 	}
 
 	@Required
@@ -793,8 +794,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@Required
-	public void setRuntimeDataGenerator(final IDataGenerator _runtimeDataGenerator) {
-	    this.runtimeDataGenerator = _runtimeDataGenerator;
+	public void setRuntimeDataGenerator(final RuntimeDataGenerator _runtimeDataGenerator)
+	{
+		this.runtimeDataGenerator = _runtimeDataGenerator;
 	}
 
 	public WebMarkupContainer getFirstSidePlaceholderParent()
