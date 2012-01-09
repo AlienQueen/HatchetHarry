@@ -33,13 +33,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class HomePageTest
 {
-	private static WicketTester tester;
-	private static HatchetHarryApplication webApp;
+	private WicketTester tester;
+	private HatchetHarryApplication webApp;
 
 	@Before
 	public void setUp()
 	{
-		HomePageTest.webApp = new HatchetHarryApplication()
+		this.webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
 			// note in this case the application context is in the default
@@ -55,25 +55,24 @@ public class HomePageTest
 			}
 		};
 
-		HomePageTest.tester = new WicketTester(HomePageTest.webApp);
+		this.tester = new WicketTester(this.webApp);
 		final ApplicationContext context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
-		HomePageTest.tester.getApplication().addComponentInstantiationListener(
-				new SpringComponentInjector(HomePageTest.tester.getApplication(), context, true));
+		this.tester.getApplication().addComponentInstantiationListener(
+				new SpringComponentInjector(this.tester.getApplication(), context, true));
 	}
 
 	@Test
 	public void testRenderMyPage()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// assert rendered label component
-		final Label message = (Label)HomePageTest.tester
-				.getComponentFromLastRenderedPage("message");
+		final Label message = (Label)this.tester.getComponentFromLastRenderedPage("message");
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
 
@@ -83,16 +82,16 @@ public class HomePageTest
 	public void testRenderHand()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// assert hand is present
-		HomePageTest.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
+		this.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
 
 		// assert hand content
-		final HandComponent gallery = (HandComponent)HomePageTest.tester
+		final HandComponent gallery = (HandComponent)this.tester
 				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
 
 		final List<Image> img = new ArrayList<Image>();
@@ -113,7 +112,7 @@ public class HomePageTest
 		Assert.assertEquals(1, images.size());
 
 		// assert URL of a thumbnail
-		final List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.tester
+		final List<TagTester> tagTester = TagTester.createTagsByAttribute(this.tester
 				.getServletResponse().getDocument(), "class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
@@ -127,16 +126,16 @@ public class HomePageTest
 	public void testRenderClock()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// assert clock is present
-		HomePageTest.tester.assertComponent("clockPanel", ClockPanel.class);
+		this.tester.assertComponent("clockPanel", ClockPanel.class);
 
 		// assert clock content
-		final ClockPanel clock = (ClockPanel)HomePageTest.tester
+		final ClockPanel clock = (ClockPanel)this.tester
 				.getComponentFromLastRenderedPage("clockPanel");
 		System.out.println("###" + clock.getTime().getObject());
 		Assert.assertTrue(clock.getTime().getObject().contains("###"));
@@ -146,20 +145,20 @@ public class HomePageTest
 	public void testRenderMenuBar()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// Assert menubar
-		List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.tester
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(this.tester
 				.getServletResponse().getDocument(), "class", "rootVoices", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
 		// Assert menu entries
-		tagTester = TagTester.createTagsByAttribute(HomePageTest.tester.getServletResponse()
-				.getDocument(), "class", "mbmenu", false);
+		tagTester = TagTester.createTagsByAttribute(this.tester.getServletResponse().getDocument(),
+				"class", "mbmenu", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertTrue(tagTester.size() > 1);
 
@@ -180,42 +179,41 @@ public class HomePageTest
 	public void testRenderDataBox()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// assert DataBox is present
-		HomePageTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
+		this.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
 
 		// assert DataBox content
-		HomePageTest.tester.assertLabel("dataBoxParent:dataBox:box:0:playerLifePoints",
-				"20 life points");
+		this.tester.assertLabel("dataBoxParent:dataBox:box:0:playerLifePoints", "20 life points");
 	}
 
 	@Test
 	public void testRenderChat()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// assert chat is present
-		HomePageTest.tester.assertComponent("chatPanel", ChatPanel.class);
-		HomePageTest.tester.assertComponent("chatPanel:chatForm:user", RequiredTextField.class);
-		HomePageTest.tester.assertComponent("chatPanel:chatForm:message", RequiredTextField.class);
+		this.tester.assertComponent("chatPanel", ChatPanel.class);
+		this.tester.assertComponent("chatPanel:chatForm:user", RequiredTextField.class);
+		this.tester.assertComponent("chatPanel:chatForm:message", RequiredTextField.class);
 	}
 
 	@Test
 	public void testRenderDock()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// Assert hand
 		this.testDockElement("Hand");
@@ -236,7 +234,7 @@ public class HomePageTest
 	// Assert dock element is present and contains a .gif
 	private void testDockElement(final String name)
 	{
-		final List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.tester
+		final List<TagTester> tagTester = TagTester.createTagsByAttribute(this.tester
 				.getServletResponse().getDocument(), "title", name, false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
@@ -254,10 +252,10 @@ public class HomePageTest
 	public void testRenderModalWindows()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		this.testModalWindow("aboutWindow", "aboutLink");
 		this.testModalWindow("teamInfoWindow", "teamInfoLink");
@@ -268,35 +266,33 @@ public class HomePageTest
 	public void testModalWindow(final String _window, final String linkToActivateWindow)
 	{
 		// assert about modal window is in the page
-		HomePageTest.tester.assertComponent(_window, ModalWindow.class);
-		final ModalWindow window = (ModalWindow)HomePageTest.tester
+		this.tester.assertComponent(_window, ModalWindow.class);
+		final ModalWindow window = (ModalWindow)this.tester
 				.getComponentFromLastRenderedPage(_window);
-		HomePageTest.tester.assertInvisible(window.getPageRelativePath() + ":"
-				+ window.getContentId());
+		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
 
 		@SuppressWarnings("unchecked")
-		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)HomePageTest.tester
+		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)this.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(aboutLink);
 		final IBehavior b = aboutLink.getBehaviors().get(0);
 		Assert.assertNotNull(b);
-		HomePageTest.tester.executeBehavior((AbstractAjaxBehavior)b);
-		HomePageTest.tester.assertVisible(window.getPageRelativePath() + ":"
-				+ window.getContentId());
+		this.tester.executeBehavior((AbstractAjaxBehavior)b);
+		this.tester.assertVisible(window.getPageRelativePath() + ":" + window.getContentId());
 	}
 
 	@Test
 	public void testRenderBaldu()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// Test the baldu and its different children
-		HomePageTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
-		final CardPanel baldu = (CardPanel)HomePageTest.tester
+		this.tester.assertComponent("balduParent:baldu", CardPanel.class);
+		final CardPanel baldu = (CardPanel)this.tester
 				.getComponentFromLastRenderedPage("balduParent:baldu");
 		final Image tapHandleImage = (Image)baldu.get("menutoggleButton:form:tapHandleImage");
 		Assert.assertNotNull(tapHandleImage);
@@ -310,18 +306,17 @@ public class HomePageTest
 	public void testRenderToolbar()
 	{
 		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
 		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
 
 		// Test the baldu and its different children
-		HomePageTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		HomePageTest.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		HomePageTest.tester.assertComponent("playCardPlaceholder:playCardLink",
-				WebMarkupContainer.class);
-		HomePageTest.tester.assertComponent("endTurnPlaceholder", WebMarkupContainer.class);
-		HomePageTest.tester.assertComponent("endTurnPlaceholder:endTurnLink", AjaxLink.class);
+		this.tester.assertComponent("drawCardLink", AjaxLink.class);
+		this.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
+		this.tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
+		this.tester.assertComponent("endTurnPlaceholder", WebMarkupContainer.class);
+		this.tester.assertComponent("endTurnPlaceholder:endTurnLink", AjaxLink.class);
 	}
 
 }

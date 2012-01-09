@@ -13,18 +13,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BasicClockTest
 {
-	private static WicketTester tester;
-	private static HatchetHarryApplication webApp;
+	private WicketTester tester;
+	private HatchetHarryApplication webApp;
 
 	@Before
 	public void setUp()
 	{
-		BasicClockTest.webApp = new HatchetHarryApplication()
+		this.webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
 			// note in this case the application context is in the default
 			// package
-			ApplicationContext context = new ClassPathXmlApplicationContext(
+			transient ApplicationContext context = new ClassPathXmlApplicationContext(
 					new String[] { "applicationContext.xml" });
 
 			@Override
@@ -35,20 +35,20 @@ public class BasicClockTest
 				this.setMistletoeTest(true);
 			}
 		};
-		BasicClockTest.tester = new WicketTester(BasicClockTest.webApp);
+		this.tester = new WicketTester(this.webApp);
 		final ApplicationContext context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
-		BasicClockTest.tester.getApplication().addComponentInstantiationListener(
-				new SpringComponentInjector(BasicClockTest.tester.getApplication(), context, true));
+		this.tester.getApplication().addComponentInstantiationListener(
+				new SpringComponentInjector(this.tester.getApplication(), context, true));
 	}
 
 	@Test
 	public void clockShouldAppearAndDisplaySomethingThenDisplaySomethingDifferentAfter10SecondsTest()
 	{
-		BasicClockTest.tester.startPage(HomePage.class);
+		this.tester.startPage(HomePage.class);
 
-		BasicClockTest.tester.assertComponent("clockPanel:clock", Label.class);
-		final Label clockBefore = (Label)BasicClockTest.tester
+		this.tester.assertComponent("clockPanel:clock", Label.class);
+		final Label clockBefore = (Label)this.tester
 				.getComponentFromLastRenderedPage("clockPanel:clock");
 		final String before = clockBefore.getDefaultModelObjectAsString();
 		Assert.assertFalse("".equals("before"));
@@ -62,7 +62,7 @@ public class BasicClockTest
 			e.printStackTrace();
 		}
 
-		final Label clockAfter = (Label)BasicClockTest.tester
+		final Label clockAfter = (Label)this.tester
 				.getComponentFromLastRenderedPage("clockPanel:clock");
 
 		final String after = clockAfter.getDefaultModelObjectAsString();
