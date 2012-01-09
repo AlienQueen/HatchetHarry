@@ -466,6 +466,11 @@
 	        <artifactId>selenium-java</artifactId>
 	        <version>${selenium.version}</version>
 	    </dependency>
+	    <dependency>
+	    	<groupId>org.aspectj</groupId>
+	    	<artifactId>aspectjweaver</artifactId>
+	    	<version>1.6.11</version>
+	    </dependency>
 	</dependencies>
 	
     <repositories>
@@ -661,6 +666,28 @@
                     </execution>
                 </executions>
             </plugin>
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>cobertura-maven-plugin</artifactId>
+		        <version>2.5.1</version>
+		        <configuration>
+		          <instrumentation>
+		            <ignores>
+		              <ignore>org.alienlabs.hatchetharry.integrationTest.*</ignore>
+		            </ignores>
+		            <excludes>
+		              <exclude>org/alienlabs/hatchetharry/integrationTest/*.class</exclude>
+		            </excludes>
+		          </instrumentation>
+		        </configuration>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>clean</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+	       </plugin>
 		</plugins>
 	</build>
 	<reporting>
@@ -683,6 +710,11 @@
        			<artifactId>findbugs-maven-plugin</artifactId>
        			<version>2.3.3</version>
    			</plugin>
+   			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>cobertura-maven-plugin</artifactId>
+		        <version>2.5.1</version>
+		    </plugin>
    		</plugins>
   	</reporting>
 </project>

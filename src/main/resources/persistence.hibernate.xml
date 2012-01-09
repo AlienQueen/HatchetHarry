@@ -14,7 +14,12 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">	
 
-	
+
+
+	<context:annotation-config/>
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
+
 
 					<!--  
 						 ____  _                 _                     
@@ -94,14 +99,6 @@
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
-	<!-- setup data generator that will add some data into the db when the app starts up -->
-	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">
-		<property name="deckDao" ref="deckDao"/>
-		<property name="collectibleCardDao" ref="collectibleCardDao"/>
-		<property name="magicCardDao" ref="magicCardDao"/>
-		<property name="persistenceService" ref="persistenceService"/>
-	</bean>
-	
 <!--	<bean id="playerDaoTarget" class="org.alienlabs.ajax.persistence.dao.PlayerDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
@@ -139,4 +136,11 @@
 		<property name="playerDao" ref="playerDao"/>
 		<property name="gameDao" ref="gameDao"/>
 	</bean>
-</beans>
+	<!-- setup data generator that will add some data into the db when the app starts up -->
+	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">
+		<property name="deckDao" ref="deckDao"/>
+		<property name="collectibleCardDao" ref="collectibleCardDao"/>
+		<property name="magicCardDao" ref="magicCardDao"/>
+		<property name="persistenceService" ref="persistenceService"/>
+	</bean>
+</beans>	

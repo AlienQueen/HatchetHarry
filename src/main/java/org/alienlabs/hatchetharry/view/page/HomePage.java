@@ -45,15 +45,14 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.alienlabs.hatchetharry.ApplicationContextHolder;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.service.IDataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
@@ -103,7 +102,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	@SpringBean
 	transient PersistenceService persistenceService;
-
+	@SpringBean
+	transient IDataGenerator runtimeDataGenerator;
+	
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
 	ModalWindow createGameWindow;
@@ -176,9 +177,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck = this.persistenceService.getDeck(1l);
 		if (null == this.deck)
 		{
-			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
-					.getContext().getBean("runtimeDataGenerator");
-			dg.generateData();
+//			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
+//					.getContext().getBean("runtimeDataGenerator");
+			this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(1l);
 			this.persistenceService.saveDeck(this.deck);
 		}
@@ -186,9 +187,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck = this.persistenceService.getDeck(2l);
 		if (null == this.deck)
 		{
-			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
-					.getContext().getBean("runtimeDataGenerator");
-			dg.generateData();
+//			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
+//					.getContext().getBean("runtimeDataGenerator");
+			this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(2l);
 			this.persistenceService.saveDeck(this.deck);
 		}
@@ -365,9 +366,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck = this.persistenceService.getDeck(id);
 		if (null == this.deck)
 		{
-			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
-					.getContext().getBean("runtimeDataGenerator");
-			dg.generateData();
+//			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
+//					.getContext().getBean("runtimeDataGenerator");
+			this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(id);
 		}
 		this.deck.setCards(this.persistenceService.getAllCardsFromDeck(id));
@@ -795,6 +796,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	@Required
+	public void setRuntimeDataGenerator(final IDataGenerator _runtimeDataGenerator) {
+	    this.runtimeDataGenerator = _runtimeDataGenerator;
 	}
 
 	public WebMarkupContainer getFirstSidePlaceholderParent()
