@@ -159,7 +159,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.5 (release EEV), built on Sunday, 8th of January 2012."));
+				"version 0.0.5 (release EEV), built on Monday, 9th of January 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -177,8 +177,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck = this.persistenceService.getDeck(1l);
 		if (null == this.deck)
 		{
-//			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
-//					.getContext().getBean("runtimeDataGenerator");
 			this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(1l);
 			this.persistenceService.saveDeck(this.deck);
@@ -187,8 +185,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck = this.persistenceService.getDeck(2l);
 		if (null == this.deck)
 		{
-//			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
-//					.getContext().getBean("runtimeDataGenerator");
 			this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(2l);
 			this.persistenceService.saveDeck(this.deck);
@@ -366,8 +362,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck = this.persistenceService.getDeck(id);
 		if (null == this.deck)
 		{
-//			final RuntimeDataGenerator dg = (RuntimeDataGenerator)ApplicationContextHolder
-//					.getContext().getBean("runtimeDataGenerator");
 			this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(id);
 		}
