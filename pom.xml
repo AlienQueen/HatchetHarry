@@ -652,7 +652,7 @@
                         <configuration>
                             <skip>false</skip>
                            	<excludes>
-								<exclude>none</exclude>
+								<exclude>**/serverSideTest/*.*</exclude>
 							</excludes>
 							<includes>
 								<include>**/integrationTest/*.java</include>
