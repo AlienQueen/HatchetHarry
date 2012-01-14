@@ -13,7 +13,6 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
-import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.web.InjectorHolder;
@@ -46,9 +45,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	private int currentCard;
 
 	private CardPanel cp;
+	private String side;
 
 	public PlayCardFromHandBehavior(final WebMarkupContainer _thumbParent,
-			final WebMarkupContainer _cardParent, final UUID _uuidToLookFor, final int _currentCard)
+			final WebMarkupContainer _cardParent, final UUID _uuidToLookFor,
+			final int _currentCard, final String _side)
 	{
 		super();
 		InjectorHolder.getInjector().inject(this);
@@ -56,6 +57,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.cardParent = _cardParent;
 		this.uuidToLookFor = _uuidToLookFor;
 		this.currentCard = _currentCard;
+		this.side = _side;
 	}
 
 	@Override
@@ -67,6 +69,20 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
+
+		int posX = 0;
+		int posY = 0;
+		if ((null != request.getParameter("posX")) && (!"".equals(request.getParameter("posX")))
+				&& (!"null".equals(request.getParameter("posX"))))
+		{
+			posX = Integer.parseInt(request.getParameter("posX"));
+		}
+		if ((null != request.getParameter("posY")) && (!"".equals(request.getParameter("posY")))
+				&& (!"null".equals(request.getParameter("posY"))))
+		{
+			posY = Integer.parseInt(request.getParameter("posY"));
+		}
+
 		try
 		{
 			this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
@@ -85,7 +101,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final NumberFormatException e)
 		{
-			PlayCardFromHandBehavior.logger.info("Error which should never happen!");
+			PlayCardFromHandBehavior.logger.error("Error which should never happen!");
 		}
 
 		this.currentCard = _indexOfClickedCard;
@@ -119,8 +135,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				target.addComponent(this.thumbParent);
 
 				target.appendJavascript("jQuery(document).ready(function() { "
-						+ "jQuery.gritter.add({ title : '"
-						+ ((HatchetHarrySession)Session.get()).getPlayer().getSide()
+						+ "jQuery.gritter.add({ title : '" + request.getParameter("side")
 						+ "', text : \"has played \'" + card.getTitle()
 						+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); });");
 
@@ -159,8 +174,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 					}
 				}
 
-				final int posX = ("infrared".equals(((HatchetHarrySession)Session.get())
-						.getPlayer().getSide())) ? 300 : 900;
 				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#menutoggleButton"
 						+ this.cp.getUuid()
 						+ "\"); "
@@ -168,9 +181,10 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 						+ "card.css(\"left\", \""
 						+ posX
 						+ "px\"); "
-						+ "card.css(\"top\", \"500px\"); });");
+						+ "card.css(\"top\", \""
+						+ posY + "px\"); });");
 				card.setX((long)posX);
-				card.setY((long)500);
+				card.setY((long)posY);
 				this.persistenceService.saveCard(card);
 			}
 			else if ((null != this.uuidToLookFor) && (!"".equals(this.uuidToLookFor.toString())))
@@ -183,7 +197,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				PlayCardFromHandBehavior.logger.info("continue!");
 
 				final String message = jsessionid + "~~~" + this.uuidToLookFor + "~~~"
-						+ (_indexOfClickedCard == 6 ? 0 : _indexOfClickedCard + 1);
+						+ (_indexOfClickedCard == 6 ? 0 : _indexOfClickedCard + 1) + "~~~"
+						+ this.side + "~~~" + HatchetHarrySession.get().getMySidePosX() + "~~~"
+						+ HatchetHarrySession.get().getMySidePosY();
 				PlayCardFromHandBehavior.logger.info(message);
 
 				final Meteor meteor = Meteor
@@ -215,6 +231,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuidValidForJs", this.uuidToLookFor.toString().replace("-", "_"));
 		variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));
 		variables.put("clicked", this.currentCard);
+		variables.put("side", this.side);
 
 		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
 				"script/playCard/playCard.js");
@@ -228,4 +245,15 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	{
 		this.persistenceService = _persistenceService;
 	}
+
+	public String getSide()
+	{
+		return this.side;
+	}
+
+	public void setSide(final String _side)
+	{
+		this.side = _side;
+	}
+
 }

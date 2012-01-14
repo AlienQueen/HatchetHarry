@@ -238,8 +238,9 @@
 									&& this.options.helper == "original") {
 								wicketAjaxGet('${url}&posX=' + event.pageX
 										+ '&posY=' + event.pageY
-										+ '&uuid=${uuid}', function() {
-								}, null, null);
+										+ '&uuid=${uuid}&side=${side}',
+										function() {
+										}, null, null);
 								return true;
 							}
 

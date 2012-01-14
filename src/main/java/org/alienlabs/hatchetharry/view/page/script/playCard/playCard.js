@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 		var aId = a.attr('id');
 		var currentCard = aId.split("cross-link")[1];
 		
-		wicketAjaxGet('${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard , function() {
+		wicketAjaxGet('${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}', function() {
 		}, null, null);
 	});
 	
@@ -63,15 +63,16 @@ jQuery(document).ready(function() {
 							var currentCard = aId.split("cross-link")[1];
 							var nextCard = (currentCard == 6 ? 0 : (currentCard + 1));
 							
-// jQuery('#cross-link' + nextCard).click();
 							jQuery('#cross-link-div' + currentCard).remove();
 							jQuery('#placeholder' + currentCard).remove();
 							jQuery('#cross-link' + nextCard).addClass("active-thumb");
-							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
+							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
+							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + data.split("~~~")[5], function() { }, null, null);
 						} else if ((typeof id != "undefined")
 								&& (getCookie('JSESSIONID') != sessionId)) 
 						{
-							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2], function() { }, null, null);
+							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
+							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + data.split("~~~")[5], function() { }, null, null);
 						};
 					};
 			};

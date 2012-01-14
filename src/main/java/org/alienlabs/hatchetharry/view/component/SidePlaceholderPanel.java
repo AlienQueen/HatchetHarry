@@ -42,7 +42,7 @@ public class SidePlaceholderPanel extends Panel
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage));
+		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage, side));
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);

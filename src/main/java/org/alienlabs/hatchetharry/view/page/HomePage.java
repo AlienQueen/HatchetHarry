@@ -68,6 +68,7 @@ import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.apache.wicket.Application;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -135,6 +136,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	private final WebMarkupContainer firstSidePlaceholderParent;
 	private final WebMarkupContainer secondSidePlaceholderParent;
+
+	private PlayCardFromHandBehavior playCardBehavior;
 
 	public HomePage()
 	{
@@ -405,8 +408,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		if (mc.size() > 0)
 		{
-			this.playCardLink.add(new PlayCardFromHandBehavior(this.playCardParent1,
-					this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0));
+			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent1,
+					this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0,
+					((HatchetHarrySession)Session.get()).getPlayer().getSide());
+			this.playCardLink.add(this.playCardBehavior);
 		}
 
 		this.playCardLink.setMarkupId("playCardLink0");
@@ -807,6 +812,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public WebMarkupContainer getSecondSidePlaceholderParent()
 	{
 		return this.secondSidePlaceholderParent;
+	}
+
+	public PlayCardFromHandBehavior getPlayCardBehavior()
+	{
+		return this.playCardBehavior;
 	}
 
 }

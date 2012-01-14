@@ -29,16 +29,17 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	private UUID uuid;
 	private String jsessionid;
 	private final WebMarkupContainer parent;
-
+	private final String side;
 	private final HomePage homePage;
 
 	public SidePlaceholderMoveBehavior(final WebMarkupContainer _parent, final UUID _uuid,
-			final String _jsessionid, final HomePage hp)
+			final String _jsessionid, final HomePage hp, final String _side)
 	{
 		this.parent = _parent;
 		this.uuid = _uuid;
 		this.jsessionid = _jsessionid;
 		this.homePage = hp;
+		this.side = _side;
 
 		InjectorHolder.getInjector().inject(this);
 	}
@@ -52,37 +53,24 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.jsessionid = request.getRequestedSessionId();
 		final String _sideX = request.getParameter("posX");
 		final String _sideY = request.getParameter("posY");
-		this.uuid = UUID.fromString(request.getParameter("uuid"));
+		this.uuid = null;
+		try
+		{
+			this.uuid = UUID.fromString(request.getParameter("uuid"));
+		}
+		catch (final Exception e)
+		{
+			SidePlaceholderMoveBehavior.logger.error("error parsing UUID: " + e);
+			return;
+		}
 		final String _side = request.getParameter("side");
-		// final String _uuid = request.getParameter("uuid");
-
-		// if (!this.jsessionid.equals(request.getParameter("requestingId")))
-		// {
-		// if (HatchetHarrySession.get().isMySidePlaceholderInSesion(
-		// ((HatchetHarrySession.get()).getPlayer().getSide())))
-		// {
-		// target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
-		// + this.toShow
-		// + "\"); "
-		// + "card.css(\"position\", \"absolute\"); "
-		// + "card.css(\"left\", \""
-		// + _sideX
-		// + "px\"); "
-		// + "card.css(\"top\", \""
-		// + _sideY + "px\"); });");
-		// }
-		// else
-		// {
-		// if
-		// (!((HatchetHarrySession.get()).isMySidePlaceholderInSesion("infrared")))
-		// {
 
 		if ((_sideX == null) || (_sideY == null))
 		{
 			final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
 					_side, this.homePage, this.uuid);
 			spp.add(new SidePlaceholderMoveBehavior(this.parent, this.uuid, this.jsessionid,
-					this.homePage));
+					this.homePage, _side));
 			spp.setOutputMarkupId(true);
 
 			final HatchetHarrySession h = ((HatchetHarrySession.get()));
@@ -93,12 +81,13 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			target.addComponent(this.homePage.getSecondSidePlaceholderParent());
 
 			SidePlaceholderMoveBehavior.logger.info("### " + this.uuid);
+			final int posX = ("infrared".equals(_side)) ? 300 : 900;
 
 			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
 					+ this.uuid
 					+ "'); "
 					+ "card.css('position', 'absolute'); "
-					+ "card.css('left', '300px'); " + "card.css('top', '500px'); });");
+					+ "card.css('left', '" + posX + "px'); " + "card.css('top', '500px'); });");
 		}
 		else if (!this.jsessionid.equals(request.getParameter("requestingId")))
 		{
@@ -111,9 +100,10 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 					+ "px\"); "
 					+ "card.css(\"top\", \""
 					+ _sideY + "px\"); });");
+			HatchetHarrySession.get().setMySidePosX(Integer.valueOf(_sideX));
+			HatchetHarrySession.get().setMySidePosY(Integer.valueOf(_sideY));
 
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			// meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 			final String message = _side + "|||||" + this.jsessionid + "|||||" + this.uuid
 					+ "|||||" + _sideX + "|||||" + _sideY;
 			SidePlaceholderMoveBehavior.logger.info("### message: " + message);
@@ -133,6 +123,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 		variables.put("jsessionid", this.jsessionid);
+		variables.put("side", this.side);
 
 		final TextTemplate template4 = new PackagedTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js");

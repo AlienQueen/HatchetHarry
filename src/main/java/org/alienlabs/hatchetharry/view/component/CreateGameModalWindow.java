@@ -139,9 +139,9 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.logger.info("close!");
 
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("firstSidePlaceholder",
-						CreateGameModalWindow.this.player.getSide(), hp, UUID.randomUUID());
+						sideInput.getDefaultModelObjectAsString(), hp, UUID.randomUUID());
 				final HatchetHarrySession h = ((HatchetHarrySession.get()));
-				h.putMySidePlaceholderInSesion(CreateGameModalWindow.this.player.getSide());
+				h.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
 						.getRequest();
@@ -149,17 +149,33 @@ public class CreateGameModalWindow extends Panel
 				final String jsessionid = request.getRequestedSessionId();
 				spp.add(new SidePlaceholderMoveBehavior(
 						CreateGameModalWindow.this.sidePlaceholderParent, spp.getUuid(),
-						jsessionid, CreateGameModalWindow.this.homePage));
+						jsessionid, CreateGameModalWindow.this.homePage, sideInput
+								.getDefaultModelObjectAsString()));
 				spp.setOutputMarkupId(true);
 
 				CreateGameModalWindow.this.sidePlaceholderParent.addOrReplace(spp);
 				target.addComponent(CreateGameModalWindow.this.sidePlaceholderParent);
 
+				final int posX = ("infrared".equals(sideInput.getDefaultModelObjectAsString()))
+						? 300
+						: 900;
+
 				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
 						+ spp.getUuid()
 						+ "\"); "
 						+ "card.css(\"position\", \"absolute\"); "
-						+ "card.css(\"left\", \"900px\"); " + "card.css(\"top\", \"500px\"); });");
+						+ "card.css(\"left\", \""
+						+ posX
+						+ "px\"); "
+						+ "card.css(\"top\", \"500px\"); });");
+
+				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
+						sideInput.getDefaultModelObjectAsString());
+
+				HatchetHarrySession.get().getPlayer()
+						.setSide(sideInput.getDefaultModelObjectAsString());
+				HatchetHarrySession.get().setMySidePosX(posX);
+				HatchetHarrySession.get().setMySidePosY(500);
 			}
 		};
 		submit.setOutputMarkupId(true);

@@ -36,7 +36,9 @@ public class HatchetHarrySession extends WebSession
 	private static final String DATA_BOX = "DATA_BOX";
 	private static final String DECK = "DECK";
 	private static final String TO_REMOVE = "TO_REMOVE";
-	private static String MY_SIDE_PLACEHOLDER = "MY_SIDE_PLACEHOLDER";
+	private static final String MY_SIDE_PLACEHOLDER = "MY_SIDE_PLACEHOLDER";
+	private static String MY_SIDE_POS_X = "MY_SIDE_POS_X";
+	private static String MY_SIDE_POS_Y = "MY_SIDE_POS_Y";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -322,6 +324,26 @@ public class HatchetHarrySession extends WebSession
 				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
 		l.add(side);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, l);
+	}
+
+	public Integer getMySidePosX()
+	{
+		return (Integer)this.getAttribute(HatchetHarrySession.MY_SIDE_POS_X);
+	}
+
+	public void setMySidePosX(final int _mySidePosX)
+	{
+		this.setAttribute(HatchetHarrySession.MY_SIDE_POS_X, _mySidePosX);
+	}
+
+	public Integer getMySidePosY()
+	{
+		return (Integer)this.getAttribute(HatchetHarrySession.MY_SIDE_POS_Y);
+	}
+
+	public void setMySidePosY(final int _mySidePosY)
+	{
+		this.setAttribute(HatchetHarrySession.MY_SIDE_POS_Y, _mySidePosY);
 	}
 
 }

@@ -171,52 +171,62 @@ public class JoinGameModalWindow extends Panel
 				final String jsessionid = request.getRequestedSessionId();
 
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
-						JoinGameModalWindow.this.player.getSide(), JoinGameModalWindow.this.hp,
+						sideInput.getDefaultModelObjectAsString(), JoinGameModalWindow.this.hp,
 						UUID.randomUUID());
 				spp.setOutputMarkupId(true);
 				spp.add(new SidePlaceholderMoveBehavior(sidePlaceholderParent, spp.getUuid(),
-						jsessionid, JoinGameModalWindow.this.hp));
+						jsessionid, JoinGameModalWindow.this.hp, sideInput
+								.getDefaultModelObjectAsString()));
 
 				final HatchetHarrySession h = ((HatchetHarrySession.get()));
-				h.putMySidePlaceholderInSesion(JoinGameModalWindow.this.player.getSide());
-
+				h.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
 				sidePlaceholderParent.addOrReplace(spp);
 				target.addComponent(sidePlaceholderParent);
+
+				final int posX = ("infrared".equals(sideInput.getDefaultModelObjectAsString()))
+						? 300
+						: 900;
 
 				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
 						+ spp.getUuid()
 						+ "'); "
 						+ "card.css('position', 'absolute'); "
-						+ "card.css('left', '300px'); " + "card.css('top', '500px'); });");
+						+ "card.css('left', '" + posX + "px'); " + "card.css('top', '500px'); });");
 
-				final String side = ("infrared".equals(JoinGameModalWindow.this.player.getSide()))
-						? "ultraviolet"
-						: "infrared";
+				final String opponentSide = ("infrared".equals(sideInput
+						.getDefaultModelObjectAsString())) ? "ultraviolet" : "infrared";
+
 				final SidePlaceholderPanel spp2 = new SidePlaceholderPanel("firstSidePlaceholder",
-						side, JoinGameModalWindow.this.hp, UUID.randomUUID());
+						opponentSide, JoinGameModalWindow.this.hp, UUID.randomUUID());
 				spp2.setOutputMarkupId(true);
 				spp2.add(new SidePlaceholderMoveBehavior(JoinGameModalWindow.this.hp
-						.getFirstSidePlaceholderParent(), spp2.getUuid(), jsessionid,
-						JoinGameModalWindow.this.hp));
-
-				// final HatchetHarrySession h = ((HatchetHarrySession.get()));
-				// h.putMySidePlaceholderInSesion(JoinGameModalWindow.this.player.getSide());
+						.getSecondSidePlaceholderParent(), spp2.getUuid(), jsessionid,
+						JoinGameModalWindow.this.hp, opponentSide));
 
 				JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
 				target.addComponent(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
 
+				final int posX2 = (posX == 300) ? 900 : 300;
 				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
 						+ spp2.getUuid()
 						+ "'); "
 						+ "card.css('position', 'absolute'); "
-						+ "card.css('left', '900px'); " + "card.css('top', '500px'); });");
-
+						+ "card.css('left', '" + posX2 + "px'); " + "card.css('top', '500px'); });");
 
 				final Meteor meteor = Meteor
 						.build(request, new LinkedList<BroadcastFilter>(), null);
-				meteor.broadcast(sideInput.getModelObject() + "|||||" + jsessionid + "|||||"
-						+ spp.getUuid());
+				final String message = sideInput.getDefaultModelObjectAsString() + "|||||"
+						+ jsessionid + "|||||" + spp.getUuid();
+				JoinGameModalWindow.logger.info("# message: " + message);
+				meteor.broadcast(message);
+
+				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
+						sideInput.getDefaultModelObjectAsString());
+				HatchetHarrySession.get().getPlayer()
+						.setSide(sideInput.getDefaultModelObjectAsString());
+				HatchetHarrySession.get().setMySidePosX(posX);
+				HatchetHarrySession.get().setMySidePosY(500);
 			}
 		};
 		submit.setOutputMarkupId(true);
