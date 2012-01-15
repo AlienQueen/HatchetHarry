@@ -55,7 +55,7 @@ jQuery(document).ready(function() {
 				
 				if (data.split("~~~").length > 0) {
 					if ((typeof id != "undefined") 
-							&& (getCookie('JSESSIONID') == sessionId))
+							&& (getCookie('JSESSIONID') == sessionId)) 
 							{
 							// We're in the play card Meteor
 							var a = jQuery(".active-thumb");
@@ -66,13 +66,26 @@ jQuery(document).ready(function() {
 							jQuery('#cross-link-div' + currentCard).remove();
 							jQuery('#placeholder' + currentCard).remove();
 							jQuery('#cross-link' + nextCard).addClass("active-thumb");
+							
+							var posY;
+							if (-1 == data.indexOf("#####")) {
+								posY = data.split("~~~")[5];
+							} else {
+								posY = data.split("~~~")[5].split("1#####")[0];
+							}
 							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
-							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + data.split("~~~")[5], function() { }, null, null);
+							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + posY, function() { }, null, null);
 						} else if ((typeof id != "undefined")
 								&& (getCookie('JSESSIONID') != sessionId)) 
 						{
+							var posY;
+							if (-1 == data.indexOf("#####")) {
+								posY = data.split("~~~")[5];
+							} else {
+								posY = data.split("~~~")[5].split("1#####")[0];
+							}
 							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
-							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + data.split("~~~")[5], function() { }, null, null);
+							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + posY, function() { }, null, null);
 						};
 					};
 			};

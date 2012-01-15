@@ -70,17 +70,21 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
 
-		int posX = 0;
-		int posY = 0;
+		PlayCardFromHandBehavior.logger.info("URL: " + request.getQueryString());
+
+		long posX = 0;
+		long posY = 0;
 		if ((null != request.getParameter("posX")) && (!"".equals(request.getParameter("posX")))
 				&& (!"null".equals(request.getParameter("posX"))))
 		{
-			posX = Integer.parseInt(request.getParameter("posX"));
+			posX = Long.parseLong(request.getParameter("posX"));
+			PlayCardFromHandBehavior.logger.info("posX: " + posX);
 		}
 		if ((null != request.getParameter("posY")) && (!"".equals(request.getParameter("posY")))
 				&& (!"null".equals(request.getParameter("posY"))))
 		{
-			posY = Integer.parseInt(request.getParameter("posY"));
+			posY = Long.parseLong(request.getParameter("posY"));
+			PlayCardFromHandBehavior.logger.info("posY: " + posY);
 		}
 
 		try
@@ -183,8 +187,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 						+ "px\"); "
 						+ "card.css(\"top\", \""
 						+ posY + "px\"); });");
-				card.setX((long)posX);
-				card.setY((long)posY);
+				card.setX(posX);
+				card.setY(posY);
 				this.persistenceService.saveCard(card);
 			}
 			else if ((null != this.uuidToLookFor) && (!"".equals(this.uuidToLookFor.toString())))

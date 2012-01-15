@@ -162,7 +162,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.5 (release EEV), built on Saturday, 14th of January 2012."));
+				"version 0.0.5 (release EEV), built on Sunday, 15th of January 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -277,7 +277,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.endTurnPlaceholder.setOutputMarkupId(true);
 
 		this.notifierPanel = new NotifierPanel("notifierPanel", HomePage.this, HatchetHarrySession
-				.get().getPlayer().getName(), "has declared the end of his turn.");
+				.get().getPlayer().getSide(), "has declared the end of his turn.");
 		this.notifierPanel.setOutputMarkupId(true);
 
 		this.endTurnLink = new AjaxLink<Void>("endTurnLink")
