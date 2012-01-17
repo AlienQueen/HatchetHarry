@@ -22,6 +22,7 @@
 	<properties>
 		<wicket.version>1.4.19</wicket.version>
 		<atmosphere.version>0.8.3</atmosphere.version>
+		<spring.version>3.0.6.RELEASE</spring.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
@@ -63,7 +64,7 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
-		</dependency>
+		</dependency> 
 
 		<!--  JUNIT DEPENDENCY FOR TESTING -->
 		<dependency>
@@ -99,7 +100,7 @@
 			<artifactId>wicket-slides</artifactId>
 			<version>0.8.3-smoothgallery2.1dev</version>
 		</dependency>
-		<dependency>
+	 	<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>annotation</artifactId>
 			<version>${wicket.version}</version>
@@ -107,7 +108,7 @@
         <dependency>
         	<groupId>org.springframework</groupId>
         	<artifactId>spring-core</artifactId>
-        	<version>3.0.3.RELEASE</version>
+        	<version>${spring.version}</version>
            	<exclusions>
         		<exclusion>
           			<groupId>commons-logging</groupId>
@@ -123,7 +124,7 @@
         <dependency>
         	<groupId>org.springframework</groupId>
         	<artifactId>spring-orm</artifactId>
-        	<version>3.0.3.RELEASE</version>
+        	<version>${spring.version}</version>
         </dependency>
         <dependency>
         	<groupId>antlr</groupId>
@@ -420,7 +421,7 @@
         	<groupId>org.slf4j</groupId>
         	<artifactId>slf4j-api</artifactId>
         	<version>${slf4j.version}</version>
-        </dependency>
+        </dependency>  
         <dependency>
         	<groupId>org.hibernate</groupId>
         	<artifactId>hibernate-ehcache</artifactId>
@@ -434,7 +435,7 @@
         <dependency>
         	<groupId>org.springframework</groupId>
         	<artifactId>spring-web</artifactId>
-        	<version>3.0.3.RELEASE</version>
+        	<version>${spring.version}</version>
         </dependency>
         <dependency>
         	<groupId>com.zenika</groupId>
@@ -469,7 +470,7 @@
 	    <dependency>
 	    	<groupId>org.aspectj</groupId>
 	    	<artifactId>aspectjweaver</artifactId>
-	    	<version>1.6.11</version>
+	    	<version>1.6.12</version>
 	    </dependency>
 	</dependencies>
 	
