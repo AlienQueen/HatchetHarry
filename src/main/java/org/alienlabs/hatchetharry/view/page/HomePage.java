@@ -162,7 +162,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.5 (release EEV), built on Tuesday, 17th of January 2012."));
+				"version 0.0.5 (release EEV), built on Wednesday, 18th of January 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
