@@ -162,7 +162,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.5 (release EEV), built on Wednesday, 18th of January 2012."));
+				"version 0.0.5 (release EEV), built on Friday, 20th of January 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -235,8 +235,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
 		this.secondSidePlaceholderParent.setOutputMarkupId(true);
-		// secondSidePlaceholderParent.add(new SidePlaceholderMoveBehavior(
-		// secondSidePlaceholderParent, UUID.randomUUID(), jsessionid, this));
 		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
 				"secondSidePlaceholder");
 		secondSidePlaceholder.setOutputMarkupId(true);
@@ -244,9 +242,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.firstSidePlaceholderParent = new WebMarkupContainer("firstSidePlaceholderParent");
 		this.firstSidePlaceholderParent.setOutputMarkupId(true);
-		// firstSidePlaceholderParent.add(new
-		// SidePlaceholderMoveBehavior(firstSidePlaceholderParent,
-		// UUID.randomUUID(), jsessionid, this));
 		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
 				"firstSidePlaceholder");
 		firstSidePlaceholder.setOutputMarkupId(true);

@@ -21,7 +21,7 @@
 	</licenses>
 	<properties>
 		<wicket.version>1.4.19</wicket.version>
-		<atmosphere.version>0.8.3</atmosphere.version>
+		<atmosphere.version>0.9-SNAPSHOT</atmosphere.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.6.4</slf4j.version>
