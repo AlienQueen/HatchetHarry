@@ -383,4 +383,34 @@ public class PersistenceService
 			}
 		}
 	}
+
+
+	@SuppressWarnings({ "unchecked", "cast" })
+	@Transactional
+	public List<MagicCard> getAllCardsInBattleFieldForAPlayer(final Long playerId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final List<CardPanel> allCardsInBattleField = HatchetHarrySession.get()
+				.getAllCardsInBattleField();
+		final List<String> allUuidsOfCardsInBattleField = new ArrayList<String>();
+		for (final CardPanel cp : allCardsInBattleField)
+		{
+			allUuidsOfCardsInBattleField.add(cp.getUuid().toString());
+		}
+
+		final Query query = session
+				.createQuery("select m from MagicCard m join m.deck as mcd where m.uuid in (:uuids) and mcd.playerId = :playerId ");
+		query.setParameterList("uuids", allUuidsOfCardsInBattleField);
+		query.setLong("playerId", playerId);
+		try
+		{
+			return (List<MagicCard>)query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			return null;
+		}
+	}
+
 }

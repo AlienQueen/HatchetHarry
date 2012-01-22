@@ -65,6 +65,7 @@ import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
+import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.apache.wicket.Application;
 import org.apache.wicket.ResourceReference;
@@ -123,8 +124,13 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	WebMarkupContainer thumbsPlaceholder;
 
 	private AjaxLink<Void> endTurnLink;
+	private AjaxLink<Void> untapAllLink;
+	UntapAllBehavior untapAllBehavior;
+
+	private BookmarkablePageLink<UntapAllPage> untapAllPage;
 
 	WebMarkupContainer endTurnPlaceholder;
+	WebMarkupContainer untapAllPlaceholder;
 
 	public NotifierPanel notifierPanel;
 
@@ -138,6 +144,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	private final WebMarkupContainer secondSidePlaceholderParent;
 
 	private PlayCardFromHandBehavior playCardBehavior;
+
 
 	public HomePage()
 	{
@@ -162,7 +169,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.5 (release EEV), built on Friday, 20th of January 2012."));
+				"version 0.0.5 (release EEV), built on Sunday, 22nd of January 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -263,6 +270,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
 
 		this.buildEndTurnLink();
+		this.buildUntapAllLink();
 	}
 
 	private void buildEndTurnLink()
@@ -295,6 +303,43 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.endTurnPlaceholder.add(this.endTurnLink, this.notifierPanel);
 		this.add(this.endTurnPlaceholder);
+	}
+
+	private void buildUntapAllLink()
+	{
+		this.untapAllPlaceholder = new WebMarkupContainer("untapAllPlaceholder");
+		this.untapAllPlaceholder.setMarkupId("untapAllPlaceholder");
+		this.untapAllPlaceholder.setOutputMarkupId(true);
+
+		this.untapAllBehavior = new UntapAllBehavior();
+
+		this.untapAllLink = new AjaxLink<Void>("untapAllLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+						.getRequest();
+				HomePage.logger.info("untap all");
+				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+				target.appendJavascript("wicketAjaxGet('"
+						+ HomePage.this.untapAllBehavior.getCallbackUrl() + "&sessionid="
+						+ request.getRequestedSessionId() + "', function() { }, null, null);");
+			}
+
+		};
+		this.untapAllLink.setMarkupId("untapAllLink");
+		this.untapAllLink.setOutputMarkupId(true);
+		this.untapAllLink.add(this.untapAllBehavior);
+
+		this.untapAllPlaceholder.add(this.untapAllLink);
+		this.add(this.untapAllPlaceholder);
+
+		this.untapAllPage = new BookmarkablePageLink<UntapAllPage>("untapAllPage",
+				UntapAllPage.class);
+		this.add(this.untapAllPage);
 	}
 
 	private void buildDataBox(final long _gameId)
@@ -478,11 +523,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void addHeadResources()
 	{
-		// this.add(new JavaScriptReference("jquery-1.6.4.js", HomePage.class,
-		// "script/jquery-1.6.4.js"));
-		// this.add(new JavaScriptReference("jquery.atmosphere.js",
-		// HomePage.class,
-		// "script/jquery.atmosphere.js"));
+		this.add(new JavaScriptReference("jquery-1.6.4.js", HomePage.class,
+				"script/jquery-1.6.4.js"));
+		this.add(new JavaScriptReference("jquery.atmosphere.js", HomePage.class,
+				"script/jquery.atmosphere.js"));
 		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
 				"script/tour/jquery.easing.1.3.js"));
 		this.add(new JavaScriptReference("jquery.storage.js", HomePage.class,
