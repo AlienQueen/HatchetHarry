@@ -52,7 +52,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 				|| (jsessionid.equals(request.getParameter("sessionid"))))
 		{
 			UntapAllBehavior.logger.info("respond first if");
-			String message = jsessionid;
+			final StringBuffer message = new StringBuffer(jsessionid);
 
 			final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
 					.getAllCardsInBattleFieldForAPlayer(HatchetHarrySession.get().getPlayer()
@@ -60,7 +60,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 
 			for (final MagicCard mc : allCardsInBattlefieldOnMySide)
 			{
-				message += "_____" + mc.getUuid();
+				message.append("_____").append(mc.getUuid().toString());
 			}
 
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
