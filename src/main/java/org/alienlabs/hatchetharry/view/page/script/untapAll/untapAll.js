@@ -32,9 +32,10 @@ jQuery(document)
 										cards = cards + "_____"
 												+ data.split("_____")[i];
 									}
-									wicketAjaxGet('${url}&cards=' + cards,
-											function() {
-											}, null, null);
+									var playerId = data.split("&playerId=")[1];
+									wicketAjaxGet('${url}&playerId=' + playerId
+											+ '&cards=' + cards, function() {
+									}, null, null);
 								}
 							}
 							;

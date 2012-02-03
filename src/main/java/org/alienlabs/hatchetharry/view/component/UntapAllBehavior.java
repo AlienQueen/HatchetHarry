@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -47,6 +46,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
+		final Long playerId = Long.parseLong(request.getParameter("playerId"));
 
 		if ((null == request.getParameter("cards"))
 				|| (jsessionid.equals(request.getParameter("sessionid"))))
@@ -55,13 +55,13 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 			final StringBuffer message = new StringBuffer(jsessionid);
 
 			final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
-					.getAllCardsInBattleFieldForAPlayer(HatchetHarrySession.get().getPlayer()
-							.getId());
+					.getAllCardsInBattleFieldForAPlayer(playerId);
 
 			for (final MagicCard mc : allCardsInBattlefieldOnMySide)
 			{
 				message.append("_____").append(mc.getUuid().toString());
 			}
+			message.append("&playerId=").append(playerId.toString());
 
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			meteor.addListener((AtmosphereResourceEventListener)target.getPage());

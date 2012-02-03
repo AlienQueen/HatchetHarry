@@ -416,16 +416,16 @@
 	<div id="floatingbar"> 
 
          <ul class="gallery clearfix">
-				<li>
-				<a class="toolbarLink" title="Untap your permanents & draw a card "  id="twitterlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/tweet.png"></img> Untap & draw</a>
+				<li wicket:id="untapAndDrawPlaceholder" class="toolbarLink" title="Untap your permanents & draw a card ">
+					<a wicket:id="untapAndDrawLink" id="twitterlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/tweet.png"></img> Untap & draw</a>
 				</li>
 				
 				<li wicket:id="untapAllPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Untall all your permanents">
 					<a wicket:id="untapAllLink" class="tour_1" href="#"><img class="toolbarIcon" src="image/googlebuzz.png"></img> Untap all</a>
 				</li>
 				
-				<li>
-					<a wicket:id="drawCardLink" class="toolbarLink tour_2" title="Draw a card " rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/youtube.png"></img> Draw a card</a>
+				<li rel="prettyPhoto[iframe]">
+					<a wicket:id="drawCardLink" class="toolbarLink tour_2" title="Draw a card " href="#"><img class="toolbarIcon" src="image/youtube.png"></img> Draw a card</a>
 				</li>
 				
 				<li wicket:id="playCardPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Play the card currently shown in your hand">

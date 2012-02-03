@@ -125,12 +125,15 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	private AjaxLink<Void> endTurnLink;
 	private AjaxLink<Void> untapAllLink;
+	private AjaxLink<Void> untapAndDrawLink;
+
 	UntapAllBehavior untapAllBehavior;
 
 	private BookmarkablePageLink<UntapAllPage> untapAllPage;
 
 	WebMarkupContainer endTurnPlaceholder;
 	WebMarkupContainer untapAllPlaceholder;
+	WebMarkupContainer untapAndDrawPlaceholder;
 
 	public NotifierPanel notifierPanel;
 
@@ -169,7 +172,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.5 (release EEV), built on Sunday, 22nd of January 2012."));
+				"version 0.0.5 (release EEV), built on Friday, 3rd of February 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -271,6 +274,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.buildEndTurnLink();
 		this.buildUntapAllLink();
+		this.buildUntapAndDrawLink();
 	}
 
 	private void buildEndTurnLink()
@@ -326,7 +330,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 				target.appendJavascript("wicketAjaxGet('"
 						+ HomePage.this.untapAllBehavior.getCallbackUrl() + "&sessionid="
-						+ request.getRequestedSessionId() + "', function() { }, null, null);");
+						+ request.getRequestedSessionId() + "&playerId="
+						+ HatchetHarrySession.get().getPlayer().getId()
+						+ "', function() { }, null, null);");
 			}
 
 		};
@@ -340,6 +346,31 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.untapAllPage = new BookmarkablePageLink<UntapAllPage>("untapAllPage",
 				UntapAllPage.class);
 		this.add(this.untapAllPage);
+	}
+
+	private void buildUntapAndDrawLink()
+	{
+		this.untapAndDrawPlaceholder = new WebMarkupContainer("untapAndDrawPlaceholder");
+		this.untapAndDrawPlaceholder.setMarkupId("untapAndDrawPlaceholder");
+		this.untapAndDrawPlaceholder.setOutputMarkupId(true);
+
+		this.untapAndDrawLink = new AjaxLink<Void>("untapAndDrawLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				HomePage.logger.info("untap and draw");
+				target.appendJavascript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 1000);");
+			}
+
+		};
+		this.untapAndDrawLink.setMarkupId("untapAndDrawLink");
+		this.untapAndDrawLink.setOutputMarkupId(true);
+
+		this.untapAndDrawPlaceholder.add(this.untapAndDrawLink);
+		this.add(this.untapAndDrawPlaceholder);
 	}
 
 	private void buildDataBox(final long _gameId)
@@ -509,6 +540,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				}
 			}
 		};
+
+		drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
 		this.add(drawCardLink);
 
 
