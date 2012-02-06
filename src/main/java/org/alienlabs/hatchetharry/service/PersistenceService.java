@@ -323,7 +323,7 @@ public class PersistenceService
 		return this.gameDao.save(game);
 	}
 
-	@Transactional
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
 	public MagicCard findCardByName(final String _name)
 	{
 		final Session session = this.magicCardDao.getSession();
