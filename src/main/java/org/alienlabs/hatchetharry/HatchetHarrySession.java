@@ -111,25 +111,25 @@ public class HatchetHarrySession extends WebSession
 	}
 
 	@SuppressWarnings("unchecked")
-	public int getFirstCardIdInHand()
+	public long getFirstCardIdInHand()
 	{
-		return ((List<Integer>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).get(0);
+		return ((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).get(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addCardIdInHand(final int index, final int id)
+	public void addCardIdInHand(final int index, final long id)
 	{
 		if (this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND) == null)
 		{
 			this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, new ArrayList<Integer>());
 		}
-		((List<Integer>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
+		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void removeCardIdInHand(final MagicCard c)
 	{
-		((List<Integer>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).remove(c.getId());
+		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).remove(c.getId());
 	}
 
 	public boolean setPlayerHasBeenCreated()

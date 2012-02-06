@@ -107,7 +107,7 @@ public class CreateGameModalWindow extends Panel
 				for (int i = 0; i < 7; i++)
 				{
 					firstCards.add(i, allCards.get(i));
-					HatchetHarrySession.get().addCardIdInHand(i, i);
+					HatchetHarrySession.get().addCardIdInHand(i, allCards.get(i).getId());
 				}
 
 				final List<CardPanel> toRemove = HatchetHarrySession.get()
