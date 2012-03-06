@@ -58,10 +58,6 @@ if (jQuery)
 																						function(
 																								e) {
 
-																							jQuery(
-																									'#bubbletip1Placeholder')
-																									.removeBubbletip();
-
 																							e
 																									.stopPropagation();
 																							var srcElement = jQuery(this);
@@ -314,20 +310,12 @@ if (jQuery)
 																																});
 																													return false;
 																												});
-
-																								jQuery(
-																										'#bubbletip1Placeholder')
-																										.bubbletip(
-																												jQuery('#cardBubbleTip1'),
-																												{
-																													deltaDirection : 'right'
-																												});
 																								// Hide
 																								// bindings
 																								setTimeout(
 																										function() { // Delay
-																														// for
-																														// Mozilla
+																											// for
+																											// Mozilla
 																											jQuery(
 																													document)
 																													.click(

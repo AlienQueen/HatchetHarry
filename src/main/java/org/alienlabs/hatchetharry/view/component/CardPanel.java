@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -20,10 +23,12 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CardPanel extends Panel
+public class CardPanel extends Panel implements IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
 
@@ -48,10 +53,6 @@ public class CardPanel extends Panel
 
 		this.add(this.cardMovePage, this.cardRotatePage);
 
-		this.add(new JavaScriptReference("jQuery.bubbletip-1.0.6.js", HomePage.class,
-				"script/bubbletip/jQuery.bubbletip-1.0.6.js"));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "script/bubbletip/bubbletip.css")));
 		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
 				HomePage.class, "stylesheet/menu.css")));
 
@@ -90,9 +91,9 @@ public class CardPanel extends Panel
 				"images/rightArrow.png"));
 		handleImage.setOutputMarkupId(true);
 
-		final TooltipPanel cardBubbleTip = new TooltipPanel("cardBubbleTip", bigImage);
+		final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage);
 		cardBubbleTip.setOutputMarkupId(true);
-		cardBubbleTip.setMarkupId("cardBubbleTip" + this.uuid);
+		cardBubbleTip.setMarkupId("cardTooltip" + this.uuid);
 		cardBubbleTip.add(new SimpleAttributeModifier("style", "display:none;"));
 
 		final Image cardImage = new Image("cardImage", new ResourceReference(HomePage.class,
@@ -127,4 +128,20 @@ public class CardPanel extends Panel
 		return this.uuid;
 	}
 
+	@Override
+	public void renderHead(final IHeaderResponse response)
+	{
+		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
+				"script/tooltip/easyTooltip.js");
+		final StringBuffer js = new StringBuffer().append(template1.asString());
+		response.renderJavascript(js.toString(), "easyTooltip.js");
+
+		final TextTemplate template2 = new PackagedTextTemplate(HomePage.class,
+				"script/tooltip/initTooltip.js");
+		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		variables.put("uuid", this.uuid);
+		template2.interpolate(variables);
+		final StringBuffer js2 = new StringBuffer().append(template2.asString());
+		response.renderJavascript(js2.toString(), "initTooltip.js" + this.uuid);
+	}
 }

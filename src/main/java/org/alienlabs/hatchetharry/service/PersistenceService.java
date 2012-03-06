@@ -237,7 +237,7 @@ public class PersistenceService
 		return (Deck)query.uniqueResult();
 	}
 
-	@Transactional
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
 	@SuppressWarnings("unchecked")
 	public List<MagicCard> getAllCardsFromDeck(final long l)
 	{

@@ -146,9 +146,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				final List<CardPanel> list = HatchetHarrySession.get().getAllCardsInBattleField();
 				for (final CardPanel aCard : list)
 				{
-					target.appendJavascript("jQuery('#card" + aCard.getUuid()
-							+ "').bubbletip(jQuery('#cardBubbleTip" + aCard.getUuid()
-							+ "'), {deltaDirection : 'right'});");
 					try
 					{
 						final MagicCard mc = this.persistenceService.getCardFromUuid(aCard
@@ -160,6 +157,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 									+ "card.css(\"position\", \"absolute\"); "
 									+ "card.css(\"left\", \"" + mc.getX() + "px\");"
 									+ "card.css(\"top\", \"" + mc.getY() + "px\");");
+							target.appendJavascript("jQuery(\"#card" + aCard.getUuid()
+									+ "\").easyTooltip({" + "useElement: \"cardTooltip"
+									+ aCard.getUuid() + "\"});");
 						}
 					}
 					catch (final IllegalArgumentException e)

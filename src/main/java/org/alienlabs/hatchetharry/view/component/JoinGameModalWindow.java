@@ -98,6 +98,7 @@ public class JoinGameModalWindow extends Panel
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
 				deck.setCards(allCards);
+				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
 				deck.shuffleLibrary();
 
 				final List<MagicCard> firstCards = new ArrayList<MagicCard>();
@@ -108,6 +109,8 @@ public class JoinGameModalWindow extends Panel
 					HatchetHarrySession.get().addCardIdInHand(i, i);
 					deck.getCards().remove(allCards.get(i));
 				}
+
+				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
 
 				final List<CardPanel> toRemove = HatchetHarrySession.get()
 						.getAllCardsInBattleField();

@@ -44,16 +44,6 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 		template1.interpolate(variables);
 		final String js1 = template1.asString();
 		response.renderJavascript(js1, "menubar.js");
-
-		final TextTemplate template2 = new PackagedTextTemplate(TeamInfoBehavior.class,
-				"script/qunitTests/HomePageTests.js");
-		final String js2 = template2.asString();
-		response.renderJavascript(js2, "codeUnderTest.js");
-
-		final TextTemplate template3 = new PackagedTextTemplate(TeamInfoBehavior.class,
-				"script/qunitTests/HomePageTests.js");
-		final String js3 = template3.asString();
-		response.renderJavascript(js3, "HomePageTests.js");
 	}
 
 }

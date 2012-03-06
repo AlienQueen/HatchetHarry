@@ -2,9 +2,9 @@
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
 
 	<classpath>
-		<dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/target/classes">
+		<dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/target/classes/">
 		</dir>
-		<dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/target/test-classes">
+		<dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/target/ROOT/WEB-INF/classes/">
 		</dir>
 	</classpath>
 
@@ -12,12 +12,6 @@
 		<link target="/">
 			<dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/src/main/webapp">
 			</dir>
-		</link>
-		<link target="/">
-			<dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/src/main/java">
-			</dir>
-		</link>
-		<link target="/">
 			<dir name="/home/nostromo/Documents/Programmation/workspace/hatchetharry/src/main/resources">
 			</dir>
 		</link>
