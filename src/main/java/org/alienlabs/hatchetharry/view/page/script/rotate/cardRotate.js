@@ -1,11 +1,8 @@
-var tapped${uuidValidForJs} = true;
-
 jQuery(document).ready(
 		function() {
 			jQuery('#tapHandleImage${uuid}').click(
 					function() {
-						wicketAjaxGet('${url}&tapped=' + tapped${uuidValidForJs}
-								+ '&uuid=${uuid}', function() {
+						wicketAjaxGet('${url}&uuid=${uuid}', function() {
 						}, null, null);
 					});
 
@@ -26,12 +23,10 @@ jQuery(document).ready(
 							var data = response.responseBody;
 							if ((typeof data.split("___")[1] != 'undefined')
 									&& (data.split("___")[1] == '${uuid}'))
-								if (tapped${uuidValidForJs}) {
+								if (response.responseBody.indexOf("true") != -1) {
 									jQuery('#card${uuid}').rotate(90);
-									tapped${uuidValidForJs} = false;
 								} else {
 									jQuery('#card${uuid}').rotate(0);
-									tapped${uuidValidForJs} = true;
 								}
 						}
 						jQuery.atmosphere.log('info',

@@ -48,6 +48,8 @@ public class MagicCard implements SlideshowImage, Serializable
 	private Long x = 64l; // x coordinate
 	@Column
 	private Long y = 64l; // y coordinate
+	@Column
+	private boolean tapped = false;
 
 	public MagicCard()
 	{
@@ -249,6 +251,16 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setY(final Long _y)
 	{
 		this.y = _y;
+	}
+
+	public boolean isTapped()
+	{
+		return this.tapped;
+	}
+
+	public void setTapped(final boolean _tapped)
+	{
+		this.tapped = _tapped;
 	}
 
 }

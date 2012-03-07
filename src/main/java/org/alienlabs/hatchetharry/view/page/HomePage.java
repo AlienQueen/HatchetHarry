@@ -38,6 +38,8 @@
 package org.alienlabs.hatchetharry.view.page;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -72,9 +74,12 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -172,7 +177,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.6 (release SpaceJockey), built on Tuesday, 6th of March 2012."));
+				"version 0.0.6 (release SpaceJockey), built on Wednesday, 7th of March 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -215,7 +220,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		balduParent.setOutputMarkupId(true);
 
 		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
-		if (null != card)
+		if ((null != card)
+				&& (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
+						HatchetHarrySession.get().getPlayer().getSide())))
 		{
 			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
 					.getBigImageFilename(), card.getUuidObject()));
@@ -275,6 +282,27 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.buildEndTurnLink();
 		this.buildUntapAllLink();
 		this.buildUntapAndDrawLink();
+
+		if (HatchetHarrySession.get().isGameCreated())
+		{
+			for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
+			{
+				this.playCardParent1.addOrReplace(cp);
+			}
+
+			this.add(new HeaderContributor(new IHeaderContributor()
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void renderHead(final IHeaderResponse response)
+				{
+					HomePage.this.restoreStateOfAllCardsInBattlefield(response);
+				}
+
+			}));
+		}
+
 	}
 
 	private void buildEndTurnLink()
@@ -456,7 +484,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		{
 			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
 					+ opponentId + i);
-			this.playCardParent1.add(cardPlaceholder);
+			this.playCardParent1.addOrReplace(cardPlaceholder);
 		}
 	}
 
@@ -862,6 +890,48 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final String encoding = "text/html;charset=utf-8";
 		this.getResponse().setContentType(encoding);
 		super.configureResponse();
+	}
+
+	void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
+	{
+		final StringBuffer js = new StringBuffer();
+		final Collection<CardPanel> allCards = Collections
+				.synchronizedCollection(HatchetHarrySession.get().getAllCardsInBattleField());
+
+		for (final CardPanel cp : allCards)
+		{
+			try
+			{
+				HatchetHarrySession.get().setPlaceholderNumber(
+						HatchetHarrySession.get().getPlaceholderNumber() + 1);
+
+				final MagicCard mc = HomePage.this.persistenceService.getCardFromUuid(cp.getUuid());
+				if (null != mc)
+				{
+					js.append("var card = jQuery(\"#menutoggleButton" + cp.getUuid() + "\"); "
+							+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
+							+ mc.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY()
+							+ "px\");\n");
+					js.append("jQuery(\"#card" + cp.getUuid() + "\").easyTooltip({"
+							+ "useElement: \"cardTooltip" + cp.getUuid() + "\"});\n");
+
+					if (mc.isTapped())
+					{
+						js.append("jQuery('#card" + cp.getUuid() + "').rotate(90);");
+					}
+					else
+					{
+						js.append("jQuery('#card" + cp.getUuid() + "').rotate(0);");
+					}
+				}
+			}
+			catch (final IllegalArgumentException e)
+			{
+				HomePage.logger.error("error parsing UUID of moved card", e);
+			}
+
+			response.renderOnDomReadyJavascript(js.toString());
+		}
 	}
 
 	@Required

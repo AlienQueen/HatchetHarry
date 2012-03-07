@@ -6,11 +6,15 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
@@ -18,6 +22,7 @@ import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -27,10 +32,14 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	private final CardPanel panel;
 	private final UUID uuid;
 
+	@SpringBean
+	private PersistenceService persistenceService;
+
 	public CardRotateBehavior(final CardPanel cp, final UUID _uuid)
 	{
 		this.panel = cp;
 		this.uuid = _uuid;
+		InjectorHolder.getInjector().inject(this);
 	}
 
 	@Override
@@ -40,10 +49,15 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
-		final String tapped = request.getParameter("tapped");
 		final String uuidToLookFor = request.getParameter("uuid");
-		final String message = request.getRequestedSessionId() + "&tapped=" + tapped + "___"
-				+ uuidToLookFor;
+
+		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
+				.fromString(uuidToLookFor));
+		card.setTapped(!card.isTapped());
+		this.persistenceService.saveCard(card);
+
+		final String message = request.getRequestedSessionId() + "&tapped=" + card.isTapped()
+				+ "___" + uuidToLookFor;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		CardRotateBehavior.logger.info("meteor: " + meteor);
@@ -67,6 +81,12 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		template.interpolate(variables);
 
 		response.renderOnDomReadyJavascript(template.asString());
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
 	}
 
 }

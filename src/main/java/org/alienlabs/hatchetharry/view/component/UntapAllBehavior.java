@@ -60,6 +60,8 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 			for (final MagicCard mc : allCardsInBattlefieldOnMySide)
 			{
 				message.append("_____").append(mc.getUuid().toString());
+				mc.setTapped(false);
+				this.persistenceService.saveCard(mc);
 			}
 			message.append("&playerId=").append(playerId.toString());
 

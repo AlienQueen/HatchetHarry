@@ -226,7 +226,7 @@ public class PersistenceService
 		return list.size() > 0;
 	}
 
-	@Transactional
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
 	public Deck getDeck(final long l)
 	{
 		final Session session = this.magicCardDao.getSession();
