@@ -9,11 +9,13 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
+import org.alienlabs.hatchetharry.persistence.dao.SideDao;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -40,6 +42,8 @@ public class PersistenceService
 	private MagicCardDao magicCardDao;
 	@SpringBean
 	private GameDao gameDao;
+	@SpringBean
+	private SideDao sideDao;
 
 	public PersistenceService()
 	{
@@ -181,6 +185,15 @@ public class PersistenceService
 		return d;
 	}
 
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public Side saveSide(final Side s)
+	{
+		final Session session = this.sideDao.getSession();
+		session.save(s);
+
+		return s;
+	}
+
 	@Transactional
 	public boolean getPlayerByGame(final long l)
 	{
@@ -271,6 +284,12 @@ public class PersistenceService
 	}
 
 	@Required
+	public void setSideDao(final SideDao _sideDao)
+	{
+		this.sideDao = _sideDao;
+	}
+
+	@Required
 	public void setCollectibleCardDao(final CollectibleCardDao _collectibleCardDao)
 	{
 		this.collectibleCardDao = _collectibleCardDao;
@@ -309,7 +328,7 @@ public class PersistenceService
 		return query.list();
 	}
 
-	@Transactional
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
 	public Game createNewGame(final Player player)
 	{
 		this.gameDao.getSession();
@@ -411,6 +430,18 @@ public class PersistenceService
 		{
 			return null;
 		}
+	}
+
+	@Transactional
+	public List<Side> getSidesFromGame(final Game game)
+	{
+		final Session session = this.sideDao.getSession();
+		final Query query = session.createQuery("from Side s where s.game=?");
+		query.setEntity(0, game);
+		@SuppressWarnings("unchecked")
+		final List<Side> s = query.list();
+
+		return s;
 	}
 
 }

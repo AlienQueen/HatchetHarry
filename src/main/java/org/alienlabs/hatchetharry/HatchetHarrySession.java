@@ -37,6 +37,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String DECK = "DECK";
 	private static final String TO_REMOVE = "TO_REMOVE";
 	private static final String MY_SIDE_PLACEHOLDER = "MY_SIDE_PLACEHOLDER";
+	private static final String MY_SIDE_PANELS = "MY_SIDE_PANELS";
 	private static String MY_SIDE_POS_X = "MY_SIDE_POS_X";
 	private static String MY_SIDE_POS_Y = "MY_SIDE_POS_Y";
 
@@ -49,8 +50,8 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
 		this.setAttribute(HatchetHarrySession.GAME_CREATED, false);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
-		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER,
-				new ArrayList<SidePlaceholderPanel>());
+		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
+		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 
 	}
 
@@ -297,17 +298,16 @@ public class HatchetHarrySession extends WebSession
 	@SuppressWarnings("unchecked")
 	public List<SidePlaceholderPanel> getMySidePlaceholder()
 	{
-		return (List<SidePlaceholderPanel>)this
-				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
+		return (List<SidePlaceholderPanel>)this.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
 	}
 
 	public void setMySidePlaceholder(final SidePlaceholderPanel _mySidePlaceholder)
 	{
 		@SuppressWarnings("unchecked")
 		final List<SidePlaceholderPanel> l = (List<SidePlaceholderPanel>)this
-				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
+				.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
 		l.add(_mySidePlaceholder);
-		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, l);
+		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, l);
 	}
 
 	@SuppressWarnings("unchecked")

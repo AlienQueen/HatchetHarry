@@ -73,8 +73,8 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 					this.homePage, _side));
 			spp.setOutputMarkupId(true);
 
-			final HatchetHarrySession h = ((HatchetHarrySession.get()));
-			h.putMySidePlaceholderInSesion(_side);
+			final HatchetHarrySession session = ((HatchetHarrySession.get()));
+			session.putMySidePlaceholderInSesion(_side);
 
 
 			this.homePage.getSecondSidePlaceholderParent().addOrReplace(spp);
@@ -88,6 +88,10 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 					+ "'); "
 					+ "card.css('position', 'absolute'); "
 					+ "card.css('left', '" + posX + "px'); " + "card.css('top', '500px'); });");
+
+			spp.setPosX(new Long(posX));
+			spp.setPosY(new Long(500));
+			session.setMySidePlaceholder(spp);
 		}
 		else if (!this.jsessionid.equals(request.getParameter("requestingId")))
 		{

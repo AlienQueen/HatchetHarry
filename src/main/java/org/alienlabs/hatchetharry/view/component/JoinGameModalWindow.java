@@ -12,6 +12,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -181,8 +182,8 @@ public class JoinGameModalWindow extends Panel
 						jsessionid, JoinGameModalWindow.this.hp, sideInput
 								.getDefaultModelObjectAsString()));
 
-				final HatchetHarrySession h = ((HatchetHarrySession.get()));
-				h.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
+				final HatchetHarrySession session = ((HatchetHarrySession.get()));
+				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
 				sidePlaceholderParent.addOrReplace(spp);
 				target.addComponent(sidePlaceholderParent);
@@ -230,6 +231,23 @@ public class JoinGameModalWindow extends Panel
 						.setSide(sideInput.getDefaultModelObjectAsString());
 				HatchetHarrySession.get().setMySidePosX(posX);
 				HatchetHarrySession.get().setMySidePosY(500);
+
+				final Side s = new Side();
+				s.setGame(JoinGameModalWindow.this.persistenceService.getGame(HatchetHarrySession
+						.get().getGameId()));
+				s.setSide(sideInput.getDefaultModelObjectAsString());
+				s.setUuid(spp.getUuid().toString());
+				s.setWicketId("secondSidePlaceholder");
+				s.setX(new Long(posX));
+				s.setY(new Long(500));
+				JoinGameModalWindow.this.persistenceService.saveSide(s);
+
+				spp.setPosX(new Long(posX));
+				spp.setPosY(new Long(500));
+				session.setMySidePlaceholder(spp);
+				spp2.setPosX(new Long(posX2));
+				spp2.setPosY(new Long(500));
+				session.setMySidePlaceholder(spp2);
 			}
 		};
 		submit.setOutputMarkupId(true);

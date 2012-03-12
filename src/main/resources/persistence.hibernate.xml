@@ -43,6 +43,7 @@
 				<value>org.alienlabs.hatchetharry.model.CollectibleCard</value>
 				<value>org.alienlabs.hatchetharry.model.Deck</value>
 				<value>org.alienlabs.hatchetharry.model.Game</value>
+				<value>org.alienlabs.hatchetharry.model.Side</value>
             </list> 
         </property>
 
@@ -98,6 +99,9 @@
 	<bean id="gameDao" class="org.alienlabs.hatchetharry.persistence.dao.GameDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
+	<bean id="sideDao" class="org.alienlabs.hatchetharry.persistence.dao.SideDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
 	
 <!--	<bean id="playerDaoTarget" class="org.alienlabs.ajax.persistence.dao.PlayerDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
@@ -135,6 +139,7 @@
 		<property name="collectibleCardDao" ref="collectibleCardDao"/>
 		<property name="playerDao" ref="playerDao"/>
 		<property name="gameDao" ref="gameDao"/>
+		<property name="sideDao" ref="sideDao"/>
 	</bean>
 	<!-- setup data generator that will add some data into the db when the app starts up -->
 	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">

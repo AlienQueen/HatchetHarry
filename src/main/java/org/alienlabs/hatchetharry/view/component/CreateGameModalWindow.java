@@ -11,6 +11,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -143,8 +144,8 @@ public class CreateGameModalWindow extends Panel
 
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("firstSidePlaceholder",
 						sideInput.getDefaultModelObjectAsString(), hp, UUID.randomUUID());
-				final HatchetHarrySession h = ((HatchetHarrySession.get()));
-				h.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
+				final HatchetHarrySession session = ((HatchetHarrySession.get()));
+				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
 						.getRequest();
@@ -175,10 +176,24 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());
 
-				HatchetHarrySession.get().getPlayer()
+				session.getPlayer()
 						.setSide(sideInput.getDefaultModelObjectAsString());
-				HatchetHarrySession.get().setMySidePosX(posX);
-				HatchetHarrySession.get().setMySidePosY(500);
+				session.setMySidePosX(posX);
+				session.setMySidePosY(500);
+
+				spp.setPosX(new Long(posX));
+				spp.setPosY(new Long(500));
+				session.setMySidePlaceholder(spp);
+
+				final Side s = new Side();
+				s.setGame(CreateGameModalWindow.this.persistenceService.getGame(HatchetHarrySession
+						.get().getGameId()));
+				s.setSide(sideInput.getDefaultModelObjectAsString());
+				s.setUuid(spp.getUuid().toString());
+				s.setWicketId("firstSidePlaceholder");
+				s.setX(new Long(posX));
+				s.setY(new Long(500));
+				CreateGameModalWindow.this.persistenceService.saveSide(s);
 			}
 		};
 		submit.setOutputMarkupId(true);

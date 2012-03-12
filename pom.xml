@@ -4,7 +4,7 @@
 	<groupId>org.alienlabs.hatchetharry</groupId>
 	<artifactId>hatchetharry</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<!-- TODO project name  -->
 	<name>hatchetharry</name>
 	<description></description>
@@ -555,21 +555,10 @@
 			      <id>generate-rebel-xml</id>
 			      <phase>process-resources</phase>
 			      <goals>
-				<goal>generate</goal>
+			        <goal>generate</goal>
 			      </goals>
 			    </execution>
 			  </executions>
-			  <configuration>
-			  <!--
-			    root is 2 directories up from the jar/war modules
-			  -->
-			 	<relativePath>target/ROOT</relativePath>
-			  <!--
-			    use a custom property for specifing root directory (note the double $)
-			    set the property in JRebel configuration or as -Dmyproject.root=c:/projects/
-			  -->
-			 	<rootPath>/home/nostromo/Documents/Programmation/workspace/hatchetharry</rootPath>
-			  </configuration>
 			</plugin>
 			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -33,7 +33,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	private final UUID uuid;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	private transient PersistenceService persistenceService;
 
 	public CardRotateBehavior(final CardPanel cp, final UUID _uuid)
 	{

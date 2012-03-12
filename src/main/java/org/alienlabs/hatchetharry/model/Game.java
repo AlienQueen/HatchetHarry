@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
@@ -30,6 +31,8 @@ public class Game implements Serializable
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "playerId"), inverseJoinColumns = @JoinColumn(name = "gameId"))
 	private List<Player> players = new ArrayList<Player>();
+	@OneToMany(mappedBy = "game")
+	private List<Side> sides = new ArrayList<Side>();
 
 	public Long getId()
 	{
@@ -88,6 +91,16 @@ public class Game implements Serializable
 			return false;
 		}
 		return true;
+	}
+
+	public List<Side> getSides()
+	{
+		return this.sides;
+	}
+
+	public void setSides(final List<Side> _sides)
+	{
+		this.sides = _sides;
 	}
 
 }

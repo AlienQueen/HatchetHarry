@@ -66,6 +66,7 @@ import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
+import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
@@ -177,7 +178,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.6 (release SpaceJockey), built on Wednesday, 7th of March 2012."));
+				"version 0.0.6 (release SpaceJockey), built on Monday, 12th of March 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -285,24 +286,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		if (HatchetHarrySession.get().isGameCreated())
 		{
-			for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
-			{
-				this.playCardParent1.addOrReplace(cp);
-			}
-
-			this.add(new HeaderContributor(new IHeaderContributor()
-			{
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void renderHead(final IHeaderResponse response)
-				{
-					HomePage.this.restoreStateOfAllCardsInBattlefield(response);
-				}
-
-			}));
+			this.restoreBattlefieldState();
 		}
-
 	}
 
 	private void buildEndTurnLink()
@@ -892,6 +877,41 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		super.configureResponse();
 	}
 
+	private void restoreBattlefieldState()
+	{
+		for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
+		{
+			this.playCardParent1.addOrReplace(cp);
+		}
+
+		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
+				.getMySidePlaceholder();
+		for (final SidePlaceholderPanel s : allSides)
+		{
+			if ("firstSidePlaceholder".equals(s.getId()))
+			{
+				this.firstSidePlaceholderParent.addOrReplace(s);
+			}
+			else if ("secondSidePlaceholder".equals(s.getId()))
+			{
+				this.secondSidePlaceholderParent.addOrReplace(s);
+			}
+
+		}
+
+		this.add(new HeaderContributor(new IHeaderContributor()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void renderHead(final IHeaderResponse response)
+			{
+				HomePage.this.restoreStateOfAllCardsInBattlefield(response);
+			}
+
+		}));
+	}
+
 	void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
 	{
 		final StringBuffer js = new StringBuffer();
@@ -924,14 +944,26 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 						js.append("jQuery('#card" + cp.getUuid() + "').rotate(0);");
 					}
 				}
+
 			}
 			catch (final IllegalArgumentException e)
 			{
 				HomePage.logger.error("error parsing UUID of moved card", e);
 			}
-
-			response.renderOnDomReadyJavascript(js.toString());
 		}
+
+		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
+				.getMySidePlaceholder();
+		HomePage.logger.info("size: " + allSides.size());
+		for (final SidePlaceholderPanel s : allSides)
+		{
+			HomePage.logger.info("side: " + s.getUuid() + ", X= " + s.getPosX() + ", Y= "
+					+ s.getPosY());
+			js.append("var card = jQuery('#sidePlaceholder" + s.getUuid() + "'); "
+					+ "card.css('position', 'absolute'); " + "card.css('left', '" + s.getPosX()
+					+ "px'); " + "card.css('top', '" + s.getPosY() + "px');");
+		}
+		response.renderOnDomReadyJavascript(js.toString());
 	}
 
 	@Required
