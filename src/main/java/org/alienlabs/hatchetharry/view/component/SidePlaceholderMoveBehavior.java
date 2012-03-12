@@ -89,8 +89,8 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 					+ "card.css('position', 'absolute'); "
 					+ "card.css('left', '" + posX + "px'); " + "card.css('top', '500px'); });");
 
-			spp.setPosX(new Long(posX));
-			spp.setPosY(new Long(500));
+			spp.setPosX(posX);
+			spp.setPosY(500);
 			session.setMySidePlaceholder(spp);
 		}
 		else if (!this.jsessionid.equals(request.getParameter("requestingId")))

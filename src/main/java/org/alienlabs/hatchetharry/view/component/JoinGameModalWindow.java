@@ -242,8 +242,8 @@ public class JoinGameModalWindow extends Panel
 				s.setY(new Long(500));
 				JoinGameModalWindow.this.persistenceService.saveSide(s);
 
-				spp.setPosX(new Long(posX));
-				spp.setPosY(new Long(500));
+				spp.setPosX(posX);
+				spp.setPosY(500);
 				session.setMySidePlaceholder(spp);
 				spp2.setPosX(new Long(posX2));
 				spp2.setPosY(new Long(500));

@@ -176,13 +176,12 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());
 
-				session.getPlayer()
-						.setSide(sideInput.getDefaultModelObjectAsString());
+				session.getPlayer().setSide(sideInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
 
-				spp.setPosX(new Long(posX));
-				spp.setPosY(new Long(500));
+				spp.setPosX(posX);
+				spp.setPosY(500);
 				session.setMySidePlaceholder(spp);
 
 				final Side s = new Side();
