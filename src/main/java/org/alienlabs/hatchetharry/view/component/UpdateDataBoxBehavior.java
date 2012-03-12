@@ -26,9 +26,9 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 
 	final WebMarkupContainer dataBoxParent;
 
-	final transient Long gameId;
+	final Long gameId;
 
-	private transient final HomePage hp;
+	private final HomePage hp;
 
 	public UpdateDataBoxBehavior(final WebMarkupContainer _dataBoxParent, final Long _gameId,
 			final HomePage _hp)
