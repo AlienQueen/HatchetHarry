@@ -190,8 +190,8 @@ public class CreateGameModalWindow extends Panel
 				s.setSide(sideInput.getDefaultModelObjectAsString());
 				s.setUuid(spp.getUuid().toString());
 				s.setWicketId("firstSidePlaceholder");
-				s.setX(new Long(posX));
-				s.setY(new Long(500));
+				s.setX(Long.valueOf(posX));
+				s.setY(Long.valueOf(500));
 				CreateGameModalWindow.this.persistenceService.saveSide(s);
 			}
 		};
