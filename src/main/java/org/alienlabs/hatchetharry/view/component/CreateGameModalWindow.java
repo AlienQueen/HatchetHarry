@@ -144,7 +144,7 @@ public class CreateGameModalWindow extends Panel
 
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("firstSidePlaceholder",
 						sideInput.getDefaultModelObjectAsString(), hp, UUID.randomUUID());
-				final HatchetHarrySession session = ((HatchetHarrySession.get()));
+				final HatchetHarrySession session = HatchetHarrySession.get();
 				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()

@@ -99,7 +99,8 @@ public class JoinGameModalWindow extends Panel
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
 				deck.setCards(allCards);
-				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
+				final HatchetHarrySession session = HatchetHarrySession.get();
+				deck.setPlayerId(session.getPlayer().getId());
 				deck.shuffleLibrary();
 
 				final List<MagicCard> firstCards = new ArrayList<MagicCard>();
@@ -127,8 +128,8 @@ public class JoinGameModalWindow extends Panel
 					HatchetHarrySession.get().removeAllCardsFromBattleField();
 				}
 
-				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
-				HatchetHarrySession.get().setDeck(deck);
+				session.setFirstCardsInHand(firstCards);
+				session.setDeck(deck);
 
 				final Game g = JoinGameModalWindow.this.persistenceService.getGame(Long
 						.valueOf(JoinGameModalWindow.this.gameIdInput
@@ -148,7 +149,7 @@ public class JoinGameModalWindow extends Panel
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
 								.getDefaultModelObjectAsString()), _dataBoxParent,
 						JoinGameModalWindow.this.hp);
-				HatchetHarrySession.get().setDataBox(dataBox);
+				session.setDataBox(dataBox);
 				dataBox.add(behavior);
 				_dataBoxParent.addOrReplace(dataBox);
 				target.addComponent(_dataBoxParent);
@@ -177,12 +178,11 @@ public class JoinGameModalWindow extends Panel
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
 						sideInput.getDefaultModelObjectAsString(), JoinGameModalWindow.this.hp,
 						UUID.randomUUID());
-				spp.setOutputMarkupId(true);
 				spp.add(new SidePlaceholderMoveBehavior(sidePlaceholderParent, spp.getUuid(),
 						jsessionid, JoinGameModalWindow.this.hp, sideInput
 								.getDefaultModelObjectAsString()));
+				spp.setOutputMarkupId(true);
 
-				final HatchetHarrySession session = ((HatchetHarrySession.get()));
 				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
 				sidePlaceholderParent.addOrReplace(spp);
@@ -203,10 +203,10 @@ public class JoinGameModalWindow extends Panel
 
 				final SidePlaceholderPanel spp2 = new SidePlaceholderPanel("firstSidePlaceholder",
 						opponentSide, JoinGameModalWindow.this.hp, UUID.randomUUID());
-				spp2.setOutputMarkupId(true);
 				spp2.add(new SidePlaceholderMoveBehavior(JoinGameModalWindow.this.hp
 						.getSecondSidePlaceholderParent(), spp2.getUuid(), jsessionid,
 						JoinGameModalWindow.this.hp, opponentSide));
+				spp2.setOutputMarkupId(true);
 
 				JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
 				target.addComponent(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
@@ -229,12 +229,11 @@ public class JoinGameModalWindow extends Panel
 						sideInput.getDefaultModelObjectAsString());
 				HatchetHarrySession.get().getPlayer()
 						.setSide(sideInput.getDefaultModelObjectAsString());
-				HatchetHarrySession.get().setMySidePosX(posX);
-				HatchetHarrySession.get().setMySidePosY(500);
+				session.setMySidePosX(posX);
+				session.setMySidePosY(500);
 
 				final Side s = new Side();
-				s.setGame(JoinGameModalWindow.this.persistenceService.getGame(HatchetHarrySession
-						.get().getGameId()));
+				s.setGame(JoinGameModalWindow.this.persistenceService.getGame(session.getGameId()));
 				s.setSide(sideInput.getDefaultModelObjectAsString());
 				s.setUuid(spp.getUuid().toString());
 				s.setWicketId("secondSidePlaceholder");
