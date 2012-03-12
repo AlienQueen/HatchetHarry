@@ -10,7 +10,6 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -40,8 +39,6 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.jsessionid = _jsessionid;
 		this.homePage = hp;
 		this.side = _side;
-
-		InjectorHolder.getInjector().inject(this);
 	}
 
 	@Override
@@ -120,7 +117,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(response);
 
-		StringBuffer js = new StringBuffer();
+		final StringBuffer js = new StringBuffer();
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
@@ -129,20 +126,20 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("jsessionid", this.jsessionid);
 		variables.put("side", this.side);
 
-		final TextTemplate template4 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js");
-		template4.interpolate(variables);
-		js = js.append("\n" + template4.asString());
+		template1.interpolate(variables);
+		js.append("\n" + template1.asString());
 
-		final TextTemplate template5 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template2 = new PackagedTextTemplate(HomePage.class,
 				"script/draggableHandle/sidePlaceholderMove.js");
-		template5.interpolate(variables);
-		js = js.append("\n" + template5.asString());
+		template2.interpolate(variables);
+		js.append("\n" + template2.asString());
 
-		final TextTemplate template6 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template3 = new PackagedTextTemplate(HomePage.class,
 				"script/draggableHandle/initSidePlaceholderDrag.js");
-		template6.interpolate(variables);
-		js = js.append("\n" + template6.asString());
+		template3.interpolate(variables);
+		js.append("\n" + template3.asString());
 
 		response.renderOnDomReadyJavascript(js.toString());
 	}

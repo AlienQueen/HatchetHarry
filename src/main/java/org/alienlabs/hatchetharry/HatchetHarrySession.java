@@ -40,6 +40,8 @@ public class HatchetHarrySession extends WebSession
 	private static final String MY_SIDE_PANELS = "MY_SIDE_PANELS";
 	private static String MY_SIDE_POS_X = "MY_SIDE_POS_X";
 	private static String MY_SIDE_POS_Y = "MY_SIDE_POS_Y";
+	private static String FIST_SIDE_MOVE_CALLBACK_URL = "FIST_SIDE_MOVE_CALLBACK_URL";
+	private static String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -346,4 +348,28 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_SIDE_POS_Y, _mySidePosY);
 	}
 
+	public String getSecondMySidePosY()
+	{
+		return (String)this.getAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL);
+	}
+
+	public String getFirstSideMoveCallbackUrl()
+	{
+		return (String)this.getAttribute(HatchetHarrySession.FIST_SIDE_MOVE_CALLBACK_URL);
+	}
+
+	public void setFirstSideMoveCallbackUrl(final String callbackUrl)
+	{
+		this.setAttribute(HatchetHarrySession.FIST_SIDE_MOVE_CALLBACK_URL, callbackUrl);
+	}
+
+	public String getSecondSideMoveCallbackUrl()
+	{
+		return (String)this.getAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL);
+	}
+
+	public void setSecondSideMoveCallbackUrl(final String callbackUrl)
+	{
+		this.setAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL, callbackUrl);
+	}
 }

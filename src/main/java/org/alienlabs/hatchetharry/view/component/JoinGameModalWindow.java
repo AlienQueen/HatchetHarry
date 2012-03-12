@@ -95,6 +95,16 @@ public class JoinGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				final Game game = JoinGameModalWindow.this.persistenceService.getGame(Long
+						.valueOf(JoinGameModalWindow.this.gameIdInput
+								.getDefaultModelObjectAsString()));
+				if (null == game)
+				{
+					_modal.close(target);
+					target.appendJavascript("alert('The selected game id does not exist!');");
+					return;
+				}
+
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
@@ -131,20 +141,17 @@ public class JoinGameModalWindow extends Panel
 				session.setFirstCardsInHand(firstCards);
 				session.setDeck(deck);
 
-				final Game g = JoinGameModalWindow.this.persistenceService.getGame(Long
-						.valueOf(JoinGameModalWindow.this.gameIdInput
-								.getDefaultModelObjectAsString()));
-				final List<Player> players = g.getPlayers();
+				final List<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
 				final List<Game> games = new ArrayList<Game>();
-				games.add(g);
+				games.add(game);
 				JoinGameModalWindow.this.player.setGame(games);
-				JoinGameModalWindow.this.persistenceService.updateGame(g);
+				JoinGameModalWindow.this.persistenceService.updateGame(game);
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 
 				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(_dataBoxParent,
-						g.getId(), JoinGameModalWindow.this.hp);
+						game.getId(), JoinGameModalWindow.this.hp);
 				final DataBox dataBox = new DataBox("dataBox",
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
 								.getDefaultModelObjectAsString()), _dataBoxParent,
@@ -178,15 +185,15 @@ public class JoinGameModalWindow extends Panel
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
 						sideInput.getDefaultModelObjectAsString(), JoinGameModalWindow.this.hp,
 						UUID.randomUUID());
-				spp.add(new SidePlaceholderMoveBehavior(sidePlaceholderParent, spp.getUuid(),
-						jsessionid, JoinGameModalWindow.this.hp, sideInput
-								.getDefaultModelObjectAsString()));
+				spp.add(new SidePlaceholderMoveBehavior(JoinGameModalWindow.this.hp
+						.getSecondSidePlaceholderParent(), spp.getUuid(), jsessionid,
+						JoinGameModalWindow.this.hp, sideInput.getDefaultModelObjectAsString()));
 				spp.setOutputMarkupId(true);
 
 				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
-				sidePlaceholderParent.addOrReplace(spp);
-				target.addComponent(sidePlaceholderParent);
+				JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent().addOrReplace(spp);
+				target.addComponent(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
 
 				final int posX = ("infrared".equals(sideInput.getDefaultModelObjectAsString()))
 						? 300
@@ -204,7 +211,7 @@ public class JoinGameModalWindow extends Panel
 				final SidePlaceholderPanel spp2 = new SidePlaceholderPanel("firstSidePlaceholder",
 						opponentSide, JoinGameModalWindow.this.hp, UUID.randomUUID());
 				spp2.add(new SidePlaceholderMoveBehavior(JoinGameModalWindow.this.hp
-						.getSecondSidePlaceholderParent(), spp2.getUuid(), jsessionid,
+						.getFirstSidePlaceholderParent(), spp2.getUuid(), jsessionid,
 						JoinGameModalWindow.this.hp, opponentSide));
 				spp2.setOutputMarkupId(true);
 

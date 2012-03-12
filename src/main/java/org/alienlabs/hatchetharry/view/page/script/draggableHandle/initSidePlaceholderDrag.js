@@ -268,7 +268,7 @@ jQuery(document).ready(
 
 			// DnD
 			jQuery("#sidePlaceholder${uuid}").draggable({
-				handle : "#sidePlaceholderHandle${uuid}"
+				handle : "img"
 			});
 
 		});

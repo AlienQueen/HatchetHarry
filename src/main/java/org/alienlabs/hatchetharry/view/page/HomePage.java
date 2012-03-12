@@ -40,6 +40,7 @@ package org.alienlabs.hatchetharry.view.page;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -66,6 +67,7 @@ import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
+import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
@@ -87,6 +89,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
@@ -153,7 +157,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	private final WebMarkupContainer secondSidePlaceholderParent;
 
 	private PlayCardFromHandBehavior playCardBehavior;
-
 
 	public HomePage()
 	{
@@ -571,6 +574,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	{
 		this.add(new JavaScriptReference("jquery-1.6.4.js", HomePage.class,
 				"script/jquery-1.6.4.js"));
+		this.add(new JavaScriptReference("jquery-ui-1.8.18.core.mouse.widget.js", HomePage.class,
+				"script/jquery/jquery-ui-1.8.18.core.mouse.widget.js"));
 		this.add(new JavaScriptReference("jquery.atmosphere.js", HomePage.class,
 				"script/jquery.atmosphere.js"));
 		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
@@ -604,6 +609,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.add(new JavaScriptReference("jQueryRotate.2.1.js", HomePage.class,
 				"script/rotate/jQueryRotate.2.1.js"));
+
+		this.add(new JavaScriptReference("jquery.ui.draggable.sidePlaceholder.js", HomePage.class,
+				"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js"));
 
 		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
 				"stylesheet/menu.css")));
@@ -886,17 +894,37 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
 				.getMySidePlaceholder();
-		for (final SidePlaceholderPanel s : allSides)
+		for (final SidePlaceholderPanel spp : allSides)
 		{
-			if ("firstSidePlaceholder".equals(s.getId()))
-			{
-				this.firstSidePlaceholderParent.addOrReplace(s);
-			}
-			else if ("secondSidePlaceholder".equals(s.getId()))
-			{
-				this.secondSidePlaceholderParent.addOrReplace(s);
-			}
+			final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
+					.getRequest();
+			final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+			final String jsessionid = request.getRequestedSessionId();
 
+			if ("firstSidePlaceholder".equals(spp.getId()))
+			{
+				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(
+						this.firstSidePlaceholderParent, spp.getUuid(), jsessionid, HomePage.this,
+						HatchetHarrySession.get().getPlayer().getSide());
+				spp.add(spmb);
+				spp.setOutputMarkupId(true);
+				this.firstSidePlaceholderParent.addOrReplace(spp);
+				HatchetHarrySession.get().setFirstSideMoveCallbackUrl(
+						spmb.getCallbackUrl().toString());
+			}
+			else if ("secondSidePlaceholder".equals(spp.getId()))
+			{
+				final String side = ("infrared".equals(HatchetHarrySession.get().getPlayer()
+						.getSide())) ? "ultraviolet" : "infrared";
+				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(
+						this.secondSidePlaceholderParent, spp.getUuid(), jsessionid, HomePage.this,
+						side);
+				spp.add(spmb);
+				spp.setOutputMarkupId(true);
+				this.secondSidePlaceholderParent.addOrReplace(spp);
+				HatchetHarrySession.get().setSecondSideMoveCallbackUrl(
+						spmb.getCallbackUrl().toString());
+			}
 		}
 
 		this.add(new HeaderContributor(new IHeaderContributor()
@@ -955,13 +983,42 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
 				.getMySidePlaceholder();
 		HomePage.LOGGER.info("size: " + allSides.size());
+
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
+		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final String jsessionid = request.getRequestedSessionId();
+
+		for (final SidePlaceholderPanel spp : allSides)
+		{
+			String callbackUrl = "";
+			if ("firstSidePlaceholder".equals(spp.getId()))
+			{
+				callbackUrl = HatchetHarrySession.get().getFirstSideMoveCallbackUrl();
+			}
+			else if ("secondSidePlaceholder".equals(spp.getId()))
+			{
+				callbackUrl = HatchetHarrySession.get().getSecondSideMoveCallbackUrl();
+			}
+			final HashMap<String, Object> variables = new HashMap<String, Object>();
+			variables.put("url", callbackUrl);
+			variables.put("uuid", spp.getUuid());
+			variables.put("uuidValidForJs", spp.getUuid().toString().replace("-", "_"));
+			variables.put("jsessionid", jsessionid);
+			variables.put("side", spp.getSide());
+
+			final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+					"script/draggableHandle/initSidePlaceholderDrag.js");
+			template.interpolate(variables);
+			js.append("\n" + template.asString() + "\n");
+		}
+
 		for (final SidePlaceholderPanel s : allSides)
 		{
 			HomePage.LOGGER.info("side: " + s.getUuid() + ", X= " + s.getPosX() + ", Y= "
 					+ s.getPosY());
 			js.append("var card = jQuery('#sidePlaceholder" + s.getUuid() + "'); "
 					+ "card.css('position', 'absolute'); " + "card.css('left', '" + s.getPosX()
-					+ "px'); " + "card.css('top', '" + s.getPosY() + "px');");
+					+ "px'); " + "card.css('top', '" + s.getPosY() + "px'); ");
 		}
 		response.renderOnDomReadyJavascript(js.toString());
 	}

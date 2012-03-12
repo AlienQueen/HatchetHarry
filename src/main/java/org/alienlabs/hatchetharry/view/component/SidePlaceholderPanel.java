@@ -25,8 +25,9 @@ public class SidePlaceholderPanel extends Panel
 
 	private long posX, posY;
 	private final HomePage homePage;
+	private final String side;
 
-	public SidePlaceholderPanel(final String id, final String side, final HomePage hp,
+	public SidePlaceholderPanel(final String id, final String _side, final HomePage hp,
 			final UUID _uuid)
 	{
 		super(id);
@@ -34,6 +35,7 @@ public class SidePlaceholderPanel extends Panel
 
 		this.homePage = hp;
 		this.uuid = _uuid;
+		this.side = _side;
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
@@ -42,7 +44,8 @@ public class SidePlaceholderPanel extends Panel
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage, side));
+		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage,
+				this.side));
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
@@ -64,8 +67,10 @@ public class SidePlaceholderPanel extends Panel
 
 		final Image handleImage = new Image("handleImage",
 				new ResourceReference("images/arrow.png"));
+		handleImage.setOutputMarkupId(true);
+		handleImage.setMarkupId("handleImage" + this.uuid.toString());
 
-		final String image = ("infrared".equals(side))
+		final String image = ("infrared".equals(this.side))
 				? "image/logobouclierrouge.png"
 				: "image/logobouclierviolet.png";
 
@@ -74,7 +79,7 @@ public class SidePlaceholderPanel extends Panel
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString());
 
-		form.add(jsessionidTextField, mouseX, mouseY, handleImage, handleImage, cardImage);
+		form.add(jsessionidTextField, mouseX, mouseY, handleImage, cardImage);
 		sidePlaceholder.add(form);
 		this.add(sidePlaceholder);
 	}
@@ -108,6 +113,11 @@ public class SidePlaceholderPanel extends Panel
 	public void setPosY(final long _posY)
 	{
 		this.posY = _posY;
+	}
+
+	public String getSide()
+	{
+		return this.side;
 	}
 
 }
