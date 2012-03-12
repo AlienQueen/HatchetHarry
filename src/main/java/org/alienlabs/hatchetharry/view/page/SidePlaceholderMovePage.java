@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory;
 public class SidePlaceholderMovePage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(SidePlaceholderMovePage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SidePlaceholderMovePage.class);
 
 	public SidePlaceholderMovePage()
 	{
@@ -66,7 +66,7 @@ public class SidePlaceholderMovePage extends WebPage implements AtmosphereResour
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		SidePlaceholderMovePage.logger.info("onBroadcast(): {}", event.getMessage());
+		SidePlaceholderMovePage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
 		// If we are using long-polling, resume the connection as soon as we get
 		// an event.
@@ -87,7 +87,7 @@ public class SidePlaceholderMovePage extends WebPage implements AtmosphereResour
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		SidePlaceholderMovePage.logger.info("Suspending the %s response from ip {}:{}",
+		SidePlaceholderMovePage.LOGGER.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -99,7 +99,7 @@ public class SidePlaceholderMovePage extends WebPage implements AtmosphereResour
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		SidePlaceholderMovePage.logger.info("Resuming the {} response from ip {}:{}",
+		SidePlaceholderMovePage.LOGGER.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -111,7 +111,7 @@ public class SidePlaceholderMovePage extends WebPage implements AtmosphereResour
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		SidePlaceholderMovePage.logger.info("{} connection dropped from ip {}:{}",
+		SidePlaceholderMovePage.LOGGER.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -120,7 +120,7 @@ public class SidePlaceholderMovePage extends WebPage implements AtmosphereResour
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		SidePlaceholderMovePage.logger.info("onThrowable()", event.throwable());
+		SidePlaceholderMovePage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 }

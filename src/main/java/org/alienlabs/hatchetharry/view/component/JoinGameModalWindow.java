@@ -41,7 +41,7 @@ public class JoinGameModalWindow extends Panel
 	@SpringBean
 	transient PersistenceService persistenceService;
 
-	static final Logger logger = LoggerFactory.getLogger(JoinGameModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
 	final DropDownChoice<Deck> decks;
 	final RequiredTextField<Long> gameIdInput;
@@ -120,7 +120,7 @@ public class JoinGameModalWindow extends Panel
 					for (final CardPanel cp : toRemove)
 					{
 						target.appendJavascript("jQuery('#" + cp.getMarkupId() + "').remove();");
-						JoinGameModalWindow.logger.info("cp.getMarkupId(): " + cp.getMarkupId());
+						JoinGameModalWindow.LOGGER.info("cp.getMarkupId(): " + cp.getMarkupId());
 						HatchetHarrySession.get().addCardInToRemoveList(cp);
 					}
 					JoinGameModalWindow.this.persistenceService.deleteAllCardsInBattleField();
@@ -167,7 +167,7 @@ public class JoinGameModalWindow extends Panel
 						+ this.getParent().getPage().getSession().getId()
 						+ "', function() { }, null, null);");
 
-				JoinGameModalWindow.logger.info("close!");
+				JoinGameModalWindow.LOGGER.info("close!");
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
 						.getRequest();
@@ -222,7 +222,7 @@ public class JoinGameModalWindow extends Panel
 						.build(request, new LinkedList<BroadcastFilter>(), null);
 				final String message = sideInput.getDefaultModelObjectAsString() + "|||||"
 						+ jsessionid + "|||||" + spp.getUuid();
-				JoinGameModalWindow.logger.info("# message: " + message);
+				JoinGameModalWindow.LOGGER.info("# message: " + message);
 				meteor.broadcast(message);
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
@@ -238,8 +238,8 @@ public class JoinGameModalWindow extends Panel
 				s.setSide(sideInput.getDefaultModelObjectAsString());
 				s.setUuid(spp.getUuid().toString());
 				s.setWicketId("secondSidePlaceholder");
-				s.setX(new Long(posX));
-				s.setY(new Long(500));
+				s.setX(Long.valueOf(posX));
+				s.setY(Long.valueOf(500));
 				JoinGameModalWindow.this.persistenceService.saveSide(s);
 
 				spp.setPosX(posX);

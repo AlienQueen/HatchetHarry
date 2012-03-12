@@ -25,7 +25,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = LoggerFactory.getLogger(SidePlaceholderMoveBehavior.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SidePlaceholderMoveBehavior.class);
 	private UUID uuid;
 	private String jsessionid;
 	private final WebMarkupContainer parent;
@@ -47,7 +47,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		SidePlaceholderMoveBehavior.logger.info("## respond");
+		SidePlaceholderMoveBehavior.LOGGER.info("## respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.parent.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		this.jsessionid = request.getRequestedSessionId();
@@ -60,7 +60,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final Exception e)
 		{
-			SidePlaceholderMoveBehavior.logger.error("error parsing UUID: " + e);
+			SidePlaceholderMoveBehavior.LOGGER.error("error parsing UUID: " + e);
 			return;
 		}
 		final String _side = request.getParameter("side");
@@ -80,7 +80,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			this.homePage.getSecondSidePlaceholderParent().addOrReplace(spp);
 			target.addComponent(this.homePage.getSecondSidePlaceholderParent());
 
-			SidePlaceholderMoveBehavior.logger.info("### " + this.uuid);
+			SidePlaceholderMoveBehavior.LOGGER.info("### " + this.uuid);
 			final int posX = ("infrared".equals(_side)) ? 300 : 900;
 
 			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
@@ -110,7 +110,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			final String message = _side + "|||||" + this.jsessionid + "|||||" + this.uuid
 					+ "|||||" + _sideX + "|||||" + _sideY;
-			SidePlaceholderMoveBehavior.logger.info("### message: " + message);
+			SidePlaceholderMoveBehavior.LOGGER.info("### message: " + message);
 			meteor.broadcast(message);
 		}
 	}

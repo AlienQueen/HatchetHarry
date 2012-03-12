@@ -33,7 +33,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 
-	static final Logger logger = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 
 	@SpringBean
 	private transient PersistenceService persistenceService;
@@ -63,14 +63,14 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		PlayCardFromHandBehavior.logger.info("respond");
+		PlayCardFromHandBehavior.LOGGER.info("respond");
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 		final String jsessionid = request.getRequestedSessionId();
 
-		PlayCardFromHandBehavior.logger.info("URL: " + request.getQueryString());
+		PlayCardFromHandBehavior.LOGGER.info("URL: " + request.getQueryString());
 
 		long posX = 0;
 		long posY = 0;
@@ -78,13 +78,13 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				&& (!"null".equals(request.getParameter("posX"))))
 		{
 			posX = Long.parseLong(request.getParameter("posX"));
-			PlayCardFromHandBehavior.logger.info("posX: " + posX);
+			PlayCardFromHandBehavior.LOGGER.info("posX: " + posX);
 		}
 		if ((null != request.getParameter("posY")) && (!"".equals(request.getParameter("posY")))
 				&& (!"null".equals(request.getParameter("posY"))))
 		{
 			posY = Long.parseLong(request.getParameter("posY"));
-			PlayCardFromHandBehavior.logger.info("posY: " + posY);
+			PlayCardFromHandBehavior.LOGGER.info("posY: " + posY);
 		}
 
 		try
@@ -93,10 +93,10 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final IllegalArgumentException e)
 		{
-			PlayCardFromHandBehavior.logger.error("bad uuid: " + request.getParameter("card"), e);
+			PlayCardFromHandBehavior.LOGGER.error("bad uuid: " + request.getParameter("card"), e);
 		}
 		final String stop = request.getParameter("stop");
-		PlayCardFromHandBehavior.logger.info("url: " + request.getQueryString());
+		PlayCardFromHandBehavior.LOGGER.info("url: " + request.getQueryString());
 
 		int _indexOfClickedCard = -1;
 		try
@@ -105,7 +105,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final NumberFormatException e)
 		{
-			PlayCardFromHandBehavior.logger.error("Error which should never happen!");
+			PlayCardFromHandBehavior.LOGGER.error("Error which should never happen!");
 		}
 
 		this.currentCard = _indexOfClickedCard;
@@ -115,15 +115,15 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		if (null != card)
 		{
-			PlayCardFromHandBehavior.logger.info("Removed? " + all.remove(card));
+			PlayCardFromHandBehavior.LOGGER.info("Removed? " + all.remove(card));
 			HatchetHarrySession.get().setFirstCardsInHand(all);
 
-			PlayCardFromHandBehavior.logger.info("card title: " + card.getTitle() + ", uuid: "
+			PlayCardFromHandBehavior.LOGGER.info("card title: " + card.getTitle() + ", uuid: "
 					+ card.getUuidObject() + ", filename: " + card.getBigImageFilename());
 
 			if ("true".equals(stop))
 			{
-				PlayCardFromHandBehavior.logger.info("stopping round-trips");
+				PlayCardFromHandBehavior.LOGGER.info("stopping round-trips");
 
 				final String id = "cardPlaceholdera"
 						+ (HatchetHarrySession.get().getPlaceholderNumber() + 1);
@@ -164,7 +164,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 					}
 					catch (final IllegalArgumentException e)
 					{
-						PlayCardFromHandBehavior.logger
+						PlayCardFromHandBehavior.LOGGER
 								.error("error parsing UUID of moved card", e);
 					}
 				}
@@ -193,18 +193,18 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			}
 			else if ((null != this.uuidToLookFor) && (!"".equals(this.uuidToLookFor.toString())))
 			{
-				PlayCardFromHandBehavior.logger.info("card: " + this.uuidToLookFor);
+				PlayCardFromHandBehavior.LOGGER.info("card: " + this.uuidToLookFor);
 
 				HatchetHarrySession.get().setPlaceholderNumber(
 						HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-				PlayCardFromHandBehavior.logger.info("continue!");
+				PlayCardFromHandBehavior.LOGGER.info("continue!");
 
 				final String message = jsessionid + "~~~" + this.uuidToLookFor + "~~~"
 						+ (_indexOfClickedCard == 6 ? 0 : _indexOfClickedCard + 1) + "~~~"
 						+ this.side + "~~~" + HatchetHarrySession.get().getMySidePosX() + "~~~"
 						+ HatchetHarrySession.get().getMySidePosY();
-				PlayCardFromHandBehavior.logger.info(message);
+				PlayCardFromHandBehavior.LOGGER.info(message);
 
 				final Meteor meteor = Meteor
 						.build(request, new LinkedList<BroadcastFilter>(), null);

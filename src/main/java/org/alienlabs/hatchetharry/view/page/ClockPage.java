@@ -64,7 +64,7 @@ import org.slf4j.LoggerFactory;
 public class ClockPage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	static final Logger logger = LoggerFactory.getLogger(ClockPage.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(ClockPage.class);
 	static final Map<String, Callable<String>> connectedJSessionIds = new HashMap<String, Callable<String>>();
 
 	// TODO is this necessary??
@@ -89,7 +89,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 				public String call()
 				{
 					final String s = "1#####" + new Date().toString();
-					ClockPage.logger.debug(s);
+					ClockPage.LOGGER.debug(s);
 					return s;
 				}
 			};
@@ -135,7 +135,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.logger.info("Suspending the %s response from ip {}:{}",
+		ClockPage.LOGGER.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -147,7 +147,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.logger.info("Resuming the {} response from ip {}:{}",
+		ClockPage.LOGGER.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -159,7 +159,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.logger.info("{} connection dropped from ip {}:{}",
+		ClockPage.LOGGER.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -168,7 +168,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		ClockPage.logger.info("onThrowable()", event.throwable());
+		ClockPage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 }

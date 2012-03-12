@@ -23,7 +23,7 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = -1301311949498369085L;
 
-	static final Logger logger = LoggerFactory.getLogger(NotifierBehavior.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(NotifierBehavior.class);
 	private final WebPage page;
 	private final String title;
 	private final String text;
@@ -41,7 +41,7 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.page.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
-		NotifierBehavior.logger.info("respond to: " + request.getQueryString());
+		NotifierBehavior.LOGGER.info("respond to: " + request.getQueryString());
 
 		final String _title = request.getParameter("title");
 		final String _text = request.getParameter("text");
@@ -56,8 +56,8 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 		{
 			final String message = _title + ":::" + _text + ":::" + request.getRequestedSessionId();
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			NotifierBehavior.logger.info("meteor: " + meteor);
-			NotifierBehavior.logger.info(message);
+			NotifierBehavior.LOGGER.info("meteor: " + meteor);
+			NotifierBehavior.LOGGER.info(message);
 			meteor.addListener((AtmosphereResourceEventListener)this.page);
 			meteor.broadcast(message);
 		}
@@ -66,8 +66,8 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			final String message = _title + ":::" + _text + ":::" + request.getRequestedSessionId()
 					+ ":::show";
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			NotifierBehavior.logger.info("meteor: " + meteor);
-			NotifierBehavior.logger.info(message);
+			NotifierBehavior.LOGGER.info("meteor: " + meteor);
+			NotifierBehavior.LOGGER.info(message);
 			meteor.addListener((AtmosphereResourceEventListener)this.page);
 			meteor.broadcast(message);
 		}
@@ -80,7 +80,7 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 		final int before = this.getCallbackUrl().toString().indexOf("&jsessionid=");
 		final int after = this.getCallbackUrl().toString().indexOf("&random=");
 		boolean isSameSessionId = false;
-		NotifierBehavior.logger.info("render head?");
+		NotifierBehavior.LOGGER.info("render head?");
 
 		if ((before != -1) && (after != -1))
 		{
@@ -102,11 +102,11 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			template.interpolate(variables);
 
 			response.renderOnDomReadyJavascript(template.asString());
-			NotifierBehavior.logger.info("yes!");
+			NotifierBehavior.LOGGER.info("yes!");
 		}
 		else
 		{
-			NotifierBehavior.logger.info("No!");
+			NotifierBehavior.LOGGER.info("No!");
 		}
 	}
 

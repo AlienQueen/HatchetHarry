@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 {
-	private static final Logger logger = LoggerFactory.getLogger(GameNotifierBehavior.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameNotifierBehavior.class);
 	private final WebPage page;
 
 	public GameNotifierBehavior(final WebPage _page)
@@ -30,7 +30,7 @@ public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.page.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
-		GameNotifierBehavior.logger.info("respond to: " + request.getQueryString());
+		GameNotifierBehavior.LOGGER.info("respond to: " + request.getQueryString());
 
 		final String title = request.getParameter("title");
 		final String text = request.getParameter("text");
@@ -46,9 +46,8 @@ public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 							? "As soon as a player is connected, you'll be able to play."
 							: "You can start right now!") + "§§§" + request.getRequestedSessionId();
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			GameNotifierBehavior.logger.info("meteor: " + meteor);
-			GameNotifierBehavior.logger.info(message);
-			// meteor.addListener((AtmosphereResourceEventListener)this.page);
+			GameNotifierBehavior.LOGGER.info("meteor: " + meteor);
+			GameNotifierBehavior.LOGGER.info(message);
 			meteor.broadcast(message);
 		}
 	}

@@ -28,7 +28,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = LoggerFactory.getLogger(CardMoveBehavior.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
 
@@ -45,7 +45,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		CardMoveBehavior.logger.info("respond");
+		CardMoveBehavior.LOGGER.info("respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
@@ -68,12 +68,12 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final IllegalArgumentException e)
 		{
-			CardMoveBehavior.logger.error("error parsing UUID of moved card", e);
+			CardMoveBehavior.LOGGER.error("error parsing UUID of moved card", e);
 		}
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-		CardMoveBehavior.logger.info("meteor: " + meteor);
-		CardMoveBehavior.logger.info(message);
+		CardMoveBehavior.LOGGER.info("meteor: " + meteor);
+		CardMoveBehavior.LOGGER.info(message);
 		meteor.addListener((AtmosphereResourceEventListener)this.panel.getPage());
 		meteor.broadcast(message);
 	}

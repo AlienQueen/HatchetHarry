@@ -33,18 +33,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class HomePageTest
 {
-	private WicketTester tester;
-	private HatchetHarryApplication webApp;
+	private transient WicketTester tester;
 
 	@Before
 	public void setUp()
 	{
-		this.webApp = new HatchetHarryApplication()
+		final HatchetHarryApplication webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
 			// note in this case the application context is in the default
 			// package
-			ApplicationContext context = new ClassPathXmlApplicationContext(
+			transient ApplicationContext context = new ClassPathXmlApplicationContext(
 					new String[] { "applicationContext.xml" });
 
 			@Override
@@ -55,7 +54,7 @@ public class HomePageTest
 			}
 		};
 
-		this.tester = new WicketTester(this.webApp);
+		this.tester = new WicketTester(webApp);
 		final ApplicationContext context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
 		this.tester.getApplication().addComponentInstantiationListener(
@@ -137,7 +136,6 @@ public class HomePageTest
 		// assert clock content
 		final ClockPanel clock = (ClockPanel)this.tester
 				.getComponentFromLastRenderedPage("clockPanel");
-		System.out.println("###" + clock.getTime().getObject());
 		Assert.assertTrue(clock.getTime().getObject().contains("###"));
 	}
 

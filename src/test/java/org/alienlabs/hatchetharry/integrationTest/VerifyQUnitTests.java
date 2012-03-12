@@ -13,8 +13,17 @@ public class VerifyQUnitTests extends SeleneseTestCase
 	@Before
 	public void setUp()
 	{
-		this.selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
-		this.selenium.start();
+		try
+		{
+			super.setUp();
+			this.selenium = new DefaultSelenium("localhost", 4444, "*firefox",
+					"http://localhost:8080/");
+			this.selenium.start();
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -28,6 +37,15 @@ public class VerifyQUnitTests extends SeleneseTestCase
 	@After
 	public void tearDown()
 	{
+		try
+		{
+			super.tearDown();
+		}
+		catch (final Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.selenium.stop();
 	}
 

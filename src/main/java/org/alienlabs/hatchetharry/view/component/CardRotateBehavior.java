@@ -28,7 +28,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = -9164073767944851883L;
 
-	private static final Logger logger = LoggerFactory.getLogger(CardRotateBehavior.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CardRotateBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
 
@@ -45,7 +45,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		CardRotateBehavior.logger.info("respond");
+		CardRotateBehavior.LOGGER.info("respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 
@@ -60,8 +60,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 				+ "___" + uuidToLookFor;
 
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-		CardRotateBehavior.logger.info("meteor: " + meteor);
-		CardRotateBehavior.logger.info(message);
+		CardRotateBehavior.LOGGER.info("meteor: " + meteor);
+		CardRotateBehavior.LOGGER.info(message);
 		meteor.addListener((AtmosphereResourceEventListener)this.panel.getPage());
 		meteor.broadcast(message);
 	}

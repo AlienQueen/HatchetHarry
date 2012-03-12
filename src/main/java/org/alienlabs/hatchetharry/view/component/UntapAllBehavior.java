@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-	static final Logger logger = LoggerFactory.getLogger(UntapAllBehavior.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(UntapAllBehavior.class);
 
 	@SpringBean
 	private transient PersistenceService persistenceService;
@@ -40,7 +40,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		UntapAllBehavior.logger.info("respond");
+		UntapAllBehavior.LOGGER.info("respond");
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
@@ -51,7 +51,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 		if ((null == request.getParameter("cards"))
 				|| (jsessionid.equals(request.getParameter("sessionid"))))
 		{
-			UntapAllBehavior.logger.info("respond first if");
+			UntapAllBehavior.LOGGER.info("respond first if");
 			final StringBuffer message = new StringBuffer(jsessionid);
 
 			final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
@@ -68,14 +68,14 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 			meteor.broadcast(message);
-			UntapAllBehavior.logger.info("message: " + message);
+			UntapAllBehavior.LOGGER.info("message: " + message);
 		}
 		else
 		{
-			UntapAllBehavior.logger.info("respond else");
+			UntapAllBehavior.LOGGER.info("respond else");
 			final String allCards = request.getParameter("cards");
 			final String[] cards = allCards.split("_____");
-			UntapAllBehavior.logger.info("cards.length: " + cards.length);
+			UntapAllBehavior.LOGGER.info("cards.length: " + cards.length);
 			for (final String cardUuid : cards)
 			{
 				target.appendJavascript("jQuery('#card" + cardUuid + "').rotate(0);");

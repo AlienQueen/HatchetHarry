@@ -106,7 +106,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 {
 	private static final long serialVersionUID = 1L;
 
-	static final Logger logger = LoggerFactory.getLogger(HomePage.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
 
 	@SpringBean
 	transient PersistenceService persistenceService;
@@ -339,7 +339,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			{
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 						.getRequest();
-				HomePage.logger.info("untap all");
+				HomePage.LOGGER.info("untap all");
 				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 				target.appendJavascript("wicketAjaxGet('"
 						+ HomePage.this.untapAllBehavior.getCallbackUrl() + "&sessionid="
@@ -374,7 +374,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				HomePage.logger.info("untap and draw");
+				HomePage.LOGGER.info("untap and draw");
 				target.appendJavascript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 1000);");
 			}
 
@@ -484,7 +484,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final WebMarkupContainer playCardPlaceholder = new WebMarkupContainer("playCardPlaceholder");
 		playCardPlaceholder.setMarkupId("playCardPlaceholder0");
 		playCardPlaceholder.setOutputMarkupId(true);
-		HomePage.logger.info("Generating link");
+		HomePage.LOGGER.info("Generating link");
 
 		this.playCardLink = new WebMarkupContainer("playCardLink");
 		this.playCardLink.setMarkupId("playCardPlaceholder0");
@@ -806,7 +806,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		HomePage.logger.info("onBroadcast(): {}", event.getMessage());
+		HomePage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
 		// If we are using long-polling, resume the connection as soon as we get
 		// an event.
@@ -827,7 +827,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		HomePage.logger.info("Suspending the %s response from ip {}:{}",
+		HomePage.LOGGER.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -839,7 +839,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		HomePage.logger.info("Resuming the {} response from ip {}:{}",
+		HomePage.LOGGER.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -851,7 +851,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		HomePage.logger.info("{} connection dropped from ip {}:{}",
+		HomePage.LOGGER.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -860,7 +860,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		HomePage.logger.info("onThrowable()", event.throwable());
+		HomePage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 	@Override
@@ -948,16 +948,16 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			}
 			catch (final IllegalArgumentException e)
 			{
-				HomePage.logger.error("error parsing UUID of moved card", e);
+				HomePage.LOGGER.error("error parsing UUID of moved card", e);
 			}
 		}
 
 		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
 				.getMySidePlaceholder();
-		HomePage.logger.info("size: " + allSides.size());
+		HomePage.LOGGER.info("size: " + allSides.size());
 		for (final SidePlaceholderPanel s : allSides)
 		{
-			HomePage.logger.info("side: " + s.getUuid() + ", X= " + s.getPosX() + ", Y= "
+			HomePage.LOGGER.info("side: " + s.getUuid() + ", X= " + s.getPosX() + ", Y= "
 					+ s.getPosY());
 			js.append("var card = jQuery('#sidePlaceholder" + s.getUuid() + "'); "
 					+ "card.css('position', 'absolute'); " + "card.css('left', '" + s.getPosX()

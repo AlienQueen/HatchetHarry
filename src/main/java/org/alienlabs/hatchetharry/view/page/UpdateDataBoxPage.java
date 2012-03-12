@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory;
 public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(UpdateDataBoxPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UpdateDataBoxPage.class);
 
 	public UpdateDataBoxPage()
 	{
@@ -66,7 +66,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		UpdateDataBoxPage.logger.info("onBroadcast(): {}", event.getMessage());
+		UpdateDataBoxPage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
 		// If we are using long-polling, resume the connection as soon as we get
 		// an event.
@@ -87,7 +87,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		UpdateDataBoxPage.logger.info("Suspending the %s response from ip {}:{}",
+		UpdateDataBoxPage.LOGGER.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -99,7 +99,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		UpdateDataBoxPage.logger.info("Resuming the {} response from ip {}:{}",
+		UpdateDataBoxPage.LOGGER.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -111,7 +111,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		UpdateDataBoxPage.logger.info("{} connection dropped from ip {}:{}",
+		UpdateDataBoxPage.LOGGER.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -120,7 +120,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		UpdateDataBoxPage.logger.info("onThrowable()", event.throwable());
+		UpdateDataBoxPage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 }

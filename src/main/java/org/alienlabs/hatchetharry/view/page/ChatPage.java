@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory;
 public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(ChatPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ChatPage.class);
 
 	public ChatPage()
 	{
@@ -66,7 +66,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		ChatPage.logger.info("onBroadcast(): {}", event.getMessage());
+		ChatPage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
 		// If we are using long-polling, resume the connection as soon as we get
 		// an event.
@@ -87,7 +87,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ChatPage.logger.info("Suspending the %s response from ip {}:{}",
+		ChatPage.LOGGER.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -99,7 +99,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ChatPage.logger.info("Resuming the {} response from ip {}:{}",
+		ChatPage.LOGGER.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -111,7 +111,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		ChatPage.logger.info("{} connection dropped from ip {}:{}",
+		ChatPage.LOGGER.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -120,7 +120,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		ChatPage.logger.info("onThrowable()", event.throwable());
+		ChatPage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 }

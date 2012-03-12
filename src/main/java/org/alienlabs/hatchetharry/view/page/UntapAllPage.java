@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory;
 public class UntapAllPage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(UntapAllPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UntapAllPage.class);
 
 	public UntapAllPage()
 	{
@@ -66,7 +66,7 @@ public class UntapAllPage extends WebPage implements AtmosphereResourceEventList
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		UntapAllPage.logger.info("onBroadcast(): {}", event.getMessage());
+		UntapAllPage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
 		// If we are using long-polling, resume the connection as soon as we get
 		// an event.
@@ -87,7 +87,7 @@ public class UntapAllPage extends WebPage implements AtmosphereResourceEventList
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		UntapAllPage.logger.info("Suspending the %s response from ip {}:{}",
+		UntapAllPage.LOGGER.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -99,7 +99,7 @@ public class UntapAllPage extends WebPage implements AtmosphereResourceEventList
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		UntapAllPage.logger.info("Resuming the {} response from ip {}:{}",
+		UntapAllPage.LOGGER.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -111,7 +111,7 @@ public class UntapAllPage extends WebPage implements AtmosphereResourceEventList
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		UntapAllPage.logger.info("{} connection dropped from ip {}:{}",
+		UntapAllPage.LOGGER.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -120,7 +120,7 @@ public class UntapAllPage extends WebPage implements AtmosphereResourceEventList
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		UntapAllPage.logger.info("onThrowable()", event.throwable());
+		UntapAllPage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 }

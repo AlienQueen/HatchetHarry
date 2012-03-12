@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 {
-	static final Logger logger = LoggerFactory.getLogger(TeamInfoBehavior.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(TeamInfoBehavior.class);
 	ModalWindow modal;
 
 	public TeamInfoBehavior(final ModalWindow _modal)
@@ -27,7 +27,7 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 	{
 		if (target != null)
 		{
-			TeamInfoBehavior.logger.info("respond TeamInfoBehavior");
+			TeamInfoBehavior.LOGGER.info("respond TeamInfoBehavior");
 			this.modal.show(target);
 		}
 	}

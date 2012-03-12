@@ -32,7 +32,7 @@ public class CardPanel extends Panel implements IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = LoggerFactory.getLogger(CardPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CardPanel.class);
 
 	private final BookmarkablePageLink<CardMovePage> cardMovePage;
 	private final BookmarkablePageLink<CardRotatePage> cardRotatePage;
@@ -75,9 +75,9 @@ public class CardPanel extends Panel implements IHeaderContributor
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
-		CardPanel.logger
+		CardPanel.LOGGER
 				.info("jsessionid: " + this.getHttpServletRequest().getRequestedSessionId());
-		CardPanel.logger.info("uuid: " + this.uuid);
+		CardPanel.LOGGER.info("uuid: " + this.uuid);
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
 		mouseX.setMarkupId("mouseX" + this.uuid);

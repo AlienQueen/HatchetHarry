@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class PersistenceService
 {
-	static final Logger logger = LoggerFactory.getLogger(JoinGameModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
 	@SpringBean
 	private PlayerDao playerDao;
@@ -96,7 +96,7 @@ public class PersistenceService
 		final Query query = session
 				.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid=?");
 		query.setString(0, uuid.toString());
-		PersistenceService.logger.debug("card UUID: " + uuid.toString());
+		PersistenceService.LOGGER.debug("card UUID: " + uuid.toString());
 		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
@@ -266,7 +266,7 @@ public class PersistenceService
 		}
 		catch (final ObjectNotFoundException e)
 		{
-			PersistenceService.logger.error("error!", e);
+			PersistenceService.LOGGER.error("error!", e);
 		}
 		return list;
 	}
@@ -387,7 +387,7 @@ public class PersistenceService
 				{
 					try
 					{
-						PersistenceService.logger.debug("card uuid= " + cp.getUuid());
+						PersistenceService.LOGGER.debug("card uuid= " + cp.getUuid());
 						final MagicCard mc = this.getCardFromUuid(cp.getUuid());
 						if (null != mc)
 						{
@@ -396,7 +396,7 @@ public class PersistenceService
 					}
 					catch (final ObjectNotFoundException e)
 					{
-						PersistenceService.logger.error("card doesn't exist", e);
+						PersistenceService.LOGGER.error("card doesn't exist", e);
 					}
 				}
 			}

@@ -65,7 +65,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class ChatPanel extends Panel
 {
-	static final Logger logger = LoggerFactory.getLogger(ChatPanel.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(ChatPanel.class);
 
 	final List<BroadcastFilter> list;
 
@@ -91,17 +91,17 @@ public class ChatPanel extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				ChatPanel.logger.info("submit");
+				ChatPanel.LOGGER.info("submit");
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
 				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
 				final String jsessionid = request.getRequestedSessionId();
 
 				final Meteor meteor = Meteor.build(request, ChatPanel.this.list, null);
-				ChatPanel.logger.info("meteor: " + meteor);
+				ChatPanel.LOGGER.info("meteor: " + meteor);
 
 				final String _user = _form.get("user").getDefaultModelObjectAsString();
 				final String _message = _form.get("message").getDefaultModelObjectAsString();
-				ChatPanel.logger.info("user: " + _user + ", message: " + _message);
+				ChatPanel.LOGGER.info("user: " + _user + ", message: " + _message);
 				meteor.broadcast(jsessionid + "###" + _user + " said: " + _message);
 			}
 		};

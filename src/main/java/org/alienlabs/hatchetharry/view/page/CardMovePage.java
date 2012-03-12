@@ -56,17 +56,13 @@ import org.slf4j.LoggerFactory;
 public class CardMovePage extends WebPage implements AtmosphereResourceEventListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(CardMovePage.class);
-
-	public CardMovePage()
-	{
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(CardMovePage.class);
 
 	@Override
 	public void onBroadcast(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		CardMovePage.logger.info("onBroadcast(): {}", event.getMessage());
+		CardMovePage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
 		// If we are using long-polling, resume the connection as soon as we get
 		// an event.
@@ -87,7 +83,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		CardMovePage.logger.info("Suspending the %s response from ip {}:{}",
+		CardMovePage.LOGGER.info("Suspending the %s response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -99,7 +95,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		CardMovePage.logger.info("Resuming the {} response from ip {}:{}",
+		CardMovePage.LOGGER.info("Resuming the {} response from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -111,7 +107,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
 		final HttpServletRequest req = event.getResource().getRequest();
-		CardMovePage.logger.info("{} connection dropped from ip {}:{}",
+		CardMovePage.LOGGER.info("{} connection dropped from ip {}:{}",
 				new Object[] { transport == null ? "streaming" : transport, req.getRemoteAddr(),
 						req.getRemotePort() });
 	}
@@ -120,7 +116,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 	public void onThrowable(
 			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
 	{
-		CardMovePage.logger.info("onThrowable()", event.throwable());
+		CardMovePage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 }

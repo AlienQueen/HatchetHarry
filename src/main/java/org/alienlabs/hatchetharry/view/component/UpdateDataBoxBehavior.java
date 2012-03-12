@@ -22,13 +22,13 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = -1192901847359306923L;
 
-	static final Logger logger = LoggerFactory.getLogger(UpdateDataBoxBehavior.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(UpdateDataBoxBehavior.class);
 
 	final WebMarkupContainer dataBoxParent;
 
-	final Long gameId;
+	final transient Long gameId;
 
-	private final HomePage hp;
+	private transient final HomePage hp;
 
 	public UpdateDataBoxBehavior(final WebMarkupContainer _dataBoxParent, final Long _gameId,
 			final HomePage _hp)
@@ -41,7 +41,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		UpdateDataBoxBehavior.logger.info("respond");
+		UpdateDataBoxBehavior.LOGGER.info("respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
@@ -60,7 +60,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 
 		if (this.hp.getSession().getId().equals(jsessionid))
 		{
-			UpdateDataBoxBehavior.logger.info("notify with jsessionid="
+			UpdateDataBoxBehavior.LOGGER.info("notify with jsessionid="
 					+ this.hp.getSession().getId());
 			target.appendJavascript("wicketAjaxGet('" + this.hp.notifierPanel.getCallbackUrl()
 					+ "&title=A player joined in!&text=Ready to play?&jsessionid=" + jsessionid
@@ -73,8 +73,8 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 			final String message = "+++++" + request.getRequestedSessionId();
 
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			UpdateDataBoxBehavior.logger.info("meteor: " + meteor);
-			UpdateDataBoxBehavior.logger.info(message);
+			UpdateDataBoxBehavior.LOGGER.info("meteor: " + meteor);
+			UpdateDataBoxBehavior.LOGGER.info(message);
 			// meteor.addListener((AtmosphereResourceEventListener)target.getPage());
 			// meteor.broadcast(message);
 		}
