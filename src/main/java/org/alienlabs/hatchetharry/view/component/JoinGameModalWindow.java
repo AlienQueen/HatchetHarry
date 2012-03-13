@@ -101,7 +101,9 @@ public class JoinGameModalWindow extends Panel
 				if (null == game)
 				{
 					_modal.close(target);
-					target.appendJavascript("alert('The selected game id does not exist!');");
+					target.appendJavascript("alert('The selected game (id= "
+							+ JoinGameModalWindow.this.gameIdInput.getDefaultModelObjectAsString()
+							+ ") does not exist!');");
 					return;
 				}
 
@@ -254,6 +256,8 @@ public class JoinGameModalWindow extends Panel
 				spp2.setPosX(posX2);
 				spp2.setPosY(500);
 				session.setMySidePlaceholder(spp2);
+
+				session.setGameCreated();
 			}
 		};
 		submit.setOutputMarkupId(true);

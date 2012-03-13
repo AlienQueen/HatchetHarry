@@ -181,7 +181,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.6 (release SpaceJockey), built on Monday, 12th of March 2012."));
+				"version 0.0.6 (release SpaceJockey), built on Tuesday, 13th of March 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -461,7 +461,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.deck = this.persistenceService.saveDeck(this.deck);
 
 		HatchetHarrySession.get().setPlayer(p);
-		HatchetHarrySession.get().setGameCreated();
 		this.player = p;
 		return p.getId();
 	}
@@ -1020,6 +1019,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 					+ "card.css('position', 'absolute'); " + "card.css('left', '" + s.getPosX()
 					+ "px'); " + "card.css('top', '" + s.getPosY() + "px'); ");
 		}
+		// Don't show website tour on page refresh
+		js.append("jQuery('#tourcontrols').remove();");
+
 		response.renderOnDomReadyJavascript(js.toString());
 	}
 

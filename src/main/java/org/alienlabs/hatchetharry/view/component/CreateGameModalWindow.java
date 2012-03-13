@@ -185,14 +185,15 @@ public class CreateGameModalWindow extends Panel
 				session.setMySidePlaceholder(spp);
 
 				final Side s = new Side();
-				s.setGame(CreateGameModalWindow.this.persistenceService.getGame(HatchetHarrySession
-						.get().getGameId()));
+				s.setGame(CreateGameModalWindow.this.persistenceService.getGame(session.getGameId()));
 				s.setSide(sideInput.getDefaultModelObjectAsString());
 				s.setUuid(spp.getUuid().toString());
 				s.setWicketId("firstSidePlaceholder");
 				s.setX(Long.valueOf(posX));
 				s.setY(Long.valueOf(500));
 				CreateGameModalWindow.this.persistenceService.saveSide(s);
+
+				session.setGameCreated();
 			}
 		};
 		submit.setOutputMarkupId(true);
