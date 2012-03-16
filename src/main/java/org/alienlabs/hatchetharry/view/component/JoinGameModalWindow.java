@@ -51,8 +51,7 @@ public class JoinGameModalWindow extends Panel
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _handCardsParent, final CharSequence _url,
-			final WebMarkupContainer _dataBoxParent, final HomePage _hp,
-			final WebMarkupContainer sidePlaceholderParent)
+			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);

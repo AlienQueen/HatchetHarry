@@ -181,7 +181,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.6 (release SpaceJockey), built on Tuesday, 13th of March 2012."));
+				"version 0.0.6 (release SpaceJockey), built on Friday, 16th of March 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -787,7 +787,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
 				this.joinGameWindow.getContentId(), _player, _handCardsParent, _url,
-				this.dataBoxParent, this, sidePlaceholderParent));
+				this.dataBoxParent, this));
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);

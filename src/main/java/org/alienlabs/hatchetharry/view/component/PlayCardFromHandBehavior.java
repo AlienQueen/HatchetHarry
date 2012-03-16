@@ -157,6 +157,17 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 									+ "card.css(\"position\", \"absolute\"); "
 									+ "card.css(\"left\", \"" + mc.getX() + "px\");"
 									+ "card.css(\"top\", \"" + mc.getY() + "px\");");
+
+							if (mc.isTapped())
+							{
+								target.appendJavascript("jQuery('#card" + mc.getUuid()
+										+ "').rotate(90);");
+							}
+							else
+							{
+								target.appendJavascript("jQuery('#card" + mc + "').rotate(0);");
+							}
+
 							target.appendJavascript("jQuery(\"#card" + aCard.getUuid()
 									+ "\").easyTooltip({" + "useElement: \"cardTooltip"
 									+ aCard.getUuid() + "\"});");
