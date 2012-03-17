@@ -3,6 +3,7 @@ package org.alienlabs.hatchetharry.view.component;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,8 +70,8 @@ public class JoinGameModalWindow extends Panel
 		this.decks.setRequired(true);
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
-		final Model<String> inputName = new Model<String>("");
-		final RequiredTextField<String> name = new RequiredTextField<String>("name", inputName);
+		final Model<String> nameModel = new Model<String>("");
+		final RequiredTextField<String> nameInput = new RequiredTextField<String>("name", nameModel);
 
 		final ArrayList<String> allSides = new ArrayList<String>();
 		allSides.add("infrared");
@@ -81,7 +82,6 @@ public class JoinGameModalWindow extends Panel
 				new Model<String>(), sidesModel);
 		sideInput.setRequired(true);
 
-		this.player.getGame().get(0);
 		final Label gameIdLabel = new Label("gameIdLabel",
 				"Please provide the game id given by your opponent: ");
 		final Model<Long> gameId = new Model<Long>(0l);
@@ -142,12 +142,18 @@ public class JoinGameModalWindow extends Panel
 				session.setFirstCardsInHand(firstCards);
 				session.setDeck(deck);
 
-				final List<Player> players = game.getPlayers();
+				JoinGameModalWindow.this.player.setSide(sideInput.getDefaultModelObjectAsString());
+				JoinGameModalWindow.this.player.setName(nameInput.getDefaultModelObjectAsString());
+				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
+
+				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
-				final List<Game> games = new ArrayList<Game>();
+				game.setPlayers(players);
+
+				final Set<Game> games = JoinGameModalWindow.this.player.getGames();
 				games.add(game);
-				JoinGameModalWindow.this.player.setGame(games);
-				JoinGameModalWindow.this.persistenceService.updateGame(game);
+				JoinGameModalWindow.this.player.setGames(games);
+
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 
@@ -174,7 +180,7 @@ public class JoinGameModalWindow extends Panel
 						+ behavior.getUrl()
 						+ "&jsessionid="
 						+ this.getParent().getPage().getSession().getId()
-						+ "', function() { }, null, null);");
+						+ "&displayJoinMessage=true', function() { }, null, null);");
 
 				JoinGameModalWindow.LOGGER.info("close!");
 
@@ -241,7 +247,7 @@ public class JoinGameModalWindow extends Panel
 				session.setMySidePosY(500);
 
 				final Side s = new Side();
-				s.setGame(JoinGameModalWindow.this.persistenceService.getGame(session.getGameId()));
+				s.setGame(game);
 				s.setSide(sideInput.getDefaultModelObjectAsString());
 				s.setUuid(spp.getUuid().toString());
 				s.setWicketId("secondSidePlaceholder");
@@ -256,13 +262,15 @@ public class JoinGameModalWindow extends Panel
 				spp2.setPosY(500);
 				session.setMySidePlaceholder(spp2);
 
+				session.setGameId(Long.valueOf(JoinGameModalWindow.this.gameIdInput
+						.getDefaultModelObjectAsString()));
 				session.setGameCreated();
 			}
 		};
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("joinSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.decks, nameLabel, name, sideLabel, sideInput, gameIdLabel,
+		form.add(chooseDeck, this.decks, nameLabel, nameInput, sideLabel, sideInput, gameIdLabel,
 				this.gameIdInput, submit);
 
 		this.add(form);

@@ -5,15 +5,15 @@ import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
-import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
@@ -24,15 +24,20 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = -1301311949498369085L;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(NotifierBehavior.class);
-	private final WebPage page;
+	private final HomePage page;
 	private final String title;
 	private final String text;
+	final WebMarkupContainer dataBoxParent;
+	final Long gameId;
 
-	public NotifierBehavior(final WebPage _page, final String _title, final String _text)
+	public NotifierBehavior(final HomePage _page, final String _title, final String _text,
+			final WebMarkupContainer _dataBoxParent, final Long _gameId)
 	{
 		this.page = _page;
 		this.title = _title;
 		this.text = _text;
+		this.dataBoxParent = _dataBoxParent;
+		this.gameId = _gameId;
 	}
 
 	@Override
@@ -46,6 +51,8 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 		final String _title = request.getParameter("title");
 		final String _text = request.getParameter("text");
 		final String _show = request.getParameter("show");
+		final String _updateDataBox = request.getParameter("updateDataBox");
+		final boolean updateDataBox = ("true".equals(_updateDataBox));
 		final boolean show = ("true".equals(_show));
 
 		final String jsessionid = request.getParameter("jsessionid");
@@ -58,7 +65,9 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			NotifierBehavior.LOGGER.info("meteor: " + meteor);
 			NotifierBehavior.LOGGER.info(message);
-			meteor.addListener((AtmosphereResourceEventListener)this.page);
+			NotifierBehavior.LOGGER.info("there?");
+
+			meteor.addListener(this.page);
 			meteor.broadcast(message);
 		}
 		else if (show)
@@ -68,8 +77,19 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			NotifierBehavior.LOGGER.info("meteor: " + meteor);
 			NotifierBehavior.LOGGER.info(message);
-			meteor.addListener((AtmosphereResourceEventListener)this.page);
+			meteor.addListener(this.page);
 			meteor.broadcast(message);
+		}
+		else if (updateDataBox)
+		{
+			final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent,
+					this.page);
+			dataBox.setOutputMarkupId(true);
+			this.dataBoxParent.setOutputMarkupId(true);
+			dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, this.gameId, this.page));
+			this.dataBoxParent.addOrReplace(dataBox);
+			target.addComponent(this.dataBoxParent, "dataBoxParent"
+					+ HatchetHarrySession.get().getPlayerLetter());
 		}
 	}
 

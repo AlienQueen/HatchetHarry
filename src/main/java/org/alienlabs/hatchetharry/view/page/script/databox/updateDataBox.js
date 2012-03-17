@@ -33,7 +33,7 @@ jQuery(document).ready(
 						var t = data.split("§§§")[1];
 						var u = data.split("###")[1];
 						
-						if ((typeof t != "undefined") && (typeof u == "undefined")) {
+						if ((typeof t != "undefined") && (typeof u == "undefined")) {
 							jQuery.gritter.add({
 								title : data.split("§§§")[0],
 								text : data.split("§§§")[1],

@@ -186,7 +186,8 @@ public class HomePageTest
 		this.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
 
 		// assert DataBox content
-		this.tester.assertLabel("dataBoxParent:dataBox:box:0:playerLifePoints", "20 life points");
+		this.tester.assertLabel("dataBoxParent:dataBox:parent:box:0:playerLifePoints",
+				"20 life points");
 	}
 
 	@Test

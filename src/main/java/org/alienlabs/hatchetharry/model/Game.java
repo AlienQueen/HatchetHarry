@@ -2,7 +2,9 @@ package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,9 +30,9 @@ public class Game implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long gameId;
 	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE })
-	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "playerId"), inverseJoinColumns = @JoinColumn(name = "gameId"))
-	private List<Player> players = new ArrayList<Player>();
+	@Cascade({ CascadeType.ALL })
+	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
+	private Set<Player> players = new HashSet<Player>();
 	@OneToMany(mappedBy = "game")
 	private List<Side> sides = new ArrayList<Side>();
 
@@ -44,12 +46,12 @@ public class Game implements Serializable
 		this.gameId = _id;
 	}
 
-	public List<Player> getPlayers()
+	public Set<Player> getPlayers()
 	{
 		return this.players;
 	}
 
-	public void setPlayers(final List<Player> _players)
+	public void setPlayers(final Set<Player> _players)
 	{
 		this.players = _players;
 	}

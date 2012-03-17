@@ -3,16 +3,18 @@
   
   	<a wicket:id="updateDataBox" id="updateDataBox"></a>
   
-  	<span wicket:id="box">
-		<span wicket:id="playerLabel"></span><span wicket:id = "playerLifePoints"></span>
-		&nbsp;
-		<a wicket:id="playerPlusLink" href="#">
-			<img wicket:id="playerPlus" title="add 1 life"></img>&nbsp;
-		</a>
-		<a wicket:id="playerMinusLink" href="#">
-			<img wicket:id="playerMinus" title="remove 1 life"></img>
-		</a>
-		<br/><br/>
+  	<span wicket:id="parent">
+	  	<span wicket:id="box">
+			<span wicket:id="playerLabel"></span><span wicket:id = "playerLifePoints"></span>
+			&nbsp;
+			<a wicket:id="playerPlusLink" href="#">
+				<img wicket:id="playerPlus" title="add 1 life"></img>&nbsp;
+			</a>
+			<a wicket:id="playerMinusLink" href="#">
+				<img wicket:id="playerMinus" title="remove 1 life"></img>
+			</a>
+			<br/><br/>
+		</span>
 	</span>
 		
 </wicket:panel>

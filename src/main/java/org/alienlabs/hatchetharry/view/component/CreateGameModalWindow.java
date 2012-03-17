@@ -1,7 +1,9 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,13 +68,13 @@ public class CreateGameModalWindow extends Panel
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
 
-		this.game = this.player.getGame().get(0);
+		this.game = this.player.getGames().iterator().next();
 		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
 				+ ". You'll have to provide it to your opponent(s).");
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
-		final Model<String> inputName = new Model<String>("");
-		final RequiredTextField<String> name = new RequiredTextField<String>("name", inputName);
+		final Model<String> nameModel = new Model<String>("");
+		final RequiredTextField<String> nameInput = new RequiredTextField<String>("name", nameModel);
 
 		final ArrayList<String> allSides = new ArrayList<String>();
 		allSides.add("infrared");
@@ -91,9 +93,15 @@ public class CreateGameModalWindow extends Panel
 			{
 				final Game g = CreateGameModalWindow.this.persistenceService
 						.getGame(CreateGameModalWindow.this.game.getId());
-				final List<Game> games = new ArrayList<Game>();
+				final Set<Game> games = new HashSet<Game>();
 				games.add(g);
-				CreateGameModalWindow.this.player.setGame(games);
+				CreateGameModalWindow.this.player.setGames(games);
+				CreateGameModalWindow.LOGGER.info("### "
+						+ sideInput.getDefaultModelObjectAsString());
+				CreateGameModalWindow.this.player
+						.setSide(sideInput.getDefaultModelObjectAsString());
+				CreateGameModalWindow.this.player
+						.setName(nameInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.persistenceService
 						.updatePlayer(CreateGameModalWindow.this.player);
 
@@ -199,7 +207,7 @@ public class CreateGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("createSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.decks, gameId, nameLabel, name, sideLabel, sideInput, submit);
+		form.add(chooseDeck, this.decks, gameId, nameLabel, nameInput, sideLabel, sideInput, submit);
 
 		this.add(form);
 	}

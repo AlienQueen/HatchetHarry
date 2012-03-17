@@ -1,10 +1,10 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,8 +13,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,20 +43,11 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
-		final String stop = request.getParameter("stop");
+		request.getParameter("stop");
 		final String jsessionid = request.getParameter("jsessionid");
-		request.getParameter("notify");
+		final String displayJoinMessage = request.getParameter("displayJoinMessage");
 
-		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent, this.hp);
-		// HatchetHarrySession.get().getDataBox().remove(this);
-		// this.detach(HatchetHarrySession.get().getDataBox());
-		// dataBox.add(this);
-		// HatchetHarrySession.get().setDataBox(dataBox);
-
-		this.dataBoxParent.addOrReplace(dataBox);
-		target.addComponent(this.dataBoxParent);
-
-		if (this.hp.getSession().getId().equals(jsessionid))
+		if (this.hp.getSession().getId().equals(jsessionid) && ("true".equals(displayJoinMessage)))
 		{
 			UpdateDataBoxBehavior.LOGGER.info("notify with jsessionid="
 					+ this.hp.getSession().getId());
@@ -67,17 +56,13 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 					+ "', function() { }, null, null);");
 		}
 
-		if (!"true".equals(stop))
-		{
-
-			final String message = "+++++" + request.getRequestedSessionId();
-
-			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			UpdateDataBoxBehavior.LOGGER.info("meteor: " + meteor);
-			UpdateDataBoxBehavior.LOGGER.info(message);
-			// meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-			// meteor.broadcast(message);
-		}
+		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent, this.hp);
+		dataBox.setOutputMarkupId(true);
+		this.dataBoxParent.setOutputMarkupId(true);
+		dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, this.gameId, this.hp));
+		this.dataBoxParent.addOrReplace(dataBox);
+		target.addComponent(this.dataBoxParent, "dataBoxParent"
+				+ HatchetHarrySession.get().getPlayerLetter());
 	}
 
 	@Override

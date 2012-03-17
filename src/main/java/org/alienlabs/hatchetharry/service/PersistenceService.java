@@ -1,7 +1,9 @@
 package org.alienlabs.hatchetharry.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -132,21 +134,22 @@ public class PersistenceService
 	}
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Player updatePlayer(final Player p)
+	public void updatePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
-		session.merge(p);
-		session.flush();
-		return p;
+		if (p.getId() != null)
+		{
+			session.merge(p);
+			return;
+		}
+		session.saveOrUpdate(p);
 	}
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Game updateGame(final Game g)
+	public void saveOrUpdateGame(final Game g)
 	{
 		final Session session = this.gameDao.getSession();
-		session.merge(g);
-		session.flush();
-		return g;
+		session.saveOrUpdate(g);
 	}
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -156,7 +159,6 @@ public class PersistenceService
 		final Long l = (Long)session.save(p);
 		return (l);
 	}
-
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveOrUpdatePlayer(final Player p)
@@ -212,7 +214,7 @@ public class PersistenceService
 		final Session session = this.playerDao.getSession();
 
 		final Query query = session
-				.createQuery("select player0_ from Player player0_ join player0_.game as g where g.gameId=?");
+				.createQuery("select player0_ from Player player0_ join player0_.games as g where g.gameId=?");
 		query.setLong(0, l);
 		return query.list();
 	}
@@ -335,7 +337,7 @@ public class PersistenceService
 
 		final Game game = new Game();
 
-		final List<Player> list = new ArrayList<Player>();
+		final Set<Player> list = new HashSet<Player>();
 		list.add(player);
 		game.setPlayers(list);
 

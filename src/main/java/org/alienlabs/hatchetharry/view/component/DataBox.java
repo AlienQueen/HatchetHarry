@@ -70,11 +70,11 @@ public class DataBox extends Panel
 					public void onClick(final AjaxRequestTarget target)
 					{
 						player.setLifePoints(player.getLifePoints() + 1);
-						DataBox.this.persistenceService.saveOrUpdatePlayer(player);
+						DataBox.this.persistenceService.updatePlayer(player);
 
 						final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(
 								_dataBoxParent, _gameId, _hp);
-						_dataBoxParent.add(behavior);
+						DataBox.this.add(behavior);
 
 						_dataBoxParent.addOrReplace(DataBox.this);
 						target.addComponent(_dataBoxParent);
@@ -98,7 +98,7 @@ public class DataBox extends Panel
 					public void onClick(final AjaxRequestTarget target)
 					{
 						player.setLifePoints(player.getLifePoints() - 1);
-						DataBox.this.persistenceService.saveOrUpdatePlayer(player);
+						DataBox.this.persistenceService.updatePlayer(player);
 
 						final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(
 								_dataBoxParent, _gameId, _hp);
@@ -119,9 +119,12 @@ public class DataBox extends Panel
 				item.add(minus);
 			}
 		};
-
 		box.setOutputMarkupId(true);
-		this.add(box);
+
+		final WebMarkupContainer parent = new WebMarkupContainer("parent");
+		parent.setOutputMarkupId(true);
+		parent.add(box);
+		this.add(parent);
 	}
 
 	@Required

@@ -41,9 +41,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -181,7 +183,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.6 (release SpaceJockey), built on Friday, 16th of March 2012."));
+				"version 0.0.6 (release SpaceJockey), built on Saturday, 17th of March 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -300,7 +302,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.endTurnPlaceholder.setOutputMarkupId(true);
 
 		this.notifierPanel = new NotifierPanel("notifierPanel", HomePage.this, HatchetHarrySession
-				.get().getPlayer().getSide(), "has declared the end of his turn.");
+				.get().getPlayer().getSide(), "has declared the end of his turn.",
+				this.dataBoxParent, HatchetHarrySession.get().getGameId());
 		this.notifierPanel.setOutputMarkupId(true);
 
 		this.endTurnLink = new AjaxLink<Void>("endTurnLink")
@@ -392,6 +395,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	private void buildDataBox(final long _gameId)
 	{
 		this.dataBoxParent = new WebMarkupContainer("dataBoxParent");
+		this.dataBoxParent.setMarkupId("dataBoxParent"
+				+ HatchetHarrySession.get().getPlayerLetter());
 		this.dataBoxParent.setOutputMarkupId(true);
 
 		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.dataBoxParent,
@@ -440,9 +445,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		p.setLifePoints(_lifePoints);
 		p.setId(this.persistenceService.savePlayer(p));
 
-		final List<Game> games = new ArrayList<Game>();
+		final Set<Game> games = new HashSet<Game>();
 		games.add(this.persistenceService.createNewGame(p));
-		p.setGame(games);
+		p.setGames(games);
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
 		HatchetHarrySession.get().setPlayer(p);
