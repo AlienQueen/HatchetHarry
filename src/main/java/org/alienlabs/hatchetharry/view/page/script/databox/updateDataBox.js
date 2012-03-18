@@ -42,6 +42,12 @@ jQuery(document).ready(
 								time : ''
 							});
 						}
+						
+						var v = data.split("%%%")[1];
+						
+						if (typeof v != "undefined") {
+							wicketAjaxGet('${url}', function() { }, null, null);
+						}
 					}
 				}
 			}

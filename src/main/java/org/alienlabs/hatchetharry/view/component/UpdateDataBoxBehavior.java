@@ -43,7 +43,6 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
-		request.getParameter("stop");
 		final String jsessionid = request.getParameter("jsessionid");
 		final String displayJoinMessage = request.getParameter("displayJoinMessage");
 

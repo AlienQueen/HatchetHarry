@@ -1,6 +1,9 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -17,7 +20,12 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.atmosphere.cpr.BroadcastFilter;
+import org.atmosphere.cpr.Meteor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -31,12 +39,16 @@ public class DataBox extends Panel
 	transient PersistenceService persistenceService;
 
 	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
+	final HomePage hp;
+
+	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 
 	public DataBox(final String id, final long _gameId, final WebMarkupContainer _dataBoxParent,
 			final HomePage _hp)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
+		this.hp = _hp;
 
 		this.updateDataBox = new BookmarkablePageLink<UpdateDataBoxPage>("updateDataBox",
 				UpdateDataBoxPage.class);
@@ -72,16 +84,7 @@ public class DataBox extends Panel
 						player.setLifePoints(player.getLifePoints() + 1);
 						DataBox.this.persistenceService.updatePlayer(player);
 
-						final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(
-								_dataBoxParent, _gameId, _hp);
-						DataBox.this.add(behavior);
-
-						_dataBoxParent.addOrReplace(DataBox.this);
-						target.addComponent(_dataBoxParent);
-
-						target.appendJavascript("wicketAjaxGet('" + behavior.getUrl()
-								+ "&jsessionid=" + this.getParent().getPage().getSession().getId()
-								+ "', function() { }, null, null);");
+						DataBox.this.writeUpdateDataBoxCometMessage();
 					}
 				};
 				final Image playerPlus = new Image("playerPlus", new ResourceReference(
@@ -100,16 +103,7 @@ public class DataBox extends Panel
 						player.setLifePoints(player.getLifePoints() - 1);
 						DataBox.this.persistenceService.updatePlayer(player);
 
-						final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(
-								_dataBoxParent, _gameId, _hp);
-						DataBox.this.add(behavior);
-
-						_dataBoxParent.addOrReplace(DataBox.this);
-						target.addComponent(_dataBoxParent);
-
-						target.appendJavascript("wicketAjaxGet('" + behavior.getUrl()
-								+ "&jsessionid=" + this.getParent().getPage().getSession().getId()
-								+ "', function() { }, null, null);");
+						DataBox.this.writeUpdateDataBoxCometMessage();
 					}
 				};
 				final Image playerMinus = new Image("playerMinus", new ResourceReference(
@@ -133,4 +127,17 @@ public class DataBox extends Panel
 		this.persistenceService = _persistenceService;
 	}
 
+	public void writeUpdateDataBoxCometMessage()
+	{
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.hp.getRequest();
+		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+
+		final String message = "%%%" + request.getRequestedSessionId();
+		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
+		DataBox.LOGGER.info("meteor: " + meteor);
+		DataBox.LOGGER.info(message);
+
+		meteor.addListener(this.hp);
+		meteor.broadcast(message);
+	}
 }
