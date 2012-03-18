@@ -43,8 +43,7 @@ public class DataBox extends Panel
 
 	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 
-	public DataBox(final String id, final long _gameId, final WebMarkupContainer _dataBoxParent,
-			final HomePage _hp)
+	public DataBox(final String id, final long _gameId, final HomePage _hp)
 	{
 		super(id);
 		InjectorHolder.getInjector().inject(this);
@@ -127,7 +126,7 @@ public class DataBox extends Panel
 		this.persistenceService = _persistenceService;
 	}
 
-	public void writeUpdateDataBoxCometMessage()
+	void writeUpdateDataBoxCometMessage()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.hp.getRequest();
 		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();

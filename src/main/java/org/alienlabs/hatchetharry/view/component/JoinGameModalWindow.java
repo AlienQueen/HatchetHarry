@@ -161,8 +161,7 @@ public class JoinGameModalWindow extends Panel
 						game.getId(), JoinGameModalWindow.this.hp);
 				final DataBox dataBox = new DataBox("dataBox",
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
-								.getDefaultModelObjectAsString()), _dataBoxParent,
-						JoinGameModalWindow.this.hp);
+								.getDefaultModelObjectAsString()), JoinGameModalWindow.this.hp);
 				session.setDataBox(dataBox);
 				dataBox.add(behavior);
 				_dataBoxParent.addOrReplace(dataBox);

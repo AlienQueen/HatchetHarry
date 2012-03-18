@@ -55,7 +55,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 					+ "', function() { }, null, null);");
 		}
 
-		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent, this.hp);
+		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.hp);
 		dataBox.setOutputMarkupId(true);
 		this.dataBoxParent.setOutputMarkupId(true);
 		dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, this.gameId, this.hp));

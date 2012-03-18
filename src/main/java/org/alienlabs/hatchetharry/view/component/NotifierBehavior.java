@@ -82,8 +82,7 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 		}
 		else if (updateDataBox)
 		{
-			final DataBox dataBox = new DataBox("dataBox", this.gameId, this.dataBoxParent,
-					this.page);
+			final DataBox dataBox = new DataBox("dataBox", this.gameId, this.page);
 			dataBox.setOutputMarkupId(true);
 			this.dataBoxParent.setOutputMarkupId(true);
 			dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, this.gameId, this.page));
