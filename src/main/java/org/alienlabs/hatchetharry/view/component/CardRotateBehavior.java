@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
@@ -33,13 +34,13 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	private final UUID uuid;
 
 	@SpringBean
-	private transient PersistenceService persistenceService;
+	private  PersistenceService persistenceService;
 
 	public CardRotateBehavior(final CardPanel cp, final UUID _uuid)
 	{
 		this.panel = cp;
 		this.uuid = _uuid;
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	{
 		CardRotateBehavior.LOGGER.info("respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String uuidToLookFor = request.getParameter("uuid");
 
@@ -67,20 +68,20 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	public void renderHead(final IHeaderResponse response)
+	public void renderHead(final Component component, final IHeaderResponse response)
 	{
-		super.renderHead(response);
+		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
-		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/rotate/cardRotate.js");
 		template.interpolate(variables);
 
-		response.renderOnDomReadyJavascript(template.asString());
+		response.renderOnDomReadyJavaScript(template.asString());
 	}
 
 	@Required

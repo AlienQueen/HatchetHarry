@@ -18,6 +18,7 @@
  */
 package org.alienlabs.hatchetharry.persistence.dao;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import org.hibernate.Session;
  * 
  * @author igor
  */
-public interface PlayerDao
+public interface PlayerDao extends Serializable
 {
 	public Session getSession();
 

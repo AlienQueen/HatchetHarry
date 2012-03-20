@@ -19,7 +19,7 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -38,7 +38,7 @@ public class CreateGameModalWindow extends Panel
 	private static final long serialVersionUID = -5432292812819537705L;
 
 	@SpringBean
-	transient PersistenceService persistenceService;
+	 PersistenceService persistenceService;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
 
@@ -54,7 +54,7 @@ public class CreateGameModalWindow extends Panel
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
 	{
 		super(id);
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 
 		this.player = _player;
 		this.sidePlaceholderParent = _sidePlaceholderParent;
@@ -91,6 +91,8 @@ public class CreateGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				_modal.close(target);
+
 				final Game g = CreateGameModalWindow.this.persistenceService
 						.getGame(CreateGameModalWindow.this.game.getId());
 				final Set<Game> games = new HashSet<Game>();
@@ -112,7 +114,7 @@ public class CreateGameModalWindow extends Panel
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
 				deck.shuffleLibrary();
 
-				final List<MagicCard> firstCards = new ArrayList<MagicCard>();
+				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 
 				for (int i = 0; i < 7; i++)
 				{
@@ -128,7 +130,7 @@ public class CreateGameModalWindow extends Panel
 				{
 					for (final CardPanel cp : toRemove)
 					{
-						target.appendJavascript("jQuery('#" + cp.getMarkupId() + "').remove();");
+						target.appendJavaScript("jQuery('#" + cp.getMarkupId() + "').remove();");
 						CreateGameModalWindow.LOGGER.info("cp.getMarkupId(): " + cp.getMarkupId());
 						HatchetHarrySession.get().addCardInToRemoveList(cp);
 					}
@@ -141,11 +143,9 @@ public class CreateGameModalWindow extends Panel
 
 				final HandComponent gallery = new HandComponent("gallery");
 				_handCardsParent.addOrReplace(gallery);
-				target.addComponent(_handCardsParent);
+				target.add(_handCardsParent);
 
-				_modal.close(target);
-
-				target.appendJavascript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
+				target.appendJavaScript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
 						+ _url + "&text=1&title=1', function() { }, null, null);");
 
 				CreateGameModalWindow.LOGGER.info("close!");
@@ -157,7 +157,7 @@ public class CreateGameModalWindow extends Panel
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
 						.getRequest();
-				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+				final HttpServletRequest request = servletWebRequest.getContainerRequest();
 				final String jsessionid = request.getRequestedSessionId();
 				spp.add(new SidePlaceholderMoveBehavior(
 						CreateGameModalWindow.this.sidePlaceholderParent, spp.getUuid(),
@@ -166,13 +166,13 @@ public class CreateGameModalWindow extends Panel
 				spp.setOutputMarkupId(true);
 
 				CreateGameModalWindow.this.sidePlaceholderParent.addOrReplace(spp);
-				target.addComponent(CreateGameModalWindow.this.sidePlaceholderParent);
+				target.add(CreateGameModalWindow.this.sidePlaceholderParent);
 
 				final int posX = ("infrared".equals(sideInput.getDefaultModelObjectAsString()))
 						? 300
 						: 900;
 
-				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
+				target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
 						+ spp.getUuid()
 						+ "\"); "
 						+ "card.css(\"position\", \"absolute\"); "
@@ -202,6 +202,11 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.persistenceService.saveSide(s);
 
 				session.setGameCreated();
+			}
+
+			@Override
+			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
+			{
 			}
 		};
 		submit.setOutputMarkupId(true);

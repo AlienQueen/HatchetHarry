@@ -37,13 +37,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class MagicCardDaoImpl implements MagicCardDao
 {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
 	public MagicCardDaoImpl()
 	{
-		// InjectorHolder.getInjector().inject(this);
 	}
 
 	/**

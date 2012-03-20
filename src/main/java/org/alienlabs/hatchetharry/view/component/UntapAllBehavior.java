@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
@@ -30,11 +31,11 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 	static final Logger LOGGER = LoggerFactory.getLogger(UntapAllBehavior.class);
 
 	@SpringBean
-	private transient PersistenceService persistenceService;
+	private  PersistenceService persistenceService;
 
 	public UntapAllBehavior()
 	{
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
 		final Long playerId = Long.parseLong(request.getParameter("playerId"));
 
@@ -78,24 +79,24 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 			UntapAllBehavior.LOGGER.info("cards.length: " + cards.length);
 			for (final String cardUuid : cards)
 			{
-				target.appendJavascript("jQuery('#card" + cardUuid + "').rotate(0);");
+				target.appendJavaScript("jQuery('#card" + cardUuid + "').rotate(0);");
 			}
 		}
 	}
 
 	@Override
-	public void renderHead(final IHeaderResponse response)
+	public void renderHead(final Component component, final IHeaderResponse response)
 	{
-		super.renderHead(response);
+		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 
-		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/untapAll/untapAll.js");
 		template1.interpolate(variables);
 
-		response.renderJavascript(template1.asString(), null);
+		response.renderJavaScript(template1.asString(), null);
 	}
 
 	@Required

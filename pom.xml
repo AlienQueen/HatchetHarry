@@ -20,7 +20,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>1.4.19</wicket.version>
+		<wicket.version>1.5.5</wicket.version>
 		<atmosphere.version>0.8.5</atmosphere.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
 		<jetty.version>6.1.25</jetty.version>
@@ -35,7 +35,7 @@
 		<!--  WICKET DEPENDENCIES -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket</artifactId>
+			<artifactId>wicket-core</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
         <dependency>
@@ -78,6 +78,12 @@
 			<groupId>ch.qos.mistletoe</groupId>
 			<artifactId>mistletoe-wicket</artifactId>
 			<version>0.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -98,11 +104,11 @@
 		<dependency>
 			<groupId>com.googlecode</groupId>
 			<artifactId>wicket-slides</artifactId>
-			<version>0.8.3-smoothgallery2.1dev</version>
+			<version>0.8.4-smoothgallery2.1dev</version>
 		</dependency>
 	 	<dependency>
 			<groupId>org.wicketstuff</groupId>
-			<artifactId>annotation</artifactId>
+			<artifactId>wicketstuff-annotation</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
         <dependency>

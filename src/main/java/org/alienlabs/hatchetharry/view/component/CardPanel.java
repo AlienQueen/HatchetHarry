@@ -8,10 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.view.page.CardMovePage;
 import org.alienlabs.hatchetharry.view.page.CardRotatePage;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
@@ -19,16 +18,15 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CardPanel extends Panel implements IHeaderContributor
+public class CardPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -53,13 +51,21 @@ public class CardPanel extends Panel implements IHeaderContributor
 
 		this.add(this.cardMovePage, this.cardRotatePage);
 
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "stylesheet/menu.css")));
+		this.add(new Behavior()
+		{
+			private static final long serialVersionUID = 1L;
 
-		this.add(new JavaScriptReference("jquery.contextMenu.js", HomePage.class,
-				"script/contextmenu/jquery.contextMenu.js"));
-		this.add(CSSPackageResource.getHeaderContribution(new CompressedResourceReference(
-				HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
+			@Override
+			public void renderHead(final Component component, final IHeaderResponse response)
+			{
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/menu.css"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/contextmenu/jquery.contextMenu.js"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"script/contextmenu/jquery.contextMenu.css"));
+			}
+		});
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
@@ -85,9 +91,9 @@ public class CardPanel extends Panel implements IHeaderContributor
 		mouseX.setOutputMarkupId(true);
 		mouseY.setOutputMarkupId(true);
 
-		final Image handleImage = new Image("handleImage",
-				new ResourceReference("images/arrow.png"));
-		final Image tapHandleImage = new Image("tapHandleImage", new ResourceReference(
+		final Image handleImage = new Image("handleImage", new PackageResourceReference(
+				"images/arrow.png"));
+		final Image tapHandleImage = new Image("tapHandleImage", new PackageResourceReference(
 				"images/rightArrow.png"));
 		handleImage.setOutputMarkupId(true);
 
@@ -96,7 +102,7 @@ public class CardPanel extends Panel implements IHeaderContributor
 		cardBubbleTip.setMarkupId("cardTooltip" + this.uuid);
 		cardBubbleTip.add(new SimpleAttributeModifier("style", "display:none;"));
 
-		final Image cardImage = new Image("cardImage", new ResourceReference(HomePage.class,
+		final Image cardImage = new Image("cardImage", new PackageResourceReference(HomePage.class,
 				smallImage));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString());
@@ -120,7 +126,7 @@ public class CardPanel extends Panel implements IHeaderContributor
 	public HttpServletRequest getHttpServletRequest()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		return servletWebRequest.getHttpServletRequest();
+		return servletWebRequest.getContainerRequest();
 	}
 
 	public UUID getUuid()
@@ -131,17 +137,17 @@ public class CardPanel extends Panel implements IHeaderContributor
 	@Override
 	public void renderHead(final IHeaderResponse response)
 	{
-		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/tooltip/easyTooltip.js");
 		final StringBuffer js = new StringBuffer().append(template1.asString());
-		response.renderJavascript(js.toString(), "easyTooltip.js");
+		response.renderJavaScript(js.toString(), "easyTooltip.js");
 
-		final TextTemplate template2 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
 				"script/tooltip/initTooltip.js");
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("uuid", this.uuid);
 		template2.interpolate(variables);
 		final StringBuffer js2 = new StringBuffer().append(template2.asString());
-		response.renderJavascript(js2.toString(), "initTooltip.js" + this.uuid);
+		response.renderJavaScript(js2.toString(), "initTooltip.js" + this.uuid);
 	}
 }

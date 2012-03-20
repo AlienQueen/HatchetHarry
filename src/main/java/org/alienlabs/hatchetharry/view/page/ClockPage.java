@@ -72,8 +72,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 
 	public ClockPage()
 	{
-		final HttpServletRequest req = this.getWebRequestCycle().getWebRequest()
-				.getHttpServletRequest();
+		final HttpServletRequest req = (HttpServletRequest)this.getRequest().getContainerRequest();
 
 		// Grap a Meteor
 		final Meteor meteor = Meteor.build(req);

@@ -8,12 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
@@ -46,7 +47,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		SidePlaceholderMoveBehavior.LOGGER.info("## respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.parent.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		this.jsessionid = request.getRequestedSessionId();
 		final String _sideX = request.getParameter("posX");
 		final String _sideY = request.getParameter("posY");
@@ -80,7 +81,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			SidePlaceholderMoveBehavior.LOGGER.info("### " + this.uuid);
 			final int posX = ("infrared".equals(_side)) ? 300 : 900;
 
-			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
+			target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
 					+ this.uuid
 					+ "'); "
 					+ "card.css('position', 'absolute'); "
@@ -92,7 +93,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		}
 		else if (!this.jsessionid.equals(request.getParameter("requestingId")))
 		{
-			target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
+			target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
 					+ this.uuid
 					+ "\"); "
 					+ "card.css(\"position\", \"absolute\"); "
@@ -113,9 +114,9 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	public void renderHead(final IHeaderResponse response)
+	public void renderHead(final Component component, final IHeaderResponse response)
 	{
-		super.renderHead(response);
+		super.renderHead(component, response);
 
 		final StringBuffer js = new StringBuffer();
 
@@ -126,22 +127,22 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("jsessionid", this.jsessionid);
 		variables.put("side", this.side);
 
-		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js");
 		template1.interpolate(variables);
 		js.append("\n" + template1.asString());
 
-		final TextTemplate template2 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/sidePlaceholderMove.js");
 		template2.interpolate(variables);
 		js.append("\n" + template2.asString());
 
-		final TextTemplate template3 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template3 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/initSidePlaceholderDrag.js");
 		template3.interpolate(variables);
 		js.append("\n" + template3.asString());
 
-		response.renderOnDomReadyJavascript(js.toString());
+		response.renderOnDomReadyJavaScript(js.toString());
 	}
 
 }

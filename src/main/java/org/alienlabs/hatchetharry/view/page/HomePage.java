@@ -75,23 +75,22 @@ import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.apache.wicket.Application;
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
@@ -115,9 +114,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
 
 	@SpringBean
-	transient PersistenceService persistenceService;
+	PersistenceService persistenceService;
 	@SpringBean
-	transient RuntimeDataGenerator runtimeDataGenerator;
+	RuntimeDataGenerator runtimeDataGenerator;
 
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
@@ -130,7 +129,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	List<MagicCard> hand;
 	private final WebMarkupContainer parentPlaceholder;
 	WebMarkupContainer playCardLink;
-	WebMarkupContainer playCardParent1;
+	WebMarkupContainer playCardParent;
 
 	final WebMarkupContainer handCardsPlaceholder;
 	WebMarkupContainer thumbsPlaceholder;
@@ -172,9 +171,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.parentPlaceholder = new WebMarkupContainer("cardParent");
 		this.parentPlaceholder.setOutputMarkupId(true);
 
-		this.playCardParent1 = new WebMarkupContainer("playCardParentPlaceholder1");
-		this.playCardParent1.setOutputMarkupId(true);
-		this.parentPlaceholder.add(this.playCardParent1);
+		this.playCardParent = new WebMarkupContainer("playCardParentPlaceholder");
+		this.playCardParent.setOutputMarkupId(true);
+		this.parentPlaceholder.add(this.playCardParent);
 		this.add(this.parentPlaceholder);
 
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
@@ -187,7 +186,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
-
 
 		if (!HatchetHarrySession.get().isGameCreated())
 		{
@@ -248,7 +246,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(notif);
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		request.getRequestedSessionId();
 
 		this.sidePlaceholderMove = new BookmarkablePageLink<SidePlaceholderMovePage>(
@@ -313,7 +311,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavascript("wicketAjaxGet('"
+				target.appendJavaScript("wicketAjaxGet('"
 						+ HomePage.this.notifierPanel.getCallbackUrl()
 						+ "&title="
 						+ HatchetHarrySession.get().getPlayer().getSide()
@@ -346,8 +344,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 						.getRequest();
 				HomePage.LOGGER.info("untap all");
-				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
-				target.appendJavascript("wicketAjaxGet('"
+				final HttpServletRequest request = servletWebRequest.getContainerRequest();
+				target.appendJavaScript("wicketAjaxGet('"
 						+ HomePage.this.untapAllBehavior.getCallbackUrl() + "&sessionid="
 						+ request.getRequestedSessionId() + "&playerId="
 						+ HatchetHarrySession.get().getPlayer().getId()
@@ -381,7 +379,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("untap and draw");
-				target.appendJavascript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 1000);");
+				target.appendJavaScript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 1000);");
 			}
 
 		};
@@ -425,7 +423,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	protected long createPlayer()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
 
 		if (this.persistenceService.getFirstPlayer() == null)
@@ -476,7 +474,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		{
 			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
 					+ opponentId + i);
-			this.playCardParent1.addOrReplace(cardPlaceholder);
+			this.playCardParent.addOrReplace(cardPlaceholder);
 		}
 	}
 
@@ -499,7 +497,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		if (mc.size() > 0)
 		{
-			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent1,
+			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent,
 					this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0,
 					((HatchetHarrySession)Session.get()).getPlayer().getSide());
 			this.playCardLink.add(this.playCardBehavior);
@@ -526,7 +524,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 						&& (HatchetHarrySession.get().getDeck().getCards().size() > 0))
 				{
 					final MagicCard card = HatchetHarrySession.get().getDeck().getCards().get(0);
-					final List<MagicCard> list = HatchetHarrySession.get().getFirstCardsInHand();
+					final ArrayList<MagicCard> list = HatchetHarrySession.get()
+							.getFirstCardsInHand();
 					list.add(card);
 
 					final Deck d = HatchetHarrySession.get().getDeck();
@@ -544,12 +543,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 							.get().getPlayer());
 
 					HomePage.this.handCardsPlaceholder.addOrReplace(gallery);
-					target.addComponent(HomePage.this.handCardsPlaceholder);
-					target.appendJavascript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+					target.add(HomePage.this.handCardsPlaceholder);
+					target.appendJavaScript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
 
 					final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 							.getRequest();
-					final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+					final HttpServletRequest request = servletWebRequest.getContainerRequest();
 					final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(),
 							null);
 					meteor.addListener((AtmosphereResourceEventListener)target.getPage());
@@ -576,78 +575,89 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void addHeadResources()
 	{
-		this.add(new JavaScriptReference("jquery-1.6.4.js", HomePage.class,
-				"script/jquery-1.6.4.js"));
-		this.add(new JavaScriptReference("jquery-ui-1.8.18.core.mouse.widget.js", HomePage.class,
-				"script/jquery/jquery-ui-1.8.18.core.mouse.widget.js"));
-		this.add(new JavaScriptReference("jquery.atmosphere.js", HomePage.class,
-				"script/jquery.atmosphere.js"));
-		this.add(new JavaScriptReference("jquery.easing.1.3.js", HomePage.class,
-				"script/tour/jquery.easing.1.3.js"));
-		this.add(new JavaScriptReference("jquery.storage.js", HomePage.class,
-				"script/tour/jquery.storage.js"));
-		this.add(new JavaScriptReference("jquery.tour.js", HomePage.class,
-				"script/tour/jquery.tour.js"));
-		this.add(new JavaScriptReference("jquery.metadata.js", HomePage.class,
-				"script/menubar/jquery.metadata.js"));
-		this.add(new JavaScriptReference("jquery.hoverIntent.js", HomePage.class,
-				"script/menubar/jquery.hoverIntent.js"));
-		this.add(new JavaScriptReference("mbMenu.js", HomePage.class, "script/menubar/mbMenu.js"));
-		this.add(new JavaScriptReference("jqDock.js", HomePage.class,
-				"script/menubar/jquery.jqDock.js"));
-		this.add(new JavaScriptReference("qUnit.js", HomePage.class, "script/qunitTests/qUnit.js"));
-		this.add(new JavaScriptReference("codeUnderTest.js", HomePage.class,
-				"script/qunitTests/codeUnderTest.js"));
-		this.add(new JavaScriptReference("HomePageTests.js", HomePage.class,
-				"script/qunitTests/HomePageTests.js"));
+		final WebMarkupContainer c = new WebMarkupContainer("headResources");
+		c.add(new Behavior()
+		{
+			private static final long serialVersionUID = 1L;
 
-		this.add(new JavaScriptReference("mootools.v1.11", HomePage.class,
-				"script/jquery/mootools.v1.11.js"));
-		this.add(new JavaScriptReference("jquery-easing-1.3.pack.js", HomePage.class,
-				"script/gallery/jquery-easing-1.3.pack.js"));
-		this.add(new JavaScriptReference("jquery-easing-compatibility.1.2.pack.js", HomePage.class,
-				"script/gallery/jquery-easing-compatibility.1.2.pack.js"));
-		this.add(new JavaScriptReference("coda-slider.1.1.1.pack.js", HomePage.class,
-				"script/gallery/coda-slider.1.1.1.pack.js"));
-		this.add(new JavaScriptReference("gallery.js", HomePage.class, "script/gallery/gallery.js"));
+			@Override
+			public void renderHead(final Component component, final IHeaderResponse response)
+			{
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/jquery-1.6.4.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/jquery/jquery-ui-1.8.18.core.mouse.widget.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/jquery.atmosphere.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/tour/jquery.easing.1.3.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/tour/jquery.storage.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/tour/jquery.tour.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/menubar/jquery.metadata.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/menubar/jquery.hoverIntent.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/menubar/mbMenu.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/menubar/jquery.jqDock.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/qunitTests/qUnit.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/qunitTests/codeUnderTest.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/qunitTests/HomePageTests.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/jquery/mootools.v1.11.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/gallery/jquery-easing-1.3.pack.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/gallery/jquery-easing-compatibility.1.2.pack.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/gallery/coda-slider.1.1.1.pack.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/gallery/gallery.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/rotate/jQueryRotate.2.1.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js"));
 
-		this.add(new JavaScriptReference("jQueryRotate.2.1.js", HomePage.class,
-				"script/rotate/jQueryRotate.2.1.js"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/menu.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/layout.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/menu_black.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/jquery.jquerytour.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/myStyle.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/galleryStyle.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/jquery.gritter.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/fixed4all.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/fixed4ie.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/prettyPhoto.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/toolbarStyle.css"));
+				response.renderCSSReference(new PackageResourceReference(HomePage.class,
+						"stylesheet/tipsy.css"));
 
-		this.add(new JavaScriptReference("jquery.ui.draggable.sidePlaceholder.js", HomePage.class,
-				"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js"));
-
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/menu.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/layout.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/menu_black.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/jquery.jquerytour.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/myStyle.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/galleryStyle.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/jquery.gritter.css")));
-
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/fixed4all.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/fixed4ie.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/prettyPhoto.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/toolbarStyle.css")));
-		this.add(CSSPackageResource.getHeaderContribution(new ResourceReference(HomePage.class,
-				"stylesheet/tipsy.css")));
-		this.add(new JavaScriptReference("jquery.prettyPhoto.js", HomePage.class,
-				"script/toolbar/jquery.prettyPhoto.js"));
-		this.add(new JavaScriptReference("jquery.tipsy.js", HomePage.class,
-				"script/toolbar/jquery.tipsy.js"));
-		this.add(new JavaScriptReference("jquery.gritter.min.js", HomePage.class,
-				"script/notifier/jquery.gritter.min.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/toolbar/jquery.prettyPhoto.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/toolbar/jquery.tipsy.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/notifier/jquery.gritter.min.js"));
+			}
+		});
+		this.add(c);
 	}
 
 	protected void buildHandMarkup()
@@ -669,7 +679,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				this.deck = this.persistenceService.getDeck(1l);
 			}
 			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getId()));
-			final List<MagicCard> cards = new ArrayList<MagicCard>();
+			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 
 			if (!HatchetHarrySession.get().isHandCardsHaveBeenBuilt())
 			{
@@ -698,7 +708,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.aboutWindow.setInitialWidth(450);
 		this.aboutWindow.setInitialHeight(675);
 		this.aboutWindow.setTitle("About HatchetHarry");
-		this.aboutWindow.setContent(new AboutModalWindow(this.aboutWindow.getContentId()));
+		this.aboutWindow.setContent(new AboutModalWindow(this.aboutWindow.getContentId(),
+				this.aboutWindow));
 		this.aboutWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.aboutWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.aboutWindow);
@@ -710,7 +721,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavascript("Wicket.Window.unloadConfirmation = false;");
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.aboutWindow.show(target);
 			}
 		};
@@ -738,7 +749,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavascript("Wicket.Window.unloadConfirmation = false;");
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.teamInfoWindow.show(target);
 			}
 		};
@@ -771,7 +782,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavascript("Wicket.Window.unloadConfirmation = false;");
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.createGameWindow.show(target);
 			}
 		};
@@ -804,7 +815,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavascript("Wicket.Window.unloadConfirmation = false;");
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.joinGameWindow.show(target);
 			}
 		};
@@ -876,7 +887,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@Override
-	protected void configureResponse()
+	protected void configureResponse(final WebResponse response)
 	{
 		if (HatchetHarrySession.get() != null)
 		{
@@ -885,15 +896,15 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		}
 
 		final String encoding = "text/html;charset=utf-8";
-		this.getResponse().setContentType(encoding);
-		super.configureResponse();
+		response.setContentType(encoding);
+		super.configureResponse(response);
 	}
 
 	private void restoreBattlefieldState()
 	{
 		for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
 		{
-			this.playCardParent1.addOrReplace(cp);
+			this.playCardParent.addOrReplace(cp);
 		}
 
 		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
@@ -902,7 +913,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		{
 			final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
 					.getRequest();
-			final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+			final HttpServletRequest request = servletWebRequest.getContainerRequest();
 			final String jsessionid = request.getRequestedSessionId();
 
 			if ("firstSidePlaceholder".equals(spp.getId()))
@@ -931,17 +942,17 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			}
 		}
 
-		this.add(new HeaderContributor(new IHeaderContributor()
+		this.add(new Behavior()
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void renderHead(final IHeaderResponse response)
+			public void renderHead(final Component component, final IHeaderResponse response)
 			{
 				HomePage.this.restoreStateOfAllCardsInBattlefield(response);
 			}
 
-		}));
+		});
 	}
 
 	void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
@@ -989,7 +1000,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		HomePage.LOGGER.info("size: " + allSides.size());
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
 
 		for (final SidePlaceholderPanel spp : allSides)
@@ -1010,7 +1021,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			variables.put("jsessionid", jsessionid);
 			variables.put("side", spp.getSide());
 
-			final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+			final TextTemplate template = new PackageTextTemplate(HomePage.class,
 					"script/draggableHandle/initSidePlaceholderDrag.js");
 			template.interpolate(variables);
 			js.append("\n" + template.asString() + "\n");
@@ -1027,7 +1038,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		// Don't show website tour on page refresh
 		js.append("jQuery('#tourcontrols').remove();");
 
-		response.renderOnDomReadyJavascript(js.toString());
+		response.renderOnDomReadyJavaScript(js.toString());
 	}
 
 	@Required

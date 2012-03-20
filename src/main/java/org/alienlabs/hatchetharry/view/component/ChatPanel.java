@@ -93,7 +93,7 @@ public class ChatPanel extends Panel
 			{
 				ChatPanel.LOGGER.info("submit");
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+				final HttpServletRequest request = servletWebRequest.getContainerRequest();
 				final String jsessionid = request.getRequestedSessionId();
 
 				final Meteor meteor = Meteor.build(request, ChatPanel.this.list, null);
@@ -103,6 +103,11 @@ public class ChatPanel extends Panel
 				final String _message = _form.get("message").getDefaultModelObjectAsString();
 				ChatPanel.LOGGER.info("user: " + _user + ", message: " + _message);
 				meteor.broadcast(jsessionid + "###" + _user + " said: " + _message);
+			}
+
+			@Override
+			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
+			{
 			}
 		};
 		form.add(button);

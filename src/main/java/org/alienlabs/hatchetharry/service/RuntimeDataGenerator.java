@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +15,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-public class RuntimeDataGenerator
+public class RuntimeDataGenerator implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
 			"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
 			"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
@@ -45,13 +48,13 @@ public class RuntimeDataGenerator
 			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
-	private transient DeckDao deckDao;
+	private DeckDao deckDao;
 	@SpringBean
-	private transient CollectibleCardDao collectibleCardDao;
+	private CollectibleCardDao collectibleCardDao;
 	@SpringBean
-	private transient MagicCardDao magicCardDao;
+	private MagicCardDao magicCardDao;
 	@SpringBean
-	private transient PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	@Required
 	public void setDeckDao(final DeckDao _deckDao)

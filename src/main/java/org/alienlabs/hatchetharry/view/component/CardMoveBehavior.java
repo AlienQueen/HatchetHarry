@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
@@ -33,13 +34,13 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private final UUID uuid;
 
 	@SpringBean
-	private transient PersistenceService persistenceService;
+	private  PersistenceService persistenceService;
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid)
 	{
 		this.panel = cp;
 		this.uuid = _uuid;
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		CardMoveBehavior.LOGGER.info("respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String _mouseX = request.getParameter("posX");
 		final String _mouseY = request.getParameter("posY");
@@ -79,19 +80,19 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	public void renderHead(final IHeaderResponse response)
+	public void renderHead(final Component component, final IHeaderResponse response)
 	{
-		super.renderHead(response);
+		super.renderHead(component, response);
 
-		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.core.js");
 		StringBuffer js = new StringBuffer().append(template1.asString());
 
-		final TextTemplate template2 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.widget.js");
 		js = js.append("\n" + template2.asString());
 
-		final TextTemplate template3 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template3 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.mouse.js");
 		js = js.append("\n" + template3.asString());
 
@@ -100,22 +101,22 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
-		final TextTemplate template4 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template4 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.js");
 		template4.interpolate(variables);
 		js = js.append("\n" + template4.asString());
 
-		final TextTemplate template5 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template5 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/cardMove.js");
 		template5.interpolate(variables);
 		js = js.append("\n" + template5.asString());
 
-		final TextTemplate template6 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template6 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/initDrag.js");
 		template6.interpolate(variables);
 		js = js.append("\n" + template6.asString());
 
-		response.renderOnDomReadyJavascript(js.toString());
+		response.renderOnDomReadyJavaScript(js.toString());
 	}
 
 	@Required

@@ -11,9 +11,9 @@ import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.apache.wicket.Application;
-import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.Request;
 
 public class HatchetHarrySession extends WebSession
 {
@@ -103,12 +103,12 @@ public class HatchetHarrySession extends WebSession
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<MagicCard> getFirstCardsInHand()
+	public ArrayList<MagicCard> getFirstCardsInHand()
 	{
-		return (List<MagicCard>)this.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND);
+		return (ArrayList<MagicCard>)this.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND);
 	}
 
-	public void setFirstCardsInHand(final List<MagicCard> cards)
+	public void setFirstCardsInHand(final ArrayList<MagicCard> cards)
 	{
 		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, cards);
 	}
@@ -306,7 +306,7 @@ public class HatchetHarrySession extends WebSession
 	public void setMySidePlaceholder(final SidePlaceholderPanel _mySidePlaceholder)
 	{
 		@SuppressWarnings("unchecked")
-		final List<SidePlaceholderPanel> l = (List<SidePlaceholderPanel>)this
+		final ArrayList<SidePlaceholderPanel> l = (ArrayList<SidePlaceholderPanel>)this
 				.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
 		l.add(_mySidePlaceholder);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, l);
@@ -322,7 +322,7 @@ public class HatchetHarrySession extends WebSession
 	public void putMySidePlaceholderInSesion(final String side)
 	{
 		@SuppressWarnings("unchecked")
-		final List<String> l = (List<String>)this
+		final ArrayList<String> l = (ArrayList<String>)this
 				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
 		l.add(side);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, l);

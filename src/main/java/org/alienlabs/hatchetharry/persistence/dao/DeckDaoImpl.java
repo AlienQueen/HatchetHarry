@@ -37,13 +37,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class DeckDaoImpl implements DeckDao
 {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
 	public DeckDaoImpl()
 	{
-		// InjectorHolder.getInjector().inject(this);
 	}
 
 	/**

@@ -4,7 +4,6 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.alienlabs.hatchetharry.view.page.PlayCardPage;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -13,6 +12,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 public class HandComponent extends Panel
 {
@@ -43,8 +43,7 @@ public class HandComponent extends Panel
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)
 			{
-				HatchetHarrySession.get(this.getRequest()).addCardIdInHand(item.getIndex(),
-						item.getIndex());
+				HatchetHarrySession.get().addCardIdInHand(item.getIndex(), item.getIndex());
 				final MagicCard card = item.getModelObject();
 
 				final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
@@ -52,7 +51,7 @@ public class HandComponent extends Panel
 				wrapper.setOutputMarkupId(true);
 
 				final Image handImagePlaceholder = new Image("handImagePlaceholder",
-						new ResourceReference(HomePage.class, card.getBigImageFilename()));
+						new PackageResourceReference(HomePage.class, card.getBigImageFilename()));
 				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
 				handImagePlaceholder.setOutputMarkupId(true);
 
@@ -89,7 +88,7 @@ public class HandComponent extends Panel
 				crossLink.setMarkupId("cross-link" + item.getIndex());
 				crossLink.setOutputMarkupId(true);
 
-				final Image thumb = new Image("thumbPlaceholder", new ResourceReference(
+				final Image thumb = new Image("thumbPlaceholder", new PackageResourceReference(
 						HomePage.class, card.getThumbnailFilename()));
 				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
 				thumb.setOutputMarkupId(true);

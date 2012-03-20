@@ -1,9 +1,11 @@
 package org.alienlabs.hatchetharry.persistence.dao;
 
+import java.io.Serializable;
+
 import org.alienlabs.hatchetharry.model.Side;
 import org.hibernate.Session;
 
-public interface SideDao
+public interface SideDao extends Serializable
 {
 	public Session getSession();
 

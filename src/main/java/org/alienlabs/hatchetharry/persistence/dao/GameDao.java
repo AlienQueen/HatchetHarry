@@ -18,6 +18,7 @@
  */
 package org.alienlabs.hatchetharry.persistence.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.Game;
@@ -29,7 +30,7 @@ import org.hibernate.Session;
  * 
  * @author igor
  */
-public interface GameDao
+public interface GameDao extends Serializable
 {
 	public Session getSession();
 

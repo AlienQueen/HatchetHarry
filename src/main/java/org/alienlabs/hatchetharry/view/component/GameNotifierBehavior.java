@@ -28,7 +28,7 @@ public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.page.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		GameNotifierBehavior.LOGGER.info("respond to: " + request.getQueryString());
 

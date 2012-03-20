@@ -16,7 +16,6 @@
  
 	<!--<script src="http://github.com/Atmosphere/atmosphere/raw/master/modules/jquery/src/main/webapp/jquery/jquery-1.6.4.js"
             type="text/javascript"></script>-->
-	<script wicket:id="jquery-1.6.4.js" type="text/javascript"></script>
 	<script wicket:id="jquery-ui-1.8.18.core.mouse.widget.js" type="text/javascript"></script>
 	<script wicket:id="jquery.atmosphere.js" type="text/javascript"></script>
 
@@ -83,7 +82,8 @@
 </head>
 <body class="yui-skin-sam" id="yahoo-com">
 
-
+  <span wicket:id="headResources"></span>
+  
   <table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#989898" id="menubar">
     <tr>
       <td valign="bottom">
@@ -224,7 +224,7 @@
 	<br/><br/><br/>
 	
 	<span wicket:id="cardParent">
-		<span wicket:id="playCardParentPlaceholder1">
+		<span wicket:id="playCardParentPlaceholder">
 					<div wicket:id="cardPlaceholdera1"></div>
 					<div wicket:id="cardPlaceholdera2"></div>
 					<div wicket:id="cardPlaceholdera3"></div>

@@ -35,13 +35,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class GameDaoImpl implements GameDao
 {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
 	public GameDaoImpl()
 	{
-		// InjectorHolder.getInjector().inject(this);
 	}
 
 	/**

@@ -5,7 +5,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -13,6 +12,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class SidePlaceholderPanel extends Panel
 		sidePlaceholder.setMarkupId("sidePlaceholder" + this.uuid.toString());
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
 		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage,
 				this.side));
@@ -65,8 +65,8 @@ public class SidePlaceholderPanel extends Panel
 		mouseX.setOutputMarkupId(true);
 		mouseY.setOutputMarkupId(true);
 
-		final Image handleImage = new Image("handleImage",
-				new ResourceReference("images/arrow.png"));
+		final Image handleImage = new Image("handleImage", new PackageResourceReference(
+				"images/arrow.png"));
 		handleImage.setOutputMarkupId(true);
 		handleImage.setMarkupId("handleImage" + this.uuid.toString());
 
@@ -74,7 +74,7 @@ public class SidePlaceholderPanel extends Panel
 				? "image/logobouclierrouge.png"
 				: "image/logobouclierviolet.png";
 
-		final Image cardImage = new Image("sidePlaceholderImage", new ResourceReference(
+		final Image cardImage = new Image("sidePlaceholderImage", new PackageResourceReference(
 				HomePage.class, image));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString());
@@ -87,7 +87,7 @@ public class SidePlaceholderPanel extends Panel
 	public HttpServletRequest getHttpServletRequest()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		return servletWebRequest.getHttpServletRequest();
+		return servletWebRequest.getContainerRequest();
 	}
 
 	public UUID getUuid()

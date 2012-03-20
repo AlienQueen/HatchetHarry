@@ -19,7 +19,7 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -40,7 +40,7 @@ public class JoinGameModalWindow extends Panel
 	private static final long serialVersionUID = -5432292812819537705L;
 
 	@SpringBean
-	transient PersistenceService persistenceService;
+	 PersistenceService persistenceService;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
@@ -55,7 +55,7 @@ public class JoinGameModalWindow extends Panel
 			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 
 		this.player = _player;
 		this.hp = _hp;
@@ -100,7 +100,7 @@ public class JoinGameModalWindow extends Panel
 				if (null == game)
 				{
 					_modal.close(target);
-					target.appendJavascript("alert('The selected game (id= "
+					target.appendJavaScript("alert('The selected game (id= "
 							+ JoinGameModalWindow.this.gameIdInput.getDefaultModelObjectAsString()
 							+ ") does not exist!');");
 					return;
@@ -114,7 +114,7 @@ public class JoinGameModalWindow extends Panel
 				deck.setPlayerId(session.getPlayer().getId());
 				deck.shuffleLibrary();
 
-				final List<MagicCard> firstCards = new ArrayList<MagicCard>();
+				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 
 				for (int i = 0; i < 7; i++)
 				{
@@ -131,7 +131,7 @@ public class JoinGameModalWindow extends Panel
 				{
 					for (final CardPanel cp : toRemove)
 					{
-						target.appendJavascript("jQuery('#" + cp.getMarkupId() + "').remove();");
+						target.appendJavaScript("jQuery('#" + cp.getMarkupId() + "').remove();");
 						JoinGameModalWindow.LOGGER.info("cp.getMarkupId(): " + cp.getMarkupId());
 						HatchetHarrySession.get().addCardInToRemoveList(cp);
 					}
@@ -165,15 +165,15 @@ public class JoinGameModalWindow extends Panel
 				session.setDataBox(dataBox);
 				dataBox.add(behavior);
 				_dataBoxParent.addOrReplace(dataBox);
-				target.addComponent(_dataBoxParent);
+				target.add(_dataBoxParent);
 
 				final HandComponent gallery = new HandComponent("gallery");
 				_handCardsParent.addOrReplace(gallery);
-				target.addComponent(_handCardsParent);
+				target.add(_handCardsParent);
 
 				_modal.close(target);
 
-				target.appendJavascript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
+				target.appendJavaScript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
 						+ _url
 						+ "&text=2&title=2', function() { }, null, null); wicketAjaxGet('"
 						+ behavior.getUrl()
@@ -185,7 +185,7 @@ public class JoinGameModalWindow extends Panel
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
 						.getRequest();
-				final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+				final HttpServletRequest request = servletWebRequest.getContainerRequest();
 				final String jsessionid = request.getRequestedSessionId();
 
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
@@ -199,13 +199,13 @@ public class JoinGameModalWindow extends Panel
 				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
 				JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent().addOrReplace(spp);
-				target.addComponent(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
+				target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
 
 				final int posX = ("infrared".equals(sideInput.getDefaultModelObjectAsString()))
 						? 300
 						: 900;
 
-				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
+				target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
 						+ spp.getUuid()
 						+ "'); "
 						+ "card.css('position', 'absolute'); "
@@ -222,10 +222,10 @@ public class JoinGameModalWindow extends Panel
 				spp2.setOutputMarkupId(true);
 
 				JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
-				target.addComponent(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
+				target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
 
 				final int posX2 = (posX == 300) ? 900 : 300;
-				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
+				target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
 						+ spp2.getUuid()
 						+ "'); "
 						+ "card.css('position', 'absolute'); "
@@ -264,6 +264,11 @@ public class JoinGameModalWindow extends Panel
 				session.setGameId(Long.valueOf(JoinGameModalWindow.this.gameIdInput
 						.getDefaultModelObjectAsString()));
 				session.setGameCreated();
+			}
+
+			@Override
+			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
+			{
 			}
 		};
 		submit.setOutputMarkupId(true);

@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,14 +14,15 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
@@ -36,7 +38,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 
 	@SpringBean
-	private transient PersistenceService persistenceService;
+	private  PersistenceService persistenceService;
 
 	private final WebMarkupContainer thumbParent;
 	private final WebMarkupContainer cardParent;
@@ -52,7 +54,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			final int _currentCard, final String _side)
 	{
 		super();
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 		this.thumbParent = _thumbParent;
 		this.cardParent = _cardParent;
 		this.uuidToLookFor = _uuidToLookFor;
@@ -67,7 +69,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
 
 		PlayCardFromHandBehavior.LOGGER.info("URL: " + request.getQueryString());
@@ -111,7 +113,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.currentCard = _indexOfClickedCard;
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
-		final List<MagicCard> all = HatchetHarrySession.get().getFirstCardsInHand();
+		final ArrayList<MagicCard> all = HatchetHarrySession.get().getFirstCardsInHand();
 
 		if (null != card)
 		{
@@ -136,9 +138,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				HatchetHarrySession.get().addCardInBattleField(this.cp);
 
 				this.thumbParent.addOrReplace(this.cp);
-				target.addComponent(this.thumbParent);
+				target.add(this.thumbParent);
 
-				target.appendJavascript("jQuery(document).ready(function() { "
+				target.appendJavaScript("jQuery(document).ready(function() { "
 						+ "jQuery.gritter.add({ title : '" + request.getParameter("side")
 						+ "', text : \"has played \'" + card.getTitle()
 						+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); });");
@@ -152,7 +154,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 								.getUuid());
 						if (null != mc)
 						{
-							target.appendJavascript("var card = jQuery(\"#menutoggleButton"
+							target.appendJavaScript("var card = jQuery(\"#menutoggleButton"
 									+ aCard.getUuid() + "\"); "
 									+ "card.css(\"position\", \"absolute\"); "
 									+ "card.css(\"left\", \"" + mc.getX() + "px\");"
@@ -160,15 +162,15 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 							if (mc.isTapped())
 							{
-								target.appendJavascript("jQuery('#card" + mc.getUuid()
+								target.appendJavaScript("jQuery('#card" + mc.getUuid()
 										+ "').rotate(90);");
 							}
 							else
 							{
-								target.appendJavascript("jQuery('#card" + mc + "').rotate(0);");
+								target.appendJavaScript("jQuery('#card" + mc + "').rotate(0);");
 							}
 
-							target.appendJavascript("jQuery(\"#card" + aCard.getUuid()
+							target.appendJavaScript("jQuery(\"#card" + aCard.getUuid()
 									+ "\").easyTooltip({" + "useElement: \"cardTooltip"
 									+ aCard.getUuid() + "\"});");
 						}
@@ -185,11 +187,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				{
 					for (final CardPanel c : toRemove)
 					{
-						target.appendJavascript("jQuery('#" + c.getMarkupId() + "').remove();");
+						target.appendJavaScript("jQuery('#" + c.getMarkupId() + "').remove();");
 					}
 				}
 
-				target.appendJavascript("jQuery(document).ready(function() { var card = jQuery(\"#menutoggleButton"
+				target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery(\"#menutoggleButton"
 						+ this.cp.getUuid()
 						+ "\"); "
 						+ "card.css(\"position\", \"absolute\"); "
@@ -217,28 +219,28 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 						+ HatchetHarrySession.get().getMySidePosY();
 				PlayCardFromHandBehavior.LOGGER.info(message);
 
-				final Meteor meteor = Meteor
-						.build(request, new LinkedList<BroadcastFilter>(), null);
-				meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-				meteor.broadcast(message);
-
 				final HandComponent gallery = new HandComponent("gallery");
 				gallery.setOutputMarkupId(true);
 
 				this.cardParent.addOrReplace(gallery);
-				target.addComponent(this.cardParent);
+				target.add(this.cardParent);
 
 				((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 						.getPlayer());
-				target.appendJavascript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+				target.appendJavaScript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+
+				final Meteor meteor = Meteor
+						.build(request, new LinkedList<BroadcastFilter>(), null);
+				meteor.addListener((AtmosphereResourceEventListener)target.getPage());
+				meteor.broadcast(message);
 			}
 		}
 	}
 
 	@Override
-	public void renderHead(final IHeaderResponse response)
+	public void renderHead(final Component component, final IHeaderResponse response)
 	{
-		super.renderHead(response);
+		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
@@ -248,11 +250,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("clicked", this.currentCard);
 		variables.put("side", this.side);
 
-		final TextTemplate template1 = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/playCard/playCard.js");
 		template1.interpolate(variables);
 
-		response.renderJavascript(template1.asString(), null);
+		response.renderJavaScript(template1.asString(), null);
 	}
 
 	@Required

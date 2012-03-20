@@ -37,13 +37,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class CollectibleCardDaoImpl implements CollectibleCardDao
 {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
 	public CollectibleCardDaoImpl()
 	{
-		// InjectorHolder.getInjector().inject(this);
 	}
 
 	/**

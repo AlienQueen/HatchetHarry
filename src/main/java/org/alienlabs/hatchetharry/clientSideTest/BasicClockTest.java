@@ -30,16 +30,16 @@ public class BasicClockTest
 			@Override
 			public void init()
 			{
-				this.addComponentInstantiationListener(new SpringComponentInjector(this,
-						this.context, true));
+				this.getComponentInstantiationListeners().add(
+						new SpringComponentInjector(this, this.context, true));
 				this.setMistletoeTest(true);
 			}
 		};
 		this.tester = new WicketTester(this.webApp);
 		final ApplicationContext context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
-		this.tester.getApplication().addComponentInstantiationListener(
-				new SpringComponentInjector(this.tester.getApplication(), context, true));
+		this.tester.getApplication().getComponentInstantiationListeners()
+				.add(new SpringComponentInjector(this.tester.getApplication(), context, true));
 	}
 
 	@Test

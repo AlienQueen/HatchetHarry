@@ -6,12 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		UpdateDataBoxBehavior.LOGGER.info("respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getParameter("jsessionid");
 		final String displayJoinMessage = request.getParameter("displayJoinMessage");
 
@@ -50,7 +51,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		{
 			UpdateDataBoxBehavior.LOGGER.info("notify with jsessionid="
 					+ this.hp.getSession().getId());
-			target.appendJavascript("wicketAjaxGet('" + this.hp.notifierPanel.getCallbackUrl()
+			target.appendJavaScript("wicketAjaxGet('" + this.hp.notifierPanel.getCallbackUrl()
 					+ "&title=A player joined in!&text=Ready to play?&jsessionid=" + jsessionid
 					+ "', function() { }, null, null);");
 		}
@@ -65,19 +66,19 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	public void renderHead(final IHeaderResponse response)
+	public void renderHead(final Component component, final IHeaderResponse response)
 	{
-		super.renderHead(response);
+		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("jsessionid", this.getComponent().getPage().getSession().getId());
 
-		final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/databox/updateDataBox.js");
 		template.interpolate(variables);
 
-		response.renderOnDomReadyJavascript(template.asString());
+		response.renderOnDomReadyJavaScript(template.asString());
 	}
 
 	public String getUrl()

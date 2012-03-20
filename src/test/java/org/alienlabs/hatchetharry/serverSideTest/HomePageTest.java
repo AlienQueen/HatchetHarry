@@ -1,6 +1,5 @@
 package org.alienlabs.hatchetharry.serverSideTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
@@ -10,10 +9,9 @@ import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
-import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -49,16 +47,16 @@ public class HomePageTest
 			@Override
 			public void init()
 			{
-				this.addComponentInstantiationListener(new SpringComponentInjector(this,
-						this.context, true));
+				this.getComponentInstantiationListeners().add(
+						new SpringComponentInjector(this, this.context, true));
 			}
 		};
 
 		this.tester = new WicketTester(webApp);
 		final ApplicationContext context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
-		this.tester.getApplication().addComponentInstantiationListener(
-				new SpringComponentInjector(this.tester.getApplication(), context, true));
+		this.tester.getApplication().getComponentInstantiationListeners()
+				.add(new SpringComponentInjector(this.tester.getApplication(), context, true));
 	}
 
 	@Test
@@ -89,30 +87,11 @@ public class HomePageTest
 		// assert hand is present
 		this.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
 
-		// assert hand content
-		final HandComponent gallery = (HandComponent)this.tester
-				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
-
-		final List<Image> img = new ArrayList<Image>();
-		@SuppressWarnings("unchecked")
-		final List<Image> images = (List<Image>)gallery.visitChildren(Image.class,
-				new IVisitor<Image>()
-				{
-					@Override
-					public List<Image> component(final Image component)
-					{
-						img.add(component);
-						return img;
-					}
-				});
-
-		// assert 1 image
-		Assert.assertNotNull(images.get(0));
-		Assert.assertEquals(1, images.size());
+		this.tester.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
 
 		// assert URL of a thumbnail
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(this.tester
-				.getServletResponse().getDocument(), "class", "nav-thumb", false);
+				.getLastResponse().getDocument(), "class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
@@ -149,13 +128,13 @@ public class HomePageTest
 		this.tester.assertRenderedPage(HomePage.class);
 
 		// Assert menubar
-		List<TagTester> tagTester = TagTester.createTagsByAttribute(this.tester
-				.getServletResponse().getDocument(), "class", "rootVoices", false);
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(this.tester.getLastResponse()
+				.getDocument(), "class", "rootVoices", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
 		// Assert menu entries
-		tagTester = TagTester.createTagsByAttribute(this.tester.getServletResponse().getDocument(),
+		tagTester = TagTester.createTagsByAttribute(this.tester.getLastResponse().getDocument(),
 				"class", "mbmenu", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertTrue(tagTester.size() > 1);
@@ -234,7 +213,7 @@ public class HomePageTest
 	private void testDockElement(final String name)
 	{
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(this.tester
-				.getServletResponse().getDocument(), "title", name, false);
+				.getLastResponse().getDocument(), "title", name, false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
@@ -274,7 +253,7 @@ public class HomePageTest
 		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)this.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(aboutLink);
-		final IBehavior b = aboutLink.getBehaviors().get(0);
+		final Behavior b = aboutLink.getBehaviors().get(0);
 		Assert.assertNotNull(b);
 		this.tester.executeBehavior((AbstractAjaxBehavior)b);
 		this.tester.assertVisible(window.getPageRelativePath() + ":" + window.getContentId());

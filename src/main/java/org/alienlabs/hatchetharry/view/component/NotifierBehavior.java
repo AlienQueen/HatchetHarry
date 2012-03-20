@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
@@ -44,7 +45,7 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.page.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		NotifierBehavior.LOGGER.info("respond to: " + request.getQueryString());
 
@@ -93,9 +94,9 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	public void renderHead(final IHeaderResponse response)
+	public void renderHead(final Component component, final IHeaderResponse response)
 	{
-		super.renderHead(response);
+		super.renderHead(component, response);
 		final int before = this.getCallbackUrl().toString().indexOf("&jsessionid=");
 		final int after = this.getCallbackUrl().toString().indexOf("&random=");
 		boolean isSameSessionId = false;
@@ -116,11 +117,11 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			variables.put("title", this.title);
 			variables.put("text", this.text);
 
-			final TextTemplate template = new PackagedTextTemplate(HomePage.class,
+			final TextTemplate template = new PackageTextTemplate(HomePage.class,
 					"script/notifier/notifier.js");
 			template.interpolate(variables);
 
-			response.renderOnDomReadyJavascript(template.asString());
+			response.renderOnDomReadyJavaScript(template.asString());
 			NotifierBehavior.LOGGER.info("yes!");
 		}
 		else

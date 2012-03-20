@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,8 +31,10 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-public class PersistenceService
+public class PersistenceService implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
 	@SpringBean

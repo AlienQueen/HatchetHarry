@@ -68,13 +68,13 @@ public class DataGenerator implements InitializingBean
 			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
-	private transient DeckDao deckDao;
+	private  DeckDao deckDao;
 	@SpringBean
-	private transient CollectibleCardDao collectibleCardDao;
+	private  CollectibleCardDao collectibleCardDao;
 	@SpringBean
-	private transient MagicCardDao magicCardDao;
+	private  MagicCardDao magicCardDao;
 	@SpringBean
-	private transient PersistenceService persistenceService;
+	private  PersistenceService persistenceService;
 
 	@SpringBean
 	private transient boolean generateData;

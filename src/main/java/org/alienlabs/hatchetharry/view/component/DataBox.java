@@ -9,10 +9,9 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.alienlabs.hatchetharry.view.page.UpdateDataBoxPage;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -21,6 +20,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
@@ -36,7 +36,7 @@ public class DataBox extends Panel
 	private static final long serialVersionUID = -9102861929848438800L;
 
 	@SpringBean
-	transient PersistenceService persistenceService;
+	 PersistenceService persistenceService;
 
 	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
 	final HomePage hp;
@@ -46,7 +46,7 @@ public class DataBox extends Panel
 	public DataBox(final String id, final long _gameId, final HomePage _hp)
 	{
 		super(id);
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 		this.hp = _hp;
 
 		this.updateDataBox = new BookmarkablePageLink<UpdateDataBoxPage>("updateDataBox",
@@ -86,7 +86,7 @@ public class DataBox extends Panel
 						DataBox.this.writeUpdateDataBoxCometMessage();
 					}
 				};
-				final Image playerPlus = new Image("playerPlus", new ResourceReference(
+				final Image playerPlus = new Image("playerPlus", new PackageResourceReference(
 						HomePage.class, "image/plusLife.png"));
 				playerPlus.setOutputMarkupId(true);
 				plus.add(playerPlus);
@@ -105,7 +105,7 @@ public class DataBox extends Panel
 						DataBox.this.writeUpdateDataBoxCometMessage();
 					}
 				};
-				final Image playerMinus = new Image("playerMinus", new ResourceReference(
+				final Image playerMinus = new Image("playerMinus", new PackageResourceReference(
 						HomePage.class, "image/minusLife.png"));
 				playerMinus.setOutputMarkupId(true);
 				minus.add(playerMinus);
@@ -129,7 +129,7 @@ public class DataBox extends Panel
 	void writeUpdateDataBoxCometMessage()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.hp.getRequest();
-		final HttpServletRequest request = servletWebRequest.getHttpServletRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String message = "%%%" + request.getRequestedSessionId();
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
