@@ -38,7 +38,7 @@ public class CreateGameModalWindow extends Panel
 	private static final long serialVersionUID = -5432292812819537705L;
 
 	@SpringBean
-	 PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
 
@@ -145,8 +145,7 @@ public class CreateGameModalWindow extends Panel
 				_handCardsParent.addOrReplace(gallery);
 				target.add(_handCardsParent);
 
-				target.appendJavaScript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); wicketAjaxGet('"
-						+ _url + "&text=1&title=1', function() { }, null, null);");
+				target.appendJavaScript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
 
 				CreateGameModalWindow.LOGGER.info("close!");
 
@@ -207,6 +206,7 @@ public class CreateGameModalWindow extends Panel
 			@Override
 			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				CreateGameModalWindow.LOGGER.error("ERROR");
 			}
 		};
 		submit.setOutputMarkupId(true);
