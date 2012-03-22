@@ -171,6 +171,6 @@ jQuery(function() {
 
 });
 
-jQuery(document).ready(function() { // TODO: remove this as it is useless now
+jQuery(document).ready(function() {
 	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({});
 });

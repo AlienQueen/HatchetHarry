@@ -42,6 +42,7 @@ public class HatchetHarrySession extends WebSession
 	private static String MY_SIDE_POS_Y = "MY_SIDE_POS_Y";
 	private static String FIST_SIDE_MOVE_CALLBACK_URL = "FIST_SIDE_MOVE_CALLBACK_URL";
 	private static String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
+	private static String IS_HAND_DISPLAYED = "IS_HAND_DISPLAYED";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -54,6 +55,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
+		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, true);
 
 	}
 
@@ -371,5 +373,15 @@ public class HatchetHarrySession extends WebSession
 	public void setSecondSideMoveCallbackUrl(final String callbackUrl)
 	{
 		this.setAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL, callbackUrl);
+	}
+
+	public boolean isHandDisplayed()
+	{
+		return (Boolean)this.getAttribute(HatchetHarrySession.IS_HAND_DISPLAYED);
+	}
+
+	public void setHandDisplayed(final boolean isDisplayed)
+	{
+		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, isDisplayed);
 	}
 }

@@ -86,6 +86,12 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+		  <groupId>pl.rabbitsoftware</groupId>
+		  <artifactId>enhancedwickettester</artifactId>
+		  <version>1.0.0</version>
+		  <scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.14</version>

@@ -9,6 +9,7 @@ import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.behavior.Behavior;
@@ -207,6 +208,30 @@ public class HomePageTest
 
 		// Assert library
 		this.testDockElement("Library");
+
+		// The first click must hide the hand
+		this.tester.assertComponent("handLink", AjaxLink.class);
+		this.tester.clickLink("handLink", true);
+		WebMarkupContainer handParent = (WebMarkupContainer)this.tester
+				.getComponentFromLastRenderedPage("handCardsPlaceholder");
+		this.tester.assertComponentOnAjaxResponse(handParent);
+
+		final Component gallery = this.tester
+				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
+		Assert.assertNotNull(gallery);
+		Assert.assertFalse(gallery instanceof HandComponent);
+		this.tester.assertComponent("handCardsPlaceholder:gallery", WebMarkupContainer.class);
+
+		// The second click must show the hand
+		this.tester.clickLink("handLink", true);
+		handParent = (WebMarkupContainer)this.tester
+				.getComponentFromLastRenderedPage("handCardsPlaceholder");
+		this.tester.assertComponentOnAjaxResponse(handParent);
+
+		this.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
+		final HandComponent hand = (HandComponent)this.tester
+				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
+		Assert.assertNotNull(hand);
 	}
 
 	// Assert dock element is present and contains a .gif

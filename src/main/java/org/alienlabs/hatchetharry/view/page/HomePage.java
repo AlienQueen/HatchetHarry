@@ -182,7 +182,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.7 (release King Wicket), built on Wednesday, 21th of March 2012."));
+				"version 0.0.7 (release King Wicket), built on Thursday, 22nd of March 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -219,6 +219,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.buildHandCards();
 		this.buildHandMarkup();
 
+		this.buildDock();
 
 		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
 		balduParent.setOutputMarkupId(true);
@@ -291,6 +292,32 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		{
 			this.restoreBattlefieldState();
 		}
+	}
+
+	private void buildDock()
+	{
+		final AjaxLink<Void> showHandLink = new AjaxLink<Void>("handLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Component galleryToUpdate;
+				final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+				galleryToUpdate = isHandDisplayed
+						? new WebMarkupContainer("gallery")
+						: new HandComponent("gallery");
+
+				HomePage.this.handCardsPlaceholder.addOrReplace(galleryToUpdate);
+				HatchetHarrySession.get().setHandDisplayed(!isHandDisplayed);
+
+				target.add(HomePage.this.handCardsPlaceholder);
+				target.appendJavaScript("var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval();");
+			}
+		};
+
+		this.add(showHandLink);
 	}
 
 	private void buildEndTurnLink()
