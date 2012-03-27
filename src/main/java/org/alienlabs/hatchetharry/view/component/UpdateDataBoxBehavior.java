@@ -23,16 +23,12 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 
 	static final Logger LOGGER = LoggerFactory.getLogger(UpdateDataBoxBehavior.class);
 
-	final WebMarkupContainer dataBoxParent;
-
 	final Long gameId;
 
 	private final HomePage hp;
 
-	public UpdateDataBoxBehavior(final WebMarkupContainer _dataBoxParent, final Long _gameId,
-			final HomePage _hp)
+	public UpdateDataBoxBehavior(final Long _gameId, final HomePage _hp)
 	{
-		this.dataBoxParent = _dataBoxParent;
 		this.gameId = _gameId;
 		this.hp = _hp;
 	}
@@ -51,18 +47,24 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		{
 			UpdateDataBoxBehavior.LOGGER.info("notify with jsessionid="
 					+ this.hp.getSession().getId());
+
 			target.appendJavaScript("wicketAjaxGet('" + this.hp.notifierPanel.getCallbackUrl()
 					+ "&title=A player joined in!&text=Ready to play?&jsessionid=" + jsessionid
 					+ "', function() { }, null, null);");
 		}
 
-		final DataBox dataBox = new DataBox("dataBox", this.gameId, this.hp);
+		final HatchetHarrySession session = HatchetHarrySession.get();
+		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(session.getGameId(),
+				this.hp);
+		final DataBox dataBox = new DataBox("dataBox", session.getGameId(), this.hp);
+		session.setDataBox(dataBox);
 		dataBox.setOutputMarkupId(true);
-		this.dataBoxParent.setOutputMarkupId(true);
-		dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, this.gameId, this.hp));
-		this.dataBoxParent.addOrReplace(dataBox);
-		target.addComponent(this.dataBoxParent, "dataBoxParent"
-				+ HatchetHarrySession.get().getPlayerLetter());
+		dataBox.add(behavior);
+		session.setDataBoxParent((WebMarkupContainer)session.getDataBoxParent().addOrReplace(
+				dataBox));
+		target.add(session.getDataBoxParent());
+		UpdateDataBoxBehavior.LOGGER.info("UpdateDataBoxBehavior with gameId="
+				+ session.getGameId());
 	}
 
 	@Override

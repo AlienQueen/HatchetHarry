@@ -12,6 +12,7 @@ import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 
@@ -29,11 +30,11 @@ public class HatchetHarrySession extends WebSession
 	private static final String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
 	private static final String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
 	private static final String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
-	private static final String PLAYER_LETTER = "PLAYER_LETTER";
 	private static final String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
 	private static final String GAME_CREATED = "GAME_CREATED";
 	private static final String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
 	private static final String DATA_BOX = "DATA_BOX";
+	private static final String DATA_BOX_PARENT = "DATA_BOX_PARENT";
 	private static final String DECK = "DECK";
 	private static final String TO_REMOVE = "TO_REMOVE";
 	private static final String MY_SIDE_PLACEHOLDER = "MY_SIDE_PLACEHOLDER";
@@ -179,16 +180,6 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD, card);
 	}
 
-	public void setPlayerLetter(final String _string)
-	{
-		this.setAttribute(HatchetHarrySession.PLAYER_LETTER, _string);
-	}
-
-	public String getPlayerLetter()
-	{
-		return (String)this.getAttribute(HatchetHarrySession.PLAYER_LETTER);
-	}
-
 	public void setPlaceholderNumber(final int _index)
 	{
 		this.setAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER, _index);
@@ -207,6 +198,16 @@ public class HatchetHarrySession extends WebSession
 	public DataBox getDataBox()
 	{
 		return (DataBox)this.getAttribute(HatchetHarrySession.DATA_BOX);
+	}
+
+	public void setDataBoxParent(final WebMarkupContainer _dataBoxParent)
+	{
+		this.setAttribute(HatchetHarrySession.DATA_BOX_PARENT, _dataBoxParent);
+	}
+
+	public WebMarkupContainer getDataBoxParent()
+	{
+		return (WebMarkupContainer)this.getAttribute(HatchetHarrySession.DATA_BOX_PARENT);
 	}
 
 	public void setDeck(final Deck _deck)

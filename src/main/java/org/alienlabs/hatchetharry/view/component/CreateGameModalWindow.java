@@ -71,6 +71,7 @@ public class CreateGameModalWindow extends Panel
 		this.game = this.player.getGames().iterator().next();
 		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
 				+ ". You'll have to provide it to your opponent(s).");
+		HatchetHarrySession.get().setGameId(this.game.getId());
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
 		final Model<String> nameModel = new Model<String>("");
@@ -158,10 +159,11 @@ public class CreateGameModalWindow extends Panel
 						.getRequest();
 				final HttpServletRequest request = servletWebRequest.getContainerRequest();
 				final String jsessionid = request.getRequestedSessionId();
-				spp.add(new SidePlaceholderMoveBehavior(
-						CreateGameModalWindow.this.sidePlaceholderParent, spp.getUuid(),
-						jsessionid, CreateGameModalWindow.this.homePage, sideInput
-								.getDefaultModelObjectAsString()));
+				spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(), jsessionid,
+						CreateGameModalWindow.this.homePage, sideInput
+								.getDefaultModelObjectAsString(),
+						CreateGameModalWindow.this.homePage.getDataBoxParent(),
+						CreateGameModalWindow.this.game.getId()));
 				spp.setOutputMarkupId(true);
 
 				CreateGameModalWindow.this.sidePlaceholderParent.addOrReplace(spp);

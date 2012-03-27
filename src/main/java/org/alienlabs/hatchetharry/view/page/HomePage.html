@@ -55,7 +55,8 @@
     <script type="text/javascript" src="http://developer.yahoo.com/yui/build/container/container_core.js"></script>
 
     <!-- Menu source file -->
-    <script type="text/javascript" src="http://developer.yahoo.com/yui/build/menu/menu.js"></script>
+    <!-- <script type="text/javascript" src="http://developer.yahoo.com/yui/build/menu/menu.js"></script> -->
+	<script type="text/javascript"  wicket:id="menu.js"></script>
     <script type="text/javascript" src="http://yui.yahooapis.com/2.8.2r1/build/element/element.js"></script>
     
     <!-- The toolbar at the bottom of the page -->
@@ -125,7 +126,7 @@
     <a  wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
         <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
     </a>
-	    <a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
+	<a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
         <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
     </a>
     <a rel="separator"> </a>
@@ -173,9 +174,9 @@
       <tr>
         <td>
           <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64"></div>
-          <a wicket:id="aboutLink" href="#">About HatychetHarry</a>
-          <a wicket:id="teamInfoLink" href="#">HatchetHarry team info</a>
-          <a href="#" target="_blank">Preferences</a>
+          <a wicket:id="aboutLink">About HatychetHarry</a>
+          <a wicket:id="teamInfoLink">HatchetHarry team info</a>
+          <a target="_blank">Preferences</a>
         </td>
       </tr>
     </table>
@@ -354,19 +355,19 @@
 	
 	<span class="tour_8">
 		<div id="dock">
-		    <a wicket:id="handLink" href='#' title="Hand" class="tour_9">
+		    <a wicket:id="handLink" title="Hand" class="tour_9">
 		    	<img src="/image/hand.gif" alt="Hand" title="Hand"/>
 		    </a>
-		    <a href='#' title="Graveyard" class="tour_10">
+		    <a title="Graveyard" class="tour_10">
 		    	<img src="/image/graveyard.gif" alt="Graveyard" title="Graveyard"/>
 		    </a>
-		    <a href='#' title="Exiled" class="tour_11">
+		    <a title="Exiled" class="tour_11">
 		    	<img src="/image/exiled.gif" alt="Exiled" title="Exiled"/>
 		    </a>
-		    <a href="#" title="Battlefield" class="tour_12">
+		    <a title="Battlefield" class="tour_12">
 		      <img src="/image/battlefield.gif" alt="Battlefield" />
 		    </a>
-		    <a href='#' title="Library" class="tour_13">
+		    <a title="Library" class="tour_13">
 			    <img src="/image/library.gif" alt="Library"  title="Library"/>
 		    </a>
 	  	</div>
@@ -418,28 +419,31 @@
 	<div id="floatingbar"> 
 
          <ul class="gallery clearfix">
-				<li wicket:id="untapAndDrawPlaceholder" class="toolbarLink" title="Untap your permanents & draw a card ">
-					<a wicket:id="untapAndDrawLink" id="twitterlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/tweet.png"></img> Untap & draw</a>
+				<li wicket:id="untapAndDrawPlaceholder" class="toolbarLink" title="Untap your permanents & draw a card " style="cursor: pointer">
+					<a wicket:id="untapAndDrawLink" id="twitterlink"rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/tweet.png"></img> Untap & draw</a>
 				</li>
 				
-				<li wicket:id="untapAllPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Untall all your permanents">
-					<a wicket:id="untapAllLink" class="tour_1" href="#"><img class="toolbarIcon" src="image/googlebuzz.png"></img> Untap all</a>
+				<li wicket:id="untapAllPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Untall all your permanents" style="cursor: pointer">
+					<a wicket:id="untapAllLink" class="tour_1"><img class="toolbarIcon" src="image/googlebuzz.png"></img> Untap all</a>
 				</li>
 				
-				<li rel="prettyPhoto[iframe]">
-					<a wicket:id="drawCardLink" class="toolbarLink tour_2" title="Draw a card " href="#"><img class="toolbarIcon" src="image/youtube.png"></img> Draw a card</a>
+				<li rel="prettyPhoto[iframe]" style="cursor: pointer">
+					<a wicket:id="drawCardLink" class="toolbarLink tour_2" title="Draw a card ">
+						<img class="toolbarIcon" src="image/youtube.png"></img>
+						 Draw a card
+					</a>
 				</li>
 				
-				<li wicket:id="playCardPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Play the card currently shown in your hand">
-					<a wicket:id="playCardLink" id="#" href="#" class="tour_3"><img style="color: white;" src="image/playCard.png"> Play card</img></a>
+				<li wicket:id="playCardPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Play the card currently shown in your hand" style="cursor: pointer">
+					<a wicket:id="playCardLink" id="#"class="tour_3"><img style="color: white;" src="image/playCard.png"> Play card</img></a>
 				</li>
 				
 				<li>
-				<a class="toolbarLink" title="Declare a combat phase "  id="combatlink" href="#" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/battle.png"></img> Declare combat</a>
+				<a class="toolbarLink" title="Declare a combat phase "  id="combatlink" rel="prettyPhoto[iframe]"><img class="toolbarIcon" src="image/battle.png"></img> Declare combat</a>
 				</li>
 				
-				<li wicket:id="endTurnPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Put an end to your turn">
-					<a wicket:id="endTurnLink" class="#" href="#"><img class="toolbarIcon" src="image/contact.png"></img> End of turn</a>
+				<li wicket:id="endTurnPlaceholder" class="toolbarLink" rel="prettyPhoto[iframe]" title="Put an end to your turn" style="cursor: pointer">
+					<a wicket:id="endTurnLink" class="#"><img class="toolbarIcon" src="image/contact.png"></img> End of turn</a>
 					<span wicket:id="notifierPanel"></span>
 				</li>
 				

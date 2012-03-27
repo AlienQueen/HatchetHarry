@@ -29,7 +29,8 @@ jQuery(document).ready(
 							var req = "${url}&id=${jsessionid}&requestingId="
 								+ data.split("|||||")[1]
 							+ "&side=" + data.split("|||||")[0]
-							+ "&uuid=" + data.split("|||||")[2];
+							+ "&uuid=" + data.split("|||||")[2]
+							+ "&stop=true";
 							wicketAjaxGet(req, function() { }, null, null);
 						}
 

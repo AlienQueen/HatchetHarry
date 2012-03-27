@@ -46,6 +46,7 @@ public class JoinGameModalWindow extends Panel
 
 	final DropDownChoice<Deck> decks;
 	final RequiredTextField<Long> gameIdInput;
+	final WebMarkupContainer dataBoxParent;
 
 	Player player;
 	HomePage hp;
@@ -59,6 +60,7 @@ public class JoinGameModalWindow extends Panel
 
 		this.player = _player;
 		this.hp = _hp;
+		this.dataBoxParent = _dataBoxParent;
 
 		final Form<String> form = new Form<String>("form");
 
@@ -106,11 +108,13 @@ public class JoinGameModalWindow extends Panel
 					return;
 				}
 
+				final HatchetHarrySession session = HatchetHarrySession.get();
+				session.setGameId(game.getId());
+
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
 				deck.setCards(allCards);
-				final HatchetHarrySession session = HatchetHarrySession.get();
 				deck.setPlayerId(session.getPlayer().getId());
 				deck.shuffleLibrary();
 
@@ -159,14 +163,16 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 
-				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(_dataBoxParent,
-						game.getId(), JoinGameModalWindow.this.hp);
+				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(game.getId(),
+						JoinGameModalWindow.this.hp);
 				final DataBox dataBox = new DataBox("dataBox",
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
 								.getDefaultModelObjectAsString()), JoinGameModalWindow.this.hp);
 				session.setDataBox(dataBox);
+				dataBox.setOutputMarkupId(true);
 				dataBox.add(behavior);
-				_dataBoxParent.addOrReplace(dataBox);
+				session.setDataBoxParent((WebMarkupContainer)session.getDataBoxParent()
+						.addOrReplace(dataBox));
 
 				final HandComponent gallery = new HandComponent("gallery");
 				_handCardsParent.addOrReplace(gallery);
@@ -178,7 +184,7 @@ public class JoinGameModalWindow extends Panel
 								+ behavior.getUrl()
 								+ "&jsessionid="
 								+ this.getParent().getPage().getSession().getId()
-								+ "&displayJoinMessage=true', function() { }, null, null);");
+								+ "&displayJoinMessage=true', function() { }, null, null); ");
 
 				JoinGameModalWindow.LOGGER.info("close!");
 
@@ -190,9 +196,9 @@ public class JoinGameModalWindow extends Panel
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
 						sideInput.getDefaultModelObjectAsString(), JoinGameModalWindow.this.hp,
 						UUID.randomUUID());
-				spp.add(new SidePlaceholderMoveBehavior(JoinGameModalWindow.this.hp
-						.getSecondSidePlaceholderParent(), spp.getUuid(), jsessionid,
-						JoinGameModalWindow.this.hp, sideInput.getDefaultModelObjectAsString()));
+				spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(), jsessionid,
+						JoinGameModalWindow.this.hp, sideInput.getDefaultModelObjectAsString(),
+						JoinGameModalWindow.this.hp.getDataBoxParent(), session.getGameId()));
 				spp.setOutputMarkupId(true);
 
 				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
@@ -211,16 +217,16 @@ public class JoinGameModalWindow extends Panel
 								+ "card.css('left', '"
 								+ posX
 								+ "px'); "
-								+ "card.css('top', '500px'); });");
+								+ "card.css('top', '500px'); }); ");
 
 				final String opponentSide = ("infrared".equals(sideInput
 						.getDefaultModelObjectAsString())) ? "ultraviolet" : "infrared";
 
 				final SidePlaceholderPanel spp2 = new SidePlaceholderPanel("firstSidePlaceholder",
 						opponentSide, JoinGameModalWindow.this.hp, UUID.randomUUID());
-				spp2.add(new SidePlaceholderMoveBehavior(JoinGameModalWindow.this.hp
-						.getFirstSidePlaceholderParent(), spp2.getUuid(), jsessionid,
-						JoinGameModalWindow.this.hp, opponentSide));
+				spp2.add(new SidePlaceholderMoveBehavior(spp2, spp2.getUuid(), jsessionid,
+						JoinGameModalWindow.this.hp, opponentSide, JoinGameModalWindow.this.hp
+								.getDataBoxParent(), session.getGameId()));
 				spp2.setOutputMarkupId(true);
 
 				JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
@@ -234,7 +240,7 @@ public class JoinGameModalWindow extends Panel
 								+ "card.css('left', '"
 								+ posX2
 								+ "px'); "
-								+ "card.css('top', '500px'); });");
+								+ "card.css('top', '500px'); }); ");
 
 				final Meteor meteor = Meteor
 						.build(request, new LinkedList<BroadcastFilter>(), null);
@@ -266,12 +272,10 @@ public class JoinGameModalWindow extends Panel
 				spp2.setPosY(500);
 				session.setMySidePlaceholder(spp2);
 
-				session.setGameId(Long.valueOf(JoinGameModalWindow.this.gameIdInput
-						.getDefaultModelObjectAsString()));
 				session.setGameCreated();
 
 				_modal.close(target);
-				target.add(_dataBoxParent);
+				target.add(session.getDataBoxParent());
 				target.add(_handCardsParent);
 				target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
 				target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());

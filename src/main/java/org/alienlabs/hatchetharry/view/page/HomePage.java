@@ -80,8 +80,8 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -182,7 +182,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.7 (release King Wicket), built on Thursday, 22nd of March 2012."));
+				"version 0.0.7 (release King Wicket), built on Tuesday, 27th of March 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -252,7 +252,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.sidePlaceholderMove = new BookmarkablePageLink<SidePlaceholderMovePage>(
 				"sidePlaceholderMove", SidePlaceholderMovePage.class);
-		this.sidePlaceholderMove.add(new SimpleAttributeModifier("id", "sidePlaceholderMove"));
+		this.sidePlaceholderMove.setMarkupId("sidePlaceholderMove");
 		this.add(this.sidePlaceholderMove);
 
 		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
@@ -314,6 +314,23 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 				target.add(HomePage.this.handCardsPlaceholder);
 				target.appendJavaScript("var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval();");
+			}
+
+			@Override
+			protected void onComponentTag(final ComponentTag tag)
+			{
+				super.onComponentTag(tag);
+
+				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+						|| tag.getName().equalsIgnoreCase("area"))
+				{
+					tag.put("href", "#");
+				}
+				else
+				{
+					this.disableLink(tag);
+				}
+
 			}
 		};
 
@@ -420,12 +437,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	private void buildDataBox(final long _gameId)
 	{
 		this.dataBoxParent = new WebMarkupContainer("dataBoxParent");
-		this.dataBoxParent.setMarkupId("dataBoxParent"
-				+ HatchetHarrySession.get().getPlayerLetter());
+		this.dataBoxParent.setMarkupId("dataBoxParent");
 		this.dataBoxParent.setOutputMarkupId(true);
+		HatchetHarrySession.get().setDataBoxParent(this.dataBoxParent);
 
-		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.dataBoxParent,
-				_gameId, this);
+		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(_gameId, this);
 		this.dataBox = new DataBox("dataBox", _gameId, this);
 		HatchetHarrySession.get().setDataBox(this.dataBox);
 		this.dataBox.add(behavior);
@@ -476,7 +492,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
 		HatchetHarrySession.get().setPlayer(p);
-		HatchetHarrySession.get().setPlayerLetter(p.getId() == 1 ? "a" : "b");
 		HatchetHarrySession.get().setPlaceholderNumber(1);
 
 		this.deck = this.persistenceService.getDeck(id);
@@ -585,6 +600,23 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 					meteor.broadcast(message);
 				}
 			}
+
+			@Override
+			protected void onComponentTag(final ComponentTag tag)
+			{
+				super.onComponentTag(tag);
+
+				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+						|| tag.getName().equalsIgnoreCase("area"))
+				{
+					tag.put("href", "");
+				}
+				else
+				{
+					this.disableLink(tag);
+				}
+
+			}
 		};
 
 		drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
@@ -649,6 +681,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
 						"script/rotate/jQueryRotate.2.1.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/menubar/menu.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
 						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js"));
 
 				response.renderCSSReference(new PackageResourceReference(HomePage.class,
@@ -689,10 +723,13 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	protected void buildHandMarkup()
 	{
+		final Component galleryToUpdate;
+		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
+				"gallery");
 
-		final HandComponent gallery = new HandComponent("gallery");
-		gallery.setOutputMarkupId(true);
-		this.handCardsPlaceholder.add(gallery);
+		galleryToUpdate.setOutputMarkupId(true);
+		this.handCardsPlaceholder.add(galleryToUpdate);
 	}
 
 	protected List<MagicCard> createFirstCards()
@@ -929,6 +966,14 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 	private void restoreBattlefieldState()
 	{
+		final Component galleryToUpdate;
+		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
+				"gallery");
+
+		galleryToUpdate.setOutputMarkupId(true);
+		this.handCardsPlaceholder.addOrReplace(galleryToUpdate);
+
 		for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
 		{
 			this.playCardParent.addOrReplace(cp);
@@ -945,9 +990,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 			if ("firstSidePlaceholder".equals(spp.getId()))
 			{
-				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(
-						this.firstSidePlaceholderParent, spp.getUuid(), jsessionid, HomePage.this,
-						HatchetHarrySession.get().getPlayer().getSide());
+				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
+						spp.getUuid(), jsessionid, HomePage.this, HatchetHarrySession.get()
+								.getPlayer().getSide(), HomePage.this.getDataBoxParent(),
+						HatchetHarrySession.get().getGameId());
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);
 				this.firstSidePlaceholderParent.addOrReplace(spp);
@@ -958,9 +1004,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			{
 				final String side = ("infrared".equals(HatchetHarrySession.get().getPlayer()
 						.getSide())) ? "ultraviolet" : "infrared";
-				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(
-						this.secondSidePlaceholderParent, spp.getUuid(), jsessionid, HomePage.this,
-						side);
+				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
+						spp.getUuid(), jsessionid, HomePage.this, side,
+						HomePage.this.getDataBoxParent(), HatchetHarrySession.get().getGameId());
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);
 				this.secondSidePlaceholderParent.addOrReplace(spp);
@@ -1093,6 +1139,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public PlayCardFromHandBehavior getPlayCardBehavior()
 	{
 		return this.playCardBehavior;
+	}
+
+	public WebMarkupContainer getDataBoxParent()
+	{
+		return this.dataBoxParent;
 	}
 
 }

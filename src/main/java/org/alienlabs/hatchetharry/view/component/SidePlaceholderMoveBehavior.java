@@ -26,20 +26,26 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SidePlaceholderMoveBehavior.class);
+
 	private UUID uuid;
 	private String jsessionid;
 	private final WebMarkupContainer parent;
 	private final String side;
 	private final HomePage homePage;
+	final WebMarkupContainer dataBoxParent;
+	final private Long gameId;
 
 	public SidePlaceholderMoveBehavior(final WebMarkupContainer _parent, final UUID _uuid,
-			final String _jsessionid, final HomePage hp, final String _side)
+			final String _jsessionid, final HomePage hp, final String _side,
+			final WebMarkupContainer _dataBoxParent, final Long _gameId)
 	{
 		this.parent = _parent;
 		this.uuid = _uuid;
 		this.jsessionid = _jsessionid;
 		this.homePage = hp;
 		this.side = _side;
+		this.dataBoxParent = _dataBoxParent;
+		this.gameId = _gameId;
 	}
 
 	@Override
@@ -51,6 +57,8 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.jsessionid = request.getRequestedSessionId();
 		final String _sideX = request.getParameter("posX");
 		final String _sideY = request.getParameter("posY");
+		final String stop = request.getParameter("stop");
+
 		this.uuid = null;
 		try
 		{
@@ -58,25 +66,25 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final Exception e)
 		{
-			SidePlaceholderMoveBehavior.LOGGER.error("error parsing UUID: " + e);
+			SidePlaceholderMoveBehavior.LOGGER.error("error parsing UUID: " + e.getMessage());
 			return;
 		}
 		final String _side = request.getParameter("side");
 
-		if ((_sideX == null) || (_sideY == null))
+		if ("true".equals(stop))
 		{
 			final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
 					_side, this.homePage, this.uuid);
-			spp.add(new SidePlaceholderMoveBehavior(this.parent, this.uuid, this.jsessionid,
-					this.homePage, _side));
+			spp.add(new SidePlaceholderMoveBehavior(spp, this.uuid, this.jsessionid, this.homePage,
+					_side, this.homePage.getDataBoxParent(), this.gameId));
 			spp.setOutputMarkupId(true);
 
-			final HatchetHarrySession session = ((HatchetHarrySession.get()));
+			final HatchetHarrySession session = HatchetHarrySession.get();
 			session.putMySidePlaceholderInSesion(_side);
 
 
 			this.homePage.getSecondSidePlaceholderParent().addOrReplace(spp);
-			target.addComponent(this.homePage.getSecondSidePlaceholderParent());
+			target.add(this.homePage.getSecondSidePlaceholderParent());
 
 			SidePlaceholderMoveBehavior.LOGGER.info("### " + this.uuid);
 			final int posX = ("infrared".equals(_side)) ? 300 : 900;
@@ -90,8 +98,28 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			spp.setPosX(posX);
 			spp.setPosY(500);
 			session.setMySidePlaceholder(spp);
+
+			if (!this.jsessionid.equals(request.getParameter("requestingId")))
+			{
+				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.gameId,
+						SidePlaceholderMoveBehavior.this.homePage);
+				final DataBox dataBox = new DataBox("dataBox", this.gameId,
+						SidePlaceholderMoveBehavior.this.homePage);
+				session.setDataBox(dataBox);
+				dataBox.setOutputMarkupId(true);
+				dataBox.add(behavior);
+
+				final WebMarkupContainer _parent = session.getDataBoxParent();
+				_parent.addOrReplace(dataBox);
+				session.setDataBoxParent(_parent);
+				target.add(_parent);
+				SidePlaceholderMoveBehavior.LOGGER.info("# databox for game id=" + this.gameId);
+			}
 		}
-		else if (!this.jsessionid.equals(request.getParameter("requestingId")))
+		else if ((_sideX != null)
+				&& (_sideY != null)
+				&& (!this.jsessionid.equals(request.getParameter("requestingId")) && (!"true"
+						.equals(stop))))
 		{
 			target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
 					+ this.uuid

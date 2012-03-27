@@ -38,7 +38,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 
 	@SpringBean
-	private  PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	private final WebMarkupContainer thumbParent;
 	private final WebMarkupContainer cardParent;

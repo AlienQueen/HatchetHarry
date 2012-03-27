@@ -22,10 +22,10 @@ jQuery(document)
 										'span#gallery a.cross-link:first img')
 										.attr('src');
 								ok(
-										((attribute.indexOf("resources") != -1)
+										((attribute.indexOf("resource") != -1)
 												&& (attribute.indexOf("image") != -1) && (attribute
 												.indexOf("jpg") != -1)),
-										"the first of these images should have a source URL containing 'resources', 'image' and 'jpg', and it appears to be: "
+										"the first of these images should have a source URL containing 'resource', 'image' and 'jpg', and it appears to be: "
 												+ attribute);
 							});
 					module("menubar");

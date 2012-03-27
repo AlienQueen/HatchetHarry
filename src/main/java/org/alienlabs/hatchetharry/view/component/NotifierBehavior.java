@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -52,8 +51,7 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 		final String _title = request.getParameter("title");
 		final String _text = request.getParameter("text");
 		final String _show = request.getParameter("show");
-		final String _updateDataBox = request.getParameter("updateDataBox");
-		final boolean updateDataBox = ("true".equals(_updateDataBox));
+		request.getParameter("updateDataBox");
 		final boolean show = ("true".equals(_show));
 
 		final String jsessionid = request.getParameter("jsessionid");
@@ -80,16 +78,6 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			NotifierBehavior.LOGGER.info(message);
 			meteor.addListener(this.page);
 			meteor.broadcast(message);
-		}
-		else if (updateDataBox)
-		{
-			final DataBox dataBox = new DataBox("dataBox", this.gameId, this.page);
-			dataBox.setOutputMarkupId(true);
-			this.dataBoxParent.setOutputMarkupId(true);
-			dataBox.add(new UpdateDataBoxBehavior(this.dataBoxParent, this.gameId, this.page));
-			this.dataBoxParent.addOrReplace(dataBox);
-			target.addComponent(this.dataBoxParent, "dataBoxParent"
-					+ HatchetHarrySession.get().getPlayerLetter());
 		}
 	}
 

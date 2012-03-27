@@ -36,7 +36,7 @@ public class DataBox extends Panel
 	private static final long serialVersionUID = -9102861929848438800L;
 
 	@SpringBean
-	 PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
 	final HomePage hp;
@@ -48,6 +48,7 @@ public class DataBox extends Panel
 		super(id);
 		Injector.get().inject(this);
 		this.hp = _hp;
+		this.setOutputMarkupId(true);
 
 		this.updateDataBox = new BookmarkablePageLink<UpdateDataBoxPage>("updateDataBox",
 				UpdateDataBoxPage.class);

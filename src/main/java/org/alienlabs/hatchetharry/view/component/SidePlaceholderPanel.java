@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
@@ -45,7 +46,7 @@ public class SidePlaceholderPanel extends Panel
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
 		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage,
-				this.side));
+				this.side, this.homePage.getDataBoxParent(), HatchetHarrySession.get().getGameId()));
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);

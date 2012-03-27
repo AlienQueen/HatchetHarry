@@ -49,8 +49,10 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				new String[] { "applicationContext.xml" });
 		this.getComponentInstantiationListeners().add(
 				new SpringComponentInjector(this, applicationContext));
-		// this.addPostComponentOnBeforeRenderListener(new
+		// this.getComponentPostOnBeforeRenderListeners().add(new
 		// WicketDebugListener());
+
+		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
 
 		this.mountResource("favicon.ico", new PackageResourceReference(HomePage.class,
 				"image/favicon.ico"));

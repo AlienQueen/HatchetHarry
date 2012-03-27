@@ -41,10 +41,6 @@ jQuery(document)
 											sticky : false,
 											time : ''
 										});
-										wicketAjaxGet(
-												'${url}&updateDataBox=true',
-												function() {
-												}, null, null);
 									} else if ((typeof sessionId != "undefined")
 											&& (typeof data.split(":::")[3] != "undefined")) {
 										// We're
