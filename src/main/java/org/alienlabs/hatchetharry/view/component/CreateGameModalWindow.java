@@ -50,7 +50,7 @@ public class CreateGameModalWindow extends Panel
 	final HomePage homePage;
 
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _handCardsParent, final CharSequence _url,
+			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
 	{
 		super(id);

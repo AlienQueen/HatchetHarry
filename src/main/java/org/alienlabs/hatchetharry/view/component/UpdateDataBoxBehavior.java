@@ -86,24 +86,6 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 			target.add(playerLifePointsParent);
 			UpdateDataBoxBehavior.LOGGER.info("just updating the life points");
 		}
-		else
-		{
-			// final UpdateDataBoxBehavior behavior = new
-			// UpdateDataBoxBehavior(session.getGameId(),
-			// this.hp, this.parent);
-			// final DataBox dataBox = new DataBox("dataBox",
-			// session.getGameId(), this.hp);
-			// session.setDataBox(dataBox);
-			// dataBox.setOutputMarkupId(true);
-			// dataBox.add(behavior);
-			//
-			// final WebMarkupContainer _parent = this.hp.getDataBoxParent();//
-			// session.getDataBoxParent();
-			// _parent.addOrReplace(dataBox);
-			// // session.setDataBoxParent(_parent);
-			// target.add(_parent);
-			// UpdateDataBoxBehavior.LOGGER.info("new databox fully created");
-		}
 
 		UpdateDataBoxBehavior.LOGGER.info("UpdateDataBoxBehavior with gameId="
 				+ session.getGameId());

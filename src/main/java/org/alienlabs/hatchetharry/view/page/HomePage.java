@@ -270,9 +270,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
 
-		this.generateCreateGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl(),
+		this.generateCreateGameLink(this.player, this.handCardsPlaceholder,
 				this.firstSidePlaceholderParent);
-		this.generateJoinGameLink(this.player, this.handCardsPlaceholder, notif.getCallbackUrl(),
+		this.generateJoinGameLink(this.player, this.handCardsPlaceholder,
 				this.secondSidePlaceholderParent);
 
 		this.generatePlayCardLink(this.hand);
@@ -836,7 +836,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	protected void generateCreateGameLink(final Player _player,
-			final WebMarkupContainer _handCardsParent, final CharSequence _url,
+			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer sidePlaceholderParent)
 	{
 		this.createGameWindow = new ModalWindow("createGameWindow");
@@ -845,7 +845,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.createGameWindow.setTitle("Create a game");
 
 		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
-				this.createGameWindow.getContentId(), _player, _handCardsParent, _url,
+				this.createGameWindow.getContentId(), _player, _handCardsParent,
 				sidePlaceholderParent, this));
 		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
@@ -869,7 +869,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	protected void generateJoinGameLink(final Player _player,
-			final WebMarkupContainer _handCardsParent, final CharSequence _url,
+			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer sidePlaceholderParent)
 	{
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
@@ -878,8 +878,8 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.joinGameWindow.setTitle("Join a game");
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
-				this.joinGameWindow.getContentId(), _player, _handCardsParent, _url,
-				this.dataBoxParent, this));
+				this.joinGameWindow.getContentId(), _player, _handCardsParent, this.dataBoxParent,
+				this));
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);
