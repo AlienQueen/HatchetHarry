@@ -162,6 +162,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	public HomePage()
 	{
 		this.setOutputMarkupId(true);
+		this.setVersioned(false);
 
 		// Resources
 		this.addHeadResources();
@@ -182,14 +183,14 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.7 (release King Wicket), built on Tuesday, 27th of March 2012."));
+				"version 0.0.7 (release King Wicket), built on Monday, 2nd of April 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
 
 		if (!HatchetHarrySession.get().isGameCreated())
 		{
-			HatchetHarrySession.get().setGameId(this.createPlayer());
+			this.player = this.createPlayer();
 		}
 		else
 		{
@@ -237,8 +238,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			balduParent.add(new WebMarkupContainer("baldu"));
 		}
 		this.add(balduParent);
-
-		this.buildDataBox(HatchetHarrySession.get().getGameId());
 
 		this.generateAboutLink();
 		this.generateTeamInfoLink();
@@ -291,7 +290,18 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		if (HatchetHarrySession.get().isGameCreated())
 		{
 			this.restoreBattlefieldState();
+			HatchetHarrySession.get().setGameCreated();
 		}
+
+		if (HatchetHarrySession.get().getGameId() != 0)
+		{
+			this.buildDataBox(HatchetHarrySession.get().getGameId());
+		}
+		else
+		{
+			this.buildDataBox(this.player.getGames().iterator().next().getId());
+		}
+
 	}
 
 	private void buildDock()
@@ -441,14 +451,16 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.dataBoxParent.setOutputMarkupId(true);
 		HatchetHarrySession.get().setDataBoxParent(this.dataBoxParent);
 
-		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(_gameId, this);
 		this.dataBox = new DataBox("dataBox", _gameId, this);
 		HatchetHarrySession.get().setDataBox(this.dataBox);
+		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(_gameId, this,
+				this.dataBox);
 		this.dataBox.add(behavior);
 		this.dataBox.setOutputMarkupId(true);
 		this.dataBoxParent.add(this.dataBox);
 
 		this.add(this.dataBoxParent);
+		HomePage.LOGGER.info("building DataBox with gameId= " + _gameId);
 	}
 
 	public void buildHandCards()
@@ -463,7 +475,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		}
 	}
 
-	protected long createPlayer()
+	protected Player createPlayer()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
@@ -476,7 +488,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		return this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet", 20l, 2l);
 	}
 
-	private Long createPlayerAndDeck(final String _jsessionid, final String _side,
+	private Player createPlayerAndDeck(final String _jsessionid, final String _side,
 			final String _name, final Long _lifePoints, final Long id)
 	{
 		final Player p = new Player();
@@ -507,7 +519,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		HatchetHarrySession.get().setPlayer(p);
 		this.player = p;
-		return p.getId();
+		return p;
 	}
 
 	private void generatePlayCardsBehaviorsForAnOpponent(final String opponentId)
@@ -994,9 +1006,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 						spp.getUuid(), jsessionid, HomePage.this, HatchetHarrySession.get()
 								.getPlayer().getSide(), HomePage.this.getDataBoxParent(),
 						HatchetHarrySession.get().getGameId());
+				spp.setVersioned(false);
+				spp.removeAll();
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);
 				this.firstSidePlaceholderParent.addOrReplace(spp);
+				this.addOrReplace(this.firstSidePlaceholderParent);
 				HatchetHarrySession.get().setFirstSideMoveCallbackUrl(
 						spmb.getCallbackUrl().toString());
 			}

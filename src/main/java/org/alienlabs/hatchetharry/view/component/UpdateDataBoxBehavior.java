@@ -5,17 +5,23 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -27,10 +33,16 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 
 	private final HomePage hp;
 
-	public UpdateDataBoxBehavior(final Long _gameId, final HomePage _hp)
+	private final DataBox parent;
+	@SpringBean
+	private PersistenceService persistenceService;
+
+	public UpdateDataBoxBehavior(final Long _gameId, final HomePage _hp, final DataBox _parent)
 	{
+		Injector.get().inject(this);
 		this.gameId = _gameId;
 		this.hp = _hp;
+		this.parent = _parent;
 	}
 
 	@Override
@@ -42,6 +54,17 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getParameter("jsessionid");
 		final String displayJoinMessage = request.getParameter("displayJoinMessage");
+		Long playerId;
+		try
+		{
+			playerId = Long.parseLong(request.getParameter("playerId"));
+		}
+		catch (final NumberFormatException e)
+		{
+			playerId = 0l;
+		}
+
+		final HatchetHarrySession session = HatchetHarrySession.get();
 
 		if (this.hp.getSession().getId().equals(jsessionid) && ("true".equals(displayJoinMessage)))
 		{
@@ -53,16 +76,35 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 					+ "', function() { }, null, null);");
 		}
 
-		final HatchetHarrySession session = HatchetHarrySession.get();
-		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(session.getGameId(),
-				this.hp);
-		final DataBox dataBox = new DataBox("dataBox", session.getGameId(), this.hp);
-		session.setDataBox(dataBox);
-		dataBox.setOutputMarkupId(true);
-		dataBox.add(behavior);
-		session.setDataBoxParent((WebMarkupContainer)session.getDataBoxParent().addOrReplace(
-				dataBox));
-		target.add(session.getDataBoxParent());
+		if (playerId != 0)
+		{
+			final WebMarkupContainer playerLifePointsParent = this.parent
+					.retrievePlayerLifePointsParentForPlayer(playerId);
+			final Player player = this.persistenceService.getPlayer(playerId);
+			playerLifePointsParent.addOrReplace(new Label("playerLifePoints", Long.toString(player
+					.getLifePoints()) + " life points"));
+			target.add(playerLifePointsParent);
+			UpdateDataBoxBehavior.LOGGER.info("just updating the life points");
+		}
+		else
+		{
+			// final UpdateDataBoxBehavior behavior = new
+			// UpdateDataBoxBehavior(session.getGameId(),
+			// this.hp, this.parent);
+			// final DataBox dataBox = new DataBox("dataBox",
+			// session.getGameId(), this.hp);
+			// session.setDataBox(dataBox);
+			// dataBox.setOutputMarkupId(true);
+			// dataBox.add(behavior);
+			//
+			// final WebMarkupContainer _parent = this.hp.getDataBoxParent();//
+			// session.getDataBoxParent();
+			// _parent.addOrReplace(dataBox);
+			// // session.setDataBoxParent(_parent);
+			// target.add(_parent);
+			// UpdateDataBoxBehavior.LOGGER.info("new databox fully created");
+		}
+
 		UpdateDataBoxBehavior.LOGGER.info("UpdateDataBoxBehavior with gameId="
 				+ session.getGameId());
 	}
@@ -86,6 +128,12 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 	public String getUrl()
 	{
 		return this.getCallbackUrl().toString();
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
 	}
 
 }

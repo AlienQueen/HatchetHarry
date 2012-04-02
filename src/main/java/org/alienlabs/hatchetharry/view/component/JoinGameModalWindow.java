@@ -163,16 +163,14 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 
-				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(game.getId(),
-						JoinGameModalWindow.this.hp);
 				final DataBox dataBox = new DataBox("dataBox",
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
 								.getDefaultModelObjectAsString()), JoinGameModalWindow.this.hp);
-				session.setDataBox(dataBox);
+				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(game.getId(),
+						JoinGameModalWindow.this.hp, dataBox);
 				dataBox.setOutputMarkupId(true);
 				dataBox.add(behavior);
-				session.setDataBoxParent((WebMarkupContainer)session.getDataBoxParent()
-						.addOrReplace(dataBox));
+				JoinGameModalWindow.this.hp.getDataBoxParent().addOrReplace(dataBox);
 
 				final HandComponent gallery = new HandComponent("gallery");
 				_handCardsParent.addOrReplace(gallery);
@@ -199,6 +197,8 @@ public class JoinGameModalWindow extends Panel
 				spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(), jsessionid,
 						JoinGameModalWindow.this.hp, sideInput.getDefaultModelObjectAsString(),
 						JoinGameModalWindow.this.hp.getDataBoxParent(), session.getGameId()));
+				JoinGameModalWindow.LOGGER.info("gameId in JoinGameModalWindow: "
+						+ session.getGameId());
 				spp.setOutputMarkupId(true);
 
 				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
@@ -275,7 +275,7 @@ public class JoinGameModalWindow extends Panel
 				session.setGameCreated();
 
 				_modal.close(target);
-				target.add(session.getDataBoxParent());
+				target.add(JoinGameModalWindow.this.hp.getDataBoxParent());
 				target.add(_handCardsParent);
 				target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
 				target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());

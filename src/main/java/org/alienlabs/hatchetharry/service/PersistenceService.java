@@ -200,6 +200,12 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
+	public Player getPlayer(final Long l)
+	{
+		return this.playerDao.load(l);
+	}
+
+	@Transactional
 	public boolean getPlayerByGame(final long l)
 	{
 		final Session session = this.playerDao.getSession();
