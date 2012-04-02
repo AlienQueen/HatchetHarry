@@ -78,6 +78,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			spp.add(new SidePlaceholderMoveBehavior(spp, this.uuid, this.jsessionid, this.homePage,
 					_side, this.homePage.getDataBoxParent(), this.gameId));
 			spp.setOutputMarkupId(true);
+			SidePlaceholderMoveBehavior.LOGGER.info("### gameId: " + this.gameId);
 
 			final HatchetHarrySession session = HatchetHarrySession.get();
 			session.putMySidePlaceholderInSesion(_side);
@@ -101,17 +102,15 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 
 			if (!this.jsessionid.equals(request.getParameter("requestingId")))
 			{
-				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.gameId,
-						SidePlaceholderMoveBehavior.this.homePage);
 				final DataBox dataBox = new DataBox("dataBox", this.gameId,
 						SidePlaceholderMoveBehavior.this.homePage);
-				session.setDataBox(dataBox);
+				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.gameId,
+						SidePlaceholderMoveBehavior.this.homePage, dataBox);
 				dataBox.setOutputMarkupId(true);
 				dataBox.add(behavior);
 
-				final WebMarkupContainer _parent = session.getDataBoxParent();
+				final WebMarkupContainer _parent = this.homePage.getDataBoxParent();
 				_parent.addOrReplace(dataBox);
-				session.setDataBoxParent(_parent);
 				target.add(_parent);
 				SidePlaceholderMoveBehavior.LOGGER.info("# databox for game id=" + this.gameId);
 			}

@@ -1,7 +1,9 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,6 +45,8 @@ public class DataBox extends Panel
 
 	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 
+	static final Map<Long, WebMarkupContainer> allPlayerLifePointsParents = new HashMap<Long, WebMarkupContainer>();
+
 	public DataBox(final String id, final long _gameId, final HomePage _hp)
 	{
 		super(id);
@@ -69,10 +73,17 @@ public class DataBox extends Panel
 				playerLabel.setOutputMarkupId(true);
 				item.add(playerLabel);
 
+				final WebMarkupContainer playerLifePointsParent = new WebMarkupContainer(
+						"playerLifePointsParent");
+				playerLifePointsParent.setOutputMarkupId(true);
+				playerLifePointsParent.setMarkupId("playerLifePointsParent" + player.getId());
 				final Label playerLifePoints = new Label("playerLifePoints", Long.toString(player
 						.getLifePoints()) + " life points");
 				playerLifePoints.setOutputMarkupId(true);
-				item.add(playerLifePoints);
+				playerLifePointsParent.add(playerLifePoints);
+				item.add(playerLifePointsParent);
+
+				DataBox.allPlayerLifePointsParents.put(player.getId(), playerLifePointsParent);
 
 				final AjaxLink<Void> plus = new AjaxLink<Void>("playerPlusLink")
 				{
@@ -81,10 +92,12 @@ public class DataBox extends Panel
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
-						player.setLifePoints(player.getLifePoints() + 1);
-						DataBox.this.persistenceService.updatePlayer(player);
+						final Player playerToUpdate = DataBox.this.persistenceService
+								.getPlayer(player.getId());
+						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
+						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-						DataBox.this.writeUpdateDataBoxCometMessage();
+						DataBox.this.writeUpdateDataBoxCometMessage(playerToUpdate.getId());
 					}
 				};
 				final Image playerPlus = new Image("playerPlus", new PackageResourceReference(
@@ -100,10 +113,12 @@ public class DataBox extends Panel
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
-						player.setLifePoints(player.getLifePoints() - 1);
-						DataBox.this.persistenceService.updatePlayer(player);
+						final Player playerToUpdate = DataBox.this.persistenceService
+								.getPlayer(player.getId());
+						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
+						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-						DataBox.this.writeUpdateDataBoxCometMessage();
+						DataBox.this.writeUpdateDataBoxCometMessage(player.getId());
 					}
 				};
 				final Image playerMinus = new Image("playerMinus", new PackageResourceReference(
@@ -127,17 +142,22 @@ public class DataBox extends Panel
 		this.persistenceService = _persistenceService;
 	}
 
-	void writeUpdateDataBoxCometMessage()
+	void writeUpdateDataBoxCometMessage(final Long playerId)
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.hp.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
-		final String message = "%%%" + request.getRequestedSessionId();
+		final String message = "%%%" + request.getRequestedSessionId() + "%%%" + playerId;
 		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 		DataBox.LOGGER.info("meteor: " + meteor);
 		DataBox.LOGGER.info(message);
 
 		meteor.addListener(this.hp);
 		meteor.broadcast(message);
+	}
+
+	public WebMarkupContainer retrievePlayerLifePointsParentForPlayer(final Long playerId)
+	{
+		return DataBox.allPlayerLifePointsParents.get(playerId);
 	}
 }

@@ -46,7 +46,7 @@ jQuery(document).ready(
 						var v = data.split("%%%")[1];
 						
 						if (typeof v != "undefined") {
-							wicketAjaxGet('${url}', function() { }, null, null);
+							wicketAjaxGet('${url}&playerId=' + data.split("%%%")[2], function() { }, null, null);
 						}
 					}
 				}

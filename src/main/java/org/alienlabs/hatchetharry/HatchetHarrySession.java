@@ -57,7 +57,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, true);
-
+		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
 	}
 
 	public static HatchetHarrySession get(final Request request)
