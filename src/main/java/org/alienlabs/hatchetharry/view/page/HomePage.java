@@ -60,7 +60,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
-import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
@@ -74,6 +73,7 @@ import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
+import org.alienlabs.hatchetharry.view.component.chat.ChatPanel;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -99,6 +99,7 @@ import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.wicketstuff.push.timer.TimerPushService;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
 
@@ -280,8 +281,9 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		this.generateDrawCardLink();
 
-		// Comet chat channel
-		this.add(new ChatPanel("chatPanel", this.player.getId()));
+		// Cometd chat channel
+		this.add(new ChatPanel("chatPanel", TimerPushService.getRef()));
+		// this.add(new ChatPanel("chatPanel", this.player.getId()));
 
 		this.buildEndTurnLink();
 		this.buildUntapAllLink();

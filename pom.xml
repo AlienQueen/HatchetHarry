@@ -30,6 +30,7 @@
 		<targetJdk>1.6</targetJdk>
 		<project.build.finalName>ROOT</project.build.finalName>
 		<selenium.version>2.14.0</selenium.version>
+		<push.version>1.5-SNAPSHOT</push.version>
 	</properties>
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
@@ -148,10 +149,10 @@
         	<artifactId>atmosphere-runtime</artifactId>
         	<version>${atmosphere.version}</version>
         	<exclusions>
-        	   <!-- <exclusion>
+        	    <exclusion>
           			<groupId>org.atmosphere</groupId>
-          			<artifactId>atmosphere-compat-tomcat</artifactId>
-        		</exclusion>-->
+          			<artifactId>atmosphere-compat-jetty</artifactId>
+        		</exclusion>
         		<exclusion>
           			<groupId>org.atmosphere</groupId>
           			<artifactId>atmosphere-ping</artifactId>
@@ -483,6 +484,16 @@
 	    	<artifactId>aspectjweaver</artifactId>
 	    	<version>1.6.12</version>
 	    </dependency>
+   		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-push-cometd</artifactId>
+			<version>${push.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-push-timer</artifactId>
+			<version>${push.version}</version>
+		</dependency>
 	</dependencies>
 	
     <repositories>
