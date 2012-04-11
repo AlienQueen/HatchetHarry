@@ -61,7 +61,7 @@ public class ChatPanel extends Panel
 	{
 		super(id);
 
-		final String chatRoomName = "#wicket-push";
+		final String chatRoomName = "#chat";
 		final ChatRoom chatRoom = ServiceLocator.getChatService().getChatRoom(chatRoomName);
 
 		/*
@@ -73,7 +73,10 @@ public class ChatPanel extends Panel
 
 		// chat history field
 		final Label chatHistoryField = new Label("chatHistory", "");
+
+		// TODO: may be set this to true (diacritics)
 		chatHistoryField.setEscapeModelStrings(false);
+
 		chatHistoryField.setOutputMarkupId(true);
 		formChat.add(chatHistoryField);
 
@@ -152,6 +155,8 @@ public class ChatPanel extends Panel
 		 */
 		chatRoom.addListener(new IChatListener()
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onMessage(final Message msg)
 			{

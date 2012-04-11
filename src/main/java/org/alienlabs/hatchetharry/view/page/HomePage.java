@@ -60,7 +60,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
-import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
@@ -74,6 +73,7 @@ import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.alienlabs.hatchetharry.view.component.chat.ChatPanel;
+import org.alienlabs.hatchetharry.view.component.clock.ClockPanel;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -184,10 +184,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.7 (release King Wicket), built on Monday, 2nd of April 2012."));
+				"version 0.0.8 (release CometD), built on Wednesday, 11th of April 2012."));
 
 		// Comet clock channel
-		this.add(new ClockPanel("clockPanel"));
+		this.add(new ClockPanel("clockPanel", TimerPushService.getRef()));
 
 		if (!HatchetHarrySession.get().isGameCreated())
 		{
@@ -283,7 +283,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 
 		// Cometd chat channel
 		this.add(new ChatPanel("chatPanel", TimerPushService.getRef()));
-		// this.add(new ChatPanel("chatPanel", this.player.getId()));
 
 		this.buildEndTurnLink();
 		this.buildUntapAllLink();

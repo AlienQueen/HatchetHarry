@@ -14,14 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.alienlabs.hatchetharry.view.component.chat;
+package org.alienlabs.hatchetharry.view.component.clock;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author <a href="http://sebthom.de/">Sebastian Thomschke</a>
  */
-public interface IChatListener extends Serializable
+public class ClockMessage implements Serializable
 {
-	void onMessage(Message message);
+	private static final long serialVersionUID = 1L;
+
+	public String getMessage()
+	{
+		return new Date().toString();
+	}
+
+	@Override
+	public String toString()
+	{
+		return new Date().toString();
+	}
 }
