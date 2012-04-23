@@ -174,3 +174,13 @@ jQuery(function() {
 jQuery(document).ready(function() {
 	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({});
 });
+
+jQuery(document).ready(function() {
+	var cometd = jQuery.cometd;
+	cometd.addListener('/meta/handshake', function(message) {
+		if (message.successful)
+			var subscription = cometd.subscribe('/joinGame', function() {
+			});
+	});
+	cometd.init('http://localhost:8080/cometd');
+});

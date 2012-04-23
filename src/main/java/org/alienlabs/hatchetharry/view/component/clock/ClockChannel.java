@@ -41,7 +41,7 @@ public class ClockChannel implements Serializable
 
 	final Set<IClockListener> listeners = new CopyOnWriteArraySet<IClockListener>();
 
-	private ClockMessage clock;
+	private ClockMessage clock = new ClockMessage();
 
 	void _notify(final IClockListener listener, final ClockMessage message)
 	{
@@ -49,6 +49,7 @@ public class ClockChannel implements Serializable
 		{
 			ClockChannel.LOGGER.debug("_notify()");
 			listener.onMessage(message);
+
 		}
 		catch (final Exception ex)
 		{
@@ -94,7 +95,7 @@ public class ClockChannel implements Serializable
 					ClockChannel.this._notify(listener, ClockChannel.this.getClock());
 				}
 			}
-		}, 1, 2, TimeUnit.SECONDS);
+		}, 100, 2000, TimeUnit.MILLISECONDS);
 	}
 
 	public ClockMessage getClock()

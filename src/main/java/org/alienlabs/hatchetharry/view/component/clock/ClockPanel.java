@@ -79,9 +79,6 @@ public class ClockPanel extends Panel
 					}
 				});
 
-		/*
-		 * connect to chat room
-		 */
 		this.clockChannel.addListener(new IClockListener()
 		{
 			private static final long serialVersionUID = 1L;

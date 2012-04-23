@@ -15,6 +15,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.component.joingame.JoinGamePanel;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -32,6 +33,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.wicketstuff.push.cometd.CometdPushService;
 
 public class CreateGameModalWindow extends Panel
 {
@@ -166,6 +168,11 @@ public class CreateGameModalWindow extends Panel
 						CreateGameModalWindow.this.game.getId()));
 				spp.setOutputMarkupId(true);
 
+				target.add(new JoinGamePanel("joinGamePanel", CometdPushService.get(), spp, spp
+						.getUuid(), jsessionid, CreateGameModalWindow.this.homePage, sideInput
+						.getDefaultModelObjectAsString(), CreateGameModalWindow.this.homePage
+						.getDataBoxParent(), CreateGameModalWindow.this.game.getId()));
+
 				CreateGameModalWindow.this.sidePlaceholderParent.addOrReplace(spp);
 				target.add(CreateGameModalWindow.this.sidePlaceholderParent);
 
@@ -216,7 +223,8 @@ public class CreateGameModalWindow extends Panel
 
 		form.add(chooseDeck, this.decks, gameId, nameLabel, nameInput, sideLabel, sideInput, submit);
 
-		this.add(form);
+		final WebMarkupContainer joinGamePanel = new WebMarkupContainer("joinGamePanel");
+		this.add(form, joinGamePanel);
 	}
 
 	@Required

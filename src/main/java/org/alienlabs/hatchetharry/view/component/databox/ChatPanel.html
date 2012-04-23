@@ -1,0 +1,26 @@
+<wicket:panel>
+	
+	<form wicket:id="chatForm">
+	<table>
+	  <tr>
+	    <td colspan="2">
+	    <div wicket:id="chatHistory"
+	      style="border: 1px black solid; width: 500px; height: 300px; overflow: auto;"></div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>Nickname</td>
+	    <td><input type="text" wicket:id="user"></input></td>
+	  </tr>
+	  <tr>
+	    <td>Message</td>
+	    <td><input type="text" wicket:id="message"></input></td>
+	  </tr>
+	  <tr>
+	    <td><input type="submit" value="Send message" wicket:id="send"></input></td>
+	    <td><input type="submit" value="Disconnect" wicket:id="disconnect"></input></td>
+	  </tr>
+	</table>
+	</form>
+
+</wicket:panel>

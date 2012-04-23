@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.view.component;
+package org.alienlabs.hatchetharry.view.component.databox;
 
 import java.util.HashMap;
 import java.util.LinkedList;

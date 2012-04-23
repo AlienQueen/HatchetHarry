@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -15,6 +14,8 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.component.databox.DataBox;
+import org.alienlabs.hatchetharry.view.component.joingame.JoinGameServiceLocator;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -29,8 +30,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
+import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.BroadcasterFactory;
+import org.atmosphere.cpr.DefaultBroadcaster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -242,12 +244,26 @@ public class JoinGameModalWindow extends Panel
 								+ "px'); "
 								+ "card.css('top', '500px'); }); ");
 
-				final Meteor meteor = Meteor
-						.build(request, new LinkedList<BroadcastFilter>(), null);
+				// final Meteor meteor = Meteor
+				// .build(request, new LinkedList<BroadcastFilter>(), null);
 				final String message = sideInput.getDefaultModelObjectAsString() + "|||||"
 						+ jsessionid + "|||||" + spp.getUuid();
 				JoinGameModalWindow.LOGGER.info("# message: " + message);
-				meteor.broadcast(message);
+				// meteor.broadcast(message);
+				// send a message in the JoinGame channel
+				final Broadcaster b = BroadcasterFactory.getDefault().get(DefaultBroadcaster.class,
+						"joinGame");
+				b.broadcast(message);
+
+				final String joinGameChannelName = "joinGame";
+				JoinGameServiceLocator
+						.getJoinGameService()
+						.getJoinGameChannel(joinGameChannelName)
+						.sendAsync(sideInput.getDefaultModelObjectAsString(), jsessionid,
+								spp.getUuid());
+
+				javaScript
+						.append("var cometd = jQuery.cometd; cometd.publish('/joinGame', { mydata: { foo: 'bar' } }); ");
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());

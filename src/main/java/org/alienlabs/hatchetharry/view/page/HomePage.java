@@ -61,7 +61,6 @@ import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
-import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
@@ -74,6 +73,7 @@ import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.alienlabs.hatchetharry.view.component.chat.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.clock.ClockPanel;
+import org.alienlabs.hatchetharry.view.component.databox.DataBox;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -184,7 +184,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.8 (release CometD), built on Wednesday, 11th of April 2012."));
+				"version 0.0.8 (release CometD), built on Friday, 13th of April 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel", TimerPushService.getRef()));
@@ -661,6 +661,10 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 						"script/jquery/jquery-ui-1.8.18.core.mouse.widget.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
 						"script/jquery.atmosphere.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/cometd.js"));
+				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
+						"script/jquery.cometd.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
 						"script/tour/jquery.easing.1.3.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
