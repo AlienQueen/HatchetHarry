@@ -12,6 +12,7 @@ import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.component.cardrotate.CardPanel;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;

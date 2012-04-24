@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 		var aId = a.attr('id');
 		var currentCard = aId.split("cross-link")[1];
 		
-		wicketAjaxGet('${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}', function() {
+		wicketAjaxGet('${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}&stop=true', function() {
 		}, null, null);
 	});
 	

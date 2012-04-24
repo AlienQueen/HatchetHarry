@@ -3,11 +3,11 @@ package org.alienlabs.hatchetharry.serverSideTest;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
-import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
+import org.alienlabs.hatchetharry.view.component.cardrotate.CardPanel;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.markup.html.AjaxLink;

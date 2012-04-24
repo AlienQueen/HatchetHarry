@@ -44,7 +44,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.apache.wicket.Session;
@@ -63,6 +62,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ClockPage extends WebPage implements AtmosphereResourceEventListener
 {
+	private static final long serialVersionUID = 1L;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(ClockPage.class);
 	static final Map<String, Callable<String>> connectedJSessionIds = new HashMap<String, Callable<String>>();
@@ -94,7 +94,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 			};
 			ClockPage.connectedJSessionIds.put(jsessionid, callable);
 			((HatchetHarrySession)Session.get()).setCometUser(jsessionid);
-			meteor.schedule(callable, 5); // 5 seconds
+			// meteor.schedule(callable, 5); // 5 seconds
 		}
 
 		// Add us to the listener list.
@@ -108,8 +108,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	}
 
 	@Override
-	public void onBroadcast(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onBroadcast(final AtmosphereResourceEvent event)
 	{
 		event.getResource().getRequest().getRequestedSessionId();
 		// if (!jsessionid.equals(((String)event.getMessage()).split("###")[0]))
@@ -128,8 +127,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	}
 
 	@Override
-	public void onSuspend(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onSuspend(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -140,8 +138,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	}
 
 	@Override
-	public void onResume(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onResume(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -152,8 +149,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	}
 
 	@Override
-	public void onDisconnect(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onDisconnect(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -164,8 +160,7 @@ public class ClockPage extends WebPage implements AtmosphereResourceEventListene
 	}
 
 	@Override
-	public void onThrowable(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onThrowable(final AtmosphereResourceEvent event)
 	{
 		ClockPage.LOGGER.info("onThrowable()", event.throwable());
 	}

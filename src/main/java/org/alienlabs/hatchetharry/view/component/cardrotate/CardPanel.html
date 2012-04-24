@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
+        xml:lang="en"
+        lang="en">
+<wicket:head>
+
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/fonts/fonts-min.css" />
+
+<style type="text/css">
+		p, h4, li
+		{
+			font-family: Arial, Tahoma, Verdana;
+		}
+		pre.tip
+		{
+			margin: 0px;
+			padding: 5px;
+			font-size: 0.9em;	
+		}
+		pre.code
+		{
+			margin: 0px;
+			padding: 20px;
+			border: solid 1px #000000;
+			font-size: 1.0em;
+		}
+		em 
+		{
+			font-size: 0.9em;
+			color: #000000;
+		}
+</style>
+
+<style type="text/css">
+
+    /*
+        Position and hide the Menu instance to prevent a flash of unstyled 
+        content when the page is loading.
+    */    
+
+    div.yuimenu {
+    
+        position: absolute;
+        visibility: hidden;
+    
+    }
+
+
+    /*
+        Set the "zoom" property to "normal" since it is set to "1" by the 
+        ".example-container .bd" rule in yui.css and this causes a Menu
+        instance's width to expand to 100% of the browser viewport.
+    */
+    div.yuimenu .bd {
+    
+        zoom: normal;
+    
+    }
+    
+    #myDiv {
+				width: 150px;
+				border: solid 1px #2AA7DE;
+				background: #6CC8EF;
+				text-align: center;
+				padding: 4em .5em;
+				margin: 1em;
+				float: left;
+			}
+			
+			#options {
+				clear: left;
+			}
+			
+			#options INPUT {
+				font-family: Verdana, Arial, Helvetica, sans-serif;
+				font-size: 11px;
+				width: 150px;
+			}
+			.ui-widget-header { border: 1px solid #000000; background: #464646
+								50% 50% repeat-x; color: #000000; font-weight: bold;
+								width: 20px; height: 20px; cursor: move;
+							  }
+			.tap-handle-image{ cursor: ne-resize; }			 
+			
+</style>
+</wicket:head>
+<wicket:panel>
+	<a wicket:id="cardMove" id="cardMove"></a>
+	<a wicket:id="cardRotate" id="cardRotate"></a>
+	<br/>
+	
+	<h2 id="status2"/>
+	<br/><br/>
+		<span id="menutoggleImage">
+			<span id="special">
+				<div wicket:id="menutoggleButton" id="menutoggleButton" style="position:absolute; top:300; left:300;" class="tour_5">
+					<form wicket:id="form">
+						<input wicket:id="jsessionid" id="jsessionid" type="text" style="display: none;"></input>
+						<input wicket:id="mouseX" id="mouseX" type="text" style="display: none;"></input>
+						<input wicket:id="mouseY" id="mouseY" type="text" style="display: none;"></input>
+						<img wicket:id="handleImage" id="handle" class="ui-widget-header"></img>
+						<img wicket:id="cardImage" id="card"></img>
+						<img wicket:id="tapHandleImage" id="tapHandleImage" class="tap-handle-image"></img>
+						<span wicket:id="cardTooltip" id="cardTooltip"></span>
+					</form>
+				</div>
+				<ul id="myMenu" class="contextMenu">
+
+					<li class="edit"><a href="#edit">Edit</a></li>
+					<li class="cut separator"><a href="#cut">Cut</a></li>
+					<li class="copy"><a href="#copy">Copy</a></li>
+					<li class="paste"><a href="#paste">Paste</a></li>
+					<li class="delete"><a href="#delete">Delete</a></li>
+					<li class="quit separator"><a href="#quit">Quit</a></li>
+		
+				</ul>
+			</span>
+		</span>
+		
+	<span wicket:id="cardParent4"><span wicket:id="cardPlaceholder4"></span></span>
+		
+	<iframe id="cometFrame" name="cometFrame" width="0" height="0" border="0" style="border-width: 0px">
+    </iframe>
+</wicket:panel>
+</html>

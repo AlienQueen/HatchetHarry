@@ -48,7 +48,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -59,7 +58,6 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
-import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
@@ -74,6 +72,7 @@ import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
+import org.alienlabs.hatchetharry.view.component.cardrotate.CardPanel;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -183,7 +182,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.7 (release King Wicket), built on Monday, 2nd of April 2012."));
+				"version 0.0.8 (release Atmosphere Rules), built on Monday, 23rd of April 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -654,12 +653,19 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/jquery-1.6.4.js"));
+				// response.renderJavaScriptReference(new
+				// PackageResourceReference(HomePage.class,
+				// "script/jquery-1.6.4.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
 						"script/jquery/jquery-ui-1.8.18.core.mouse.widget.js"));
+				// response.renderJavaScriptReference(new
+				// PackageResourceReference(HomePage.class,
+				// "script/jquery/jquery.atmosphere-1.0.0-SNAPSHOT.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/jquery.atmosphere.js"));
+						"script/jquery/jquery.atmosphere-0.9.js"));
+				// response.renderJavaScriptReference(new
+				// PackageResourceReference(HomePage.class,
+				// "script/jquery.atmosphere.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
 						"script/tour/jquery.easing.1.3.js"));
 				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
@@ -902,8 +908,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@Override
-	public void onBroadcast(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onBroadcast(final AtmosphereResourceEvent event)
 	{
 		HomePage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
@@ -920,8 +925,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@Override
-	public void onSuspend(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onSuspend(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -932,8 +936,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@Override
-	public void onResume(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onResume(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -944,8 +947,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@Override
-	public void onDisconnect(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onDisconnect(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -956,8 +958,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	}
 
 	@Override
-	public void onThrowable(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onThrowable(final AtmosphereResourceEvent event)
 	{
 		HomePage.LOGGER.info("onThrowable()", event.throwable());
 	}

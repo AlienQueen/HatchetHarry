@@ -38,7 +38,6 @@
 package org.alienlabs.hatchetharry.view.page;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
@@ -55,6 +54,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 {
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChatPage.class);
 
@@ -63,8 +63,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 	}
 
 	@Override
-	public void onBroadcast(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onBroadcast(final AtmosphereResourceEvent event)
 	{
 		ChatPage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
@@ -81,8 +80,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 	}
 
 	@Override
-	public void onSuspend(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onSuspend(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -93,8 +91,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 	}
 
 	@Override
-	public void onResume(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onResume(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -105,8 +102,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 	}
 
 	@Override
-	public void onDisconnect(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onDisconnect(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -117,8 +113,7 @@ public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 	}
 
 	@Override
-	public void onThrowable(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	public void onThrowable(final AtmosphereResourceEvent event)
 	{
 		ChatPage.LOGGER.info("onThrowable()", event.throwable());
 	}
