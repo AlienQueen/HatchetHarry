@@ -118,7 +118,6 @@ public class DeckDaoImpl implements DeckDao
 	 * @return The results of the query as an Iterator.
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public Iterator<Deck> find(final QueryParam qp, final Deck filter)
 	{
@@ -142,7 +141,6 @@ public class DeckDaoImpl implements DeckDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<String> getUniqueLastNames()
 	{

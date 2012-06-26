@@ -6,7 +6,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 				"script/menubar/menubar.js");
 		template1.interpolate(variables);
 		final String js1 = template1.asString();
-		response.renderJavaScript(js1, "menubar.js");
+		response.render(JavaScriptHeaderItem.forScript(js1, "menubar.js"));
 	}
 
 }

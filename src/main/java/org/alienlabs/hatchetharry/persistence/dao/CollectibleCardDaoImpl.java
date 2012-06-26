@@ -118,7 +118,6 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 	 * @return The results of the query as an Iterator.
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public Iterator<CollectibleCard> find(final QueryParam qp, final CollectibleCard filter)
 	{
@@ -142,7 +141,6 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<String> getUniqueLastNames()
 	{

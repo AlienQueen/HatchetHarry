@@ -275,7 +275,6 @@ public class HomePageTest
 				.getComponentFromLastRenderedPage(_window);
 		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
 
-		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)this.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(aboutLink);

@@ -118,7 +118,6 @@ public class PlayerDaoImpl implements PlayerDao
 	 * @return The results of the query as an Iterator.
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public Iterator<Player> find(final QueryParam qp, final Player filter)
 	{
@@ -142,7 +141,6 @@ public class PlayerDaoImpl implements PlayerDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<String> getUniqueLastNames()
 	{

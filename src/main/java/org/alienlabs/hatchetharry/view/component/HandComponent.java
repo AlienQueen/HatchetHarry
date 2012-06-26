@@ -4,7 +4,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.alienlabs.hatchetharry.view.page.PlayCardPage;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -84,7 +84,7 @@ public class HandComponent extends Panel
 				crossLinkDiv.setOutputMarkupId(true);
 
 				final WebMarkupContainer crossLink = new WebMarkupContainer("crossLink");
-				crossLink.add(new SimpleAttributeModifier("href", "#" + (item.getIndex() + 1)));
+				crossLink.add(new AttributeModifier("href", "#" + (item.getIndex() + 1)));
 				crossLink.setMarkupId("cross-link" + item.getIndex());
 				crossLink.setOutputMarkupId(true);
 

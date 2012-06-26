@@ -112,7 +112,6 @@ public class GameDaoImpl implements GameDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<String> getUniqueLastNames()
 	{

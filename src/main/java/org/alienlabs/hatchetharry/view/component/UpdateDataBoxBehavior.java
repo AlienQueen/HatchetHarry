@@ -12,7 +12,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -104,7 +105,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 				"script/databox/updateDataBox.js");
 		template.interpolate(variables);
 
-		response.renderOnDomReadyJavaScript(template.asString());
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "updateDataBox"));
 	}
 
 	public String getUrl()

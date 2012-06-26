@@ -21,10 +21,10 @@ public class HandCardImageLoader<T> extends ListItem<MagicCard>
 	public void populate(final ListItem<MagicCard> item)
 	{
 		item.add(new Image("image", new PackageResourceReference(HomePage.class, "image"))
-				.add(new AttributeModifier("src", true, new Model<String>(item.getModelObject()
+				.add(new AttributeModifier("src", new Model<String>(item.getModelObject()
 						.getBigImageFilename()))));
 		item.add(new Image("thumb", new PackageResourceReference(HomePage.class, "thumb"))
-				.add(new AttributeModifier("src", true, new Model<String>(item.getModelObject()
+				.add(new AttributeModifier("src", new Model<String>(item.getModelObject()
 						.getSmallImageFilename()))));
 		item.add(new Label("title", item.getModelObject().getTitle()));
 		item.add(new Label("description", item.getModelObject().getDescription()));
