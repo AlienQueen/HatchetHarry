@@ -11,7 +11,8 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -169,7 +170,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		template3.interpolate(variables);
 		js.append("\n" + template3.asString());
 
-		response.renderOnDomReadyJavaScript(js.toString());
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "sidePlaceholderMove"));
 	}
 
 }

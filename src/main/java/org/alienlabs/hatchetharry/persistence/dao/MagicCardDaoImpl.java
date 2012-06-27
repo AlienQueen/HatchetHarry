@@ -118,7 +118,6 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 * @return The results of the query as an Iterator.
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public Iterator<MagicCard> find(final QueryParam qp, final MagicCard filter)
 	{
@@ -142,7 +141,6 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<String> getUniqueLastNames()
 	{

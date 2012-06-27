@@ -13,7 +13,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -31,7 +32,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 	static final Logger LOGGER = LoggerFactory.getLogger(UntapAllBehavior.class);
 
 	@SpringBean
-	private  PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	public UntapAllBehavior()
 	{
@@ -96,7 +97,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 				"script/untapAll/untapAll.js");
 		template1.interpolate(variables);
 
-		response.renderJavaScript(template1.asString(), null);
+		response.render(JavaScriptHeaderItem.forScript(template1.asString(), "untapAll"));
 	}
 
 	@Required

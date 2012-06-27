@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.view.page.CardMovePage;
 import org.alienlabs.hatchetharry.view.page.CardRotatePage;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -58,12 +60,12 @@ public class CardPanel extends Panel
 			@Override
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/menu.css"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/contextmenu/jquery.contextMenu.js"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"script/contextmenu/jquery.contextMenu.css"));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/menu.css")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
 			}
 		});
 
@@ -100,7 +102,7 @@ public class CardPanel extends Panel
 		final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage);
 		cardBubbleTip.setOutputMarkupId(true);
 		cardBubbleTip.setMarkupId("cardTooltip" + this.uuid);
-		cardBubbleTip.add(new SimpleAttributeModifier("style", "display:none;"));
+		cardBubbleTip.add(new AttributeModifier("style", "display:none;"));
 
 		final Image cardImage = new Image("cardImage", new PackageResourceReference(HomePage.class,
 				smallImage));
@@ -140,7 +142,7 @@ public class CardPanel extends Panel
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/tooltip/easyTooltip.js");
 		final StringBuffer js = new StringBuffer().append(template1.asString());
-		response.renderJavaScript(js.toString(), "easyTooltip.js");
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "easyTooltip.js"));
 
 		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
 				"script/tooltip/initTooltip.js");
@@ -148,6 +150,6 @@ public class CardPanel extends Panel
 		variables.put("uuid", this.uuid);
 		template2.interpolate(variables);
 		final StringBuffer js2 = new StringBuffer().append(template2.asString());
-		response.renderJavaScript(js2.toString(), "initTooltip.js" + this.uuid);
+		response.render(JavaScriptHeaderItem.forScript(js2.toString(), "initTooltip.js" + this.uuid));
 	}
 }

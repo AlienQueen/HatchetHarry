@@ -117,7 +117,6 @@ public class PersistenceService implements Serializable
 		query.setLong(0, gameId);
 		query.setFirstResult(0);
 		query.setMaxResults(7);
-		@SuppressWarnings("unchecked")
 		final List<MagicCard> cards = query.list();
 
 		return cards;
@@ -216,7 +215,6 @@ public class PersistenceService implements Serializable
 		return query.list().size() > 0;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Player> getAllPlayersOfGame(final long l)
 	{
@@ -262,7 +260,6 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
-	@SuppressWarnings("unchecked")
 	public List<MagicCard> getAllCardsFromDeck(final long l)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -329,7 +326,6 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Deck> getAllDecks()
 	{
@@ -415,7 +411,7 @@ public class PersistenceService implements Serializable
 	}
 
 
-	@SuppressWarnings({ "unchecked", "cast" })
+	@SuppressWarnings("cast")
 	@Transactional
 	public List<MagicCard> getAllCardsInBattleFieldForAPlayer(final Long playerId)
 	{
@@ -449,7 +445,6 @@ public class PersistenceService implements Serializable
 		final Session session = this.sideDao.getSession();
 		final Query query = session.createQuery("from Side s where s.game=?");
 		query.setEntity(0, game);
-		@SuppressWarnings("unchecked")
 		final List<Side> s = query.list();
 
 		return s;

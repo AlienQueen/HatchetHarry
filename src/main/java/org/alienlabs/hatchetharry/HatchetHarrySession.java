@@ -105,7 +105,6 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT, handCardsHaveBeenBuilt);
 	}
 
-	@SuppressWarnings("unchecked")
 	public ArrayList<MagicCard> getFirstCardsInHand()
 	{
 		return (ArrayList<MagicCard>)this.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND);
@@ -116,13 +115,11 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, cards);
 	}
 
-	@SuppressWarnings("unchecked")
 	public long getFirstCardIdInHand()
 	{
 		return ((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addCardIdInHand(final int index, final long id)
 	{
 		if (this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND) == null)
@@ -132,7 +129,6 @@ public class HatchetHarrySession extends WebSession
 		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void removeCardIdInHand(final MagicCard c)
 	{
 		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).remove(c.getId());
@@ -232,14 +228,12 @@ public class HatchetHarrySession extends WebSession
 
 	public void addCardInBattleField(final CardPanel cp)
 	{
-		@SuppressWarnings("unchecked")
 		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
 		cards.add(cp);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addCardInToRemoveList(final CardPanel cp)
 	{
 		ArrayList<CardPanel> cards;
@@ -258,7 +252,6 @@ public class HatchetHarrySession extends WebSession
 
 	public List<CardPanel> getAllCardsToRemove()
 	{
-		@SuppressWarnings("unchecked")
 		final List<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.TO_REMOVE);
 		return cards;
@@ -271,7 +264,6 @@ public class HatchetHarrySession extends WebSession
 
 	public List<CardPanel> getAllCardsInBattleField()
 	{
-		@SuppressWarnings("unchecked")
 		final List<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
 		return cards;
@@ -279,7 +271,6 @@ public class HatchetHarrySession extends WebSession
 
 	public CardPanel removeACardFromBattleField()
 	{
-		@SuppressWarnings("unchecked")
 		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
 
@@ -300,7 +291,6 @@ public class HatchetHarrySession extends WebSession
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<SidePlaceholderPanel> getMySidePlaceholder()
 	{
 		return (List<SidePlaceholderPanel>)this.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
@@ -308,14 +298,12 @@ public class HatchetHarrySession extends WebSession
 
 	public void setMySidePlaceholder(final SidePlaceholderPanel _mySidePlaceholder)
 	{
-		@SuppressWarnings("unchecked")
 		final ArrayList<SidePlaceholderPanel> l = (ArrayList<SidePlaceholderPanel>)this
 				.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
 		l.add(_mySidePlaceholder);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, l);
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean isMySidePlaceholderInSesion(final String side)
 	{
 		return ((List<String>)this.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER))
@@ -324,7 +312,6 @@ public class HatchetHarrySession extends WebSession
 
 	public void putMySidePlaceholderInSesion(final String side)
 	{
-		@SuppressWarnings("unchecked")
 		final ArrayList<String> l = (ArrayList<String>)this
 				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
 		l.add(side);

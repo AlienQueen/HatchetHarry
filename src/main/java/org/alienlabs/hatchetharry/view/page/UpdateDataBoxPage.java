@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
  */
 public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEventListener
 {
-
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(UpdateDataBoxPage.class);
 
 	public UpdateDataBoxPage()

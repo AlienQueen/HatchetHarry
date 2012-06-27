@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ClockPage extends WebPage implements AtmosphereResourceEventListener
 {
-
+	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(ClockPage.class);
 	static final Map<String, Callable<String>> connectedJSessionIds = new HashMap<String, Callable<String>>();
 

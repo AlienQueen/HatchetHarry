@@ -82,7 +82,9 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -654,80 +656,81 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/jquery-1.6.4.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/jquery/jquery-ui-1.8.18.core.mouse.widget.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/jquery.atmosphere.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/tour/jquery.easing.1.3.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/tour/jquery.storage.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/tour/jquery.tour.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/menubar/jquery.metadata.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/menubar/jquery.hoverIntent.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/menubar/mbMenu.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/menubar/jquery.jqDock.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/qunitTests/qUnit.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/qunitTests/codeUnderTest.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/qunitTests/HomePageTests.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/jquery/mootools.v1.11.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/gallery/jquery-easing-1.3.pack.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/gallery/jquery-easing-compatibility.1.2.pack.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/gallery/coda-slider.1.1.1.pack.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/gallery/gallery.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/rotate/jQueryRotate.2.1.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/menubar/menu.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js"));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/jquery-1.6.4.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/jquery.atmosphere.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/tour/jquery.easing.1.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/tour/jquery.storage.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/tour/jquery.tour.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/jquery.metadata.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/jquery.hoverIntent.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/mbMenu.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/jquery.jqDock.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/qunitTests/qUnit.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/qunitTests/codeUnderTest.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/qunitTests/HomePageTests.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/jquery/mootools.v1.11.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/jquery-easing-1.3.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/jquery-easing-compatibility.1.2.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/coda-slider.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/gallery.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/rotate/jQueryRotate.2.1.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/menu.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class,
+						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js")));
 
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/menu.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/layout.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/menu_black.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/jquery.jquerytour.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/myStyle.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/galleryStyle.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/jquery.gritter.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/fixed4all.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/fixed4ie.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/prettyPhoto.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/toolbarStyle.css"));
-				response.renderCSSReference(new PackageResourceReference(HomePage.class,
-						"stylesheet/tipsy.css"));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/menu.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/layout.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/menu_black.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/jquery.jquerytour.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/myStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/galleryStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/jquery.gritter.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/fixed4all.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/fixed4ie.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/prettyPhoto.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/toolbarStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/tipsy.css")));
 
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/toolbar/jquery.prettyPhoto.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/toolbar/jquery.tipsy.js"));
-				response.renderJavaScriptReference(new PackageResourceReference(HomePage.class,
-						"script/notifier/jquery.gritter.min.js"));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/toolbar/jquery.tipsy.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/notifier/jquery.gritter.min.js")));
 			}
 		});
 		this.add(c);
@@ -1126,7 +1129,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		// Don't show website tour on page refresh
 		js.append("jQuery('#tourcontrols').remove();");
 
-		response.renderOnDomReadyJavaScript(js.toString());
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "homePage"));
 	}
 
 	@Required

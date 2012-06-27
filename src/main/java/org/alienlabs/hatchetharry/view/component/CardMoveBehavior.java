@@ -13,7 +13,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -34,7 +35,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private final UUID uuid;
 
 	@SpringBean
-	private  PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid)
 	{
@@ -116,7 +117,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		template6.interpolate(variables);
 		js = js.append("\n" + template6.asString());
 
-		response.renderOnDomReadyJavaScript(js.toString());
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "cardMoveBehavior"));
 	}
 
 	@Required
