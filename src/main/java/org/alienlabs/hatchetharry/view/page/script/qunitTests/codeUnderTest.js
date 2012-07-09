@@ -1,10 +1,3 @@
-// The dock: a jQuery plugin
-jQuery(document).ready(function() {
-	jQuery('#dock').jqDock({
-		align : 'middle'
-	});
-});
-
 // The menubar, a jQuery plugin
 jQuery(document).ready(function() {
 

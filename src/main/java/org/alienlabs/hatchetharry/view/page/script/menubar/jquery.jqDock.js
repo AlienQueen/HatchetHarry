@@ -97,8 +97,8 @@
  *    - added jqDockLabel(Link|Image) class to label, depending on type of current image
  *    - updated demo and documentation for label positioning and clicking on labels
  */
-(function($, window){
-if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
+(function(jQuery, window){
+if(!jQuery.jqDock){ //can't see why it should be, but it doesn't hurt to check
 	var ONE = 1 //cheat to get past jslint objecting to things like var i_want_a_number = 1 * var_of_unknown_type;
 		, TRBL = ['Top', 'Right', 'Bottom', 'Left']
 		, AXES = ['Major', 'Minor']
@@ -147,7 +147,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
  * @return {integer} Dock index, -1 if not found
  */
 		, DOCK_INDEX_FROM_ID = function(el){
-				return el ? ONE * ( (el.id || '').match(/^jqDock(\d+)$/) || [0,-1] )[1] : -1;
+				return el ? ONE * ( (el.id || '').match(/^jqDock(\d+)jQuery/) || [0,-1] )[1] : -1;
 			}
 //v1.6 : moved this out of initDock (used to be var callback) and corrected typo (Dock.Asleep instead of Dock.Sleep!)...
 /** from an initial fade-in of a menu, this clears filters (for IE) and notifies readiness
@@ -155,7 +155,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
  * @this {element} The element that was initially faded in
  */
 		, FADEIN_COMPLETE = function(){
-				var Dock = DOCKS[ DOCK_INDEX_FROM_ID( $('.jqDockFilter', this).add(this)
+				var Dock = DOCKS[ DOCK_INDEX_FROM_ID( jQuery('.jqDockFilter', this).add(this)
 					//remove any filters...
 					.css({filter:''}).removeClass('jqDockFilter').filter('.jqDock')[0] ) ];
 				if(Dock){
@@ -211,7 +211,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 				el.height = this.height;
 				el.width = this.width;
 				if(--Dock.Load <= 0){ //check to see if all images are loaded...
-					window.setTimeout(function(){ $.jqDock.initDock(ev.data.id); }, 0);
+					window.setTimeout(function(){ jQuery.jqDock.initDock(ev.data.id); }, 0);
 				}
 			}
 /** returns an item index as indicated by the numeric suffix to the closest jqDockMouse-classed element
@@ -258,7 +258,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
  */
 		, LABEL_CLICK = function(){
 //v1.8 : switch trigger() to triggerHandler() (see notes below)...
-				$(this).prev('img').triggerHandler('click');
+				jQuery(this).prev('img').triggerHandler('click');
 //v1.7 : do NOT return false, because doing so prevents anchors being notified of clicking on labels!
 //				return false;
 //A bit more detail is needed here (for me mainly!)...
@@ -429,7 +429,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 				//          needs it)
 
 				//create the label's *outer* container (div.jqDockLabel) and hide it...
-				label.el = $('<div class="jqDockLabel jqDockLabel' + item.Link + '" style="position:absolute;margin:0;"></div>')
+				label.el = jQuery('<div class="jqDockLabel jqDockLabel' + item.Link + '" style="position:absolute;margin:0;"></div>')
 					.hide().insertAfter(item.Img) //insert after the image element
 //v1.8 : assign the click handler here, regardless of whether labels are enabled or not...
 					.click(LABEL_CLICK); //NB: the click handler does NOT (as of v1.7) return false!
@@ -452,7 +452,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 				txt = op.setLabel.call(Dock.Menu[0], item.Title, indx, label.el[0]);
 				if(txt !== false){
 					//if there is label content (as an HTML string!) then insert it with the inner container...
-					$('<div class="jqDockLabelText">' + txt.toString() + '</div>').appendTo(label.el);
+					jQuery('<div class="jqDockLabelText">' + txt.toString() + '</div>').appendTo(label.el);
 				}
 			}
 /** calculates the image sizes according to the current (translated) position of the cursor within div.jqDock
@@ -528,7 +528,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 					;
 				if(force || el.Major !== dim){
 					//horizontal menus in IE quirks mode require border widths (if any) of the Dock to be added to the Dock's main axis dimension...
-					bdr = ($.boxModel || op.vh === 'v') ? 0 : Dock.Border[VH.lead] + Dock.Border[VH.trail];
+					bdr = (jQuery.boxModel || op.vh === 'v') ? 0 : Dock.Border[VH.lead] + Dock.Border[VH.trail];
 					//switch image source to large, if (a) it's different to small source, and (b) this is the first step of an expansion...
 					if(srcDiff && !force && el.Major === el.Initial){
 						el.Img[0].src = el.altsrc;
@@ -808,7 +808,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
  * @param {object} ev jQuery event object
  */
 		, LISTENER = function(ev){
-				var el = $('.jqDock', this).get(0)
+				var el = jQuery('.jqDock', this).get(0)
 					, dockId = DOCK_INDEX_FROM_ID(el)
 					, Dock = DOCKS[ dockId ]
 					, frosty = ev.type === CUSTOMEVENTS[2]
@@ -822,7 +822,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 						//trigger a dockwake event if not still asleep...
 						if(Dock.Asleep && !(Dock.Asleep = (Dock.Opts.onWake.call(this, param) === false))){
 							//always clear frozen...
-							Dock.Frozen = !$(this).trigger('dockwake', [param]);
+							Dock.Frozen = !jQuery(this).trigger('dockwake', [param]);
 						}
 						if(!Dock.Asleep){
 							//start (or reset) idling now...
@@ -863,11 +863,11 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 		;
 
 /**
- * The main $.jqDock object
+ * The main jQuery.jqDock object
  * @private
  * @return {object}
  */
-	$.jqDock = (function(){
+	jQuery.jqDock = (function(){
 		return {
 				version : 1.8
 			, defaults : { //can be set at runtime, per menu
@@ -918,7 +918,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 										//NB: align:middle,bias:0 === align:top, and align:middle,bias:100 === align:bottom
 										//and vertically, align:center,bias:0 === align:left, and align:center,bias:100 === align:right
 				}
-			, useJqLoader : $.browser.opera || $.browser.safari //use jQuery method for loading images, rather than "new Image()" method
+			, useJqLoader : jQuery.browser.opera || jQuery.browser.safari //use jQuery method for loading images, rather than "new Image()" method
 
 /**
  * initDock()
@@ -926,7 +926,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
  * called by the image onload function, it stores and sets image height/width;
  * once all images have been loaded, it completes the setup of the dock menu
  * note: unless all images get loaded, the menu will stay hidden!
- * @this {$.jqDock}
+ * @this {jQuery.jqDock}
  * @param {integer} id Dock index
  */
 			, initDock : function(id){
@@ -948,7 +948,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 					//double wrap, and set some basic styles on the dock elements, otherwise it won't work
 					Dock.Menu.children()
 						.each(function(i, kid){
-								var wrap = Dock.Elem[i].Wrap = $(kid).wrap(vanillaDiv + vanillaDiv + '</div></div>').parent(); 
+								var wrap = Dock.Elem[i].Wrap = jQuery(kid).wrap(vanillaDiv + vanillaDiv + '</div></div>').parent(); 
 								if(op.vh === 'h'){
 									wrap.parent().css('float', 'left');
 								}
@@ -1018,7 +1018,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 						, '<div id="jqDock', id, '" class="jqDock" style="position:absolute;top:0;left:0;padding:0;margin:0;overflow:visible;'
 						, 'height:', Dock.height, 'px;width:', Dock.width, 'px;"></div></div>'
 						].join('');
-					Dock.Yard = $('div.jqDock', Dock.Menu.wrapInner(wrap));
+					Dock.Yard = jQuery('div.jqDock', Dock.Menu.wrapInner(wrap));
 					//now that we have div.jqDock, let's see if the user has applied any css border styling to it...
 					for(j = 4; j--; ){
 						borders[j] = AS_INTEGER(Dock.Yard.css('border' + TRBL[j] + 'Width'));
@@ -1092,7 +1092,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 							//at the jqDockWrap boundary (IE6/7) or would leave a 'shadow' trail effect beyond
 							//the jqDockWrap boundary as it shrank (IE8) ... due to the filters not being reset
 							//until the end of the animation.
-							Dock.Asleep = !!$('.jqDock,.jqDockWrap', el).addClass('jqDockFilter').css({filter:'inherit'});
+							Dock.Asleep = !!jQuery('.jqDock,.jqDockWrap', el).addClass('jqDockFilter').css({filter:'inherit'});
 							el.css({opacity:0});
 							REVEAL_MENU(Dock);
 							el.animate({opacity:1}, op.fadeIn, FADEIN_COMPLETE);
@@ -1105,65 +1105,65 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 				} //end function initDock()
 
 			}; //end of return object
-		}()); //run the function to set up $.jqDock
+		}()); //run the function to set up jQuery.jqDock
 
 	/***************************************************************************************************
 	*  jQuery.fn.jqDock()
 	*  ==================
 	* STANDARD
-	* usage:      $(selector).jqDock(options);
-	* options:    see $.jqDock.defaults
-  * returns:    $(selector)
+	* usage:      jQuery(selector).jqDock(options);
+	* options:    see jQuery.jqDock.defaults
+  * returns:    jQuery(selector)
   *
   * ALTERNATE   ...provides a means for modifying image paths post-initialisation
-  * usage:      $(image-selector).jqDock(options);
+  * usage:      jQuery(image-selector).jqDock(options);
 	* options:    object, with the following possible properties...
 	*               src: {string|function} Path to 'at rest' image, or function returning a path
 	*               altsrc: {string|function} Path to expanded image, or function returning a path
-  * returns:    $(image-selector)
+  * returns:    jQuery(image-selector)
   * Note : image-selector *must* result in solely IMG element(s)
   * 
   * ALTERNATE2  ...provides a means for nudging a dock awake, or sending it to sleep
 	*                (see Advanced documentation)
-  * usage:      $(selector).jqDock('nudge'); //'nudges' dock awake
-  *             $(selector).jqDock('idle'); //sends dock to sleep
-  * returns:    $(selector)
+  * usage:      jQuery(selector).jqDock('nudge'); //'nudges' dock awake
+  *             jQuery(selector).jqDock('idle'); //sends dock to sleep
+  * returns:    jQuery(selector)
   * Note : selector should be (or contain) already initialised dock(s), ie. classed with 'jqDocked'
 	*
   * ALTERNATE3  ...a 'getter', providing a means for retrieving either a Dock's internal object, or
   *                an image's object from the Elem array
   *                (undocumented, but used in example.js)
-  * usage:      $(menu-selector).jqDock('get');
-  *             $(image-selector).jqDock('get');
-  * returns:    {object} The object corresponding to the first (active) Dock in the $(menu-selector)
+  * usage:      jQuery(menu-selector).jqDock('get');
+  *             jQuery(image-selector).jqDock('get');
+  * returns:    {object} The object corresponding to the first (active) Dock in the jQuery(menu-selector)
   *                      colection; or the object which is the element of the Elem array corresponding
-  *                      to the first 'img' DOM element in the $(image-selector) collection
+  *                      to the first 'img' DOM element in the jQuery(image-selector) collection
 	* 
 	* ALTERNATE4  ...provides a means for removing jqDock from a 'docked' element
 	*                (see Advanced documentation)
-	* usage:      $(selector).jqDock('destroy');
-  * returns:    $(selector)
+	* usage:      jQuery(selector).jqDock('destroy');
+  * returns:    jQuery(selector)
   * Note : selector should be (or contain) already initialised dock(s), ie. classed with 'jqDocked'
 	* 
 	* ALTERNATE5  ...provides a means for expanding (making active) an image
-	* usage:      $(image-selector).jqDock('expand'); //with animation
-	*             $(image-selector).jqDock('active'); //without animation
-	* returns:    $(image-selector)
+	* usage:      jQuery(image-selector).jqDock('expand'); //with animation
+	*             jQuery(image-selector).jqDock('active'); //without animation
+	* returns:    jQuery(image-selector)
 	* 
 	* note: the aim is to do as little processing as possible after setup, because everything is
 	* driven from the mousemove/enter/leave events and I don't want to kill the browser if I can help it!
-	* hence the code below, and in $.jqDock.initDock(), sets up and stores everything it possibly can
+	* hence the code below, and in jQuery.jqDock.initDock(), sets up and stores everything it possibly can
 	* which will reduce processing at runtime, and hopefully give as smooth animation as possible.
 	***************************************************************************************************/
-	$.fn.jqDock = function(opts){
+	jQuery.fn.jqDock = function(opts){
 		/***************************************************************************************************
 		* ALTERNATE2:
 		* Accepts 'nudge', 'idle' or 'freeze'. Chainable.
 		* 
 		* Example:
-		*   $('#menu').jqDock('nudge'); //wake from sleep
-		*   $('#menu').jqDock('idle'); //send to sleep
-		*   $('#menu').jqDock('freeze'); //freeze the dock
+		*   jQuery('#menu').jqDock('nudge'); //wake from sleep
+		*   jQuery('#menu').jqDock('idle'); //send to sleep
+		*   jQuery('#menu').jqDock('freeze'); //freeze the dock
 		***************************************************************************************************/
 		if(opts === 'nudge' || opts === 'idle' || opts === 'freeze'){ //alternate usage 3 (nudge/idle/freeze)
 			this.filter('.jqDocked').each(function(){ //only runs on an original menu element that has been docked
@@ -1175,11 +1175,11 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 		* added v1.6
 		* 
 		* Example:
-		*   $('#menu').jqDock('destroy'); //remove jqDock functionality from the menu
+		*   jQuery('#menu').jqDock('destroy'); //remove jqDock functionality from the menu
 		***************************************************************************************************/
 		}else if(opts === 'destroy'){ //alternate usage 3 (destroy)
 			this.filter('.jqDocked').each(function(){
-					var dockId = DOCK_INDEX_FROM_ID( $('.jqDock', $(this).removeClass('jqDocked')).get(0) )
+					var dockId = DOCK_INDEX_FROM_ID( jQuery('.jqDock', jQuery(this).removeClass('jqDocked')).get(0) )
 						, Dock = DOCKS[dockId]
 						, i = MOUSEEVENTS.length
 						, j, el, imageEl;
@@ -1223,7 +1223,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 							el = null;
 						}
 						//remove the dock wrapper...
-						$('.jqDockWrap', Dock.Menu).remove();
+						jQuery('.jqDockWrap', Dock.Menu).remove();
 						//clear down...
 						for(i in Dock){
 							Dock[i] = null;
@@ -1241,8 +1241,8 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 		* added v1.6
 		* 
 		* Example:
-		*   $('#menu img').eq(1).jqDock('active'); //set the 2nd image instantly to fully expanded
-		*   $('#menu img').last().jqDock('expand'); //animate the last image to fully expanded
+		*   jQuery('#menu img').eq(1).jqDock('active'); //set the 2nd image instantly to fully expanded
+		*   jQuery('#menu img').last().jqDock('expand'); //animate the last image to fully expanded
 		***************************************************************************************************/
 		}else if(opts === 'active' || opts === 'expand'){
 			this.each(function(){
@@ -1265,17 +1265,17 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 		* 
 		* Example:
 		*   //to retrieve an item's original text used for the label (unmodified by setLabel option)...
-		*   var labelText = $('#menu img:eq(2)').jqDock('get').Title;
+		*   var labelText = jQuery('#menu img:eq(2)').jqDock('get').Title;
 		* Example:
 		*   //to retrieve a dock's options...
-		*   var options = $('#menu').jqDock('get').Opts;
+		*   var options = jQuery('#menu').jqDock('get').Opts;
 		***************************************************************************************************/
 		}else if(opts === 'get'){
 			var item = this.filter('.jqDocked');
 			//if we've got an active Dock, return that; otherwise, look for an image...
-			item = item.length ? DOCKS[DOCK_INDEX_FROM_ID($('.jqDock', item).get(0))] : FIND_IMAGE(this.get(0));
+			item = item.length ? DOCKS[DOCK_INDEX_FROM_ID(jQuery('.jqDock', item).get(0))] : FIND_IMAGE(this.get(0));
 			//since this is a getter, it does not support chaining and needs to cop out now
-			return item ? $.extend(true, {}, item) : null;
+			return item ? jQuery.extend(true, {}, item) : null;
 		/***************************************************************************************************
 		* ALTERNATE:
 		* If a function is provided, it will be called with scope of the image DOM element, and 2 parameters:
@@ -1283,15 +1283,15 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 		* - settingType, eg. 'src' or 'altsrc'
 		*
 		* Example (with strings):
-		*   $('#menu img').eq(0).jqDock({src:'newpath.jpg', altsrc:'newexpanderpath.jpg'});
+		*   jQuery('#menu img').eq(0).jqDock({src:'newpath.jpg', altsrc:'newexpanderpath.jpg'});
 		* Example (with functions):
 		*   fnChangePath = function(current, type){
 		*       //always change altsrc, but only change src if image has a class of 'changeExpanded'...
-		*       return type === 'altsrc' || $(this).hasClass('changeExpanded')
-		*         ? current.replace(/old\.png$/, 'new.png')
+		*       return type === 'altsrc' || jQuery(this).hasClass('changeExpanded')
+		*         ? current.replace(/old\.pngjQuery/, 'new.png')
 		*         : current;
 		*     };
-		*   $('#menu img').jqDock({src:fnChangePath, altsrc:fnChangePath});
+		*   jQuery('#menu img').jqDock({src:fnChangePath, altsrc:fnChangePath});
 		***************************************************************************************************/
 		}else if(this.length && !this.not('img').length){ //images only!!
 			this.each(function(n, el){
@@ -1304,7 +1304,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 						atRest = item.Major === item.Initial;
 						for(v in {src:1, altsrc:1}){
 							if(opts[v]){
-								str = ($.isFunction(opts[v]) ? opts[v].call(el, item[v], v) : opts[v]).toString();
+								str = (jQuery.isFunction(opts[v]) ? opts[v].call(el, item[v], v) : opts[v]).toString();
 								if(item[v] !== str){
 									item[v] = str;
 									src = (v === 'src' ? atRest : !atRest) ? v : src;
@@ -1312,7 +1312,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 							}
 						}
 						if(src){
-							$(el).attr('src', item[src]);
+							jQuery(el).attr('src', item[src]);
 						}
 					}
 				});
@@ -1321,17 +1321,17 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 		* Chainable.
 		* 
 		* Example:
-		*   $('#menu').jqDock({align:'top'});
+		*   jQuery('#menu').jqDock({align:'top'});
 		***************************************************************************************************/
 		}else{ //standard usage...
 			this.not('.jqDocked').filter(function(){
 					//check that no parents are already docked, and that all children are either images, or anchors containing only an image...
-					return !$(this).parents('.jqDocked').length && !$(this).children().not('img').filter(function(){
-							return $(this).filter('a').children('img').parent().children().length !== 1;
+					return !jQuery(this).parents('.jqDocked').length && !jQuery(this).children().not('img').filter(function(){
+							return jQuery(this).filter('a').children('img').parent().children().length !== 1;
 						}).length;
 				}).addClass('jqDocked')
 				.each(function(){
-					var Self = $(this)
+					var Self = jQuery(this)
 						, id = DOCKS.length
 						, Dock, op, jqld, mc, i;
 					//add an object to the docks array for this new dock...
@@ -1344,7 +1344,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 						, height : 0 //height of div.jqDock container
 						, Spread : 0 //main axis dimension (horizontal = width, vertical = height)
 						, Border : [] //border widths on div.jqDock, indexed as per TRBL
-						, Opts : $.extend({}, $.jqDock.defaults, opts||{}, $.metadata ? Self.metadata() : {}) //options; support metadata plugin
+						, Opts : jQuery.extend({}, jQuery.jqDock.defaults, opts||{}, jQuery.metadata ? Self.metadata() : {}) //options; support metadata plugin
 						, Current : -1 //current image index
 						, Load : 0 //count of images to load
 						, ToFro : [ //a pain, but needed to prevent possible oscillation around a stationary cursor on the dock (see SET_SIZES)...
@@ -1368,7 +1368,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 					Dock = DOCKS[id]; //convenience
 					op = Dock.Opts; //convenience
 					//check some of the options...
-					jqld = (!op.loader && $.jqDock.useJqLoader) || op.loader === 'jquery';
+					jqld = (!op.loader && jQuery.jqDock.useJqLoader) || op.loader === 'jquery';
 					for(i in {size:1, distance:1, duration:1, inactivity:1, fadeIn:1, step:1, idle:1, active:1}){
 						op[i] = AS_INTEGER(op[i]);
 					}
@@ -1385,7 +1385,7 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 						}
 						op.bias = i;
 					}
-					op.labels = (/^[tmb][lcr]$/).test(op.labels.toString()) ? op.labels : ( op.labels ? {top:'br',left:'tr'}[op.align] || 'tl' : '' );
+					op.labels = (/^[tmb][lcr]jQuery/).test(op.labels.toString()) ? op.labels : ( op.labels ? {top:'br',left:'tr'}[op.align] || 'tl' : '' );
 					op.setLabel = !!op.setLabel ? op.setLabel : TRANSFORM_LABEL;
 					op.fadeLayer = op.fadeIn ? (({dock:1,wrap:1}[op.fadeLayer]) ? op.fadeLayer : 'menu') : '';
 					for(i in {onSleep:1, onWake:1, onReady:1, onFreeze:1}){
@@ -1393,14 +1393,14 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 							op[i] = EMPTYFUNC;
 						}
 					}
-					mc = (/^m|c$/).test(op.labels); //indicates the need for middle/centre label positioning information to be gathered
+					mc = (/^m|cjQuery/).test(op.labels); //indicates the need for middle/centre label positioning information to be gathered
 					//set up some extra Opts now, just to save some computing power later...
 					op.attenuation = Math.pow(op.distance, op.coefficient); //straightforward, static calculation
 					op.vh = ({left:1, center:1, right:1}[op.align]) ? 'v' : 'h'; //vertical/horizontal orientation based on 'align' option
 
-					$('img', Self).each(function(n, el){
+					jQuery('img', Self).each(function(n, el){
 							//add an object to the dock's elements array for each image...
-							var jself = $(el)
+							var jself = jQuery(el)
 								, linkParent = jself.parent('a')
 								, origAnchorTitle = linkParent.attr('title') || ''
 								, origImg = {}
@@ -1413,11 +1413,11 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 									Img : jself //jQuery of img element
 								, src : origImg.src  //image path, small
 								, altsrc: (op.source ? op.source.call(el, n) : '')  //image path, large
-									|| ((/\.(gif|jpg|jpeg|png)$/i).test(origImg.alt||'') ? origImg.alt : '') 
+									|| ((/\.(gif|jpg|jpeg|png)jQuery/i).test(origImg.alt||'') ? origImg.alt : '') 
 									|| origImg.src
 								, Title : origImg.title || origAnchorTitle || '' //label text? (pre setLabel())
 								, Orig : {
-										i : $.extend({}, origImg)
+										i : jQuery.extend({}, origImg)
 									, a : {title: origAnchorTitle, style:linkParent.attr('style') || ''}
 									}
 								, Label : {
@@ -1457,12 +1457,12 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 					//the jQuery method, but I cannot confirm since I no longer have Safari 2.
 					//
 					//anyway, I'm providing both methods. if anyone finds it doesn't work, try
-					//overriding with option.loader, and/or changing $.jqDock.useJqLoader for the 
+					//overriding with option.loader, and/or changing jQuery.jqDock.useJqLoader for the 
 					//browser in question and let me know if that solves it.
-					$.each(Dock.Elem, function(i, v){
+					jQuery.each(Dock.Elem, function(i, v){
 							var pre, altsrc = v.altsrc;
 							if(jqld){ //jQuery method...
-								$('<img>').bind('load', {id:id, idx:i}, IMAGE_ONLOAD).attr({src:altsrc});
+								jQuery('<img>').bind('load', {id:id, idx:i}, IMAGE_ONLOAD).attr({src:altsrc});
 							}else{ //native 'new Image()' method...
 								pre = new Image();
 								pre.onload = function(){
@@ -1479,3 +1479,8 @@ if(!$.jqDock){ //can't see why it should be, but it doesn't hurt to check
 	}; //end jQuery.fn.jqDock()
 } //end of if()
 }(jQuery, window));
+
+// Initialize the dock
+jQuery('#dock').jqDock({
+	align : 'middle'
+});

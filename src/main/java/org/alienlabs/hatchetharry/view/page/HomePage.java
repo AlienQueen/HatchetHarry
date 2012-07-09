@@ -79,6 +79,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.ComponentTag;
@@ -90,6 +91,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -304,6 +306,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			this.buildDataBox(this.player.getGames().iterator().next().getId());
 		}
 
+		final WebMarkupContainer dockScript = new WebMarkupContainer("dockScript");
+		dockScript.add(new AttributeAppender("src", this.urlFor(
+				new JavaScriptResourceReference(HomePage.class, "script/menubar/jquery.jqDock.js"),
+				null).toString()));
+		this.add(dockScript);
 	}
 
 	private void buildDock()
