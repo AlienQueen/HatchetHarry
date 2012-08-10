@@ -365,7 +365,7 @@
         	<groupId>org.jvnet.hudson.plugins</groupId>
         	<artifactId>sonar</artifactId>
         	<version>1.6.1</version>
-        	<type>hpi</type>
+        	<type>jar</type>
         	<scope>compile</scope>
            	<exclusions>
         		<exclusion>
