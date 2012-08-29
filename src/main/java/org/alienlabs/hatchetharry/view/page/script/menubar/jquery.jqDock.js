@@ -1479,8 +1479,3 @@ if(!jQuery.jqDock){ //can't see why it should be, but it doesn't hurt to check
 	}; //end jQuery.fn.jqDock()
 } //end of if()
 }(jQuery, window));
-
-// Initialize the dock
-jQuery('#dock').jqDock({
-	align : 'middle'
-});

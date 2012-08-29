@@ -2,7 +2,7 @@ jQuery(document).ready(
 		function() {
 			jQuery('#tapHandleImage${uuid}').click(
 					function() {
-						wicketAjaxGet('${url}&uuid=${uuid}', function() {
+						Wicket.Ajax.get('${url}&uuid=${uuid}', function() {
 						}, null, null);
 					});
 

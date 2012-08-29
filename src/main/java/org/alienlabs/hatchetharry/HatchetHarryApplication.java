@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Application;
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
@@ -179,6 +181,17 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				HomePage.class, "image/logobouclierrouge.png"));
 		this.mountResource("image/logobouclierviolet.png", new PackageResourceReference(
 				HomePage.class, "image/logobouclierviolet.png"));
+		
+		this.getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(HomePage.class, "script/google-analytics.js"));
+		this.getJavaScriptLibrarySettings().setWicketEventReference(new PackageResourceReference(HomePage.class, "blah.js"));
+		this.getJavaScriptLibrarySettings().setWicketAjaxReference(new PackageResourceReference(HomePage.class, "blah.js"));
+	}
+	
+	@Override
+	public RuntimeConfigurationType getConfigurationType() {
+ 
+		return RuntimeConfigurationType.DEPLOYMENT;
+ 
 	}
 
 	@Override

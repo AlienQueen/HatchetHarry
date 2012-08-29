@@ -84,13 +84,11 @@ public class PersistenceService implements Serializable
 		c.setId(id);
 
 		return c;
-
 	}
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public void saveCard(final MagicCard c)
 	{
-
 		this.magicCardDao.save(c);
 	}
 
@@ -117,7 +115,8 @@ public class PersistenceService implements Serializable
 		query.setLong(0, gameId);
 		query.setFirstResult(0);
 		query.setMaxResults(7);
-		final List<MagicCard> cards = query.list();
+		@SuppressWarnings("unchecked")
+		final List<MagicCard> cards = (List<MagicCard>)query.list();
 
 		return cards;
 	}
@@ -216,6 +215,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
+	@SuppressWarnings("unchecked")
 	public List<Player> getAllPlayersOfGame(final long l)
 	{
 		final Session session = this.playerDao.getSession();
@@ -260,6 +260,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
+	@SuppressWarnings("unchecked")
 	public List<MagicCard> getAllCardsFromDeck(final long l)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -327,6 +328,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
+	@SuppressWarnings("unchecked")
 	public List<Deck> getAllDecks()
 	{
 		final Session session = this.deckDao.getSession();
@@ -363,6 +365,7 @@ public class PersistenceService implements Serializable
 		}
 		catch (final ObjectNotFoundException e)
 		{
+			PersistenceService.LOGGER.error("error!", e);
 			return null;
 		}
 
@@ -411,7 +414,7 @@ public class PersistenceService implements Serializable
 	}
 
 
-	@SuppressWarnings("cast")
+	@SuppressWarnings({ "unchecked" })
 	@Transactional
 	public List<MagicCard> getAllCardsInBattleFieldForAPlayer(final Long playerId)
 	{
@@ -435,6 +438,7 @@ public class PersistenceService implements Serializable
 		}
 		catch (final ObjectNotFoundException e)
 		{
+			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for player: " + playerId + " => no result found", e);
 			return null;
 		}
 	}
@@ -445,6 +449,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.sideDao.getSession();
 		final Query query = session.createQuery("from Side s where s.game=?");
 		query.setEntity(0, game);
+		@SuppressWarnings("unchecked")
 		final List<Side> s = query.list();
 
 		return s;

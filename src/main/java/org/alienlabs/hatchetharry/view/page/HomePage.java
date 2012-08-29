@@ -77,6 +77,7 @@ import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -187,7 +188,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.7 (release King Wicket), built on Monday, 2nd of April 2012."));
+				"version 0.0.8 (release Emperor Wicket), built on Tuesday, 28th of August 2012."));
 
 		// Comet clock channel
 		this.add(new ClockPanel("clockPanel"));
@@ -664,11 +665,15 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery-1.6.4.js")));
+						HomePage.class, "script/jquery-1.7.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery.atmosphere.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						AbstractDefaultAjaxBehavior.class, "res/js/wicket-event-jquery.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						AbstractDefaultAjaxBehavior.class, "res/js/wicket-ajax-jquery.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tour/jquery.easing.1.3.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -683,6 +688,16 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 						HomePage.class, "script/menubar/mbMenu.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/jquery.jqDock.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/yahoo-dom-event.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/animation.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/utilities.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/container_core.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/element.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
