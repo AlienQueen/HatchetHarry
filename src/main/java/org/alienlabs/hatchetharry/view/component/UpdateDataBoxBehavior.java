@@ -72,7 +72,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 			UpdateDataBoxBehavior.LOGGER.info("notify with jsessionid="
 					+ this.hp.getSession().getId());
 
-			target.appendJavaScript("wicketAjaxGet('" + this.hp.notifierPanel.getCallbackUrl()
+			target.appendJavaScript("Wicket.Ajax.get('" + this.hp.notifierPanel.getCallbackUrl()
 					+ "&title=A player joined in!&text=Ready to play?&jsessionid=" + jsessionid
 					+ "', function() { }, null, null);");
 		}

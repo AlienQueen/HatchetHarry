@@ -29,16 +29,17 @@ jQuery(document).ready(
 									jQuery('#card${uuid}').rotate(0);
 								}
 						}
-						jQuery.atmosphere.log('info',
-								[ "response.responseBody: "
-										+ response.responseBody ]);
+//						jQuery.atmosphere.log('info',
+//								[ "response.responseBody: "
+//										+ response.responseBody ]);
 					}
 				}
 			}
 			// You can set websocket, streaming or long-polling here.
-			jQuery.atmosphere.subscribe(
-					document.getElementById('cardRotate').href,
-					callbackCardRotate${uuidValidForJs}, jQuery.atmosphere.request = {
-						transport : 'streaming'
-					});
+			// TODO: use wicket-atmosphere
+//			jQuery.atmosphere.subscribe(
+//					document.getElementById('cardRotate').href,
+//					callbackCardRotate${uuidValidForJs}, jQuery.atmosphere.request = {
+//						transport : 'streaming'
+//			});
 });

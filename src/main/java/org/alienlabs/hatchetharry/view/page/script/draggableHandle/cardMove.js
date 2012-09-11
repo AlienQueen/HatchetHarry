@@ -37,9 +37,10 @@ jQuery(document).ready(
 				}
 			}
 			// You can set websocket, streaming or long-polling here.
-			jQuery.atmosphere.subscribe(
-					document.getElementById('cardMove').href, callbackCardMove${uuidValidForJs},
-					jQuery.atmosphere.request = {
-						transport : 'streaming'
-					});
+			// TODO: use wicket-atmosphere
+//			jQuery.atmosphere.subscribe(
+//					document.getElementById('cardMove').href, callbackCardMove${uuidValidForJs},
+//					jQuery.atmosphere.request = {
+//						transport : 'streaming'
+//			});
 		});

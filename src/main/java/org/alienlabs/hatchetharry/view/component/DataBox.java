@@ -152,8 +152,8 @@ public class DataBox extends Panel
 		DataBox.LOGGER.info("meteor: " + meteor);
 		DataBox.LOGGER.info(message);
 
-		meteor.addListener(this.hp);
-		meteor.broadcast(message);
+		// meteor.addListener(this.hp);
+		// meteor.broadcast(message);
 	}
 
 	public WebMarkupContainer retrievePlayerLifePointsParentForPlayer(final Long playerId)

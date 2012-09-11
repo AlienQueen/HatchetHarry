@@ -236,7 +236,7 @@
 							// helper is set to "original"
 							if ((!this.element[0] || !this.element[0].parentNode)
 									&& this.options.helper == "original") {
-								wicketAjaxGet('${url}&posX=' + event.pageX
+								Wicket.Ajax.get('${url}&posX=' + event.pageX
 										+ '&posY=' + event.pageY
 										+ '&uuid=${uuid}', function() {
 								}, null, null);
@@ -267,7 +267,7 @@
 								}
 							}
 
-							wicketAjaxGet('${url}&posX=' + event.pageX
+							Wicket.Ajax.get('${url}&posX=' + event.pageX
 									+ '&posY=' + event.pageY + '&uuid=${uuid}',
 									function() {
 									}, null, null);

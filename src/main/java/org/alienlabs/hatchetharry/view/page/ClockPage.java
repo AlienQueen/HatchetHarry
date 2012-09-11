@@ -37,20 +37,7 @@
  */
 package org.alienlabs.hatchetharry.view.page;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
-import org.atmosphere.cpr.AtmosphereResourceEvent;
-import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,113 +48,13 @@ import org.slf4j.LoggerFactory;
  * @author Andrey Belyaev
  * @author Jeanfrancois Arcand
  */
-public class ClockPage extends WebPage implements AtmosphereResourceEventListener
+public class ClockPage extends WebPage
 {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(ClockPage.class);
-	static final Map<String, Callable<String>> connectedJSessionIds = new HashMap<String, Callable<String>>();
-
-	// TODO is this necessary??
-	private final AtomicBoolean scheduleStarted = new AtomicBoolean(false);
 
 	public ClockPage()
 	{
-		final HttpServletRequest req = (HttpServletRequest)this.getRequest().getContainerRequest();
-
-		// Grap a Meteor
-		final Meteor meteor = Meteor.build(req);
-		final String jsessionid = req.getRequestedSessionId();
-
-		// Start scheduling update.
-		if ((!this.scheduleStarted.getAndSet(true))
-				&& !(ClockPage.connectedJSessionIds.containsKey(jsessionid)))
-		{
-			final Callable<String> callable = new Callable<String>()
-			{
-				@Override
-				public String call()
-				{
-					final String s = "1#####" + new Date().toString();
-					ClockPage.LOGGER.debug(s);
-					return s;
-				}
-			};
-			ClockPage.connectedJSessionIds.put(jsessionid, callable);
-			((HatchetHarrySession)Session.get()).setCometUser(jsessionid);
-			meteor.schedule(callable, 5); // 5 seconds
-		}
-
-		// Add us to the listener list.
-		meteor.addListener(this);
-
-		final String transport = req.getHeader("X-Atmosphere-Transport");
-
-		// Suspend the connection. Could be long-polling, streaming or
-		// websocket.
-		meteor.suspend(-1, !((transport != null) && transport.equalsIgnoreCase("long-polling")));
-	}
-
-	@Override
-	public void onBroadcast(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		event.getResource().getRequest().getRequestedSessionId();
-		// if (!jsessionid.equals(((String)event.getMessage()).split("###")[0]))
-		// {
-		// If we are using long-polling, resume the connection as soon as we
-		// get an event.
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		if ((transport != null) && transport.equalsIgnoreCase("long-polling"))
-		{
-			final Meteor meteor = Meteor.lookup(event.getResource().getRequest());
-			meteor.removeListener(this);
-			meteor.resume();
-		}
-		// }
-	}
-
-	@Override
-	public void onSuspend(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.LOGGER.info("Suspending the %s response from ip {}:{}",
-				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
-						req.getRemotePort() });
-	}
-
-	@Override
-	public void onResume(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.LOGGER.info("Resuming the {} response from ip {}:{}",
-				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
-						req.getRemotePort() });
-	}
-
-	@Override
-	public void onDisconnect(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		final HttpServletRequest req = event.getResource().getRequest();
-		ClockPage.LOGGER.info("{} connection dropped from ip {}:{}",
-				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
-						req.getRemotePort() });
-	}
-
-	@Override
-	public void onThrowable(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		ClockPage.LOGGER.info("onThrowable()", event.throwable());
 	}
 
 }

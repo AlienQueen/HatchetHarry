@@ -37,13 +37,9 @@
  */
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.Date;
-
-import org.alienlabs.hatchetharry.view.page.ClockPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Simple panel.
@@ -53,29 +49,18 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 public class ClockPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
-	private AbstractReadOnlyModel<String> time;
+	private final IModel<String> time;
 
-	public ClockPanel(final String id)
+	public ClockPanel(final String id, final IModel<String> model)
 	{
-		super(id);
+		super(id, model);
 
-		this.add(new BookmarkablePageLink<ClockPage>("cometStart", ClockPage.class));
-		this.time = new AbstractReadOnlyModel<String>()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String getObject()
-			{
-				return "1#####" + new Date().toString();
-			}
-		};
+		this.time = model;
 		this.add(new Label("clock", this.time));
 	}
 
-	public AbstractReadOnlyModel<String> getTime()
+	public IModel<String> getTime()
 	{
 		return this.time;
 	}
-
 }

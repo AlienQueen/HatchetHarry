@@ -33,7 +33,7 @@ jQuery(document)
 												+ data.split("_____")[i];
 									}
 									var playerId = data.split("&playerId=")[1];
-									wicketAjaxGet('${url}&playerId=' + playerId
+									Wicket.Ajax.get('${url}&playerId=' + playerId
 											+ '&cards=' + cards, function() {
 									}, null, null);
 								}
@@ -45,10 +45,11 @@ jQuery(document)
 					;
 
 					// You can set websocket, streaming or long-polling here.
-					jQuery.atmosphere.subscribe(document
-							.getElementById('untapAll').href, callbackUntapAll,
-							jQuery.atmosphere.request = {
-								transport : 'streaming'
-							});
+					// TODO: use wicket-atmosphere
+//					jQuery.atmosphere.subscribe(document
+//							.getElementById('untapAll').href, callbackUntapAll,
+//							jQuery.atmosphere.request = {
+//								transport : 'streaming'
+//					});
 
 				});

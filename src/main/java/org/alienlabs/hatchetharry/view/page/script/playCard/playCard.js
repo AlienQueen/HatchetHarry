@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 		var aId = a.attr('id');
 		var currentCard = aId.split("cross-link")[1];
 		
-		wicketAjaxGet('${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}', function() {
+		Wicket.Ajax.get('${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}', function() {
 		}, null, null);
 	});
 	
@@ -73,7 +73,7 @@ jQuery(document).ready(function() {
 							} else {
 								posY = data.split("~~~")[5].split("1#####")[0];
 							}
-							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
+							Wicket.Ajax.get('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
 							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + posY, function() { }, null, null);
 						} else if ((typeof id != "undefined")
 								&& (getCookie('JSESSIONID') != sessionId)) 
@@ -84,7 +84,7 @@ jQuery(document).ready(function() {
 							} else {
 								posY = data.split("~~~")[5].split("1#####")[0];
 							}
-							wicketAjaxGet('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
+							Wicket.Ajax.get('${url}&card=' + id + '&stop=true&indexOfClickedCard=' + data.split("~~~")[2]
 							+ '&side=' + data.split("~~~")[3] + '&posX=' + data.split("~~~")[4] + '&posY=' + posY, function() { }, null, null);
 						};
 					};
@@ -93,11 +93,12 @@ jQuery(document).ready(function() {
 	};
 	
 	// You can set websocket, streaming or long-polling here.
-	jQuery.atmosphere.subscribe(
-			document.getElementById('playCard').href, callbackPlayCard${uuidValidForJs},
-			jQuery.atmosphere.request = {
-				transport : 'streaming'
-			}
-	);
+	// TODO: use wicket-atmosphere
+//	jQuery.atmosphere.subscribe(
+//			document.getElementById('playCard').href, callbackPlayCard${uuidValidForJs},
+//			jQuery.atmosphere.request = {
+//				transport : 'streaming'
+//			}
+//	);
 	
 });

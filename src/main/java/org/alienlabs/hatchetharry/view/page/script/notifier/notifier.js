@@ -64,9 +64,10 @@ jQuery(document)
 					}
 
 					// You can set websocket, streaming or long-polling here.
-					jQuery.atmosphere.subscribe(document
-							.getElementById('notifierStart').href,
-							callbackNotifier, jQuery.atmosphere.request = {
-								transport : 'streaming'
-							});
+					// TODO: use wicket-atmosphere
+//					jQuery.atmosphere.subscribe(document
+//							.getElementById('notifierStart').href,
+//							callbackNotifier, jQuery.atmosphere.request = {
+//								transport : 'streaming'
+//					});
 				});

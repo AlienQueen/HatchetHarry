@@ -1,12 +1,17 @@
 package org.alienlabs.hatchetharry;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
+import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
@@ -26,6 +31,7 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 	private static final long serialVersionUID = 1L;
 	private Player player;
 	private boolean mistletoeTest = false;
+	private EventBus eventBus;
 
 	/**
 	 * Constructor
@@ -43,6 +49,16 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 		return HomePage.class;
 	}
 
+	public EventBus getEventBus()
+	{
+		return this.eventBus;
+	}
+
+	public static HatchetHarryApplication get()
+	{
+		return (HatchetHarryApplication)Application.get();
+	}
+
 	@Override
 	protected void init()
 	{
@@ -53,6 +69,26 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				new SpringComponentInjector(this, applicationContext));
 		// this.getComponentPostOnBeforeRenderListeners().add(new
 		// WicketDebugListener());
+
+		this.eventBus = new EventBus(this);
+
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
+		final Runnable beeper = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					HatchetHarryApplication.this.eventBus.post(new Date());
+				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
 
 		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
 
@@ -181,17 +217,21 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				HomePage.class, "image/logobouclierrouge.png"));
 		this.mountResource("image/logobouclierviolet.png", new PackageResourceReference(
 				HomePage.class, "image/logobouclierviolet.png"));
-		
-		this.getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(HomePage.class, "script/google-analytics.js"));
-		this.getJavaScriptLibrarySettings().setWicketEventReference(new PackageResourceReference(HomePage.class, "blah.js"));
-		this.getJavaScriptLibrarySettings().setWicketAjaxReference(new PackageResourceReference(HomePage.class, "blah.js"));
+
+		this.getJavaScriptLibrarySettings().setJQueryReference(
+				new PackageResourceReference(HomePage.class, "script/google-analytics.js"));
+		this.getJavaScriptLibrarySettings().setWicketEventReference(
+				new PackageResourceReference(HomePage.class, "blah.js"));
+		this.getJavaScriptLibrarySettings().setWicketAjaxReference(
+				new PackageResourceReference(HomePage.class, "blah.js"));
 	}
-	
+
 	@Override
-	public RuntimeConfigurationType getConfigurationType() {
- 
-		return RuntimeConfigurationType.DEPLOYMENT;
- 
+	public RuntimeConfigurationType getConfigurationType()
+	{
+
+		return RuntimeConfigurationType.DEVELOPMENT;
+
 	}
 
 	@Override

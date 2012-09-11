@@ -67,8 +67,8 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			NotifierBehavior.LOGGER.info(message);
 			NotifierBehavior.LOGGER.info("there?");
 
-			meteor.addListener(this.page);
-			meteor.broadcast(message);
+			// meteor.addListener(this.page);
+			// meteor.broadcast(message);
 		}
 		else if (show)
 		{
@@ -77,8 +77,8 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			NotifierBehavior.LOGGER.info("meteor: " + meteor);
 			NotifierBehavior.LOGGER.info(message);
-			meteor.addListener(this.page);
-			meteor.broadcast(message);
+			// meteor.addListener(this.page);
+			// meteor.broadcast(message);
 		}
 	}
 

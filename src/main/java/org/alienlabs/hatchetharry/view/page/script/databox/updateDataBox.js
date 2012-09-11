@@ -27,7 +27,7 @@ jQuery(document).ready(
 						if ((typeof s != "undefined")
 								&& (getCookie('JSESSIONID') != s)) {
 							// We're in the DataBox Meteor
-							wicketAjaxGet('${url}&stop=true&notify=true&jsessionid=' + getCookie('JSESSIONID'), function() { }, null, null);
+							Wicket.Ajax.get('${url}&stop=true&notify=true&jsessionid=' + getCookie('JSESSIONID'), function() { }, null, null);
 						}
 						
 						var t = data.split("§§§")[1];
@@ -46,16 +46,17 @@ jQuery(document).ready(
 						var v = data.split("%%%")[1];
 						
 						if (typeof v != "undefined") {
-							wicketAjaxGet('${url}&playerId=' + data.split("%%%")[2], function() { }, null, null);
+							Wicket.Ajax.get('${url}&playerId=' + data.split("%%%")[2], function() { }, null, null);
 						}
 					}
 				}
 			}
 			
 			// You can set websocket, streaming or long-polling here.
-			jQuery.atmosphere.subscribe(
-				document.getElementById('updateDataBox').href, callbackDataBox${jsessionid},
-				jQuery.atmosphere.request = {
-					transport : 'streaming'
-			});
+			// TODO: use wicket-atmosphere
+//			jQuery.atmosphere.subscribe(
+//				document.getElementById('updateDataBox').href, callbackDataBox${jsessionid},
+//				jQuery.atmosphere.request = {
+//					transport : 'streaming'
+//			});
 });

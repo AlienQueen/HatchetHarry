@@ -1,5 +1,5 @@
 // The menubar, a jQuery plugin
-jQuery(document).ready(function() {
+jQuery(function() {
 
 	jQuery(".myMenu").buildMenu({
 		additionalData : "pippo=1",
@@ -25,9 +25,7 @@ jQuery(document).ready(function() {
 });
 
 // The website tour, a jQuery plugin
-jQuery(document)
-		.ready(
-				function() {
+jQuery(function() {
 					if (!(jQuery.Storage.get("tour") == "true")) {
 						var config = {
 							mainTitle : "First time here?",
@@ -164,11 +162,11 @@ jQuery(function() {
 
 });
 
-jQuery(document).ready(function() {
+jQuery(function() {
 	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({});
 });
 
-jQuery(document).ready(function() {
+jQuery(function() {
 	jQuery('#dock').jqDock({
 		align : 'middle'
 	});

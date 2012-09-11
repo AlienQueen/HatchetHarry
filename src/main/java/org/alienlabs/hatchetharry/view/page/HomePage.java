@@ -40,6 +40,7 @@ package org.alienlabs.hatchetharry.view.page;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -48,7 +49,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -80,7 +80,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.ComponentTag;
@@ -90,14 +90,13 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
-import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListener;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
@@ -112,7 +111,7 @@ import ch.qos.mistletoe.wicket.TestReportPage;
  * 
  * @author Andrey Belyaev
  */
-public class HomePage extends TestReportPage implements AtmosphereResourceEventListener
+public class HomePage extends TestReportPage
 {
 	private static final long serialVersionUID = 1L;
 
@@ -163,6 +162,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 	private final WebMarkupContainer secondSidePlaceholderParent;
 
 	private PlayCardFromHandBehavior playCardBehavior;
+	ClockPanel clockPanel;
 
 	public HomePage()
 	{
@@ -188,10 +188,12 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.8 (release Emperor Wicket), built on Tuesday, 28th of August 2012."));
+				"version 0.0.8 (release Emperor Wicket), built on Tuesday, 11th of September 2012."));
 
 		// Comet clock channel
-		this.add(new ClockPanel("clockPanel"));
+		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
+		this.clockPanel.setOutputMarkupId(true);
+		this.add(this.clockPanel);
 
 		if (!HatchetHarrySession.get().isGameCreated())
 		{
@@ -307,11 +309,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			this.buildDataBox(this.player.getGames().iterator().next().getId());
 		}
 
-		final WebMarkupContainer dockScript = new WebMarkupContainer("dockScript");
-		dockScript.add(new AttributeAppender("src", this.urlFor(
-				new JavaScriptResourceReference(HomePage.class, "script/menubar/jquery.jqDock.js"),
-				null).toString()));
-		this.add(dockScript);
 	}
 
 	private void buildDock()
@@ -375,7 +372,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript("wicketAjaxGet('"
+				target.appendJavaScript("Wicket.Ajax.get('"
 						+ HomePage.this.notifierPanel.getCallbackUrl()
 						+ "&title="
 						+ HatchetHarrySession.get().getPlayer().getSide()
@@ -409,7 +406,7 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 						.getRequest();
 				HomePage.LOGGER.info("untap all");
 				final HttpServletRequest request = servletWebRequest.getContainerRequest();
-				target.appendJavaScript("wicketAjaxGet('"
+				target.appendJavaScript("Wicket.Ajax.get('"
 						+ HomePage.this.untapAllBehavior.getCallbackUrl() + "&sessionid="
 						+ request.getRequestedSessionId() + "&playerId="
 						+ HatchetHarrySession.get().getPlayer().getId()
@@ -697,7 +694,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/container_core.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/menu.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/element.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/jquery.jqDock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -716,8 +717,6 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 						HomePage.class, "script/gallery/gallery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/rotate/jQueryRotate.2.1.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/menu.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class,
 						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js")));
@@ -926,65 +925,11 @@ public class HomePage extends TestReportPage implements AtmosphereResourceEventL
 		this.add(createGameLink);
 	}
 
-	@Override
-	public void onBroadcast(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+	@Subscribe
+	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
-		HomePage.LOGGER.info("onBroadcast(): {}", event.getMessage());
-
-		// If we are using long-polling, resume the connection as soon as we get
-		// an event.
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		if ((transport != null) && transport.equalsIgnoreCase("long-polling"))
-		{
-			final Meteor meteor = Meteor.lookup(event.getResource().getRequest());
-			meteor.removeListener(this);
-			meteor.resume();
-		}
-	}
-
-	@Override
-	public void onSuspend(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		final HttpServletRequest req = event.getResource().getRequest();
-		HomePage.LOGGER.info("Suspending the %s response from ip {}:{}",
-				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
-						req.getRemotePort() });
-	}
-
-	@Override
-	public void onResume(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		final HttpServletRequest req = event.getResource().getRequest();
-		HomePage.LOGGER.info("Resuming the {} response from ip {}:{}",
-				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
-						req.getRemotePort() });
-	}
-
-	@Override
-	public void onDisconnect(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		final String transport = event.getResource().getRequest()
-				.getHeader("X-Atmosphere-Transport");
-		final HttpServletRequest req = event.getResource().getRequest();
-		HomePage.LOGGER.info("{} connection dropped from ip {}:{}",
-				new Object[] { transport == null ? "websocket" : transport, req.getRemoteAddr(),
-						req.getRemotePort() });
-	}
-
-	@Override
-	public void onThrowable(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
-	{
-		HomePage.LOGGER.info("onThrowable()", event.throwable());
+		this.clockPanel.setDefaultModelObject(event.toString());
+		target.add(this.clockPanel);
 	}
 
 	@Override

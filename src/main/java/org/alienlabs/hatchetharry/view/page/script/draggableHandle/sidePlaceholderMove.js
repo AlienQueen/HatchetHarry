@@ -31,7 +31,7 @@ jQuery(document).ready(
 							+ "&side=" + data.split("|||||")[0]
 							+ "&uuid=" + data.split("|||||")[2]
 							+ "&stop=true";
-							wicketAjaxGet(req, function() { }, null, null);
+							Wicket.Ajax.get(req, function() { }, null, null);
 						}
 
 						if ((typeof data.split("|||||")[1] != "undefined")
@@ -50,9 +50,10 @@ jQuery(document).ready(
 				}
 			}
 			// You can set websocket, streaming or long-polling here.
-			jQuery.atmosphere.subscribe(
-					document.getElementById("sidePlaceholderMove").href, callbackSidePlaceholderMove${uuidValidForJs},
-					jQuery.atmosphere.request = {
-							transport : 'streaming'
-					});
+			// TODO: use wicket-atmosphere
+//			jQuery.atmosphere.subscribe(
+//					document.getElementById("sidePlaceholderMove").href, callbackSidePlaceholderMove${uuidValidForJs},
+//					jQuery.atmosphere.request = {
+//							transport : 'streaming'
+//			});
 		});

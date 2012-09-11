@@ -20,7 +20,7 @@ public class NotifierPage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onBroadcast(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		NotifierPage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
@@ -38,7 +38,7 @@ public class NotifierPage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onSuspend(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -50,7 +50,7 @@ public class NotifierPage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onResume(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -62,7 +62,7 @@ public class NotifierPage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onDisconnect(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -74,7 +74,7 @@ public class NotifierPage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onThrowable(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		NotifierPage.LOGGER.info("onThrowable()", event.throwable());
 	}

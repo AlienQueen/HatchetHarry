@@ -60,7 +60,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onBroadcast(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		CardMovePage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
@@ -78,7 +78,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onSuspend(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -90,7 +90,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onResume(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -102,7 +102,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onDisconnect(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -114,7 +114,7 @@ public class CardMovePage extends WebPage implements AtmosphereResourceEventList
 
 	@Override
 	public void onThrowable(
-			final AtmosphereResourceEvent<HttpServletRequest, HttpServletResponse> event)
+			final AtmosphereResourceEvent event)
 	{
 		CardMovePage.LOGGER.info("onThrowable()", event.throwable());
 	}
