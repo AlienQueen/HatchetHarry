@@ -1,17 +1,20 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -19,9 +22,6 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
-import org.atmosphere.cpr.AtmosphereResourceEventListener;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -58,14 +58,36 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		card.setTapped(!card.isTapped());
 		this.persistenceService.saveCard(card);
 
-		final String message = request.getRequestedSessionId() + "&tapped=" + card.isTapped()
-				+ "___" + uuidToLookFor;
+		final CardRotateCometChannel crcc = new CardRotateCometChannel(HatchetHarrySession.get()
+				.getGameId(), card.getUuid(), card.isTapped());
+		HatchetHarryApplication.get().getEventBus().post(crcc);
 
-		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-		CardRotateBehavior.LOGGER.info("meteor: " + meteor);
-		CardRotateBehavior.LOGGER.info(message);
-		meteor.addListener((AtmosphereResourceEventListener)this.panel.getPage());
-		meteor.broadcast(message);
+		// final String message = request.getRequestedSessionId() + "&tapped=" +
+		// card.isTapped()
+		// + "___" + uuidToLookFor;
+		//
+		// final Meteor meteor = Meteor.build(request, new
+		// LinkedList<BroadcastFilter>(), null);
+		// CardRotateBehavior.LOGGER.info("meteor: " + meteor);
+		// CardRotateBehavior.LOGGER.info(message);
+		// meteor.addListener((AtmosphereResourceEventListener)this.panel.getPage());
+		// meteor.broadcast(message);
+	}
+
+	@Subscribe
+	public void updateTime(final AjaxRequestTarget target, final CardRotateCometChannel event)
+	{
+		if (HatchetHarrySession.get().getGameId() == event.getGameId())
+		{
+			if (event.isTapped())
+			{
+				target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(90);");
+			}
+			else
+			{
+				target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(0);");
+			}
+		}
 	}
 
 	@Override
