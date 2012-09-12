@@ -57,26 +57,19 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 				.fromString(uuidToLookFor));
 		card.setTapped(!card.isTapped());
 		this.persistenceService.saveCard(card);
-
+		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
+		
 		final CardRotateCometChannel crcc = new CardRotateCometChannel(HatchetHarrySession.get()
 				.getGameId(), card.getUuid(), card.isTapped());
 		HatchetHarryApplication.get().getEventBus().post(crcc);
-
-		// final String message = request.getRequestedSessionId() + "&tapped=" +
-		// card.isTapped()
-		// + "___" + uuidToLookFor;
-		//
-		// final Meteor meteor = Meteor.build(request, new
-		// LinkedList<BroadcastFilter>(), null);
-		// CardRotateBehavior.LOGGER.info("meteor: " + meteor);
-		// CardRotateBehavior.LOGGER.info(message);
-		// meteor.addListener((AtmosphereResourceEventListener)this.panel.getPage());
-		// meteor.broadcast(message);
 	}
 
 	@Subscribe
 	public void updateTime(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
+		CardRotateBehavior.LOGGER.info("update time, gameId from event= " + event.getGameId());
+		CardRotateBehavior.LOGGER.info("update time, gameId from session= " + HatchetHarrySession.get().getGameId());
+		
 		if (HatchetHarrySession.get().getGameId() == event.getGameId())
 		{
 			if (event.isTapped())
@@ -98,7 +91,6 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuid", this.uuid);
-		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/rotate/cardRotate.js");

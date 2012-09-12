@@ -188,7 +188,7 @@ public class HomePage extends TestReportPage
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.8 (release Emperor Wicket), built on Tuesday, 11th of September 2012."));
+				"version 0.0.8 (release Emperor Wicket), built on Wednesday, 12th of September 2012."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
@@ -487,7 +487,9 @@ public class HomePage extends TestReportPage
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
-
+		
+		HatchetHarrySession.get().setGameCreated();
+		
 		if (this.persistenceService.getFirstPlayer() == null)
 		{
 			return this.createPlayerAndDeck(jsessionid, "infrared", "infrared", 20l, 1l);
