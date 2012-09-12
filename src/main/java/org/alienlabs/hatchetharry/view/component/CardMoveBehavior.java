@@ -6,12 +6,17 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
+import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -54,10 +59,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String _mouseX = request.getParameter("posX");
 		final String _mouseY = request.getParameter("posY");
 		final String uniqueid = request.getParameter("uuid");
-		final String message = request.getRequestedSessionId() + "&&&"
-				+ (Integer.parseInt(_mouseX) - 16) + "&&&" + (Integer.parseInt(_mouseY) - 16)
-				+ "&&&" + uniqueid;
-
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, _mouseX, _mouseY, uniqueid);
 		try
 		{
 			final MagicCard mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
@@ -72,14 +75,21 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		{
 			CardMoveBehavior.LOGGER.error("error parsing UUID of moved card", e);
 		}
-
-		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-		CardMoveBehavior.LOGGER.info("meteor: " + meteor);
-		CardMoveBehavior.LOGGER.info(message);
-		meteor.addListener((AtmosphereResourceEventListener)this.panel.getPage());
-		meteor.broadcast(message);
+		HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel);
 	}
 
+	@Subscribe
+	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
+	{
+		if (HatchetHarrySession.get().getGameId() == event.getGameId())
+		{
+			target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid() + "');" +
+					"card.css('position', 'absolute');"+
+					"card.css('left', '"+event.getMouseX()+"');"+
+					"card.css('top', '"+event.getMouseY()+"');");
+		}
+	} 
+	
 	@Override
 	public void renderHead(final Component component, final IHeaderResponse response)
 	{

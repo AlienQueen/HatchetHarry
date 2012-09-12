@@ -236,10 +236,9 @@
 							// helper is set to "original"
 							if ((!this.element[0] || !this.element[0].parentNode)
 									&& this.options.helper == "original") {
-								Wicket.Ajax.get('${url}&posX=' + event.pageX
+								Wicket.Ajax.get({ 'u' : '${url}&posX=' + event.pageX
 										+ '&posY=' + event.pageY
-										+ '&uuid=${uuid}', function() {
-								}, null, null);
+										+ '&uuid=${uuid}'});
 								return true;
 							}
 
@@ -267,10 +266,8 @@
 								}
 							}
 
-							Wicket.Ajax.get('${url}&posX=' + event.pageX
-									+ '&posY=' + event.pageY + '&uuid=${uuid}',
-									function() {
-									}, null, null);
+							Wicket.Ajax.get({ 'u' : '${url}&posX=' + event.pageX
+									+ '&posY=' + event.pageY + '&uuid=${uuid}'});
 							return true;
 						},
 
