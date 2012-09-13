@@ -236,9 +236,6 @@
 							// helper is set to "original"
 							if ((!this.element[0] || !this.element[0].parentNode)
 									&& this.options.helper == "original") {
-								Wicket.Ajax.get({ 'u' : '${url}&posX=' + event.pageX
-										+ '&posY=' + event.pageY
-										+ '&uuid=${uuid}'});
 								return true;
 							}
 

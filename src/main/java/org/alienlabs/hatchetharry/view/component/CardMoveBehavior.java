@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +9,6 @@ import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
-import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -24,9 +22,6 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
-import org.atmosphere.cpr.AtmosphereResourceEventListener;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -60,14 +55,16 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String _mouseY = request.getParameter("posY");
 		final String uniqueid = request.getParameter("uuid");
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, _mouseX, _mouseY, uniqueid);
+
+		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, _mouseX,
+				_mouseY, uniqueid);
 		try
 		{
 			final MagicCard mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
 			if (null != mc)
 			{
-				mc.setX(Long.parseLong(_mouseX) - 16);
-				mc.setY(Long.parseLong(_mouseY) - 16);
+				mc.setX(Long.parseLong(_mouseX));
+				mc.setY(Long.parseLong(_mouseY));
 				this.persistenceService.saveCard(mc);
 			}
 		}
@@ -83,13 +80,12 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		if (HatchetHarrySession.get().getGameId() == event.getGameId())
 		{
-			target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid() + "');" +
-					"card.css('position', 'absolute');"+
-					"card.css('left', '"+event.getMouseX()+"');"+
-					"card.css('top', '"+event.getMouseY()+"');");
+			target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
+					+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"
+					+ event.getMouseX() + "');" + "card.css('top', '" + event.getMouseY() + "');");
 		}
-	} 
-	
+	}
+
 	@Override
 	public void renderHead(final Component component, final IHeaderResponse response)
 	{

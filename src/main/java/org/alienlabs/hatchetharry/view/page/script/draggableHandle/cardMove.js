@@ -1,5 +1,4 @@
-jQuery(document).ready(
-		function() {
+jQuery(function() {
 			// Show menu when #myDiv is clicked
 			jQuery("#card${uuid}").contextMenu(
 					{
@@ -12,35 +11,6 @@ jQuery(document).ready(
 								+ ' (relative to element)\n\n' + 'X: '
 								+ pos.docX + '  Y: ' + pos.docY
 								+ ' (relative to document)');
-					});
-
-			function callbackCardMove${uuidValidForJs}(response) {
-				if (response.transport != 'polling'
-						&& response.state != 'connected'
-						&& response.state != 'closed') {
-					if (response.status == 200) {
-						var data = response.responseBody;
-						var s = data.split("&&&")[1];
-						if ((typeof s != "undefined")
-								&& (jQuery('#jsessionid${uuid}').val() != data
-										.split("&&&")[0])
-								&& (typeof data.split("&&&")[3] != 'undefined')
-								&& (data.split("&&&")[3] == '${uuid}')) {
-							// We're in the card move Meteor
-							var card = jQuery("#menutoggleButton${uuid}");
-							card.css("position", "absolute");
-							card.css("left", data.split("&&&")[1]);
-							card.css("top", data.split("&&&")[2]);
-							// }
-						}
 					}
-				}
-			}
-			// You can set websocket, streaming or long-polling here.
-			// TODO: use wicket-atmosphere
-//			jQuery.atmosphere.subscribe(
-//					document.getElementById('cardMove').href, callbackCardMove${uuidValidForJs},
-//					jQuery.atmosphere.request = {
-//						transport : 'streaming'
-//			});
-		});
+			)
+});

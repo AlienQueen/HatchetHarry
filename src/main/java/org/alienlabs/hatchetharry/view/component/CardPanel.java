@@ -5,8 +5,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.view.page.CardMovePage;
-import org.alienlabs.hatchetharry.view.page.CardRotatePage;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -18,7 +16,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -34,9 +31,6 @@ public class CardPanel extends Panel
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardPanel.class);
 
-	private final BookmarkablePageLink<CardMovePage> cardMovePage;
-	private final BookmarkablePageLink<CardRotatePage> cardRotatePage;
-
 	private final UUID uuid;
 
 	public CardPanel(final String id, final String smallImage, final String bigImage,
@@ -46,12 +40,6 @@ public class CardPanel extends Panel
 		this.uuid = _uuid;
 
 		this.setOutputMarkupId(true);
-
-		this.cardMovePage = new BookmarkablePageLink<CardMovePage>("cardMove", CardMovePage.class);
-		this.cardRotatePage = new BookmarkablePageLink<CardRotatePage>("cardRotate",
-				CardRotatePage.class);
-
-		this.add(this.cardMovePage, this.cardRotatePage);
 
 		this.add(new Behavior()
 		{
