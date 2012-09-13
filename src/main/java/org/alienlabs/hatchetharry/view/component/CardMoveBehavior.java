@@ -55,9 +55,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String _mouseY = request.getParameter("posY");
 		final String uniqueid = request.getParameter("uuid");
 		final Long gameId = HatchetHarrySession.get().getGameId();
+		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 
 		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, _mouseX,
-				_mouseY, uniqueid);
+				_mouseY, uniqueid, playerId);
 		try
 		{
 			final MagicCard mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
@@ -72,13 +73,31 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		{
 			CardMoveBehavior.LOGGER.error("error parsing UUID of moved card", e);
 		}
+
+		CardMoveBehavior.LOGGER.info("playerId in respond(): "
+				+ HatchetHarrySession.get().getPlayer().getId());
 		HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel);
 	}
 
 	@Subscribe
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
-		if (HatchetHarrySession.get().getGameId() == event.getGameId())
+		CardMoveBehavior.LOGGER.info("playerId in moveCard(): "
+				+ HatchetHarrySession.get().getPlayer().getId());
+		CardMoveBehavior.LOGGER.info("event playerId in moveCard(): " + event.getPlayerId());
+
+		CardMoveBehavior.LOGGER.info("gameId in moveCard(): "
+				+ HatchetHarrySession.get().getGameId());
+		CardMoveBehavior.LOGGER.info("event gameId in moveCard(): " + event.getGameId());
+		CardMoveBehavior.LOGGER
+				.info("### "
+						+ ((HatchetHarrySession.get().getGameId().longValue() == event.getGameId()
+								.longValue()) && (HatchetHarrySession.get().getPlayer().getId()
+								.longValue() != event.getPlayerId().longValue())));
+
+		if ((HatchetHarrySession.get().getGameId().longValue() == event.getGameId().longValue())
+				&& (HatchetHarrySession.get().getPlayer().getId().longValue() != event
+						.getPlayerId().longValue()))
 		{
 			target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
 					+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"

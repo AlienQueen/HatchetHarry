@@ -7,14 +7,16 @@ public class CardMoveCometChannel
 	private final String mouseX;
 	private final String mouseY;
 	private final String uniqueid;
+	private final Long playerId;
 
 	public CardMoveCometChannel(final Long _gameId, final String _mouseX, final String _mouseY,
-			final String _uniqueid)
+			final String _uniqueid, final Long _playerId)
 	{
 		this.gameId = _gameId;
 		this.mouseX = _mouseX;
 		this.mouseY = _mouseY;
 		this.uniqueid = _uniqueid;
+		this.playerId = _playerId;
 	}
 
 	public Long getGameId()
@@ -35,6 +37,11 @@ public class CardMoveCometChannel
 	public String getUniqueid()
 	{
 		return this.uniqueid;
+	}
+
+	public Long getPlayerId()
+	{
+		return this.playerId;
 	}
 
 }

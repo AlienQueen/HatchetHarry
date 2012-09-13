@@ -487,9 +487,9 @@ public class HomePage extends TestReportPage
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
-		
+
 		HatchetHarrySession.get().setGameCreated();
-		
+
 		if (this.persistenceService.getFirstPlayer() == null)
 		{
 			return this.createPlayerAndDeck(jsessionid, "infrared", "infrared", 20l, 1l);
@@ -508,7 +508,8 @@ public class HomePage extends TestReportPage
 		p.setId(this.persistenceService.savePlayer(p));
 
 		final Set<Game> games = new HashSet<Game>();
-		games.add(this.persistenceService.createNewGame(p));
+		final Game game = this.persistenceService.createGame(p, 1l);
+		games.add(game);
 		p.setGames(games);
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
@@ -526,6 +527,7 @@ public class HomePage extends TestReportPage
 		this.deck.setPlayerId(id);
 		this.deck = this.persistenceService.saveDeck(this.deck);
 
+		HatchetHarrySession.get().setGameId(game.getId());
 		HatchetHarrySession.get().setPlayer(p);
 		this.player = p;
 		return p;

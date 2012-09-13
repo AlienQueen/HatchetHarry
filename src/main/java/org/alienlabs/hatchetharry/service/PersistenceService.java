@@ -2,7 +2,6 @@ package org.alienlabs.hatchetharry.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -115,8 +114,7 @@ public class PersistenceService implements Serializable
 		query.setLong(0, gameId);
 		query.setFirstResult(0);
 		query.setMaxResults(7);
-		@SuppressWarnings("unchecked")
-		final List<MagicCard> cards = (List<MagicCard>)query.list();
+		final List<MagicCard> cards = query.list();
 
 		return cards;
 	}
@@ -215,7 +213,6 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
-	@SuppressWarnings("unchecked")
 	public List<Player> getAllPlayersOfGame(final long l)
 	{
 		final Session session = this.playerDao.getSession();
@@ -260,7 +257,6 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
-	@SuppressWarnings("unchecked")
 	public List<MagicCard> getAllCardsFromDeck(final long l)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -328,7 +324,6 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
-	@SuppressWarnings("unchecked")
 	public List<Deck> getAllDecks()
 	{
 		final Session session = this.deckDao.getSession();
@@ -338,15 +333,20 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
-	public Game createNewGame(final Player player)
+	public Game createGame(final Player player, final Long gameId)
 	{
 		this.gameDao.getSession();
 
-		final Game game = new Game();
+		Game game = this.gameDao.load(gameId);
+		if (null == game)
+		{
+			game = new Game();
+		}
 
-		final Set<Player> list = new HashSet<Player>();
-		list.add(player);
-		game.setPlayers(list);
+		final Set<Player> set = game.getPlayers();
+		set.add(player);
+		game.setPlayers(set);
+		game.setId(gameId);
 
 		return this.gameDao.save(game);
 	}
@@ -414,7 +414,6 @@ public class PersistenceService implements Serializable
 	}
 
 
-	@SuppressWarnings({ "unchecked" })
 	@Transactional
 	public List<MagicCard> getAllCardsInBattleFieldForAPlayer(final Long playerId)
 	{
@@ -434,11 +433,12 @@ public class PersistenceService implements Serializable
 		query.setLong("playerId", playerId);
 		try
 		{
-			return (List<MagicCard>)query.list();
+			return query.list();
 		}
 		catch (final ObjectNotFoundException e)
 		{
-			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for player: " + playerId + " => no result found", e);
+			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for player: "
+					+ playerId + " => no result found", e);
 			return null;
 		}
 	}
@@ -449,7 +449,6 @@ public class PersistenceService implements Serializable
 		final Session session = this.sideDao.getSession();
 		final Query query = session.createQuery("from Side s where s.game=?");
 		query.setEntity(0, game);
-		@SuppressWarnings("unchecked")
 		final List<Side> s = query.list();
 
 		return s;
