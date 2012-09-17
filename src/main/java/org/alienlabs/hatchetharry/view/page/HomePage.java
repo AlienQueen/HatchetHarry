@@ -188,7 +188,7 @@ public class HomePage extends TestReportPage
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.8 (release Emperor Wicket), built on Wednesday, 12th of September 2012."));
+				"version 0.0.8 (release Emperor Wicket), built on Monday, 17th of September 2012."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
@@ -687,8 +687,9 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/menubar/jquery.hoverIntent.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/mbMenu.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/jquery.jqDock.js")));
+				// response.render(JavaScriptHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "script/menubar/jquery.jqDock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/yahoo-dom-event.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -701,8 +702,11 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/menubar/menu.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/element.js")));
+				// response.render(JavaScriptHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "script/menubar/jquery.jqDock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/jquery.jqDock.js")));
+						HomePage.class, "script/dock/dock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -749,6 +753,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/toolbarStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/tipsy.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/dock/dock.css")));
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
