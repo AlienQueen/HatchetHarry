@@ -26,10 +26,14 @@ public class TeamInfoModalWindow extends Panel
 				"Founder: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
 		final Label lead = new Label("lead", new Model<String>(
 				"Lead developer: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
+		final Label dev1 = new Label("dev1", new Model<String>(
+				"Developer: Sandaly Diawara (sandaly.diawara@gmail.com)"));
+		final Label gfx = new Label("gfx", new Model<String>(
+				"GFX: Marie-Antoinette Navarro (mariea33@gmail.com)"));
 		final Label tester1 = new Label("tester1", new Model<String>(
 				"Tester: Jean Leherle (jean.ravnica@hotmail.fr)"));
 
-		form.add(founder, lead, tester1);
+		form.add(founder, lead, dev1, gfx, tester1);
 		this.add(img1, form);
 	}
 

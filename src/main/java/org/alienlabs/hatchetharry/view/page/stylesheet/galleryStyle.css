@@ -23,7 +23,7 @@ a											{ outline: none; }
 	TYPOGRAPHY
 */
 ul											{ list-style: square inside; }
-a, a:visited								{ color: #729dff; text-decoration: none; }
+/*a, a:visited								{ color: #729dff; text-decoration: none; }*/
 a:hover, a:active							{ color: white; }
 blockquote									{ padding: 0 20px; margin-left: 20px; border-left: 20px solid #ccc; font-size: 14px; 
 									  		  font-family: Georgia, serif; font-style: italic; margin-top: 10px;}

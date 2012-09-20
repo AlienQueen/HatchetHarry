@@ -26,103 +26,138 @@
 
   <span wicket:id="headResources"></span>
   
-  <table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#989898" id="menubar">
-    <tr>
-      <td valign="bottom">
-        <table  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000" class="container">
-          <tr>
-            <td class="myMenu">
-
-              <!-- start horizontal menu -->
-
-              <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'>
-              <tr>
-                <td class="rootVoice {menu: 'box_menu'}" ><img src="/image/logoh2.gif" alt="HH" width="32"></td>
-                <td class="rootVoice {menu: 'menu_2'}" >Documentation</td>
-                <td class="rootVoice {menu: 'menu_3'}" >Game</td>
-              </tr>
-              </table>
-
-              <!-- end horizontal menu -->
-
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  <span class="tour_4"></span>
-  <br/>
+  <!-- Menus -->
   
-  <!-- menus -->
-  <div id="menu_2" class="mbmenu">
-    <a class="{action: 'showMessage(\'menu_2.1\')', img: 'icon_13.png'}">Official Magic(tm) rules</a>
-    <a class="{action: 'showMessage(\'menu_2.2\')'}">HatchetHarry documentation</a>
-    <a class="{menu: 'sub_menu_1', img: 'icon_14.png'}">Browse cards database</a>
-    <a rel="separator"> </a>
-    <a class="{menu: 'sub_menu_2', img: '24-tag-add.png'}">New and old rules</a>
-  </div>
-
-  <div id="menu_3" class="mbmenu">
-    <a  wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
-        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
-    </a>
-	<a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
-        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
-    </a>
-    <a rel="separator"> </a>
-    <a id="aaa" class="{menu:'sub_menu_3'}">Mana</a>
-    <a class="{menu:'sub_menu_4', action: 'showMessage(\'menu_3.4\')'}">Cards</a>
-  </div>
-
-  <div id="sub_menu_1" class="mbmenu">
-    <a class="{action: 'showMessage(\'sub_menu_1.1\')'}">sub_menu_1.1</a>
-    <a rel="separator"> </a>
-    <a class="{action: 'showMessage(\'sub_menu_1.2\')'}">sub_menu_1.2</a>
-    <a class="{action: 'showMessage(\'sub_menu_1.3\')', img: 'bgColor.gif'}">sub_menu_1.3</a>
-    <a class="{action: 'showMessage(\'sub_menu_1.4\')',img: 'Applet.gif'}">sub_menu_1.4</a>
-  </div>
-
-  <div id="sub_menu_2" class="mbmenu">
-    <a class="{action: 'showMessage(\'sub_menu_2.1\')', img: 'buttonfind.gif'}" target="_blank" >Layers</a>
-    <a class="{action: 'showMessage(\'sub_menu_2.2\')'}">The game wins</a>
-    <a class="{action: 'showMessage(\'sub_menu_2.3\')'}" >Infinite manas, life, tokens and combo</a>
-    <a rel="separator"> </a>
-    <a class="{img: 'buttonfind.gif'}" target="_self" >Mana pool</a>
-    <a class="{action: 'showMessage(\'sub_menu_2.5\')'}">Stack</a>
-  </div>
-
-  <div id="sub_menu_3" class="mbmenu">
-    <a class="{action: 'showMessage(\'sub_menu_3.1\')', img: 'buttonfind.gif'}" target="_blank" >Blah</a>
-    <a class="{action: 'showMessage(\'sub_menu_3.2\')'}">Blah</a>
-    <a class="{action: 'showMessage(\'sub_menu_3.3\')'}" >Blah</a>
-    <a rel="separator"> </a>
-    <a class="{img: 'buttonfind.gif'}" target="_self" >Blah</a>
-    <a class="{action: 'showMessage(\'sub_menu_3.5\')'}">Blah</a>
-  </div>
-
-  <div id="sub_menu_4" class="mbmenu">
-    <a class="{action: 'showMessage(\'sub_menu_3.1\')', img: 'buttonfind.gif'}" target="_blank" >Blah2</a>
-    <a class="{action: 'showMessage(\'sub_menu_3.2\')'}">Blah2</a>
-    <a class="{action: 'showMessage(\'sub_menu_3.3\')'}" >Blah2</a>
-    <a rel="separator"> </a>
-    <a class="{img: 'buttonfind.gif'}" target="_self" >Blah2</a>
-    <a class="{action: 'showMessage(\'sub_menu_3.5\')'}">Blah2</a>
-  </div>
-
-  <div id="box_menu" class="mbmenu boxMenu">
-    <table style="border:0;" >
-      <tr>
-        <td>
-          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64"></div>
-          <a wicket:id="aboutLink">About HatychetHarry</a>
-          <a wicket:id="teamInfoLink">HatchetHarry team info</a>
-          <a target="_blank">Preferences</a>
-        </td>
-      </tr>
-    </table>
+  <!-- The main (desktop) menu bar -->
+  <div id="yproducts"> 
+	  <table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#989898" id="menubar">
+	    <tr>
+	      <td valign="bottom">
+	        <table  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000" class="container">
+	          <tr>
+	            <td class="myMenu">
+	
+	              <!-- start horizontal menu -->
+	
+	              <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'>
+	              <tr>
+	                <td class="rootVoice {menu: 'box_menu'}" ><img src="/image/logoh2.gif" alt="HH" width="32"></td>
+	                <td class="rootVoice {menu: 'menu_2'}" >Documentation</td>
+	                <td class="rootVoice {menu: 'menu_3'}" >Game</td>
+	              </tr>
+	              </table>
+	
+	              <!-- end horizontal menu -->
+	
+	            </td>
+	          </tr>
+	        </table>
+	      </td>
+	    </tr>
+	  </table>
+	  <span class="tour_4"></span>
+	  <br/>
+	  
+	  <div id="menu_2" class="mbmenu">
+	    <a class="{action: 'showMessage(\'menu_2.1\')', img: 'icon_13.png'}">Official Magic(tm) rules</a>
+	    <a class="{action: 'showMessage(\'menu_2.2\')'}">HatchetHarry documentation</a>
+	    <a class="{menu: 'sub_menu_1', img: 'icon_14.png'}">Browse cards database</a>
+	    <a rel="separator"> </a>
+	    <a class="{menu: 'sub_menu_2', img: '24-tag-add.png'}">New and old rules</a>
+	  </div>
+	
+	  <div id="menu_3" class="mbmenu">
+	    <a  wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
+	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
+	    </a>
+		<a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
+	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
+	    </a>
+	    <a rel="separator"> </a>
+	    <a id="aaa" class="{menu:'sub_menu_3'}">Mana</a>
+	    <a class="{menu:'sub_menu_4', action: 'showMessage(\'menu_3.4\')'}">Cards</a>
+	  </div>
+	
+	  <div id="sub_menu_1" class="mbmenu">
+	    <a class="{action: 'showMessage(\'sub_menu_1.1\')'}">sub_menu_1.1</a>
+	    <a rel="separator"> </a>
+	    <a class="{action: 'showMessage(\'sub_menu_1.2\')'}">sub_menu_1.2</a>
+	    <a class="{action: 'showMessage(\'sub_menu_1.3\')', img: 'bgColor.gif'}">sub_menu_1.3</a>
+	    <a class="{action: 'showMessage(\'sub_menu_1.4\')',img: 'Applet.gif'}">sub_menu_1.4</a>
+	  </div>
+	
+	  <div id="sub_menu_2" class="mbmenu">
+	    <a class="{action: 'showMessage(\'sub_menu_2.1\')', img: 'buttonfind.gif'}" target="_blank" >Layers</a>
+	    <a class="{action: 'showMessage(\'sub_menu_2.2\')'}">The game wins</a>
+	    <a class="{action: 'showMessage(\'sub_menu_2.3\')'}" >Infinite manas, life, tokens and combo</a>
+	    <a rel="separator"> </a>
+	    <a class="{img: 'buttonfind.gif'}" target="_self" >Mana pool</a>
+	    <a class="{action: 'showMessage(\'sub_menu_2.5\')'}">Stack</a>
+	  </div>
+	
+	  <div id="sub_menu_3" class="mbmenu">
+	    <a class="{action: 'showMessage(\'sub_menu_3.1\')', img: 'buttonfind.gif'}" target="_blank" >Blah</a>
+	    <a class="{action: 'showMessage(\'sub_menu_3.2\')'}">Blah</a>
+	    <a class="{action: 'showMessage(\'sub_menu_3.3\')'}" >Blah</a>
+	    <a rel="separator"> </a>
+	    <a class="{img: 'buttonfind.gif'}" target="_self" >Blah</a>
+	    <a class="{action: 'showMessage(\'sub_menu_3.5\')'}">Blah</a>
+	  </div>
+	
+	  <div id="sub_menu_4" class="mbmenu">
+	    <a class="{action: 'showMessage(\'sub_menu_3.1\')', img: 'buttonfind.gif'}" target="_blank" >Blah2</a>
+	    <a class="{action: 'showMessage(\'sub_menu_3.2\')'}">Blah2</a>
+	    <a class="{action: 'showMessage(\'sub_menu_3.3\')'}" >Blah2</a>
+	    <a rel="separator"> </a>
+	    <a class="{img: 'buttonfind.gif'}" target="_self" >Blah2</a>
+	    <a class="{action: 'showMessage(\'sub_menu_3.5\')'}">Blah2</a>
+	  </div>
+	
+	  <div id="box_menu" class="mbmenu boxMenu">
+	    <table style="border:0;" >
+	      <tr>
+	        <td>
+	          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64"></div>
+	          <a wicket:id="aboutLink">About HatychetHarry</a>
+	          <a wicket:id="teamInfoLink">HatchetHarry team info</a>
+	          <a target="_blank">Preferences</a>
+	        </td>
+	      </tr>
+	    </table>
+	  </div>
   </div>
   
+  <!-- The mobile drop down menu -->
+  <div class="dropdownmenu">
+  		<img src="/image/logoh2.gif" width="32" height="32"/>
+	  	<img src="/image/browse.png" id="browse" height="32" width="32"/>
+  </div>
+   <div class="categories">
+      <ul>
+        <li><a href="http://papermashup.com/category/api/">API's</a></li>
+        <li><a href="http://papermashup.com/category/php/">PHP</a></li>
+        <li><a href="http://papermashup.com/category/mysql/">MySQL</a></li>
+        <li><a href="http://papermashup.com/category/oauth/">OAuth</a></li>
+        <li><a href="http://papermashup.com/category/memcache/">Memcache</a></li>
+        <li><a href="http://papermashup.com/category/css/">CSS</a></li>
+        <li><a href="http://papermashup.com/category/api/javascript">JavaScript</a></li>
+        <li><a href="http://papermashup.com/category/jquery/">jQuery</a></li>
+        <li><a href="http://papermashup.com/category/mootools/">MooTools</a></li>
+        <li><a href="http://papermashup.com/category/mobile/">Mobile</a></li>
+        <li><a href="http://papermashup.com/category/iphone/">iPhone</a></li>
+        <li><a href="http://papermashup.com/category/web-tools/">Web Tools</a></li>
+        <li><a href="http://papermashup.com/category/frameworks/">Frameworks</a></li>
+        <li><a href="http://papermashup.com/category/analytics/">Analytics</a></li>
+        <li><a href="http://papermashup.com/category/social-media/">Social Media</a></li>
+        <li><a href="http://papermashup.com/category/widgets/">Widgets</a></li>
+        <li><a href="http://papermashup.com/category/reviews/">Reviews</a></li>
+        <li><a href="http://papermashup.com/category/trends/">Trends</a></li>
+        <li><a href="http://papermashup.com/category/social-networks/">Social Networks</a></li>
+        <li><a href="http://papermashup.com/category/social-bookmarking/">Bookmarking</a></li>
+        <li><a href="http://papermashup.com/category/facebook/">Facebook</a></li>
+        <div class="clear"></div>
+      </ul>
+    </div>
   <!-- end menus -->
 	
 	<br/><br/><br/><br/><br/>

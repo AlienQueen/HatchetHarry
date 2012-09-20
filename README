@@ -3,3 +3,9 @@
 	- delete navigation data in other browsers
 	
 - to hide the jQuery-tour temporarily: target.appendJavascript("jQuery('#tourcontrols').remove());
+
+- versions-maven-plugin:
+
+	+ mvn versions:display-dependency-updates	scans a project's dependencies and produces a report of those dependencies which have newer versions available.
+	+ mvn versions:display-plugin-updates		scans a project's plugins and produces a report of those plugins which have newer versions available.
+	+ mvn versions:display-property-updates		scans a projectand produces a report of those properties which are used to control artifact versions and which properies have newer versions available.

@@ -130,6 +130,8 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 
 		this.mountResource("image/logoh2.gif", new PackageResourceReference(HomePage.class,
 				"image/logoh2.gif"));
+		this.mountResource("image/browse.png", new PackageResourceReference(HomePage.class,
+				"image/browse.png"));
 		this.mountResource("image/library.gif", new PackageResourceReference(HomePage.class,
 				"image/library.gif"));
 		this.mountResource("image/hand.gif", new PackageResourceReference(HomePage.class,
@@ -142,8 +144,6 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				"image/Safari.png"));
 		this.mountResource("image/Terminal.png", new PackageResourceReference(HomePage.class,
 				"image/Terminal.png"));
-		this.mountResource("image/gradient1.jpg", new PackageResourceReference(HomePage.class,
-				"image/gradient1.jpg"));
 
 		this.mountResource("image/bgnd_sel_1.jpg", new PackageResourceReference(HomePage.class,
 				"image/bgnd_sel_1.jpg"));

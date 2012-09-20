@@ -38,7 +38,8 @@ public class AboutModalWindow extends Panel
 				new Model<String>(
 						"You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license."));
 
-		final Label text4 = new Label("text4", new Model<String>("(c) 2011 Zala Pierre GOUPIL"));
+		final Label text4 = new Label("text4",
+				new Model<String>("(c) 2011-2012 Zala Pierre GOUPIL"));
 
 		final ExternalLink link = new ExternalLink("link", "http://www.gnu.org/licenses/agpl.html");
 		final ExternalLink whyLink = new ExternalLink("whyLink",

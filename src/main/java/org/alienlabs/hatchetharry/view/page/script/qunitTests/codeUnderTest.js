@@ -18,7 +18,7 @@ jQuery(function() {
 		shadowColor : "#ccc",
 		hoverIntent : 0,
 		openOnClick : false,
-		closeOnMouseOut : false,
+		closeOnMouseOut : true,
 		closeAfter : 1000,
 		submenuHoverIntent : 200
 	});
@@ -166,8 +166,27 @@ jQuery(function() {
 	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({});
 });
 
-//jQuery(function() {
-//	jQuery('#dock').jqDock({
-//		align : 'middle'
-//	});
-//});
+// The drop-down menu for mobile
+jQuery(function() {
+	if (jQuery(window).width() <= 800) {
+		jQuery(".myMenu").hide();
+		jQuery('.dropdownmenu').show();
+	} else {
+		jQuery(".myMenu").show();
+		jQuery('.dropdownmenu').hide();
+	}
+	jQuery('.dropdownmenu').click(function(){ 
+		jQuery('.categories').toggle();
+	});
+});
+
+// We switch the menu to full bar or small drop-down depending upon the size of the screen
+jQuery(window).resize(function() {
+	if (jQuery(window).width() <= 800) {
+		jQuery(".myMenu").hide();
+		jQuery('.dropdownmenu').show();
+	} else {
+		jQuery(".myMenu").show();
+		jQuery('.dropdownmenu').hide();
+	}
+});
