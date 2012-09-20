@@ -165,9 +165,3 @@ jQuery(function() {
 jQuery(function() {
 	jQuery(".gallery a[rel^='prettyPhoto']").prettyPhoto({});
 });
-
-//jQuery(function() {
-//	jQuery('#dock').jqDock({
-//		align : 'middle'
-//	});
-//});

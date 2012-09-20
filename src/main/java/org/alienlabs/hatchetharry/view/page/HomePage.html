@@ -25,37 +25,39 @@
 <body class="yui-skin-sam" id="yahoo-com">
 
   <span wicket:id="headResources"></span>
+  <div wicket:id="menuBar"></div>
+ <!-- <img wicket:id="logo" src="/image/logoh2.gif" alt="HH" width="64">-->
   
-  <table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#989898" id="menubar">
+ <!-- <table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#989898" id="menubar">
     <tr>
       <td valign="bottom">
         <table  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000" class="container">
           <tr>
-            <td class="myMenu">
+             <td class="myMenu">-->
 
               <!-- start horizontal menu -->
 
-              <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'>
+         <!--      <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'>
               <tr>
                 <td class="rootVoice {menu: 'box_menu'}" ><img src="/image/logoh2.gif" alt="HH" width="32"></td>
                 <td class="rootVoice {menu: 'menu_2'}" >Documentation</td>
                 <td class="rootVoice {menu: 'menu_3'}" >Game</td>
               </tr>
-              </table>
+              </table>-->
 
               <!-- end horizontal menu -->
 
-            </td>
+        <!--     </td>
           </tr>
         </table>
       </td>
     </tr>
-  </table>
+  </table>-->
   <span class="tour_4"></span>
   <br/>
   
   <!-- menus -->
-  <div id="menu_2" class="mbmenu">
+ <!-- <div id="menu_2" class="mbmenu">
     <a class="{action: 'showMessage(\'menu_2.1\')', img: 'icon_13.png'}">Official Magic(tm) rules</a>
     <a class="{action: 'showMessage(\'menu_2.2\')'}">HatchetHarry documentation</a>
     <a class="{menu: 'sub_menu_1', img: 'icon_14.png'}">Browse cards database</a>
@@ -115,14 +117,20 @@
       <tr>
         <td>
           <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64"></div>
-          <a wicket:id="aboutLink">About HatychetHarry</a>
-          <a wicket:id="teamInfoLink">HatchetHarry team info</a>
           <a target="_blank">Preferences</a>
         </td>
       </tr>
     </table>
-  </div>
-  
+  </div>-->
+  <br/><br/><br/><br/>
+   <a  wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
+        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
+    </a>
+	<a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
+        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
+    </a>
+    <a wicket:id="aboutLink">About HatychetHarry</a>
+    <a wicket:id="teamInfoLink">HatchetHarry team info</a>
   <!-- end menus -->
 	
 	<br/><br/><br/><br/><br/>

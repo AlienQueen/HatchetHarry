@@ -105,6 +105,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
+import de.agilecoders.wicket.Bootstrap;
+import de.agilecoders.wicket.markup.html.bootstrap.button.dropdown.MenuDivider;
+import de.agilecoders.wicket.markup.html.bootstrap.button.dropdown.MenuPageButton;
+import de.agilecoders.wicket.markup.html.bootstrap.image.Icon;
+import de.agilecoders.wicket.markup.html.bootstrap.image.IconType;
+import de.agilecoders.wicket.markup.html.bootstrap.navbar.Navbar;
+import de.agilecoders.wicket.markup.html.bootstrap.navbar.Navbar.ButtonPosition;
+import de.agilecoders.wicket.markup.html.bootstrap.navbar.Navbar.Position;
+import de.agilecoders.wicket.markup.html.bootstrap.navbar.NavbarDropDownButton;
+import de.agilecoders.wicket.settings.ITheme;
 
 /**
  * Bootstrap class
@@ -171,6 +181,8 @@ public class HomePage extends TestReportPage
 
 		// Resources
 		this.addHeadResources();
+		this.setTheme();
+		this.generateMenuBar();
 
 		this.add(new BookmarkablePageLink<NotifierPage>("notifierStart", NotifierPage.class));
 
@@ -690,10 +702,12 @@ public class HomePage extends TestReportPage
 				// response.render(JavaScriptHeaderItem.forReference(new
 				// PackageResourceReference(
 				// HomePage.class, "script/menubar/jquery.jqDock.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/yahoo-dom-event.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/animation.js")));
+				// response.render(JavaScriptHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "script/menubar/yahoo-dom-event.js")));
+				// response.render(JavaScriptHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "script/menubar/animation.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/utilities.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -767,6 +781,23 @@ public class HomePage extends TestReportPage
 		this.add(c);
 	}
 
+	protected void setTheme()
+	{
+		ITheme cyborgTheme = null;
+		final List<ITheme> all = Bootstrap.getSettings(HatchetHarryApplication.get())
+				.getThemeProvider().available();
+		for (final ITheme iTheme : all)
+		{
+			System.out.println("### " + iTheme.name());
+			if ("cyborg".equals(iTheme.name()))
+			{
+				cyborgTheme = iTheme;
+			}
+		}
+		Bootstrap.getSettings(HatchetHarryApplication.get()).getActiveThemeProvider()
+				.setActiveTheme(cyborgTheme);
+	}
+
 	protected void buildHandMarkup()
 	{
 		final Component galleryToUpdate;
@@ -810,6 +841,37 @@ public class HomePage extends TestReportPage
 		}
 
 		return new ArrayList<MagicCard>();
+	}
+
+	protected void generateMenuBar()
+	{
+		final Navbar navbar = new Navbar("menuBar");
+		navbar.setPosition(Position.TOP);
+		// navbar.brandName(Model.of("HH"));
+		// navbar.addButton(ButtonPosition.LEFT, new Label("button",
+		// Model.of("HH")));
+		navbar.addButton(ButtonPosition.LEFT,
+				new MenuPageButton<HomePage>(HomePage.class, Model.of("HH")).setIcon(new Icon(
+						IconType.Logo)));
+
+		navbar.addButton(ButtonPosition.LEFT,
+				new NavbarDropDownButton("button", Model.of("Documentation")).addButtons(
+						new MenuPageButton<HomePage>(HomePage.class, Model
+								.of("Official Magic(tm) rules")).setIcon(new Icon(IconType.Home)),
+						new MenuPageButton<HomePage>(HomePage.class, Model
+								.of("HatchetHarry documentation")), new MenuPageButton<HomePage>(
+								HomePage.class, Model.of("Browse cards database")),
+						new MenuDivider(),
+						new MenuPageButton<HomePage>(HomePage.class, Model.of("New and old rules"))
+								.setIcon(new Icon(IconType.AlignJustify))));
+
+		navbar.addButton(ButtonPosition.LEFT, new NavbarDropDownButton("button", Model.of("Game"))
+				.addButtons(new MenuPageButton<HomePage>(HomePage.class, Model.of("Create game")),
+						new MenuPageButton<HomePage>(HomePage.class, Model.of("Join game")),
+						new MenuDivider(),
+						new MenuPageButton<HomePage>(HomePage.class, Model.of("Mana")),
+						new MenuPageButton<HomePage>(HomePage.class, Model.of("Cards"))));
+		this.add(navbar);
 	}
 
 	protected void generateAboutLink()
