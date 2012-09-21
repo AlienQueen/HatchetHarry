@@ -168,12 +168,17 @@ jQuery(function() {
 
 // The drop-down menu for mobile
 jQuery(function() {
-	if (jQuery(window).width() <= 800) {
-		jQuery(".myMenu").hide();
-		jQuery('.dropdownmenu').show();
-	} else {
+	var height = jQuery(window).height();
+	var width = jQuery(window).width();
+
+	if (width>height) {
+		// Landscape
 		jQuery(".myMenu").show();
 		jQuery('.dropdownmenu').hide();
+	} else {
+		// Portrait
+		jQuery(".myMenu").hide();
+		jQuery('.dropdownmenu').show();
 	}
 	jQuery('.dropdownmenu').click(function(){ 
 		jQuery('.categories').toggle();
@@ -182,11 +187,16 @@ jQuery(function() {
 
 // We switch the menu to full bar or small drop-down depending upon the size of the screen
 jQuery(window).resize(function() {
-	if (jQuery(window).width() <= 800) {
-		jQuery(".myMenu").hide();
-		jQuery('.dropdownmenu').show();
-	} else {
+	var height = jQuery(window).height();
+	var width = jQuery(window).width();
+	
+	if (width>height) {
+		// Landscape
 		jQuery(".myMenu").show();
 		jQuery('.dropdownmenu').hide();
+	} else {
+		// Portrait
+		jQuery(".myMenu").hide();
+		jQuery('.dropdownmenu').show();
 	}
 });
