@@ -122,6 +122,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 				"script/draggableHandle/jquery.ui.mouse.js");
 		js = js.append("\n" + template3.asString());
 
+		final TextTemplate template7 = new PackageTextTemplate(HomePage.class,
+				"script/draggableHandle/jquery.ui.touch-punch.js");
+		js = js.append("\n" + template7.asString());
+
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuid", this.uuid);

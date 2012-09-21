@@ -124,6 +124,8 @@ public class HomePage extends TestReportPage
 
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
+	ModalWindow teamInfoWindowResponsive;
+	ModalWindow aboutWindowResponsive;
 	ModalWindow createGameWindow;
 	ModalWindow joinGameWindow;
 
@@ -188,7 +190,7 @@ public class HomePage extends TestReportPage
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.8 (release Emperor Wicket), built on Monday, 17th of September 2012."));
+				"version 0.0.8 (release Emperor Wicket), built on Friday, 21st of September 2012."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
@@ -246,8 +248,23 @@ public class HomePage extends TestReportPage
 		}
 		this.add(balduParent);
 
-		this.generateAboutLink();
-		this.generateTeamInfoLink();
+		// Links from the menubar
+		this.aboutWindow = new ModalWindow("aboutWindow");
+		this.aboutWindow = this.generateAboutLink("aboutLink", this.aboutWindow);
+		this.teamInfoWindow = new ModalWindow("teamInfoWindow");
+		this.teamInfoWindow = this.generateTeamInfoLink("teamInfoLink", this.teamInfoWindow);
+
+		/*
+		 * Links from the drop-down menu, which appears when the width of the
+		 * view port is < than its height. (AKA a little bit of responsive Web
+		 * design)
+		 */
+		this.aboutWindowResponsive = new ModalWindow("aboutWindowResponsive");
+		this.aboutWindowResponsive = this.generateAboutLink("aboutLinkResponsive",
+				this.aboutWindowResponsive);
+		this.teamInfoWindow = new ModalWindow("teamInfoWindowResponsive");
+		this.teamInfoWindow = this.generateTeamInfoLink("teamInfoLinkResponsive",
+				this.teamInfoWindow);
 
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
@@ -812,19 +829,17 @@ public class HomePage extends TestReportPage
 		return new ArrayList<MagicCard>();
 	}
 
-	protected void generateAboutLink()
+	protected ModalWindow generateAboutLink(final String id, final ModalWindow window)
 	{
-		this.aboutWindow = new ModalWindow("aboutWindow");
-		this.aboutWindow.setInitialWidth(450);
-		this.aboutWindow.setInitialHeight(675);
-		this.aboutWindow.setTitle("About HatchetHarry");
-		this.aboutWindow.setContent(new AboutModalWindow(this.aboutWindow.getContentId(),
-				this.aboutWindow));
-		this.aboutWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
-		this.aboutWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
-		this.add(this.aboutWindow);
+		window.setInitialWidth(450);
+		window.setInitialHeight(675);
+		window.setTitle("About HatchetHarry");
+		window.setContent(new AboutModalWindow(window.getContentId(), window));
+		window.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.add(window);
 
-		final AjaxLink<Void> aboutLink = new AjaxLink<Void>("aboutLink")
+		final AjaxLink<Void> aboutLink = new AjaxLink<Void>(id)
 		{
 			private static final long serialVersionUID = 8140325977385015896L;
 
@@ -832,27 +847,27 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				HomePage.this.aboutWindow.show(target);
+				window.show(target);
 			}
 		};
 
 		aboutLink.setOutputMarkupId(true);
-		this.aboutWindow.setOutputMarkupId(true);
+		window.setOutputMarkupId(true);
 		this.add(aboutLink);
+		return window;
 	}
 
-	protected void generateTeamInfoLink()
+	protected ModalWindow generateTeamInfoLink(final String id, final ModalWindow window)
 	{
-		this.teamInfoWindow = new ModalWindow("teamInfoWindow");
-		this.teamInfoWindow.setInitialWidth(475);
-		this.teamInfoWindow.setInitialHeight(528);
-		this.teamInfoWindow.setTitle("HatchetHarry Team info");
-		this.teamInfoWindow.setContent(new TeamInfoModalWindow(this.teamInfoWindow.getContentId()));
-		this.teamInfoWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
-		this.teamInfoWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
-		this.add(this.teamInfoWindow);
+		window.setInitialWidth(475);
+		window.setInitialHeight(528);
+		window.setTitle("HatchetHarry Team info");
+		window.setContent(new TeamInfoModalWindow(window.getContentId()));
+		window.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.add(window);
 
-		final AjaxLink<Void> teamInfoLink = new AjaxLink<Void>("teamInfoLink")
+		final AjaxLink<Void> teamInfoLink = new AjaxLink<Void>(id)
 		{
 			private static final long serialVersionUID = 8140325977385015896L;
 
@@ -860,13 +875,14 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				HomePage.this.teamInfoWindow.show(target);
+				window.show(target);
 			}
 		};
 
 		teamInfoLink.setOutputMarkupId(true);
-		this.teamInfoWindow.setOutputMarkupId(true);
+		window.setOutputMarkupId(true);
 		this.add(teamInfoLink);
+		return window;
 	}
 
 	protected void generateCreateGameLink(final Player _player,

@@ -175,6 +175,7 @@ jQuery(function() {
 		// Landscape
 		jQuery(".myMenu").show();
 		jQuery('.dropdownmenu').hide();
+		jQuery('.categories').hide();
 	} else {
 		// Portrait
 		jQuery(".myMenu").hide();
@@ -194,6 +195,7 @@ jQuery(window).resize(function() {
 		// Landscape
 		jQuery(".myMenu").show();
 		jQuery('.dropdownmenu').hide();
+		jQuery('.categories').hide();
 	} else {
 		// Portrait
 		jQuery(".myMenu").hide();
