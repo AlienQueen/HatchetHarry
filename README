@@ -1,9 +1,3 @@
-- to enable the jQuery-tour again :
-	- issue jQuery.Storage.set("tour", "blah"); in the FireBugs console of Firefox
-	- delete navigation data in other browsers
-	
-- to hide the jQuery-tour temporarily: target.appendJavascript("jQuery('#tourcontrols').remove());
-
 - versions-maven-plugin:
 
 	+ mvn versions:display-dependency-updates	scans a project's dependencies and produces a report of those dependencies which have newer versions available.

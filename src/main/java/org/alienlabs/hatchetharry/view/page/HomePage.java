@@ -190,7 +190,7 @@ public class HomePage extends TestReportPage
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.8 (release Emperor Wicket), built on Friday, 21st of September 2012."));
+				"version 0.0.8 (release Emperor Wicket), built on Tuesday, 25th of September 2012."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
@@ -695,9 +695,11 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tour/jquery.easing.1.3.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/jquery.storage.js")));
+						HomePage.class, "script/tour/jquery.cookie.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/jquery.tour.js")));
+						HomePage.class, "script/tour/modernizr.mq.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/tour/jquery.joyride-1.0.5.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/jquery.metadata.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -719,9 +721,6 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/menubar/menu.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/element.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "script/menubar/jquery.jqDock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/dock/dock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -732,8 +731,6 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/qunitTests/HomePageTests.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/mootools.v1.11.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/jquery-easing-1.3.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/jquery-easing-compatibility.1.2.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -772,6 +769,12 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/tipsy.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/dock/dock.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/joyride-1.0.5.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/demo-style.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/mobile.css")));
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
