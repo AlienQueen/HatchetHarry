@@ -19,7 +19,6 @@ import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
-import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
@@ -34,7 +33,7 @@ public class PersistenceService implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(PersistenceService.class);
 
 	@SpringBean
 	private PlayerDao playerDao;
