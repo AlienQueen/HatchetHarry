@@ -18,10 +18,12 @@
  */
 package org.alienlabs.hatchetharry.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.model.CardCollection;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -68,16 +70,19 @@ public class DataGenerator implements InitializingBean
 			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
-	private  DeckDao deckDao;
+	private DeckDao deckDao;
 	@SpringBean
-	private  CollectibleCardDao collectibleCardDao;
+	private CollectibleCardDao collectibleCardDao;
 	@SpringBean
-	private  MagicCardDao magicCardDao;
+	private MagicCardDao magicCardDao;
 	@SpringBean
-	private  PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	@SpringBean
 	private transient boolean generateData;
+
+	@SpringBean
+	private transient boolean generateCardCollection;
 
 	@Required
 	public void setDeckDao(final DeckDao _deckDao)
@@ -107,88 +112,102 @@ public class DataGenerator implements InitializingBean
 	@Transactional
 	public void afterPropertiesSet()
 	{
-		if (!this.generateData)
+		if (this.generateData)
 		{
-			return;
-		}
-		Deck deck1 = new Deck();
-		deck1.setPlayerId(1l);
-		deck1.setDeckName("aggro-combo Red / Black");
-		deck1 = this.deckDao.save(deck1);
+			Deck deck1 = new Deck();
+			deck1.setPlayerId(1l);
+			deck1.setDeckName("aggro-combo Red / Black");
+			deck1 = this.deckDao.save(deck1);
 
-		Deck deck2 = new Deck();
-		deck2.setPlayerId(2l);
-		deck2.setDeckName("burn mono-Red");
-		deck2 = this.deckDao.save(deck2);
+			Deck deck2 = new Deck();
+			deck2.setPlayerId(2l);
+			deck2.setDeckName("burn mono-Red");
+			deck2 = this.deckDao.save(deck2);
 
-		final List<Deck> decks = new ArrayList<Deck>();
-		decks.add(0, deck1);
-		decks.add(1, deck2);
+			final List<Deck> decks = new ArrayList<Deck>();
+			decks.add(0, deck1);
+			decks.add(1, deck2);
 
-		for (int j = 1; j < 3; j++)
-		{
-			for (int i = 0; i < 60; i++)
+			for (int j = 1; j < 3; j++)
 			{
-
-				final CollectibleCard c = new CollectibleCard();
-				c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
-				if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
+				for (int i = 0; i < 60; i++)
 				{
-					this.collectibleCardDao.save(c);
-				}
 
-				if (j == 1l)
-				{
-					MagicCard card = new MagicCard("image/"
-							+ DataGenerator.TITLES1[i].replace(" ", "") + "_small.jpg", "image/"
-							+ DataGenerator.TITLES1[i].replace(" ", "") + ".jpg", "image/"
-							+ DataGenerator.TITLES1[i].replace(" ", "") + "Thumb.jpg",
-							DataGenerator.TITLES1[i], "");
-					card.setGameId(1l);
-					card.setDeck(decks.get(j - 1));
-					card.setUuidObject(UUID.randomUUID());
-					card = this.magicCardDao.save(card);
+					final CollectibleCard c = new CollectibleCard();
+					c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
+					if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
+					{
+						this.collectibleCardDao.save(c);
+					}
 
-					final List<MagicCard> cards = decks.get(j - 1).getCards();
-					cards.add(card);
-					decks.get(j - 1).setCards(cards);
-				}
-				else
-				{
-					MagicCard card = new MagicCard("image/"
-							+ DataGenerator.TITLES2[i].replace(" ", "") + "_small.jpg", "image/"
-							+ DataGenerator.TITLES2[i].replace(" ", "") + ".jpg", "image/"
-							+ DataGenerator.TITLES2[i].replace(" ", "") + "Thumb.jpg",
-							DataGenerator.TITLES2[i], "");
-					card.setGameId(1l);
-					card.setDeck(decks.get(j - 1));
-					card.setUuidObject(UUID.randomUUID());
-					card.setX(16l);
-					card.setY(16l);
-					card = this.magicCardDao.save(card);
+					if (j == 1l)
+					{
+						MagicCard card = new MagicCard("image/"
+								+ DataGenerator.TITLES1[i].replace(" ", "") + "_small.jpg",
+								"image/" + DataGenerator.TITLES1[i].replace(" ", "") + ".jpg",
+								"image/" + DataGenerator.TITLES1[i].replace(" ", "") + "Thumb.jpg",
+								DataGenerator.TITLES1[i], "");
+						card.setGameId(1l);
+						card.setDeck(decks.get(j - 1));
+						card.setUuidObject(UUID.randomUUID());
+						card = this.magicCardDao.save(card);
 
-					final List<MagicCard> cards = decks.get(j - 1).getCards();
-					cards.add(card);
-					decks.get(j - 1).setCards(cards);
+						final List<MagicCard> cards = decks.get(j - 1).getCards();
+						cards.add(card);
+						decks.get(j - 1).setCards(cards);
+					}
+					else
+					{
+						MagicCard card = new MagicCard("image/"
+								+ DataGenerator.TITLES2[i].replace(" ", "") + "_small.jpg",
+								"image/" + DataGenerator.TITLES2[i].replace(" ", "") + ".jpg",
+								"image/" + DataGenerator.TITLES2[i].replace(" ", "") + "Thumb.jpg",
+								DataGenerator.TITLES2[i], "");
+						card.setGameId(1l);
+						card.setDeck(decks.get(j - 1));
+						card.setUuidObject(UUID.randomUUID());
+						card.setX(16l);
+						card.setY(16l);
+						card = this.magicCardDao.save(card);
+
+						final List<MagicCard> cards = decks.get(j - 1).getCards();
+						cards.add(card);
+						decks.get(j - 1).setCards(cards);
+					}
 				}
 			}
+
+			final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
+					"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
+					"Isn't it a spoiler?");
+			card.setUuidObject(UUID.randomUUID());
+			final Deck fake = new Deck();
+			fake.setDeckName("fake");
+			fake.setPlayerId(-1l);
+			card.setDeck(fake);
+			card.setGameId(-1l);
+			this.magicCardDao.save(card);
 		}
 
-		final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
-				"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
-				"Isn't it a spoiler?");
-		card.setUuidObject(UUID.randomUUID());
-		final Deck fake = new Deck();
-		fake.setDeckName("fake");
-		fake.setPlayerId(-1l);
-		card.setDeck(fake);
-		card.setGameId(-1l);
-		this.magicCardDao.save(card);
+		if (this.generateCardCollection)
+		{
+			final ObjectMapper mapper = new ObjectMapper(); // can reuse, share
+															// globally
+			final CardCollection user = mapper.readValue(new File("return_to_ravnica.json"),
+					CardCollection.class);
+		}
 	}
 
+	@Required
 	public void setGenerateData(final boolean _generateData)
 	{
 		this.generateData = _generateData;
+	}
+
+	@Required
+	public void setGenerateCardCollection(final boolean _generateCardCollection)
+	{
+		this.generateCardCollection = _generateCardCollection;
 	}
 
 }

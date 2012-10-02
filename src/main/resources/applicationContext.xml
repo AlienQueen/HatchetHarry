@@ -23,6 +23,7 @@
 		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="persistenceService" ref="persistenceService"/>
 		<property name="generateData" value="false"/>
+		<property name="generateCardCollection" value="true"/>
 	</bean>
 	
 	<bean id="applicationContextHolderTarget" class="org.alienlabs.hatchetharry.ApplicationContextHolder">
