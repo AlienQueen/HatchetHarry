@@ -21,9 +21,10 @@
 		<property name="deckDao" ref="deckDao"/>
 		<property name="collectibleCardDao" ref="collectibleCardDao"/>
 		<property name="magicCardDao" ref="magicCardDao"/>
+		<property name="cardCollectionDao" ref="cardCollectionDao"/>
 		<property name="persistenceService" ref="persistenceService"/>
 		<property name="generateData" value="false"/>
-		<property name="generateCardCollection" value="true"/>
+		<property name="generateCardCollection" value="false"/>
 	</bean>
 	
 	<bean id="applicationContextHolderTarget" class="org.alienlabs.hatchetharry.ApplicationContextHolder">

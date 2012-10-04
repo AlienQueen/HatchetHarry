@@ -23,17 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import org.alienlabs.hatchetharry.model.CardCollection;
+import org.alienlabs.hatchetharry.model.CardCollectionRootElement;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.persistence.dao.CardCollectionDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author ivaynberg
@@ -77,6 +82,8 @@ public class DataGenerator implements InitializingBean
 	private MagicCardDao magicCardDao;
 	@SpringBean
 	private PersistenceService persistenceService;
+	@SpringBean
+	private CardCollectionDao cardCollectionDao;
 
 	@SpringBean
 	private transient boolean generateData;
@@ -103,13 +110,18 @@ public class DataGenerator implements InitializingBean
 	}
 
 	@Required
+	public void setCardCollectionDao(final CardCollectionDao _cardCollectionDao)
+	{
+		this.cardCollectionDao = _cardCollectionDao;
+	}
+
+	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
 	}
 
 	@Override
-	@Transactional
 	public void afterPropertiesSet()
 	{
 		if (this.generateData)
@@ -189,12 +201,29 @@ public class DataGenerator implements InitializingBean
 			this.magicCardDao.save(card);
 		}
 
-		if (this.generateCardCollection)
+		if ((this.generateCardCollection) && (this.cardCollectionDao.count() == 0))
 		{
-			final ObjectMapper mapper = new ObjectMapper(); // can reuse, share
-															// globally
-			final CardCollection user = mapper.readValue(new File("return_to_ravnica.json"),
-					CardCollection.class);
+			try
+			{
+
+				final JAXBContext context = JAXBContext
+						.newInstance(CardCollectionRootElement.class);
+				final Unmarshaller um = context.createUnmarshaller();
+				final CardCollectionRootElement cardCollection = (CardCollectionRootElement)um
+						.unmarshal(new File(
+								"/home/nostromo/Documents/programmation/hatchetharry/src/main/java/org/alienlabs/hatchetharry/service/return_to_ravnica.xml"));
+
+				final Object[] array = cardCollection.getCardCollectionList().toArray();
+
+				for (int i = 0; i < array.length; i++)
+				{
+					this.cardCollectionDao.save((CardCollection)array[i]);
+				}
+			}
+			catch (final JAXBException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -44,19 +44,22 @@
 				<value>org.alienlabs.hatchetharry.model.Deck</value>
 				<value>org.alienlabs.hatchetharry.model.Game</value>
 				<value>org.alienlabs.hatchetharry.model.Side</value>
+				<value>org.alienlabs.hatchetharry.model.CardCollection</value>
             </list> 
         </property>
 
 		<property name="hibernateProperties">
 			<props>
 				<!--  create= provide data at start-up by dropping tables, update= no start-up data model modification -->
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-				<prop key="hibernate.connection.pool_size">15</prop>
+				<prop key="hibernate.connection.pool_size">100</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
             	<prop key="hibernate.hibernate.cache.use_query_cache">true</prop>
             	<prop key="validation.query">select 1</prop>
+				<prop key="hibernate.c3p0.timeout">300</prop>
+    			<prop key="hibernate.c3p0.idle_test_periods">150</prop>    
 			</props>
 		</property>
 	</bean>
@@ -102,7 +105,9 @@
 	<bean id="sideDao" class="org.alienlabs.hatchetharry.persistence.dao.SideDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
-	
+	<bean id="cardCollectionDao" class="org.alienlabs.hatchetharry.persistence.dao.CardCollectionDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
 <!--	<bean id="playerDaoTarget" class="org.alienlabs.ajax.persistence.dao.PlayerDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
@@ -140,6 +145,7 @@
 		<property name="playerDao" ref="playerDao"/>
 		<property name="gameDao" ref="gameDao"/>
 		<property name="sideDao" ref="sideDao"/>
+		<property name="cardCollectionDao" ref="cardCollectionDao"/>
 	</bean>
 	<!-- setup data generator that will add some data into the db when the app starts up -->
 	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">

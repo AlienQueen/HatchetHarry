@@ -12,6 +12,7 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
+import org.alienlabs.hatchetharry.persistence.dao.CardCollectionDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.GameDao;
@@ -47,6 +48,8 @@ public class PersistenceService implements Serializable
 	private GameDao gameDao;
 	@SpringBean
 	private SideDao sideDao;
+	@SpringBean
+	private CardCollectionDao cardCollectionDao;
 
 	public PersistenceService()
 	{
@@ -309,6 +312,12 @@ public class PersistenceService implements Serializable
 	public void setGameDao(final GameDao _gameDao)
 	{
 		this.gameDao = _gameDao;
+	}
+
+	@Required
+	public void setCardCollectionDao(final CardCollectionDao _cardCollectionDao)
+	{
+		this.cardCollectionDao = _cardCollectionDao;
 	}
 
 	@Transactional
