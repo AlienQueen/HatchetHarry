@@ -1,4 +1,4 @@
-jQuery(function() {
+window.setTimeout(function() {
 			// Show menu when #myDiv is clicked
 			jQuery("#card${uuid}").contextMenu(
 					{
@@ -13,4 +13,4 @@ jQuery(function() {
 								+ ' (relative to document)');
 					}
 			)
-});
+}, 2000);
