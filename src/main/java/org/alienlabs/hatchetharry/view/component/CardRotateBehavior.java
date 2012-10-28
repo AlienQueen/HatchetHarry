@@ -58,18 +58,19 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		card.setTapped(!card.isTapped());
 		this.persistenceService.saveCard(card);
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
-		
+
 		final CardRotateCometChannel crcc = new CardRotateCometChannel(HatchetHarrySession.get()
 				.getGameId(), card.getUuid(), card.isTapped());
 		HatchetHarryApplication.get().getEventBus().post(crcc);
 	}
 
 	@Subscribe
-	public void updateTime(final AjaxRequestTarget target, final CardRotateCometChannel event)
+	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
 		CardRotateBehavior.LOGGER.info("update time, gameId from event= " + event.getGameId());
-		CardRotateBehavior.LOGGER.info("update time, gameId from session= " + HatchetHarrySession.get().getGameId());
-		
+		CardRotateBehavior.LOGGER.info("update time, gameId from session= "
+				+ HatchetHarrySession.get().getGameId());
+
 		if (HatchetHarrySession.get().getGameId() == event.getGameId())
 		{
 			if (event.isTapped())
@@ -96,7 +97,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 				"script/rotate/cardRotate.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "cardRotateBehavior"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 	}
 
 	@Required

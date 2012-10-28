@@ -263,8 +263,8 @@
 								}
 							}
 
-							Wicket.Ajax.get({ 'u' : '${url}&posX=' + event.pageX
-									+ '&posY=' + event.pageY + '&uuid=${uuid}'});
+							var url = $("#" + event.target.id).data("url");
+							Wicket.Ajax.get({ 'u' : url + '&posX=' + event.pageX + '&posY=' + event.pageY});
 							return true;
 						},
 

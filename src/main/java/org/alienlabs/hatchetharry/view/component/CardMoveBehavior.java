@@ -53,7 +53,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final String _mouseX = request.getParameter("posX");
 		final String _mouseY = request.getParameter("posY");
-		final String uniqueid = request.getParameter("uuid");
+		final String uniqueid = this.uuid.toString();
+		CardMoveBehavior.LOGGER.info("uuid: " + uniqueid);
+
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 
@@ -94,6 +96,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 						+ ((HatchetHarrySession.get().getGameId().longValue() == event.getGameId()
 								.longValue()) && (HatchetHarrySession.get().getPlayer().getId()
 								.longValue() != event.getPlayerId().longValue())));
+		CardMoveBehavior.LOGGER.info("event.getUniqueid(): " + event.getUniqueid());
 
 		if ((HatchetHarrySession.get().getGameId().longValue() == event.getGameId().longValue())
 				&& (HatchetHarrySession.get().getPlayer().getId().longValue() != event
@@ -146,7 +149,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		template6.interpolate(variables);
 		js = js.append("\n" + template6.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "cardMoveBehavior"));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 	}
 
 	@Required

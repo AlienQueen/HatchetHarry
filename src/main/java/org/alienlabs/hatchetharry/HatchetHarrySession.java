@@ -129,9 +129,16 @@ public class HatchetHarrySession extends WebSession
 		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
 	}
 
-	public void removeCardIdInHand(final MagicCard c)
+	public void removeCardInHand(final MagicCard c)
 	{
-		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).remove(c.getId());
+		final ArrayList<Long> allExceptRemovedOne = ((ArrayList<Long>)this
+				.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND));
+		this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, allExceptRemovedOne);
+
+		final ArrayList<MagicCard> allFirstCardsExceptRemovedOne = ((ArrayList<MagicCard>)this
+				.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND));
+		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, allFirstCardsExceptRemovedOne);
+
 	}
 
 	public boolean setPlayerHasBeenCreated()

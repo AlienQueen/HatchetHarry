@@ -683,7 +683,7 @@ public class HomePage extends TestReportPage
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery-1.7.2.js")));
+						HomePage.class, "script/jquery/jquery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(

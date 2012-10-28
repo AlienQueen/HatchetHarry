@@ -18,7 +18,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.Request;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
@@ -83,9 +83,13 @@ public class CardPanel extends Panel
 
 		final Image handleImage = new Image("handleImage", new PackageResourceReference(
 				"images/arrow.png"));
+		handleImage.setMarkupId("handleImage" + this.uuid.toString());
+		handleImage.setOutputMarkupId(true);
+
 		final Image tapHandleImage = new Image("tapHandleImage", new PackageResourceReference(
 				"images/rightArrow.png"));
-		handleImage.setOutputMarkupId(true);
+		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString());
+		tapHandleImage.setOutputMarkupId(true);
 
 		final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage);
 		cardBubbleTip.setOutputMarkupId(true);
@@ -96,9 +100,6 @@ public class CardPanel extends Panel
 				smallImage));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString());
-
-		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString());
-		tapHandleImage.setOutputMarkupId(true);
 
 		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, cardBubbleTip);
 		menutoggleButton.add(form);
@@ -115,8 +116,8 @@ public class CardPanel extends Panel
 
 	public HttpServletRequest getHttpServletRequest()
 	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		return servletWebRequest.getContainerRequest();
+		final Request servletWebRequest = this.getRequest();
+		return (HttpServletRequest)servletWebRequest.getContainerRequest();
 	}
 
 	public UUID getUuid()
