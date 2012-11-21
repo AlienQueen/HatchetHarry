@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,7 +79,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
+		PlayCardFromHandBehavior.LOGGER.info("Before remove: "
+				+ HatchetHarrySession.get().getFirstCardsInHand().size());
 		HatchetHarrySession.get().removeCardInHand(card);
+		PlayCardFromHandBehavior.LOGGER.info("After remove: "
+				+ HatchetHarrySession.get().getFirstCardsInHand().size());
 		final HandComponent gallery = new HandComponent("gallery");
 		gallery.setOutputMarkupId(true);
 
@@ -99,17 +104,19 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.thumbParent.addOrReplace(this.cp);
 		target.add(this.thumbParent);
 
-		target.appendJavaScript("jQuery(document).ready(function() { "
-				+ "jQuery.gritter.add({ title : '" + request.getParameter("side")
-				+ "', text : \"has played \'" + card.getTitle()
-				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); });");
+		final StringBuffer buf = new StringBuffer("jQuery(document).ready(function() { "
+				+ "jQuery.gritter.add({ title : '"
+				+ HatchetHarrySession.get().getPlayer().getName() + "', text : \"has played \'"
+				+ card.getTitle()
+				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
 
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 				.getPlayer());
-		target.appendJavaScript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+		buf.append("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+		target.appendJavaScript(buf.toString());
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
-				this.uuidToLookFor, request.getParameter("side"));
+				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), id);
 		HatchetHarryApplication.get().getEventBus().post(pcfhcc);
 	}
 
@@ -119,11 +126,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	{
 		PlayCardFromHandBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
 
-		HatchetHarrySession.get().setPlaceholderNumber(
-				HatchetHarrySession.get().getPlaceholderNumber() + 1);
-
-		final String id = "cardPlaceholdera"
-				+ (HatchetHarrySession.get().getPlaceholderNumber() + 1);
+		final String id = event.getCardWicketId();
 		HatchetHarrySession.get().setPlaceholderNumber(
 				HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
@@ -136,13 +139,51 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.thumbParent.addOrReplace(this.cp);
 		target.add(this.thumbParent);
 
-		target.appendJavaScript("jQuery(document).ready(function() { "
-				+ "jQuery.gritter.add({ title : '" + event.getSide() + "', text : \"has played \'"
-				+ card.getTitle()
-				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); });");
+		final StringBuffer buf = new StringBuffer();
+		buf.append("jQuery.gritter.add({ title : '" + event.getPlayerName()
+				+ "', text : \"has played \'" + card.getTitle()
+				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 				.getPlayer());
+
+		buf.append("window.setTimeout(function() { ");
+
+		final List<CardPanel> list = HatchetHarrySession.get().getAllCardsInBattleField();
+		for (final CardPanel aCard : list)
+		{
+			try
+			{
+				final MagicCard mc = this.persistenceService.getCardFromUuid(aCard.getUuid());
+				if (null != mc)
+				{
+					buf.append("var card = jQuery(\"#menutoggleButton" + aCard.getUuid() + "\"); "
+							+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
+							+ mc.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY() + "px\"); ");
+					PlayCardFromHandBehavior.LOGGER.info("moving card UUID=" + aCard.getUuid()
+							+ " to posX=" + mc.getX() + ", posY=" + mc.getY());
+
+					if (mc.isTapped())
+					{
+						buf.append("jQuery('#card" + aCard.getUuid() + "').rotate(90); ");
+					}
+					else
+					{
+						buf.append("jQuery('#card" + aCard.getUuid() + "').rotate(0); ");
+					}
+
+					buf.append("jQuery(\"#card" + aCard.getUuid() + "\").easyTooltip({"
+							+ "useElement: \"cardTooltip" + aCard.getUuid() + "\"}); ");
+				}
+			}
+			catch (final IllegalArgumentException e)
+			{
+				PlayCardFromHandBehavior.LOGGER.error("error parsing UUID of moved card", e);
+			}
+		}
+
+		buf.append(" }, 2000);");
+		target.appendJavaScript(buf.toString());
 	}
 
 	@Override

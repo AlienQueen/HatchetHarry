@@ -4,7 +4,7 @@
 	<groupId>org.alienlabs.hatchetharry</groupId>
 	<artifactId>hatchetharry</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.8-SNAPSHOT</version>
+	<version>0.0.9-SNAPSHOT</version>
 	<!-- TODO project name  -->
 	<name>hatchetharry</name>
 	<description></description>
@@ -20,8 +20,8 @@
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.2.1-SNAPSHOT</wicket.version>
-		<wicketstuff.version>6.2.0</wicketstuff.version>
+		<wicket.version>6.4.0-SNAPSHOT</wicket.version>
+		<wicketstuff.version>6.2.1</wicketstuff.version>
 		<wicket-atmosphere.version>0.6-SNAPSHOT</wicket-atmosphere.version>
 		<atmosphere.version>1.0.0</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>

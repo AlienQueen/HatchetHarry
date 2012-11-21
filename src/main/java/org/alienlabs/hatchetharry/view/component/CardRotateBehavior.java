@@ -67,21 +67,21 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	@Subscribe
 	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
-		CardRotateBehavior.LOGGER.info("update time, gameId from event= " + event.getGameId());
-		CardRotateBehavior.LOGGER.info("update time, gameId from session= "
+		CardRotateBehavior.LOGGER.info("gameId from event= " + event.getGameId());
+		CardRotateBehavior.LOGGER.info("gameId from session= "
 				+ HatchetHarrySession.get().getGameId());
 
-		if (HatchetHarrySession.get().getGameId() == event.getGameId())
+		// if (HatchetHarrySession.get().getGameId() == event.getGameId())
+		// {
+		if (event.isTapped())
 		{
-			if (event.isTapped())
-			{
-				target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(90);");
-			}
-			else
-			{
-				target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(0);");
-			}
+			target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(90);");
 		}
+		else
+		{
+			target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(0);");
+		}
+		// }
 	}
 
 	@Override

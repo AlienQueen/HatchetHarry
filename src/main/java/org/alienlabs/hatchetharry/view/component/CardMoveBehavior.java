@@ -98,14 +98,16 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 								.longValue() != event.getPlayerId().longValue())));
 		CardMoveBehavior.LOGGER.info("event.getUniqueid(): " + event.getUniqueid());
 
-		if ((HatchetHarrySession.get().getGameId().longValue() == event.getGameId().longValue())
-				&& (HatchetHarrySession.get().getPlayer().getId().longValue() != event
-						.getPlayerId().longValue()))
-		{
-			target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
-					+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"
-					+ event.getMouseX() + "');" + "card.css('top', '" + event.getMouseY() + "');");
-		}
+		// if ((HatchetHarrySession.get().getGameId().longValue() ==
+		// event.getGameId().longValue())
+		// && (HatchetHarrySession.get().getPlayer().getId().longValue() !=
+		// event
+		// .getPlayerId().longValue()))
+		// {
+		target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
+				+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"
+				+ event.getMouseX() + "');" + "card.css('top', '" + event.getMouseY() + "');");
+		// }
 	}
 
 	@Override

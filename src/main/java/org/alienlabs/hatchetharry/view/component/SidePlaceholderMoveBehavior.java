@@ -1,6 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
@@ -12,11 +11,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.apache.wicket.util.template.PackageTextTemplate;
-import org.apache.wicket.util.template.TextTemplate;
 import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
@@ -145,32 +141,38 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	public void renderHead(final Component component, final IHeaderResponse response)
 	{
 		super.renderHead(component, response);
-
-		final StringBuffer js = new StringBuffer();
-
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
-		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.uuid);
-		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
-		variables.put("jsessionid", this.jsessionid);
-		variables.put("side", this.side);
-
-		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js");
-		template1.interpolate(variables);
-		js.append("\n" + template1.asString());
-
-		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/sidePlaceholderMove.js");
-		template2.interpolate(variables);
-		js.append("\n" + template2.asString());
-
-		final TextTemplate template3 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/initSidePlaceholderDrag.js");
-		template3.interpolate(variables);
-		js.append("\n" + template3.asString());
-
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "sidePlaceholderMove"));
+		// TODO virer ces js
+		// final StringBuffer js = new StringBuffer();
+		//
+		// final HashMap<String, Object> variables = new HashMap<String,
+		// Object>();
+		// variables.put("url", this.getCallbackUrl());
+		// variables.put("uuid", this.uuid);
+		// variables.put("uuidValidForJs", this.uuid.toString().replace("-",
+		// "_"));
+		// variables.put("jsessionid", this.jsessionid);
+		// variables.put("side", this.side);
+		//
+		// final TextTemplate template1 = new
+		// PackageTextTemplate(HomePage.class,
+		// "script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js");
+		// template1.interpolate(variables);
+		// js.append("\n" + template1.asString());
+		//
+		// final TextTemplate template2 = new
+		// PackageTextTemplate(HomePage.class,
+		// "script/draggableHandle/sidePlaceholderMove.js");
+		// template2.interpolate(variables);
+		// js.append("\n" + template2.asString());
+		//
+		// final TextTemplate template3 = new
+		// PackageTextTemplate(HomePage.class,
+		// "script/draggableHandle/initSidePlaceholderDrag.js");
+		// template3.interpolate(variables);
+		// js.append("\n" + template3.asString());
+		//
+		// response.render(JavaScriptHeaderItem.forScript(js.toString(),
+		// "sidePlaceholderMove"));
 	}
 
 }

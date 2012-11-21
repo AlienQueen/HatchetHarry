@@ -34,6 +34,7 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
+	// TODO is this class still useful?
 	public UntapAllBehavior()
 	{
 		Injector.get().inject(this);

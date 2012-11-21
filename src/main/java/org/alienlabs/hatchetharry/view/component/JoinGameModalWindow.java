@@ -1,19 +1,20 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
+import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -29,8 +30,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -176,13 +175,8 @@ public class JoinGameModalWindow extends Panel
 				_handCardsParent.addOrReplace(gallery);
 
 				javaScript
-						.append("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); "
-								+ "var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); "
-								+ "Wicket.Ajax.get('"
-								+ behavior.getUrl()
-								+ "&jsessionid="
-								+ this.getParent().getPage().getSession().getId()
-								+ "&displayJoinMessage=true', function() { }, null, null); ");
+						.append("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); "
+								+ "var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
 
 				JoinGameModalWindow.LOGGER.info("close!");
 
@@ -210,14 +204,14 @@ public class JoinGameModalWindow extends Panel
 						: 900;
 
 				javaScript
-						.append("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
+						.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
 								+ spp.getUuid()
 								+ "'); "
 								+ "card.css('position', 'absolute'); "
 								+ "card.css('left', '"
 								+ posX
 								+ "px'); "
-								+ "card.css('top', '500px'); }); ");
+								+ "card.css('top', '500px'); }, 2000);");
 
 				final String opponentSide = ("infrared".equals(sideInput
 						.getDefaultModelObjectAsString())) ? "ultraviolet" : "infrared";
@@ -233,26 +227,26 @@ public class JoinGameModalWindow extends Panel
 
 				final int posX2 = (posX == 300) ? 900 : 300;
 				javaScript
-						.append("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
+						.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
 								+ spp2.getUuid()
 								+ "'); "
 								+ "card.css('position', 'absolute'); "
 								+ "card.css('left', '"
 								+ posX2
 								+ "px'); "
-								+ "card.css('top', '500px'); }); ");
+								+ "card.css('top', '500px'); }, 2000);");
 
-				final Meteor meteor = Meteor
-						.build(request, new LinkedList<BroadcastFilter>(), null);
-				final String message = sideInput.getDefaultModelObjectAsString() + "|||||"
-						+ jsessionid + "|||||" + spp.getUuid();
-				JoinGameModalWindow.LOGGER.info("# message: " + message);
-				meteor.broadcast(message);
+				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
+						sideInput.getDefaultModelObjectAsString(), jsessionid, spp.getUuid(),
+						Long.valueOf(posX), 500l);
+				HatchetHarryApplication.get().getEventBus().post(jgcc);
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());
 				HatchetHarrySession.get().getPlayer()
 						.setSide(sideInput.getDefaultModelObjectAsString());
+				HatchetHarrySession.get().getPlayer()
+						.setName(nameInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
 

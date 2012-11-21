@@ -43,7 +43,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -56,6 +55,10 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
+import org.alienlabs.hatchetharry.model.channel.NotifierAction;
+import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
+import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
@@ -97,9 +100,6 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
-import org.atmosphere.cpr.AtmosphereResourceEventListener;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -190,7 +190,7 @@ public class HomePage extends TestReportPage
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.0.8 (release Emperor Wicket), built on Tuesday, 25th of September 2012."));
+				"version 0.0.9 (release Emperor Wicket), built on Sunday, 11th of November 2012."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
@@ -280,13 +280,16 @@ public class HomePage extends TestReportPage
 
 		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
 		this.secondSidePlaceholderParent.setOutputMarkupId(true);
+		this.secondSidePlaceholderParent.setMarkupId("secondSidePlaceholderParent");
 		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
 				"secondSidePlaceholder");
 		secondSidePlaceholder.setOutputMarkupId(true);
+		secondSidePlaceholder.setMarkupId("secondSidePlaceholder");
 		this.secondSidePlaceholderParent.add(secondSidePlaceholder);
 
 		this.firstSidePlaceholderParent = new WebMarkupContainer("firstSidePlaceholderParent");
 		this.firstSidePlaceholderParent.setOutputMarkupId(true);
+		this.firstSidePlaceholderParent.setMarkupId("firstSidePlaceholderParent");
 		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
 				"firstSidePlaceholder");
 		firstSidePlaceholder.setOutputMarkupId(true);
@@ -377,6 +380,7 @@ public class HomePage extends TestReportPage
 		this.endTurnPlaceholder.setMarkupId("endTurnPlaceholder");
 		this.endTurnPlaceholder.setOutputMarkupId(true);
 
+		// TODO maybe we could remove this:
 		this.notifierPanel = new NotifierPanel("notifierPanel", HomePage.this, HatchetHarrySession
 				.get().getPlayer().getSide(), "has declared the end of his turn.",
 				this.dataBoxParent, HatchetHarrySession.get().getGameId());
@@ -389,11 +393,13 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript("Wicket.Ajax.get('"
-						+ HomePage.this.notifierPanel.getCallbackUrl()
-						+ "&title="
-						+ HatchetHarrySession.get().getPlayer().getSide()
-						+ "&text=has declared the end of his turn.&show=true', function() { }, null, null);");
+				final Player me = HatchetHarrySession.get().getPlayer();
+
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(),
+						me.getSide(), null);
+
+				HatchetHarryApplication.get().getEventBus().post(ncc);
 			}
 
 		};
@@ -419,15 +425,9 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-						.getRequest();
-				HomePage.LOGGER.info("untap all");
-				final HttpServletRequest request = servletWebRequest.getContainerRequest();
-				target.appendJavaScript("Wicket.Ajax.get('"
-						+ HomePage.this.untapAllBehavior.getCallbackUrl() + "&sessionid="
-						+ request.getRequestedSessionId() + "&playerId="
-						+ HatchetHarrySession.get().getPlayer().getId()
-						+ "', function() { }, null, null);");
+				final UntapAllCometChannel uacc = new UntapAllCometChannel(HatchetHarrySession
+						.get().getGameId(), HatchetHarrySession.get().getPlayer().getId());
+				HatchetHarryApplication.get().getEventBus().post(uacc);
 			}
 
 		};
@@ -601,43 +601,37 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				if ((HatchetHarrySession.get().getDeck() != null)
-						&& (HatchetHarrySession.get().getDeck().getCards() != null)
-						&& (HatchetHarrySession.get().getDeck().getCards().size() > 0))
+				final HatchetHarrySession session = HatchetHarrySession.get();
+
+				if ((session.getDeck() != null) && (session.getDeck().getCards() != null)
+						&& (session.getDeck().getCards().size() > 0))
 				{
-					final MagicCard card = HatchetHarrySession.get().getDeck().getCards().get(0);
-					final ArrayList<MagicCard> list = HatchetHarrySession.get()
-							.getFirstCardsInHand();
+					final MagicCard card = session.getDeck().getCards().get(0);
+					final ArrayList<MagicCard> list = session.getFirstCardsInHand();
 					list.add(card);
 
-					final Deck d = HatchetHarrySession.get().getDeck();
+					final Deck d = session.getDeck();
 					final List<MagicCard> deckList = d.getCards();
 					deckList.remove(card);
 					d.setCards(deckList);
 
-					HatchetHarrySession.get().setFirstCardsInHand(list);
-					HatchetHarrySession.get().setDeck(d);
+					session.setFirstCardsInHand(list);
+					session.setDeck(d);
 
 					final HandComponent gallery = new HandComponent("gallery");
 					gallery.setOutputMarkupId(true);
 
-					((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession
-							.get().getPlayer());
+					((HatchetHarryApplication)Application.get()).setPlayer(session.getPlayer());
 
 					HomePage.this.handCardsPlaceholder.addOrReplace(gallery);
 					target.add(HomePage.this.handCardsPlaceholder);
 					target.appendJavaScript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
 
-					final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-							.getRequest();
-					final HttpServletRequest request = servletWebRequest.getContainerRequest();
-					final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(),
-							null);
-					meteor.addListener((AtmosphereResourceEventListener)target.getPage());
-					final String message = HatchetHarrySession.get().getPlayer().getSide() + ":::"
-							+ "has drawn a card!" + ":::" + request.getRequestedSessionId()
-							+ ":::padding";
-					meteor.broadcast(message);
+					final Player me = session.getPlayer();
+					final NotifierCometChannel ncc = new NotifierCometChannel(
+							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(),
+							me.getSide(), null);
+					HatchetHarryApplication.get().getEventBus().post(ncc);
 				}
 			}
 
@@ -686,8 +680,9 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/jquery/jquery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery.atmosphere.js")));
+				// response.render(JavaScriptHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "script/jquery/jquery.atmosphere.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						AbstractDefaultAjaxBehavior.class, "res/js/wicket-event-jquery.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -959,6 +954,134 @@ public class HomePage extends TestReportPage
 	{
 		this.clockPanel.setDefaultModelObject(event.toString());
 		target.add(this.clockPanel);
+	}
+
+	@Subscribe
+	public void aPlayerJoinedIn(final AjaxRequestTarget target, final JoinGameCometChannel event)
+	{
+		final String jsessionid = HatchetHarrySession.get().getId();
+
+		if (!jsessionid.equals(event.getJsessionid()))
+		{
+			final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
+					event.getSide(), this, event.getUuid());
+
+			final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
+					event.getUuid(), jsessionid, this, event.getSide(), this.getDataBoxParent(),
+					HatchetHarrySession.get().getGameId());
+			spp.add(spmb);
+			spp.setOutputMarkupId(true);
+			HomePage.LOGGER.info("### aPlayerJoinedIn(), gameId: "
+					+ HatchetHarrySession.get().getGameId());
+
+			final HatchetHarrySession session = HatchetHarrySession.get();
+			session.putMySidePlaceholderInSesion(event.getSide());
+
+
+			this.secondSidePlaceholderParent.addOrReplace(spp);
+			target.add(this.secondSidePlaceholderParent);
+
+			HomePage.LOGGER.info("### " + event.getUuid());
+			final int posX = ("infrared".equals(event.getSide())) ? 300 : 900;
+			HomePage.LOGGER.info("### aPlayerJoinedIn(), posX: " + posX);
+			HomePage.LOGGER.info("### aPlayerJoinedIn(), jsessionid from event: "
+					+ event.getJsessionid());
+			HomePage.LOGGER.info("### aPlayerJoinedIn(), jsessionid from request: " + jsessionid);
+
+			target.appendJavaScript("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
+					+ event.getUuid()
+					+ "'); "
+					+ "card.css('position', 'absolute'); "
+					+ "card.css('left', '"
+					+ posX
+					+ "px'); "
+					+ "card.css('top', '500px'); "
+					+ "jQuery(\"#"
+					+ spp.getMarkupId()
+					+ "\").draggable({ handle : \"#handleImage"
+					+ event.getUuid()
+					+ "\" });"
+					+ "jQuery(\"#handleImage"
+					+ spp.getUuid()
+					+ "\").data(\"url\",\"" + spmb.getCallbackUrl() + "\"); }, 2000);");
+
+			spp.setPosX(posX);
+			spp.setPosY(500);
+			session.setMySidePlaceholder(spp);
+
+			// TODO manage DataBox again
+			// if (!this.jsessionid.equals(event.getJsessionid()))
+			// {
+			// final DataBox dataBox = new DataBox("dataBox", this.gameId,
+			// SidePlaceholderMoveBehavior.this.homePage);
+			// final UpdateDataBoxBehavior behavior = new
+			// UpdateDataBoxBehavior(this.gameId,
+			// SidePlaceholderMoveBehavior.this.homePage, dataBox);
+			// dataBox.setOutputMarkupId(true);
+			// dataBox.add(behavior);
+			//
+			// final WebMarkupContainer _parent =
+			// this.homePage.getDataBoxParent();
+			// _parent.addOrReplace(dataBox);
+			// target.add(_parent);
+			// SidePlaceholderMoveBehavior.LOGGER.info("# databox for game id="
+			// +
+			// this.gameId);
+			// }
+
+			// target.add(spp, "secondSidePlaceholder");
+		}
+	}
+
+	@Subscribe
+	public void displayNotification(final AjaxRequestTarget target, final NotifierCometChannel event)
+	{
+		switch (event.getAction())
+		{
+			case DRAW_CARD_ACTION :
+				if (HatchetHarrySession.get().getPlayer().getId().longValue() != event
+						.getPlayerId().longValue())
+				{
+					target.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getPlayerName()
+							+ "', text : \"has drawn a card!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				}
+				break;
+
+			case END_OF_TURN_ACTION :
+				if (HatchetHarrySession.get().getPlayer().getId().longValue() != event
+						.getPlayerId().longValue())
+				{
+					target.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getPlayerName()
+							+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				}
+				break;
+		}
+	}
+
+	@Subscribe
+	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
+	{
+		final HatchetHarrySession session = HatchetHarrySession.get();
+
+		if (session.getPlayer().getId().longValue() == event.getPlayerId().longValue())
+		{
+			final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
+					.getAllCardsInBattleFieldForAPlayer(HatchetHarrySession.get().getPlayer()
+							.getId());
+
+			final StringBuffer buf = new StringBuffer();
+
+			for (final MagicCard mc : allCardsInBattlefieldOnMySide)
+			{
+				buf.append("jQuery('#card" + mc.getUuid().toString() + "').rotate(0); ");
+				mc.setTapped(false);
+				this.persistenceService.saveCard(mc);
+			}
+
+			target.appendJavaScript(buf.toString());
+		}
 	}
 
 	@Override

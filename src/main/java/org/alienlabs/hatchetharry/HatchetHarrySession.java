@@ -133,10 +133,12 @@ public class HatchetHarrySession extends WebSession
 	{
 		final ArrayList<Long> allExceptRemovedOne = ((ArrayList<Long>)this
 				.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND));
+		allExceptRemovedOne.remove(c);
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, allExceptRemovedOne);
 
 		final ArrayList<MagicCard> allFirstCardsExceptRemovedOne = ((ArrayList<MagicCard>)this
 				.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND));
+		allFirstCardsExceptRemovedOne.remove(c);
 		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, allFirstCardsExceptRemovedOne);
 
 	}

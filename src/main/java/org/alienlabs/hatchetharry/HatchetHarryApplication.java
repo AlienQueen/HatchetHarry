@@ -31,7 +31,7 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 	private static final long serialVersionUID = 1L;
 	private Player player;
 	private boolean mistletoeTest = false;
-	private EventBus eventBus;
+	EventBus eventBus;
 
 	/**
 	 * Constructor
@@ -72,7 +72,7 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 
 		this.eventBus = new EventBus(this);
 
-		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 		final Runnable beeper = new Runnable()
 		{
 			@Override
@@ -88,7 +88,7 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				}
 			}
 		};
-		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
+		scheduler.scheduleWithFixedDelay(beeper, 2000, 2000, TimeUnit.SECONDS);
 
 		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
 
@@ -217,6 +217,19 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				HomePage.class, "image/logobouclierrouge.png"));
 		this.mountResource("image/logobouclierviolet.png", new PackageResourceReference(
 				HomePage.class, "image/logobouclierviolet.png"));
+
+		this.mountResource("image/edit.png", new PackageResourceReference(HomePage.class,
+				"image/edit.png"));
+		this.mountResource("image/cut.png", new PackageResourceReference(HomePage.class,
+				"image/cut.png"));
+		this.mountResource("image/copy.png", new PackageResourceReference(HomePage.class,
+				"image/copy.png"));
+		this.mountResource("image/paste.png", new PackageResourceReference(HomePage.class,
+				"image/paste.png"));
+		this.mountResource("image/delete.png", new PackageResourceReference(HomePage.class,
+				"image/delete.png"));
+		this.mountResource("image/quit.png", new PackageResourceReference(HomePage.class,
+				"image/quit.png"));
 
 		this.getJavaScriptLibrarySettings().setJQueryReference(
 				new PackageResourceReference(HomePage.class, "script/google-analytics.js"));

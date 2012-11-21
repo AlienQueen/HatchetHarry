@@ -5,3 +5,5 @@
 	+ mvn versions:display-property-updates		scans a projectand produces a report of those properties which are used to control artifact versions and which properies have newer versions available.
 	
 - in order to display a notifier pop-up: jQuery.gritter.add({ title : 'infrared', text : 'has played mountain!', image : 'image/logoh2.gif', sticky : false, time : ''});
+
+jQuery('#menutoggleButton758f66a4-513b-40db-a3d9-83ec7e91f1e4').wicketAtmosphere({"url" : "http://localhost:8080/?0-1.IBehaviorListener.1-balduParent-baldu-menutoggleButton&uuid=758f66a4-513b-40db-a3d9-83ec7e91f1e4&_=1353358682233" });

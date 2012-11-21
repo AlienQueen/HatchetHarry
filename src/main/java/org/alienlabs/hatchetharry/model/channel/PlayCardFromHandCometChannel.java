@@ -6,13 +6,16 @@ public class PlayCardFromHandCometChannel
 {
 
 	UUID uuidToLookFor;
-	String side;
+	String playerName;
+	private final String cardWicketId;
 
 
-	public PlayCardFromHandCometChannel(final UUID _uuidToLookFor, final String _side)
+	public PlayCardFromHandCometChannel(final UUID _uuidToLookFor, final String _playerName,
+			final String _cardWicketId)
 	{
 		this.uuidToLookFor = _uuidToLookFor;
-		this.side = _side;
+		this.playerName = _playerName;
+		this.cardWicketId = _cardWicketId;
 	}
 
 	public UUID getUuidToLookFor()
@@ -20,9 +23,14 @@ public class PlayCardFromHandCometChannel
 		return this.uuidToLookFor;
 	}
 
-	public String getSide()
+	public String getPlayerName()
 	{
-		return this.side;
+		return this.playerName;
+	}
+
+	public String getCardWicketId()
+	{
+		return this.cardWicketId;
 	}
 
 }

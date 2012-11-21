@@ -146,12 +146,13 @@ public class CreateGameModalWindow extends Panel
 				_handCardsParent.addOrReplace(gallery);
 				target.add(_handCardsParent);
 
-				target.appendJavaScript("jQuery('#tourcontrols').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
+				target.appendJavaScript("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
 
 				CreateGameModalWindow.LOGGER.info("close!");
 
+				final UUID uuid = UUID.randomUUID();
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("firstSidePlaceholder",
-						sideInput.getDefaultModelObjectAsString(), hp, UUID.randomUUID());
+						sideInput.getDefaultModelObjectAsString(), hp, uuid);
 				final HatchetHarrySession session = HatchetHarrySession.get();
 				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
 
@@ -159,11 +160,13 @@ public class CreateGameModalWindow extends Panel
 						.getRequest();
 				final HttpServletRequest request = servletWebRequest.getContainerRequest();
 				final String jsessionid = request.getRequestedSessionId();
-				spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(), jsessionid,
-						CreateGameModalWindow.this.homePage, sideInput
-								.getDefaultModelObjectAsString(),
+
+				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
+						spp.getUuid(), jsessionid, CreateGameModalWindow.this.homePage,
+						sideInput.getDefaultModelObjectAsString(),
 						CreateGameModalWindow.this.homePage.getDataBoxParent(),
-						CreateGameModalWindow.this.game.getId()));
+						CreateGameModalWindow.this.game.getId());
+				spp.add(spmb);
 				spp.setOutputMarkupId(true);
 
 				CreateGameModalWindow.this.sidePlaceholderParent.addOrReplace(spp);
@@ -173,19 +176,29 @@ public class CreateGameModalWindow extends Panel
 						? 300
 						: 900;
 
-				target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
+				target.appendJavaScript("window.setTimeout(function() { var card = jQuery(\"#sidePlaceholder"
 						+ spp.getUuid()
 						+ "\"); "
 						+ "card.css(\"position\", \"absolute\"); "
 						+ "card.css(\"left\", \""
 						+ posX
 						+ "px\"); "
-						+ "card.css(\"top\", \"500px\"); });");
+						+ "card.css(\"top\", \"500px\");"
+						+ "jQuery(\"#"
+						+ spp.getMarkupId()
+						+ "\").draggable({ handle : \"#handleImage"
+						+ uuid
+						+ "\" });"
+						+ "jQuery(\"#handleImage"
+						+ uuid
+						+ "\").data(\"url\",\""
+						+ spmb.getCallbackUrl() + "\");" + " }, 2000);");
 
 				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());
 
 				session.getPlayer().setSide(sideInput.getDefaultModelObjectAsString());
+				session.getPlayer().setName(nameInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
 

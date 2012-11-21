@@ -77,7 +77,7 @@ jQuery.atmosphere = function() {
                 suspend : true,
                 maxRequest : 60,
                 reconnect : true,
-                maxStreamingLength : 10000000000,
+                maxStreamingLength : 10000000,
                 lastIndex : 0,
                 logLevel : 'info',
                 requestCount : 0,
@@ -94,7 +94,7 @@ jQuery.atmosphere = function() {
                 readyState : 0,
                 lastTimestamp : 0,
                 withCredentials : false,
-                trackMessageLength : true ,
+                trackMessageLength : false ,
                 messageDelimiter : '|',
                 connectTimeout : -1,
                 reconnectInterval : 0,
@@ -1525,13 +1525,11 @@ jQuery.atmosphere = function() {
                     suspend : false,
                     maxRequest : 60,
                     logLevel : 'info',
-                    trackMessageLength : true,
-                    messageDelimiter : '|',
                     requestCount : 0,
                     transport: 'polling',
                     attachHeadersAsQueryString: true,
                     enableXDR: _request.enableXDR,
-                    uuid : _request.uuid,
+                    uuid : _request.uuid
                 };
 
                 if (typeof(message) == 'object') {

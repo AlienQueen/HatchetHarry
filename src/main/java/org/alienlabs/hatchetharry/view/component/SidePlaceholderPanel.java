@@ -12,7 +12,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.Request;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +42,8 @@ public class SidePlaceholderPanel extends Panel
 		sidePlaceholder.setOutputMarkupId(true);
 		sidePlaceholder.setMarkupId("sidePlaceholder" + this.uuid.toString());
 
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-		final String jsessionid = request.getRequestedSessionId();
+		final HttpServletRequest request = this.getHttpServletRequest();
+		final String jsessionid = request.getParameter("jsessionid");
 		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage,
 				this.side, this.homePage.getDataBoxParent(), HatchetHarrySession.get().getGameId()));
 
@@ -87,8 +86,8 @@ public class SidePlaceholderPanel extends Panel
 
 	public HttpServletRequest getHttpServletRequest()
 	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		return servletWebRequest.getContainerRequest();
+		final Request servletWebRequest = this.getRequest();
+		return (HttpServletRequest)servletWebRequest.getContainerRequest();
 	}
 
 	public UUID getUuid()

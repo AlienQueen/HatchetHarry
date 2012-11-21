@@ -90,8 +90,20 @@
         <init-param> 
 	   		<param-name>defaultTestSuite</param-name>
 	   		<param-value>org.alienlabs.hatchetharry.clientSideTest.AllMistletoeTests</param-value>
-	  </init-param>
-      <load-on-startup>0</load-on-startup>        
+	    </init-param>
+        <init-param>
+        	<param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
+        	<param-value>org.alienlabs.hatchetharry.ResponseSizeFilter</param-value>
+      	</init-param>
+      	<!--<init-param>
+        	<param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
+        	<param-value>org.atmosphere.client.TrackMessageSizeFilter</param-value>
+      	</init-param>-->
+		<init-param>
+		    <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+		    <param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
+		</init-param>
+      	<load-on-startup>0</load-on-startup>        
     </servlet> 
 	
     <servlet-mapping>
