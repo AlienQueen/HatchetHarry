@@ -140,6 +140,10 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		target.add(this.thumbParent);
 
 		final StringBuffer buf = new StringBuffer();
+
+		final String toId = HatchetHarrySession.get().getId();
+		buf.append("var toId = \"" + toId + "\"; ");
+
 		buf.append("jQuery.gritter.add({ title : '" + event.getPlayerName()
 				+ "', text : \"has played \'" + card.getTitle()
 				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");

@@ -93,7 +93,7 @@
 	    </init-param>
         <init-param>
         	<param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
-        	<param-value>org.apache.wicket.atmosphere.TrackMessageSizeFilter</param-value>
+        	<param-value>org.alienlabs.hatchetharry.ResponseSizeFilter</param-value>
       	</init-param>
       	<!--<init-param>
         	<param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
