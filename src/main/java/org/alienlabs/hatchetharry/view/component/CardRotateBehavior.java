@@ -71,17 +71,31 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		CardRotateBehavior.LOGGER.info("gameId from session= "
 				+ HatchetHarrySession.get().getGameId());
 
-		// if (HatchetHarrySession.get().getGameId() == event.getGameId())
-		// {
+		final StringBuffer buf = new StringBuffer();
+
+		final String toId = HatchetHarrySession.get().getId();
+		buf.append("var toId = \"" + toId + "\"; ");
+
 		if (event.isTapped())
 		{
-			target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(90);");
+			buf.append("window.setTimeout(function() { jQuery('#card" + event.getCardUuid()
+					+ "').rotate(90); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(0); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(90); }, 250); }, 250); }, 250);");
 		}
 		else
 		{
-			target.appendJavaScript("jQuery('#card" + event.getCardUuid() + "').rotate(0);");
+			buf.append("window.setTimeout(function() {jQuery('#card" + event.getCardUuid()
+					+ "').rotate(0); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(90); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(0); }, 250); }, 250); }, 250);");
 		}
-		// }
+
+		target.appendJavaScript(buf.toString());
 	}
 
 	@Override

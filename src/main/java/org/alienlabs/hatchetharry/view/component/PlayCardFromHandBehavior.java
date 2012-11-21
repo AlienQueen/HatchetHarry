@@ -110,6 +110,13 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				+ card.getTitle()
 				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
 
+		card.setX(100l);
+		card.setY(100l);
+		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
+				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
+				+ "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
+		this.persistenceService.saveCard(card);
+
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 				.getPlayer());
 		buf.append("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
