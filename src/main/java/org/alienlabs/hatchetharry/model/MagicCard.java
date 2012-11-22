@@ -3,6 +3,7 @@ package org.alienlabs.hatchetharry.model;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +15,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.wicket.model.Model;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.googlecode.wicketslides.SlideshowImage;
 
 @Entity
 @Table(name = "MagicCard")
+@Cacheable 
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MagicCard implements SlideshowImage, Serializable
 {
 	private static final long serialVersionUID = -5115712217304615521L;

@@ -500,6 +500,11 @@
    			<artifactId>jaxb-impl</artifactId>
    			<version>2.2.7-b41</version>
    		</dependency>
+   		<dependency>
+   			<groupId>org.codehaus.redback.components.cache</groupId>
+   			<artifactId>spring-cache-ehcache</artifactId>
+   			<version>1.1</version>
+   		</dependency>
 	</dependencies>
 	
     <repositories>
