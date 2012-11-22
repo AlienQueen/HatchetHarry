@@ -95,26 +95,27 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final String id = "cardPlaceholdera" + (HatchetHarrySession.get().getPlaceholderNumber());
 
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
-				card.getUuidObject());
-		this.cp.setOutputMarkupId(true);
-		HatchetHarrySession.get().addCardInBattleField(this.cp);
+		//		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
+		//				card.getUuidObject());
+		//		this.cp.setOutputMarkupId(true);
+		//		HatchetHarrySession.get().addCardInBattleField(this.cp);
 		PlayCardFromHandBehavior.LOGGER.info("uuid created " + card.getUuidObject().toString());
 
-		this.thumbParent.addOrReplace(this.cp);
-		target.add(this.thumbParent);
+		//		this.thumbParent.addOrReplace(this.cp);
+		//		target.add(this.thumbParent);
 
-		final StringBuffer buf = new StringBuffer("jQuery(document).ready(function() { "
-				+ "jQuery.gritter.add({ title : '"
-				+ HatchetHarrySession.get().getPlayer().getName() + "', text : \"has played \'"
-				+ card.getTitle()
-				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
+		//		final StringBuffer buf = new StringBuffer("jQuery(document).ready(function() { "
+		//				+ "jQuery.gritter.add({ title : '"
+		//				+ HatchetHarrySession.get().getPlayer().getName() + "', text : \"has played \'"
+		//				+ card.getTitle()
+		//				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
+		final StringBuffer buf = new StringBuffer();
 
-		card.setX(100l);
-		card.setY(100l);
-		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
-				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
-				+ "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
+		card.setX(300l + p.getPlaceholderNumber() * 30);
+		card.setY(300l + p.getPlaceholderNumber() * 30);
+		//		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
+		//				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
+		//				+ "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
 		this.persistenceService.saveCard(card);
 
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
@@ -138,7 +139,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.savePlayer(p);
 		HatchetHarrySession.get().setPlaceholderNumber(p.getPlaceholderNumber());
 
+		final StringBuffer buf = new StringBuffer();
 		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+
 		this.cp = new CardPanel("cardPlaceholdera" + p.getPlaceholderNumber(), card.getSmallImageFilename(), card.getBigImageFilename(),
 				card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
@@ -146,8 +149,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		this.thumbParent.addOrReplace(this.cp);
 		target.add(this.thumbParent);
-
-		final StringBuffer buf = new StringBuffer();
 
 		final String toId = HatchetHarrySession.get().getId();
 		buf.append("var toId = \"" + toId + "\"; ");
