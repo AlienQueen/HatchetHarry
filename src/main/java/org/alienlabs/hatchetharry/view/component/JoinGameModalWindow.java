@@ -149,6 +149,9 @@ public class JoinGameModalWindow extends Panel
 
 				JoinGameModalWindow.this.player.setSide(sideInput.getDefaultModelObjectAsString());
 				JoinGameModalWindow.this.player.setName(nameInput.getDefaultModelObjectAsString());
+				JoinGameModalWindow.this.player.setPlaceholderNumber(2);
+				session.getPlayer().setPlaceholderNumber(2);
+				session.setPlaceholderNumber(2);
 				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
 
 				final Set<Player> players = game.getPlayers();

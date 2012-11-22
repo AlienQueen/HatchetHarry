@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -74,8 +75,10 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 		PlayCardFromHandBehavior.LOGGER.info("uuidToLookFor: " + this.uuidToLookFor);
 
-		HatchetHarrySession.get().setPlaceholderNumber(
-				HatchetHarrySession.get().getPlaceholderNumber() + 1);
+		Player p = HatchetHarrySession.get().getPlayer();
+		p.setPlaceholderNumber(p.getPlaceholderNumber() + 1);
+		this.persistenceService.savePlayer(p);
+		HatchetHarrySession.get().setPlaceholderNumber(p.getPlaceholderNumber());
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
@@ -90,10 +93,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.cardParent.addOrReplace(gallery);
 		target.add(this.cardParent);
 
-		final String id = "cardPlaceholdera"
-				+ (HatchetHarrySession.get().getPlaceholderNumber() + 1);
-		HatchetHarrySession.get().setPlaceholderNumber(
-				HatchetHarrySession.get().getPlaceholderNumber() + 1);
+		final String id = "cardPlaceholdera" + (HatchetHarrySession.get().getPlaceholderNumber());
 
 		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
 				card.getUuidObject());
@@ -123,7 +123,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		target.appendJavaScript(buf.toString());
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), id);
+				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName());
 		HatchetHarryApplication.get().getEventBus().post(pcfhcc);
 	}
 
@@ -133,12 +133,13 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	{
 		PlayCardFromHandBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
 
-		final String id = event.getCardWicketId();
-		HatchetHarrySession.get().setPlaceholderNumber(
-				HatchetHarrySession.get().getPlaceholderNumber() + 1);
+		Player p = HatchetHarrySession.get().getPlayer();
+		p.setPlaceholderNumber(p.getPlaceholderNumber() + 1);
+		this.persistenceService.savePlayer(p);
+		HatchetHarrySession.get().setPlaceholderNumber(p.getPlaceholderNumber());
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
+		this.cp = new CardPanel("cardPlaceholdera" + p.getPlaceholderNumber(), card.getSmallImageFilename(), card.getBigImageFilename(),
 				card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
 		HatchetHarrySession.get().addCardInBattleField(this.cp);

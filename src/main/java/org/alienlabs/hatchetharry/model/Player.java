@@ -40,6 +40,8 @@ public class Player implements Serializable
 	private String jsessionid;
 	@Column
 	private Long lifePoints;
+	@Column
+	private Integer placeholderNumber;
 
 	public Long getId()
 	{
@@ -150,5 +152,15 @@ public class Player implements Serializable
 			return false;
 		}
 		return true;
+	}
+
+	public Integer getPlaceholderNumber()
+	{
+		return this.placeholderNumber;
+	}
+
+	public void setPlaceholderNumber(Integer _placeholderNumber)
+	{
+		this.placeholderNumber = _placeholderNumber;
 	}
 }

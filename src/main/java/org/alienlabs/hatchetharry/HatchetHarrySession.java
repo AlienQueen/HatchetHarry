@@ -58,6 +58,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, true);
 		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
+		this.setAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER, 1);
 	}
 
 	public static HatchetHarrySession get(final Request request)
@@ -185,7 +186,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD, card);
 	}
 
-	public void setPlaceholderNumber(final int _index)
+	public void setPlaceholderNumber(final Integer _index)
 	{
 		this.setAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER, _index);
 	}

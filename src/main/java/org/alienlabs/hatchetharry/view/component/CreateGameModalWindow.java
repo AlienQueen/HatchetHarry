@@ -105,6 +105,9 @@ public class CreateGameModalWindow extends Panel
 						.setSide(sideInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.player
 						.setName(nameInput.getDefaultModelObjectAsString());
+				CreateGameModalWindow.this.player.setPlaceholderNumber(2);
+				HatchetHarrySession.get().getPlayer().setPlaceholderNumber(2);
+				HatchetHarrySession.get().setPlaceholderNumber(2);
 				CreateGameModalWindow.this.persistenceService
 						.updatePlayer(CreateGameModalWindow.this.player);
 
