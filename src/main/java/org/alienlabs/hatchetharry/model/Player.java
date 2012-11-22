@@ -20,7 +20,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Player")
-@Cacheable 
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Player implements Serializable
 {
@@ -40,8 +40,6 @@ public class Player implements Serializable
 	private String jsessionid;
 	@Column
 	private Long lifePoints;
-	@Column
-	private Integer placeholderNumber;
 
 	public Long getId()
 	{
@@ -154,13 +152,4 @@ public class Player implements Serializable
 		return true;
 	}
 
-	public Integer getPlaceholderNumber()
-	{
-		return this.placeholderNumber;
-	}
-
-	public void setPlaceholderNumber(Integer _placeholderNumber)
-	{
-		this.placeholderNumber = _placeholderNumber;
-	}
 }

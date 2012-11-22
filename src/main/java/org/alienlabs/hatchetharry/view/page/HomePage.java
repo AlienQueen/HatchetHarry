@@ -181,6 +181,7 @@ public class HomePage extends TestReportPage
 
 		this.playCardParent = new WebMarkupContainer("playCardParentPlaceholder");
 		this.playCardParent.setOutputMarkupId(true);
+		this.playCardParent.setMarkupId("playCardParentPlaceholder");
 		this.parentPlaceholder.add(this.playCardParent);
 		this.add(this.parentPlaceholder);
 
@@ -317,7 +318,6 @@ public class HomePage extends TestReportPage
 		if (HatchetHarrySession.get().isGameCreated())
 		{
 			this.restoreBattlefieldState();
-			HatchetHarrySession.get().setGameCreated();
 		}
 
 		if (HatchetHarrySession.get().getGameId() != 0)
@@ -531,7 +531,6 @@ public class HomePage extends TestReportPage
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
 		HatchetHarrySession.get().setPlayer(p);
-		HatchetHarrySession.get().setPlaceholderNumber(1);
 
 		this.deck = this.persistenceService.getDeck(id);
 		if (null == this.deck)
@@ -1175,9 +1174,6 @@ public class HomePage extends TestReportPage
 		{
 			try
 			{
-				HatchetHarrySession.get().setPlaceholderNumber(
-						HatchetHarrySession.get().getPlaceholderNumber() + 1);
-
 				final MagicCard mc = HomePage.this.persistenceService.getCardFromUuid(cp.getUuid());
 				if (null != mc)
 				{
