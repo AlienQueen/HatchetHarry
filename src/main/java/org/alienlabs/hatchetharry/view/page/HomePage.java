@@ -555,6 +555,8 @@ public class HomePage extends TestReportPage
 		{
 			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
 					+ opponentId + i);
+			cardPlaceholder.setOutputMarkupId(true);
+			cardPlaceholder.setMarkupId("cardPlaceholder" + opponentId + i);
 			this.playCardParent.addOrReplace(cardPlaceholder);
 		}
 	}

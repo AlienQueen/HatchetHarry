@@ -126,8 +126,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		game.setPlaceholderId(game.getPlaceholderId() + 1);
 		this.persistenceService.saveOrUpdateGame(game);
 
-		card.setX(300l + (game.getPlaceholderId() * 30));
-		card.setY(300l + (game.getPlaceholderId() * 30));
+		card.setX(300l + (game.getPlaceholderId() * 50));
+		card.setY(300l + (game.getPlaceholderId() * 50));
 		this.persistenceService.saveCard(card);
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
