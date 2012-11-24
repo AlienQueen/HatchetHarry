@@ -16,7 +16,7 @@
 	text-align: center;
 	white-space: nowrap;
 	display: inline-block;
-	background: url("img/dock-middle.png") bottom left repeat-x;
+	background: url("/image/dock-middle.png") bottom left repeat-x;
 }
 
 #dock ul:before,
@@ -33,13 +33,13 @@
 #dock ul:before {
 	padding-left: 60px;
 	margin-left: -60px;
-	background: url("img/dock-left.png") bottom left repeat-x;
+	background: url("/image/dock-left.png") bottom left repeat-x;
 } 
 
 #dock ul:after {
 	padding-right: 60px;
 	margin-right: -60px;
-	background: url("img/dock-right.png") bottom right repeat-x;
+	background: url("/image/dock-right.png") bottom right repeat-x;
 }
 
 /* Dock Icons */
@@ -53,7 +53,7 @@
 }
 
 #dock li.seperator {
-	background: url("img/dock-seperator.png") bottom left no-repeat;
+	background: url("/image/dock-seperator.png") bottom left no-repeat;
 	width: 20px;
 	height: 158px;
 	position: relative;

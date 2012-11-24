@@ -20,7 +20,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Player")
-@Cacheable 
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Player implements Serializable
 {
@@ -151,4 +151,5 @@ public class Player implements Serializable
 		}
 		return true;
 	}
+
 }

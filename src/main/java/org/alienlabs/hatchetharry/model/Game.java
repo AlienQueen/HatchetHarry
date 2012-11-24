@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,8 +26,8 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Game")
-@Cacheable 
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Game implements Serializable
 {
 	private static final long serialVersionUID = 5336828396327485268L;
@@ -40,6 +41,8 @@ public class Game implements Serializable
 	private Set<Player> players = new HashSet<Player>();
 	@OneToMany(mappedBy = "game")
 	private List<Side> sides = new ArrayList<Side>();
+	@Column
+	private Integer placeholderId;
 
 	public Long getId()
 	{
@@ -108,6 +111,16 @@ public class Game implements Serializable
 	public void setSides(final List<Side> _sides)
 	{
 		this.sides = _sides;
+	}
+
+	public Integer getPlaceholderId()
+	{
+		return this.placeholderId;
+	}
+
+	public void setPlaceholderId(final Integer _placeholderId)
+	{
+		this.placeholderId = _placeholderId;
 	}
 
 }

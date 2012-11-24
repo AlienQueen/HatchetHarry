@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandFilter;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
@@ -38,8 +40,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer thumbParent;
-	private final WebMarkupContainer cardParent;
+	private final WebMarkupContainer galleryParent;
 
 	private UUID uuidToLookFor;
 	private final int currentCard;
@@ -47,14 +48,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	private CardPanel cp;
 	private String side;
 
-	public PlayCardFromHandBehavior(final WebMarkupContainer _thumbParent,
-			final WebMarkupContainer _cardParent, final UUID _uuidToLookFor,
-			final int _currentCard, final String _side)
+	public PlayCardFromHandBehavior(final WebMarkupContainer _galleryParent,
+			final UUID _uuidToLookFor, final int _currentCard, final String _side)
 	{
 		super();
 		Injector.get().inject(this);
-		this.thumbParent = _thumbParent;
-		this.cardParent = _cardParent;
+		this.galleryParent = _galleryParent;
 		this.uuidToLookFor = _uuidToLookFor;
 		this.currentCard = _currentCard;
 		this.side = _side;
@@ -74,9 +73,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 		PlayCardFromHandBehavior.LOGGER.info("uuidToLookFor: " + this.uuidToLookFor);
 
-		HatchetHarrySession.get().setPlaceholderNumber(
-				HatchetHarrySession.get().getPlaceholderNumber() + 1);
-
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
 		PlayCardFromHandBehavior.LOGGER.info("Before remove: "
@@ -87,66 +83,83 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final HandComponent gallery = new HandComponent("gallery");
 		gallery.setOutputMarkupId(true);
 
-		this.cardParent.addOrReplace(gallery);
-		target.add(this.cardParent);
+		this.galleryParent.addOrReplace(gallery);
+		target.add(this.galleryParent);
 
-		final String id = "cardPlaceholdera"
-				+ (HatchetHarrySession.get().getPlaceholderNumber() + 1);
-		HatchetHarrySession.get().setPlaceholderNumber(
-				HatchetHarrySession.get().getPlaceholderNumber() + 1);
+		// final String id = "cardPlaceholdera" +
+		// (HatchetHarrySession.get().getPlaceholderNumber());
 
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
-				card.getUuidObject());
-		this.cp.setOutputMarkupId(true);
-		HatchetHarrySession.get().addCardInBattleField(this.cp);
+		// this.cp = new CardPanel(id, card.getSmallImageFilename(),
+		// card.getBigImageFilename(),
+		// card.getUuidObject());
+		// this.cp.setOutputMarkupId(true);
+		// HatchetHarrySession.get().addCardInBattleField(this.cp);
 		PlayCardFromHandBehavior.LOGGER.info("uuid created " + card.getUuidObject().toString());
 
-		this.thumbParent.addOrReplace(this.cp);
-		target.add(this.thumbParent);
+		// this.thumbParent.addOrReplace(this.cp);
+		// target.add(this.thumbParent);
 
-		final StringBuffer buf = new StringBuffer("jQuery(document).ready(function() { "
-				+ "jQuery.gritter.add({ title : '"
-				+ HatchetHarrySession.get().getPlayer().getName() + "', text : \"has played \'"
-				+ card.getTitle()
-				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
+		// final StringBuffer buf = new
+		// StringBuffer("jQuery(document).ready(function() { "
+		// + "jQuery.gritter.add({ title : '"
+		// + HatchetHarrySession.get().getPlayer().getName() +
+		// "', text : \"has played \'"
+		// + card.getTitle()
+		// +
+		// "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
+		final StringBuffer buf = new StringBuffer();
 
-		card.setX(100l);
-		card.setY(100l);
-		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
-				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
-				+ "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
-		this.persistenceService.saveCard(card);
+		// buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() +
+		// "\"); "
+		// + "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
+		// + card.getX()
+		// + "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
 
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 				.getPlayer());
 		buf.append("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
 		target.appendJavaScript(buf.toString());
 
+		final Game game = this.persistenceService.getGame(HatchetHarrySession.get().getGameId());
+		game.setPlaceholderId(game.getPlaceholderId() + 1);
+		this.persistenceService.saveOrUpdateGame(game);
+
+		card.setX(100l + (game.getPlaceholderId() * 60));
+		card.setY(100l + (game.getPlaceholderId() * 60));
+		this.persistenceService.saveCard(card);
+
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), id);
+				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(),
+				game.getPlaceholderId());
 		HatchetHarryApplication.get().getEventBus().post(pcfhcc);
 	}
 
-	@Subscribe
+	@Subscribe(filter = PlayCardFromHandFilter.class)
 	public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{
 		PlayCardFromHandBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
 
-		final String id = event.getCardWicketId();
-		HatchetHarrySession.get().setPlaceholderNumber(
-				HatchetHarrySession.get().getPlaceholderNumber() + 1);
-
-		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
-				card.getUuidObject());
-		this.cp.setOutputMarkupId(true);
-		HatchetHarrySession.get().addCardInBattleField(this.cp);
-
-		this.thumbParent.addOrReplace(this.cp);
-		target.add(this.thumbParent);
+		// final Player p = HatchetHarrySession.get().getPlayer();
+		// p.setPlaceholderNumber(p.getPlaceholderNumber() + 1);
+		// this.persistenceService.savePlayer(p);
 
 		final StringBuffer buf = new StringBuffer();
+		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+
+		this.cp = new CardPanel("cardPlaceholdera" + event.getPlaceholderId(),
+				card.getSmallImageFilename(), card.getBigImageFilename(), card.getUuidObject());
+		this.cp.add(new CardMoveBehavior(card.getUuidObject()));
+		this.cp.add(new CardRotateBehavior(card.getUuidObject()));
+		this.cp.setOutputMarkupId(true);
+		this.cp.setMarkupId("cardPlaceholdera" + event.getPlaceholderId());
+
+		HatchetHarrySession.get().addCardInBattleField(this.cp);
+
+		final WebMarkupContainer parent = (WebMarkupContainer)target.getPage().get(
+				"cardParent:playCardParentPlaceholdera" + event.getPlaceholderId());
+		parent.addOrReplace(this.cp);
+		target.add(parent);
 
 		final String toId = HatchetHarrySession.get().getId();
 		buf.append("var toId = \"" + toId + "\"; ");
@@ -193,7 +206,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			}
 		}
 
-		buf.append(" }, 2000);");
+		buf.append(" }, 500);");
 		target.appendJavaScript(buf.toString());
 	}
 
@@ -216,6 +229,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		PlayCardFromHandBehavior.LOGGER.info("### clicked: " + this.currentCard);
 		response.render(JavaScriptHeaderItem.forScript(template1.asString(), "playCardFromHand"));
+	}
+
+	@Override
+	public boolean getStatelessHint(final Component component)
+	{
+		return false;
 	}
 
 	@Required

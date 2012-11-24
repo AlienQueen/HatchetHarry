@@ -31,15 +31,13 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
-	private final CardPanel panel;
 	private final UUID uuid;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public CardMoveBehavior(final CardPanel cp, final UUID _uuid)
+	public CardMoveBehavior(final UUID _uuid)
 	{
-		this.panel = cp;
 		this.uuid = _uuid;
 		Injector.get().inject(this);
 	}
@@ -48,7 +46,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		CardMoveBehavior.LOGGER.info("respond");
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String _mouseX = request.getParameter("posX");
@@ -154,10 +153,17 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 	}
 
+	@Override
+	public boolean getStatelessHint(final Component component)
+	{
+		return false;
+	}
+
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
 	}
+
 
 }

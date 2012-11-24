@@ -62,7 +62,9 @@ import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
+import org.alienlabs.hatchetharry.view.component.CardMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
+import org.alienlabs.hatchetharry.view.component.CardRotateBehavior;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
@@ -96,6 +98,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -135,7 +138,6 @@ public class HomePage extends TestReportPage
 	List<MagicCard> hand;
 	private final WebMarkupContainer parentPlaceholder;
 	WebMarkupContainer playCardLink;
-	WebMarkupContainer playCardParent;
 
 	final WebMarkupContainer handCardsPlaceholder;
 	WebMarkupContainer thumbsPlaceholder;
@@ -169,7 +171,6 @@ public class HomePage extends TestReportPage
 	public HomePage()
 	{
 		this.setOutputMarkupId(true);
-		this.setVersioned(false);
 
 		// Resources
 		this.addHeadResources();
@@ -178,10 +179,7 @@ public class HomePage extends TestReportPage
 
 		this.parentPlaceholder = new WebMarkupContainer("cardParent");
 		this.parentPlaceholder.setOutputMarkupId(true);
-
-		this.playCardParent = new WebMarkupContainer("playCardParentPlaceholder");
-		this.playCardParent.setOutputMarkupId(true);
-		this.parentPlaceholder.add(this.playCardParent);
+		this.parentPlaceholder.setMarkupId("cardParent");
 		this.add(this.parentPlaceholder);
 
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
@@ -239,8 +237,12 @@ public class HomePage extends TestReportPage
 				&& (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
 						HatchetHarrySession.get().getPlayer().getSide())))
 		{
-			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-					.getBigImageFilename(), card.getUuidObject()));
+			final CardPanel cardPanel = new CardPanel("baldu", card.getSmallImageFilename(),
+					card.getBigImageFilename(), card.getUuidObject());
+			cardPanel.add(new CardMoveBehavior(card.getUuidObject()));
+			cardPanel.add(new CardRotateBehavior(card.getUuidObject()));
+			HatchetHarrySession.get().addCardInBattleField(cardPanel);
+			balduParent.add(cardPanel);
 		}
 		else
 		{
@@ -317,7 +319,6 @@ public class HomePage extends TestReportPage
 		if (HatchetHarrySession.get().isGameCreated())
 		{
 			this.restoreBattlefieldState();
-			HatchetHarrySession.get().setGameCreated();
 		}
 
 		if (HatchetHarrySession.get().getGameId() != 0)
@@ -531,7 +532,6 @@ public class HomePage extends TestReportPage
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
 		HatchetHarrySession.get().setPlayer(p);
-		HatchetHarrySession.get().setPlaceholderNumber(1);
 
 		this.deck = this.persistenceService.getDeck(id);
 		if (null == this.deck)
@@ -556,7 +556,16 @@ public class HomePage extends TestReportPage
 		{
 			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
 					+ opponentId + i);
-			this.playCardParent.addOrReplace(cardPlaceholder);
+			cardPlaceholder.setOutputMarkupId(true);
+			cardPlaceholder.setMarkupId("cardPlaceholder" + opponentId + i);
+
+			final WebMarkupContainer cardPlaceholderParent = new WebMarkupContainer(
+					"playCardParentPlaceholder" + opponentId + i);
+			cardPlaceholderParent.setOutputMarkupId(true);
+			cardPlaceholderParent.setMarkupId("playCardParentPlaceholder" + opponentId + i);
+
+			cardPlaceholderParent.addOrReplace(cardPlaceholder);
+			this.parentPlaceholder.add(cardPlaceholderParent);
 		}
 	}
 
@@ -579,9 +588,9 @@ public class HomePage extends TestReportPage
 
 		if (mc.size() > 0)
 		{
-			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent,
-					this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0,
-					((HatchetHarrySession)Session.get()).getPlayer().getSide());
+			this.playCardBehavior = new PlayCardFromHandBehavior(this.handCardsPlaceholder, mc.get(
+					0).getUuidObject(), 0, ((HatchetHarrySession)Session.get()).getPlayer()
+					.getSide());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -738,38 +747,38 @@ public class HomePage extends TestReportPage
 						HomePage.class,
 						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js")));
 
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/menu.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/layout.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/menu_black.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/jquery.jquerytour.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/myStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/galleryStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/jquery.gritter.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/fixed4all.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/fixed4ie.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/prettyPhoto.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/toolbarStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/tipsy.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/dock/dock.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/joyride-1.0.5.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/demo-style.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/mobile.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/menu.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/layout.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/menu_black.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/jquery.jquerytour.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/myStyle.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/galleryStyle.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/jquery.gritter.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/fixed4all.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/fixed4ie.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/prettyPhoto.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/toolbarStyle.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/tipsy.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"script/dock/dock.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/joyride-1.0.5.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/demo-style.css")));
+				response.render(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
+						"stylesheet/mobile.css")));
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
@@ -1108,10 +1117,12 @@ public class HomePage extends TestReportPage
 		galleryToUpdate.setOutputMarkupId(true);
 		this.handCardsPlaceholder.addOrReplace(galleryToUpdate);
 
-		for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
-		{
-			this.playCardParent.addOrReplace(cp);
-		}
+		// TODO replace a parent for all cards with a parent for each card
+		// for (final CardPanel cp :
+		// HatchetHarrySession.get().getAllCardsInBattleField())
+		// {
+		// this.playCardParent.addOrReplace(cp);
+		// }
 
 		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
 				.getMySidePlaceholder();
@@ -1128,7 +1139,6 @@ public class HomePage extends TestReportPage
 						spp.getUuid(), jsessionid, HomePage.this, HatchetHarrySession.get()
 								.getPlayer().getSide(), HomePage.this.getDataBoxParent(),
 						HatchetHarrySession.get().getGameId());
-				spp.setVersioned(false);
 				spp.removeAll();
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);
@@ -1175,9 +1185,6 @@ public class HomePage extends TestReportPage
 		{
 			try
 			{
-				HatchetHarrySession.get().setPlaceholderNumber(
-						HatchetHarrySession.get().getPlaceholderNumber() + 1);
-
 				final MagicCard mc = HomePage.this.persistenceService.getCardFromUuid(cp.getUuid());
 				if (null != mc)
 				{

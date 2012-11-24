@@ -146,10 +146,15 @@ public class PersistenceService implements Serializable
 		session.saveOrUpdate(p);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void saveOrUpdateGame(final Game g)
 	{
 		final Session session = this.gameDao.getSession();
+		if (g.getId() != null)
+		{
+			session.merge(g);
+			return;
+		}
 		session.saveOrUpdate(g);
 	}
 
