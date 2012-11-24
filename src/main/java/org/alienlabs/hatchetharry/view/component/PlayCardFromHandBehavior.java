@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.channel.NotifierAction;
+import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -104,14 +106,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.thumbParent.addOrReplace(this.cp);
 		target.add(this.thumbParent);
 
-		final StringBuffer buf = new StringBuffer("jQuery(document).ready(function() { "
-				+ "jQuery.gritter.add({ title : '"
-				+ HatchetHarrySession.get().getPlayer().getName() + "', text : \"has played \'"
-				+ card.getTitle()
-				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
+		final StringBuffer buf = new StringBuffer();
 
-		card.setX(100l);
-		card.setY(100l);
+		card.setX(100l + (HatchetHarrySession.get().getPlaceholderNumber() * 60));
+		card.setY(100l + (HatchetHarrySession.get().getPlaceholderNumber() * 60));
+
 		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
 				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
 				+ "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
@@ -125,6 +124,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
 				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), id);
 		HatchetHarryApplication.get().getEventBus().post(pcfhcc);
+
+		final NotifierCometChannel ncc = new NotifierCometChannel(NotifierAction.PLAY_CARD_ACTION,
+				HatchetHarrySession.get().getGameId(), HatchetHarrySession.get().getPlayer()
+						.getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
+				card.getTitle(), null);
+		HatchetHarryApplication.get().getEventBus().post(ncc);
 	}
 
 	@Subscribe
@@ -147,13 +152,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		target.add(this.thumbParent);
 
 		final StringBuffer buf = new StringBuffer();
-
-		final String toId = HatchetHarrySession.get().getId();
-		buf.append("var toId = \"" + toId + "\"; ");
-
-		buf.append("jQuery.gritter.add({ title : '" + event.getPlayerName()
-				+ "', text : \"has played \'" + card.getTitle()
-				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 				.getPlayer());

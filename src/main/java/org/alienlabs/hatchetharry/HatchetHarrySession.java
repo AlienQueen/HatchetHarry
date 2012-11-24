@@ -44,6 +44,7 @@ public class HatchetHarrySession extends WebSession
 	private static String FIST_SIDE_MOVE_CALLBACK_URL = "FIST_SIDE_MOVE_CALLBACK_URL";
 	private static String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
 	private static String IS_HAND_DISPLAYED = "IS_HAND_DISPLAYED";
+	private static String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -58,6 +59,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, true);
 		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
+		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, false);
 	}
 
 	public static HatchetHarrySession get(final Request request)
@@ -381,4 +383,15 @@ public class HatchetHarrySession extends WebSession
 	{
 		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, isDisplayed);
 	}
+
+	public boolean isCombatInProgress()
+	{
+		return (Boolean)this.getAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS);
+	}
+
+	public void setCombatInProgress(final boolean combatInProgress)
+	{
+		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, combatInProgress);
+	}
+
 }

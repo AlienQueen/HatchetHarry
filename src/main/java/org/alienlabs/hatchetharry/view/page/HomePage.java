@@ -313,6 +313,7 @@ public class HomePage extends TestReportPage
 		this.buildEndTurnLink();
 		this.buildUntapAllLink();
 		this.buildUntapAndDrawLink();
+		this.buildCombatLink();
 
 		if (HatchetHarrySession.get().isGameCreated())
 		{
@@ -397,9 +398,11 @@ public class HomePage extends TestReportPage
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(),
-						me.getSide(), null);
+						me.getSide(), null, null, null);
 
 				HatchetHarryApplication.get().getEventBus().post(ncc);
+
+				HatchetHarrySession.get().setCombatInProgress(false);
 			}
 
 		};
@@ -592,6 +595,37 @@ public class HomePage extends TestReportPage
 		this.add(playCardPlaceholder);
 	}
 
+	private void buildCombatLink()
+	{
+		final WebMarkupContainer combatPlaceholder = new WebMarkupContainer("combatPlaceholder");
+		combatPlaceholder.setMarkupId("combatPlaceholder");
+		combatPlaceholder.setOutputMarkupId(true);
+
+		final AjaxLink<Void> combatLink = new AjaxLink<Void>("combatLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				HomePage.LOGGER.info("clicked on declare combat");
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+						NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null, HatchetHarrySession
+								.get().getPlayer().getName(), "", "", "", HatchetHarrySession.get()
+								.isCombatInProgress());
+				HatchetHarryApplication.get().getEventBus().post(ncc);
+				HatchetHarrySession.get().setCombatInProgress(
+						!HatchetHarrySession.get().isCombatInProgress());
+			}
+		};
+		combatLink.setMarkupId("combatLink");
+		combatLink.setOutputMarkupId(true);
+
+		combatPlaceholder.add(combatLink);
+
+		this.add(combatPlaceholder);
+	}
+
 	private void generateDrawCardLink()
 	{
 		final AjaxLink<String> drawCardLink = new AjaxLink<String>("drawCardLink")
@@ -630,7 +664,7 @@ public class HomePage extends TestReportPage
 					final Player me = session.getPlayer();
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(),
-							me.getSide(), null);
+							me.getSide(), null, null, null);
 					HatchetHarryApplication.get().getEventBus().post(ncc);
 				}
 			}
@@ -1055,6 +1089,35 @@ public class HomePage extends TestReportPage
 					target.appendJavaScript("jQuery.gritter.add({ title : '"
 							+ event.getPlayerName()
 							+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				}
+				break;
+
+			case PLAY_CARD_ACTION :
+				if (HatchetHarrySession.get().getPlayer().getId().longValue() != event
+						.getPlayerId().longValue())
+				{
+					target.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getPlayerName() + "', text : \"has played '"
+							+ event.getCardName()
+							+ "'!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				}
+				break;
+
+			case COMBAT_IN_PROGRESS_ACTION :
+				if (HatchetHarrySession.get().getPlayer().getName().equals(event.getPlayerName()))
+				{
+					if (event.isCombatInProgress())
+					{
+						target.appendJavaScript("jQuery.gritter.add({ title : '"
+								+ event.getPlayerName()
+								+ "', text : 'has finished combat', image : 'image/logoh2.gif', sticky : false, time : ''});");
+					}
+					else
+					{
+						target.appendJavaScript("jQuery.gritter.add({ title : '"
+								+ event.getPlayerName()
+								+ "', text : 'is declaring combat!', image : 'image/logoh2.gif', sticky : false, time : ''});");
+					}
 				}
 				break;
 		}
