@@ -31,15 +31,13 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = -9164073767944851883L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardRotateBehavior.class);
-	private final CardPanel panel;
 	private final UUID uuid;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public CardRotateBehavior(final CardPanel cp, final UUID _uuid)
+	public CardRotateBehavior(final UUID _uuid)
 	{
-		this.panel = cp;
 		this.uuid = _uuid;
 		Injector.get().inject(this);
 	}
@@ -48,7 +46,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		CardRotateBehavior.LOGGER.info("respond");
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String uuidToLookFor = request.getParameter("uuid");
@@ -112,6 +111,12 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+	}
+
+	@Override
+	public boolean getStatelessHint(final Component component)
+	{
+		return false;
 	}
 
 	@Required

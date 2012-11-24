@@ -55,6 +55,12 @@ public class CardPanel extends Panel
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
 			}
+
+			@Override
+			public boolean getStatelessHint(final Component component)
+			{
+				return false;
+			}
 		});
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
@@ -63,8 +69,6 @@ public class CardPanel extends Panel
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
-		menutoggleButton.add(new CardMoveBehavior(this, this.uuid));
-		menutoggleButton.add(new CardRotateBehavior(this, this.uuid));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				this.getHttpServletRequest().getRequestedSessionId()));
@@ -104,14 +108,6 @@ public class CardPanel extends Panel
 		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, cardBubbleTip);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
-
-		// Placeholders for CardPanel-adding with AjaxRequestTarget
-		final WebMarkupContainer cardParent = new WebMarkupContainer("cardParent4");
-		cardParent.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder4");
-		cardPlaceholder.setOutputMarkupId(true);
-		cardParent.add(cardPlaceholder);
-		this.add(cardParent);
 	}
 
 	public HttpServletRequest getHttpServletRequest()

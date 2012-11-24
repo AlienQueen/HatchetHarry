@@ -11,6 +11,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandFilter;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
@@ -39,7 +40,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer cardParent;
 	private final WebMarkupContainer galleryParent;
 
 	private UUID uuidToLookFor;
@@ -48,13 +48,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	private CardPanel cp;
 	private String side;
 
-	public PlayCardFromHandBehavior(final WebMarkupContainer _cardParent,
-			final WebMarkupContainer _galleryParent, final UUID _uuidToLookFor,
-			final int _currentCard, final String _side)
+	public PlayCardFromHandBehavior(final WebMarkupContainer _galleryParent,
+			final UUID _uuidToLookFor, final int _currentCard, final String _side)
 	{
 		super();
 		Injector.get().inject(this);
-		this.cardParent = _cardParent;
 		this.galleryParent = _galleryParent;
 		this.uuidToLookFor = _uuidToLookFor;
 		this.currentCard = _currentCard;
@@ -126,8 +124,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		game.setPlaceholderId(game.getPlaceholderId() + 1);
 		this.persistenceService.saveOrUpdateGame(game);
 
-		card.setX(300l + (game.getPlaceholderId() * 50));
-		card.setY(300l + (game.getPlaceholderId() * 50));
+		card.setX(100l + (game.getPlaceholderId() * 60));
+		card.setY(100l + (game.getPlaceholderId() * 60));
 		this.persistenceService.saveCard(card);
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
@@ -136,7 +134,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		HatchetHarryApplication.get().getEventBus().post(pcfhcc);
 	}
 
-	@Subscribe
+	@Subscribe(filter = PlayCardFromHandFilter.class)
 	public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{
@@ -151,11 +149,17 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		this.cp = new CardPanel("cardPlaceholdera" + event.getPlaceholderId(),
 				card.getSmallImageFilename(), card.getBigImageFilename(), card.getUuidObject());
+		this.cp.add(new CardMoveBehavior(card.getUuidObject()));
+		this.cp.add(new CardRotateBehavior(card.getUuidObject()));
 		this.cp.setOutputMarkupId(true);
+		this.cp.setMarkupId("cardPlaceholdera" + event.getPlaceholderId());
+
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
 
-		this.cardParent.addOrReplace(this.cp);
-		target.add(this.cardParent);
+		final WebMarkupContainer parent = (WebMarkupContainer)target.getPage().get(
+				"cardParent:playCardParentPlaceholdera" + event.getPlaceholderId());
+		parent.addOrReplace(this.cp);
+		target.add(parent);
 
 		final String toId = HatchetHarrySession.get().getId();
 		buf.append("var toId = \"" + toId + "\"; ");
@@ -202,7 +206,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			}
 		}
 
-		buf.append(" }, 2000);");
+		buf.append(" }, 500);");
 		target.appendJavaScript(buf.toString());
 	}
 
@@ -225,6 +229,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		PlayCardFromHandBehavior.LOGGER.info("### clicked: " + this.currentCard);
 		response.render(JavaScriptHeaderItem.forScript(template1.asString(), "playCardFromHand"));
+	}
+
+	@Override
+	public boolean getStatelessHint(final Component component)
+	{
+		return false;
 	}
 
 	@Required

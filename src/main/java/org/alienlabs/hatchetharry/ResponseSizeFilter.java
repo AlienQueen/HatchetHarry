@@ -20,31 +20,6 @@ public class ResponseSizeFilter implements PerRequestBroadcastFilter
 				&& (message != null) && String.class.isAssignableFrom(message.getClass()))
 		{
 			String msg = message.toString();
-
-			if (msg.indexOf("var toId = \"") != -1)
-			{
-				String id = msg.split("var toId = \"")[1];
-				id = id.split("\";")[0];
-
-				String sessionId = null;
-
-				try
-				{
-					sessionId = HatchetHarrySession.get().getId();
-				}
-				catch (final Exception e)
-				{
-					ResponseSizeFilter.LOGGER.error("error in ResponseSizeFilter", e);
-				}
-
-				if ((null != id) && (null != sessionId) && (!id.equals(sessionId)))
-				{
-					ResponseSizeFilter.LOGGER.info("aborting for id: " + id);
-					return new BroadcastAction(BroadcastAction.ACTION.ABORT, msg);
-				}
-			}
-
-			ResponseSizeFilter.LOGGER.info("continuing");
 			msg = msg.length() + "<|msg|>" + msg;
 			return new BroadcastAction(BroadcastAction.ACTION.CONTINUE, msg);
 

@@ -98,7 +98,7 @@ public class CreateGameModalWindow extends Panel
 						.getGame(CreateGameModalWindow.this.game.getId());
 				final Set<Game> games = new HashSet<Game>();
 				games.add(g);
-				g.setPlaceholderId(1);
+				g.setPlaceholderId(0);
 				CreateGameModalWindow.this.persistenceService.saveOrUpdateGame(g);
 				HatchetHarrySession.get().setGameId(g.getId());
 

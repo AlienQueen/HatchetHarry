@@ -154,7 +154,7 @@ public class JoinGameModalWindow extends Panel
 				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
-				game.setPlaceholderId(1);
+				game.setPlaceholderId(0);
 				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
 
 				final Set<Game> games = new HashSet<Game>();

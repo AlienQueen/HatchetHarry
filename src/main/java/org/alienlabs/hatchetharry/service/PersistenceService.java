@@ -150,6 +150,11 @@ public class PersistenceService implements Serializable
 	public void saveOrUpdateGame(final Game g)
 	{
 		final Session session = this.gameDao.getSession();
+		if (g.getId() != null)
+		{
+			session.merge(g);
+			return;
+		}
 		session.saveOrUpdate(g);
 	}
 
