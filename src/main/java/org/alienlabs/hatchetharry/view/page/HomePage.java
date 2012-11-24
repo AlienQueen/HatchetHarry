@@ -185,7 +185,7 @@ public class HomePage extends TestReportPage
 		this.add(this.handCardsPlaceholder);
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.1.0 (release Piggy Pie), built on Wednesday, 21st of November 2012."));
+				"version 0.1.0 (release Piggy Pie), built on Saturday, 24th of November 2012."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
