@@ -137,7 +137,7 @@ public class HomePage extends TestReportPage
 	WebMarkupContainer playCardLink;
 	WebMarkupContainer playCardParent;
 
-	final WebMarkupContainer handCardsPlaceholder;
+	final WebMarkupContainer galleryParent;
 	WebMarkupContainer thumbsPlaceholder;
 
 	private AjaxLink<Void> endTurnLink;
@@ -178,19 +178,20 @@ public class HomePage extends TestReportPage
 
 		this.parentPlaceholder = new WebMarkupContainer("cardParent");
 		this.parentPlaceholder.setOutputMarkupId(true);
-
+		
 		this.playCardParent = new WebMarkupContainer("playCardParentPlaceholder");
 		this.playCardParent.setOutputMarkupId(true);
 		this.parentPlaceholder.add(this.playCardParent);
 		this.add(this.parentPlaceholder);
 
-		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
-		this.handCardsPlaceholder.setMarkupId("handCardsPlaceholder");
-		this.handCardsPlaceholder.setOutputMarkupId(true);
-		this.add(this.handCardsPlaceholder);
+		this.galleryParent = new WebMarkupContainer("galleryParent");
+		this.galleryParent.setMarkupId("galleryParent");
+		this.galleryParent.setOutputMarkupId(true);
+		this.add(this.galleryParent);
+
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.1.0 (release Piggy Pie), built on Wednesday, 21st of November 2012."));
+				"version 0.1.0 (release Piggy Pie), built on Saturday, 24th of November 2012."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
@@ -297,10 +298,9 @@ public class HomePage extends TestReportPage
 
 		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
 
-		this.generateCreateGameLink(this.player, this.handCardsPlaceholder,
+		this.generateCreateGameLink(this.player, this.galleryParent,
 				this.firstSidePlaceholderParent);
-		this.generateJoinGameLink(this.player, this.handCardsPlaceholder,
-				this.secondSidePlaceholderParent);
+		this.generateJoinGameLink(this.player, this.galleryParent, this.secondSidePlaceholderParent);
 
 		this.generatePlayCardLink(this.hand);
 		this.generatePlayCardsBehaviorsForAllOpponents();
@@ -347,10 +347,10 @@ public class HomePage extends TestReportPage
 						? new WebMarkupContainer("gallery")
 						: new HandComponent("gallery");
 
-				HomePage.this.handCardsPlaceholder.addOrReplace(galleryToUpdate);
+				HomePage.this.galleryParent.addOrReplace(galleryToUpdate);
 				HatchetHarrySession.get().setHandDisplayed(!isHandDisplayed);
 
-				target.add(HomePage.this.handCardsPlaceholder);
+				target.add(HomePage.this.galleryParent);
 				target.appendJavaScript("var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval();");
 			}
 
@@ -559,6 +559,9 @@ public class HomePage extends TestReportPage
 		{
 			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
 					+ opponentId + i);
+			cardPlaceholder.setOutputMarkupId(true);
+			cardPlaceholder.setMarkupId("cardPlaceholder" + opponentId + i);
+
 			this.playCardParent.addOrReplace(cardPlaceholder);
 		}
 	}
@@ -582,9 +585,8 @@ public class HomePage extends TestReportPage
 
 		if (mc.size() > 0)
 		{
-			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent,
-					this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0,
-					((HatchetHarrySession)Session.get()).getPlayer().getSide());
+			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent, this.galleryParent, mc.get(0)
+					.getUuidObject(), 0, ((HatchetHarrySession)Session.get()).getPlayer().getSide());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -657,8 +659,8 @@ public class HomePage extends TestReportPage
 
 					((HatchetHarryApplication)Application.get()).setPlayer(session.getPlayer());
 
-					HomePage.this.handCardsPlaceholder.addOrReplace(gallery);
-					target.add(HomePage.this.handCardsPlaceholder);
+					HomePage.this.galleryParent.addOrReplace(gallery);
+					target.add(HomePage.this.galleryParent);
 					target.appendJavaScript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
 
 					final Player me = session.getPlayer();
@@ -824,7 +826,7 @@ public class HomePage extends TestReportPage
 				"gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
-		this.handCardsPlaceholder.add(galleryToUpdate);
+		this.galleryParent.add(galleryToUpdate);
 	}
 
 	protected List<MagicCard> createFirstCards()
@@ -1169,7 +1171,7 @@ public class HomePage extends TestReportPage
 				"gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
-		this.handCardsPlaceholder.addOrReplace(galleryToUpdate);
+		this.galleryParent.addOrReplace(galleryToUpdate);
 
 		for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
 		{

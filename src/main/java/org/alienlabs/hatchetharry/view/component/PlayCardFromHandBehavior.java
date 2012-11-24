@@ -40,8 +40,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer thumbParent;
 	private final WebMarkupContainer cardParent;
+	private final WebMarkupContainer galleryParent;
 
 	private UUID uuidToLookFor;
 	private final int currentCard;
@@ -49,14 +49,14 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	private CardPanel cp;
 	private String side;
 
-	public PlayCardFromHandBehavior(final WebMarkupContainer _thumbParent,
-			final WebMarkupContainer _cardParent, final UUID _uuidToLookFor,
+	public PlayCardFromHandBehavior(final WebMarkupContainer _cardParent,
+			final WebMarkupContainer _galleryParent, final UUID _uuidToLookFor,
 			final int _currentCard, final String _side)
 	{
 		super();
 		Injector.get().inject(this);
-		this.thumbParent = _thumbParent;
 		this.cardParent = _cardParent;
+		this.galleryParent = _galleryParent;
 		this.uuidToLookFor = _uuidToLookFor;
 		this.currentCard = _currentCard;
 		this.side = _side;
@@ -89,27 +89,27 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final HandComponent gallery = new HandComponent("gallery");
 		gallery.setOutputMarkupId(true);
 
-		this.cardParent.addOrReplace(gallery);
-		target.add(this.cardParent);
+		this.galleryParent.addOrReplace(gallery);
+		target.add(this.galleryParent);
 
-		final String id = "cardPlaceholdera"
-				+ (HatchetHarrySession.get().getPlaceholderNumber() + 1);
+		final Integer id = (HatchetHarrySession.get().getPlaceholderNumber() + 1);
 		HatchetHarrySession.get().setPlaceholderNumber(
 				HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
-				card.getUuidObject());
+		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
+				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
+		this.cp.setMarkupId("cardPlaceholdera" + id);
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
 		PlayCardFromHandBehavior.LOGGER.info("uuid created " + card.getUuidObject().toString());
 
-		this.thumbParent.addOrReplace(this.cp);
-		target.add(this.thumbParent);
+		this.cardParent.addOrReplace(this.cp);
+		target.add(this.cardParent);
 
 		final StringBuffer buf = new StringBuffer();
 
-		card.setX(100l + (HatchetHarrySession.get().getPlaceholderNumber() * 60));
-		card.setY(100l + (HatchetHarrySession.get().getPlaceholderNumber() * 60));
+		card.setX(50l + (HatchetHarrySession.get().getPlaceholderNumber() * 50));
+		card.setY(50l + (HatchetHarrySession.get().getPlaceholderNumber() * 50));
 
 		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
 				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
@@ -138,18 +138,20 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	{
 		PlayCardFromHandBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
 
-		final String id = event.getCardWicketId();
+		final Integer id = event.getCardPlaceholderId();
 		HatchetHarrySession.get().setPlaceholderNumber(
 				HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
-				card.getUuidObject());
+
+		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
+				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
+		this.cp.setMarkupId("cardPlaceholdera" + event.getCardPlaceholderId());
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
 
-		this.thumbParent.addOrReplace(this.cp);
-		target.add(this.thumbParent);
+		this.cardParent.addOrReplace(this.cp);
+		target.add(this.cardParent);
 
 		final StringBuffer buf = new StringBuffer();
 
@@ -191,7 +193,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			}
 		}
 
-		buf.append(" }, 2000);");
+		buf.append(" }, 500);");
 		target.appendJavaScript(buf.toString());
 	}
 

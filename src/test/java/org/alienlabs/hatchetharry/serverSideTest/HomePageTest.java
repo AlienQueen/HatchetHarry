@@ -83,9 +83,9 @@ public class HomePageTest
 		HomePageTest.tester.assertRenderedPage(HomePage.class);
 
 		// assert hand is present
-		HomePageTest.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
+		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 
-		HomePageTest.tester.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
+		HomePageTest.tester.getComponentFromLastRenderedPage("galleryParent:gallery");
 
 		// assert URL of a thumbnail
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.tester
@@ -211,25 +211,25 @@ public class HomePageTest
 		HomePageTest.tester.assertComponent("handLink", AjaxLink.class);
 		HomePageTest.tester.clickLink("handLink", true);
 		WebMarkupContainer handParent = (WebMarkupContainer)HomePageTest.tester
-				.getComponentFromLastRenderedPage("handCardsPlaceholder");
+				.getComponentFromLastRenderedPage("galleryParent");
 		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
 
 		final Component gallery = HomePageTest.tester
-				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
+				.getComponentFromLastRenderedPage("galleryParent:gallery");
 		Assert.assertNotNull(gallery);
 		Assert.assertFalse(gallery instanceof HandComponent);
-		HomePageTest.tester.assertComponent("handCardsPlaceholder:gallery",
+		HomePageTest.tester.assertComponent("galleryParent:gallery",
 				WebMarkupContainer.class);
 
 		// The second click must show the hand
 		HomePageTest.tester.clickLink("handLink", true);
 		handParent = (WebMarkupContainer)HomePageTest.tester
-				.getComponentFromLastRenderedPage("handCardsPlaceholder");
+				.getComponentFromLastRenderedPage("galleryParent");
 		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
 
-		HomePageTest.tester.assertComponent("handCardsPlaceholder:gallery", HandComponent.class);
+		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 		final HandComponent hand = (HandComponent)HomePageTest.tester
-				.getComponentFromLastRenderedPage("handCardsPlaceholder:gallery");
+				.getComponentFromLastRenderedPage("galleryParent:gallery");
 		Assert.assertNotNull(hand);
 	}
 
