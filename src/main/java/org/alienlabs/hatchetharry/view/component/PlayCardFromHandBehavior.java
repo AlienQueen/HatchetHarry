@@ -38,7 +38,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer thumbParent;
 	private final WebMarkupContainer cardParent;
 
 	private UUID uuidToLookFor;
@@ -47,13 +46,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	private CardPanel cp;
 	private String side;
 
-	public PlayCardFromHandBehavior(final WebMarkupContainer _thumbParent,
-			final WebMarkupContainer _cardParent, final UUID _uuidToLookFor,
-			final int _currentCard, final String _side)
+	public PlayCardFromHandBehavior(final WebMarkupContainer _cardParent,
+			final UUID _uuidToLookFor, final int _currentCard, final String _side)
 	{
 		super();
 		Injector.get().inject(this);
-		this.thumbParent = _thumbParent;
 		this.cardParent = _cardParent;
 		this.uuidToLookFor = _uuidToLookFor;
 		this.currentCard = _currentCard;
@@ -81,41 +78,46 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		PlayCardFromHandBehavior.LOGGER.info("Before remove: "
 				+ HatchetHarrySession.get().getFirstCardsInHand().size());
+
 		HatchetHarrySession.get().removeCardInHand(card);
+
 		PlayCardFromHandBehavior.LOGGER.info("After remove: "
 				+ HatchetHarrySession.get().getFirstCardsInHand().size());
+
 		final HandComponent gallery = new HandComponent("gallery");
 		gallery.setOutputMarkupId(true);
 
 		this.cardParent.addOrReplace(gallery);
 		target.add(this.cardParent);
 
-		final String id = "cardPlaceholdera"
-				+ (HatchetHarrySession.get().getPlaceholderNumber() + 1);
+		card.setX(100l + (HatchetHarrySession.get().getPlaceholderNumber() * 60));
+		card.setY(100l + (HatchetHarrySession.get().getPlaceholderNumber() * 60));
+		this.persistenceService.saveCard(card);
+
+		final Integer id = (HatchetHarrySession.get().getPlaceholderNumber() + 1);
 		HatchetHarrySession.get().setPlaceholderNumber(
 				HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
-				card.getUuidObject());
+		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
+				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
 		PlayCardFromHandBehavior.LOGGER.info("uuid created " + card.getUuidObject().toString());
 
-		this.thumbParent.addOrReplace(this.cp);
-		target.add(this.thumbParent);
+		final WebMarkupContainer parent = (WebMarkupContainer)target.getPage().get(
+				"cardParent:playCardParentPlaceholdera"
+						+ HatchetHarrySession.get().getPlaceholderNumber());
+		parent.addOrReplace(this.cp);
+		target.add(parent);
 
-		final StringBuffer buf = new StringBuffer("jQuery(document).ready(function() { "
-				+ "jQuery.gritter.add({ title : '"
-				+ HatchetHarrySession.get().getPlayer().getName() + "', text : \"has played \'"
-				+ card.getTitle()
-				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); }); ");
+		// this.thumbParent.addOrReplace(this.cp);
+		// target.add(this.thumbParent);
 
-		card.setX(100l);
-		card.setY(100l);
-		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
-				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
-				+ "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
-		this.persistenceService.saveCard(card);
+		final StringBuffer buf = new StringBuffer("var card = jQuery(\"#menutoggleButton"
+				+ card.getUuid() + "\"); " + "card.css(\"position\", \"absolute\"); "
+				+ "card.css(\"left\", \"" + card.getX() + "px\");" + "card.css(\"top\", \""
+				+ card.getY() + "px\"); ");
+
 
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 				.getPlayer());
@@ -128,29 +130,37 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Subscribe
+	// (filter = PlayCardFromHandFilter.class)
 	public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{
 		PlayCardFromHandBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
 
-		final String id = event.getCardWicketId();
+		final Integer id = event.getCardWicketId();
 		HatchetHarrySession.get().setPlaceholderNumber(
 				HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
-		this.cp = new CardPanel(id, card.getSmallImageFilename(), card.getBigImageFilename(),
-				card.getUuidObject());
+
+		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
+				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
 
-		this.thumbParent.addOrReplace(this.cp);
-		target.add(this.thumbParent);
+		final WebMarkupContainer parent = (WebMarkupContainer)target.getPage().get(
+				"cardParent:playCardParentPlaceholdera" + event.getCardWicketId());
+		parent.addOrReplace(this.cp);
+		target.add(parent);
+
+		// this.thumbParent.addOrReplace(this.cp);
+		// target.add(this.thumbParent);
 
 		final StringBuffer buf = new StringBuffer();
 
 		final String toId = HatchetHarrySession.get().getId();
 		buf.append("var toId = \"" + toId + "\"; ");
 
+		// TODO notify in another channel
 		buf.append("jQuery.gritter.add({ title : '" + event.getPlayerName()
 				+ "', text : \"has played \'" + card.getTitle()
 				+ "\'!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");

@@ -135,7 +135,6 @@ public class HomePage extends TestReportPage
 	List<MagicCard> hand;
 	private final WebMarkupContainer parentPlaceholder;
 	WebMarkupContainer playCardLink;
-	WebMarkupContainer playCardParent;
 
 	final WebMarkupContainer handCardsPlaceholder;
 	WebMarkupContainer thumbsPlaceholder;
@@ -178,10 +177,6 @@ public class HomePage extends TestReportPage
 
 		this.parentPlaceholder = new WebMarkupContainer("cardParent");
 		this.parentPlaceholder.setOutputMarkupId(true);
-
-		this.playCardParent = new WebMarkupContainer("playCardParentPlaceholder");
-		this.playCardParent.setOutputMarkupId(true);
-		this.parentPlaceholder.add(this.playCardParent);
 		this.add(this.parentPlaceholder);
 
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
@@ -556,7 +551,16 @@ public class HomePage extends TestReportPage
 		{
 			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
 					+ opponentId + i);
-			this.playCardParent.addOrReplace(cardPlaceholder);
+			cardPlaceholder.setOutputMarkupId(true);
+			cardPlaceholder.setMarkupId("cardPlaceholder" + opponentId + i);
+
+			final WebMarkupContainer cardPlaceholderParent = new WebMarkupContainer(
+					"playCardParentPlaceholder" + opponentId + i);
+			cardPlaceholderParent.setOutputMarkupId(true);
+			cardPlaceholderParent.setMarkupId("playCardParentPlaceholder" + opponentId + i);
+
+			cardPlaceholderParent.addOrReplace(cardPlaceholder);
+			this.parentPlaceholder.add(cardPlaceholderParent);
 		}
 	}
 
@@ -579,9 +583,9 @@ public class HomePage extends TestReportPage
 
 		if (mc.size() > 0)
 		{
-			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent,
-					this.handCardsPlaceholder, mc.get(0).getUuidObject(), 0,
-					((HatchetHarrySession)Session.get()).getPlayer().getSide());
+			this.playCardBehavior = new PlayCardFromHandBehavior(this.handCardsPlaceholder, mc.get(
+					0).getUuidObject(), 0, ((HatchetHarrySession)Session.get()).getPlayer()
+					.getSide());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -1108,10 +1112,13 @@ public class HomePage extends TestReportPage
 		galleryToUpdate.setOutputMarkupId(true);
 		this.handCardsPlaceholder.addOrReplace(galleryToUpdate);
 
-		for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
-		{
-			this.playCardParent.addOrReplace(cp);
-		}
+		// TODO re-enable this, but without playCardParent, use
+		// playCardParentPlaceholder instead
+		// for (final CardPanel cp :
+		// HatchetHarrySession.get().getAllCardsInBattleField())
+		// {
+		// this.playCardParent.addOrReplace(cp);
+		// }
 
 		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
 				.getMySidePlaceholder();
