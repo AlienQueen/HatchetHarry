@@ -146,7 +146,9 @@ public class CreateGameModalWindow extends Panel
 				_handCardsParent.addOrReplace(gallery);
 				target.add(_handCardsParent);
 
-				target.appendJavaScript("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
+				final StringBuffer buf = new StringBuffer(
+						"jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
+				buf.append("window.gameId = " + CreateGameModalWindow.this.game.getId() + "; ");
 
 				CreateGameModalWindow.LOGGER.info("close!");
 
@@ -176,23 +178,15 @@ public class CreateGameModalWindow extends Panel
 						? 300
 						: 900;
 
-				target.appendJavaScript("window.setTimeout(function() { var card = jQuery(\"#sidePlaceholder"
-						+ spp.getUuid()
-						+ "\"); "
-						+ "card.css(\"position\", \"absolute\"); "
-						+ "card.css(\"left\", \""
-						+ posX
-						+ "px\"); "
-						+ "card.css(\"top\", \"500px\");"
-						+ "jQuery(\"#"
-						+ spp.getMarkupId()
-						+ "\").draggable({ handle : \"#handleImage"
-						+ uuid
-						+ "\" });"
-						+ "jQuery(\"#handleImage"
-						+ uuid
-						+ "\").data(\"url\",\""
-						+ spmb.getCallbackUrl() + "\");" + " }, 2000);");
+				buf.append("window.setTimeout(function() { var card = jQuery(\"#sidePlaceholder"
+						+ spp.getUuid() + "\"); " + "card.css(\"position\", \"absolute\"); "
+						+ "card.css(\"left\", \"" + posX + "px\"); "
+						+ "card.css(\"top\", \"500px\");" + "jQuery(\"#" + spp.getMarkupId()
+						+ "\").draggable({ handle : \"#handleImage" + uuid + "\" });"
+						+ "jQuery(\"#handleImage" + uuid + "\").data(\"url\",\""
+						+ spmb.getCallbackUrl() + "\");" + " }, 2000); ");
+
+				target.appendJavaScript(buf.toString());
 
 				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());

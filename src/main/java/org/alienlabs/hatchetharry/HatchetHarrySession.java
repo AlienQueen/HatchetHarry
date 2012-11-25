@@ -8,9 +8,9 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
-import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.apache.wicket.Application;
+import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.WebSession;
@@ -197,14 +197,14 @@ public class HatchetHarrySession extends WebSession
 		return (Integer)this.getAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER);
 	}
 
-	public void setDataBox(final DataBox _dataBox)
+	public void setDataBox(final Component _dataBox)
 	{
 		this.setAttribute(HatchetHarrySession.DATA_BOX, _dataBox);
 	}
 
-	public DataBox getDataBox()
+	public Component getDataBox()
 	{
-		return (DataBox)this.getAttribute(HatchetHarrySession.DATA_BOX);
+		return (Component)this.getAttribute(HatchetHarrySession.DATA_BOX);
 	}
 
 	public void setDataBoxParent(final WebMarkupContainer _dataBoxParent)

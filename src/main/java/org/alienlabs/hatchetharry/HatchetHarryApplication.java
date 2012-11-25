@@ -88,7 +88,7 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				}
 			}
 		};
-		scheduler.scheduleWithFixedDelay(beeper, 2000, 2000, TimeUnit.SECONDS);
+		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
 
 		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
 

@@ -56,8 +56,10 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
+import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
+import org.alienlabs.hatchetharry.model.channel.SimplePredicate;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
@@ -156,7 +158,7 @@ public class HomePage extends TestReportPage
 
 	private WebMarkupContainer dataBoxParent;
 
-	private DataBox dataBox;
+	private Component dataBox;
 
 	private final BookmarkablePageLink<SidePlaceholderMovePage> sidePlaceholderMove;
 
@@ -169,7 +171,6 @@ public class HomePage extends TestReportPage
 	public HomePage()
 	{
 		this.setOutputMarkupId(true);
-		this.setVersioned(false);
 
 		// Resources
 		this.addHeadResources();
@@ -178,7 +179,7 @@ public class HomePage extends TestReportPage
 
 		this.parentPlaceholder = new WebMarkupContainer("cardParent");
 		this.parentPlaceholder.setOutputMarkupId(true);
-		
+
 		this.playCardParent = new WebMarkupContainer("playCardParentPlaceholder");
 		this.playCardParent.setOutputMarkupId(true);
 		this.parentPlaceholder.add(this.playCardParent);
@@ -320,6 +321,10 @@ public class HomePage extends TestReportPage
 			this.restoreBattlefieldState();
 			HatchetHarrySession.get().setGameCreated();
 		}
+		else
+		{
+			HatchetHarrySession.get().setGameId(0l);
+		}
 
 		if (HatchetHarrySession.get().getGameId() != 0)
 		{
@@ -327,7 +332,7 @@ public class HomePage extends TestReportPage
 		}
 		else
 		{
-			this.buildDataBox(this.player.getGames().iterator().next().getId());
+			this.buildEmptyDataBox();
 		}
 
 	}
@@ -490,6 +495,22 @@ public class HomePage extends TestReportPage
 		HomePage.LOGGER.info("building DataBox with gameId= " + _gameId);
 	}
 
+	private void buildEmptyDataBox()
+	{
+		this.dataBoxParent = new WebMarkupContainer("dataBoxParent");
+		this.dataBoxParent.setMarkupId("dataBoxParent");
+		this.dataBoxParent.setOutputMarkupId(true);
+		HatchetHarrySession.get().setDataBoxParent(this.dataBoxParent);
+
+		this.dataBox = new WebMarkupContainer("dataBox");
+		HatchetHarrySession.get().setDataBox(this.dataBox);
+		this.dataBox.setOutputMarkupId(true);
+		this.dataBoxParent.add(this.dataBox);
+
+		this.add(this.dataBoxParent);
+		HomePage.LOGGER.info("building * empty * DataBox with gameId= 0");
+	}
+
 	public void buildHandCards()
 	{
 		if (HatchetHarrySession.get().isHandHasBeenCreated())
@@ -528,7 +549,7 @@ public class HomePage extends TestReportPage
 		p.setId(this.persistenceService.savePlayer(p));
 
 		final Set<Game> games = new HashSet<Game>();
-		final Game game = this.persistenceService.createGame(p, 1l);
+		final Game game = this.persistenceService.createGame(p, 0l);
 		games.add(game);
 		p.setGames(games);
 
@@ -585,8 +606,9 @@ public class HomePage extends TestReportPage
 
 		if (mc.size() > 0)
 		{
-			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent, this.galleryParent, mc.get(0)
-					.getUuidObject(), 0, ((HatchetHarrySession)Session.get()).getPlayer().getSide());
+			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent,
+					this.galleryParent, mc.get(0).getUuidObject(), 0,
+					((HatchetHarrySession)Session.get()).getPlayer().getSide());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -1149,6 +1171,29 @@ public class HomePage extends TestReportPage
 		}
 	}
 
+	@Subscribe(filter = SimplePredicate.class)
+	public void displayJoinGameMessage(final AjaxRequestTarget target,
+			final JoinGameNotificationCometChannel event)
+	{
+		final String fromSession = HatchetHarrySession.get().getPlayer().getName();
+		final String fromEvent = event.getPlayerName();
+		final boolean cond = fromSession.equals(fromEvent);
+
+		System.out.println("&&& fromSession: " + fromSession + ", fromEvent: " + fromEvent
+				+ ", equals? " + cond);
+
+		System.out.println("ééé jsessionid: " + event.getJsessionid());
+
+		if (cond)
+		{
+			target.appendJavaScript("var id = jQuery(jQuery('input[name=\"jsessionid\"]')[1]).attr(\"value\"); if ((typeof id != 'undefined') && (id != \""
+					+ event.getJsessionid()
+					+ "\") && (typeof window.gameId != 'undefined') && (window.gameId == "
+					+ event.getGameId()
+					+ ")) { jQuery.gritter.add({ title : 'A player joined in', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''}); }");
+		}
+	}
+
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
@@ -1193,7 +1238,6 @@ public class HomePage extends TestReportPage
 						spp.getUuid(), jsessionid, HomePage.this, HatchetHarrySession.get()
 								.getPlayer().getSide(), HomePage.this.getDataBoxParent(),
 						HatchetHarrySession.get().getGameId());
-				spp.setVersioned(false);
 				spp.removeAll();
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);

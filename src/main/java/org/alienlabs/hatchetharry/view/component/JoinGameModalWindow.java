@@ -15,6 +15,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
+import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -234,12 +235,9 @@ public class JoinGameModalWindow extends Panel
 								+ "card.css('left', '"
 								+ posX2
 								+ "px'); "
-								+ "card.css('top', '500px'); }, 2000);");
+								+ "card.css('top', '500px'); }, 2000); ");
 
-				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
-						sideInput.getDefaultModelObjectAsString(), jsessionid, spp.getUuid(),
-						Long.valueOf(posX), 500l);
-				HatchetHarryApplication.get().getEventBus().post(jgcc);
+				javaScript.append("window.gameId = " + session.getGameId() + "; ");
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());
@@ -274,6 +272,16 @@ public class JoinGameModalWindow extends Panel
 				target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
 				target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
 				target.appendJavaScript(javaScript.toString());
+
+				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
+						sideInput.getDefaultModelObjectAsString(), jsessionid, spp.getUuid(),
+						Long.valueOf(posX), 500l);
+				HatchetHarryApplication.get().getEventBus().post(jgcc);
+
+				final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(
+						HatchetHarrySession.get().getPlayer().getName(), jsessionid,
+						HatchetHarrySession.get().getGameId());
+				HatchetHarryApplication.get().getEventBus().post(jgncc);
 			}
 
 			@Override

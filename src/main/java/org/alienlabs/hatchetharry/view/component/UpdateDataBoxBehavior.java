@@ -34,11 +34,11 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 
 	private final HomePage hp;
 
-	private final DataBox parent;
+	private final Component parent;
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public UpdateDataBoxBehavior(final Long _gameId, final HomePage _hp, final DataBox _parent)
+	public UpdateDataBoxBehavior(final Long _gameId, final HomePage _hp, final Component _parent)
 	{
 		Injector.get().inject(this);
 		this.gameId = _gameId;
@@ -79,7 +79,7 @@ public class UpdateDataBoxBehavior extends AbstractDefaultAjaxBehavior
 
 		if (playerId != 0)
 		{
-			final WebMarkupContainer playerLifePointsParent = this.parent
+			final WebMarkupContainer playerLifePointsParent = ((DataBox)this.parent)
 					.retrievePlayerLifePointsParentForPlayer(playerId);
 			final Player player = this.persistenceService.getPlayer(playerId);
 			playerLifePointsParent.addOrReplace(new Label("playerLifePoints", Long.toString(player
