@@ -12,5 +12,5 @@ window.setTimeout(function() {
 								+ pos.docX + '  Y: ' + pos.docY
 								+ ' (relative to document)');
 					}
-			)
-}, 2000);
+			);
+}, 5000);

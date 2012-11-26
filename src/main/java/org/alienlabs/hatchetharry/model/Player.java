@@ -20,7 +20,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Player")
-@Cacheable 
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Player implements Serializable
 {
@@ -40,6 +40,8 @@ public class Player implements Serializable
 	private String jsessionid;
 	@Column
 	private Long lifePoints;
+	@Column(nullable = true)
+	private Boolean firstOrSecond; // True=first, False=second see Game
 
 	public Long getId()
 	{
@@ -150,5 +152,15 @@ public class Player implements Serializable
 			return false;
 		}
 		return true;
+	}
+
+	public Boolean isFirstOrSecond()
+	{
+		return this.firstOrSecond;
+	}
+
+	public void setFirstOrSecond(final Boolean firstOrSecond)
+	{
+		this.firstOrSecond = firstOrSecond;
 	}
 }

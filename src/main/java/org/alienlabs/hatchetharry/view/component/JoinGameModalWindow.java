@@ -21,6 +21,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.atmosphere.AtmosphereBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -111,6 +112,7 @@ public class JoinGameModalWindow extends Panel
 
 				final HatchetHarrySession session = HatchetHarrySession.get();
 				session.setGameId(game.getId());
+				System.out.println("~~~ " + game.getId());
 
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
@@ -155,12 +157,15 @@ public class JoinGameModalWindow extends Panel
 				newGames.add(game);
 				JoinGameModalWindow.this.player.setGames(newGames);
 
-				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
-
 				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
 
+
+				game.setSecondPlayerPageCometUuid(AtmosphereBehavior.getUUID(target.getPage()));
+				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
+
+				JoinGameModalWindow.this.player.setFirstOrSecond(false);
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 

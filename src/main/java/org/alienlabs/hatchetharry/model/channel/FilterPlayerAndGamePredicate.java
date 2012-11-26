@@ -4,38 +4,43 @@ import javax.annotation.Nullable;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
 
 public class FilterPlayerAndGamePredicate implements Predicate<Object>
 {
+	static final Logger LOGGER = LoggerFactory.getLogger(FilterPlayerAndGamePredicate.class);
+
 	@Override
 	public boolean apply(@Nullable final Object input)
 	{
-		final Player p = HatchetHarrySession.get().getPlayer();
+		final HatchetHarrySession session = HatchetHarrySession.get();
+		final Player p = session.getPlayer();
 
 		if (p != null)
 		{
-			final String playerFromSession = HatchetHarrySession.get().getPlayer().getName();
+			final String playerFromSession = p.getName();
 			final String playerFromEvent = ((PlayCardFromHandCometChannel)input).getPlayerName();
-			final Long gameFromSession = HatchetHarrySession.get().getGameId();
+			final long gameFromSession = session.getGameId().longValue();
 			final Long gameFromEvent = ((PlayCardFromHandCometChannel)input).getGameId();
 
-			final boolean cond = ((!playerFromSession.equals(playerFromEvent)) && (gameFromSession
-					.longValue() == gameFromEvent.longValue()));
+			final boolean cond = ((!playerFromSession.equals(playerFromEvent)) && (gameFromSession == gameFromEvent));
 
-			System.out.println("Player name fromSession: " + playerFromSession + " fromEvent: "
-					+ playerFromEvent);
-			System.out.println("Game id fromSession: " + gameFromSession.toString()
+			FilterPlayerAndGamePredicate.LOGGER.info("Player name fromSession: "
+					+ playerFromSession + " fromEvent: " + playerFromEvent);
+			FilterPlayerAndGamePredicate.LOGGER.info("Game id fromSession: " + gameFromSession
 					+ " fromEvent: " + gameFromEvent.toString());
-			System.out.println("players equal?: " + playerFromSession.equals(playerFromEvent));
-			System.out.println("games equal?: "
-					+ (gameFromSession.longValue() == gameFromEvent.longValue()));
-			System.out.println("cond: " + cond);
-			return cond;
+			FilterPlayerAndGamePredicate.LOGGER.info("players equal?: "
+					+ playerFromSession.equals(playerFromEvent));
+			FilterPlayerAndGamePredicate.LOGGER.info("games equal?: "
+					+ (gameFromSession == gameFromEvent.longValue()));
+			FilterPlayerAndGamePredicate.LOGGER.info("cond: " + cond);
+			return playerFromSession.equals("a");
 		}
 
-		System.out.println("player is null");
+		FilterPlayerAndGamePredicate.LOGGER.info("player is null");
 		return false;
 	}
 }

@@ -568,7 +568,7 @@ public class HomePage extends TestReportPage
 		this.deck.setPlayerId(id);
 		this.deck = this.persistenceService.saveDeck(this.deck);
 
-		HatchetHarrySession.get().setGameId(game.getId());
+		// HatchetHarrySession.get().setGameId(game.getId());
 		HatchetHarrySession.get().setPlayer(p);
 		this.player = p;
 		return p;

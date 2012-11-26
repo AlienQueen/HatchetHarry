@@ -8,10 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.model.channel.FilterPlayerAndGamePredicate;
-import org.alienlabs.hatchetharry.model.channel.NotifierAction;
-import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -125,16 +123,36 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
 				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(),
 				HatchetHarrySession.get().getGameId(), id);
-		HatchetHarryApplication.get().getEventBus().post(pcfhcc);
 
-		final NotifierCometChannel ncc = new NotifierCometChannel(NotifierAction.PLAY_CARD_ACTION,
-				HatchetHarrySession.get().getGameId(), HatchetHarrySession.get().getPlayer()
-						.getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
-				card.getTitle(), null);
-		HatchetHarryApplication.get().getEventBus().post(ncc);
+		final Boolean bool = this.persistenceService.getPlayer(
+				HatchetHarrySession.get().getPlayer().getId()).isFirstOrSecond();
+		String pageUuid = "";
+		if (bool.booleanValue())
+		{
+			final Game game = this.persistenceService
+					.getGame(HatchetHarrySession.get().getGameId());
+			pageUuid = game.getFirstPlayerPageCometUuid();
+		}
+		else
+		{
+			final Game game = this.persistenceService
+					.getGame(HatchetHarrySession.get().getGameId());
+			pageUuid = game.getSecondPlayerPageCometUuid();
+		}
+		System.out.println("~~~ " + pageUuid);
+		HatchetHarryApplication.get().getEventBus().post(pcfhcc, pageUuid);
+
+		// final NotifierCometChannel ncc = new
+		// NotifierCometChannel(NotifierAction.PLAY_CARD_ACTION,
+		// HatchetHarrySession.get().getGameId(),
+		// HatchetHarrySession.get().getPlayer()
+		// .getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
+		// card.getTitle(), null);
+		// HatchetHarryApplication.get().getEventBus().post(ncc);
 	}
 
-	@Subscribe(contextAwareFilter = FilterPlayerAndGamePredicate.class)
+	@Subscribe
+	// contextAwareFilter = FilterPlayerAndGamePredicate.class)
 	public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{

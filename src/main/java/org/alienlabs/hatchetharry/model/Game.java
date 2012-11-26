@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Game")
-@Cacheable 
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Game implements Serializable
 {
@@ -40,6 +41,11 @@ public class Game implements Serializable
 	private Set<Player> players = new HashSet<Player>();
 	@OneToMany(mappedBy = "game")
 	private List<Side> sides = new ArrayList<Side>();
+	@Column(nullable = true)
+	private String firstPlayerPageCometUuid;
+	@Column(nullable = true)
+	private String secondPlayerPageCometUuid;
+
 
 	public Long getId()
 	{
@@ -108,6 +114,26 @@ public class Game implements Serializable
 	public void setSides(final List<Side> _sides)
 	{
 		this.sides = _sides;
+	}
+
+	public String getFirstPlayerPageCometUuid()
+	{
+		return this.firstPlayerPageCometUuid;
+	}
+
+	public void setFirstPlayerPageCometUuid(final String _firstPlayerPageCometUuid)
+	{
+		this.firstPlayerPageCometUuid = _firstPlayerPageCometUuid;
+	}
+
+	public String getSecondPlayerPageCometUuid()
+	{
+		return this.secondPlayerPageCometUuid;
+	}
+
+	public void setSecondPlayerPageCometUuid(final String _secondPlayerPageCometUuid)
+	{
+		this.secondPlayerPageCometUuid = _secondPlayerPageCometUuid;
 	}
 
 }

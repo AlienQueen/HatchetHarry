@@ -391,6 +391,18 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
+	public String getFirstPlayerPageCometUuidFromGame(final Long _id)
+	{
+		return this.gameDao.load(_id).getFirstPlayerPageCometUuid();
+	}
+
+	@Transactional
+	public String getSecondPlayerPageCometUuidFromGame(final Long _id)
+	{
+		return this.gameDao.load(_id).getSecondPlayerPageCometUuid();
+	}
+
+	@Transactional
 	public void deleteMagicCard(final MagicCard mc)
 	{
 		this.magicCardDao.delete(mc.getId());
