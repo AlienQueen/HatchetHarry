@@ -23,7 +23,7 @@
 		<wicket.version>6.4.0-SNAPSHOT</wicket.version>
 		<wicketstuff.version>6.2.1</wicketstuff.version>
 		<wicket-atmosphere.version>0.6-SNAPSHOT</wicket-atmosphere.version>
-		<atmosphere.version>1.0.2</atmosphere.version>
+		<atmosphere.version>1.0.0</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.6.4</slf4j.version>

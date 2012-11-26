@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.channel.FilterPlayerAndGamePredicate;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
@@ -122,7 +123,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		target.appendJavaScript(buf.toString());
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), id);
+				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(),
+				HatchetHarrySession.get().getGameId(), id);
 		HatchetHarryApplication.get().getEventBus().post(pcfhcc);
 
 		final NotifierCometChannel ncc = new NotifierCometChannel(NotifierAction.PLAY_CARD_ACTION,
@@ -132,7 +134,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		HatchetHarryApplication.get().getEventBus().post(ncc);
 	}
 
-	@Subscribe
+	@Subscribe(contextAwareFilter = FilterPlayerAndGamePredicate.class)
 	public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{

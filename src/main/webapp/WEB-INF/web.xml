@@ -95,11 +95,11 @@
         	<param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
         	<param-value>org.alienlabs.hatchetharry.ResponseSizeFilter</param-value>
       	</init-param>
-		<init-param>
+		<!--<init-param>
           <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
           <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
 		</init-param>
-      	<!--<init-param>
+      	<init-param>
         	<param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
         	<param-value>org.atmosphere.client.TrackMessageSizeFilter</param-value>
       	</init-param>

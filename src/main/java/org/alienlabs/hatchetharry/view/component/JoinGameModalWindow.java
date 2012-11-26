@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -150,15 +151,15 @@ public class JoinGameModalWindow extends Panel
 
 				JoinGameModalWindow.this.player.setSide(sideInput.getDefaultModelObjectAsString());
 				JoinGameModalWindow.this.player.setName(nameInput.getDefaultModelObjectAsString());
+				final Set<Game> newGames = new HashSet<Game>();
+				newGames.add(game);
+				JoinGameModalWindow.this.player.setGames(newGames);
+
 				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
 
 				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
-
-				final Set<Game> games = JoinGameModalWindow.this.player.getGames();
-				games.add(game);
-				JoinGameModalWindow.this.player.setGames(games);
 
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
