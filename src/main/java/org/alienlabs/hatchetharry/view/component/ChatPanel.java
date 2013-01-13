@@ -37,24 +37,30 @@
  */
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.channel.ChatCometChannel;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.ChatPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.atmosphere.EventBus;
+import org.apache.wicket.atmosphere.Subscribe;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -62,9 +68,13 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Andrey Belyaev
  */
-@SuppressWarnings("serial")
 public class ChatPanel extends Panel
 {
+	private static final long serialVersionUID = 1L;
+
+	@SpringBean
+	PersistenceService persistenceService;
+
 	static final Logger LOGGER = LoggerFactory.getLogger(ChatPanel.class);
 
 	final List<BroadcastFilter> list;
@@ -72,12 +82,14 @@ public class ChatPanel extends Panel
 	public ChatPanel(final String id, final Long _playerId)
 	{
 		super(id);
+		Injector.get().inject(this);
 
 		this.add(new BookmarkablePageLink<ChatPage>("chatStart", ChatPage.class));
 
 		this.list = new LinkedList<BroadcastFilter>();
 
 		final Form<String> form = new Form<String>("chatForm");
+
 		final RequiredTextField<String> user = new RequiredTextField<String>("user",
 				new Model<String>(""));
 		user.setMarkupId("user" + _playerId);
@@ -88,21 +100,36 @@ public class ChatPanel extends Panel
 		form.add(message);
 		final AjaxButton button = new AjaxButton("submit")
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				ChatPanel.LOGGER.info("submit");
-				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-				final HttpServletRequest request = servletWebRequest.getContainerRequest();
-				final String jsessionid = request.getRequestedSessionId();
-
-				final Meteor meteor = Meteor.build(request, ChatPanel.this.list, null);
-				ChatPanel.LOGGER.info("meteor: " + meteor);
 
 				final String _user = _form.get("user").getDefaultModelObjectAsString();
 				final String _message = _form.get("message").getDefaultModelObjectAsString();
 				ChatPanel.LOGGER.info("user: " + _user + ", message: " + _message);
-				meteor.broadcast(jsessionid + "###" + _user + " said: " + _message);
+
+				final String chatMessage = _user + " said: " + _message;
+
+				final Long gameId = ChatPanel.this.persistenceService
+						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
+						.iterator().next().getId();
+				final List<BigInteger> allPlayersInGame = ChatPanel.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+
+					final ChatCometChannel ccc = new ChatCometChannel(gameId, chatMessage);
+
+					EventBus.get().post(ccc, pageUuid);
+				}
+
 			}
 
 			@Override
@@ -113,4 +140,18 @@ public class ChatPanel extends Panel
 		form.add(button);
 		this.add(form);
 	}
+
+	@Subscribe
+	public void updateTime(final AjaxRequestTarget target, final ChatCometChannel event)
+	{
+		target.appendJavaScript("document.getElementById('chat').innerHTML = document.getElementById('chat').innerHTML + \"&#013;&#010;\" + \""
+				+ event.getMessage() + "\" + \"&#013;&#010;\";");
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
+	}
+
 }

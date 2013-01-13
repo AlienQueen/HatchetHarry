@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
@@ -31,7 +32,7 @@ public class Player implements Serializable
 	private Long playerId;
 	@ManyToMany(mappedBy = "players", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.ALL })
-	private Set<Game> games;
+	private Set<Game> games = new HashSet<Game>();
 	@Column
 	private String side;
 	@Column

@@ -14,10 +14,11 @@ a											{ outline: none; }
 
 /*
 	PAGE STRUCTURE
-*/
 #page-wrap 									{ width: 262px; margin: 25px auto; position: relative; min-height: 420px;
 											  background: url(/image/bg.png) top center; }
-
+*/
+#page-wrap 									{ width: 262px; margin: 25px auto; position: relative; min-height: 420px;
+											  background: url(/image/tombe1.png) top center; }
 
 /*
 	TYPOGRAPHY

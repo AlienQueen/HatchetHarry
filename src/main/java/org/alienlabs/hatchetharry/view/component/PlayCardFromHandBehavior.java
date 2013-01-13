@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -8,8 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.channel.NotifierAction;
+import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -17,6 +19,7 @@ import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -95,25 +98,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		HatchetHarrySession.get().setPlaceholderNumber(
 				HatchetHarrySession.get().getPlaceholderNumber() + 1);
 
-		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
-				card.getBigImageFilename(), card.getUuidObject());
-		this.cp.setOutputMarkupId(true);
-		this.cp.setMarkupId("cardPlaceholdera" + id);
-		HatchetHarrySession.get().addCardInBattleField(this.cp);
-		PlayCardFromHandBehavior.LOGGER.info("uuid created " + card.getUuidObject().toString());
-
-		this.cardParent.addOrReplace(this.cp);
-		target.add(this.cardParent);
+		card.setX(50l + (HatchetHarrySession.get().getPlaceholderNumber() * 10));
+		card.setY(50l + (HatchetHarrySession.get().getPlaceholderNumber() * 25));
+		this.persistenceService.saveCard(card);
 
 		final StringBuffer buf = new StringBuffer();
-
-		card.setX(50l + (HatchetHarrySession.get().getPlaceholderNumber() * 50));
-		card.setY(50l + (HatchetHarrySession.get().getPlaceholderNumber() * 50));
-
-		buf.append("var card = jQuery(\"#menutoggleButton" + card.getUuid() + "\"); "
-				+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + card.getX()
-				+ "px\");" + "card.css(\"top\", \"" + card.getY() + "px\"); ");
-		this.persistenceService.saveCard(card);
 
 		((HatchetHarryApplication)Application.get()).setPlayer(HatchetHarrySession.get()
 				.getPlayer());
@@ -124,31 +113,34 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(),
 				HatchetHarrySession.get().getGameId(), id);
 
-		final Boolean bool = this.persistenceService.getPlayer(
-				HatchetHarrySession.get().getPlayer().getId()).isFirstOrSecond();
-		String pageUuid = "";
-		if (bool.booleanValue())
-		{
-			final Game game = this.persistenceService
-					.getGame(HatchetHarrySession.get().getGameId());
-			pageUuid = game.getFirstPlayerPageCometUuid();
-		}
-		else
-		{
-			final Game game = this.persistenceService
-					.getGame(HatchetHarrySession.get().getGameId());
-			pageUuid = game.getSecondPlayerPageCometUuid();
-		}
-		System.out.println("~~~ " + pageUuid);
-		HatchetHarryApplication.get().getEventBus().post(pcfhcc, pageUuid);
+		final Long gameId = this.persistenceService
+				.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames().iterator()
+				.next().getId();
 
-		// final NotifierCometChannel ncc = new
-		// NotifierCometChannel(NotifierAction.PLAY_CARD_ACTION,
-		// HatchetHarrySession.get().getGameId(),
-		// HatchetHarrySession.get().getPlayer()
-		// .getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
-		// card.getTitle(), null);
-		// HatchetHarryApplication.get().getEventBus().post(ncc);
+		final NotifierCometChannel ncc = new NotifierCometChannel(NotifierAction.PLAY_CARD_ACTION,
+				gameId, HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
+						.getPlayer().getName(), "", "", card.getTitle(), null);
+
+		final List<BigInteger> allPlayersInGameExceptMe = this.persistenceService
+				.giveAllPlayersFromGameExceptMe(gameId, HatchetHarrySession.get().getPlayer()
+						.getId());
+
+		// post a message for all players in the game, except me
+		for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
+		{
+			final Long player = allPlayersInGameExceptMe.get(i).longValue();
+			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
+			PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+			EventBus.get().post(pcfhcc, pageUuid);
+			EventBus.get().post(ncc, pageUuid);
+		}
+
+		// post a message for me
+		final String me = HatchetHarryApplication.getCometResources().get(
+				HatchetHarrySession.get().getPlayer().getId());
+		PlayCardFromHandBehavior.LOGGER.info("pageUuid for myself: " + me);
+		EventBus.get().post(pcfhcc, me);
+		EventBus.get().post(ncc, me);
 	}
 
 	@Subscribe

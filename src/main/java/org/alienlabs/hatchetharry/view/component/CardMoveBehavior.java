@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
@@ -14,6 +13,7 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -78,7 +78,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		CardMoveBehavior.LOGGER.info("playerId in respond(): "
 				+ HatchetHarrySession.get().getPlayer().getId());
-		HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel);
+		EventBus.get().post(cardMoveCometChannel);
 	}
 
 	@Subscribe

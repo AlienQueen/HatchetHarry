@@ -34,10 +34,10 @@ jQuery(document)
 							function() {
 								var menubaritem1 = jQuery('td.myMenu table.rootVoices tr td.rootVoice:first img:first');
 								ok(
-										("/image/logoh2.gif" === menubaritem1
+										("/image/logoh1.gif" === menubaritem1
 												.attr('src')),
 										"the first menubar option is the first image of a td class myMenu containing a table class rootVoices containing a tr which contains "
-												+ "the first td class rootVoice should exist and point to '/image/logoh2.gif', and it appears to be: "
+												+ "the first td class rootVoice should exist and point to '/image/logoh1.gif', and it appears to be: "
 												+ menubaritem1.attr('src'));
 								menubaritem1 = jQuery('div#box_menu table tr td div:first img:first');
 								ok(

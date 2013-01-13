@@ -2,6 +2,8 @@ package org.alienlabs.hatchetharry;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -9,14 +11,18 @@ import java.util.concurrent.TimeUnit;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
+import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.atmosphere.EventBus;
+import org.apache.wicket.atmosphere.ResourceRegistrationListener;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -26,12 +32,20 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  * 
  */
-public class HatchetHarryApplication extends WebApplication implements Serializable
+public class HatchetHarryApplication extends WebApplication
+		implements
+			Serializable,
+			ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
 	private Player player;
 	private boolean mistletoeTest = false;
 	EventBus eventBus;
+
+	// Map of playerId and Atmosphere UUID
+	private static Map<Long, String> cometResources = new HashMap<Long, String>();
+
+	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
 
 	/**
 	 * Constructor
@@ -47,11 +61,6 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 	public Class<HomePage> getHomePage()
 	{
 		return HomePage.class;
-	}
-
-	public EventBus getEventBus()
-	{
-		return this.eventBus;
 	}
 
 	public static HatchetHarryApplication get()
@@ -71,8 +80,9 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 		// WicketDebugListener());
 
 		this.eventBus = new EventBus(this);
+		this.eventBus.addRegistrationListener(this);
 
-		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final Runnable beeper = new Runnable()
 		{
 			@Override
@@ -84,7 +94,7 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				}
 				catch (final Exception e)
 				{
-					e.printStackTrace();
+					HatchetHarryApplication.LOGGER.error("error in clock Comet channel!", e);
 				}
 			}
 		};
@@ -96,6 +106,8 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				"image/favicon.ico"));
 		this.mountResource("image/ajax-loader.gif", new PackageResourceReference(HomePage.class,
 				"image/ajax-loader.gif"));
+		this.mountResource("image/fond4.jpg", new PackageResourceReference(HomePage.class,
+				"image/fond4.jpg"));
 
 		this.mountResource("image/HammerOfBogardan.jpg", new PackageResourceReference(
 				HomePage.class, "image/HammerOfBogardan.jpg"));
@@ -123,6 +135,8 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 				HomePage.class, "image/CursedScrollThumb.jpg"));
 		this.mountResource("image/bg.png", new PackageResourceReference(HomePage.class,
 				"image/bg.png"));
+		this.mountResource("image/tombe1.png", new PackageResourceReference(HomePage.class,
+				"image/tombe1.png"));
 		this.mountResource("image/icon-uparrowsmallwhite.png", new PackageResourceReference(
 				HomePage.class, "image/icon-uparrowsmallwhite.png"));
 		this.mountResource("image/transpBlack.png", new PackageResourceReference(HomePage.class,
@@ -130,6 +144,8 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 
 		this.mountResource("image/logoh2.gif", new PackageResourceReference(HomePage.class,
 				"image/logoh2.gif"));
+		this.mountResource("image/logoh1.gif", new PackageResourceReference(HomePage.class,
+				"image/logoh1.gif"));
 		this.mountResource("image/browse.png", new PackageResourceReference(HomePage.class,
 				"image/browse.png"));
 		this.mountResource("image/library.gif", new PackageResourceReference(HomePage.class,
@@ -244,7 +260,6 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 	{
 
 		return RuntimeConfigurationType.DEVELOPMENT;
-
 	}
 
 	@Override
@@ -271,6 +286,28 @@ public class HatchetHarryApplication extends WebApplication implements Serializa
 	public void setMistletoeTest(final boolean _mistletoeTest)
 	{
 		this.mistletoeTest = _mistletoeTest;
+	}
+
+	public static Map<Long, String> getCometResources()
+	{
+		return HatchetHarryApplication.cometResources;
+	}
+
+	@Override
+	public void resourceRegistered(final String uuid, final Page page)
+	{
+		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
+		HatchetHarryApplication.LOGGER.info("uuid added: " + uuid + ", for playerId: " + playerId);
+		HatchetHarryApplication.cometResources.put(playerId, uuid);
+	}
+
+	@Override
+	public void resourceUnregistered(final String uuid)
+	{
+		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
+		HatchetHarryApplication.LOGGER
+				.info("uuid removed: " + uuid + ", for playerId: " + playerId);
+		HatchetHarryApplication.cometResources.remove(playerId);
 	}
 
 }

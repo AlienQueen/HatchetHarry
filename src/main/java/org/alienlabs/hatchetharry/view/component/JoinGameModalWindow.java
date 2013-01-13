@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
@@ -21,7 +20,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.atmosphere.AtmosphereBehavior;
+import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -98,9 +97,10 @@ public class JoinGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				final Game game = JoinGameModalWindow.this.persistenceService.getGame(Long
-						.valueOf(JoinGameModalWindow.this.gameIdInput
-								.getDefaultModelObjectAsString()));
+
+				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
+						.getDefaultModelObjectAsString());
+				Game game = JoinGameModalWindow.this.persistenceService.getGame(_id);
 				if (null == game)
 				{
 					_modal.close(target);
@@ -111,14 +111,33 @@ public class JoinGameModalWindow extends Panel
 				}
 
 				final HatchetHarrySession session = HatchetHarrySession.get();
-				session.setGameId(game.getId());
-				System.out.println("~~~ " + game.getId());
+
+				JoinGameModalWindow.this.player = JoinGameModalWindow.this.persistenceService
+						.getPlayer(session.getPlayer().getId());
+
+				final Game gameToRemove = JoinGameModalWindow.this.persistenceService
+						.getGame(session.getGameId());
+				if (null != gameToRemove)
+				{
+					if (JoinGameModalWindow.this.player.getGames().remove(gameToRemove))
+					{
+						JoinGameModalWindow.this.persistenceService
+								.saveOrUpdatePlayer(JoinGameModalWindow.this.player);
+					}
+					gameToRemove.getPlayers().remove(JoinGameModalWindow.this.player);
+					JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(gameToRemove);
+				}
+
+				session.setGameId(_id);
+				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
 
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
 				deck.setCards(allCards);
-				deck.setPlayerId(session.getPlayer().getId());
+
+
+				deck.setPlayerId(JoinGameModalWindow.this.player.getId());
 				deck.shuffleLibrary();
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
@@ -132,13 +151,13 @@ public class JoinGameModalWindow extends Panel
 
 				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
 
-				final List<CardPanel> toRemove = HatchetHarrySession.get()
+				final List<CardPanel> cardToRemove = HatchetHarrySession.get()
 						.getAllCardsInBattleField();
 				final StringBuffer javaScript = new StringBuffer();
 
-				if ((null != toRemove) && (toRemove.size() > 0))
+				if ((null != cardToRemove) && (cardToRemove.size() > 0))
 				{
-					for (final CardPanel cp : toRemove)
+					for (final CardPanel cp : cardToRemove)
 					{
 						javaScript.append("jQuery('#" + cp.getMarkupId() + "').remove();");
 						JoinGameModalWindow.LOGGER.info("cp.getMarkupId(): " + cp.getMarkupId());
@@ -157,15 +176,12 @@ public class JoinGameModalWindow extends Panel
 				newGames.add(game);
 				JoinGameModalWindow.this.player.setGames(newGames);
 
+				game = JoinGameModalWindow.this.persistenceService.getGame(game.getId());
 				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
-
-
-				game.setSecondPlayerPageCometUuid(AtmosphereBehavior.getUUID(target.getPage()));
 				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
 
-				JoinGameModalWindow.this.player.setFirstOrSecond(false);
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 
@@ -282,12 +298,12 @@ public class JoinGameModalWindow extends Panel
 				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
 						sideInput.getDefaultModelObjectAsString(), jsessionid, spp.getUuid(),
 						Long.valueOf(posX), 500l);
-				HatchetHarryApplication.get().getEventBus().post(jgcc);
+				EventBus.get().post(jgcc);
 
 				final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(
 						HatchetHarrySession.get().getPlayer().getName(), jsessionid,
 						HatchetHarrySession.get().getGameId());
-				HatchetHarryApplication.get().getEventBus().post(jgncc);
+				EventBus.get().post(jgncc);
 			}
 
 			@Override

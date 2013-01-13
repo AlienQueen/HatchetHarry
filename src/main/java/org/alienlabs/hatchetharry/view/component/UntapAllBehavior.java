@@ -60,6 +60,11 @@ public class UntapAllBehavior extends AbstractDefaultAjaxBehavior
 			final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
 					.getAllCardsInBattleFieldForAPlayer(playerId);
 
+			if (allCardsInBattlefieldOnMySide.isEmpty())
+			{
+				return;
+			}
+
 			for (final MagicCard mc : allCardsInBattlefieldOnMySide)
 			{
 				message.append("_____").append(mc.getUuid().toString());

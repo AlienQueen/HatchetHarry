@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.service;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -146,8 +147,22 @@ public class PersistenceService implements Serializable
 		session.saveOrUpdate(p);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void saveGame(final Game g)
+	{
+		final Session session = this.gameDao.getSession();
+		session.save(g);
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void saveOrUpdateGame(final Game g)
+	{
+		final Session session = this.gameDao.getSession();
+		session.merge(g);
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void updateGame(final Game g)
 	{
 		final Session session = this.gameDao.getSession();
 		if (g.getId() != null)
@@ -345,10 +360,10 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional(isolation = Isolation.REPEATABLE_READ)
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public Game createGame(final Player player, final Long gameId)
 	{
-		this.gameDao.getSession();
+		final Session session = this.gameDao.getSession();
 
 		Game game = this.gameDao.load(gameId);
 		if (null == game)
@@ -361,7 +376,10 @@ public class PersistenceService implements Serializable
 		game.setPlayers(set);
 		game.setId(gameId);
 
-		return this.gameDao.save(game);
+		this.playerDao.getSession().saveOrUpdate(player);
+
+		final Long id = (Long)session.save(game);
+		return (Game)session.load(Game.class, id);
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -446,6 +464,12 @@ public class PersistenceService implements Serializable
 
 		final List<CardPanel> allCardsInBattleField = HatchetHarrySession.get()
 				.getAllCardsInBattleField();
+
+		if (allCardsInBattleField.isEmpty())
+		{
+			return new ArrayList<MagicCard>();
+		}
+
 		final List<String> allUuidsOfCardsInBattleField = new ArrayList<String>();
 		for (final CardPanel cp : allCardsInBattleField)
 		{
@@ -477,6 +501,35 @@ public class PersistenceService implements Serializable
 		final List<Side> s = query.list();
 
 		return s;
+	}
+
+	@Transactional
+	public List<BigInteger> giveAllPlayersFromGameExceptMe(final Long gameId, final Long me)
+	{
+		final Session session = this.gameDao.getSession();
+
+		final Query query = session
+				.createSQLQuery("select playerId from Player_Game pg where pg.gameId = ? and pg.playerId <> ?");
+		query.setLong(0, gameId);
+		query.setLong(1, me);
+
+		final List<BigInteger> l = query.list();
+
+		return l;
+	}
+
+	@Transactional
+	public List<BigInteger> giveAllPlayersFromGame(final Long gameId)
+	{
+		final Session session = this.gameDao.getSession();
+
+		final Query query = session
+				.createSQLQuery("select playerId from Player_Game pg where pg.gameId = ?");
+		query.setLong(0, gameId);
+
+		final List<BigInteger> l = query.list();
+
+		return l;
 	}
 
 }

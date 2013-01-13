@@ -45,6 +45,7 @@ public class HatchetHarrySession extends WebSession
 	private static String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
 	private static String IS_HAND_DISPLAYED = "IS_HAND_DISPLAYED";
 	private static String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
+	private static String COMET_UUID = "COMET_UUID";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -392,6 +393,16 @@ public class HatchetHarrySession extends WebSession
 	public void setCombatInProgress(final boolean combatInProgress)
 	{
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, combatInProgress);
+	}
+
+	public String getCometUuid()
+	{
+		return (String)this.getAttribute(HatchetHarrySession.COMET_UUID);
+	}
+
+	public void setCometUuid(final String _cometUuid)
+	{
+		this.setAttribute(HatchetHarrySession.COMET_UUID, _cometUuid);
 	}
 
 }

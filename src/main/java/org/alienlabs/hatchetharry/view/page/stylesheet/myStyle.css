@@ -154,8 +154,9 @@ a, a:visited {
 }
 
 body {
-    background-color: #000000;
-    background-image: -moz-linear-gradient(center top , #060606, #252A30);
+    /*background-color: #000000;
+    background-image: -moz-linear-gradient(center top , #060606, #252A30);*/
+	background: url("/image/fond4.jpg") repeat scroll 0 0 #000000;
     min-height: 100%;
     font-family: "Trebuchet MS", "Lucida Grande", Arial, Helvetica, sans-serif;
 	margin: 0 auto;

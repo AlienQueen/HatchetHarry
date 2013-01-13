@@ -218,8 +218,7 @@ public class HomePageTest
 				.getComponentFromLastRenderedPage("galleryParent:gallery");
 		Assert.assertNotNull(gallery);
 		Assert.assertFalse(gallery instanceof HandComponent);
-		HomePageTest.tester.assertComponent("galleryParent:gallery",
-				WebMarkupContainer.class);
+		HomePageTest.tester.assertComponent("galleryParent:gallery", WebMarkupContainer.class);
 
 		// The second click must show the hand
 		HomePageTest.tester.clickLink("handLink", true);
@@ -274,7 +273,6 @@ public class HomePageTest
 		HomePageTest.tester.assertInvisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
-		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)HomePageTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(aboutLink);
