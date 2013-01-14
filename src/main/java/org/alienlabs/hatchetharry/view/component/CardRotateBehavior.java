@@ -1,10 +1,13 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
@@ -59,9 +62,19 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.saveCard(card);
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
 
-		final CardRotateCometChannel crcc = new CardRotateCometChannel(HatchetHarrySession.get()
-				.getGameId(), card.getUuid(), card.isTapped());
-		EventBus.get().post(crcc);
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final List<BigInteger> allPlayersInGame = CardRotateBehavior.this.persistenceService
+				.giveAllPlayersFromGame(gameId);
+
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
+			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+			final String pageUuid = HatchetHarryApplication.getCometResources().get(
+					playerToWhomToSend);
+			final CardRotateCometChannel crcc = new CardRotateCometChannel(gameId, card.getUuid(),
+					card.isTapped());
+			EventBus.get().post(crcc, pageUuid);
+		}
 	}
 
 	@Subscribe

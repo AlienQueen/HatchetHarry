@@ -1,10 +1,13 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
@@ -59,8 +62,6 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 
-		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, _mouseX,
-				_mouseY, uniqueid, playerId);
 		try
 		{
 			final MagicCard mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
@@ -78,7 +79,20 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		CardMoveBehavior.LOGGER.info("playerId in respond(): "
 				+ HatchetHarrySession.get().getPlayer().getId());
-		EventBus.get().post(cardMoveCometChannel);
+
+		final List<BigInteger> allPlayersInGame = CardMoveBehavior.this.persistenceService
+				.giveAllPlayersFromGame(gameId);
+
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
+			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+			final String pageUuid = HatchetHarryApplication.getCometResources().get(
+					playerToWhomToSend);
+			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId,
+					_mouseX, _mouseY, uniqueid, playerId);
+
+			EventBus.get().post(cardMoveCometChannel, pageUuid);
+		}
 	}
 
 	@Subscribe
