@@ -214,6 +214,11 @@ public class CreateGameModalWindow extends Panel
 				s.setY(Long.valueOf(500));
 				CreateGameModalWindow.this.persistenceService.saveSide(s);
 
+				final DataBox db = new DataBox("dataBox", Long.valueOf(g.getId()));
+				CreateGameModalWindow.this.homePage.getDataBoxParent().addOrReplace(db);
+				db.setOutputMarkupId(true);
+				target.add(CreateGameModalWindow.this.homePage.getDataBoxParent());
+
 				session.setGameCreated();
 			}
 

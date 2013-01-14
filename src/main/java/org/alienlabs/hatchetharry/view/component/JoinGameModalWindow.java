@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
@@ -16,6 +18,7 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
+import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -97,7 +100,6 @@ public class JoinGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-
 				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
 						.getDefaultModelObjectAsString());
 				Game game = JoinGameModalWindow.this.persistenceService.getGame(_id);
@@ -187,11 +189,8 @@ public class JoinGameModalWindow extends Panel
 
 				final DataBox dataBox = new DataBox("dataBox",
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
-								.getDefaultModelObjectAsString()), JoinGameModalWindow.this.hp);
-				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(game.getId(),
-						JoinGameModalWindow.this.hp, dataBox);
+								.getDefaultModelObjectAsString()));
 				dataBox.setOutputMarkupId(true);
-				dataBox.add(behavior);
 				JoinGameModalWindow.this.hp.getDataBoxParent().addOrReplace(dataBox);
 
 				final HandComponent gallery = new HandComponent("gallery");
@@ -304,6 +303,24 @@ public class JoinGameModalWindow extends Panel
 						HatchetHarrySession.get().getPlayer().getName(), jsessionid,
 						HatchetHarrySession.get().getGameId());
 				EventBus.get().post(jgncc);
+
+				final Long _gameId = JoinGameModalWindow.this.persistenceService
+						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
+						.iterator().next().getId();
+				final List<BigInteger> allPlayersInGameExceptMe = JoinGameModalWindow.this.persistenceService
+						.giveAllPlayersFromGameExceptMe(_gameId, HatchetHarrySession.get()
+								.getPlayer().getId());
+				final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(_gameId);
+
+				// post the DataBox update message to all players in the game,
+				// except me
+				for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
+				{
+					final Long p = allPlayersInGameExceptMe.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
+					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+					EventBus.get().post(udbcc, pageUuid);
+				}
 			}
 
 			@Override

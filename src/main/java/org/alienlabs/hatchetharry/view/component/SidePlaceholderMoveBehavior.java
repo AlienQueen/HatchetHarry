@@ -99,12 +99,8 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 
 			if (!this.jsessionid.equals(request.getParameter("requestingId")))
 			{
-				final DataBox dataBox = new DataBox("dataBox", this.gameId,
-						SidePlaceholderMoveBehavior.this.homePage);
-				final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(this.gameId,
-						SidePlaceholderMoveBehavior.this.homePage, dataBox);
+				final DataBox dataBox = new DataBox("dataBox", this.gameId);
 				dataBox.setOutputMarkupId(true);
-				dataBox.add(behavior);
 
 				final WebMarkupContainer _parent = this.homePage.getDataBoxParent();
 				_parent.addOrReplace(dataBox);

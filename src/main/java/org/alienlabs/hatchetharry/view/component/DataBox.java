@@ -1,18 +1,19 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.alienlabs.hatchetharry.view.page.UpdateDataBoxPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -21,11 +22,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -41,17 +39,15 @@ public class DataBox extends Panel
 	PersistenceService persistenceService;
 
 	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
-	final HomePage hp;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 
 	static final Map<Long, WebMarkupContainer> allPlayerLifePointsParents = new HashMap<Long, WebMarkupContainer>();
 
-	public DataBox(final String id, final long _gameId, final HomePage _hp)
+	public DataBox(final String id, final long _gameId)
 	{
 		super(id);
 		Injector.get().inject(this);
-		this.hp = _hp;
 		this.setOutputMarkupId(true);
 
 		this.updateDataBox = new BookmarkablePageLink<UpdateDataBoxPage>("updateDataBox",
@@ -97,7 +93,21 @@ public class DataBox extends Panel
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-						DataBox.this.writeUpdateDataBoxCometMessage(playerToUpdate.getId());
+						final Long g = playerToUpdate.getGames().iterator().next().getId();
+						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
+								.giveAllPlayersFromGame(g);
+						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
+
+						// post the DataBox update message to all players in the
+						// game
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+							EventBus.get().post(udbcc, pageUuid);
+						}
 					}
 				};
 				final Image playerPlus = new Image("playerPlus", new PackageResourceReference(
@@ -118,7 +128,21 @@ public class DataBox extends Panel
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-						DataBox.this.writeUpdateDataBoxCometMessage(player.getId());
+						final Long g = playerToUpdate.getGames().iterator().next().getId();
+						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
+								.giveAllPlayersFromGame(g);
+						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
+
+						// post the DataBox update message to all players in the
+						// game
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+							EventBus.get().post(udbcc, pageUuid);
+						}
 					}
 				};
 				final Image playerMinus = new Image("playerMinus", new PackageResourceReference(
@@ -140,20 +164,6 @@ public class DataBox extends Panel
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
-	}
-
-	void writeUpdateDataBoxCometMessage(final Long playerId)
-	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.hp.getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-
-		final String message = "%%%" + request.getRequestedSessionId() + "%%%" + playerId;
-		final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-		DataBox.LOGGER.info("meteor: " + meteor);
-		DataBox.LOGGER.info(message);
-
-		// meteor.addListener(this.hp);
-		// meteor.broadcast(message);
 	}
 
 	public WebMarkupContainer retrievePlayerLifePointsParentForPlayer(final Long playerId)

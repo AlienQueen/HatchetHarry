@@ -62,6 +62,7 @@ import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.SimplePredicate;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
+import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
@@ -79,7 +80,6 @@ import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
-import org.alienlabs.hatchetharry.view.component.UpdateDataBoxBehavior;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -494,11 +494,8 @@ public class HomePage extends TestReportPage
 		this.dataBoxParent.setOutputMarkupId(true);
 		HatchetHarrySession.get().setDataBoxParent(this.dataBoxParent);
 
-		this.dataBox = new DataBox("dataBox", _gameId, this);
+		this.dataBox = new DataBox("dataBox", _gameId);
 		HatchetHarrySession.get().setDataBox(this.dataBox);
-		final UpdateDataBoxBehavior behavior = new UpdateDataBoxBehavior(_gameId, this,
-				this.dataBox);
-		this.dataBox.add(behavior);
 		this.dataBox.setOutputMarkupId(true);
 		this.dataBoxParent.add(this.dataBox);
 
@@ -1219,6 +1216,15 @@ public class HomePage extends TestReportPage
 					+ event.getGameId()
 					+ ")) { jQuery.gritter.add({ title : 'A player joined in', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''}); }");
 		}
+	}
+
+	@Subscribe
+	public void updateDataBox(final AjaxRequestTarget target, final UpdateDataBoxCometChannel event)
+	{
+		final DataBox db = new DataBox("dataBox", Long.valueOf(event.getGameId()));
+		this.getDataBoxParent().addOrReplace(db);
+		db.setOutputMarkupId(true);
+		target.add(this.getDataBoxParent());
 	}
 
 	@Override
