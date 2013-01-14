@@ -79,7 +79,6 @@ import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
-import org.alienlabs.hatchetharry.view.component.UntapAllBehavior;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -146,8 +145,6 @@ public class HomePage extends TestReportPage
 	private AjaxLink<Void> endTurnLink;
 	private AjaxLink<Void> untapAllLink;
 	private AjaxLink<Void> untapAndDrawLink;
-
-	UntapAllBehavior untapAllBehavior;
 
 	private BookmarkablePageLink<UntapAllPage> untapAllPage;
 
@@ -435,8 +432,6 @@ public class HomePage extends TestReportPage
 		this.untapAllPlaceholder.setMarkupId("untapAllPlaceholder");
 		this.untapAllPlaceholder.setOutputMarkupId(true);
 
-		this.untapAllBehavior = new UntapAllBehavior();
-
 		this.untapAllLink = new AjaxLink<Void>("untapAllLink")
 		{
 			private static final long serialVersionUID = 1L;
@@ -444,15 +439,25 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final UntapAllCometChannel uacc = new UntapAllCometChannel(HatchetHarrySession
-						.get().getGameId(), HatchetHarrySession.get().getPlayer().getId());
-				EventBus.get().post(uacc);
+				final Long gameId = HatchetHarrySession.get().getGameId();
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+
+					final UntapAllCometChannel uacc = new UntapAllCometChannel(HatchetHarrySession
+							.get().getGameId(), HatchetHarrySession.get().getPlayer().getId());
+					EventBus.get().post(uacc, pageUuid);
+				}
 			}
 
 		};
 		this.untapAllLink.setMarkupId("untapAllLink");
 		this.untapAllLink.setOutputMarkupId(true);
-		this.untapAllLink.add(this.untapAllBehavior);
 
 		this.untapAllPlaceholder.add(this.untapAllLink);
 		this.add(this.untapAllPlaceholder);
@@ -1174,25 +1179,19 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
 	{
-		final HatchetHarrySession session = HatchetHarrySession.get();
+		final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
+				.getAllCardsInBattleFieldForAPlayer(event.getPlayerId());
 
-		if (session.getPlayer().getId().longValue() == event.getPlayerId().longValue())
+		final StringBuffer buf = new StringBuffer();
+
+		for (final MagicCard mc : allCardsInBattlefieldOnMySide)
 		{
-			final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
-					.getAllCardsInBattleFieldForAPlayer(HatchetHarrySession.get().getPlayer()
-							.getId());
-
-			final StringBuffer buf = new StringBuffer();
-
-			for (final MagicCard mc : allCardsInBattlefieldOnMySide)
-			{
-				buf.append("jQuery('#card" + mc.getUuid().toString() + "').rotate(0); ");
-				mc.setTapped(false);
-				this.persistenceService.saveCard(mc);
-			}
-
-			target.appendJavaScript(buf.toString());
+			buf.append("jQuery('#card" + mc.getUuid().toString() + "').rotate(0); ");
+			mc.setTapped(false);
+			this.persistenceService.saveCard(mc);
 		}
+
+		target.appendJavaScript(buf.toString());
 	}
 
 	@Subscribe(filter = SimplePredicate.class)
