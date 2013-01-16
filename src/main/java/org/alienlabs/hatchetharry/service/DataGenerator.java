@@ -211,7 +211,7 @@ public class DataGenerator implements InitializingBean
 				final Unmarshaller um = context.createUnmarshaller();
 				final CardCollectionRootElement cardCollection = (CardCollectionRootElement)um
 						.unmarshal(new File(
-								"/home/nostromo/Documents/programmation/hatchetharry/src/main/java/org/alienlabs/hatchetharry/service/return_to_ravnica.xml"));
+								"/home/nostromo/hatchetharry/src/main/java/org/alienlabs/hatchetharry/service/return_to_ravnica.xml"));
 
 				final Object[] array = cardCollection.getCardCollectionList().toArray();
 
