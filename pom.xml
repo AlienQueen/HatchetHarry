@@ -362,7 +362,7 @@
         	<version>2.12</version>
         	<scope>compile</scope>
         </dependency>
-        <dependency>
+   <!-- commented for Jenkins safety <dependency>
         	<groupId>org.jvnet.hudson.plugins</groupId>
         	<artifactId>sonar</artifactId>
         	<version>1.6.1</version>
@@ -374,7 +374,7 @@
           			<artifactId>commons-logging</artifactId>
         		</exclusion>
       		</exclusions>        	
-        </dependency>
+        </dependency> -->
         <dependency>
         	<groupId>org.codehaus.sonar.plugins</groupId>
         	<artifactId>sonar-surefire-plugin</artifactId>
