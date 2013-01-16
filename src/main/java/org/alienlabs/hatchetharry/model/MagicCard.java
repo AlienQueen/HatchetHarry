@@ -7,6 +7,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +24,7 @@ import com.googlecode.wicketslides.SlideshowImage;
 
 @Entity
 @Table(name = "MagicCard")
-@Cacheable 
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MagicCard implements SlideshowImage, Serializable
 {
@@ -55,6 +57,11 @@ public class MagicCard implements SlideshowImage, Serializable
 	private Long y = 64l; // y coordinate
 	@Column
 	private boolean tapped = false;
+	@Column
+	@Enumerated(value = EnumType.STRING)
+	private CardZone zone;
+	@Column
+	private String cardPlaceholderId;
 
 	public MagicCard()
 	{
@@ -266,6 +273,26 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setTapped(final boolean _tapped)
 	{
 		this.tapped = _tapped;
+	}
+
+	public CardZone getZone()
+	{
+		return this.zone;
+	}
+
+	public void setZone(final CardZone _zone)
+	{
+		this.zone = _zone;
+	}
+
+	public String getCardPlaceholderId()
+	{
+		return this.cardPlaceholderId;
+	}
+
+	public void setCardPlaceholderId(final String _cardPlaceholderId)
+	{
+		this.cardPlaceholderId = _cardPlaceholderId;
 	}
 
 }

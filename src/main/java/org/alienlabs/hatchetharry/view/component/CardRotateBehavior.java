@@ -62,7 +62,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.saveCard(card);
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
 
-		final Long gameId = HatchetHarrySession.get().getGameId();
+		final Long gameId = card.getGameId();
 		final List<BigInteger> allPlayersInGame = CardRotateBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 

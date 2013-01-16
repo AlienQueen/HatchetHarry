@@ -52,6 +52,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -72,6 +73,7 @@ import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
+import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.NotifierPanel;
@@ -79,7 +81,6 @@ import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
-import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -140,7 +141,9 @@ public class HomePage extends TestReportPage
 	WebMarkupContainer playCardParent;
 
 	final WebMarkupContainer galleryParent;
+	final WebMarkupContainer graveyardParent;
 	WebMarkupContainer thumbsPlaceholder;
+	WebMarkupContainer graveyardThumbsPlaceholder;
 
 	private AjaxLink<Void> endTurnLink;
 	private AjaxLink<Void> untapAllLink;
@@ -188,9 +191,14 @@ public class HomePage extends TestReportPage
 		this.galleryParent.setOutputMarkupId(true);
 		this.add(this.galleryParent);
 
+		this.graveyardParent = new WebMarkupContainer("graveyardParent");
+		this.graveyardParent.setMarkupId("graveyardParent");
+		this.graveyardParent.setOutputMarkupId(true);
+		this.add(this.graveyardParent);
+
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.1.0 (release Piggy Pie), built on Friday, 11th of January 2013."));
+				"version 0.2.0 (release Pass Me By), built on Wednesday, 16th of January 2013."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
@@ -228,6 +236,7 @@ public class HomePage extends TestReportPage
 		// Hand
 		this.buildHandCards();
 		this.buildHandMarkup();
+		this.buildGraveyardMarkup();
 
 		this.buildDock();
 
@@ -239,8 +248,8 @@ public class HomePage extends TestReportPage
 				&& (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
 						HatchetHarrySession.get().getPlayer().getSide())))
 		{
-			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-					.getBigImageFilename(), card.getUuidObject()));
+			balduParent.add(new CardPanel(this.playCardParent, "baldu", card
+					.getSmallImageFilename(), card.getBigImageFilename(), card.getUuidObject()));
 		}
 		else
 		{
@@ -375,6 +384,51 @@ public class HomePage extends TestReportPage
 		};
 
 		this.add(showHandLink);
+
+		final AjaxLink<Void> showGraveyardLink = new AjaxLink<Void>("graveyardLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Component graveyardToUpdate;
+				final boolean isGraveyardDisplayed = HatchetHarrySession.get()
+						.isGraveyardDisplayed();
+				graveyardToUpdate = isGraveyardDisplayed
+						? new WebMarkupContainer("graveyard")
+						: new GraveyardComponent("graveyard");
+
+				HomePage.this.graveyardParent.addOrReplace(graveyardToUpdate);
+				target.add(HomePage.this.graveyardParent);
+
+				if (!isGraveyardDisplayed)
+				{
+					target.appendJavaScript("var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard();");
+				}
+
+				HatchetHarrySession.get().setGraveyardDisplayed(!isGraveyardDisplayed);
+			}
+
+			@Override
+			protected void onComponentTag(final ComponentTag tag)
+			{
+				super.onComponentTag(tag);
+
+				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+						|| tag.getName().equalsIgnoreCase("area"))
+				{
+					tag.put("href", "#");
+				}
+				else
+				{
+					this.disableLink(tag);
+				}
+
+			}
+		};
+
+		this.add(showGraveyardLink);
 	}
 
 	private void buildEndTurnLink()
@@ -568,7 +622,6 @@ public class HomePage extends TestReportPage
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
 		HatchetHarrySession.get().setPlayer(p);
-		HatchetHarrySession.get().setPlaceholderNumber(1);
 
 		this.deck = this.persistenceService.getDeck(id);
 		if (null == this.deck)
@@ -693,6 +746,9 @@ public class HomePage extends TestReportPage
 						&& (session.getDeck().getCards().size() > 0))
 				{
 					final MagicCard card = session.getDeck().getCards().get(0);
+					card.setZone(CardZone.HAND);
+					HomePage.this.persistenceService.saveCard(card);
+
 					final ArrayList<MagicCard> list = session.getFirstCardsInHand();
 					list.add(card);
 
@@ -706,8 +762,6 @@ public class HomePage extends TestReportPage
 
 					final HandComponent gallery = new HandComponent("gallery");
 					gallery.setOutputMarkupId(true);
-
-					((HatchetHarryApplication)Application.get()).setPlayer(session.getPlayer());
 
 					HomePage.this.galleryParent.addOrReplace(gallery);
 					target.add(HomePage.this.galleryParent);
@@ -779,13 +833,6 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/jquery/jquery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "script/jquery/jquery.atmosphere.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class,
-				// "script/jquery/jquery.wicketatmosphere.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						AbstractDefaultAjaxBehavior.class, "res/js/wicket-event-jquery.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -804,9 +851,6 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/menubar/jquery.hoverIntent.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/mbMenu.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "script/menubar/jquery.jqDock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/yahoo-dom-event.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -828,13 +872,15 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/HomePageTests.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery/mootools.v1.11.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/jquery-easing-compatibility.1.2.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/coda-slider.1.1.1.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/coda-sliderGraveyard.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/gallery.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/graveyard.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/rotate/jQueryRotate.2.1.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -853,6 +899,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/myStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/galleryStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/graveyardStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/jquery.gritter.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -896,6 +944,18 @@ public class HomePage extends TestReportPage
 		this.galleryParent.add(galleryToUpdate);
 	}
 
+	protected void buildGraveyardMarkup()
+	{
+		final Component graveyardToUpdate;
+		final boolean isGraveyardDisplayed = HatchetHarrySession.get().isGraveyardDisplayed();
+		graveyardToUpdate = isGraveyardDisplayed
+				? new GraveyardComponent("graveyard")
+				: new WebMarkupContainer("graveyard");
+
+		graveyardToUpdate.setOutputMarkupId(true);
+		this.graveyardParent.add(graveyardToUpdate);
+	}
+
 	protected List<MagicCard> createFirstCards()
 	{
 		if (HatchetHarrySession.get().isPlayerCreated())
@@ -916,7 +976,11 @@ public class HomePage extends TestReportPage
 
 			for (int i = 0; i < 7; i++)
 			{
-				cards.add(i, this.deck.getCards().get(i));
+				final MagicCard mc = this.deck.getCards().get(i);
+				mc.setZone(CardZone.HAND);
+				this.persistenceService.saveCard(mc);
+
+				cards.add(i, mc);
 				HatchetHarrySession.get().addCardIdInHand(i, i);
 			}
 
@@ -1316,9 +1380,6 @@ public class HomePage extends TestReportPage
 		{
 			try
 			{
-				HatchetHarrySession.get().setPlaceholderNumber(
-						HatchetHarrySession.get().getPlaceholderNumber() + 1);
-
 				final MagicCard mc = HomePage.this.persistenceService.getCardFromUuid(cp.getUuid());
 				if (null != mc)
 				{
@@ -1422,6 +1483,16 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getDataBoxParent()
 	{
 		return this.dataBoxParent;
+	}
+
+	public WebMarkupContainer getGraveyardParent()
+	{
+		return this.graveyardParent;
+	}
+
+	public WebMarkupContainer getPlayCardParent()
+	{
+		return this.playCardParent;
 	}
 
 }

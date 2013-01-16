@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -409,18 +410,6 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
-	public String getFirstPlayerPageCometUuidFromGame(final Long _id)
-	{
-		return this.gameDao.load(_id).getFirstPlayerPageCometUuid();
-	}
-
-	@Transactional
-	public String getSecondPlayerPageCometUuidFromGame(final Long _id)
-	{
-		return this.gameDao.load(_id).getSecondPlayerPageCometUuid();
-	}
-
-	@Transactional
 	public void deleteMagicCard(final MagicCard mc)
 	{
 		this.magicCardDao.delete(mc.getId());
@@ -456,7 +445,6 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-
 	@Transactional
 	public List<MagicCard> getAllCardsInBattleFieldForAPlayer(final Long playerId)
 	{
@@ -477,9 +465,11 @@ public class PersistenceService implements Serializable
 		}
 
 		final Query query = session
-				.createQuery("select m from MagicCard m join m.deck as mcd where m.uuid in (:uuids) and mcd.playerId = :playerId ");
+				.createQuery("select m from MagicCard m join m.deck as mcd where m.uuid in (:uuids) and mcd.playerId = :playerId and m.zone = :zone");
 		query.setParameterList("uuids", allUuidsOfCardsInBattleField);
 		query.setLong("playerId", playerId);
+		query.setParameter("zone", CardZone.BATTLEFIELD);
+
 		try
 		{
 			return query.list();
@@ -488,6 +478,50 @@ public class PersistenceService implements Serializable
 		{
 			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for player: "
 					+ playerId + " => no result found", e);
+			return null;
+		}
+	}
+
+	@Transactional
+	public List<MagicCard> getAllCardsInBattleFieldForAGame(final Long gameId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final Query query = session
+				.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
+		query.setLong("gameId", gameId);
+		query.setParameter("zone", CardZone.BATTLEFIELD);
+
+		try
+		{
+			return query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for game: "
+					+ gameId + " => no result found", e);
+			return null;
+		}
+	}
+
+	@Transactional
+	public List<MagicCard> getAllCardsInGraveyardForAGame(final Long gameId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final Query query = session
+				.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
+		query.setLong("gameId", gameId);
+		query.setParameter("zone", CardZone.GRAVEYARD);
+
+		try
+		{
+			return query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+					+ gameId + " => no result found", e);
 			return null;
 		}
 	}

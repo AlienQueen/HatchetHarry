@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -121,6 +122,7 @@ public class RuntimeDataGenerator implements Serializable
 					card.setGameId(1l);
 					card.setDeck(decks.get(j - 1));
 					card.setUuidObject(UUID.randomUUID());
+					card.setZone(CardZone.LIBRARY);
 					card = this.magicCardDao.save(card);
 
 					final List<MagicCard> cards = decks.get(j - 1).getCards();
@@ -139,6 +141,7 @@ public class RuntimeDataGenerator implements Serializable
 					card.setUuidObject(UUID.randomUUID());
 					card.setX(16l);
 					card.setY(16l);
+					card.setZone(CardZone.LIBRARY);
 					card = this.magicCardDao.save(card);
 
 					final List<MagicCard> cards = decks.get(j - 1).getCards();
@@ -157,6 +160,7 @@ public class RuntimeDataGenerator implements Serializable
 		fake.setPlayerId(-1l);
 		card.setDeck(fake);
 		card.setGameId(-1l);
+		card.setZone(CardZone.BATTLEFIELD);
 		this.magicCardDao.save(card);
 	}
 

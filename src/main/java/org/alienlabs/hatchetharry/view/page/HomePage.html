@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="stylesheet/jquery.jquerytour.css"/>
 	<link rel="stylesheet" type="text/css" href="stylesheet/myStyle.css"/>
 	<link rel="stylesheet" type="text/css" href="stylesheet/galleryStyle.css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheet/graveyardStyle.css"/>
 	<link rel="stylesheet" type="text/css" href="stylesheet/jquery.gritter.css"/> 
 	
 	<link rel="shortcut icon" href="http://hatchetharry.net/favicon.ico" />
@@ -236,17 +237,56 @@
     </ol>
     
 	<br/><br/><br/><br/><br/>
-	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span><br/><br/>
-
+	<strong>Welcome to HatchetHarry </strong><span wicket:id="message" id="message">message will be here</span>
+	
+	<span id="tour_9">
+		<div id="dock">
+			<ul>
+				<li>
+					<a wicket:id="handLink" title="Hand" id="tour_10">
+				    	<img src="/image/hand.gif" alt="Hand" title="Hand"/>
+		    		</a>
+		    	</li>
+		    	<li>
+				    <a wicket:id="graveyardLink" title="Graveyard" id="tour_11">
+				    	<img src="/image/graveyard.gif" alt="Graveyard" title="Graveyard"/>
+				    </a>
+				</li>
+				<li>
+				    <a title="Exiled" id="tour_12">
+				    	<img src="/image/exiled.gif" alt="Exiled" title="Exiled"/>
+				    </a>
+				</li>
+				<li>
+				    <a title="Battlefield" id="tour_13">
+				    	<img src="/image/battlefield.gif" alt="Battlefield" />
+				    </a>
+				</li>
+				<li>
+				    <a title="Library" id="tour_14">
+					    <img src="/image/library.gif" alt="Library"  title="Library"/>
+				    </a>
+				</li>
+			</ul>
+	  	</div>
+  	</span>
+  	<br/>
+	<br/>
+	<br/>
+	
 	<span wicket:id="balduParent">
+		<br/>
+		<br/>
 		<span wicket:id="baldu" id="tour_6"></span>
 	</span>
 	
   	<br/><br/>
 	<span wicket:id="dataBoxParent">
 		<span wicket:id="dataBox"></span>
-	</span>
-
+	</span><br/>
+	<span wicket:id="clockPanel" id="clock">Clock Panel</span><br/>
+	<span wicket:id="chatPanel" id="chatPanel">Chat Panel</span>
+	
 	<div wicket:id="aboutWindow"></div>
 	<div wicket:id="teamInfoWindow"></div>
 	<div wicket:id="aboutWindowResponsive"></div>
@@ -265,6 +305,9 @@
 		<span wicket:id="galleryParent" id="#">
 			<span wicket:id="gallery"></span>
 		</span>
+		<span wicket:id="graveyardParent" id="#">
+			<span wicket:id="graveyard"></span>
+		</span>
 	</span>
 	
 	<span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
@@ -274,7 +317,6 @@
 	
 	<br/><br/><br/>
   	<span wicket:id="feedback"></span>
-  	<span wicket:id="clockPanel" id="clock">Clock Panel</span>
 	<br/><br/><br/>
 	
 	<span wicket:id="cardParent">
@@ -406,43 +448,7 @@
 	
 	<span wicket:id="cardPlaceholder"></span>
 	
-	<span id="tour_9">
-		<div id="dock">
-			<ul>
-				<li>
-					<a wicket:id="handLink" title="Hand" id="tour_10">
-				    	<img src="/image/hand.gif" alt="Hand" title="Hand"/>
-		    		</a>
-		    	</li>
-		    	<li>
-				    <a title="Graveyard" id="tour_11">
-				    	<img src="/image/graveyard.gif" alt="Graveyard" title="Graveyard"/>
-				    </a>
-				</li>
-				<li>
-				    <a title="Exiled" id="tour_12">
-				    	<img src="/image/exiled.gif" alt="Exiled" title="Exiled"/>
-				    </a>
-				</li>
-				<li>
-				    <a title="Battlefield" id="tour_13">
-				    	<img src="/image/battlefield.gif" alt="Battlefield" />
-				    </a>
-				</li>
-				<li>
-				    <a title="Library" id="tour_14">
-					    <img src="/image/library.gif" alt="Library"  title="Library"/>
-				    </a>
-				</li>
-			</ul>
-	  	</div>
-  	</span>
-  	<br/>
-	
   	<span>
-
-  		<span wicket:id="chatPanel" id="chatPanel">Chat Panel</span>
-
   		<h2 id="qunit-header">QUnit example</h2>
 		<h2 id="qunit-banner"></h2>
 		<div id="qunit-testrunner-toolbar"></div>

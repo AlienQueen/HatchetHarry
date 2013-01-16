@@ -36,15 +36,19 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
+	private final PutToGraveyardBehavior _putToGraveyardBehavior;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public CardMoveBehavior(final CardPanel cp, final UUID _uuid)
+
+	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
+			final PutToGraveyardBehavior _putToGraveyardBehavior)
 	{
+		Injector.get().inject(this);
 		this.panel = cp;
 		this.uuid = _uuid;
-		Injector.get().inject(this);
+		this._putToGraveyardBehavior = _putToGraveyardBehavior;
 	}
 
 	@Override
@@ -59,27 +63,34 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String uniqueid = this.uuid.toString();
 		CardMoveBehavior.LOGGER.info("uuid: " + uniqueid);
 
-		final Long gameId = HatchetHarrySession.get().getGameId();
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
+		MagicCard mc = null;
 
 		try
 		{
-			final MagicCard mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
-			if (null != mc)
+			mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
+			if (null == mc)
 			{
-				mc.setX(Long.parseLong(_mouseX));
-				mc.setY(Long.parseLong(_mouseY));
-				this.persistenceService.saveCard(mc);
+				return;
 			}
+			mc.setX(Long.parseLong(_mouseX));
+			mc.setY(Long.parseLong(_mouseY));
+			this.persistenceService.saveCard(mc);
 		}
 		catch (final IllegalArgumentException e)
 		{
 			CardMoveBehavior.LOGGER.error("error parsing UUID of moved card", e);
 		}
 
+		if (null == mc)
+		{
+			return;
+		}
+
 		CardMoveBehavior.LOGGER.info("playerId in respond(): "
 				+ HatchetHarrySession.get().getPlayer().getId());
 
+		final Long gameId = mc.getGameId();
 		final List<BigInteger> allPlayersInGame = CardMoveBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
@@ -98,30 +109,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	@Subscribe
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
-		CardMoveBehavior.LOGGER.info("playerId in moveCard(): "
-				+ HatchetHarrySession.get().getPlayer().getId());
-		CardMoveBehavior.LOGGER.info("event playerId in moveCard(): " + event.getPlayerId());
-
-		CardMoveBehavior.LOGGER.info("gameId in moveCard(): "
-				+ HatchetHarrySession.get().getGameId());
-		CardMoveBehavior.LOGGER.info("event gameId in moveCard(): " + event.getGameId());
-		CardMoveBehavior.LOGGER
-				.info("### "
-						+ ((HatchetHarrySession.get().getGameId().longValue() == event.getGameId()
-								.longValue()) && (HatchetHarrySession.get().getPlayer().getId()
-								.longValue() != event.getPlayerId().longValue())));
-		CardMoveBehavior.LOGGER.info("event.getUniqueid(): " + event.getUniqueid());
-
-		// if ((HatchetHarrySession.get().getGameId().longValue() ==
-		// event.getGameId().longValue())
-		// && (HatchetHarrySession.get().getPlayer().getId().longValue() !=
-		// event
-		// .getPlayerId().longValue()))
-		// {
 		target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
 				+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"
 				+ event.getMouseX() + "');" + "card.css('top', '" + event.getMouseY() + "');");
-		// }
 	}
 
 	@Override
@@ -149,6 +139,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+		variables.put("graveyardUrl", this._putToGraveyardBehavior.getCallbackUrl());
 
 		final TextTemplate template4 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.js");

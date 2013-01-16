@@ -268,16 +268,6 @@ public class HatchetHarryApplication extends WebApplication
 		return new HatchetHarrySession(request);
 	}
 
-	public Player getPlayer()
-	{
-		return this.player;
-	}
-
-	public void setPlayer(final Player _player)
-	{
-		this.player = _player;
-	}
-
 	public boolean isMistletoeTest()
 	{
 		return this.mistletoeTest;

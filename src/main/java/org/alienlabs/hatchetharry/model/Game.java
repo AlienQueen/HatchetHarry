@@ -41,10 +41,8 @@ public class Game implements Serializable
 	private Set<Player> players = new HashSet<Player>();
 	@OneToMany(mappedBy = "game")
 	private List<Side> sides = new ArrayList<Side>();
-	@Column(nullable = true)
-	private String firstPlayerPageCometUuid;
-	@Column(nullable = true)
-	private String secondPlayerPageCometUuid;
+	@Column
+	private Long currentPlaceholderId = 0L;
 
 
 	public Long getId()
@@ -116,24 +114,14 @@ public class Game implements Serializable
 		this.sides = _sides;
 	}
 
-	public String getFirstPlayerPageCometUuid()
+	public Long getCurrentPlaceholderId()
 	{
-		return this.firstPlayerPageCometUuid;
+		return this.currentPlaceholderId;
 	}
 
-	public void setFirstPlayerPageCometUuid(final String _firstPlayerPageCometUuid)
+	public void setCurrentPlaceholderId(final Long _currentPlaceholderId)
 	{
-		this.firstPlayerPageCometUuid = _firstPlayerPageCometUuid;
-	}
-
-	public String getSecondPlayerPageCometUuid()
-	{
-		return this.secondPlayerPageCometUuid;
-	}
-
-	public void setSecondPlayerPageCometUuid(final String _secondPlayerPageCometUuid)
-	{
-		this.secondPlayerPageCometUuid = _secondPlayerPageCometUuid;
+		this.currentPlaceholderId = _currentPlaceholderId;
 	}
 
 }

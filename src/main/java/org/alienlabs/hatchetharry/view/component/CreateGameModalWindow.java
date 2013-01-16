@@ -147,9 +147,12 @@ public class CreateGameModalWindow extends Panel
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
 				HatchetHarrySession.get().setDeck(deck);
 
-				final HandComponent gallery = new HandComponent("gallery");
-				_handCardsParent.addOrReplace(gallery);
-				target.add(_handCardsParent);
+				if (HatchetHarrySession.get().isHandDisplayed())
+				{
+					final HandComponent gallery = new HandComponent("gallery");
+					_handCardsParent.addOrReplace(gallery);
+					target.add(_handCardsParent);
+				}
 
 				final StringBuffer buf = new StringBuffer(
 						"jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
@@ -220,6 +223,16 @@ public class CreateGameModalWindow extends Panel
 				target.add(CreateGameModalWindow.this.homePage.getDataBoxParent());
 
 				session.setGameCreated();
+				session.resetCardsInGraveyard();
+
+				if (session.isGraveyardDisplayed())
+				{
+					((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
+							new GraveyardComponent("graveyard"));
+					target.add(((HomePage)target.getPage()).getGraveyardParent());
+
+					target.appendJavaScript("var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard();");
+				}
 			}
 
 			@Override

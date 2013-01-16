@@ -23,6 +23,7 @@ public class HatchetHarrySession extends WebSession
 
 	private static final String MY_GAME = "MY_GAME";
 	private static final String FIRST_CARDS_IN_HAND = "FIRST_CARDS_IN_HAND";
+	private static final String CARDS_IN_GRAVEYARD = "CARDS_IN_GRAVEYARD";
 	private static final String HAND_CARDS_HAVE_BEEN_BUILT = "HAND_CARDS_HAVE_BEEN_BUILT";
 	private static final String ALL_CARDS_IN_HAND = "ALL_CARDS_IN_HAND";
 	private static final String PLAYER_HAS_BEEN_CREATED = "PLAYER_HAS_BEEN_CREATED";
@@ -30,7 +31,6 @@ public class HatchetHarrySession extends WebSession
 	private static final String HAND_HAS_BEEN_CREATED = "HAND_HAS_BEEN_CREATED";
 	private static final String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
 	private static final String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
-	private static final String PLACEHOLDER_NUMBER = "PLACEHOLDER_NUMBER";
 	private static final String GAME_CREATED = "GAME_CREATED";
 	private static final String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
 	private static final String DATA_BOX = "DATA_BOX";
@@ -44,6 +44,7 @@ public class HatchetHarrySession extends WebSession
 	private static String FIST_SIDE_MOVE_CALLBACK_URL = "FIST_SIDE_MOVE_CALLBACK_URL";
 	private static String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
 	private static String IS_HAND_DISPLAYED = "IS_HAND_DISPLAYED";
+	private static String IS_GRAVEYARD_DISPLAYED = "IS_GRAVEYARD_DISPLAYED";
 	private static String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
 	private static String COMET_UUID = "COMET_UUID";
 
@@ -59,8 +60,10 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, true);
+		this.setAttribute(HatchetHarrySession.IS_GRAVEYARD_DISPLAYED, false);
 		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, false);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 	}
 
 	public static HatchetHarrySession get(final Request request)
@@ -116,6 +119,23 @@ public class HatchetHarrySession extends WebSession
 	public void setFirstCardsInHand(final ArrayList<MagicCard> cards)
 	{
 		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, cards);
+	}
+
+	public ArrayList<MagicCard> getCardsInGraveyard()
+	{
+		return (ArrayList<MagicCard>)this.getAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD);
+	}
+
+	public void addCardInGraveyard(final MagicCard card)
+	{
+		final List<MagicCard> cards = this.getCardsInGraveyard();
+		cards.add(card);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, (ArrayList<MagicCard>)cards);
+	}
+
+	public void resetCardsInGraveyard()
+	{
+		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 	}
 
 	public long getFirstCardIdInHand()
@@ -186,16 +206,6 @@ public class HatchetHarrySession extends WebSession
 	public void setIndexOfCurrentCard(final int card)
 	{
 		this.setAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD, card);
-	}
-
-	public void setPlaceholderNumber(final int _index)
-	{
-		this.setAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER, _index);
-	}
-
-	public int getPlaceholderNumber()
-	{
-		return (Integer)this.getAttribute(HatchetHarrySession.PLACEHOLDER_NUMBER);
 	}
 
 	public void setDataBox(final Component _dataBox)
@@ -279,6 +289,11 @@ public class HatchetHarrySession extends WebSession
 		final List<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
 		return cards;
+	}
+
+	public void setAllCardsInBattleField(final List<CardPanel> cards)
+	{
+		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, (ArrayList<CardPanel>)cards);
 	}
 
 	public CardPanel removeACardFromBattleField()
@@ -383,6 +398,16 @@ public class HatchetHarrySession extends WebSession
 	public void setHandDisplayed(final boolean isDisplayed)
 	{
 		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, isDisplayed);
+	}
+
+	public boolean isGraveyardDisplayed()
+	{
+		return (Boolean)this.getAttribute(HatchetHarrySession.IS_GRAVEYARD_DISPLAYED);
+	}
+
+	public void setGraveyardDisplayed(final boolean isDisplayed)
+	{
+		this.setAttribute(HatchetHarrySession.IS_GRAVEYARD_DISPLAYED, isDisplayed);
 	}
 
 	public boolean isCombatInProgress()

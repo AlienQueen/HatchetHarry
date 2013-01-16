@@ -123,6 +123,14 @@ public class JoinGameModalWindow extends Panel
 				{
 					if (JoinGameModalWindow.this.player.getGames().remove(gameToRemove))
 					{
+						final Player _p = session.getPlayer();
+						final Set<Game> allGamesInSession = _p.getGames();
+						allGamesInSession.remove(gameToRemove);
+						allGamesInSession.add(game);
+						_p.setGames(allGamesInSession);
+						session.setGameId(_id);
+						session.setPlayer(_p);
+
 						JoinGameModalWindow.this.persistenceService
 								.saveOrUpdatePlayer(JoinGameModalWindow.this.player);
 					}
@@ -193,8 +201,12 @@ public class JoinGameModalWindow extends Panel
 				dataBox.setOutputMarkupId(true);
 				JoinGameModalWindow.this.hp.getDataBoxParent().addOrReplace(dataBox);
 
-				final HandComponent gallery = new HandComponent("gallery");
-				_handCardsParent.addOrReplace(gallery);
+				if (HatchetHarrySession.get().isHandDisplayed())
+				{
+					final HandComponent gallery = new HandComponent("gallery");
+					_handCardsParent.addOrReplace(gallery);
+					target.add(_handCardsParent);
+				}
 
 				javaScript
 						.append("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); "
@@ -289,7 +301,6 @@ public class JoinGameModalWindow extends Panel
 
 				_modal.close(target);
 				target.add(JoinGameModalWindow.this.hp.getDataBoxParent());
-				target.add(_handCardsParent);
 				target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
 				target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
 				target.appendJavaScript(javaScript.toString());
@@ -320,6 +331,17 @@ public class JoinGameModalWindow extends Panel
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
 					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 					EventBus.get().post(udbcc, pageUuid);
+				}
+
+				session.resetCardsInGraveyard();
+
+				if (session.isGraveyardDisplayed())
+				{
+					((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
+							new GraveyardComponent("graveyard"));
+					target.add(((HomePage)target.getPage()).getGraveyardParent());
+
+					target.appendJavaScript("var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard();");
 				}
 			}
 

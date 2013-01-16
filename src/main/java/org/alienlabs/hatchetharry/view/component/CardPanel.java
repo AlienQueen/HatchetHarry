@@ -5,10 +5,14 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -20,10 +24,12 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class CardPanel extends Panel
 {
@@ -31,13 +37,20 @@ public class CardPanel extends Panel
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardPanel.class);
 
+	@SpringBean
+	private PersistenceService persistenceService;
+
+	private final WebMarkupContainer cardParent;
 	private final UUID uuid;
 
-	public CardPanel(final String id, final String smallImage, final String bigImage,
-			final UUID _uuid)
+	public CardPanel(final WebMarkupContainer _cardParent, final String id,
+			final String smallImage, final String bigImage, final UUID _uuid)
 	{
 		super(id);
+		Injector.get().inject(this);
+
 		this.uuid = _uuid;
+		this.cardParent = _cardParent;
 
 		this.setOutputMarkupId(true);
 
@@ -63,7 +76,11 @@ public class CardPanel extends Panel
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
-		menutoggleButton.add(new CardMoveBehavior(this, this.uuid));
+
+		final PutToGraveyardBehavior putToGraveyardBehavior = new PutToGraveyardBehavior(this.uuid,
+				this.cardParent);
+		menutoggleButton.add(putToGraveyardBehavior);
+		menutoggleButton.add(new CardMoveBehavior(this, this.uuid, putToGraveyardBehavior));
 		menutoggleButton.add(new CardRotateBehavior(this, this.uuid));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
@@ -91,27 +108,53 @@ public class CardPanel extends Panel
 		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString());
 		tapHandleImage.setOutputMarkupId(true);
 
-		final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage);
-		cardBubbleTip.setOutputMarkupId(true);
-		cardBubbleTip.setMarkupId("cardTooltip" + this.uuid);
-		cardBubbleTip.add(new AttributeModifier("style", "display:none;"));
-
 		final Image cardImage = new Image("cardImage", new PackageResourceReference(HomePage.class,
 				smallImage));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString());
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, cardBubbleTip);
+		final MagicCard mc = this.persistenceService.getCardFromUuid(this.uuid);
+
+		if (null != mc)
+		{
+			final Player owner = this.persistenceService.getPlayer(mc.getDeck().getPlayerId());
+
+			if (null != owner)
+			{
+				if ("infrared".equals(owner.getSide()))
+				{
+					cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
+				}
+				else if ("ultraviolet".equals(owner.getSide()))
+				{
+					cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
+				}
+
+				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage,
+						owner.getSide());
+				cardBubbleTip.setOutputMarkupId(true);
+				cardBubbleTip.setMarkupId("cardTooltip" + this.uuid);
+				cardBubbleTip.add(new AttributeModifier("style", "display:none;"));
+
+				form.add(cardBubbleTip);
+			}
+			else
+			{
+				form.add(new WebMarkupContainer("cardTooltip"));
+			}
+		}
+
+		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage);
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
-		final WebMarkupContainer cardParent = new WebMarkupContainer("cardParent4");
-		cardParent.setOutputMarkupId(true);
+		final WebMarkupContainer cp = new WebMarkupContainer("cardParent4");
+		cp.setOutputMarkupId(true);
 		final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder4");
 		cardPlaceholder.setOutputMarkupId(true);
-		cardParent.add(cardPlaceholder);
-		this.add(cardParent);
+		cp.add(cardPlaceholder);
+		this.add(cp);
 	}
 
 	public HttpServletRequest getHttpServletRequest()
@@ -141,4 +184,11 @@ public class CardPanel extends Panel
 		final StringBuffer js2 = new StringBuffer().append(template2.asString());
 		response.render(JavaScriptHeaderItem.forScript(js2.toString(), "initTooltip.js" + this.uuid));
 	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
+	}
+
 }
