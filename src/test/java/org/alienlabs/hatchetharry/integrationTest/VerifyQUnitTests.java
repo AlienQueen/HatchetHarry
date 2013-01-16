@@ -22,7 +22,8 @@ public class VerifyQUnitTests extends SeleneseTestCase
 		try
 		{
 			super.setUp();
-			this.selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost/");
+			this.selenium = new DefaultSelenium("localhost", 4444, "*firefox",
+					"http://localhost:9999/");
 			this.selenium.start();
 		}
 		catch (final Exception e)
