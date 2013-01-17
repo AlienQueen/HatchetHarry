@@ -204,7 +204,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			buf.append("jQuery('#menutoggleButton" + aCard.getUuid() + "').remove(); ");
 		}
 
-		buf.append(" }, 1000);");
+		buf.append(" }, 2000);");
 		target.appendJavaScript(buf.toString());
 	}
 

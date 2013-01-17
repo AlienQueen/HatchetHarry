@@ -96,7 +96,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			buf.append("jQuery('#card" + event.getCardUuid()
 					+ "').rotate(0); window.setTimeout(function() {");
 			buf.append("jQuery('#card" + event.getCardUuid()
-					+ "').rotate(90); }, 250); }, 250); }, 250);");
+					+ "').rotate(90); }, 750); }, 750); }, 750);");
 		}
 		else
 		{
@@ -105,7 +105,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			buf.append("jQuery('#card" + event.getCardUuid()
 					+ "').rotate(90); window.setTimeout(function() {");
 			buf.append("jQuery('#card" + event.getCardUuid()
-					+ "').rotate(0); }, 250); }, 250); }, 250);");
+					+ "').rotate(0); }, 750); }, 750); }, 750);");
 		}
 
 		target.appendJavaScript(buf.toString());
