@@ -88,6 +88,12 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateGame(game);
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
+
+		if (!CardZone.HAND.equals(card.getZone()))
+		{
+			return;
+		}
+
 		card.setZone(CardZone.BATTLEFIELD);
 		card.setCardPlaceholderId("cardPlaceholdera" + placeholderId);
 		this.persistenceService.saveCard(card);

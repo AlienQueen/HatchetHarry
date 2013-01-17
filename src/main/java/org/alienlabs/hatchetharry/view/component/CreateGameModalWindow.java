@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -124,8 +125,12 @@ public class CreateGameModalWindow extends Panel
 
 				for (int i = 0; i < 7; i++)
 				{
-					firstCards.add(i, allCards.get(i));
-					HatchetHarrySession.get().addCardIdInHand(i, allCards.get(i).getId());
+					final MagicCard aCard = allCards.get(i);
+					aCard.setZone(CardZone.HAND);
+					CreateGameModalWindow.this.persistenceService.saveCard(aCard);
+					firstCards.add(i, aCard);
+					HatchetHarrySession.get().addCardIdInHand(i, aCard.getId());
+					deck.getCards().remove(aCard);
 				}
 
 				CreateGameModalWindow.this.persistenceService.saveDeck(deck);

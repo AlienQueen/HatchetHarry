@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -154,7 +155,10 @@ public class JoinGameModalWindow extends Panel
 
 				for (int i = 0; i < 7; i++)
 				{
-					firstCards.add(i, allCards.get(i));
+					final MagicCard aCard = allCards.get(i);
+					aCard.setZone(CardZone.HAND);
+					JoinGameModalWindow.this.persistenceService.saveCard(aCard);
+					firstCards.add(i, aCard);
 					HatchetHarrySession.get().addCardIdInHand(i, i);
 					deck.getCards().remove(allCards.get(i));
 				}
