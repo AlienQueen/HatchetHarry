@@ -1170,7 +1170,7 @@ public class HomePage extends TestReportPage
 					+ "\" });"
 					+ "jQuery(\"#handleImage"
 					+ spp.getUuid()
-					+ "\").data(\"url\",\"" + spmb.getCallbackUrl() + "\"); }, 2000);");
+					+ "\").data(\"url\",\"" + spmb.getCallbackUrl() + "\"); }, 3000); ");
 
 			spp.setPosX(posX);
 			spp.setPosY(500);

@@ -192,7 +192,7 @@ public class CreateGameModalWindow extends Panel
 						+ "card.css(\"top\", \"500px\");" + "jQuery(\"#" + spp.getMarkupId()
 						+ "\").draggable({ handle : \"#handleImage" + uuid + "\" });"
 						+ "jQuery(\"#handleImage" + uuid + "\").data(\"url\",\""
-						+ spmb.getCallbackUrl() + "\");" + " }, 2000); ");
+						+ spmb.getCallbackUrl() + "\");" + " }, 3000); ");
 
 				target.appendJavaScript(buf.toString());
 

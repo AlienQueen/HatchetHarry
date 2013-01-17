@@ -172,7 +172,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		target.add(this.cardParent);
 
 		final StringBuffer buf = new StringBuffer();
-		buf.append("window.setTimeout(function() { ");
+		buf.append("window.setTimeout(function() {  ");
 
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
 				.getAllCardsInBattleFieldForAGame(event.getGameId());
@@ -204,7 +204,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			buf.append("jQuery('#menutoggleButton" + aCard.getUuid() + "').remove(); ");
 		}
 
-		buf.append(" }, 2000);");
+		buf.append(" }, 3000); ");
 		target.appendJavaScript(buf.toString());
 	}
 

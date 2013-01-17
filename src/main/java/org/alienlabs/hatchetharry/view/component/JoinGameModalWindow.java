@@ -245,7 +245,7 @@ public class JoinGameModalWindow extends Panel
 								+ "card.css('left', '"
 								+ posX
 								+ "px'); "
-								+ "card.css('top', '500px'); }, 2000);");
+								+ "card.css('top', '500px'); }, 3000); ");
 
 				final String opponentSide = ("infrared".equals(sideInput
 						.getDefaultModelObjectAsString())) ? "ultraviolet" : "infrared";
@@ -268,7 +268,7 @@ public class JoinGameModalWindow extends Panel
 								+ "card.css('left', '"
 								+ posX2
 								+ "px'); "
-								+ "card.css('top', '500px'); }, 2000); ");
+								+ "card.css('top', '500px'); }, 3000); ");
 
 				javaScript.append("window.gameId = " + session.getGameId() + "; ");
 
