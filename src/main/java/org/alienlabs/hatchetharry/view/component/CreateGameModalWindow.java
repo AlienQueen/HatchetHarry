@@ -173,7 +173,6 @@ public class CreateGameModalWindow extends Panel
 
 				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
 						spp.getUuid(), jsessionid, CreateGameModalWindow.this.homePage,
-						sideInput.getDefaultModelObjectAsString(),
 						CreateGameModalWindow.this.homePage.getDataBoxParent(),
 						CreateGameModalWindow.this.game.getId());
 				spp.add(spmb);

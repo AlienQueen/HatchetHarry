@@ -223,7 +223,7 @@ public class JoinGameModalWindow extends Panel
 						sideInput.getDefaultModelObjectAsString(), JoinGameModalWindow.this.hp,
 						UUID.randomUUID());
 				spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(), jsessionid,
-						JoinGameModalWindow.this.hp, sideInput.getDefaultModelObjectAsString(),
+						JoinGameModalWindow.this.hp,
 						JoinGameModalWindow.this.hp.getDataBoxParent(), session.getGameId()));
 				JoinGameModalWindow.LOGGER.info("gameId in JoinGameModalWindow: "
 						+ session.getGameId());
@@ -253,8 +253,8 @@ public class JoinGameModalWindow extends Panel
 				final SidePlaceholderPanel spp2 = new SidePlaceholderPanel("firstSidePlaceholder",
 						opponentSide, JoinGameModalWindow.this.hp, UUID.randomUUID());
 				spp2.add(new SidePlaceholderMoveBehavior(spp2, spp2.getUuid(), jsessionid,
-						JoinGameModalWindow.this.hp, opponentSide, JoinGameModalWindow.this.hp
-								.getDataBoxParent(), session.getGameId()));
+						JoinGameModalWindow.this.hp,
+						JoinGameModalWindow.this.hp.getDataBoxParent(), session.getGameId()));
 				spp2.setOutputMarkupId(true);
 
 				JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);

@@ -92,8 +92,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		card.setCardPlaceholderId("cardPlaceholdera" + placeholderId);
 		this.persistenceService.saveCard(card);
 
-		this.cp = new CardPanel(this.cardParent, "cardPlaceholdera" + placeholderId,
-				card.getSmallImageFilename(), card.getBigImageFilename(), card.getUuidObject());
+		this.cp = new CardPanel("cardPlaceholdera" + placeholderId, card.getSmallImageFilename(),
+				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
 		this.cp.setMarkupId("cardPlaceholdera" + placeholderId);
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
@@ -162,8 +162,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
 
-		this.cp = new CardPanel(this.cardParent, "cardPlaceholdera" + id,
-				card.getSmallImageFilename(), card.getBigImageFilename(), card.getUuidObject());
+		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
+				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
 		this.cp.setMarkupId("cardPlaceholdera" + event.getCardPlaceholderId());
 		HatchetHarrySession.get().addCardInBattleField(this.cp);

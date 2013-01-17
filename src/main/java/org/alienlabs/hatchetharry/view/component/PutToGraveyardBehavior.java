@@ -17,7 +17,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +32,10 @@ public class PutToGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer cardParent;
-
-	public PutToGraveyardBehavior(final UUID _uuid, final WebMarkupContainer _cardParent)
+	public PutToGraveyardBehavior(final UUID _uuid)
 	{
 		Injector.get().inject(this);
 		this.uuid = _uuid;
-		this.cardParent = _cardParent;
 	}
 
 	@Override

@@ -142,10 +142,11 @@ public class ChatPanel extends Panel
 	}
 
 	@Subscribe
-	public void updateTime(final AjaxRequestTarget target, final ChatCometChannel event)
+	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event)
 	{
-		target.appendJavaScript("document.getElementById('chat').innerHTML = document.getElementById('chat').innerHTML + \"&#013;&#010;\" + \""
-				+ event.getMessage() + "\" + \"&#013;&#010;\";");
+		target.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
+				+ event.getMessage()
+				+ "\" + \"&#013;&#010;\"; chatPanel.scrollTop = chatPanel.scrollHeight");
 	}
 
 	@Required

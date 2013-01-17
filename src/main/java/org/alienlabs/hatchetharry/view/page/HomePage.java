@@ -248,8 +248,8 @@ public class HomePage extends TestReportPage
 				&& (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
 						HatchetHarrySession.get().getPlayer().getSide())))
 		{
-			balduParent.add(new CardPanel(this.playCardParent, "baldu", card
-					.getSmallImageFilename(), card.getBigImageFilename(), card.getUuidObject()));
+			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
+					.getBigImageFilename(), card.getUuidObject()));
 		}
 		else
 		{
@@ -437,7 +437,7 @@ public class HomePage extends TestReportPage
 		this.endTurnPlaceholder.setMarkupId("endTurnPlaceholder");
 		this.endTurnPlaceholder.setOutputMarkupId(true);
 
-		// TODO maybe we could remove this:
+		// TODO remove this in favor of the wicket-atmosphere implementation:
 		this.notifierPanel = new NotifierPanel("notifierPanel", HomePage.this, HatchetHarrySession
 				.get().getPlayer().getSide(), "has declared the end of his turn.",
 				this.dataBoxParent, HatchetHarrySession.get().getGameId());
@@ -1134,8 +1134,8 @@ public class HomePage extends TestReportPage
 					event.getSide(), this, event.getUuid());
 
 			final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
-					event.getUuid(), jsessionid, this, event.getSide(), this.getDataBoxParent(),
-					HatchetHarrySession.get().getGameId());
+					event.getUuid(), jsessionid, this, this.getDataBoxParent(), HatchetHarrySession
+							.get().getGameId());
 			spp.add(spmb);
 			spp.setOutputMarkupId(true);
 			HomePage.LOGGER.info("### aPlayerJoinedIn(), gameId: "
@@ -1175,28 +1175,6 @@ public class HomePage extends TestReportPage
 			spp.setPosX(posX);
 			spp.setPosY(500);
 			session.setMySidePlaceholder(spp);
-
-			// TODO manage DataBox again
-			// if (!this.jsessionid.equals(event.getJsessionid()))
-			// {
-			// final DataBox dataBox = new DataBox("dataBox", this.gameId,
-			// SidePlaceholderMoveBehavior.this.homePage);
-			// final UpdateDataBoxBehavior behavior = new
-			// UpdateDataBoxBehavior(this.gameId,
-			// SidePlaceholderMoveBehavior.this.homePage, dataBox);
-			// dataBox.setOutputMarkupId(true);
-			// dataBox.add(behavior);
-			//
-			// final WebMarkupContainer _parent =
-			// this.homePage.getDataBoxParent();
-			// _parent.addOrReplace(dataBox);
-			// target.add(_parent);
-			// SidePlaceholderMoveBehavior.LOGGER.info("# databox for game id="
-			// +
-			// this.gameId);
-			// }
-
-			// target.add(spp, "secondSidePlaceholder");
 		}
 	}
 
@@ -1331,8 +1309,7 @@ public class HomePage extends TestReportPage
 			if ("firstSidePlaceholder".equals(spp.getId()))
 			{
 				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
-						spp.getUuid(), jsessionid, HomePage.this, HatchetHarrySession.get()
-								.getPlayer().getSide(), HomePage.this.getDataBoxParent(),
+						spp.getUuid(), jsessionid, HomePage.this, HomePage.this.getDataBoxParent(),
 						HatchetHarrySession.get().getGameId());
 				spp.removeAll();
 				spp.add(spmb);
@@ -1344,11 +1321,9 @@ public class HomePage extends TestReportPage
 			}
 			else if ("secondSidePlaceholder".equals(spp.getId()))
 			{
-				final String side = ("infrared".equals(HatchetHarrySession.get().getPlayer()
-						.getSide())) ? "ultraviolet" : "infrared";
 				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
-						spp.getUuid(), jsessionid, HomePage.this, side,
-						HomePage.this.getDataBoxParent(), HatchetHarrySession.get().getGameId());
+						spp.getUuid(), jsessionid, HomePage.this, HomePage.this.getDataBoxParent(),
+						HatchetHarrySession.get().getGameId());
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);
 				this.secondSidePlaceholderParent.addOrReplace(spp);

@@ -40,17 +40,15 @@ public class CardPanel extends Panel
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer cardParent;
 	private final UUID uuid;
 
-	public CardPanel(final WebMarkupContainer _cardParent, final String id,
-			final String smallImage, final String bigImage, final UUID _uuid)
+	public CardPanel(final String id, final String smallImage, final String bigImage,
+			final UUID _uuid)
 	{
 		super(id);
 		Injector.get().inject(this);
 
 		this.uuid = _uuid;
-		this.cardParent = _cardParent;
 
 		this.setOutputMarkupId(true);
 
@@ -77,8 +75,7 @@ public class CardPanel extends Panel
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
-		final PutToGraveyardBehavior putToGraveyardBehavior = new PutToGraveyardBehavior(this.uuid,
-				this.cardParent);
+		final PutToGraveyardBehavior putToGraveyardBehavior = new PutToGraveyardBehavior(this.uuid);
 		menutoggleButton.add(putToGraveyardBehavior);
 		menutoggleButton.add(new CardMoveBehavior(this, this.uuid, putToGraveyardBehavior));
 		menutoggleButton.add(new CardRotateBehavior(this, this.uuid));

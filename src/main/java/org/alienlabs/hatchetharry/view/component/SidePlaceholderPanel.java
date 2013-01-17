@@ -45,7 +45,7 @@ public class SidePlaceholderPanel extends Panel
 		final HttpServletRequest request = this.getHttpServletRequest();
 		final String jsessionid = request.getParameter("jsessionid");
 		this.add(new SidePlaceholderMoveBehavior(this, this.uuid, jsessionid, this.homePage,
-				this.side, this.homePage.getDataBoxParent(), HatchetHarrySession.get().getGameId()));
+				this.homePage.getDataBoxParent(), HatchetHarrySession.get().getGameId()));
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);

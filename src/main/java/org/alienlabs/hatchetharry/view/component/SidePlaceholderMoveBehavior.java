@@ -7,10 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.atmosphere.cpr.BroadcastFilter;
@@ -27,20 +25,18 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	private UUID uuid;
 	private String jsessionid;
 	private final WebMarkupContainer parent;
-	private final String side;
 	private final HomePage homePage;
 	final WebMarkupContainer dataBoxParent;
 	final private Long gameId;
 
 	public SidePlaceholderMoveBehavior(final WebMarkupContainer _parent, final UUID _uuid,
-			final String _jsessionid, final HomePage hp, final String _side,
-			final WebMarkupContainer _dataBoxParent, final Long _gameId)
+			final String _jsessionid, final HomePage hp, final WebMarkupContainer _dataBoxParent,
+			final Long _gameId)
 	{
 		this.parent = _parent;
 		this.uuid = _uuid;
 		this.jsessionid = _jsessionid;
 		this.homePage = hp;
-		this.side = _side;
 		this.dataBoxParent = _dataBoxParent;
 		this.gameId = _gameId;
 	}
@@ -73,7 +69,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
 					_side, this.homePage, this.uuid);
 			spp.add(new SidePlaceholderMoveBehavior(spp, this.uuid, this.jsessionid, this.homePage,
-					_side, this.homePage.getDataBoxParent(), this.gameId));
+					this.homePage.getDataBoxParent(), this.gameId));
 			spp.setOutputMarkupId(true);
 			SidePlaceholderMoveBehavior.LOGGER.info("### gameId: " + this.gameId);
 
@@ -131,44 +127,6 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			SidePlaceholderMoveBehavior.LOGGER.info("### message: " + message);
 			meteor.broadcast(message);
 		}
-	}
-
-	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
-	{
-		super.renderHead(component, response);
-		// TODO virer ces js
-		// final StringBuffer js = new StringBuffer();
-		//
-		// final HashMap<String, Object> variables = new HashMap<String,
-		// Object>();
-		// variables.put("url", this.getCallbackUrl());
-		// variables.put("uuid", this.uuid);
-		// variables.put("uuidValidForJs", this.uuid.toString().replace("-",
-		// "_"));
-		// variables.put("jsessionid", this.jsessionid);
-		// variables.put("side", this.side);
-		//
-		// final TextTemplate template1 = new
-		// PackageTextTemplate(HomePage.class,
-		// "script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js");
-		// template1.interpolate(variables);
-		// js.append("\n" + template1.asString());
-		//
-		// final TextTemplate template2 = new
-		// PackageTextTemplate(HomePage.class,
-		// "script/draggableHandle/sidePlaceholderMove.js");
-		// template2.interpolate(variables);
-		// js.append("\n" + template2.asString());
-		//
-		// final TextTemplate template3 = new
-		// PackageTextTemplate(HomePage.class,
-		// "script/draggableHandle/initSidePlaceholderDrag.js");
-		// template3.interpolate(variables);
-		// js.append("\n" + template3.asString());
-		//
-		// response.render(JavaScriptHeaderItem.forScript(js.toString(),
-		// "sidePlaceholderMove"));
 	}
 
 }
