@@ -896,8 +896,6 @@ public class HomePage extends TestReportPage
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/jquery.jquerytour.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/myStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/galleryStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/graveyardStyle.css")));
