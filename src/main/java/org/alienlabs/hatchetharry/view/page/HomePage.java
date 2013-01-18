@@ -197,8 +197,9 @@ public class HomePage extends TestReportPage
 		this.add(this.graveyardParent);
 
 		// Welcome message
-		this.add(new Label("message",
-				"version 0.2.0 (release Pass Me By), built on Friday, 18th of January 2013."));
+		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
+		final Label message2 = new Label("message2", "built on Friday, 18th of January 2013.");
+		this.add(message1, message2);
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));

@@ -67,7 +67,7 @@ public class HomePageTest
 
 		// assert rendered label component
 		final Label message = (Label)HomePageTest.tester
-				.getComponentFromLastRenderedPage("message");
+				.getComponentFromLastRenderedPage("message1");
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
 
