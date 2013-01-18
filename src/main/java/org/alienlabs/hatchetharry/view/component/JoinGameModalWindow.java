@@ -145,9 +145,14 @@ public class JoinGameModalWindow extends Panel
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
+
+				for (final MagicCard aCard : allCards)
+				{
+					aCard.setZone(CardZone.LIBRARY);
+					JoinGameModalWindow.this.persistenceService.saveCard(aCard);
+				}
+
 				deck.setCards(allCards);
-
-
 				deck.setPlayerId(JoinGameModalWindow.this.player.getId());
 				deck.shuffleLibrary();
 

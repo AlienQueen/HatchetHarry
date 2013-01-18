@@ -100,7 +100,8 @@ public class HatchetHarryApplication extends WebApplication
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
 
-		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
+		// this.mount(new MountedMapperWithoutPageComponentInfo("/",
+		// HomePage.class));
 
 		this.mountResource("favicon.ico", new PackageResourceReference(HomePage.class,
 				"image/favicon.ico"));

@@ -198,7 +198,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		this.add(new Label("message",
-				"version 0.2.0 (release Pass Me By), built on Wednesday, 16th of January 2013."));
+				"version 0.2.0 (release Pass Me By), built on Friday, 18th of January 2013."));
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));

@@ -110,13 +110,19 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.persistenceService.saveOrUpdateGame(g);
 
-				CreateGameModalWindow.this.player.setFirstOrSecond(true);
 				CreateGameModalWindow.this.persistenceService
 						.updatePlayer(CreateGameModalWindow.this.player);
 
 				final Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = CreateGameModalWindow.this.persistenceService
 						.getAllCardsFromDeck(deck.getId());
+
+				for (final MagicCard aCard : allCards)
+				{
+					aCard.setZone(CardZone.LIBRARY);
+					CreateGameModalWindow.this.persistenceService.saveCard(aCard);
+				}
+
 				deck.setCards(allCards);
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
 				deck.shuffleLibrary();
