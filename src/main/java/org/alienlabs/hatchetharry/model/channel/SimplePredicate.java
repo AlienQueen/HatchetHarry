@@ -7,6 +7,7 @@ import org.alienlabs.hatchetharry.model.Player;
 
 import com.google.common.base.Predicate;
 
+// TODO remove me
 public class SimplePredicate implements Predicate<Object>
 {
 	@Override

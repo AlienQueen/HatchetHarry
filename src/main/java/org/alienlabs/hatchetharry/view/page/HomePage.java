@@ -77,6 +77,7 @@ import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.NotifierPanel;
+import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
@@ -139,6 +140,7 @@ public class HomePage extends TestReportPage
 	private final WebMarkupContainer parentPlaceholder;
 	WebMarkupContainer playCardLink;
 	WebMarkupContainer playCardParent;
+	WebMarkupContainer playCardFromGraveyardLink;
 
 	final WebMarkupContainer galleryParent;
 	final WebMarkupContainer graveyardParent;
@@ -167,6 +169,7 @@ public class HomePage extends TestReportPage
 	private final WebMarkupContainer secondSidePlaceholderParent;
 
 	private PlayCardFromHandBehavior playCardBehavior;
+	private PlayCardFromGraveyardBehavior playCardFromGraveyardBehavior;
 	ClockPanel clockPanel;
 
 	public HomePage()
@@ -312,7 +315,9 @@ public class HomePage extends TestReportPage
 		this.generateJoinGameLink(this.player, this.galleryParent, this.secondSidePlaceholderParent);
 
 		this.generatePlayCardLink(this.hand);
+		this.generatePlayCardFromGraveyardLink();
 		this.generatePlayCardsBehaviorsForAllOpponents();
+		// this.generatePlayCardsFromGraveyardBehaviorsForAllOpponents();
 
 		this.generateDrawCardLink();
 
@@ -686,6 +691,33 @@ public class HomePage extends TestReportPage
 		this.add(playCardPlaceholder);
 	}
 
+	private void generatePlayCardFromGraveyardLink()
+	{
+		HomePage.LOGGER.info("Generating playCardFromGraveyard link");
+
+		final WebMarkupContainer playCardFromGraveyardPlaceholder = new WebMarkupContainer(
+				"playCardFromGraveyardPlaceholder");
+		playCardFromGraveyardPlaceholder.setMarkupId("playCardFromGraveyardPlaceholder0");
+		playCardFromGraveyardPlaceholder.setOutputMarkupId(true);
+
+		this.playCardFromGraveyardLink = new WebMarkupContainer("playCardFromGraveyardLink");
+		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
+		this.playCardFromGraveyardLink.setOutputMarkupId(true);
+
+		this.playCardFromGraveyardBehavior = new PlayCardFromGraveyardBehavior(this.playCardParent,
+				HatchetHarrySession.get().getPlayer().getSide());
+		this.playCardFromGraveyardLink.add(this.playCardFromGraveyardBehavior);
+
+		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
+		this.playCardFromGraveyardLink.setOutputMarkupId(true);
+		playCardFromGraveyardPlaceholder.add(this.playCardFromGraveyardLink);
+
+		this.add(playCardFromGraveyardPlaceholder);
+
+		// TODO: put this in PlayCardFromGraveyardBehavior
+		// target.appendJavaScript("jQuery(\"#menu_4_0\").hide(); ");
+	}
+
 	private void buildCombatLink()
 	{
 		final WebMarkupContainer combatPlaceholder = new WebMarkupContainer("combatPlaceholder");
@@ -1011,6 +1043,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				target.appendJavaScript("jQuery(\"#box_menu_clone\").hide(); ");
 				window.show(target);
 			}
 		};
@@ -1039,6 +1072,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				target.appendJavaScript("jQuery(\"#box_menu_clone\").hide(); ");
 				window.show(target);
 			}
 		};
@@ -1194,10 +1228,18 @@ public class HomePage extends TestReportPage
 						+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PLAY_CARD_ACTION :
+			case PLAY_CARD_FROM_HAND_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has played '" + event.getCardName()
 						+ "'!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+
+			case PLAY_CARD_FROM_GRAVEYARD_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has played '"
+						+ event.getCardName()
+						+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			case COMBAT_IN_PROGRESS_ACTION :

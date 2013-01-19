@@ -46,6 +46,7 @@
 	                <td class="rootVoice {menu: 'box_menu'}" ><img src="/image/logoh1.gif" alt="HH" width="32"></td>
 	                <td class="rootVoice {menu: 'menu_2'}" >Documentation</td>
 	                <td class="rootVoice {menu: 'menu_3'}" >Game</td>
+					<td class="rootVoice {menu: 'menu_4'}" >Zones</td>
 	              </tr>
 	              </table>
 	
@@ -80,6 +81,15 @@
 	    <a class="{menu:'sub_menu_4', action: 'showMessage(\'menu_3.4\')'}">Cards</a>
 	  </div>
 	
+	  <div id="menu_4" class="mbmenu">
+	  	<span wicket:id="playCardFromGraveyardPlaceholder">
+		    <a wicket:id="playCardFromGraveyardLink" class="{action: 'showMessage(\'menu_2.2\')'}" href="#">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Play card from graveyard
+				<br/>
+		    </a>
+		</span>
+	  </div>
+	  
 	  <div id="sub_menu_1" class="mbmenu">
 	    <a class="{action: 'showMessage(\'sub_menu_1.1\')'}">sub_menu_1.1</a>
 	    <a rel="separator"> </a>

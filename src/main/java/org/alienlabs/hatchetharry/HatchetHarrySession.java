@@ -47,6 +47,7 @@ public class HatchetHarrySession extends WebSession
 	private static String IS_GRAVEYARD_DISPLAYED = "IS_GRAVEYARD_DISPLAYED";
 	private static String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
 	private static String COMET_UUID = "COMET_UUID";
+	private static String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -64,6 +65,8 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, false);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
+		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD,
+				new ArrayList<MagicCard>());
 	}
 
 	public static HatchetHarrySession get(final Request request)
@@ -130,6 +133,13 @@ public class HatchetHarrySession extends WebSession
 	{
 		final List<MagicCard> cards = this.getCardsInGraveyard();
 		cards.add(card);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, (ArrayList<MagicCard>)cards);
+	}
+
+	public void removeCardFromGraveyard(final MagicCard card)
+	{
+		final List<MagicCard> cards = this.getCardsInGraveyard();
+		cards.remove(card);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, (ArrayList<MagicCard>)cards);
 	}
 
@@ -428,6 +438,17 @@ public class HatchetHarrySession extends WebSession
 	public void setCometUuid(final String _cometUuid)
 	{
 		this.setAttribute(HatchetHarrySession.COMET_UUID, _cometUuid);
+	}
+
+	public ArrayList<MagicCard> getAllCardsWhichHaveBeenInBattlefield()
+	{
+		return (ArrayList<MagicCard>)this
+				.getAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD);
+	}
+
+	public void setAllCardsWhichHaveBeenInBattlefield(final ArrayList<MagicCard> list)
+	{
+		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD, list);
 	}
 
 }

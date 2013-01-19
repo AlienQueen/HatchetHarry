@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -105,7 +106,7 @@ public class PutToGraveyardBehavior extends AbstractDefaultAjaxBehavior
 						final String pageUuid = HatchetHarryApplication.getCometResources().get(
 								playerToWhomToSend);
 						final PutToGraveyardCometChannel ptgcc = new PutToGraveyardCometChannel(
-								_gameId, cp);
+								_gameId, cp, mc);
 
 						EventBus.get().post(ptgcc, pageUuid);
 					}
@@ -124,7 +125,12 @@ public class PutToGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	public void removeCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToGraveyardCometChannel event)
 	{
-		target.appendJavaScript("jQuery('#" + event.getCard().getMarkupId() + "').remove();");
+		final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
+				.getAllCardsWhichHaveBeenInBattlefield();
+		toRemove.add(event.getMagicCard());
+		HatchetHarrySession.get().setAllCardsWhichHaveBeenInBattlefield(toRemove);
+
+		target.appendJavaScript("jQuery('#" + event.getCardPanel().getMarkupId() + "').remove();");
 	}
 
 	@Required
