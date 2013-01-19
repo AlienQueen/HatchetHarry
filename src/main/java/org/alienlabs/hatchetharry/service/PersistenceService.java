@@ -566,4 +566,17 @@ public class PersistenceService implements Serializable
 		return l;
 	}
 
+	@Transactional
+	public void resetDb()
+	{
+		final Session session = this.gameDao.getSession();
+
+		session.createSQLQuery("truncate table Player").executeUpdate();
+		session.createSQLQuery("truncate table Game").executeUpdate();
+		session.createSQLQuery("truncate table Player_Game").executeUpdate();
+		session.createSQLQuery("truncate table Side").executeUpdate();
+		session.createSQLQuery("truncate table Deck").executeUpdate();
+		session.createSQLQuery("truncate table MagicCard").executeUpdate();
+	}
+
 }

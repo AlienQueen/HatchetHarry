@@ -201,7 +201,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
-		final Label message2 = new Label("message2", "built on Friday, 18th of January 2013.");
+		final Label message2 = new Label("message2", "built on Saturday, 19th of January 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -347,6 +347,25 @@ public class HomePage extends TestReportPage
 		{
 			this.buildEmptyDataBox();
 		}
+
+		this.generateResetDbLink();
+	}
+
+	private void generateResetDbLink()
+	{
+		this.add(new AjaxLink<Void>("resetDbLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				HomePage.LOGGER.info("reset DB");
+				HomePage.this.persistenceService.resetDb();
+				target.appendJavaScript("alert('The database has been reset, please clear your cookies and refresh this page (F5)!');");
+			}
+
+		});
 	}
 
 	private void buildDock()
