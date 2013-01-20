@@ -131,7 +131,7 @@ public class CardPanel extends Panel
 						owner.getSide());
 				cardBubbleTip.setOutputMarkupId(true);
 				cardBubbleTip.setMarkupId("cardTooltip" + this.uuid);
-				cardBubbleTip.add(new AttributeModifier("style", "display:none;"));
+				cardBubbleTip.add(new AttributeModifier("style", "display: none;"));
 
 				form.add(cardBubbleTip);
 			}

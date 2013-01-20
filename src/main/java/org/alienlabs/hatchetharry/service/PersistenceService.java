@@ -577,6 +577,7 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("truncate table Side").executeUpdate();
 		session.createSQLQuery("truncate table Deck").executeUpdate();
 		session.createSQLQuery("truncate table MagicCard").executeUpdate();
+		session.createSQLQuery("truncate table MagicCard__cardPlaceholderId").executeUpdate();
 	}
 
 }

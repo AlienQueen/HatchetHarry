@@ -201,7 +201,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
-		final Label message2 = new Label("message2", "built on Saturday, 19th of January 2013.");
+		final Label message2 = new Label("message2", "built on Sunday, 20th of January 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -349,6 +349,22 @@ public class HomePage extends TestReportPage
 		}
 
 		this.generateResetDbLink();
+		this.generateHideAllTooltipsLink();
+	}
+
+	private void generateHideAllTooltipsLink()
+	{
+		this.add(new AjaxLink<Void>("hideAllTooltipsLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavaScript("jQuery('.cardTooltip').attr('style', 'display: none;');");
+			}
+
+		});
 	}
 
 	private void generateResetDbLink()

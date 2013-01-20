@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -130,7 +131,38 @@ public class PutToGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		toRemove.add(event.getMagicCard());
 		HatchetHarrySession.get().setAllCardsWhichHaveBeenInBattlefield(toRemove);
 
-		target.appendJavaScript("jQuery('#" + event.getCardPanel().getMarkupId() + "').remove();");
+		// TODO: apply DRY (see PCFHB & PCFGB)
+		final StringBuffer buf = new StringBuffer();
+		buf.append("window.setTimeout(function() { ");
+
+		buf.append("jQuery('#" + event.getCardPanel().getMarkupId() + "').children(0).remove(); ");
+
+		final List<MagicCard> allCardsInGraveyard = this.persistenceService
+				.getAllCardsInGraveyardForAGame(event.getGameId());
+		for (final MagicCard aCard : allCardsInGraveyard)
+		{
+			buf.append("jQuery('#menutoggleButton" + aCard.getUuid() + "').remove(); ");
+		}
+
+		for (final MagicCard aCard : toRemove)
+		{
+			final MagicCard freshCard = this.persistenceService.getCardFromUuid(aCard
+					.getUuidObject());
+
+			Collections.sort(freshCard.getCardPlaceholderIds());
+			for (final String _cardPlaceholderId : freshCard.getCardPlaceholderIds())
+			{
+				if (freshCard.getCardPlaceholderIds().indexOf(_cardPlaceholderId) > 0)
+				{
+					PutToGraveyardBehavior.LOGGER.info("=== removing: " + _cardPlaceholderId);
+					buf.append("jQuery('#" + _cardPlaceholderId + "').children(0).remove(); ");
+				}
+			}
+		}
+
+		buf.append(" }, 3000); ");
+
+		target.appendJavaScript(buf.toString());
 	}
 
 	@Required

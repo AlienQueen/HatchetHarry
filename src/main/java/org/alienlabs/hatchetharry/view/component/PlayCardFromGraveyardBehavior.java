@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -89,27 +90,10 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setZone(CardZone.BATTLEFIELD);
-		card.setCardPlaceholderId("cardPlaceholdera" + placeholderId);
+		final String cardPlaceholderId = "cardPlaceholdera" + placeholderId;
+		card.getCardPlaceholderIds().add(cardPlaceholderId);
 		this.persistenceService.saveCard(card);
 		HatchetHarrySession.get().removeCardFromGraveyard(card);
-
-		// TODO remove this
-		// this.cp = new CardPanel("cardPlaceholdera" + placeholderId,
-		// card.getSmallImageFilename(),
-		// card.getBigImageFilename(), card.getUuidObject());
-		// this.cp.setOutputMarkupId(true);
-		// this.cp.setMarkupId("cardPlaceholdera" + placeholderId);
-		// HatchetHarrySession.get().addCardInBattleField(this.cp);
-
-		// this.cardParent.addOrReplace(this.cp);
-		// target.add(this.cardParent);
-
-		// TODO: manage new graveyard
-		// final HandComponent gallery = new HandComponent("gallery");
-		// gallery.setOutputMarkupId(true);
-
-		// this.galleryParent.addOrReplace(gallery);
-		// target.add(this.galleryParent);
 
 		card.setX(50l + (placeholderId * 10));
 		card.setY(50l + (placeholderId * 25));
@@ -155,14 +139,16 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	{
 		PlayCardFromGraveyardBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
 
+		// TODO: apply DRY (see PCFHB & PTGB)
 		final Long id = event.getCardPlaceholderId();
+		final String placeholder = "cardPlaceholdera" + id;
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
 
-		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
+		this.cp = new CardPanel(placeholder, card.getSmallImageFilename(),
 				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
-		this.cp.setMarkupId("cardPlaceholdera" + event.getCardPlaceholderId());
+		this.cp.setMarkupId(placeholder);
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
 
 		this.cardParent.addOrReplace(this.cp);
@@ -207,12 +193,24 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		{
 			final MagicCard freshCard = this.persistenceService.getCardFromUuid(aCard
 					.getUuidObject());
-			PlayCardFromGraveyardBehavior.LOGGER.info("=== removing: "
-					+ freshCard.getCardPlaceholderId());
-			buf.append("jQuery('#" + freshCard.getCardPlaceholderId() + "').remove(); ");
+
+			Collections.sort(freshCard.getCardPlaceholderIds());
+			for (final String _cardPlaceholderId : freshCard.getCardPlaceholderIds())
+			{
+				if (freshCard.getCardPlaceholderIds().indexOf(_cardPlaceholderId) > 0)
+				{
+					PlayCardFromGraveyardBehavior.LOGGER
+							.info("=== removing: " + _cardPlaceholderId);
+					buf.append("jQuery('#" + _cardPlaceholderId + "').children(0).remove(); ");
+				}
+				else
+				{
+					PlayCardFromGraveyardBehavior.LOGGER.info("~~~ not removing: "
+							+ _cardPlaceholderId + ", placeholder: " + placeholder);
+				}
+			}
 		}
 
-		buf.append("jQuery('#" + card.getCardPlaceholderId() + "').remove(); ");
 		buf.append(" }, 3000); ");
 
 		target.appendJavaScript(buf.toString());

@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -96,7 +97,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setZone(CardZone.BATTLEFIELD);
-		card.setCardPlaceholderId("cardPlaceholdera" + placeholderId);
+		final String cardPlaceholderId = "cardPlaceholdera" + placeholderId;
+		card.getCardPlaceholderIds().add(cardPlaceholderId);
 		this.persistenceService.saveCard(card);
 
 		this.cp = new CardPanel("cardPlaceholdera" + placeholderId, card.getSmallImageFilename(),
@@ -141,7 +143,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
-		// post a message for all players in the game, except me
+		// post a message for all players in the game
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final Long player = allPlayersInGame.get(i).longValue();
@@ -151,13 +153,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			EventBus.get().post(ncc, pageUuid);
 		}
 
-		// TODO: is this really useful???
-		// post a message for me
-		final String me = HatchetHarryApplication.getCometResources().get(
-				HatchetHarrySession.get().getPlayer().getId());
-		PlayCardFromHandBehavior.LOGGER.info("pageUuid for myself: " + me);
-		EventBus.get().post(pcfhcc, me);
-		EventBus.get().post(ncc, me);
 	}
 
 	@Subscribe
@@ -167,13 +162,14 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		PlayCardFromHandBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
 
 		final Long id = event.getCardPlaceholderId();
+		final String placeholder = "cardPlaceholdera" + id;
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
 
-		this.cp = new CardPanel("cardPlaceholdera" + id, card.getSmallImageFilename(),
+		this.cp = new CardPanel(placeholder, card.getSmallImageFilename(),
 				card.getBigImageFilename(), card.getUuidObject());
 		this.cp.setOutputMarkupId(true);
-		this.cp.setMarkupId("cardPlaceholdera" + event.getCardPlaceholderId());
+		this.cp.setMarkupId(placeholder);
 		HatchetHarrySession.get().addCardInBattleField(this.cp);
 
 		this.cardParent.addOrReplace(this.cp);
@@ -205,6 +201,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 					+ "useElement: \"cardTooltip" + aCard.getUuid() + "\"}); ");
 		}
 
+		// TODO: apply DRY (see PCFGB & PTGB)
 		final List<MagicCard> allCardsInGraveyard = this.persistenceService
 				.getAllCardsInGraveyardForAGame(event.getGameId());
 		for (final MagicCard aCard : allCardsInGraveyard)
@@ -218,9 +215,24 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		{
 			final MagicCard freshCard = this.persistenceService.getCardFromUuid(aCard
 					.getUuidObject());
-			PlayCardFromHandBehavior.LOGGER.info("~~~ removing: "
-					+ freshCard.getCardPlaceholderId());
-			buf.append("jQuery('#" + freshCard.getCardPlaceholderId() + "').remove(); ");
+			PlayCardFromHandBehavior.LOGGER.info("~~~ freshCard: "
+					+ freshCard.getBigImageFilename());
+
+			Collections.sort(freshCard.getCardPlaceholderIds());
+			for (final String _cardPlaceholderId : freshCard.getCardPlaceholderIds())
+			{
+				if (freshCard.getCardPlaceholderIds().indexOf(_cardPlaceholderId) > 0)
+				{
+					PlayCardFromHandBehavior.LOGGER.info("~~~ removing: " + _cardPlaceholderId
+							+ ", placeholder: " + placeholder);
+					buf.append("jQuery('#" + _cardPlaceholderId + "').children(0).remove(); ");
+				}
+				else
+				{
+					PlayCardFromHandBehavior.LOGGER.info("~~~ not removing: " + _cardPlaceholderId
+							+ ", placeholder: " + placeholder);
+				}
+			}
 		}
 
 		buf.append(" }, 3000); ");
