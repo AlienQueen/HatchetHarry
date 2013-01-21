@@ -72,6 +72,10 @@ public class CardPanel extends Panel
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("menutoggleButton" + this.uuid.toString());
 
+		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.uuid);
+		menutoggleButton.add(new AttributeModifier("style", "position: absolute; top: "
+				+ myCard.getY() + "px; left: " + myCard.getX() + "px;"));
+
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
