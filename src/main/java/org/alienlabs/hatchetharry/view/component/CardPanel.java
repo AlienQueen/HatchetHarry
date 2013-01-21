@@ -75,9 +75,17 @@ public class CardPanel extends Panel
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
-		final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(this.uuid);
+		final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(
+				this.uuid);
 		menutoggleButton.add(putToGraveyardFromBattlefieldBehavior);
-		menutoggleButton.add(new CardMoveBehavior(this, this.uuid, putToGraveyardFromBattlefieldBehavior));
+
+		final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(
+				this.uuid);
+		menutoggleButton.add(putToHandFromBattlefieldBehavior);
+
+		menutoggleButton.add(new CardMoveBehavior(this, this.uuid,
+				putToGraveyardFromBattlefieldBehavior, putToHandFromBattlefieldBehavior));
+
 		menutoggleButton.add(new CardRotateBehavior(this, this.uuid));
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(

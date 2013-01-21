@@ -5,8 +5,12 @@ window.setTimeout(function() {
 						menu : 'myMenu'
 					},
 					function(action, el, pos) {
+						var uuid = jQuery(el).attr('id').replace('card', '');
+						
 						if (action === 'edit') {
-							Wicket.Ajax.get({ 'u' : '${graveyardUrl}&uuid=' + jQuery(el).attr('id').replace('card', '') });
+							Wicket.Ajax.get({ 'u' : '${graveyardUrl}&uuid=' + uuid });
+						} else if (action === 'cut') {
+							Wicket.Ajax.get({ 'u' : '${handUrl}&uuid=' + uuid });
 						}
 //						alert('Action: ' + action + '\n\n' + 'Element ID: '
 //								+ jQuery(el).attr('id') + '\n\n' + 'X: '

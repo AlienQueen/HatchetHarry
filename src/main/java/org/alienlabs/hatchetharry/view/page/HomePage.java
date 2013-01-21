@@ -1287,6 +1287,14 @@ public class HomePage extends TestReportPage
 						+ "' to graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
+			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has put '"
+						+ event.getCardName()
+						+ "' to his (her) hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+
 			case COMBAT_IN_PROGRESS_ACTION :
 				if (event.isCombatInProgress())
 				{
@@ -1552,6 +1560,11 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getGraveyardParent()
 	{
 		return this.graveyardParent;
+	}
+
+	public WebMarkupContainer getGalleryParent()
+	{
+		return this.galleryParent;
 	}
 
 	public WebMarkupContainer getPlayCardParent()

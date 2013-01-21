@@ -11,11 +11,10 @@ import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
@@ -26,18 +25,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBehavior
+public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(PutToGraveyardFromBattlefieldBehavior.class);
+			.getLogger(PutToHandFromBattlefieldBehavior.class);
 	private final UUID uuid;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public PutToGraveyardFromBattlefieldBehavior(final UUID _uuid)
+	public PutToHandFromBattlefieldBehavior(final UUID _uuid)
 	{
 		Injector.get().inject(this);
 		this.uuid = _uuid;
@@ -46,7 +45,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("respond");
+		PutToHandFromBattlefieldBehavior.LOGGER.info("respond");
 
 		final String uniqueid = this.uuid.toString();
 		MagicCard mc = null;
@@ -57,7 +56,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		}
 		catch (final IllegalArgumentException e)
 		{
-			PutToGraveyardFromBattlefieldBehavior.LOGGER.error("error parsing UUID of card", e);
+			PutToHandFromBattlefieldBehavior.LOGGER.error("error parsing UUID of card", e);
 		}
 
 		if (null == mc)
@@ -65,10 +64,10 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 			return;
 		}
 
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
+		PutToHandFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
 				+ HatchetHarrySession.get().getPlayer().getId());
 
-		mc.setZone(CardZone.GRAVEYARD);
+		mc.setZone(CardZone.HAND);
 		this.persistenceService.saveCard(mc);
 
 		final List<CardPanel> allCardsInBattlefield = HatchetHarrySession.get()
@@ -80,28 +79,29 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 			{
 				if (allCardsInBattlefield.remove(cp))
 				{
-					PutToGraveyardFromBattlefieldBehavior.LOGGER.info("|||");
 					HatchetHarrySession.get().setAllCardsInBattleField(allCardsInBattlefield);
 
-					final Long _gameId = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
+					final Long _gameId = PutToHandFromBattlefieldBehavior.this.persistenceService
 							.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
 							.iterator().next().getId();
-					final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
+					final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService
 							.giveAllPlayersFromGame(_gameId);
 
-					HatchetHarrySession.get().addCardInGraveyard(mc);
+					final ArrayList<MagicCard> allCardsInHand = HatchetHarrySession.get()
+							.getFirstCardsInHand();
+					allCardsInHand.add(mc);
+					HatchetHarrySession.get()
+							.addCardIdInHand(allCardsInHand.size() + 1, mc.getId());
 
-					final boolean isGraveyardDisplayed = HatchetHarrySession.get()
-							.isGraveyardDisplayed();
-					if (isGraveyardDisplayed)
+					final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+					if (isHandDisplayed)
 					{
-						final Component graveyardToUpdate = new GraveyardComponent("graveyard");
+						final HandComponent handToUpdate = new HandComponent("gallery");
+						handToUpdate.setOutputMarkupId(true);
+						((HomePage)target.getPage()).getGalleryParent().addOrReplace(handToUpdate);
+						target.add(((HomePage)target.getPage()).getGalleryParent());
 
-						((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
-								graveyardToUpdate);
-						target.add(((HomePage)target.getPage()).getGraveyardParent());
-
-						target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
+						target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
 					}
 
 					for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -109,30 +109,30 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 						final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 						final String pageUuid = HatchetHarryApplication.getCometResources().get(
 								playerToWhomToSend);
-						final PutToGraveyardCometChannel ptgcc = new PutToGraveyardCometChannel(
+						final PutToHandFromBattlefieldCometChannel pthfbcc = new PutToHandFromBattlefieldCometChannel(
 								_gameId, cp, mc);
 						final NotifierCometChannel ncc = new NotifierCometChannel(
-								NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD, _gameId,
+								NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD, _gameId,
 								HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
 										.get().getPlayer().getName(), "", "", mc.getTitle(), null);
-						EventBus.get().post(ptgcc, pageUuid);
+						EventBus.get().post(pthfbcc, pageUuid);
 						EventBus.get().post(ncc, pageUuid);
 					}
 
 					return;
 				}
-				PutToGraveyardFromBattlefieldBehavior.LOGGER.info("could not remove card uuid= "
+				PutToHandFromBattlefieldBehavior.LOGGER.info("could not remove card uuid= "
 						+ mc.getUuid());
 				return;
 			}
-			PutToGraveyardFromBattlefieldBehavior.LOGGER.info("could not find CardPanel uuid= "
+			PutToHandFromBattlefieldBehavior.LOGGER.info("could not find CardPanel uuid= "
 					+ mc.getUuid() + " in allCardsInBattlefield from session");
 		}
 	}
 
 	@Subscribe
-	public void removeCardFromBattlefield(final AjaxRequestTarget target,
-			final PutToGraveyardCometChannel event)
+	public void putToHandFromBattlefield(final AjaxRequestTarget target,
+			final PutToHandFromBattlefieldCometChannel event)
 	{
 		final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
 				.getAllCardsWhichHaveBeenInBattlefield();

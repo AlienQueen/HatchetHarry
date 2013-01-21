@@ -157,7 +157,8 @@ public class HatchetHarrySession extends WebSession
 	{
 		if (this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND) == null)
 		{
-			this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, new ArrayList<Integer>());
+			// TODO ArrayList<Long> or ArrayList<Integer>?
+			this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, new ArrayList<Long>());
 		}
 		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
 	}

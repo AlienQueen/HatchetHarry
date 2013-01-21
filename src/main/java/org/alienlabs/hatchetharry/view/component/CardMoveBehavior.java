@@ -36,19 +36,22 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
-	private final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior;
+	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardBehavior;
+	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
-			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior)
+			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
+			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior)
 	{
 		Injector.get().inject(this);
 		this.panel = cp;
 		this.uuid = _uuid;
-		this._putToGraveyardBehavior = _putToGraveyardBehavior;
+		this.putToGraveyardBehavior = _putToGraveyardBehavior;
+		this.putToHandFromBattlefieldBehavior = _putToHandFromBattlefieldBehavior;
 	}
 
 	@Override
@@ -139,7 +142,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
-		variables.put("graveyardUrl", this._putToGraveyardBehavior.getCallbackUrl());
+		variables.put("graveyardUrl", this.putToGraveyardBehavior.getCallbackUrl());
+		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
 
 		final TextTemplate template4 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.js");
