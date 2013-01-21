@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
@@ -98,7 +99,8 @@ public class JavaScriptUtils
 			Collections.sort(freshCard.getCardPlaceholderIds());
 			for (final String _cardPlaceholderId : freshCard.getCardPlaceholderIds())
 			{
-				if (freshCard.getCardPlaceholderIds().indexOf(_cardPlaceholderId) > 0)
+				if (!CardZone.BATTLEFIELD.equals(freshCard.getZone())
+						|| (freshCard.getCardPlaceholderIds().indexOf(_cardPlaceholderId) > 0))
 				{
 					buf.append("jQuery('#" + _cardPlaceholderId + "').children(0).remove(); ");
 				}

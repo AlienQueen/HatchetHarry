@@ -64,6 +64,11 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			return;
 		}
 
+		if (!CardZone.BATTLEFIELD.equals(mc.getZone()))
+		{
+			return;
+		}
+
 		PutToHandFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
 				+ HatchetHarrySession.get().getPlayer().getId());
 
@@ -110,7 +115,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 						final String pageUuid = HatchetHarryApplication.getCometResources().get(
 								playerToWhomToSend);
 						final PutToHandFromBattlefieldCometChannel pthfbcc = new PutToHandFromBattlefieldCometChannel(
-								_gameId, cp, mc);
+								_gameId, cp, mc, HatchetHarrySession.get().getPlayer().getId());
 						final NotifierCometChannel ncc = new NotifierCometChannel(
 								NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD, _gameId,
 								HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
@@ -134,6 +139,17 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 	public void putToHandFromBattlefield(final AjaxRequestTarget target,
 			final PutToHandFromBattlefieldCometChannel event)
 	{
+		if (HatchetHarrySession.get().getPlayer().getId().longValue() != event.getPlayerId())
+		{
+			final List<CardPanel> allCardsInBattlefield = HatchetHarrySession.get()
+					.getAllCardsInBattleField();
+			allCardsInBattlefield.remove(event.getCardPanel());
+
+			final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
+					.getAllCardsWhichHaveBeenInBattlefield();
+			toRemove.add(event.getMagicCard());
+		}
+
 		final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
 				.getAllCardsWhichHaveBeenInBattlefield();
 		toRemove.add(event.getMagicCard());
