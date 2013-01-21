@@ -8,7 +8,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -38,7 +37,6 @@ public class HatchetHarryApplication extends WebApplication
 			ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
-	private Player player;
 	private boolean mistletoeTest = false;
 	EventBus eventBus;
 

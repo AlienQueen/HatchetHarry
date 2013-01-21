@@ -1,8 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +16,7 @@ import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -39,17 +38,13 @@ import org.springframework.beans.factory.annotation.Required;
 public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-
 	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromGraveyardBehavior.class);
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
 	private final WebMarkupContainer cardParent;
-
 	private UUID uuidToLookFor;
-
-	private CardPanel cp;
 	private String side;
 
 	public PlayCardFromGraveyardBehavior(final WebMarkupContainer _cardParent, final String _side)
@@ -106,8 +101,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 
 		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(graveyardToUpdate);
 		target.add(((HomePage)target.getPage()).getGraveyardParent());
-		// TODO externalize this string
-		buf.append("var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard();");
+
+		buf.append(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
 		target.appendJavaScript(buf.toString());
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
@@ -134,86 +129,15 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Subscribe
-	public void playCardFromHand(final AjaxRequestTarget target,
+	public void playCardFromGraveyard(final AjaxRequestTarget target,
 			final PlayCardFromGraveyardCometChannel event)
 	{
-		PlayCardFromGraveyardBehavior.LOGGER.info("### card: " + event.getUuidToLookFor());
-
-		// TODO: apply DRY (see PCFHB & PTGB)
-		final Long id = event.getCardPlaceholderId();
-		final String placeholder = "cardPlaceholdera" + id;
-
-		final MagicCard card = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
-
-		this.cp = new CardPanel(placeholder, card.getSmallImageFilename(),
-				card.getBigImageFilename(), card.getUuidObject());
-		this.cp.setOutputMarkupId(true);
-		this.cp.setMarkupId(placeholder);
-		HatchetHarrySession.get().addCardInBattleField(this.cp);
-
-		this.cardParent.addOrReplace(this.cp);
-		target.add(this.cardParent);
-
-		final StringBuffer buf = new StringBuffer();
-		buf.append("window.setTimeout(function() { ");
-
-		final List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattleFieldForAGame(event.getGameId());
-		for (final MagicCard aCard : allCardsInBattlefield)
-		{
-			buf.append("var card = jQuery(\"#menutoggleButton" + aCard.getUuid() + "\"); "
-					+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
-					+ aCard.getX() + "px\");" + "card.css(\"top\", \"" + aCard.getY() + "px\"); ");
-			PlayCardFromGraveyardBehavior.LOGGER.info("moving card UUID=" + aCard.getUuid()
-					+ " to posX=" + aCard.getX() + ", posY=" + aCard.getY());
-
-			if (aCard.isTapped())
-			{
-				buf.append("jQuery('#card" + aCard.getUuid() + "').rotate(90); ");
-			}
-			else
-			{
-				buf.append("jQuery('#card" + aCard.getUuid() + "').rotate(0); ");
-			}
-
-			buf.append("jQuery(\"#card" + aCard.getUuid() + "\").easyTooltip({"
-					+ "useElement: \"cardTooltip" + aCard.getUuid() + "\"}); ");
-		}
-
-		final List<MagicCard> allCardsInGraveyard = this.persistenceService
-				.getAllCardsInGraveyardForAGame(event.getGameId());
-		for (final MagicCard aCard : allCardsInGraveyard)
-		{
-			buf.append("jQuery('#menutoggleButton" + aCard.getUuid() + "').remove(); ");
-		}
-
-		final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
-				.getAllCardsWhichHaveBeenInBattlefield();
-		for (final MagicCard aCard : toRemove)
-		{
-			final MagicCard freshCard = this.persistenceService.getCardFromUuid(aCard
-					.getUuidObject());
-
-			Collections.sort(freshCard.getCardPlaceholderIds());
-			for (final String _cardPlaceholderId : freshCard.getCardPlaceholderIds())
-			{
-				if (freshCard.getCardPlaceholderIds().indexOf(_cardPlaceholderId) > 0)
-				{
-					PlayCardFromGraveyardBehavior.LOGGER
-							.info("=== removing: " + _cardPlaceholderId);
-					buf.append("jQuery('#" + _cardPlaceholderId + "').children(0).remove(); ");
-				}
-				else
-				{
-					PlayCardFromGraveyardBehavior.LOGGER.info("~~~ not removing: "
-							+ _cardPlaceholderId + ", placeholder: " + placeholder);
-				}
-			}
-		}
-
-		buf.append(" }, 3000); ");
-
-		target.appendJavaScript(buf.toString());
+		JavaScriptUtils.putCardInGame(target, event.getCardPlaceholderId(),
+				this.persistenceService, event.getUuidToLookFor(), this.cardParent);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+				event.getGameId());
+		JavaScriptUtils.removeNonRelevantCardsFromBatlefield(target, this.persistenceService,
+				event.getGameId());
 	}
 
 	@Override

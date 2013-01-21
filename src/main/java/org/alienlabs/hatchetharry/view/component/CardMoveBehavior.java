@@ -36,14 +36,14 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
-	private final PutToGraveyardBehavior _putToGraveyardBehavior;
+	private final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
-			final PutToGraveyardBehavior _putToGraveyardBehavior)
+			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior)
 	{
 		Injector.get().inject(this);
 		this.panel = cp;

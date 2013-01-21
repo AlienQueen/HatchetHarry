@@ -21,6 +21,7 @@ import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -218,9 +219,8 @@ public class JoinGameModalWindow extends Panel
 				}
 
 				javaScript
-						.append("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); "
-								+ "var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ");
-
+						.append("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
+				javaScript.append(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
 				JoinGameModalWindow.LOGGER.info("close!");
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
@@ -278,7 +278,8 @@ public class JoinGameModalWindow extends Panel
 								+ posX2
 								+ "px'); "
 								+ "card.css('top', '500px'); }, 3000); ");
-
+				// TODO remove gameId management since we now have Comet
+				// channels
 				javaScript.append("window.gameId = " + session.getGameId() + "; ");
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
@@ -350,7 +351,7 @@ public class JoinGameModalWindow extends Panel
 							new GraveyardComponent("graveyard"));
 					target.add(((HomePage)target.getPage()).getGraveyardParent());
 
-					target.appendJavaScript("var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard();");
+					target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
 				}
 			}
 

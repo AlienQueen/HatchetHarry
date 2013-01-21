@@ -66,6 +66,7 @@ import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
+import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
@@ -403,7 +404,7 @@ public class HomePage extends TestReportPage
 				HatchetHarrySession.get().setHandDisplayed(!isHandDisplayed);
 
 				target.add(HomePage.this.galleryParent);
-				target.appendJavaScript("var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval();");
+				target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
 			}
 
 			@Override
@@ -445,7 +446,7 @@ public class HomePage extends TestReportPage
 
 				if (!isGraveyardDisplayed)
 				{
-					target.appendJavaScript("var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard();");
+					target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
 				}
 
 				HatchetHarrySession.get().setGraveyardDisplayed(!isGraveyardDisplayed);
@@ -833,7 +834,8 @@ public class HomePage extends TestReportPage
 
 					HomePage.this.galleryParent.addOrReplace(gallery);
 					target.add(HomePage.this.galleryParent);
-					target.appendJavaScript("jQuery(document).ready(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); });");
+					target.appendJavaScript("jQuery(document).ready(function() { "
+							+ JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT + " });");
 
 					final Player me = session.getPlayer();
 					final Long gameId = HomePage.this.persistenceService
@@ -1277,6 +1279,14 @@ public class HomePage extends TestReportPage
 						+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
+			case PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has put '"
+						+ event.getCardName()
+						+ "' to graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+
 			case COMBAT_IN_PROGRESS_ACTION :
 				if (event.isCombatInProgress())
 				{
@@ -1312,6 +1322,7 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(buf.toString());
 	}
 
+	// TODO remove SimplePredicate.class
 	@Subscribe(filter = SimplePredicate.class)
 	public void displayJoinGameMessage(final AjaxRequestTarget target,
 			final JoinGameNotificationCometChannel event)
@@ -1327,6 +1338,8 @@ public class HomePage extends TestReportPage
 
 		if (cond)
 		{
+			// TODO remove gameId management since we now have Comet
+			// channels
 			target.appendJavaScript("var id = jQuery(jQuery('input[name=\"jsessionid\"]')[1]).attr(\"value\"); if ((typeof id != 'undefined') && (id != \""
 					+ event.getJsessionid()
 					+ "\") && (typeof window.gameId != 'undefined') && (window.gameId == "
