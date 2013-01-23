@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +18,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
-import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -71,79 +69,37 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		mc.setZone(CardZone.GRAVEYARD);
 		this.persistenceService.saveCard(mc);
 
-		final List<CardPanel> allCardsInBattlefield = HatchetHarrySession.get()
-				.getAllCardsInBattleField();
+		final Long gameId = HatchetHarrySession.get().getPlayer().getGames().iterator().next()
+				.getId();
+		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
+				.giveAllPlayersFromGame(gameId);
 
-		for (final CardPanel cp : allCardsInBattlefield)
+		final boolean isGraveyardDisplayed = HatchetHarrySession.get().isGraveyardDisplayed();
+		if (isGraveyardDisplayed)
 		{
-			if (mc.getUuid().equals(cp.getUuid().toString()))
-			{
-				if (allCardsInBattlefield.remove(cp))
-				{
-					PutToGraveyardFromBattlefieldBehavior.LOGGER.info("|||");
-					HatchetHarrySession.get().setAllCardsInBattleField(allCardsInBattlefield);
+			final Component graveyardToUpdate = new GraveyardComponent("graveyard");
 
-					final Long _gameId = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
-							.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
-							.iterator().next().getId();
-					final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
-							.giveAllPlayersFromGame(_gameId);
+			((HomePage)target.getPage()).getGraveyardParent().addOrReplace(graveyardToUpdate);
+			target.add(((HomePage)target.getPage()).getGraveyardParent());
 
-					HatchetHarrySession.get().addCardInGraveyard(mc);
-
-					final boolean isGraveyardDisplayed = HatchetHarrySession.get()
-							.isGraveyardDisplayed();
-					if (isGraveyardDisplayed)
-					{
-						final Component graveyardToUpdate = new GraveyardComponent("graveyard");
-
-						((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
-								graveyardToUpdate);
-						target.add(((HomePage)target.getPage()).getGraveyardParent());
-
-						target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
-					}
-
-					for (int i = 0; i < allPlayersInGame.size(); i++)
-					{
-						final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-						final String pageUuid = HatchetHarryApplication.getCometResources().get(
-								playerToWhomToSend);
-						final PutToGraveyardCometChannel ptgcc = new PutToGraveyardCometChannel(
-								_gameId, cp, mc);
-						final NotifierCometChannel ncc = new NotifierCometChannel(
-								NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD, _gameId,
-								HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
-										.get().getPlayer().getName(), "", "", mc.getTitle(), null);
-						EventBus.get().post(ptgcc, pageUuid);
-						EventBus.get().post(ncc, pageUuid);
-					}
-
-					return;
-				}
-				PutToGraveyardFromBattlefieldBehavior.LOGGER.info("could not remove card uuid= "
-						+ mc.getUuid());
-				return;
-			}
-			PutToGraveyardFromBattlefieldBehavior.LOGGER.info("could not find CardPanel uuid= "
-					+ mc.getUuid() + " in allCardsInBattlefield from session");
+			target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
 		}
-	}
 
-	@Subscribe
-	public void removeCardFromBattlefield(final AjaxRequestTarget target,
-			final PutToGraveyardCometChannel event)
-	{
-		final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
-				.getAllCardsWhichHaveBeenInBattlefield();
-		toRemove.add(event.getMagicCard());
-		HatchetHarrySession.get().setAllCardsWhichHaveBeenInBattlefield(toRemove);
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
+			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+			final String _pageUuid = HatchetHarryApplication.getCometResources().get(
+					playerToWhomToSend);
 
-		target.appendJavaScript("window.setTimeout(function() { jQuery('#"
-				+ event.getCardPanel().getMarkupId() + "').children(0).remove(); }, 3000); ");
+			final PutToGraveyardCometChannel _ptgcc = new PutToGraveyardCometChannel(gameId, mc);
+			final NotifierCometChannel _ncc = new NotifierCometChannel(
+					NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD, gameId,
+					HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
+							.getPlayer().getName(), "", "", mc.getTitle(), null);
 
-		JavaScriptUtils.removeNonRelevantCardsFromBatlefield(target, this.persistenceService,
-				event.getGameId());
+			EventBus.get().post(_ptgcc, _pageUuid);
+			EventBus.get().post(_ncc, _pageUuid);
+		}
 	}
 
 	@Required

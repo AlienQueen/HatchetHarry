@@ -51,7 +51,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<!--  create= provide data at start-up by dropping tables, update= no start-up data model modification -->
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="hibernate.connection.pool_size">100</prop>
 				<prop key="hibernate.show_sql">false</prop>
@@ -63,7 +63,7 @@
             	<prop key="hibernate.cache.use_second_level_cache">true</prop>
             	<prop key="hibernate.cache.use_query_cache">true</prop>
 				<!-- We tell Hibernate that we use EhCache -->
-            	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+            	<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
 			</props>
 		</property>
 	</bean>

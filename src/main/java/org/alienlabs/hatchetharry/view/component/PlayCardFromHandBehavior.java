@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
-import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
@@ -22,7 +21,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
-import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -44,22 +42,18 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer cardParent;
 	private final WebMarkupContainer galleryParent;
 
 	private UUID uuidToLookFor;
 	private final int currentCard;
 
-	private CardPanel cp;
 	private String side;
 
-	public PlayCardFromHandBehavior(final WebMarkupContainer _cardParent,
-			final WebMarkupContainer _galleryParent, final UUID _uuidToLookFor,
-			final int _currentCard, final String _side)
+	public PlayCardFromHandBehavior(final WebMarkupContainer _galleryParent,
+			final UUID _uuidToLookFor, final int _currentCard, final String _side)
 	{
 		super();
 		Injector.get().inject(this);
-		this.cardParent = _cardParent;
 		this.galleryParent = _galleryParent;
 		this.uuidToLookFor = _uuidToLookFor;
 		this.currentCard = _currentCard;
@@ -69,26 +63,15 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		PlayCardFromHandBehavior.LOGGER.info("respond");
-
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
-		PlayCardFromHandBehavior.LOGGER.info("URL: " + request.getQueryString());
-
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
-		PlayCardFromHandBehavior.LOGGER.info("uuidToLookFor: " + this.uuidToLookFor);
+		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
 		final Long gameId = HatchetHarrySession.get().getPlayer().getGames().iterator().next()
 				.getId();
-		final Game game = this.persistenceService.getGame(gameId);
-
-		final Long placeholderId = game.getCurrentPlaceholderId() + 1;
-		game.setCurrentPlaceholderId(placeholderId);
-		this.persistenceService.updateGame(game);
-
-		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
 		if (!CardZone.HAND.equals(card.getZone()))
 		{
@@ -96,24 +79,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setZone(CardZone.BATTLEFIELD);
-		final String cardPlaceholderId = "cardPlaceholdera" + placeholderId;
-		card.getCardPlaceholderIds().add(cardPlaceholderId);
 		this.persistenceService.saveCard(card);
 
-		this.cp = new CardPanel("cardPlaceholdera" + placeholderId, card.getSmallImageFilename(),
-				card.getBigImageFilename(), card.getUuidObject());
-		this.cp.setOutputMarkupId(true);
-		this.cp.setMarkupId("cardPlaceholdera" + placeholderId);
-		HatchetHarrySession.get().addCardInBattleField(this.cp);
-
-		this.cardParent.addOrReplace(this.cp);
-		target.add(this.cardParent);
-
-		PlayCardFromHandBehavior.LOGGER.info("Before remove: "
-				+ HatchetHarrySession.get().getFirstCardsInHand().size());
-		HatchetHarrySession.get().removeCardInHand(card);
-		PlayCardFromHandBehavior.LOGGER.info("After remove: "
-				+ HatchetHarrySession.get().getFirstCardsInHand().size());
+		final HomePage homePage = (HomePage)target.getPage();
+		homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView());
+		target.add(homePage.getParentPlaceholder());
 
 		final HandComponent gallery = new HandComponent("gallery");
 		gallery.setOutputMarkupId(true);
@@ -121,8 +91,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.galleryParent.addOrReplace(gallery);
 		target.add(this.galleryParent);
 
-		card.setX(50l + (placeholderId * 10));
-		card.setY(50l + (placeholderId * 25));
+		card.setX(50l + (card.getId() * 2));
+		card.setY(50l + (card.getId() * 2));
 		this.persistenceService.saveCard(card);
 
 		final StringBuffer buf = new StringBuffer();
@@ -132,8 +102,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		target.appendJavaScript(buf.toString());
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId,
-				placeholderId);
+				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);
 
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
@@ -153,18 +122,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			EventBus.get().post(ncc, pageUuid);
 		}
 
-	}
-
-	@Subscribe
-	public void playCardFromHand(final AjaxRequestTarget target,
-			final PlayCardFromHandCometChannel event)
-	{
-		JavaScriptUtils.putCardInGame(target, event.getCardPlaceholderId(),
-				this.persistenceService, event.getUuidToLookFor(), this.cardParent);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
-		JavaScriptUtils.removeNonRelevantCardsFromBatlefield(target, this.persistenceService,
-				event.getGameId());
 	}
 
 	@Override

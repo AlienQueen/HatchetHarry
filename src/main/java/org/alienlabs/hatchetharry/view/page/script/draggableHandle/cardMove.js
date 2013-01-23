@@ -20,4 +20,4 @@ window.setTimeout(function() {
 //								+ ' (relative to document)');
 					}
 			);
-}, 5000);
+}, 2000);

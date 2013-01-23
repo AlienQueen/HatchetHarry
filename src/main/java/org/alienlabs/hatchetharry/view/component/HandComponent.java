@@ -1,7 +1,10 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.util.List;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.alienlabs.hatchetharry.view.page.PlayCardPage;
 import org.apache.wicket.AttributeModifier;
@@ -13,10 +16,15 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.springframework.beans.factory.annotation.Required;
 
 public class HandComponent extends Panel
 {
-	private static final long serialVersionUID = -271477124972641648L;
+	private static final long serialVersionUID = 1L;
+
+	@SpringBean
+	private PersistenceService persistenceService;
 
 	private final BookmarkablePageLink<PlayCardPage> playCardPage;
 	private final WebMarkupContainer handCardsPlaceholder;
@@ -35,10 +43,15 @@ public class HandComponent extends Panel
 
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
 		this.handCardsPlaceholder.setOutputMarkupId(true);
-		this.allCards = new ListView<MagicCard>("handCards", HatchetHarrySession.get()
-				.getFirstCardsInHand())
+
+		final List<MagicCard> allCardsInHand = this.persistenceService
+				.getAllCardsInHandForAGameAndAPlayer(HatchetHarrySession.get().getPlayer()
+						.getGames().iterator().next().getId(), HatchetHarrySession.get()
+						.getPlayer().getId());
+
+		this.allCards = new ListView<MagicCard>("handCards", allCardsInHand)
 		{
-			private static final long serialVersionUID = -7874661839855866875L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)
@@ -69,8 +82,7 @@ public class HandComponent extends Panel
 		this.add(this.handCardsPlaceholder);
 
 		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
-		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", HatchetHarrySession
-				.get().getFirstCardsInHand())
+		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", allCardsInHand)
 		{
 			private static final long serialVersionUID = -787466183866875L;
 
@@ -105,6 +117,12 @@ public class HandComponent extends Panel
 		this.add(this.thumbsPlaceholder);
 
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
 	}
 
 }

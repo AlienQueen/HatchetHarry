@@ -25,6 +25,7 @@ import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -446,29 +447,17 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
-	public List<MagicCard> getAllCardsInBattleFieldForAPlayer(final Long playerId)
+	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
+			final Long playerId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
-		final List<CardPanel> allCardsInBattleField = HatchetHarrySession.get()
-				.getAllCardsInBattleField();
-
-		if (allCardsInBattleField.isEmpty())
-		{
-			return new ArrayList<MagicCard>();
-		}
-
-		final List<String> allUuidsOfCardsInBattleField = new ArrayList<String>();
-		for (final CardPanel cp : allCardsInBattleField)
-		{
-			allUuidsOfCardsInBattleField.add(cp.getUuid().toString());
-		}
-
-		final Query query = session
-				.createQuery("select m from MagicCard m join m.deck as mcd where m.uuid in (:uuids) and mcd.playerId = :playerId and m.zone = :zone");
-		query.setParameterList("uuids", allUuidsOfCardsInBattleField);
-		query.setLong("playerId", playerId);
-		query.setParameter("zone", CardZone.BATTLEFIELD);
+		final SQLQuery query = session
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId");
+		query.addEntity(MagicCard.class);
+		query.setLong(0, gameId);
+		query.setString(1, CardZone.HAND.toString());
+		query.setLong(2, playerId);
 
 		try
 		{
@@ -476,8 +465,8 @@ public class PersistenceService implements Serializable
 		}
 		catch (final ObjectNotFoundException e)
 		{
-			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for player: "
-					+ playerId + " => no result found", e);
+			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+					+ gameId + " => no result found", e);
 			return null;
 		}
 	}
@@ -504,6 +493,33 @@ public class PersistenceService implements Serializable
 		}
 	}
 
+
+	@Transactional
+	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
+			final Long playerId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final SQLQuery query = session
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId");
+		query.addEntity(MagicCard.class);
+		query.setLong(0, gameId);
+		query.setString(1, CardZone.BATTLEFIELD.toString());
+		query.setLong(2, playerId);
+
+		try
+		{
+			return query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+					+ gameId + " => no result found", e);
+			return null;
+		}
+	}
+
+	// TODO remove this
 	@Transactional
 	public List<MagicCard> getAllCardsInGraveyardForAGame(final Long gameId)
 	{
@@ -513,6 +529,31 @@ public class PersistenceService implements Serializable
 				.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
 		query.setLong("gameId", gameId);
 		query.setParameter("zone", CardZone.GRAVEYARD);
+
+		try
+		{
+			return query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+					+ gameId + " => no result found", e);
+			return null;
+		}
+	}
+
+	@Transactional
+	public List<MagicCard> getAllCardsInGraveyardForAGameAndAPlayer(final Long gameId,
+			final Long playerId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final SQLQuery query = session
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId");
+		query.addEntity(MagicCard.class);
+		query.setLong(0, gameId);
+		query.setString(1, CardZone.GRAVEYARD.toString());
+		query.setLong(2, playerId);
 
 		try
 		{

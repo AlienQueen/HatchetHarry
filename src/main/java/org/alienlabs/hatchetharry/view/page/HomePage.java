@@ -57,10 +57,16 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
+import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.SimplePredicate;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
@@ -98,6 +104,8 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.WebResponse;
@@ -140,6 +148,7 @@ public class HomePage extends TestReportPage
 	List<MagicCard> hand;
 	private final WebMarkupContainer parentPlaceholder;
 	WebMarkupContainer playCardLink;
+	// TODO remove this
 	WebMarkupContainer playCardParent;
 	WebMarkupContainer playCardFromGraveyardLink;
 
@@ -182,12 +191,8 @@ public class HomePage extends TestReportPage
 
 		this.add(new BookmarkablePageLink<NotifierPage>("notifierStart", NotifierPage.class));
 
-		this.parentPlaceholder = new WebMarkupContainer("cardParent");
+		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
 		this.parentPlaceholder.setOutputMarkupId(true);
-
-		this.playCardParent = new WebMarkupContainer("playCardParentPlaceholder");
-		this.playCardParent.setOutputMarkupId(true);
-		this.parentPlaceholder.add(this.playCardParent);
 		this.add(this.parentPlaceholder);
 
 		this.galleryParent = new WebMarkupContainer("galleryParent");
@@ -245,22 +250,28 @@ public class HomePage extends TestReportPage
 
 		this.buildDock();
 
-		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
-		balduParent.setOutputMarkupId(true);
-
-		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
-		if ((null != card)
-				&& (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
-						HatchetHarrySession.get().getPlayer().getSide())))
-		{
-			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-					.getBigImageFilename(), card.getUuidObject()));
-		}
-		else
-		{
-			balduParent.add(new WebMarkupContainer("baldu"));
-		}
-		this.add(balduParent);
+		// final WebMarkupContainer balduParent = new
+		// WebMarkupContainer("balduParent");
+		// balduParent.setOutputMarkupId(true);
+		//
+		// final MagicCard card =
+		// this.persistenceService.findCardByName("Balduvian Horde");
+		// if ((null != card)
+		// && (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
+		// HatchetHarrySession.get().getPlayer().getSide())))
+		// {
+		// balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(),
+		// card
+		// .getBigImageFilename(), card.getUuidObject()));
+		// }
+		// else
+		// {
+		// balduParent.add(new WebMarkupContainer("baldu"));
+		// }
+		// this.add(balduParent);
+		// final MagicCard card =
+		// this.persistenceService.findCardByName("Balduvian Horde");
+		// HatchetHarrySession.get().getAllMagicCardsInBattleField().add(card);
 
 		// Links from the menubar
 		this.aboutWindow = new ModalWindow("aboutWindow");
@@ -317,7 +328,8 @@ public class HomePage extends TestReportPage
 
 		this.generatePlayCardLink(this.hand);
 		this.generatePlayCardFromGraveyardLink();
-		this.generatePlayCardsBehaviorsForAllOpponents();
+		this.generateCardPanels();
+		// this.generatePlayCardsBehaviorsForAllOpponents();
 		// this.generatePlayCardsFromGraveyardBehaviorsForAllOpponents();
 
 		this.generateDrawCardLink();
@@ -351,6 +363,11 @@ public class HomePage extends TestReportPage
 
 		this.generateResetDbLink();
 		this.generateHideAllTooltipsLink();
+	}
+
+	private void generateCardPanels()
+	{
+		this.parentPlaceholder.add(this.generateCardListView());
 	}
 
 	private void generateHideAllTooltipsLink()
@@ -682,6 +699,7 @@ public class HomePage extends TestReportPage
 		return p;
 	}
 
+	// TODO remove this
 	private void generatePlayCardsBehaviorsForAnOpponent(final String opponentId)
 	{
 		for (int i = 1; i < 61; i++)
@@ -695,6 +713,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
+	// TODO remove this
 	private void generatePlayCardsBehaviorsForAllOpponents()
 	{
 		this.generatePlayCardsBehaviorsForAnOpponent("a");
@@ -714,9 +733,8 @@ public class HomePage extends TestReportPage
 
 		if (mc.size() > 0)
 		{
-			this.playCardBehavior = new PlayCardFromHandBehavior(this.playCardParent,
-					this.galleryParent, mc.get(0).getUuidObject(), 0, HatchetHarrySession.get()
-							.getPlayer().getSide());
+			this.playCardBehavior = new PlayCardFromHandBehavior(this.galleryParent, mc.get(0)
+					.getUuidObject(), 0, HatchetHarrySession.get().getPlayer().getSide());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -740,8 +758,8 @@ public class HomePage extends TestReportPage
 		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
 		this.playCardFromGraveyardLink.setOutputMarkupId(true);
 
-		this.playCardFromGraveyardBehavior = new PlayCardFromGraveyardBehavior(this.playCardParent,
-				HatchetHarrySession.get().getPlayer().getSide());
+		this.playCardFromGraveyardBehavior = new PlayCardFromGraveyardBehavior(HatchetHarrySession
+				.get().getPlayer().getSide());
 		this.playCardFromGraveyardLink.add(this.playCardFromGraveyardBehavior);
 
 		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
@@ -1316,7 +1334,7 @@ public class HomePage extends TestReportPage
 	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
 	{
 		final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
-				.getAllCardsInBattleFieldForAPlayer(event.getPlayerId());
+				.getAllCardsInBattlefieldForAGameAndAPlayer(event.getGameId(), event.getPlayerId());
 
 		final StringBuffer buf = new StringBuffer();
 
@@ -1363,6 +1381,83 @@ public class HomePage extends TestReportPage
 		this.getDataBoxParent().addOrReplace(db);
 		db.setOutputMarkupId(true);
 		target.add(this.getDataBoxParent());
+	}
+
+	@Subscribe
+	public void removeCardFromBattlefield(final AjaxRequestTarget target,
+			final PutToGraveyardCometChannel event)
+	{
+		final HomePage homePage = (HomePage)target.getPage();
+		homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView());
+		target.add(homePage.getParentPlaceholder());
+
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+				event.getGameId());
+	}
+
+	@Subscribe
+	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
+	{
+		target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
+				+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"
+				+ event.getMouseX() + "');" + "card.css('top', '" + event.getMouseY() + "');");
+	}
+
+	@Subscribe
+	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
+	{
+		final StringBuffer buf = new StringBuffer();
+
+		final String toId = HatchetHarrySession.get().getId();
+		buf.append("var toId = \"" + toId + "\"; ");
+
+		if (event.isTapped())
+		{
+			buf.append("window.setTimeout(function() { jQuery('#card" + event.getCardUuid()
+					+ "').rotate(90); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(0); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(90); }, 500); }, 500); }, 500);");
+		}
+		else
+		{
+			buf.append("window.setTimeout(function() {jQuery('#card" + event.getCardUuid()
+					+ "').rotate(0); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(90); window.setTimeout(function() {");
+			buf.append("jQuery('#card" + event.getCardUuid()
+					+ "').rotate(0); }, 750); }, 750); }, 750);");
+		}
+
+		target.appendJavaScript(buf.toString());
+	}
+
+	@Subscribe
+	public void putToHandFromBattlefield(final AjaxRequestTarget target,
+			final PutToHandFromBattlefieldCometChannel event)
+	{
+		JavaScriptUtils.updateCardsInBattlefield(target);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+				event.getGameId());
+	}
+
+	@Subscribe
+	public void playCardFromHand(final AjaxRequestTarget target,
+			final PlayCardFromHandCometChannel event)
+	{
+		JavaScriptUtils.updateCardsInBattlefield(target);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+				event.getGameId());
+	}
+
+	@Subscribe
+	public void playCardFromGraveyard(final AjaxRequestTarget target,
+			final PlayCardFromGraveyardCometChannel event)
+	{
+		JavaScriptUtils.updateCardsInBattlefield(target);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+				event.getGameId());
 	}
 
 	@Override
@@ -1570,6 +1665,34 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getPlayCardParent()
 	{
 		return this.playCardParent;
+	}
+
+	public WebMarkupContainer getParentPlaceholder()
+	{
+		return this.parentPlaceholder;
+	}
+
+	public ListView<MagicCard> generateCardListView()
+	{
+		final List<MagicCard> allCardsInBattlefield = HomePage.this.persistenceService
+				.getAllCardsInBattleFieldForAGame(HatchetHarrySession.get().getPlayer().getGames()
+						.iterator().next().getId());
+
+		return new ListView<MagicCard>("handCards", allCardsInBattlefield)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
+				final CardPanel cp = new CardPanel("cardPanel", item.getModelObject()
+						.getSmallImageFilename(), item.getModelObject().getBigImageFilename(), item
+						.getModelObject().getUuidObject());
+				cp.setOutputMarkupId(true);
+				// TODO placeholderId ?
+				item.add(cp);
+			}
+		};
 	}
 
 }

@@ -157,6 +157,7 @@ public class CardPanel extends Panel
 		menutoggleButton.add(form);
 		this.add(menutoggleButton);
 
+		// TODO: remove this
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
 		final WebMarkupContainer cp = new WebMarkupContainer("cardParent4");
 		cp.setOutputMarkupId(true);

@@ -17,7 +17,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
-import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -75,40 +74,6 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 					card.isTapped());
 			EventBus.get().post(crcc, pageUuid);
 		}
-	}
-
-	@Subscribe
-	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
-	{
-		CardRotateBehavior.LOGGER.info("gameId from event= " + event.getGameId());
-		CardRotateBehavior.LOGGER.info("gameId from session= "
-				+ HatchetHarrySession.get().getGameId());
-
-		final StringBuffer buf = new StringBuffer();
-
-		final String toId = HatchetHarrySession.get().getId();
-		buf.append("var toId = \"" + toId + "\"; ");
-
-		if (event.isTapped())
-		{
-			buf.append("window.setTimeout(function() { jQuery('#card" + event.getCardUuid()
-					+ "').rotate(90); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
-					+ "').rotate(0); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
-					+ "').rotate(90); }, 750); }, 750); }, 750);");
-		}
-		else
-		{
-			buf.append("window.setTimeout(function() {jQuery('#card" + event.getCardUuid()
-					+ "').rotate(0); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
-					+ "').rotate(90); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
-					+ "').rotate(0); }, 750); }, 750); }, 750);");
-		}
-
-		target.appendJavaScript(buf.toString());
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
-import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
@@ -22,11 +21,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
-import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -43,23 +40,19 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer cardParent;
 	private UUID uuidToLookFor;
 	private String side;
 
-	public PlayCardFromGraveyardBehavior(final WebMarkupContainer _cardParent, final String _side)
+	public PlayCardFromGraveyardBehavior(final String _side)
 	{
 		super();
 		Injector.get().inject(this);
-		this.cardParent = _cardParent;
 		this.side = _side;
 	}
 
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		PlayCardFromGraveyardBehavior.LOGGER.info("respond PlayCardFromGraveyardBehavior");
-
 		target.appendJavaScript("jQuery(\"#box_menu_clone\").hide(); ");
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
@@ -67,15 +60,11 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
-		PlayCardFromGraveyardBehavior.LOGGER.info("uuidToLookFor: " + this.uuidToLookFor);
 
 		final Long gameId = HatchetHarrySession.get().getPlayer().getGames().iterator().next()
 				.getId();
-		final Game game = this.persistenceService.getGame(gameId);
-
-		final Long placeholderId = game.getCurrentPlaceholderId() + 1;
-		game.setCurrentPlaceholderId(placeholderId);
-		this.persistenceService.updateGame(game);
+		// TODO remove this
+		// this.persistenceService.updateGame(game);
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
@@ -85,14 +74,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setZone(CardZone.BATTLEFIELD);
-		final String cardPlaceholderId = "cardPlaceholdera" + placeholderId;
-		card.getCardPlaceholderIds().add(cardPlaceholderId);
-		this.persistenceService.saveCard(card);
-		HatchetHarrySession.get().removeCardFromGraveyard(card);
-
-		card.setX(50l + (placeholderId * 10));
-		card.setY(50l + (placeholderId * 25));
-		// TODO card has been saved twice!
+		card.setX(50l + (card.getId() * 2));
+		card.setY(50l + (card.getId() * 2));
 		this.persistenceService.saveCard(card);
 
 		final StringBuffer buf = new StringBuffer();
@@ -106,8 +89,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		target.appendJavaScript(buf.toString());
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId,
-				placeholderId);
+				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);
 
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
@@ -122,22 +104,10 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		{
 			final Long player = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
-			PlayCardFromGraveyardBehavior.LOGGER.info("pageUuid: " + pageUuid);
+
 			EventBus.get().post(pcfgcc, pageUuid);
 			EventBus.get().post(ncc, pageUuid);
 		}
-	}
-
-	@Subscribe
-	public void playCardFromGraveyard(final AjaxRequestTarget target,
-			final PlayCardFromGraveyardCometChannel event)
-	{
-		JavaScriptUtils.putCardInGame(target, event.getCardPlaceholderId(),
-				this.persistenceService, event.getUuidToLookFor(), this.cardParent);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
-		JavaScriptUtils.removeNonRelevantCardsFromBatlefield(target, this.persistenceService,
-				event.getGameId());
 	}
 
 	@Override

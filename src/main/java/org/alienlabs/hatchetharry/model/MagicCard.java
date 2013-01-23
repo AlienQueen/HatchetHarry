@@ -1,18 +1,14 @@
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,10 +60,6 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	@Enumerated(value = EnumType.STRING)
 	private CardZone zone;
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "MagicCard__cardPlaceholderId", joinColumns = @JoinColumn(name = "cardPlaceholderId"))
-	@Column(name = "cardPlaceholder")
-	private List<String> cardPlaceholderIds;
 
 	public MagicCard()
 	{
@@ -289,16 +281,6 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setZone(final CardZone _zone)
 	{
 		this.zone = _zone;
-	}
-
-	public List<String> getCardPlaceholderIds()
-	{
-		return this.cardPlaceholderIds;
-	}
-
-	public void setCardPlaceholderIds(final List<String> _cardPlaceholderIds)
-	{
-		this.cardPlaceholderIds = _cardPlaceholderIds;
 	}
 
 }

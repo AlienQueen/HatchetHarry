@@ -48,6 +48,7 @@ public class HatchetHarrySession extends WebSession
 	private static String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
 	private static String COMET_UUID = "COMET_UUID";
 	private static String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
+	private static String ALL_CARD_PANELS_IN_BATTLEFIELD = "ALL_CARD_PANELS_IN_BATTLEFIELD";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -66,6 +67,8 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, false);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD,
+				new ArrayList<MagicCard>());
+		this.setAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
 	}
 
@@ -450,6 +453,17 @@ public class HatchetHarrySession extends WebSession
 	public void setAllCardsWhichHaveBeenInBattlefield(final ArrayList<MagicCard> list)
 	{
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD, list);
+	}
+
+	public ArrayList<MagicCard> getAllMagicCardsInBattleField()
+	{
+		return (ArrayList<MagicCard>)this
+				.getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
+	}
+
+	public void setAllMagicCardsInBattleField(final ArrayList<MagicCard> list)
+	{
+		this.setAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD, list);
 	}
 
 }

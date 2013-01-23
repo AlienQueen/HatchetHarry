@@ -17,7 +17,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
-import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -107,14 +106,6 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 			EventBus.get().post(cardMoveCometChannel, pageUuid);
 		}
-	}
-
-	@Subscribe
-	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
-	{
-		target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
-				+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"
-				+ event.getMouseX() + "');" + "card.css('top', '" + event.getMouseY() + "');");
 	}
 
 	@Override

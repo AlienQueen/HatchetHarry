@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +17,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
-import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -75,91 +73,49 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		mc.setZone(CardZone.HAND);
 		this.persistenceService.saveCard(mc);
 
-		final List<CardPanel> allCardsInBattlefield = HatchetHarrySession.get()
-				.getAllCardsInBattleField();
-
-		for (final CardPanel cp : allCardsInBattlefield)
+		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+		if (isHandDisplayed)
 		{
-			if (mc.getUuid().equals(cp.getUuid().toString()))
-			{
-				if (allCardsInBattlefield.remove(cp))
-				{
-					HatchetHarrySession.get().setAllCardsInBattleField(allCardsInBattlefield);
+			final HandComponent handToUpdate = new HandComponent("gallery");
+			handToUpdate.setOutputMarkupId(true);
+			((HomePage)target.getPage()).getGalleryParent().addOrReplace(handToUpdate);
+			target.add(((HomePage)target.getPage()).getGalleryParent());
 
-					final Long _gameId = PutToHandFromBattlefieldBehavior.this.persistenceService
-							.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
-							.iterator().next().getId();
-					final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService
-							.giveAllPlayersFromGame(_gameId);
-
-					final ArrayList<MagicCard> allCardsInHand = HatchetHarrySession.get()
-							.getFirstCardsInHand();
-					allCardsInHand.add(mc);
-					HatchetHarrySession.get()
-							.addCardIdInHand(allCardsInHand.size() + 1, mc.getId());
-
-					final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
-					if (isHandDisplayed)
-					{
-						final HandComponent handToUpdate = new HandComponent("gallery");
-						handToUpdate.setOutputMarkupId(true);
-						((HomePage)target.getPage()).getGalleryParent().addOrReplace(handToUpdate);
-						target.add(((HomePage)target.getPage()).getGalleryParent());
-
-						target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
-					}
-
-					for (int i = 0; i < allPlayersInGame.size(); i++)
-					{
-						final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-						final String pageUuid = HatchetHarryApplication.getCometResources().get(
-								playerToWhomToSend);
-						final PutToHandFromBattlefieldCometChannel pthfbcc = new PutToHandFromBattlefieldCometChannel(
-								_gameId, cp, mc, HatchetHarrySession.get().getPlayer().getId());
-						final NotifierCometChannel ncc = new NotifierCometChannel(
-								NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD, _gameId,
-								HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
-										.get().getPlayer().getName(), "", "", mc.getTitle(), null);
-						EventBus.get().post(pthfbcc, pageUuid);
-						EventBus.get().post(ncc, pageUuid);
-					}
-
-					return;
-				}
-				PutToHandFromBattlefieldBehavior.LOGGER.info("could not remove card uuid= "
-						+ mc.getUuid());
-				return;
-			}
-			PutToHandFromBattlefieldBehavior.LOGGER.info("could not find CardPanel uuid= "
-					+ mc.getUuid() + " in allCardsInBattlefield from session");
-		}
-	}
-
-	@Subscribe
-	public void putToHandFromBattlefield(final AjaxRequestTarget target,
-			final PutToHandFromBattlefieldCometChannel event)
-	{
-		if (HatchetHarrySession.get().getPlayer().getId().longValue() != event.getPlayerId())
-		{
-			final List<CardPanel> allCardsInBattlefield = HatchetHarrySession.get()
-					.getAllCardsInBattleField();
-			allCardsInBattlefield.remove(event.getCardPanel());
-
-			final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
-					.getAllCardsWhichHaveBeenInBattlefield();
-			toRemove.add(event.getMagicCard());
+			target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
 		}
 
-		final ArrayList<MagicCard> toRemove = HatchetHarrySession.get()
-				.getAllCardsWhichHaveBeenInBattlefield();
-		toRemove.add(event.getMagicCard());
-		HatchetHarrySession.get().setAllCardsWhichHaveBeenInBattlefield(toRemove);
+		final Long gameId = PutToHandFromBattlefieldBehavior.this.persistenceService
+				.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames().iterator()
+				.next().getId();
+		final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService
+				.giveAllPlayersFromGame(gameId);
 
-		target.appendJavaScript("window.setTimeout(function() { jQuery('#"
-				+ event.getCardPanel().getMarkupId() + "').children(0).remove(); }, 3000); ");
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
+			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+			final String pageUuid = HatchetHarryApplication.getCometResources().get(
+					playerToWhomToSend);
 
-		JavaScriptUtils.removeNonRelevantCardsFromBatlefield(target, this.persistenceService,
-				event.getGameId());
+			final PutToHandFromBattlefieldCometChannel pthfbcc = new PutToHandFromBattlefieldCometChannel(
+					gameId);
+			final NotifierCometChannel ncc = new NotifierCometChannel(
+					NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD, gameId, HatchetHarrySession
+							.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer()
+							.getName(), "", "", mc.getTitle(), null);
+
+			EventBus.get().post(pthfbcc, pageUuid);
+			EventBus.get().post(ncc, pageUuid);
+		}
+
+		// return;
+		// }
+		// PutToHandFromBattlefieldBehavior.LOGGER.info("could not remove card uuid= "
+		// + mc.getUuid());
+		// return;
+		// }
+		// PutToHandFromBattlefieldBehavior.LOGGER.info("could not find CardPanel uuid= "
+		// + mc.getUuid() + " in allCardsInBattlefield from session");
+		// }
 	}
 
 	@Required
