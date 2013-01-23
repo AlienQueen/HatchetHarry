@@ -24,7 +24,6 @@ import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -42,19 +41,16 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer galleryParent;
-
 	private UUID uuidToLookFor;
 	private final int currentCard;
 
 	private String side;
 
-	public PlayCardFromHandBehavior(final WebMarkupContainer _galleryParent,
-			final UUID _uuidToLookFor, final int _currentCard, final String _side)
+	public PlayCardFromHandBehavior(final UUID _uuidToLookFor, final int _currentCard,
+			final String _side)
 	{
 		super();
 		Injector.get().inject(this);
-		this.galleryParent = _galleryParent;
 		this.uuidToLookFor = _uuidToLookFor;
 		this.currentCard = _currentCard;
 		this.side = _side;
@@ -81,25 +77,14 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		card.setZone(CardZone.BATTLEFIELD);
 		this.persistenceService.saveCard(card);
 
-		final HomePage homePage = (HomePage)target.getPage();
-		homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView());
-		target.add(homePage.getParentPlaceholder());
-
 		final HandComponent gallery = new HandComponent("gallery");
 		gallery.setOutputMarkupId(true);
-
-		this.galleryParent.addOrReplace(gallery);
-		target.add(this.galleryParent);
 
 		card.setX(50l + (card.getId() * 2));
 		card.setY(50l + (card.getId() * 2));
 		this.persistenceService.saveCard(card);
 
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append("jQuery(document).ready(function() { "
-				+ JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT + " });");
-		target.appendJavaScript(buf.toString());
+		JavaScriptUtils.updateHand(target);
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
 				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);

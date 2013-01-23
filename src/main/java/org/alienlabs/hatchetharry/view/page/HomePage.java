@@ -733,8 +733,8 @@ public class HomePage extends TestReportPage
 
 		if (mc.size() > 0)
 		{
-			this.playCardBehavior = new PlayCardFromHandBehavior(this.galleryParent, mc.get(0)
-					.getUuidObject(), 0, HatchetHarrySession.get().getPlayer().getSide());
+			this.playCardBehavior = new PlayCardFromHandBehavior(mc.get(0).getUuidObject(), 0,
+					HatchetHarrySession.get().getPlayer().getSide());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -847,13 +847,7 @@ public class HomePage extends TestReportPage
 					session.setFirstCardsInHand(list);
 					session.setDeck(d);
 
-					final HandComponent gallery = new HandComponent("gallery");
-					gallery.setOutputMarkupId(true);
-
-					HomePage.this.galleryParent.addOrReplace(gallery);
-					target.add(HomePage.this.galleryParent);
-					target.appendJavaScript("jQuery(document).ready(function() { "
-							+ JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT + " });");
+					JavaScriptUtils.updateHand(target);
 
 					final Player me = session.getPlayer();
 					final Long gameId = HomePage.this.persistenceService
@@ -1064,6 +1058,8 @@ public class HomePage extends TestReportPage
 			{
 				final MagicCard mc = this.deck.getCards().get(i);
 				mc.setZone(CardZone.HAND);
+				mc.setGameId(HatchetHarrySession.get().getPlayer().getGames().iterator().next()
+						.getId());
 				this.persistenceService.saveCard(mc);
 
 				cards.add(i, mc);
@@ -1148,8 +1144,7 @@ public class HomePage extends TestReportPage
 		this.createGameWindow.setTitle("Create a game");
 
 		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
-				this.createGameWindow.getContentId(), _player, _handCardsParent,
-				sidePlaceholderParent, this));
+				this.createGameWindow.getContentId(), _player, sidePlaceholderParent, this));
 		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.createGameWindow);
@@ -1181,8 +1176,7 @@ public class HomePage extends TestReportPage
 		this.joinGameWindow.setTitle("Join a game");
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
-				this.joinGameWindow.getContentId(), _player, _handCardsParent, this.dataBoxParent,
-				this));
+				this.joinGameWindow.getContentId(), _player, this.dataBoxParent, this));
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);
@@ -1387,10 +1381,7 @@ public class HomePage extends TestReportPage
 	public void removeCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToGraveyardCometChannel event)
 	{
-		final HomePage homePage = (HomePage)target.getPage();
-		homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView());
-		target.add(homePage.getParentPlaceholder());
-
+		JavaScriptUtils.updateCardsInBattlefield(target);
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
 	}

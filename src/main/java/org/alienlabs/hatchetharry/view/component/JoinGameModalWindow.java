@@ -58,8 +58,7 @@ public class JoinGameModalWindow extends Panel
 	HomePage hp;
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _handCardsParent, final WebMarkupContainer _dataBoxParent,
-			final HomePage _hp)
+			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
 		Injector.get().inject(this);
@@ -213,14 +212,11 @@ public class JoinGameModalWindow extends Panel
 
 				if (HatchetHarrySession.get().isHandDisplayed())
 				{
-					final HandComponent gallery = new HandComponent("gallery");
-					_handCardsParent.addOrReplace(gallery);
-					target.add(_handCardsParent);
+					JavaScriptUtils.updateHand(target);
 				}
 
 				javaScript
 						.append("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
-				javaScript.append(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
 				JoinGameModalWindow.LOGGER.info("close!");
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
@@ -347,11 +343,7 @@ public class JoinGameModalWindow extends Panel
 
 				if (session.isGraveyardDisplayed())
 				{
-					((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
-							new GraveyardComponent("graveyard"));
-					target.add(((HomePage)target.getPage()).getGraveyardParent());
-
-					target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
+					JavaScriptUtils.updateGraveyard(target);
 				}
 			}
 

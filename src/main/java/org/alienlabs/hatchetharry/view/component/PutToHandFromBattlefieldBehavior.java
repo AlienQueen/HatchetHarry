@@ -13,7 +13,6 @@ import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
-import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
@@ -76,12 +75,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
 		if (isHandDisplayed)
 		{
-			final HandComponent handToUpdate = new HandComponent("gallery");
-			handToUpdate.setOutputMarkupId(true);
-			((HomePage)target.getPage()).getGalleryParent().addOrReplace(handToUpdate);
-			target.add(((HomePage)target.getPage()).getGalleryParent());
-
-			target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
+			JavaScriptUtils.updateHand(target);
 		}
 
 		final Long gameId = PutToHandFromBattlefieldBehavior.this.persistenceService

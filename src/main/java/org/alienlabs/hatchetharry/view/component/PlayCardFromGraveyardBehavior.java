@@ -78,15 +78,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		card.setY(50l + (card.getId() * 2));
 		this.persistenceService.saveCard(card);
 
-		final StringBuffer buf = new StringBuffer();
-
-		final Component graveyardToUpdate = new GraveyardComponent("graveyard");
-
-		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(graveyardToUpdate);
-		target.add(((HomePage)target.getPage()).getGraveyardParent());
-
-		buf.append(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
-		target.appendJavaScript(buf.toString());
+		JavaScriptUtils.updateGraveyard(target);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
 				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);

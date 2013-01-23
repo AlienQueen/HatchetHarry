@@ -13,8 +13,6 @@ import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
-import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.atmosphere.EventBus;
@@ -77,12 +75,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final boolean isGraveyardDisplayed = HatchetHarrySession.get().isGraveyardDisplayed();
 		if (isGraveyardDisplayed)
 		{
-			final Component graveyardToUpdate = new GraveyardComponent("graveyard");
-
-			((HomePage)target.getPage()).getGraveyardParent().addOrReplace(graveyardToUpdate);
-			target.add(((HomePage)target.getPage()).getGraveyardParent());
-
-			target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
+			JavaScriptUtils.updateGraveyard(target);
 		}
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)

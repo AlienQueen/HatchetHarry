@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
+import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
@@ -51,9 +53,34 @@ public class JavaScriptUtils
 					+ "useElement: \"cardTooltip" + aCard.getUuid() + "\"}); ");
 		}
 
+		buf.append("jQuery(\".myMenu\").buildMenu({" + "additionalData : \"pippo=1\","
+				+ "menuWidth : 200," + "openOnRight : false,"
+				+ "menuSelector : \".menuContainer\"," + "iconPath : \"/image/\","
+				+ "hasImages : true," + "fadeInTime : 100," + "fadeOutTime : 300,"
+				+ "adjustLeft : 0," + "minZindex : \"auto\"," + "adjustTop : 0," + "opacity : .95,"
+				+ "shadow : true," + "shadowColor : \"#ccc\"," + "hoverIntent : 0,"
+				+ "openOnClick : false," + "closeOnMouseOut : true," + "closeAfter : 1000,"
+				+ "submenuHoverIntent : 200" + "}); ");
 		buf.append(" }, 2000); ");
 
 		target.appendJavaScript(buf.toString());
 	}
 
+	public static void updateHand(final AjaxRequestTarget target)
+	{
+		((HomePage)target.getPage()).getGalleryParent().addOrReplace(new HandComponent("gallery"));
+		target.add(((HomePage)target.getPage()).getGalleryParent());
+
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
+	}
+
+
+	public static void updateGraveyard(final AjaxRequestTarget target)
+	{
+		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
+				new GraveyardComponent("graveyard"));
+		target.add(((HomePage)target.getPage()).getGraveyardParent());
+
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
+	}
 }

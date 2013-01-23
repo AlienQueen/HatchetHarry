@@ -52,7 +52,6 @@ public class CreateGameModalWindow extends Panel
 	final HomePage homePage;
 
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
 	{
 		super(id);
@@ -161,14 +160,11 @@ public class CreateGameModalWindow extends Panel
 
 				if (HatchetHarrySession.get().isHandDisplayed())
 				{
-					final HandComponent gallery = new HandComponent("gallery");
-					_handCardsParent.addOrReplace(gallery);
-					target.add(_handCardsParent);
+					JavaScriptUtils.updateHand(target);
 				}
 
 				final StringBuffer buf = new StringBuffer(
 						"jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
-				buf.append(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
 				// TODO remove gameId management since we now have Comet
 				// channels
 				buf.append("window.gameId = " + CreateGameModalWindow.this.game.getId() + "; ");
@@ -241,11 +237,7 @@ public class CreateGameModalWindow extends Panel
 
 				if (session.isGraveyardDisplayed())
 				{
-					((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
-							new GraveyardComponent("graveyard"));
-					target.add(((HomePage)target.getPage()).getGraveyardParent());
-
-					target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
+					JavaScriptUtils.updateGraveyard(target);
 				}
 			}
 

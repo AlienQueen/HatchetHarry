@@ -156,11 +156,11 @@ public class HatchetHarrySession extends WebSession
 		return ((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).get(0);
 	}
 
+	// TODO remove this
 	public void addCardIdInHand(final int index, final long id)
 	{
 		if (this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND) == null)
 		{
-			// TODO ArrayList<Long> or ArrayList<Integer>?
 			this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, new ArrayList<Long>());
 		}
 		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
