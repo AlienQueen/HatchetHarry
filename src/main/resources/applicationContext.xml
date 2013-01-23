@@ -23,7 +23,7 @@
 		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="cardCollectionDao" ref="cardCollectionDao"/>
 		<property name="persistenceService" ref="persistenceService"/>
-		<property name="generateData" value="false"/>
+		<property name="generateData" value="true"/>
 		<property name="generateCardCollection" value="false"/>
 	</bean>
 	
