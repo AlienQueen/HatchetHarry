@@ -82,6 +82,7 @@ import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
 import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
+import org.alienlabs.hatchetharry.view.component.ImportDeckModalWindow;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
@@ -141,6 +142,7 @@ public class HomePage extends TestReportPage
 	ModalWindow aboutWindowResponsive;
 	ModalWindow createGameWindow;
 	ModalWindow joinGameWindow;
+	ModalWindow importDeckWindow;
 
 	Player player;
 	Deck deck;
@@ -227,7 +229,8 @@ public class HomePage extends TestReportPage
 		this.deck = this.persistenceService.getDeck(1l);
 		if (null == this.deck)
 		{
-			this.runtimeDataGenerator.generateData();
+			// TODO remove this
+			// this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(1l);
 			this.persistenceService.saveDeck(this.deck);
 		}
@@ -235,10 +238,13 @@ public class HomePage extends TestReportPage
 		this.deck = this.persistenceService.getDeck(2l);
 		if (null == this.deck)
 		{
-			this.runtimeDataGenerator.generateData();
+			// TODO remove this
+			// this.runtimeDataGenerator.generateData();
 			this.deck = this.persistenceService.getDeck(2l);
-			this.persistenceService.saveDeck(this.deck);
+			this.deck = this.persistenceService.saveDeck(this.deck);
 		}
+
+		HatchetHarrySession.get().setDeck(this.deck);
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
 		this.createCardPanelPlaceholders();
@@ -361,6 +367,7 @@ public class HomePage extends TestReportPage
 			this.buildEmptyDataBox();
 		}
 
+		this.generateImportDeckLink();
 		this.generateResetDbLink();
 		this.generateHideAllTooltipsLink();
 	}
@@ -1143,8 +1150,7 @@ public class HomePage extends TestReportPage
 		this.createGameWindow.setInitialHeight(290);
 		this.createGameWindow.setTitle("Create a game");
 
-		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
-				this.createGameWindow.getContentId(), _player, sidePlaceholderParent, this));
+		this.regenarateCreateGameWindowContent(_player, sidePlaceholderParent);
 		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.createGameWindow);
@@ -1166,6 +1172,13 @@ public class HomePage extends TestReportPage
 		this.add(createGameLink);
 	}
 
+	public void regenarateCreateGameWindowContent(final Player _player,
+			final WebMarkupContainer sidePlaceholderParent)
+	{
+		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
+				this.createGameWindow.getContentId(), _player, sidePlaceholderParent, this));
+	}
+
 	protected void generateJoinGameLink(final Player _player,
 			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer sidePlaceholderParent)
@@ -1175,15 +1188,14 @@ public class HomePage extends TestReportPage
 		this.joinGameWindow.setInitialHeight(290);
 		this.joinGameWindow.setTitle("Join a game");
 
-		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
-				this.joinGameWindow.getContentId(), _player, this.dataBoxParent, this));
+		this.regenarateJoinGameWindowContent(_player);
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.joinGameWindow);
 
 		final AjaxLink<Void> createGameLink = new AjaxLink<Void>("joinGameLink")
 		{
-			private static final long serialVersionUID = 4097315677385015896L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(final AjaxRequestTarget target)
@@ -1196,6 +1208,42 @@ public class HomePage extends TestReportPage
 		createGameLink.setOutputMarkupId(true);
 		this.joinGameWindow.setOutputMarkupId(true);
 		this.add(createGameLink);
+	}
+
+	public void regenarateJoinGameWindowContent(final Player _player)
+	{
+		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
+				this.joinGameWindow.getContentId(), _player, this.dataBoxParent, this));
+	}
+
+	protected void generateImportDeckLink()
+	{
+		this.importDeckWindow = new ModalWindow("importDeckWindow");
+		this.importDeckWindow.setInitialWidth(475);
+		this.importDeckWindow.setInitialHeight(290);
+		this.importDeckWindow.setTitle("Import a deck");
+
+		this.importDeckWindow.setContent(new ImportDeckModalWindow(this.importDeckWindow,
+				this.importDeckWindow.getContentId()));
+		this.importDeckWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.importDeckWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.add(this.importDeckWindow);
+
+		final AjaxLink<Void> importDeckLink = new AjaxLink<Void>("importDeckLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				HomePage.this.importDeckWindow.show(target);
+			}
+		};
+
+		importDeckLink.setOutputMarkupId(true);
+		this.importDeckWindow.setOutputMarkupId(true);
+		this.add(importDeckLink);
 	}
 
 	@Subscribe

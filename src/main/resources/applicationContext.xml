@@ -19,11 +19,12 @@
 	<!-- setup data generator that will add some data into the db when the app starts up -->
 	<bean id="dataGenerator" class="org.alienlabs.hatchetharry.service.DataGenerator">
 		<property name="deckDao" ref="deckDao"/>
+		<property name="deckArchiveDao" ref="deckArchiveDao"/>
 		<property name="collectibleCardDao" ref="collectibleCardDao"/>
 		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="cardCollectionDao" ref="cardCollectionDao"/>
 		<property name="persistenceService" ref="persistenceService"/>
-		<property name="generateData" value="false"/>
+		<property name="generateData" value="true"/>
 		<property name="generateCardCollection" value="false"/>
 	</bean>
 	

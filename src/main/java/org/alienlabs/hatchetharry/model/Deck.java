@@ -6,12 +6,15 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -19,22 +22,23 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "Deck")
-@Cacheable 
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Deck implements Serializable
 {
-	private static final long serialVersionUID = 5336828396327485268L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckId")
 	private Long deckId;
+	@OneToOne(cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "Deck_DeckArchive")
+	private DeckArchive deckArchive = new DeckArchive();
 	@Column
 	private Long playerId;
 	@OneToMany(mappedBy = "deck")
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
-	@Column
-	private String deckName;
 
 	public List<MagicCard> shuffleLibrary()
 	{
@@ -66,6 +70,32 @@ public class Deck implements Serializable
 		this.playerId = _playerId;
 	}
 
+	@Override
+	public String toString()
+	{
+		return this.deckArchive.getDeckName();
+	}
+
+	public Long getDeckId()
+	{
+		return this.deckId;
+	}
+
+	public void setDeckId(final Long deckId)
+	{
+		this.deckId = deckId;
+	}
+
+	public DeckArchive getDeckArchive()
+	{
+		return this.deckArchive;
+	}
+
+	public void setDeckArchive(final DeckArchive deckArchive)
+	{
+		this.deckArchive = deckArchive;
+	}
+
 	public List<MagicCard> getCards()
 	{
 		return this.cards;
@@ -74,22 +104,6 @@ public class Deck implements Serializable
 	public void setCards(final List<MagicCard> _cards)
 	{
 		this.cards = _cards;
-	}
-
-	public String getDeckName()
-	{
-		return this.deckName;
-	}
-
-	public void setDeckName(final String _deckName)
-	{
-		this.deckName = _deckName;
-	}
-
-	@Override
-	public String toString()
-	{
-		return this.getDeckName();
 	}
 
 }

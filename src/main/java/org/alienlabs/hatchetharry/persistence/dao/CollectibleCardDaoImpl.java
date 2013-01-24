@@ -92,9 +92,9 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public CollectibleCard save(final CollectibleCard CollectibleCard)
+	public Long save(final CollectibleCard collectibleCard)
 	{
-		return (CollectibleCard)this.getSession().merge(CollectibleCard);
+		return (Long)this.getSession().save(collectibleCard);
 	}
 
 	/**

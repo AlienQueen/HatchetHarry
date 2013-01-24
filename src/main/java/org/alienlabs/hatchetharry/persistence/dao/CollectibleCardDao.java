@@ -50,7 +50,7 @@ public interface CollectibleCardDao extends Serializable
 	 * @param CollectibleCard
 	 * @return persistent instance of contact
 	 */
-	CollectibleCard save(CollectibleCard contact);
+	Long save(CollectibleCard contact);
 
 	/**
 	 * Delete a {@link CollectibleCard} from the DB, given it's <tt>id</tt>.

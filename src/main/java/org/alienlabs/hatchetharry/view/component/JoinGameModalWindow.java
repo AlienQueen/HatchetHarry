@@ -43,7 +43,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class JoinGameModalWindow extends Panel
 {
-	private static final long serialVersionUID = -5432292812819537705L;
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	PersistenceService persistenceService;
@@ -203,6 +203,7 @@ public class JoinGameModalWindow extends Panel
 
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
+				HatchetHarrySession.get().setPlayer(JoinGameModalWindow.this.player);
 
 				final DataBox dataBox = new DataBox("dataBox",
 						Long.valueOf(JoinGameModalWindow.this.gameIdInput
@@ -280,10 +281,6 @@ public class JoinGameModalWindow extends Panel
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
 						sideInput.getDefaultModelObjectAsString());
-				HatchetHarrySession.get().getPlayer()
-						.setSide(sideInput.getDefaultModelObjectAsString());
-				HatchetHarrySession.get().getPlayer()
-						.setName(nameInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
 

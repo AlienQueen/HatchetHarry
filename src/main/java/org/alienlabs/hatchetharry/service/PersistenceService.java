@@ -9,13 +9,16 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.persistence.dao.CardCollectionDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
+import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
@@ -43,6 +46,8 @@ public class PersistenceService implements Serializable
 	private PlayerDao playerDao;
 	@SpringBean
 	private DeckDao deckDao;
+	@SpringBean
+	private DeckArchiveDao deckArchiveDao;
 	@SpringBean
 	private CollectibleCardDao collectibleCardDao;
 	@SpringBean
@@ -94,6 +99,12 @@ public class PersistenceService implements Serializable
 	public void saveCard(final MagicCard c)
 	{
 		this.magicCardDao.save(c);
+	}
+
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public void saveOrUpdateCard(final MagicCard c)
+	{
+		this.magicCardDao.getSession().saveOrUpdate(c);
 	}
 
 	@Transactional
@@ -202,10 +213,28 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public Deck updateDeck(final Deck d)
+	{
+		final Session session = this.deckDao.getSession();
+		session.saveOrUpdate(d);
+
+		return d;
+	}
+
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public Deck saveDeck(final Deck d)
 	{
 		final Session session = this.deckDao.getSession();
 		session.update(d);
+
+		return d;
+	}
+
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public Deck saveOrUpdateDeck(final Deck d)
+	{
+		final Session session = this.deckDao.getSession();
+		session.saveOrUpdate(d);
 
 		return d;
 	}
@@ -266,7 +295,7 @@ public class PersistenceService implements Serializable
 		final Query query = session.createQuery("from CollectibleCard cc0_ where cc0_.title=?");
 		query.setString(0, title);
 		final List<?> list = query.list();
-		return list.size() > 0;
+		return ((list != null) && (list.size() > 0));
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -300,6 +329,41 @@ public class PersistenceService implements Serializable
 		return list;
 	}
 
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public void saveCollectibleCard(final CollectibleCard cc)
+	{
+		this.collectibleCardDao.save(cc);
+	}
+
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public void saveDeckArchive(final DeckArchive da)
+	{
+		this.deckArchiveDao.save(da);
+	}
+
+	// TODO needed?
+	// @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	// public List<CollectibleCard> getAllCollectibleCardsFromDeckArchive(final
+	// DeckArchive da)
+	// {
+	// final Session session = this.magicCardDao.getSession();
+	//
+	// final Query query =
+	// session.createQuery("from CollectibleCard cc where cc.deckArchiveId=?");
+	// query.setLong(0, da.getDeckArchiveId());
+	//
+	// List<CollectibleCard> list = new ArrayList<CollectibleCard>();
+	// try
+	// {
+	// list = query.list();
+	// }
+	// catch (final ObjectNotFoundException e)
+	// {
+	// PersistenceService.LOGGER.error("error!", e);
+	// }
+	// return list;
+	// }
+
 	@Required
 	public void setPlayerDao(final PlayerDao _playerDao)
 	{
@@ -310,6 +374,12 @@ public class PersistenceService implements Serializable
 	public void setDeckDao(final DeckDao _deckDao)
 	{
 		this.deckDao = _deckDao;
+	}
+
+	@Required
+	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao)
+	{
+		this.deckArchiveDao = _deckArchiveDao;
 	}
 
 	@Required
@@ -448,16 +518,17 @@ public class PersistenceService implements Serializable
 
 	@Transactional
 	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
-			final Long playerId)
+			final Long playerId, final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId");
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ?");
 		query.addEntity(MagicCard.class);
 		query.setLong(0, gameId);
 		query.setString(1, CardZone.HAND.toString());
 		query.setLong(2, playerId);
+		query.setLong(3, deckId);
 
 		try
 		{
@@ -544,16 +615,17 @@ public class PersistenceService implements Serializable
 
 	@Transactional
 	public List<MagicCard> getAllCardsInGraveyardForAGameAndAPlayer(final Long gameId,
-			final Long playerId)
+			final Long playerId, final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId");
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ?");
 		query.addEntity(MagicCard.class);
 		query.setLong(0, gameId);
 		query.setString(1, CardZone.GRAVEYARD.toString());
 		query.setLong(2, playerId);
+		query.setLong(2, deckId);
 
 		try
 		{
@@ -619,6 +691,8 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("truncate table Deck").executeUpdate();
 		session.createSQLQuery("truncate table MagicCard").executeUpdate();
 		session.createSQLQuery("truncate table MagicCard__cardPlaceholderId").executeUpdate();
+		session.createSQLQuery("truncate table DeckArchive").executeUpdate();
+		session.createSQLQuery("truncate table CollectibleCard").executeUpdate();
 	}
 
 }

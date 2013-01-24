@@ -31,9 +31,11 @@ import org.alienlabs.hatchetharry.model.CardCollection;
 import org.alienlabs.hatchetharry.model.CardCollectionRootElement;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.persistence.dao.CardCollectionDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
+import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -53,7 +55,7 @@ public class DataGenerator implements InitializingBean
 			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
 			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
 			"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
-			"Tezzeret s Gambit", "Tezzeret s Gambit", "Tezzeret s Gambit", "Tezzeret s Gambit",
+			"Tezzeret s Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
 			"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
 			"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
 			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
@@ -77,6 +79,8 @@ public class DataGenerator implements InitializingBean
 	@SpringBean
 	private DeckDao deckDao;
 	@SpringBean
+	private DeckArchiveDao deckArchiveDao;
+	@SpringBean
 	private CollectibleCardDao collectibleCardDao;
 	@SpringBean
 	private MagicCardDao magicCardDao;
@@ -95,6 +99,12 @@ public class DataGenerator implements InitializingBean
 	public void setDeckDao(final DeckDao _deckDao)
 	{
 		this.deckDao = _deckDao;
+	}
+
+	@Required
+	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao)
+	{
+		this.deckArchiveDao = _deckArchiveDao;
 	}
 
 	@Required
@@ -124,83 +134,6 @@ public class DataGenerator implements InitializingBean
 	@Override
 	public void afterPropertiesSet()
 	{
-		if (this.generateData)
-		{
-			Deck deck1 = new Deck();
-			deck1.setPlayerId(1l);
-			deck1.setDeckName("aggro-combo Red / Black");
-			deck1 = this.deckDao.save(deck1);
-
-			Deck deck2 = new Deck();
-			deck2.setPlayerId(2l);
-			deck2.setDeckName("burn mono-Red");
-			deck2 = this.deckDao.save(deck2);
-
-			final List<Deck> decks = new ArrayList<Deck>();
-			decks.add(0, deck1);
-			decks.add(1, deck2);
-
-			for (int j = 1; j < 3; j++)
-			{
-				for (int i = 0; i < 60; i++)
-				{
-
-					final CollectibleCard c = new CollectibleCard();
-					c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
-					if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
-					{
-						this.collectibleCardDao.save(c);
-					}
-
-					if (j == 1l)
-					{
-						MagicCard card = new MagicCard("image/"
-								+ DataGenerator.TITLES1[i].replace(" ", "") + "_small.jpg",
-								"image/" + DataGenerator.TITLES1[i].replace(" ", "") + ".jpg",
-								"image/" + DataGenerator.TITLES1[i].replace(" ", "") + "Thumb.jpg",
-								DataGenerator.TITLES1[i], "");
-						card.setGameId(1l);
-						card.setDeck(decks.get(j - 1));
-						card.setUuidObject(UUID.randomUUID());
-						card = this.magicCardDao.save(card);
-
-						final List<MagicCard> cards = decks.get(j - 1).getCards();
-						cards.add(card);
-						decks.get(j - 1).setCards(cards);
-					}
-					else
-					{
-						MagicCard card = new MagicCard("image/"
-								+ DataGenerator.TITLES2[i].replace(" ", "") + "_small.jpg",
-								"image/" + DataGenerator.TITLES2[i].replace(" ", "") + ".jpg",
-								"image/" + DataGenerator.TITLES2[i].replace(" ", "") + "Thumb.jpg",
-								DataGenerator.TITLES2[i], "");
-						card.setGameId(1l);
-						card.setDeck(decks.get(j - 1));
-						card.setUuidObject(UUID.randomUUID());
-						card.setX(16l);
-						card.setY(16l);
-						card = this.magicCardDao.save(card);
-
-						final List<MagicCard> cards = decks.get(j - 1).getCards();
-						cards.add(card);
-						decks.get(j - 1).setCards(cards);
-					}
-				}
-			}
-
-			final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
-					"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
-					"Isn't it a spoiler?");
-			card.setUuidObject(UUID.randomUUID());
-			final Deck fake = new Deck();
-			fake.setDeckName("fake");
-			fake.setPlayerId(-1l);
-			card.setDeck(fake);
-			card.setGameId(-1l);
-			this.magicCardDao.save(card);
-		}
-
 		if ((this.generateCardCollection) && (this.cardCollectionDao.count() == 0))
 		{
 			try
@@ -224,6 +157,95 @@ public class DataGenerator implements InitializingBean
 			{
 				e.printStackTrace();
 			}
+		}
+
+		if (this.generateData)
+		{
+			Deck deck1 = new Deck();
+			deck1.setPlayerId(1l);
+
+			final DeckArchive deckArchive1 = new DeckArchive();
+			deckArchive1.setDeckName("aggro-combo Red / Black");
+			deck1.setDeckArchive(deckArchive1);
+
+			deck1 = this.deckDao.save(deck1);
+
+			Deck deck2 = new Deck();
+			deck2.setPlayerId(2l);
+
+			final DeckArchive deckArchive2 = new DeckArchive();
+			deckArchive2.setDeckName("burn mono-Red");
+			deck2.setDeckArchive(deckArchive2);
+
+			deck2 = this.deckDao.save(deck2);
+
+			final List<Deck> decks = new ArrayList<Deck>();
+			decks.add(0, deck1);
+			decks.add(1, deck2);
+
+			for (int j = 1; j < 3; j++)
+			{
+				for (int i = 0; i < 60; i++)
+				{
+
+					final CollectibleCard c = new CollectibleCard();
+					c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
+					c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
+							.getDeckArchiveId());
+					if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
+					{
+						this.deckArchiveDao.save(j == 1 ? deckArchive1 : deckArchive2);
+						this.collectibleCardDao.save(c);
+					}
+
+					if (j == 1l)
+					{
+						MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
+								+ "_small.jpg", "cards/" + DataGenerator.TITLES1[i] + ".jpg",
+								"cards/" + DataGenerator.TITLES1[i] + "Thumb.jpg",
+								DataGenerator.TITLES1[i], "");
+						card.setGameId(1l);
+						card.setDeck(decks.get(j - 1));
+						card.setUuidObject(UUID.randomUUID());
+						card = this.magicCardDao.save(card);
+
+						final List<MagicCard> cards = decks.get(j - 1).getCards();
+						cards.add(card);
+						decks.get(j - 1).setCards(cards);
+					}
+					else
+					{
+						MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
+								+ "_small.jpg", "cards/" + DataGenerator.TITLES1[i] + ".jpg",
+								"cards/" + DataGenerator.TITLES1[i] + "Thumb.jpg",
+								DataGenerator.TITLES1[i], "");
+						card.setGameId(1l);
+						card.setDeck(decks.get(j - 1));
+						card.setUuidObject(UUID.randomUUID());
+						card.setX(16l);
+						card.setY(16l);
+						card = this.magicCardDao.save(card);
+
+						final List<MagicCard> cards = decks.get(j - 1).getCards();
+						cards.add(card);
+						decks.get(j - 1).setCards(cards);
+					}
+				}
+			}
+
+			// TODO really needed?
+			// this.deckArchiveDao.save(deckArchive1);
+			// this.deckArchiveDao.save(deckArchive2);
+
+			final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
+					"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
+					"Isn't it a spoiler?");
+			card.setUuidObject(UUID.randomUUID());
+			final Deck fake = new Deck();
+			fake.setPlayerId(-1l);
+			card.setDeck(fake);
+			card.setGameId(-1l);
+			this.magicCardDao.save(card);
 		}
 	}
 

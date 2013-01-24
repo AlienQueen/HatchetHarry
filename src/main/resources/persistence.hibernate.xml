@@ -42,6 +42,7 @@
 				<value>org.alienlabs.hatchetharry.model.Player</value>
 				<value>org.alienlabs.hatchetharry.model.CollectibleCard</value>
 				<value>org.alienlabs.hatchetharry.model.Deck</value>
+				<value>org.alienlabs.hatchetharry.model.DeckArchive</value>
 				<value>org.alienlabs.hatchetharry.model.Game</value>
 				<value>org.alienlabs.hatchetharry.model.Side</value>
 				<value>org.alienlabs.hatchetharry.model.CardCollection</value>
@@ -51,7 +52,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<!--  create= provide data at start-up by dropping tables, update= no start-up data model modification -->
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="hibernate.connection.pool_size">100</prop>
 				<prop key="hibernate.show_sql">false</prop>
@@ -92,6 +93,9 @@
 	
 	<!-- setup DAOs  -->
 	<bean id="deckDao" class="org.alienlabs.hatchetharry.persistence.dao.DeckDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="deckArchiveDao" class="org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	<bean id="collectibleCardDao" class="org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDaoImpl">
@@ -145,6 +149,7 @@
  	<bean id="persistenceService" class="org.alienlabs.hatchetharry.service.PersistenceService">
 		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="deckDao" ref="deckDao"/>
+		<property name="deckArchiveDao" ref="deckArchiveDao"/>
 		<property name="collectibleCardDao" ref="collectibleCardDao"/>
 		<property name="playerDao" ref="playerDao"/>
 		<property name="gameDao" ref="gameDao"/>
@@ -154,6 +159,7 @@
 	<!-- setup data generator that will add some data into the db when the app starts up -->
 	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">
 		<property name="deckDao" ref="deckDao"/>
+		<property name="deckArchiveDao" ref="deckArchiveDao"/>
 		<property name="collectibleCardDao" ref="collectibleCardDao"/>
 		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="persistenceService" ref="persistenceService"/>

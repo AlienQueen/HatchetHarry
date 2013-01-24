@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
+import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -27,7 +28,7 @@ public class RuntimeDataGenerator implements Serializable
 			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
 			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
 			"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
-			"Tezzeret s Gambit", "Tezzeret s Gambit", "Tezzeret s Gambit", "Tezzeret s Gambit",
+			"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
 			"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
 			"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
 			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
@@ -51,6 +52,8 @@ public class RuntimeDataGenerator implements Serializable
 	@SpringBean
 	private DeckDao deckDao;
 	@SpringBean
+	private DeckArchiveDao deckArchiveDao;
+	@SpringBean
 	private CollectibleCardDao collectibleCardDao;
 	@SpringBean
 	private MagicCardDao magicCardDao;
@@ -61,6 +64,12 @@ public class RuntimeDataGenerator implements Serializable
 	public void setDeckDao(final DeckDao _deckDao)
 	{
 		this.deckDao = _deckDao;
+	}
+
+	@Required
+	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao)
+	{
+		this.deckArchiveDao = _deckArchiveDao;
 	}
 
 	@Required
@@ -84,14 +93,22 @@ public class RuntimeDataGenerator implements Serializable
 	@Transactional
 	public void generateData()
 	{
+		final DeckArchive deckArchive1 = new DeckArchive();
+		deckArchive1.setDeckName("aggro-combo Red / Black");
+		this.persistenceService.saveDeckArchive(deckArchive1);
+
 		Deck deck1 = new Deck();
 		deck1.setPlayerId(1l);
-		deck1.setDeckName("aggro-combo Red / Black");
+		deck1.setDeckArchive(deckArchive1);
 		deck1 = this.deckDao.save(deck1);
+
+		final DeckArchive deckArchive2 = new DeckArchive();
+		deckArchive2.setDeckName("burn mono-Red");
+		this.persistenceService.saveDeckArchive(deckArchive2);
 
 		Deck deck2 = new Deck();
 		deck2.setPlayerId(2l);
-		deck2.setDeckName("burn mono-Red");
+		deck2.setDeckArchive(deckArchive2);
 		deck2 = this.deckDao.save(deck2);
 
 		final List<Deck> decks = new ArrayList<Deck>();
@@ -107,22 +124,25 @@ public class RuntimeDataGenerator implements Serializable
 				c.setTitle((j == 1
 						? RuntimeDataGenerator.TITLES1[i]
 						: RuntimeDataGenerator.TITLES2[i]));
+				c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
+						.getDeckArchiveId());
+				this.persistenceService.saveCollectibleCard(c);
+
 				if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
 				{
+					this.deckArchiveDao.save(j == 1 ? deckArchive1 : deckArchive2);
 					this.collectibleCardDao.save(c);
 				}
 
 				if (j == 1l)
 				{
-					MagicCard card = new MagicCard("image/"
-							+ RuntimeDataGenerator.TITLES1[i].replace(" ", "") + "_small.jpg",
-							"image/" + RuntimeDataGenerator.TITLES1[i].replace(" ", "") + ".jpg",
-							"image/" + RuntimeDataGenerator.TITLES1[i].replace(" ", "")
-									+ "Thumb.jpg", RuntimeDataGenerator.TITLES1[i], "");
+					MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
+							+ "_small.jpg", "cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg",
+							"cards/" + RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
+							RuntimeDataGenerator.TITLES1[i], "");
 					card.setGameId(1l);
 					card.setDeck(decks.get(j - 1));
 					card.setUuidObject(UUID.randomUUID());
-					card.setZone(CardZone.LIBRARY);
 					card = this.magicCardDao.save(card);
 
 					final List<MagicCard> cards = decks.get(j - 1).getCards();
@@ -131,36 +151,38 @@ public class RuntimeDataGenerator implements Serializable
 				}
 				else
 				{
-					MagicCard card = new MagicCard("image/"
-							+ RuntimeDataGenerator.TITLES2[i].replace(" ", "") + "_small.jpg",
-							"image/" + RuntimeDataGenerator.TITLES2[i].replace(" ", "") + ".jpg",
-							"image/" + RuntimeDataGenerator.TITLES2[i].replace(" ", "")
-									+ "Thumb.jpg", RuntimeDataGenerator.TITLES2[i], "");
+					MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
+							+ "_small.jpg", "cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg",
+							"cards/" + RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
+							RuntimeDataGenerator.TITLES1[i], "");
 					card.setGameId(1l);
 					card.setDeck(decks.get(j - 1));
 					card.setUuidObject(UUID.randomUUID());
 					card.setX(16l);
 					card.setY(16l);
-					card.setZone(CardZone.LIBRARY);
 					card = this.magicCardDao.save(card);
 
 					final List<MagicCard> cards = decks.get(j - 1).getCards();
 					cards.add(card);
 					decks.get(j - 1).setCards(cards);
+
+					this.deckDao.save(decks.get(j - 1));
 				}
 			}
 		}
+
+		// TODO really needed?
+		// this.deckArchiveDao.save(deckArchive1);
+		// this.deckArchiveDao.save(deckArchive2);
 
 		final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
 				"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
 				"Isn't it a spoiler?");
 		card.setUuidObject(UUID.randomUUID());
 		final Deck fake = new Deck();
-		fake.setDeckName("fake");
 		fake.setPlayerId(-1l);
 		card.setDeck(fake);
 		card.setGameId(-1l);
-		card.setZone(CardZone.BATTLEFIELD);
 		this.magicCardDao.save(card);
 	}
 

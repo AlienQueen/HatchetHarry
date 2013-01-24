@@ -108,7 +108,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player
 						.setName(nameInput.getDefaultModelObjectAsString());
 
-				CreateGameModalWindow.this.persistenceService.saveOrUpdateGame(g);
+				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
 				CreateGameModalWindow.this.persistenceService
 						.updatePlayer(CreateGameModalWindow.this.player);

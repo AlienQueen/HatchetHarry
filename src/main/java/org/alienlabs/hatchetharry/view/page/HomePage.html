@@ -76,12 +76,16 @@
 		<a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
 	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
 	    </a>
+		 <a rel="separator"> </a>
+		 <a wicket:id="importDeckLink" class="{action: 'showMessage(\'menu_2.4\')'}">
+	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import a deck<br/>
+	    </a>
 	    <a rel="separator"> </a>
-			<a wicket:id="resetDbLink" class="{action: 'showMessage(\'menu_2.4\')'}">
+			<a wicket:id="resetDbLink" class="{action: 'showMessage(\'menu_2.5\')'}">
 	        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reset database<br/>
 	    </a>
 		<a rel="separator"> </a>
-			<a wicket:id="hideAllTooltipsLink" class="{action: 'showMessage(\'menu_2.5\')'}">
+			<a wicket:id="hideAllTooltipsLink" class="{action: 'showMessage(\'menu_2.6\')'}">
 	        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hide all tooltips<br/>
 	    </a>
 		<a rel="separator"> </a>
@@ -309,6 +313,7 @@
 	<a wicket:id="notifierStart" id="notifierStart"></a>
 	<div wicket:id="createGameWindow"></div>
 	<div wicket:id="joinGameWindow"></div>
+	<div wicket:id="importDeckWindow"></div>
 	
 	<a wicket:id="sidePlaceholderMove" id="sidePlaceholderMove"></a>
 	

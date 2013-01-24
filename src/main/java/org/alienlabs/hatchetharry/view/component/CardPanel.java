@@ -117,8 +117,11 @@ public class CardPanel extends Panel
 		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString());
 		tapHandleImage.setOutputMarkupId(true);
 
-		final Image cardImage = new Image("cardImage", new PackageResourceReference(HomePage.class,
-				smallImage));
+		// TODO OK?
+		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
+		// final Image cardImage = new Image("cardImage", new
+		// PackageResourceReference(HomePage.class,
+		// smallImage));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString());
 

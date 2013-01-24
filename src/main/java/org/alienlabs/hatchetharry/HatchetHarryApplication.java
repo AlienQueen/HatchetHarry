@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,8 +19,13 @@ import org.apache.wicket.atmosphere.ResourceRegistrationListener;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceStreamResource;
+import org.apache.wicket.request.resource.SharedResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.resource.FileResourceStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -252,6 +258,10 @@ public class HatchetHarryApplication extends WebApplication
 				new PackageResourceReference(HomePage.class, "blah.js"));
 		this.getJavaScriptLibrarySettings().setWicketAjaxReference(
 				new PackageResourceReference(HomePage.class, "blah.js"));
+
+		this.getSharedResources().add("cards",
+				new FolderContentResource(new File("/home/nostromo/cards/")));
+		this.mountResource("cards", new SharedResourceReference("cards"));
 	}
 
 	@Override
@@ -297,6 +307,29 @@ public class HatchetHarryApplication extends WebApplication
 		HatchetHarryApplication.LOGGER
 				.info("uuid removed: " + uuid + ", for playerId: " + playerId);
 		HatchetHarryApplication.cometResources.remove(playerId);
+	}
+
+	static class FolderContentResource implements IResource
+	{
+		private static final long serialVersionUID = 1L;
+
+		private final File rootFolder;
+
+		public FolderContentResource(final File rootFolder)
+		{
+			this.rootFolder = rootFolder;
+		}
+
+		@Override
+		public void respond(final Attributes attributes)
+		{
+			final PageParameters parameters = attributes.getParameters();
+			final String fileName = parameters.get(0).toString();
+			final File file = new File(this.rootFolder, fileName);
+			final FileResourceStream fileResourceStream = new FileResourceStream(file);
+			final ResourceStreamResource resource = new ResourceStreamResource(fileResourceStream);
+			resource.respond(attributes);
+		}
 	}
 
 }

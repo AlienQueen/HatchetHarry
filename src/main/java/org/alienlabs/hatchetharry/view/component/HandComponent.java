@@ -5,17 +5,14 @@ import java.util.List;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.alienlabs.hatchetharry.view.page.PlayCardPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -47,7 +44,7 @@ public class HandComponent extends Panel
 		final List<MagicCard> allCardsInHand = this.persistenceService
 				.getAllCardsInHandForAGameAndAPlayer(HatchetHarrySession.get().getPlayer()
 						.getGames().iterator().next().getId(), HatchetHarrySession.get()
-						.getPlayer().getId());
+						.getPlayer().getId(), HatchetHarrySession.get().getDeck().getId());
 
 		this.allCards = new ListView<MagicCard>("handCards", allCardsInHand)
 		{
@@ -63,8 +60,13 @@ public class HandComponent extends Panel
 				wrapper.setMarkupId("wrapper" + item.getIndex());
 				wrapper.setOutputMarkupId(true);
 
-				final Image handImagePlaceholder = new Image("handImagePlaceholder",
-						new PackageResourceReference(HomePage.class, card.getBigImageFilename()));
+				// TODO OK?
+				final ExternalImage handImagePlaceholder = new ExternalImage(
+						"handImagePlaceholder", card.getBigImageFilename());
+				// final Image handImagePlaceholder = new
+				// Image("handImagePlaceholder",
+				// new PackageResourceReference(HomePage.class,
+				// card.getBigImageFilename()));
 				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
 				handImagePlaceholder.setOutputMarkupId(true);
 
@@ -100,8 +102,12 @@ public class HandComponent extends Panel
 				crossLink.setMarkupId("cross-link" + item.getIndex());
 				crossLink.setOutputMarkupId(true);
 
-				final Image thumb = new Image("thumbPlaceholder", new PackageResourceReference(
-						HomePage.class, card.getThumbnailFilename()));
+				// TODO OK?
+				final ExternalImage thumb = new ExternalImage("thumbPlaceholder",
+						card.getThumbnailFilename());
+				// final Image thumb = new Image("thumbPlaceholder", new
+				// PackageResourceReference(
+				// HomePage.class, card.getThumbnailFilename()));
 				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
 				thumb.setOutputMarkupId(true);
 
