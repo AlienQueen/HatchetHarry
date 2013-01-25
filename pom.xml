@@ -21,7 +21,7 @@
 	<properties>
 		<wicket.version>6.4.0</wicket.version>
 		<wicketstuff.version>6.4.0</wicketstuff.version>
-		<wicket-atmosphere.version>0.7-SNAPSHOT</wicket-atmosphere.version>
+		<wicket-atmosphere.version>0.8-SNAPSHOT</wicket-atmosphere.version>
 		<atmosphere.version>1.0.9</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<jetty.version>6.1.25</jetty.version>
