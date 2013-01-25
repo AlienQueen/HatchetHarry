@@ -67,6 +67,7 @@ import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChanne
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.RegenerateGameLinksCometChannel;
 import org.alienlabs.hatchetharry.model.channel.SimplePredicate;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
@@ -183,6 +184,14 @@ public class HomePage extends TestReportPage
 	private PlayCardFromHandBehavior playCardBehavior;
 	private PlayCardFromGraveyardBehavior playCardFromGraveyardBehavior;
 	ClockPanel clockPanel;
+
+	private final WebMarkupContainer generateCreateGameLinkParent;
+	private final WebMarkupContainer createGameLinkParent;
+	private AjaxLink<Void> createGameLink;
+
+	private final WebMarkupContainer generateJoinGameLinkParent;
+	private final WebMarkupContainer joinGameLinkParent;
+	private AjaxLink<Void> joinGameLink;
 
 	public HomePage()
 	{
@@ -328,15 +337,27 @@ public class HomePage extends TestReportPage
 
 		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
 
-		this.generateCreateGameLink(this.player, this.galleryParent,
-				this.firstSidePlaceholderParent);
-		this.generateJoinGameLink(this.player, this.galleryParent, this.secondSidePlaceholderParent);
+		this.createGameLinkParent = new WebMarkupContainer("createGameLinkParent");
+		this.createGameLinkParent.setOutputMarkupId(true);
+		this.add(this.createGameLinkParent);
+		this.generateCreateGameLinkParent = new WebMarkupContainer("generateCreateGameLinkParent");
+		this.generateCreateGameLinkParent.setOutputMarkupId(true);
+		this.generateCreateGameLinkParent.add(this.generateCreateGameModalWindow(this.player,
+				this.galleryParent, this.firstSidePlaceholderParent, null));
+		this.add(this.generateCreateGameLinkParent);
+
+		this.joinGameLinkParent = new WebMarkupContainer("joinGameLinkParent");
+		this.joinGameLinkParent.setOutputMarkupId(true);
+		this.add(this.joinGameLinkParent);
+		this.generateJoinGameLinkParent = new WebMarkupContainer("generateJoinGameLinkParent");
+		this.generateJoinGameLinkParent.setOutputMarkupId(true);
+		this.generateJoinGameLinkParent.add(this.generateJoinGameModalWindow(this.player,
+				this.galleryParent, this.secondSidePlaceholderParent, null));
+		this.add(this.generateJoinGameLinkParent);
 
 		this.generatePlayCardLink(this.hand);
 		this.generatePlayCardFromGraveyardLink();
 		this.generateCardPanels();
-		// this.generatePlayCardsBehaviorsForAllOpponents();
-		// this.generatePlayCardsFromGraveyardBehaviorsForAllOpponents();
 
 		this.generateDrawCardLink();
 
@@ -570,7 +591,8 @@ public class HomePage extends TestReportPage
 							playerToWhomToSend);
 
 					final UntapAllCometChannel uacc = new UntapAllCometChannel(HatchetHarrySession
-							.get().getGameId(), HatchetHarrySession.get().getPlayer().getId());
+							.get().getGameId(), HatchetHarrySession.get().getPlayer().getId(),
+							HatchetHarrySession.get().getDeck().getDeckId());
 					EventBus.get().post(uacc, pageUuid);
 				}
 			}
@@ -704,27 +726,6 @@ public class HomePage extends TestReportPage
 		HatchetHarrySession.get().setPlayer(p);
 		this.player = p;
 		return p;
-	}
-
-	// TODO remove this
-	private void generatePlayCardsBehaviorsForAnOpponent(final String opponentId)
-	{
-		for (int i = 1; i < 61; i++)
-		{
-			final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder"
-					+ opponentId + i);
-			cardPlaceholder.setOutputMarkupId(true);
-			cardPlaceholder.setMarkupId("cardPlaceholder" + opponentId + i);
-
-			this.playCardParent.addOrReplace(cardPlaceholder);
-		}
-	}
-
-	// TODO remove this
-	private void generatePlayCardsBehaviorsForAllOpponents()
-	{
-		this.generatePlayCardsBehaviorsForAnOpponent("a");
-		this.generatePlayCardsBehaviorsForAnOpponent("b");
 	}
 
 	private void generatePlayCardLink(final List<MagicCard> mc)
@@ -1141,79 +1142,101 @@ public class HomePage extends TestReportPage
 		return window;
 	}
 
-	protected void generateCreateGameLink(final Player _player,
+	protected ModalWindow generateCreateGameModalWindow(final Player _player,
 			final WebMarkupContainer _handCardsParent,
-			final WebMarkupContainer sidePlaceholderParent)
+			final WebMarkupContainer sidePlaceholderParent, final AjaxRequestTarget target)
 	{
 		this.createGameWindow = new ModalWindow("createGameWindow");
 		this.createGameWindow.setInitialWidth(475);
 		this.createGameWindow.setInitialHeight(290);
 		this.createGameWindow.setTitle("Create a game");
 
-		this.regenarateCreateGameWindowContent(_player, sidePlaceholderParent);
+		this.regenarateCreateGameWindowContent(this.createGameWindow, _player,
+				sidePlaceholderParent);
 		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
-		this.add(this.createGameWindow);
 
-		final AjaxLink<Void> createGameLink = new AjaxLink<Void>("createGameLink")
+		this.createGameLink = new AjaxLink<Void>("createGameLink")
 		{
 			private static final long serialVersionUID = 4097315677385015896L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target)
+			public void onClick(final AjaxRequestTarget _target)
 			{
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				HomePage.this.createGameWindow.show(target);
+				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				HomePage.this.createGameWindow.show(_target);
 			}
 		};
 
-		createGameLink.setOutputMarkupId(true);
+		this.createGameLink.setOutputMarkupId(true);
 		this.createGameWindow.setOutputMarkupId(true);
-		this.add(createGameLink);
+
+		if (null != target)
+		{
+			this.createGameLinkParent.addOrReplace(this.createGameLink);
+			target.add(this.createGameLinkParent);
+		}
+		else
+		{
+			this.createGameLinkParent.add(this.createGameLink);
+		}
+
+		return this.createGameWindow;
 	}
 
-	public void regenarateCreateGameWindowContent(final Player _player,
-			final WebMarkupContainer sidePlaceholderParent)
+	public void regenarateCreateGameWindowContent(final ModalWindow _createGameWindow,
+			final Player _player, final WebMarkupContainer sidePlaceholderParent)
 	{
-		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
-				this.createGameWindow.getContentId(), _player, sidePlaceholderParent, this));
+		_createGameWindow.setContent(new CreateGameModalWindow(_createGameWindow, _createGameWindow
+				.getContentId(), _player, sidePlaceholderParent, this));
 	}
 
-	protected void generateJoinGameLink(final Player _player,
+	protected ModalWindow generateJoinGameModalWindow(final Player _player,
 			final WebMarkupContainer _handCardsParent,
-			final WebMarkupContainer sidePlaceholderParent)
+			final WebMarkupContainer sidePlaceholderParent, final AjaxRequestTarget target)
 	{
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
 		this.joinGameWindow.setInitialWidth(475);
 		this.joinGameWindow.setInitialHeight(290);
 		this.joinGameWindow.setTitle("Join a game");
 
-		this.regenarateJoinGameWindowContent(_player);
+		this.regenarateJoinGameWindowContent(this.joinGameWindow, _player);
 		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
-		this.add(this.joinGameWindow);
 
-		final AjaxLink<Void> createGameLink = new AjaxLink<Void>("joinGameLink")
+		this.joinGameLink = new AjaxLink<Void>("joinGameLink")
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target)
+			public void onClick(final AjaxRequestTarget _target)
 			{
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				HomePage.this.joinGameWindow.show(target);
+				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				HomePage.this.joinGameWindow.show(_target);
 			}
 		};
 
-		createGameLink.setOutputMarkupId(true);
+		this.joinGameLink.setOutputMarkupId(true);
 		this.joinGameWindow.setOutputMarkupId(true);
-		this.add(createGameLink);
+
+		if (null != target)
+		{
+			this.joinGameLinkParent.addOrReplace(this.joinGameLink);
+			target.add(this.joinGameLinkParent);
+		}
+		else
+		{
+			this.joinGameLinkParent.add(this.joinGameLink);
+		}
+
+		return this.joinGameWindow;
 	}
 
-	public void regenarateJoinGameWindowContent(final Player _player)
+	public void regenarateJoinGameWindowContent(final ModalWindow _joinGameWindow,
+			final Player _player)
 	{
-		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
-				this.joinGameWindow.getContentId(), _player, this.dataBoxParent, this));
+		_joinGameWindow.setContent(new JoinGameModalWindow(_joinGameWindow, _joinGameWindow
+				.getContentId(), _player, this.dataBoxParent, this));
 	}
 
 	protected void generateImportDeckLink()
@@ -1376,7 +1399,8 @@ public class HomePage extends TestReportPage
 	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
 	{
 		final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(event.getGameId(), event.getPlayerId());
+				.getAllCardsInBattlefieldForAGameAndAPlayer(event.getGameId(), event.getPlayerId(),
+						event.getDeckId());
 
 		final StringBuffer buf = new StringBuffer();
 
@@ -1497,6 +1521,19 @@ public class HomePage extends TestReportPage
 		JavaScriptUtils.updateCardsInBattlefield(target);
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
+	}
+
+	@Subscribe
+	public void regenerateGameLinks(final AjaxRequestTarget target,
+			final RegenerateGameLinksCometChannel event)
+	{
+		this.generateCreateGameLinkParent.addOrReplace(this.generateCreateGameModalWindow(
+				this.player, this.galleryParent, this.firstSidePlaceholderParent, target));
+		target.add(this.generateCreateGameLinkParent);
+
+		this.generateJoinGameLinkParent.addOrReplace(this.generateJoinGameModalWindow(this.player,
+				this.galleryParent, this.secondSidePlaceholderParent, target));
+		target.add(this.generateJoinGameLinkParent);
 	}
 
 	@Override

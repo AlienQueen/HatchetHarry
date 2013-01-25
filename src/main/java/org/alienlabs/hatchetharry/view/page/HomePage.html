@@ -70,12 +70,16 @@
 	  </div>
 	
 	  <div id="menu_3" class="mbmenu">
-	    <a  wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
-	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
-	    </a>
-		<a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
-	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
-	    </a>
+	  	<span wicket:id="createGameLinkParent">
+		    <a wicket:id="createGameLink" class="{action: 'showMessage(\'menu_2.2\')'}">
+		        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
+	    	</a>
+		</span>
+		<span wicket:id="joinGameLinkParent">
+			<a wicket:id="joinGameLink" class="{action: 'showMessage(\'menu_2.3\')'}">
+		        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
+		    </a>
+		</span>
 		 <a rel="separator"> </a>
 		 <a wicket:id="importDeckLink" class="{action: 'showMessage(\'menu_2.4\')'}">
 	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import a deck<br/>
@@ -311,8 +315,15 @@
 	<div wicket:id="aboutWindowResponsive"></div>
 	<div wicket:id="teamInfoWindowResponsive"></div>
 	<a wicket:id="notifierStart" id="notifierStart"></a>
-	<div wicket:id="createGameWindow"></div>
-	<div wicket:id="joinGameWindow"></div>
+
+	<span wicket:id="generateCreateGameLinkParent">
+		<div wicket:id="createGameWindow"></div>
+	</span>
+	
+	<span wicket:id="generateJoinGameLinkParent">
+		<div wicket:id="joinGameWindow"></div>
+	</span>
+	
 	<div wicket:id="importDeckWindow"></div>
 	
 	<a wicket:id="sidePlaceholderMove" id="sidePlaceholderMove"></a>

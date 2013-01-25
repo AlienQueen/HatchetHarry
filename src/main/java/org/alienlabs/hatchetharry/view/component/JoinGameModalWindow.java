@@ -118,26 +118,15 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player = JoinGameModalWindow.this.persistenceService
 						.getPlayer(session.getPlayer().getId());
 
-				final Game gameToRemove = JoinGameModalWindow.this.persistenceService
-						.getGame(session.getGameId());
-				if (null != gameToRemove)
-				{
-					if (JoinGameModalWindow.this.player.getGames().remove(gameToRemove))
-					{
-						final Player _p = session.getPlayer();
-						final Set<Game> allGamesInSession = _p.getGames();
-						allGamesInSession.remove(gameToRemove);
-						allGamesInSession.add(game);
-						_p.setGames(allGamesInSession);
-						session.setGameId(_id);
-						session.setPlayer(_p);
+				final Player _p = session.getPlayer();
+				final Set<Game> allGames = new HashSet<Game>();
+				allGames.add(game);
+				_p.setGames(allGames);
+				session.setGameId(_id);
+				session.setPlayer(_p);
 
-						JoinGameModalWindow.this.persistenceService
-								.saveOrUpdatePlayer(JoinGameModalWindow.this.player);
-					}
-					gameToRemove.getPlayers().remove(JoinGameModalWindow.this.player);
-					JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(gameToRemove);
-				}
+				JoinGameModalWindow.this.persistenceService
+						.saveOrUpdatePlayer(JoinGameModalWindow.this.player);
 
 				session.setGameId(_id);
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);

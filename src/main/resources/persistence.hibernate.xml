@@ -164,4 +164,7 @@
 		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="persistenceService" ref="persistenceService"/>
 	</bean>
+	<bean id="importDeckService" class="org.alienlabs.hatchetharry.service.ImportDeckService">
+		<property name="persistenceService" ref="persistenceService"/>
+	</bean>
 </beans>	

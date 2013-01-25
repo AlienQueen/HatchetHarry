@@ -1,16 +1,11 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.UUID;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.model.CollectibleCard;
-import org.alienlabs.hatchetharry.model.Deck;
-import org.alienlabs.hatchetharry.model.DeckArchive;
-import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.channel.RegenerateGameLinksCometChannel;
+import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.basic.Label;
@@ -32,6 +27,8 @@ public class ImportDeckModalWindow extends Panel
 
 	@SpringBean
 	PersistenceService persistenceService;
+	@SpringBean
+	ImportDeckService importDeckService;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckModalWindow.class);
 
@@ -70,75 +67,21 @@ public class ImportDeckModalWindow extends Panel
 					return;
 				}
 
-				String fileContent;
-
-				final DeckArchive deckArchive = new DeckArchive();
-				deckArchive.setDeckName(ImportDeckModalWindow.this.nameInput.getModelObject());
-				ImportDeckModalWindow.this.persistenceService.saveDeckArchive(deckArchive);
-
 				try
 				{
-					fileContent = new String(fupload.getBytes(), "UTF-8");
-
-					final Deck deck = new Deck();
-					deck.setPlayerId(1l);
-					deck.setDeckArchive(deckArchive);
-					final List<MagicCard> allMagicCards = deck.getCards();
-
-					for (final String line : fileContent.split("\n"))
-					{
-						ImportDeckModalWindow.LOGGER.info("line: " + line);
-
-						if ("".equals(line.trim()))
-						{
-							break;
-						}
-
-						final String numberOfItemsAsString = line.split(" ")[0];
-						final int numberOfItems = Integer.parseInt(numberOfItemsAsString);
-						final int indexOfSpace = line.indexOf(" ");
-						final String cardName = line.substring(indexOfSpace + 1, line.length());
-
-
-						ImportDeckModalWindow.LOGGER.info(numberOfItems + " x " + cardName);
-
-						for (int i = 0; i < numberOfItems; i++)
-						{
-							final CollectibleCard cc = new CollectibleCard();
-							cc.setTitle(cardName);
-							cc.setDeckArchiveId(deckArchive.getDeckArchiveId());
-
-							// TODO needed?
-							// ImportDeckModalWindow.this.persistenceService
-							// .saveDeckArchive(deckArchive);
-							ImportDeckModalWindow.this.persistenceService.saveCollectibleCard(cc);
-
-							final MagicCard card = new MagicCard(
-									"cards/" + cardName + "_small.jpg", "cards/" + cardName
-											+ ".jpg", "cards/" + cardName + "Thumb.jpg", cardName,
-									"");
-							card.setGameId(1l);
-							card.setDeck(deck);
-							card.setUuidObject(UUID.randomUUID());
-
-							allMagicCards.add(card);
-
-							ImportDeckModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
-							ImportDeckModalWindow.this.persistenceService.saveOrUpdateCard(card);
-						}
-					}
-					// TODO needed?
-					ImportDeckModalWindow.this.persistenceService.saveDeckArchive(deckArchive);
+					ImportDeckModalWindow.this.importDeckService.importDeck(
+							new String(fupload.getBytes(), "UTF-8"),
+							ImportDeckModalWindow.this.nameInput.getModelObject());
 				}
 				catch (final UnsupportedEncodingException e)
 				{
 					ImportDeckModalWindow.LOGGER.error("error parsing deck file", e);
+					return;
 				}
 
-				final HomePage hp = (HomePage)ImportDeckModalWindow.this.getPage();
-				hp.regenarateJoinGameWindowContent(HatchetHarrySession.get().getPlayer());
-				hp.regenarateCreateGameWindowContent(HatchetHarrySession.get().getPlayer(),
-						hp.getFirstSidePlaceholderParent());
+				// post a message for all players connected to HH
+				final RegenerateGameLinksCometChannel rglcc = new RegenerateGameLinksCometChannel();
+				EventBus.get().post(rglcc);
 			}
 		};
 
@@ -156,6 +99,12 @@ public class ImportDeckModalWindow extends Panel
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	@Required
+	public void setImportDeckService(final ImportDeckService _importDeckService)
+	{
+		this.importDeckService = _importDeckService;
 	}
 
 }

@@ -100,7 +100,10 @@ public class CreateGameModalWindow extends Panel
 
 				final Set<Game> games = new HashSet<Game>();
 				games.add(g);
+
 				CreateGameModalWindow.this.player.setGames(games);
+				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
+
 				CreateGameModalWindow.LOGGER.info("### "
 						+ sideInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.player
