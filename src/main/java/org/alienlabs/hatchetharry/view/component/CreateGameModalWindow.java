@@ -118,7 +118,7 @@ public class CreateGameModalWindow extends Panel
 
 				final Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = CreateGameModalWindow.this.persistenceService
-						.getAllCardsFromDeck(deck.getId());
+						.getAllCardsFromDeck(deck.getDeckId());
 
 				for (final MagicCard aCard : allCards)
 				{

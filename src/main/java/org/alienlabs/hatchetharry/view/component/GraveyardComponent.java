@@ -38,7 +38,7 @@ public class GraveyardComponent extends Panel
 		final List<MagicCard> allCardsInGraveyard = this.persistenceService
 				.getAllCardsInGraveyardForAGameAndAPlayer(HatchetHarrySession.get().getPlayer()
 						.getGames().iterator().next().getId(), HatchetHarrySession.get()
-						.getPlayer().getId(), HatchetHarrySession.get().getDeck().getId());
+						.getPlayer().getId(), HatchetHarrySession.get().getDeck().getDeckId());
 
 		this.allCards = new ListView<MagicCard>("graveyardCards", allCardsInGraveyard)
 		{

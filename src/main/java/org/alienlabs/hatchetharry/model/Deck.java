@@ -9,6 +9,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class Deck implements Serializable
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
 	private Long playerId;
-	@OneToMany(mappedBy = "deck")
+	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
 	public List<MagicCard> shuffleLibrary()
@@ -48,16 +49,6 @@ public class Deck implements Serializable
 		Collections.shuffle(this.cards);
 		Collections.shuffle(this.cards);
 		return this.cards;
-	}
-
-	public Long getId()
-	{
-		return this.deckId;
-	}
-
-	public void setId(final Long _id)
-	{
-		this.deckId = _id;
 	}
 
 	public Long getPlayerId()

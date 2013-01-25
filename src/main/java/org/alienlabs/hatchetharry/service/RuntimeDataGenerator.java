@@ -91,14 +91,14 @@ public class RuntimeDataGenerator implements Serializable
 	}
 
 	@Transactional
-	public void generateData()
+	public Deck generateData(final Long playerId)
 	{
 		final DeckArchive deckArchive1 = new DeckArchive();
 		deckArchive1.setDeckName("aggro-combo Red / Black");
 		this.persistenceService.saveDeckArchive(deckArchive1);
 
 		Deck deck1 = new Deck();
-		deck1.setPlayerId(1l);
+		deck1.setPlayerId(playerId);
 		deck1.setDeckArchive(deckArchive1);
 		deck1 = this.deckDao.save(deck1);
 
@@ -107,7 +107,7 @@ public class RuntimeDataGenerator implements Serializable
 		this.persistenceService.saveDeckArchive(deckArchive2);
 
 		Deck deck2 = new Deck();
-		deck2.setPlayerId(2l);
+		deck2.setPlayerId(playerId);
 		deck2.setDeckArchive(deckArchive2);
 		deck2 = this.deckDao.save(deck2);
 
@@ -171,10 +171,6 @@ public class RuntimeDataGenerator implements Serializable
 			}
 		}
 
-		// TODO really needed?
-		// this.deckArchiveDao.save(deckArchive1);
-		// this.deckArchiveDao.save(deckArchive2);
-
 		final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
 				"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
 				"Isn't it a spoiler?");
@@ -184,6 +180,8 @@ public class RuntimeDataGenerator implements Serializable
 		card.setDeck(fake);
 		card.setGameId(-1l);
 		this.magicCardDao.save(card);
+
+		return deck1;
 	}
 
 }

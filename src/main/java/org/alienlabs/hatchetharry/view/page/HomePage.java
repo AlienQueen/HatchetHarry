@@ -218,7 +218,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
-		final Label message2 = new Label("message2", "built on Sunday, 20th of January 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 25th of January 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -228,33 +228,19 @@ public class HomePage extends TestReportPage
 
 		if (!HatchetHarrySession.get().isGameCreated())
 		{
-			this.player = this.createPlayer();
+			this.createPlayer();
 		}
 		else
 		{
 			this.player = HatchetHarrySession.get().getPlayer();
 		}
 
-		this.deck = this.persistenceService.getDeck(1l);
-		if (null == this.deck)
-		{
-			// TODO remove this
-			// this.runtimeDataGenerator.generateData();
-			this.deck = this.persistenceService.getDeck(1l);
-			this.persistenceService.saveDeck(this.deck);
-		}
+		// TODO remove this?
+		// this.deck =
+		// this.runtimeDataGenerator.generateData(this.player.getId());
+		// HatchetHarrySession.get().setDeck(this.deck);
 
-		this.deck = this.persistenceService.getDeck(2l);
-		if (null == this.deck)
-		{
-			// TODO remove this
-			// this.runtimeDataGenerator.generateData();
-			this.deck = this.persistenceService.getDeck(2l);
-			this.deck = this.persistenceService.saveDeck(this.deck);
-		}
-
-		HatchetHarrySession.get().setDeck(this.deck);
-
+		// TODO remove this?
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
 		this.createCardPanelPlaceholders();
 
@@ -711,19 +697,13 @@ public class HomePage extends TestReportPage
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
 		HatchetHarrySession.get().setPlayer(p);
 
-		this.deck = this.persistenceService.getDeck(id);
-		if (null == this.deck)
-		{
-			this.runtimeDataGenerator.generateData();
-			this.deck = this.persistenceService.getDeck(id);
-		}
-		this.deck.setCards(this.persistenceService.getAllCardsFromDeck(id));
+		this.deck = this.runtimeDataGenerator.generateData(p.getId());
 		this.deck.setCards(this.deck.shuffleLibrary());
 		this.deck.setPlayerId(id);
 		this.deck = this.persistenceService.saveDeck(this.deck);
 
-		// HatchetHarrySession.get().setGameId(game.getId());
 		HatchetHarrySession.get().setPlayer(p);
+		HatchetHarrySession.get().setDeck(this.deck);
 		this.player = p;
 		return p;
 	}
@@ -1054,7 +1034,7 @@ public class HomePage extends TestReportPage
 			{
 				this.deck = this.persistenceService.getDeck(1l);
 			}
-			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getId()));
+			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 
 			if (!HatchetHarrySession.get().isHandCardsHaveBeenBuilt())

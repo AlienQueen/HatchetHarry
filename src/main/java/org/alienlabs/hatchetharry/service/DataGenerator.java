@@ -233,10 +233,6 @@ public class DataGenerator implements InitializingBean
 				}
 			}
 
-			// TODO really needed?
-			// this.deckArchiveDao.save(deckArchive1);
-			// this.deckArchiveDao.save(deckArchive2);
-
 			final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
 					"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
 					"Isn't it a spoiler?");

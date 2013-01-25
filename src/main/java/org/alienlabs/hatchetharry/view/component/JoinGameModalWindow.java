@@ -133,7 +133,7 @@ public class JoinGameModalWindow extends Panel
 
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
-						.getAllCardsFromDeck(deck.getId());
+						.getAllCardsFromDeck(deck.getDeckId());
 
 				for (final MagicCard aCard : allCards)
 				{
