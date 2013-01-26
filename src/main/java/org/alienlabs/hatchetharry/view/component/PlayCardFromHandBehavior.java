@@ -66,8 +66,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
-		final Long gameId = HatchetHarrySession.get().getPlayer().getGames().iterator().next()
-				.getId();
+		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 
 		if (!CardZone.HAND.equals(card.getZone()))
 		{
@@ -75,10 +74,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setZone(CardZone.BATTLEFIELD);
-		this.persistenceService.saveCard(card);
-
-		final HandComponent gallery = new HandComponent("gallery");
-		gallery.setOutputMarkupId(true);
 
 		card.setX(50l + (card.getId() * 2));
 		card.setY(50l + (card.getId() * 2));

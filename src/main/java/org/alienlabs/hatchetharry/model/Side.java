@@ -3,22 +3,23 @@ package org.alienlabs.hatchetharry.model;
 import java.io.Serializable;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Side")
-@Cacheable 
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Side implements Serializable
 {
@@ -33,8 +34,8 @@ public class Side implements Serializable
 	private String side;
 	@Column
 	private String uuid;
-	@ManyToOne(cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "side_game")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.SAVE_UPDATE })
 	private Game game;
 	@Column
 	private Long x = 64l; // x coordinate

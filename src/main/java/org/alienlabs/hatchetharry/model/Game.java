@@ -1,9 +1,7 @@
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
@@ -15,14 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Game")
@@ -35,12 +30,12 @@ public class Game implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long gameId;
-	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.ALL })
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
 	private Set<Player> players = new HashSet<Player>();
-	@OneToMany(mappedBy = "game")
-	private List<Side> sides = new ArrayList<Side>();
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "Game_Side", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "sideId"))
+	private Set<Side> sides = new HashSet<Side>();
 	@Column
 	private Long currentPlaceholderId = 0L;
 
@@ -104,12 +99,12 @@ public class Game implements Serializable
 		return true;
 	}
 
-	public List<Side> getSides()
+	public Set<Side> getSides()
 	{
 		return this.sides;
 	}
 
-	public void setSides(final List<Side> _sides)
+	public void setSides(final Set<Side> _sides)
 	{
 		this.sides = _sides;
 	}

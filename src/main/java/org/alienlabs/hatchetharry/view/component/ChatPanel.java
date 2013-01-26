@@ -114,8 +114,7 @@ public class ChatPanel extends Panel
 				final String chatMessage = _user + " said: " + _message;
 
 				final Long gameId = ChatPanel.this.persistenceService
-						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
-						.iterator().next().getId();
+						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
 				final List<BigInteger> allPlayersInGame = ChatPanel.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 

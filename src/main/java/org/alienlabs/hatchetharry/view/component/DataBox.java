@@ -93,7 +93,7 @@ public class DataBox extends Panel
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-						final Long g = playerToUpdate.getGames().iterator().next().getId();
+						final Long g = playerToUpdate.getGame().getId();
 						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
 								.giveAllPlayersFromGame(g);
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
@@ -128,7 +128,7 @@ public class DataBox extends Panel
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-						final Long g = playerToUpdate.getGames().iterator().next().getId();
+						final Long g = playerToUpdate.getGame().getId();
 						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
 								.giveAllPlayersFromGame(g);
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);

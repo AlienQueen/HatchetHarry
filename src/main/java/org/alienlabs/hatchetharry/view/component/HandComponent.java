@@ -43,8 +43,8 @@ public class HandComponent extends Panel
 
 		final List<MagicCard> allCardsInHand = this.persistenceService
 				.getAllCardsInHandForAGameAndAPlayer(HatchetHarrySession.get().getPlayer()
-						.getGames().iterator().next().getId(), HatchetHarrySession.get()
-						.getPlayer().getId(), HatchetHarrySession.get().getDeck().getDeckId());
+						.getGame().getId(), HatchetHarrySession.get().getPlayer().getId(),
+						HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 
 		this.allCards = new ListView<MagicCard>("handCards", allCardsInHand)
 		{

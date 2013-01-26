@@ -7,19 +7,49 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.tester.WicketTester;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class ImportDeckServiceTest extends TestParent
+public class ImportDeckServiceTest
 {
+	protected static transient WicketTester tester;
+	protected static HatchetHarryApplication webApp;
+	protected static transient ApplicationContext context;
+
+	@BeforeClass
+	public static void setUpBeforeClass()
+	{
+		ImportDeckServiceTest.webApp = new HatchetHarryApplication()
+		{
+			private static final long serialVersionUID = 1L;
+
+
+			@Override
+			public void init()
+			{
+				ImportDeckServiceTest.context = new ClassPathXmlApplicationContext(
+						new String[] { "applicationContext.xml" });
+				this.getComponentInstantiationListeners().add(
+						new SpringComponentInjector(this, ImportDeckServiceTest.context, true));
+			}
+		};
+		ImportDeckServiceTest.tester = new WicketTester(ImportDeckServiceTest.webApp);
+	}
+
 	@Test
 	public void testImportDeck() throws FileNotFoundException, IOException
 	{
 		// Init
-		final PersistenceService persistenceService = TestParent.context
+		final PersistenceService persistenceService = ImportDeckServiceTest.context
 				.getBean(PersistenceService.class);
-		final ImportDeckService importDeckService = TestParent.context
+		final ImportDeckService importDeckService = ImportDeckServiceTest.context
 				.getBean(ImportDeckService.class);
 
 		final int initialNumberOfDeckArchives = persistenceService.countDeckArchives();

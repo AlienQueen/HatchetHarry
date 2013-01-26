@@ -29,6 +29,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.alienlabs.hatchetharry.model.CardCollection;
 import org.alienlabs.hatchetharry.model.CardCollectionRootElement;
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.DeckArchive;
@@ -207,6 +208,7 @@ public class DataGenerator implements InitializingBean
 						card.setGameId(1l);
 						card.setDeck(decks.get(j - 1));
 						card.setUuidObject(UUID.randomUUID());
+						card.setZone(CardZone.LIBRARY);
 						card = this.magicCardDao.save(card);
 
 						final List<MagicCard> cards = decks.get(j - 1).getCards();
@@ -224,6 +226,7 @@ public class DataGenerator implements InitializingBean
 						card.setUuidObject(UUID.randomUUID());
 						card.setX(16l);
 						card.setY(16l);
+						card.setZone(CardZone.LIBRARY);
 						card = this.magicCardDao.save(card);
 
 						final List<MagicCard> cards = decks.get(j - 1).getCards();

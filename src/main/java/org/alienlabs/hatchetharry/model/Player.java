@@ -1,8 +1,6 @@
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -11,7 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -30,9 +29,9 @@ public class Player implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long playerId;
-	@ManyToMany(mappedBy = "players", fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.ALL })
-	private Set<Game> games = new HashSet<Game>();
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.SAVE_UPDATE })
+	private Game game = new Game();
 	@Column
 	private String side;
 	@Column
@@ -41,6 +40,10 @@ public class Player implements Serializable
 	private String jsessionid;
 	@Column
 	private Long lifePoints;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.ALL })
+	@JoinColumn(name = "deck")
+	private Deck deck;
 
 	public Long getId()
 	{
@@ -92,14 +95,14 @@ public class Player implements Serializable
 		this.lifePoints = _lifePoints;
 	}
 
-	public Set<Game> getGames()
+	public Game getGame()
 	{
-		return this.games;
+		return this.game;
 	}
 
-	public void setGames(final Set<Game> _games)
+	public void setGame(final Game _game)
 	{
-		this.games = _games;
+		this.game = _game;
 	}
 
 	@Override
@@ -151,6 +154,16 @@ public class Player implements Serializable
 			return false;
 		}
 		return true;
+	}
+
+	public Deck getDeck()
+	{
+		return this.deck;
+	}
+
+	public void setDeck(final Deck _deck)
+	{
+		this.deck = _deck;
 	}
 
 }

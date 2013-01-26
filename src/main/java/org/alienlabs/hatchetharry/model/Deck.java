@@ -38,7 +38,7 @@ public class Deck implements Serializable
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
 	private Long playerId;
-	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
 	public List<MagicCard> shuffleLibrary()

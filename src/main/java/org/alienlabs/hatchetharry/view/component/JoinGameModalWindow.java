@@ -2,7 +2,6 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -103,7 +103,9 @@ public class JoinGameModalWindow extends Panel
 			{
 				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
 						.getDefaultModelObjectAsString());
-				Game game = JoinGameModalWindow.this.persistenceService.getGame(_id);
+
+
+				final Game game = JoinGameModalWindow.this.persistenceService.getGame(_id);
 				if (null == game)
 				{
 					_modal.close(target);
@@ -118,43 +120,77 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player = JoinGameModalWindow.this.persistenceService
 						.getPlayer(session.getPlayer().getId());
 
-				final Player _p = session.getPlayer();
-				final Set<Game> allGames = new HashSet<Game>();
-				allGames.add(game);
-				_p.setGames(allGames);
-				session.setGameId(_id);
-				session.setPlayer(_p);
+				final Game oldGame = session.getPlayer().getGame();
+				session.getPlayer().setGame(null);
+				oldGame.getPlayers().clear();
+				final Set<Side> sides = oldGame.getSides();
 
-				JoinGameModalWindow.this.persistenceService
-						.saveOrUpdatePlayer(JoinGameModalWindow.this.player);
+				for (final Side s : sides)
+				{
+					if (oldGame.equals(s.getGame()))
+					{
+						s.setGame(null);
+					}
+				}
 
+				session.getPlayer().setGame(game);
+				JoinGameModalWindow.this.persistenceService.updatePlayer(session.getPlayer());
+				JoinGameModalWindow.this.persistenceService.saveSides(sides);
+				sides.clear();
+				JoinGameModalWindow.this.persistenceService.deleteGame(oldGame);
+
+
+				JoinGameModalWindow.this.player.setGame(game);
 				session.setGameId(_id);
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
 
-				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
-				final List<MagicCard> allCards = JoinGameModalWindow.this.persistenceService
-						.getAllCardsFromDeck(deck.getDeckId());
+				Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
+				final List<MagicCard> cards = new ArrayList<MagicCard>();
 
-				for (final MagicCard aCard : allCards)
+				final List<String> allTitles = JoinGameModalWindow.this.persistenceService
+						.findCollectibleCardTitlesFromDeckArchive(deck.getDeckArchive()
+								.getDeckArchiveId());
+				for (final String title : allTitles)
 				{
-					aCard.setZone(CardZone.LIBRARY);
-					JoinGameModalWindow.this.persistenceService.saveCard(aCard);
+					final CollectibleCard cc = JoinGameModalWindow.this.persistenceService
+							.findCollectibleCardByName(title);
+
+					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
+							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
+									+ "Thumb.jpg", cc.getTitle(), "");
+					card.setGameId(game.getId());
+					card.setDeck(deck);
+					card.setUuidObject(UUID.randomUUID());
+					card.setZone(CardZone.LIBRARY);
+
+					JoinGameModalWindow.this.persistenceService.saveOrUpdateCard(card);
+					cards.add(card);
 				}
 
-				deck.setCards(allCards);
-				deck.setPlayerId(JoinGameModalWindow.this.player.getId());
+				deck.setCards(cards);
+				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
+				deck = JoinGameModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
+
+				JoinGameModalWindow.this.player.setDeck(deck);
+				// TODO remove this
+				// JoinGameModalWindow.this.persistenceService
+				// .updatePlayer(JoinGameModalWindow.this.player);
+				session.setPlayer(JoinGameModalWindow.this.player);
+
 				deck.shuffleLibrary();
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 
 				for (int i = 0; i < 7; i++)
 				{
-					final MagicCard aCard = allCards.get(i);
+					final MagicCard aCard = cards.get(i);
 					aCard.setZone(CardZone.HAND);
 					JoinGameModalWindow.this.persistenceService.saveCard(aCard);
 					firstCards.add(i, aCard);
-					HatchetHarrySession.get().addCardIdInHand(i, i);
-					deck.getCards().remove(allCards.get(i));
+					HatchetHarrySession.get().addCardIdInHand(i, i); // TODO
+																		// remove
+																		// this
+					deck.getCards().remove(cards.get(i));
 				}
 
 				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
@@ -176,19 +212,17 @@ public class JoinGameModalWindow extends Panel
 				}
 
 				session.setFirstCardsInHand(firstCards);
-				session.setDeck(deck);
 
 				JoinGameModalWindow.this.player.setSide(sideInput.getDefaultModelObjectAsString());
 				JoinGameModalWindow.this.player.setName(nameInput.getDefaultModelObjectAsString());
-				final Set<Game> newGames = new HashSet<Game>();
-				newGames.add(game);
-				JoinGameModalWindow.this.player.setGames(newGames);
+				JoinGameModalWindow.this.player.setGame(game);
 
-				game = JoinGameModalWindow.this.persistenceService.getGame(game.getId());
+				// game =
+				// JoinGameModalWindow.this.persistenceService.getGame(game.getId());
 				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
-				JoinGameModalWindow.this.persistenceService.saveOrUpdateGame(game);
+				// JoinGameModalWindow.this.persistenceService.updateGame(game);
 
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
@@ -280,6 +314,7 @@ public class JoinGameModalWindow extends Panel
 				s.setWicketId("secondSidePlaceholder");
 				s.setX(Long.valueOf(posX));
 				s.setY(Long.valueOf(500));
+				JoinGameModalWindow.this.persistenceService.updateGame(game); // TODO
 				JoinGameModalWindow.this.persistenceService.saveSide(s);
 
 				spp.setPosX(posX);
@@ -302,17 +337,14 @@ public class JoinGameModalWindow extends Panel
 						Long.valueOf(posX), 500l);
 				EventBus.get().post(jgcc);
 
+				final Long _gameId = game.getId();
 				final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(
-						HatchetHarrySession.get().getPlayer().getName(), jsessionid,
-						HatchetHarrySession.get().getGameId());
+						JoinGameModalWindow.this.player.getName(), jsessionid, _gameId);
 				EventBus.get().post(jgncc);
 
-				final Long _gameId = JoinGameModalWindow.this.persistenceService
-						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
-						.iterator().next().getId();
 				final List<BigInteger> allPlayersInGameExceptMe = JoinGameModalWindow.this.persistenceService
-						.giveAllPlayersFromGameExceptMe(_gameId, HatchetHarrySession.get()
-								.getPlayer().getId());
+						.giveAllPlayersFromGameExceptMe(_gameId,
+								JoinGameModalWindow.this.player.getId());
 				final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(_gameId);
 
 				// post the DataBox update message to all players in the game,

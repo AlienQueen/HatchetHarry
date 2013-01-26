@@ -61,8 +61,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 
-		final Long gameId = HatchetHarrySession.get().getPlayer().getGames().iterator().next()
-				.getId();
+		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 		// TODO remove this
 		// this.persistenceService.updateGame(game);
 

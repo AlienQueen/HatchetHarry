@@ -79,8 +79,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		}
 
 		final Long gameId = PutToHandFromBattlefieldBehavior.this.persistenceService
-				.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames().iterator()
-				.next().getId();
+				.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
 		final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 

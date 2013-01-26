@@ -43,10 +43,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -218,7 +216,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
-		final Label message2 = new Label("message2", "built on Friday, 25th of January 2013.");
+		final Label message2 = new Label("message2", "built on Saturday, 26th of January 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -525,8 +523,7 @@ public class HomePage extends TestReportPage
 			{
 				final Player me = HatchetHarrySession.get().getPlayer();
 				final Long gameId = HomePage.this.persistenceService
-						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
-						.iterator().next().getId();
+						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 
@@ -578,7 +575,7 @@ public class HomePage extends TestReportPage
 
 					final UntapAllCometChannel uacc = new UntapAllCometChannel(HatchetHarrySession
 							.get().getGameId(), HatchetHarrySession.get().getPlayer().getId(),
-							HatchetHarrySession.get().getDeck().getDeckId());
+							HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 					EventBus.get().post(uacc, pageUuid);
 				}
 			}
@@ -687,23 +684,21 @@ public class HomePage extends TestReportPage
 		p.setName(_name);
 		p.setJsessionid(_jsessionid);
 		p.setLifePoints(_lifePoints);
-		p.setId(this.persistenceService.savePlayer(p));
 
-		final Set<Game> games = new HashSet<Game>();
 		final Game game = this.persistenceService.createGame(p, 0l);
-		games.add(game);
-		p.setGames(games);
+		p.setGame(game);
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();
-		HatchetHarrySession.get().setPlayer(p);
 
 		this.deck = this.runtimeDataGenerator.generateData(p.getId());
 		this.deck.setCards(this.deck.shuffleLibrary());
-		this.deck.setPlayerId(id);
+		this.deck.setPlayerId(p.getId());
 		this.deck = this.persistenceService.saveDeck(this.deck);
 
+		p.setDeck(this.deck);
+		this.persistenceService.saveOrUpdatePlayer(p);
 		HatchetHarrySession.get().setPlayer(p);
-		HatchetHarrySession.get().setDeck(this.deck);
+
 		this.player = p;
 		return p;
 	}
@@ -775,8 +770,7 @@ public class HomePage extends TestReportPage
 			{
 				HomePage.LOGGER.info("clicked on declare combat");
 				final Long gameId = HomePage.this.persistenceService
-						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
-						.iterator().next().getId();
+						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 
@@ -816,31 +810,34 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				final HatchetHarrySession session = HatchetHarrySession.get();
+				final List<MagicCard> cards = HomePage.this.persistenceService
+						.getAllCardsFromDeck(session.getPlayer().getDeck().getDeckId());
 
-				if ((session.getDeck() != null) && (session.getDeck().getCards() != null)
-						&& (session.getDeck().getCards().size() > 0))
+				if ((cards != null) && (!cards.isEmpty()))
 				{
-					final MagicCard card = session.getDeck().getCards().get(0);
+
+					final MagicCard card = cards.get(0);
 					card.setZone(CardZone.HAND);
 					HomePage.this.persistenceService.saveCard(card);
 
 					final ArrayList<MagicCard> list = session.getFirstCardsInHand();
 					list.add(card);
 
-					final Deck d = session.getDeck();
+					final Deck d = HomePage.this.persistenceService.getDeck(session.getPlayer()
+							.getDeck().getDeckId());
 					final List<MagicCard> deckList = d.getCards();
 					deckList.remove(card);
 					d.setCards(deckList);
+					HomePage.this.persistenceService.saveDeck(d);
 
 					session.setFirstCardsInHand(list);
-					session.setDeck(d);
 
 					JavaScriptUtils.updateHand(target);
 
 					final Player me = session.getPlayer();
 					final Long gameId = HomePage.this.persistenceService
-							.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGames()
-							.iterator().next().getId();
+							.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame()
+							.getId();
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
 
@@ -1029,10 +1026,11 @@ public class HomePage extends TestReportPage
 		if (HatchetHarrySession.get().isPlayerCreated())
 		{
 			this.player = HatchetHarrySession.get().getPlayer();
-			this.deck = this.persistenceService.getDeck(this.player.getId());
+			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
 			if (this.deck == null)
 			{
 				this.deck = this.persistenceService.getDeck(1l);
+				this.player.setDeck(this.deck);
 			}
 			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
@@ -1046,11 +1044,11 @@ public class HomePage extends TestReportPage
 			{
 				final MagicCard mc = this.deck.getCards().get(i);
 				mc.setZone(CardZone.HAND);
-				mc.setGameId(HatchetHarrySession.get().getPlayer().getGames().iterator().next()
-						.getId());
+				mc.setGameId(HatchetHarrySession.get().getPlayer().getGame().getId());
 				this.persistenceService.saveCard(mc);
 
 				cards.add(i, mc);
+				// TODO remove this
 				HatchetHarrySession.get().addCardIdInHand(i, i);
 			}
 
@@ -1731,8 +1729,8 @@ public class HomePage extends TestReportPage
 	public ListView<MagicCard> generateCardListView()
 	{
 		final List<MagicCard> allCardsInBattlefield = HomePage.this.persistenceService
-				.getAllCardsInBattleFieldForAGame(HatchetHarrySession.get().getPlayer().getGames()
-						.iterator().next().getId());
+				.getAllCardsInBattleFieldForAGame(HatchetHarrySession.get().getPlayer().getGame()
+						.getId());
 
 		return new ListView<MagicCard>("handCards", allCardsInBattlefield)
 		{

@@ -1,15 +1,14 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -69,7 +68,7 @@ public class CreateGameModalWindow extends Panel
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
 
-		this.game = this.player.getGames().iterator().next();
+		this.game = this.player.getGame();
 		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
 				+ ". You'll have to provide it to your opponent(s).");
 		HatchetHarrySession.get().setGameId(this.game.getId());
@@ -98,14 +97,8 @@ public class CreateGameModalWindow extends Panel
 				final Game g = CreateGameModalWindow.this.persistenceService
 						.getGame(CreateGameModalWindow.this.game.getId());
 
-				final Set<Game> games = new HashSet<Game>();
-				games.add(g);
+				CreateGameModalWindow.this.player.setGame(g);
 
-				CreateGameModalWindow.this.player.setGames(games);
-				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
-
-				CreateGameModalWindow.LOGGER.info("### "
-						+ sideInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.player
 						.setSide(sideInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.player
@@ -113,32 +106,51 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
-				CreateGameModalWindow.this.persistenceService
-						.updatePlayer(CreateGameModalWindow.this.player);
+				Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
+				final List<MagicCard> cards = new ArrayList<MagicCard>();
 
-				final Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
-				final List<MagicCard> allCards = CreateGameModalWindow.this.persistenceService
-						.getAllCardsFromDeck(deck.getDeckId());
-
-				for (final MagicCard aCard : allCards)
+				final List<String> allTitles = CreateGameModalWindow.this.persistenceService
+						.findCollectibleCardTitlesFromDeckArchive(deck.getDeckArchive()
+								.getDeckArchiveId());
+				for (final String title : allTitles)
 				{
-					aCard.setZone(CardZone.LIBRARY);
-					CreateGameModalWindow.this.persistenceService.saveCard(aCard);
+					final CollectibleCard cc = CreateGameModalWindow.this.persistenceService
+							.findCollectibleCardByName(title);
+
+					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
+							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
+									+ "Thumb.jpg", cc.getTitle(), "");
+					card.setGameId(g.getId());
+					card.setDeck(deck);
+					card.setUuidObject(UUID.randomUUID());
+					card.setZone(CardZone.LIBRARY);
+
+					CreateGameModalWindow.this.persistenceService.saveOrUpdateCard(card);
+					cards.add(card);
 				}
 
-				deck.setCards(allCards);
+				deck.setCards(cards);
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
+				deck = CreateGameModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
+
+				CreateGameModalWindow.this.player.setDeck(deck);
+				CreateGameModalWindow.this.persistenceService
+						.updatePlayer(CreateGameModalWindow.this.player);
+				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
+
 				deck.shuffleLibrary();
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 
 				for (int i = 0; i < 7; i++)
 				{
-					final MagicCard aCard = allCards.get(i);
+					final MagicCard aCard = cards.get(i);
 					aCard.setZone(CardZone.HAND);
-					CreateGameModalWindow.this.persistenceService.saveCard(aCard);
+					CreateGameModalWindow.this.persistenceService.saveOrUpdateCard(aCard);
 					firstCards.add(i, aCard);
-					HatchetHarrySession.get().addCardIdInHand(i, aCard.getId());
+					HatchetHarrySession.get().addCardIdInHand(i, aCard.getId()); // TODO
+																					// remove
+																					// this
 					deck.getCards().remove(aCard);
 				}
 
@@ -159,7 +171,6 @@ public class CreateGameModalWindow extends Panel
 				}
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
-				HatchetHarrySession.get().setDeck(deck);
 
 				if (HatchetHarrySession.get().isHandDisplayed())
 				{
