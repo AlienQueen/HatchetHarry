@@ -32,8 +32,10 @@ public class TeamInfoModalWindow extends Panel
 				"GFX: Marie-Antoinette Navarro (mariea33@gmail.com)"));
 		final Label tester1 = new Label("tester1", new Model<String>(
 				"Tester: Jean Leherle (jean.ravnica@hotmail.fr)"));
+		final Label tester2 = new Label("tester2", new Model<String>(
+				"Tester: Benoît Bouchery (benoit.bouchery@laposte.net)"));
 
-		form.add(founder, lead, dev1, gfx, tester1);
+		form.add(founder, lead, dev1, gfx, tester1, tester2);
 		this.add(img1, form);
 	}
 

@@ -26,6 +26,7 @@ import org.apache.wicket.request.resource.ResourceStreamResource;
 import org.apache.wicket.request.resource.SharedResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.resource.FileResourceStream;
+import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -44,7 +45,7 @@ public class HatchetHarryApplication extends WebApplication
 {
 	private static final long serialVersionUID = 1L;
 	private boolean mistletoeTest = false;
-	EventBus eventBus;
+	transient EventBus eventBus;
 
 	// Map of playerId and Atmosphere UUID
 	private static Map<Long, String> cometResources = new HashMap<Long, String>();
@@ -258,6 +259,8 @@ public class HatchetHarryApplication extends WebApplication
 				new PackageResourceReference(HomePage.class, "blah.js"));
 		this.getJavaScriptLibrarySettings().setWicketAjaxReference(
 				new PackageResourceReference(HomePage.class, "blah.js"));
+
+		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 
 		this.getSharedResources().add("cards",
 				new FolderContentResource(new File("/home/nostromo/cards/")));

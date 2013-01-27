@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
  * @author Andrey Belyaev
  * @author Jeanfrancois Arcand
  */
+// TODO remove this
 public class ChatPage extends WebPage implements AtmosphereResourceEventListener
 {
 	private static final long serialVersionUID = 1L;

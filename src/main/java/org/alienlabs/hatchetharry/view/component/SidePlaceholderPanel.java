@@ -84,7 +84,7 @@ public class SidePlaceholderPanel extends Panel
 		this.add(sidePlaceholder);
 	}
 
-	public HttpServletRequest getHttpServletRequest()
+	private final HttpServletRequest getHttpServletRequest()
 	{
 		final Request servletWebRequest = this.getRequest();
 		return (HttpServletRequest)servletWebRequest.getContainerRequest();

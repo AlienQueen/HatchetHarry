@@ -1,9 +1,7 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.model.Player;
@@ -42,8 +40,6 @@ public class DataBox extends Panel
 
 	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 
-	static final Map<Long, WebMarkupContainer> allPlayerLifePointsParents = new HashMap<Long, WebMarkupContainer>();
-
 	public DataBox(final String id, final long _gameId)
 	{
 		super(id);
@@ -78,8 +74,6 @@ public class DataBox extends Panel
 				playerLifePoints.setOutputMarkupId(true);
 				playerLifePointsParent.add(playerLifePoints);
 				item.add(playerLifePointsParent);
-
-				DataBox.allPlayerLifePointsParents.put(player.getId(), playerLifePointsParent);
 
 				final AjaxLink<Void> plus = new AjaxLink<Void>("playerPlusLink")
 				{
@@ -166,8 +160,4 @@ public class DataBox extends Panel
 		this.persistenceService = _persistenceService;
 	}
 
-	public WebMarkupContainer retrievePlayerLifePointsParentForPlayer(final Long playerId)
-	{
-		return DataBox.allPlayerLifePointsParents.get(playerId);
-	}
 }

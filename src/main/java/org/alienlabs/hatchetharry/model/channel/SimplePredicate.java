@@ -21,13 +21,9 @@ public class SimplePredicate implements Predicate<Object>
 			final String fromEvent = ((JoinGameNotificationCometChannel)input).getPlayerName();
 			final boolean cond = fromSession.equals(fromEvent);
 
-			System.out.println("fromSession: " + fromSession + " fromEvent: " + fromEvent
-					+ ", equals? " + cond);
-
 			return cond;
 		}
 
-		System.out.println("player is null");
 		return false;
 	}
 }

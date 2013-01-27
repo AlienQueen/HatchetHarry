@@ -77,7 +77,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		card.setX(50l + (card.getId() * 2));
 		card.setY(50l + (card.getId() * 2));
-		this.persistenceService.saveCard(card);
+		this.persistenceService.saveOrUpdateCard(card);
 
 		JavaScriptUtils.updateHand(target);
 

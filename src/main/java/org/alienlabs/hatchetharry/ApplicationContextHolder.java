@@ -5,12 +5,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 
-public class ApplicationContextHolder implements ApplicationContextAware
+public final class ApplicationContextHolder implements ApplicationContextAware
 {
 
 	/** Contexte Spring qui sera injecte par Spring directement */
-	private static ApplicationContext CONTEXT = null;
+	private static ApplicationContext context = null;
 
+	private ApplicationContextHolder()
+	{
+	}
 
 	/**
 	 * Méthode de ApplicationContextAware, qui sera appellée automatiquement par
@@ -20,7 +23,7 @@ public class ApplicationContextHolder implements ApplicationContextAware
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "Spring requires this for ApplicationContextHolder.getContext().getBean();")
 	public void setApplicationContext(final ApplicationContext ctx) throws BeansException
 	{
-		ApplicationContextHolder.CONTEXT = ctx;
+		ApplicationContextHolder.context = ctx;
 	}
 
 
@@ -29,7 +32,7 @@ public class ApplicationContextHolder implements ApplicationContextAware
 	 */
 	public static ApplicationContext getContext()
 	{
-		return ApplicationContextHolder.CONTEXT;
+		return ApplicationContextHolder.context;
 	}
 
 }

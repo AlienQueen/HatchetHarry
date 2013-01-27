@@ -216,7 +216,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
-		final Label message2 = new Label("message2", "built on Saturday, 26th of January 2013.");
+		final Label message2 = new Label("message2", "built on Sunday, 27th of January 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -232,11 +232,6 @@ public class HomePage extends TestReportPage
 		{
 			this.player = HatchetHarrySession.get().getPlayer();
 		}
-
-		// TODO remove this?
-		// this.deck =
-		// this.runtimeDataGenerator.generateData(this.player.getId());
-		// HatchetHarrySession.get().setDeck(this.deck);
 
 		// TODO remove this?
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
@@ -377,7 +372,8 @@ public class HomePage extends TestReportPage
 		this.generateHideAllTooltipsLink();
 	}
 
-	private void generateCardPanels()
+	// TODO: really necessary?
+	private final void generateCardPanels()
 	{
 		this.parentPlaceholder.add(this.generateCardListView());
 	}
@@ -649,7 +645,7 @@ public class HomePage extends TestReportPage
 		HomePage.LOGGER.info("building * empty * DataBox with gameId= 0");
 	}
 
-	public void buildHandCards()
+	private final void buildHandCards()
 	{
 		if (HatchetHarrySession.get().isHandHasBeenCreated())
 		{
@@ -661,7 +657,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
-	protected Player createPlayer()
+	private Player createPlayer()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
@@ -811,14 +807,21 @@ public class HomePage extends TestReportPage
 			{
 				final HatchetHarrySession session = HatchetHarrySession.get();
 				final List<MagicCard> cards = HomePage.this.persistenceService
-						.getAllCardsFromDeck(session.getPlayer().getDeck().getDeckId());
+						.getAllCardsInLibraryForDeckAndPlayer(
+								session.getPlayer().getGame().getId(), session.getPlayer().getId(),
+								session.getPlayer().getDeck().getDeckId());
 
 				if ((cards != null) && (!cards.isEmpty()))
 				{
-
 					final MagicCard card = cards.get(0);
+
+					final Deck _deck = HomePage.this.persistenceService.getDeck(session.getPlayer()
+							.getDeck().getDeckId());
+					_deck.getCards().remove(cards.get(0));
+					HomePage.this.persistenceService.saveOrUpdateDeck(_deck);
+
 					card.setZone(CardZone.HAND);
-					HomePage.this.persistenceService.saveCard(card);
+					HomePage.this.persistenceService.saveOrUpdateCard(card);
 
 					final ArrayList<MagicCard> list = session.getFirstCardsInHand();
 					list.add(card);
@@ -879,14 +882,14 @@ public class HomePage extends TestReportPage
 
 	}
 
-	protected void createCardPanelPlaceholders()
+	private void createCardPanelPlaceholders()
 	{
 		final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder");
 		cardPlaceholder.setOutputMarkupId(true);
 		this.add(cardPlaceholder);
 	}
 
-	protected void addHeadResources()
+	private void addHeadResources()
 	{
 		final WebMarkupContainer c = new WebMarkupContainer("headResources");
 		c.add(new Behavior()
@@ -998,7 +1001,7 @@ public class HomePage extends TestReportPage
 		this.add(c);
 	}
 
-	protected void buildHandMarkup()
+	private void buildHandMarkup()
 	{
 		final Component galleryToUpdate;
 		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
@@ -1009,7 +1012,7 @@ public class HomePage extends TestReportPage
 		this.galleryParent.add(galleryToUpdate);
 	}
 
-	protected void buildGraveyardMarkup()
+	private void buildGraveyardMarkup()
 	{
 		final Component graveyardToUpdate;
 		final boolean isGraveyardDisplayed = HatchetHarrySession.get().isGraveyardDisplayed();
@@ -1021,7 +1024,7 @@ public class HomePage extends TestReportPage
 		this.graveyardParent.add(graveyardToUpdate);
 	}
 
-	protected List<MagicCard> createFirstCards()
+	private final List<MagicCard> createFirstCards()
 	{
 		if (HatchetHarrySession.get().isPlayerCreated())
 		{
@@ -1062,7 +1065,7 @@ public class HomePage extends TestReportPage
 		return new ArrayList<MagicCard>();
 	}
 
-	protected ModalWindow generateAboutLink(final String id, final ModalWindow window)
+	private ModalWindow generateAboutLink(final String id, final ModalWindow window)
 	{
 		window.setInitialWidth(450);
 		window.setInitialHeight(675);
@@ -1091,7 +1094,7 @@ public class HomePage extends TestReportPage
 		return window;
 	}
 
-	protected ModalWindow generateTeamInfoLink(final String id, final ModalWindow window)
+	private ModalWindow generateTeamInfoLink(final String id, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(528);
@@ -1120,7 +1123,7 @@ public class HomePage extends TestReportPage
 		return window;
 	}
 
-	protected ModalWindow generateCreateGameModalWindow(final Player _player,
+	private final ModalWindow generateCreateGameModalWindow(final Player _player,
 			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer sidePlaceholderParent, final AjaxRequestTarget target)
 	{
@@ -1162,14 +1165,14 @@ public class HomePage extends TestReportPage
 		return this.createGameWindow;
 	}
 
-	public void regenarateCreateGameWindowContent(final ModalWindow _createGameWindow,
+	private final void regenarateCreateGameWindowContent(final ModalWindow _createGameWindow,
 			final Player _player, final WebMarkupContainer sidePlaceholderParent)
 	{
 		_createGameWindow.setContent(new CreateGameModalWindow(_createGameWindow, _createGameWindow
 				.getContentId(), _player, sidePlaceholderParent, this));
 	}
 
-	protected ModalWindow generateJoinGameModalWindow(final Player _player,
+	private final ModalWindow generateJoinGameModalWindow(final Player _player,
 			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer sidePlaceholderParent, final AjaxRequestTarget target)
 	{
@@ -1210,14 +1213,14 @@ public class HomePage extends TestReportPage
 		return this.joinGameWindow;
 	}
 
-	public void regenarateJoinGameWindowContent(final ModalWindow _joinGameWindow,
+	private final void regenarateJoinGameWindowContent(final ModalWindow _joinGameWindow,
 			final Player _player)
 	{
 		_joinGameWindow.setContent(new JoinGameModalWindow(_joinGameWindow, _joinGameWindow
 				.getContentId(), _player, this.dataBoxParent, this));
 	}
 
-	protected void generateImportDeckLink()
+	private final void generateImportDeckLink()
 	{
 		this.importDeckWindow = new ModalWindow("importDeckWindow");
 		this.importDeckWindow.setInitialWidth(475);
@@ -1401,11 +1404,6 @@ public class HomePage extends TestReportPage
 		final String fromEvent = event.getPlayerName();
 		final boolean cond = fromSession.equals(fromEvent);
 
-		System.out.println("&&& fromSession: " + fromSession + ", fromEvent: " + fromEvent
-				+ ", equals? " + cond);
-
-		System.out.println("ééé jsessionid: " + event.getJsessionid());
-
 		if (cond)
 		{
 			// TODO remove gameId management since we now have Comet
@@ -1528,7 +1526,7 @@ public class HomePage extends TestReportPage
 		super.configureResponse(response);
 	}
 
-	private void restoreBattlefieldState()
+	private final void restoreBattlefieldState()
 	{
 		final Component galleryToUpdate;
 		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
@@ -1591,7 +1589,7 @@ public class HomePage extends TestReportPage
 		});
 	}
 
-	void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
+	final void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
 	{
 		final StringBuffer js = new StringBuffer();
 		final Collection<CardPanel> allCards = Collections
@@ -1701,7 +1699,7 @@ public class HomePage extends TestReportPage
 		return this.playCardBehavior;
 	}
 
-	public WebMarkupContainer getDataBoxParent()
+	public final WebMarkupContainer getDataBoxParent()
 	{
 		return this.dataBoxParent;
 	}
@@ -1726,7 +1724,7 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public ListView<MagicCard> generateCardListView()
+	public final ListView<MagicCard> generateCardListView()
 	{
 		final List<MagicCard> allCardsInBattlefield = HomePage.this.persistenceService
 				.getAllCardsInBattleFieldForAGame(HatchetHarrySession.get().getPlayer().getGame()

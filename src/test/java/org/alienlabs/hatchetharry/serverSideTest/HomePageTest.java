@@ -33,6 +33,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class HomePageTest
 {
+	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+			new String[] { "applicationContext.xml" });
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
 	protected static transient ApplicationContext context;
@@ -48,8 +50,7 @@ public class HomePageTest
 			@Override
 			public void init()
 			{
-				HomePageTest.context = new ClassPathXmlApplicationContext(
-						new String[] { "applicationContext.xml" });
+				HomePageTest.context = HomePageTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
 						new SpringComponentInjector(this, HomePageTest.context, true));
 			}

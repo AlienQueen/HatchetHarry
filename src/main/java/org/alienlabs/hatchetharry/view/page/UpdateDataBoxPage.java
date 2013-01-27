@@ -38,7 +38,6 @@
 package org.alienlabs.hatchetharry.view.page;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
@@ -53,6 +52,7 @@ import org.slf4j.LoggerFactory;
  * @author Andrey Belyaev
  * @author Jeanfrancois Arcand
  */
+// TODO remove this
 public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEventListener
 {
 	private static final long serialVersionUID = 1L;
@@ -63,8 +63,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 	}
 
 	@Override
-	public void onBroadcast(
-			final AtmosphereResourceEvent event)
+	public void onBroadcast(final AtmosphereResourceEvent event)
 	{
 		UpdateDataBoxPage.LOGGER.info("onBroadcast(): {}", event.getMessage());
 
@@ -81,8 +80,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 	}
 
 	@Override
-	public void onSuspend(
-			final AtmosphereResourceEvent event)
+	public void onSuspend(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -93,8 +91,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 	}
 
 	@Override
-	public void onResume(
-			final AtmosphereResourceEvent event)
+	public void onResume(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -105,8 +102,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 	}
 
 	@Override
-	public void onDisconnect(
-			final AtmosphereResourceEvent event)
+	public void onDisconnect(final AtmosphereResourceEvent event)
 	{
 		final String transport = event.getResource().getRequest()
 				.getHeader("X-Atmosphere-Transport");
@@ -117,8 +113,7 @@ public class UpdateDataBoxPage extends WebPage implements AtmosphereResourceEven
 	}
 
 	@Override
-	public void onThrowable(
-			final AtmosphereResourceEvent event)
+	public void onThrowable(final AtmosphereResourceEvent event)
 	{
 		UpdateDataBoxPage.LOGGER.info("onThrowable()", event.throwable());
 	}

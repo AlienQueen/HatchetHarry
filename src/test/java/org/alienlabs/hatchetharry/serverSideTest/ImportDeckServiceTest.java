@@ -19,6 +19,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ImportDeckServiceTest
 {
+	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+			new String[] { "applicationContext.xml" });
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
 	protected static transient ApplicationContext context;
@@ -34,8 +36,7 @@ public class ImportDeckServiceTest
 			@Override
 			public void init()
 			{
-				ImportDeckServiceTest.context = new ClassPathXmlApplicationContext(
-						new String[] { "applicationContext.xml" });
+				ImportDeckServiceTest.context = ImportDeckServiceTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
 						new SpringComponentInjector(this, ImportDeckServiceTest.context, true));
 			}
@@ -59,7 +60,14 @@ public class ImportDeckServiceTest
 
 		final File deck = new File("/home/nostromo/Aura Bant.txt");
 		final byte[] content = new byte[475];
-		new FileInputStream(deck).read(content);
+
+		final FileInputStream fis = new FileInputStream(deck);
+		if (fis.read(content) == -1)
+		{
+			fis.close();
+			Assert.fail("Aura Bant.txt seems to be empty");
+		}
+		fis.close();
 
 		final String deckContent = new String(content, "UTF-8");
 

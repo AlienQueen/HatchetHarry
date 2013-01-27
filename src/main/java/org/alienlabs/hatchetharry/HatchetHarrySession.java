@@ -18,7 +18,7 @@ import org.apache.wicket.request.Request;
 public class HatchetHarrySession extends WebSession
 {
 	private static final long serialVersionUID = 4565051252275468687L;
-	private String cometUser;
+	private String cometUser; // TODO: do something, Gromit
 
 	private static final String MY_GAME = "MY_GAME";
 	private static final String FIRST_CARDS_IN_HAND = "FIRST_CARDS_IN_HAND";
@@ -37,16 +37,16 @@ public class HatchetHarrySession extends WebSession
 	private static final String TO_REMOVE = "TO_REMOVE";
 	private static final String MY_SIDE_PLACEHOLDER = "MY_SIDE_PLACEHOLDER";
 	private static final String MY_SIDE_PANELS = "MY_SIDE_PANELS";
-	private static String MY_SIDE_POS_X = "MY_SIDE_POS_X";
-	private static String MY_SIDE_POS_Y = "MY_SIDE_POS_Y";
-	private static String FIST_SIDE_MOVE_CALLBACK_URL = "FIST_SIDE_MOVE_CALLBACK_URL";
-	private static String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
-	private static String IS_HAND_DISPLAYED = "IS_HAND_DISPLAYED";
-	private static String IS_GRAVEYARD_DISPLAYED = "IS_GRAVEYARD_DISPLAYED";
-	private static String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
-	private static String COMET_UUID = "COMET_UUID";
-	private static String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
-	private static String ALL_CARD_PANELS_IN_BATTLEFIELD = "ALL_CARD_PANELS_IN_BATTLEFIELD";
+	private static final String MY_SIDE_POS_X = "MY_SIDE_POS_X";
+	private static final String MY_SIDE_POS_Y = "MY_SIDE_POS_Y";
+	private static final String FIST_SIDE_MOVE_CALLBACK_URL = "FIST_SIDE_MOVE_CALLBACK_URL";
+	private static final String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
+	private static final String IS_HAND_DISPLAYED = "IS_HAND_DISPLAYED";
+	private static final String IS_GRAVEYARD_DISPLAYED = "IS_GRAVEYARD_DISPLAYED";
+	private static final String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
+	private static final String COMET_UUID = "COMET_UUID";
+	private static final String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
+	private static final String ALL_CARD_PANELS_IN_BATTLEFIELD = "ALL_CARD_PANELS_IN_BATTLEFIELD";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -115,7 +115,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT, handCardsHaveBeenBuilt);
 	}
 
-	public ArrayList<MagicCard> getFirstCardsInHand()
+	public final ArrayList<MagicCard> getFirstCardsInHand()
 	{
 		return (ArrayList<MagicCard>)this.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND);
 	}
@@ -164,20 +164,6 @@ public class HatchetHarrySession extends WebSession
 		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
 	}
 
-	public void removeCardInHand(final MagicCard c)
-	{
-		final ArrayList<Long> allExceptRemovedOne = ((ArrayList<Long>)this
-				.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND));
-		allExceptRemovedOne.remove(c);
-		this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, allExceptRemovedOne);
-
-		final ArrayList<MagicCard> allFirstCardsExceptRemovedOne = ((ArrayList<MagicCard>)this
-				.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND));
-		allFirstCardsExceptRemovedOne.remove(c);
-		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, allFirstCardsExceptRemovedOne);
-
-	}
-
 	public boolean setPlayerHasBeenCreated()
 	{
 		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, true);
@@ -189,7 +175,7 @@ public class HatchetHarrySession extends WebSession
 		return (Boolean)this.getAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED);
 	}
 
-	public boolean isHandHasBeenCreated()
+	public final boolean isHandHasBeenCreated()
 	{
 		return (Boolean)this.getAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED);
 	}
@@ -286,16 +272,16 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
 	}
 
-	public List<CardPanel> getAllCardsInBattleField()
+	public ArrayList<CardPanel> getAllCardsInBattleField()
 	{
-		final List<CardPanel> cards = (ArrayList<CardPanel>)this
+		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
 		return cards;
 	}
 
-	public void setAllCardsInBattleField(final List<CardPanel> cards)
+	public void setAllCardsInBattleField(final ArrayList<CardPanel> cards)
 	{
-		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, (ArrayList<CardPanel>)cards);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
 	}
 
 	public CardPanel removeACardFromBattleField()
@@ -377,7 +363,7 @@ public class HatchetHarrySession extends WebSession
 		return (String)this.getAttribute(HatchetHarrySession.FIST_SIDE_MOVE_CALLBACK_URL);
 	}
 
-	public void setFirstSideMoveCallbackUrl(final String callbackUrl)
+	public final void setFirstSideMoveCallbackUrl(final String callbackUrl)
 	{
 		this.setAttribute(HatchetHarrySession.FIST_SIDE_MOVE_CALLBACK_URL, callbackUrl);
 	}

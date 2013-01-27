@@ -370,6 +370,32 @@ public class PersistenceService implements Serializable
 		return list;
 	}
 
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
+	public List<MagicCard> getAllCardsInLibraryForDeckAndPlayer(final Long gameId,
+			final Long playerId, final Long deckId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final SQLQuery query = session
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ?");
+		query.addEntity(MagicCard.class);
+		query.setLong(0, gameId);
+		query.setString(1, CardZone.LIBRARY.toString());
+		query.setLong(2, playerId);
+		query.setLong(3, deckId);
+
+		List<MagicCard> list = new ArrayList<MagicCard>();
+		try
+		{
+			list = query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.LOGGER.error("error!", e);
+		}
+		return list;
+	}
+
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public void saveCollectibleCard(final CollectibleCard cc)
 	{
