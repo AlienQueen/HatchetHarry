@@ -20,6 +20,7 @@ import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO: delete this file
 public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = -1301311949498369085L;

@@ -107,11 +107,15 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
 				Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
-				final List<MagicCard> cards = new ArrayList<MagicCard>();
+				deck.shuffleLibrary();
 
-				final List<String> allTitles = CreateGameModalWindow.this.persistenceService
-						.findCollectibleCardTitlesFromDeckArchive(deck.getDeckArchive()
-								.getDeckArchiveId());
+				final List<MagicCard> cards = new ArrayList<MagicCard>();
+				final List<String> allTitles = new ArrayList<String>();
+
+				for (final MagicCard m : deck.getCards())
+				{
+					allTitles.add(m.getTitle());
+				}
 				for (final String title : allTitles)
 				{
 					final CollectibleCard cc = CreateGameModalWindow.this.persistenceService
@@ -137,8 +141,6 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.persistenceService
 						.updatePlayer(CreateGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
-
-				deck.shuffleLibrary();
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 

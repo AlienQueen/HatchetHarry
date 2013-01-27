@@ -145,11 +145,15 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
 
 				Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
-				final List<MagicCard> cards = new ArrayList<MagicCard>();
+				deck.shuffleLibrary();
 
-				final List<String> allTitles = JoinGameModalWindow.this.persistenceService
-						.findCollectibleCardTitlesFromDeckArchive(deck.getDeckArchive()
-								.getDeckArchiveId());
+				final List<MagicCard> cards = new ArrayList<MagicCard>();
+				final List<String> allTitles = new ArrayList<String>();
+
+				for (final MagicCard m : deck.getCards())
+				{
+					allTitles.add(m.getTitle());
+				}
 				for (final String title : allTitles)
 				{
 					final CollectibleCard cc = JoinGameModalWindow.this.persistenceService
@@ -176,8 +180,6 @@ public class JoinGameModalWindow extends Panel
 				// JoinGameModalWindow.this.persistenceService
 				// .updatePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
-
-				deck.shuffleLibrary();
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 

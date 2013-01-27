@@ -45,7 +45,6 @@ import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.channel.ChatCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.page.ChatPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.atmosphere.EventBus;
@@ -53,7 +52,6 @@ import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -83,8 +81,6 @@ public class ChatPanel extends Panel
 	{
 		super(id);
 		Injector.get().inject(this);
-
-		this.add(new BookmarkablePageLink<ChatPage>("chatStart", ChatPage.class));
 
 		this.list = new LinkedList<BroadcastFilter>();
 

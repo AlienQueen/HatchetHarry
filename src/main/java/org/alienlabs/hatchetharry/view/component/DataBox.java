@@ -8,7 +8,6 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.alienlabs.hatchetharry.view.page.UpdateDataBoxPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.atmosphere.EventBus;
@@ -16,7 +15,6 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -32,23 +30,17 @@ import org.springframework.beans.factory.annotation.Required;
 public class DataBox extends Panel
 {
 	private static final long serialVersionUID = -9102861929848438800L;
+	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 
 	@SpringBean
 	PersistenceService persistenceService;
 
-	private final BookmarkablePageLink<UpdateDataBoxPage> updateDataBox;
-
-	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 
 	public DataBox(final String id, final long _gameId)
 	{
 		super(id);
 		Injector.get().inject(this);
 		this.setOutputMarkupId(true);
-
-		this.updateDataBox = new BookmarkablePageLink<UpdateDataBoxPage>("updateDataBox",
-				UpdateDataBoxPage.class);
-		this.add(this.updateDataBox);
 
 		final List<Player> players = this.persistenceService.getAllPlayersOfGame(_gameId);
 

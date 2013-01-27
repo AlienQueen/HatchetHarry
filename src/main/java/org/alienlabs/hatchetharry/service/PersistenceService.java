@@ -544,26 +544,6 @@ public class PersistenceService implements Serializable
 
 	}
 
-	@Transactional(isolation = Isolation.REPEATABLE_READ)
-	public List<String> findCollectibleCardTitlesFromDeckArchive(final Long deckArchiveId)
-	{
-		final Session session = this.magicCardDao.getSession();
-
-		final SQLQuery query = session
-				.createSQLQuery("select cc.title from CollectibleCard cc where cc.deckArchiveId = ?");
-		query.setLong(0, deckArchiveId);
-		try
-		{
-			return query.list();
-		}
-		catch (final ObjectNotFoundException e)
-		{
-			PersistenceService.LOGGER.error("error!", e);
-			return null;
-		}
-
-	}
-
 	@Transactional
 	public Game getGame(final Long _id)
 	{

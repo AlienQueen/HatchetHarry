@@ -5,11 +5,9 @@ import java.util.List;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.page.PlayCardPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -23,7 +21,6 @@ public class HandComponent extends Panel
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final BookmarkablePageLink<PlayCardPage> playCardPage;
 	private final WebMarkupContainer handCardsPlaceholder;
 	private final ListView<MagicCard> allCards;
 	private final WebMarkupContainer thumbsPlaceholder;
@@ -34,9 +31,6 @@ public class HandComponent extends Panel
 
 		this.setOutputMarkupId(true);
 		this.setMarkupId("handGallery");
-		this.playCardPage = new BookmarkablePageLink<PlayCardPage>("playCardPage",
-				PlayCardPage.class);
-		this.add(this.playCardPage);
 
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
 		this.handCardsPlaceholder.setOutputMarkupId(true);

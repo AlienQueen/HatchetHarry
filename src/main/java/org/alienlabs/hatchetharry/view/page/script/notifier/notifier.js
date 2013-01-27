@@ -1,3 +1,4 @@
+// TODO delete this file
 jQuery(document)
 		.ready(
 				function() {

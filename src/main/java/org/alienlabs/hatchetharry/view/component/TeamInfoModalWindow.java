@@ -1,6 +1,9 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
@@ -12,7 +15,7 @@ public class TeamInfoModalWindow extends Panel
 {
 	private static final long serialVersionUID = -4905521543219537705L;
 
-	public TeamInfoModalWindow(final String id)
+	public TeamInfoModalWindow(final String id, final ModalWindow _modal)
 	{
 		super(id);
 
@@ -35,7 +38,23 @@ public class TeamInfoModalWindow extends Panel
 		final Label tester2 = new Label("tester2", new Model<String>(
 				"Tester: Benoît Bouchery (benoit.bouchery@laposte.net)"));
 
-		form.add(founder, lead, dev1, gfx, tester1, tester2);
+		final AjaxButton submit = new AjaxButton("submit", form)
+		{
+			private static final long serialVersionUID = 5612763286127668L;
+
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			{
+				_modal.close(target);
+			}
+
+			@Override
+			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
+			{
+			}
+		};
+
+		form.add(founder, lead, dev1, gfx, tester1, tester2, submit);
 		this.add(img1, form);
 	}
 

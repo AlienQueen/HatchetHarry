@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 /**
  * @author nostromo
  */
+// TODO: delete this file
 public class NotifierPanel extends Panel
 {
 	private static final long serialVersionUID = 7528525699722463229L;

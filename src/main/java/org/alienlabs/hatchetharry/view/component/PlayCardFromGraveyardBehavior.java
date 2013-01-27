@@ -62,9 +62,6 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 
 		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
-		// TODO remove this
-		// this.persistenceService.updateGame(game);
-
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
 		if (!CardZone.GRAVEYARD.equals(card.getZone()))
@@ -73,8 +70,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setZone(CardZone.BATTLEFIELD);
-		card.setX(50l + (card.getId() * 2));
-		card.setY(50l + (card.getId() * 2));
+		card.setX(card.getX());
+		card.setY(card.getY());
 		this.persistenceService.saveCard(card);
 
 		JavaScriptUtils.updateGraveyard(target);

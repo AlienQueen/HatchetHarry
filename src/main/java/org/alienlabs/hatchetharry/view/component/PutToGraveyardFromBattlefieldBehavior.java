@@ -65,6 +65,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 				+ HatchetHarrySession.get().getPlayer().getId());
 
 		mc.setZone(CardZone.GRAVEYARD);
+		mc.setTapped(false);
 		this.persistenceService.saveCard(mc);
 
 		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();

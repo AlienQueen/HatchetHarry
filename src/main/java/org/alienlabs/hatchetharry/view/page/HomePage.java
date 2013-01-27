@@ -83,7 +83,6 @@ import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.ImportDeckModalWindow;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
-import org.alienlabs.hatchetharry.view.component.NotifierPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
@@ -145,7 +144,6 @@ public class HomePage extends TestReportPage
 
 	Player player;
 	Deck deck;
-	BookmarkablePageLink<PlayCardPage> playCardPage;
 	List<MagicCard> hand;
 	private final WebMarkupContainer parentPlaceholder;
 	WebMarkupContainer playCardLink;
@@ -162,13 +160,9 @@ public class HomePage extends TestReportPage
 	private AjaxLink<Void> untapAllLink;
 	private AjaxLink<Void> untapAndDrawLink;
 
-	private BookmarkablePageLink<UntapAllPage> untapAllPage;
-
 	WebMarkupContainer endTurnPlaceholder;
 	WebMarkupContainer untapAllPlaceholder;
 	WebMarkupContainer untapAndDrawPlaceholder;
-
-	public NotifierPanel notifierPanel;
 
 	private WebMarkupContainer dataBoxParent;
 
@@ -197,8 +191,6 @@ public class HomePage extends TestReportPage
 
 		// Resources
 		this.addHeadResources();
-
-		this.add(new BookmarkablePageLink<NotifierPage>("notifierStart", NotifierPage.class));
 
 		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
 		this.parentPlaceholder.setOutputMarkupId(true);
@@ -504,12 +496,6 @@ public class HomePage extends TestReportPage
 		this.endTurnPlaceholder.setMarkupId("endTurnPlaceholder");
 		this.endTurnPlaceholder.setOutputMarkupId(true);
 
-		// TODO remove this in favor of the wicket-atmosphere implementation:
-		this.notifierPanel = new NotifierPanel("notifierPanel", HomePage.this, HatchetHarrySession
-				.get().getPlayer().getSide(), "has declared the end of his turn.",
-				this.dataBoxParent, HatchetHarrySession.get().getGameId());
-		this.notifierPanel.setOutputMarkupId(true);
-
 		this.endTurnLink = new AjaxLink<Void>("endTurnLink")
 		{
 			private static final long serialVersionUID = 1L;
@@ -542,7 +528,7 @@ public class HomePage extends TestReportPage
 		this.endTurnLink.setMarkupId("endTurnLink");
 		this.endTurnLink.setOutputMarkupId(true);
 
-		this.endTurnPlaceholder.add(this.endTurnLink, this.notifierPanel);
+		this.endTurnPlaceholder.add(this.endTurnLink);
 		this.add(this.endTurnPlaceholder);
 	}
 
@@ -582,10 +568,6 @@ public class HomePage extends TestReportPage
 
 		this.untapAllPlaceholder.add(this.untapAllLink);
 		this.add(this.untapAllPlaceholder);
-
-		this.untapAllPage = new BookmarkablePageLink<UntapAllPage>("untapAllPage",
-				UntapAllPage.class);
-		this.add(this.untapAllPage);
 	}
 
 	private void buildUntapAndDrawLink()
@@ -1097,9 +1079,9 @@ public class HomePage extends TestReportPage
 	private ModalWindow generateTeamInfoLink(final String id, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(528);
+		window.setInitialHeight(635);
 		window.setTitle("HatchetHarry Team info");
-		window.setContent(new TeamInfoModalWindow(window.getContentId()));
+		window.setContent(new TeamInfoModalWindow(window.getContentId(), window));
 		window.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(window);
