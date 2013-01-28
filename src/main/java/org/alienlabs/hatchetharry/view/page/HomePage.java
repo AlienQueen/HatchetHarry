@@ -1481,17 +1481,18 @@ public class HomePage extends TestReportPage
 				event.getGameId());
 	}
 
+	// TODO: remove this and the now useless parents
 	@Subscribe
 	public void regenerateGameLinks(final AjaxRequestTarget target,
 			final RegenerateGameLinksCometChannel event)
 	{
-		this.generateCreateGameLinkParent.addOrReplace(this.generateCreateGameModalWindow(
-				this.player, this.galleryParent, this.firstSidePlaceholderParent, target));
-		target.add(this.generateCreateGameLinkParent);
-
-		this.generateJoinGameLinkParent.addOrReplace(this.generateJoinGameModalWindow(this.player,
-				this.galleryParent, this.secondSidePlaceholderParent, target));
-		target.add(this.generateJoinGameLinkParent);
+//		this.generateCreateGameLinkParent.addOrReplace(this.generateCreateGameModalWindow(
+//				this.player, this.galleryParent, this.firstSidePlaceholderParent, target));
+//		target.add(this.generateCreateGameLinkParent);
+//
+//		this.generateJoinGameLinkParent.addOrReplace(this.generateJoinGameModalWindow(this.player,
+//				this.galleryParent, this.secondSidePlaceholderParent, target));
+//		target.add(this.generateJoinGameLinkParent);
 	}
 
 	@Override

@@ -22,7 +22,7 @@
 		<wicket.version>6.6.0-SNAPSHOT</wicket.version>
 		<wicketstuff.version>6.4.0</wicketstuff.version>
 		<wicket-atmosphere.version>0.8-SNAPSHOT</wicket-atmosphere.version>
-		<atmosphere.version>1.0.8</atmosphere.version>
+		<atmosphere.version>1.0.9</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.6.4</slf4j.version>
@@ -520,6 +520,11 @@
    			<version>0.9.0.RC3</version>
    			<type>jar</type>
    		</dependency>
+        <dependency>
+           	<groupId>com.vaynberg.wicket.select2</groupId>
+			<artifactId>wicket-select2</artifactId>
+			<version>2.2-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	
     <repositories>

@@ -18,6 +18,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
@@ -50,6 +51,8 @@ public class CreateGameModalWindow extends Panel
 
 	final HomePage homePage;
 
+	final WebMarkupContainer deckParent;
+
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
 	{
@@ -67,6 +70,12 @@ public class CreateGameModalWindow extends Panel
 		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService.getAllDecks();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
+		this.decks.setOutputMarkupId(true);
+
+		this.deckParent = new WebMarkupContainer("deckParent");
+		this.deckParent.setOutputMarkupId(true);
+		this.decks.add(addUpdatingBehavior());
+		this.deckParent.add(this.decks);
 
 		this.game = this.player.getGame();
 		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
@@ -100,9 +109,9 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setGame(g);
 
 				CreateGameModalWindow.this.player
-						.setSide(sideInput.getDefaultModelObjectAsString());
+				.setSide(sideInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.player
-						.setName(nameInput.getDefaultModelObjectAsString());
+				.setName(nameInput.getDefaultModelObjectAsString());
 
 				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
@@ -123,7 +132,7 @@ public class CreateGameModalWindow extends Panel
 
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-									+ "Thumb.jpg", cc.getTitle(), "");
+							+ "Thumb.jpg", cc.getTitle(), "");
 					card.setGameId(g.getId());
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
@@ -139,7 +148,7 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.player.setDeck(deck);
 				CreateGameModalWindow.this.persistenceService
-						.updatePlayer(CreateGameModalWindow.this.player);
+				.updatePlayer(CreateGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
@@ -151,8 +160,8 @@ public class CreateGameModalWindow extends Panel
 					CreateGameModalWindow.this.persistenceService.saveOrUpdateCard(aCard);
 					firstCards.add(i, aCard);
 					HatchetHarrySession.get().addCardIdInHand(i, aCard.getId()); // TODO
-																					// remove
-																					// this
+					// remove
+					// this
 					deck.getCards().remove(aCard);
 				}
 
@@ -210,7 +219,7 @@ public class CreateGameModalWindow extends Panel
 
 				final int posX = ("infrared".equals(sideInput.getDefaultModelObjectAsString()))
 						? 300
-						: 900;
+								: 900;
 
 				buf.append("window.setTimeout(function() { var card = jQuery(\"#sidePlaceholder"
 						+ spp.getUuid() + "\"); " + "card.css(\"position\", \"absolute\"); "
@@ -266,9 +275,30 @@ public class CreateGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("createSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.decks, gameId, nameLabel, nameInput, sideLabel, sideInput, submit);
+		form.add(chooseDeck, this.deckParent, gameId, nameLabel, nameInput, sideLabel, sideInput, submit);
 
 		this.add(form);
+	}
+
+	private AjaxFormComponentUpdatingBehavior addUpdatingBehavior()
+	{
+		return new AjaxFormComponentUpdatingBehavior("onReadyStateChange") {
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				if (target != null) {
+					final ArrayList<Deck> _allDecks = (ArrayList<Deck>)CreateGameModalWindow.this.persistenceService.getAllDecks();
+					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
+					DropDownChoice<Deck> _deck = new DropDownChoice<Deck>("decks", new Model<Deck>(), _decksModel);
+					_deck.setOutputMarkupId(true);
+					_deck.add(addUpdatingBehavior());
+					
+//					target.appendJavaScript("document.getElementById('nameInput').focus();");
+					
+					CreateGameModalWindow.this.deckParent.addOrReplace(_deck);
+					target.add(CreateGameModalWindow.this.deckParent);
+				}
+			}
+		};
 	}
 
 	@Required

@@ -79,9 +79,10 @@ public class ImportDeckModalWindow extends Panel
 					return;
 				}
 
+				// TODO: remove this
 				// post a message for all players connected to HH
-				final RegenerateGameLinksCometChannel rglcc = new RegenerateGameLinksCometChannel();
-				EventBus.get().post(rglcc);
+//				final RegenerateGameLinksCometChannel rglcc = new RegenerateGameLinksCometChannel();
+//				EventBus.get().post(rglcc);
 			}
 		};
 
