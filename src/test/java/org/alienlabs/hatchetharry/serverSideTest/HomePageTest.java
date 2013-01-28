@@ -127,7 +127,7 @@ public class HomePageTest
 
 		// Assert menubar
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.tester
-				.getLastResponse().getDocument(), "class", "rootVoices", false);
+				.getLastResponse().getDocument(), "class", "myMenu", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
@@ -135,13 +135,13 @@ public class HomePageTest
 		tagTester = TagTester.createTagsByAttribute(HomePageTest.tester.getLastResponse()
 				.getDocument(), "class", "mbmenu", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertTrue(tagTester.size() > 1);
+		Assert.assertEquals(3, tagTester.size());
 
-		// Assert 'the game wins' entry exists
+		// Assert 'Import a deck' entry exists
 		boolean containsText = false;
 		for (final TagTester tt : tagTester)
 		{
-			if (((null != tt.getMarkup()) && tt.getMarkup().contains("The game wins")))
+			if (((null != tt.getMarkup()) && tt.getMarkup().contains("Import a deck")))
 			{
 				containsText = true;
 				break;

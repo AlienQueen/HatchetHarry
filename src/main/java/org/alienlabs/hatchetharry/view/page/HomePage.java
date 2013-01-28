@@ -1065,7 +1065,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				target.appendJavaScript("jQuery(\"#box_menu_clone\").hide(); ");
+				target.appendJavaScript(JavaScriptUtils.REACTIVE_MENUBAR);
 				window.show(target);
 			}
 		};
@@ -1094,7 +1094,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				target.appendJavaScript("jQuery(\"#box_menu_clone\").hide(); ");
+				target.appendJavaScript(JavaScriptUtils.REACTIVE_MENUBAR);
 				window.show(target);
 			}
 		};

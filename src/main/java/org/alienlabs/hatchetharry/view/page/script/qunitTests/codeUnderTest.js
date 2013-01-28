@@ -1,25 +1,25 @@
 // The menubar, a jQuery plugin
 jQuery(function() {
 
-	jQuery(".myMenu").buildMenu({
-		additionalData : "pippo=1",
+	jQuery('.myMenu').buildMenu({
+		additionalData : 'pippo=1',
 		menuWidth : 200,
 		openOnRight : false,
-		menuSelector : ".menuContainer",
-		iconPath : "/image/",
+		menuSelector : '.menuContainer',
+		iconPath : '/image/',
 		hasImages : true,
 		fadeInTime : 100,
-		fadeOutTime : 300,
+		fadeOutTime : 3000,
 		adjustLeft : 0,
-		minZindex : "auto",
+		minZindex : 'auto',
 		adjustTop : 0,
 		opacity : .95,
 		shadow : true,
-		shadowColor : "#ccc",
+		shadowColor : '#ccc',
 		hoverIntent : 0,
 		openOnClick : false,
 		closeOnMouseOut : true,
-		closeAfter : 1000,
+		closeAfter : 5000,
 		submenuHoverIntent : 200
 	});
 });

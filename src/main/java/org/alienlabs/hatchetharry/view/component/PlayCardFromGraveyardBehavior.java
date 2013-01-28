@@ -53,8 +53,6 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		target.appendJavaScript("jQuery(\"#box_menu_clone\").hide(); ");
-
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
