@@ -3,12 +3,19 @@
 		<div style="position:absolute; left: 15%;">
 			<form wicket:id="form" action="">
 				
-				<br/><br/><span wicket:id="chooseDeck">Choose a deck</span><select wicket:id="decks"></select><br/><br/>
-				
-				<span wicket:id="nameLabel">Your name</span><input wicket:id="name" type="text"></input><br/><br/>
-				
-				<span wicket:id="sideLabel">Your side</span><select wicket:id="sideInput"></select><br/><br/>
+				<br/><br/>
+				<span wicket:id="nameLabel">Your name</span><input wicket:id="name" type="text"></input>
+				<br/><br/>
 
+				<span wicket:id="chooseDeck">Choose a deck</span>
+				<span wicket:id="deckParent">
+					<select wicket:id="decks"></select>
+				</span>
+				<br/><br/>
+				
+				<span wicket:id="sideLabel">Your side</span><select wicket:id="sideInput"></select>
+				<br/><br/>
+				
 				<b><span wicket:id="gameIdLabel">Id of the Game</span><input wicket:id="gameIdInput" type="text"></input><br/><br/></b>
 				
 				<button wicket:id="submit" id="#" type="submit">OK</button>

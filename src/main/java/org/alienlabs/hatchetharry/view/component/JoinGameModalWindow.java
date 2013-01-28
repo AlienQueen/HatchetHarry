@@ -24,6 +24,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -32,7 +33,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -50,12 +51,14 @@ public class JoinGameModalWindow extends Panel
 
 	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 
-	final DropDownChoice<Deck> decks;
-	final RequiredTextField<Long> gameIdInput;
+	final TextField<Long> gameIdInput;
 	final WebMarkupContainer dataBoxParent;
 
 	Player player;
 	HomePage hp;
+
+	WebMarkupContainer deckParent;
+	DropDownChoice<Deck> decks;
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
@@ -69,16 +72,44 @@ public class JoinGameModalWindow extends Panel
 
 		final Form<String> form = new Form<String>("form");
 
+
+		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
+		final Model<String> nameModel = new Model<String>("");
+		final TextField<String> nameInput = new TextField<String>("name", nameModel);
+		nameInput.setOutputMarkupId(true);
+
+		nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(final AjaxRequestTarget target)
+			{
+				if ((null != target) && (null == JoinGameModalWindow.this.decks.getModelObject()))
+				{
+					final ArrayList<Deck> _allDecks = (ArrayList<Deck>)JoinGameModalWindow.this.persistenceService
+							.getAllDecks();
+					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
+					JoinGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
+							new Model<Deck>(), _decksModel);
+
+					JoinGameModalWindow.this.deckParent
+							.addOrReplace(JoinGameModalWindow.this.decks);
+					target.add(JoinGameModalWindow.this.deckParent);
+				}
+			}
+		});
+
 		final Label chooseDeck = new Label("chooseDeck", "Choose a deck: ");
 
 		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService.getAllDecks();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
-		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
-		this.decks.setRequired(true);
 
-		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
-		final Model<String> nameModel = new Model<String>("");
-		final RequiredTextField<String> nameInput = new RequiredTextField<String>("name", nameModel);
+		this.deckParent = new WebMarkupContainer("deckParent");
+		this.deckParent.setOutputMarkupId(true);
+		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
+		this.decks.setOutputMarkupId(true);
+		this.deckParent.add(this.decks);
 
 		final ArrayList<String> allSides = new ArrayList<String>();
 		allSides.add("infrared");
@@ -87,12 +118,11 @@ public class JoinGameModalWindow extends Panel
 		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
 		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
 				new Model<String>(), sidesModel);
-		sideInput.setRequired(true);
 
 		final Label gameIdLabel = new Label("gameIdLabel",
 				"Please provide the game id given by your opponent: ");
 		final Model<Long> gameId = new Model<Long>(0l);
-		this.gameIdInput = new RequiredTextField<Long>("gameIdInput", gameId);
+		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
 
 		final AjaxButton submit = new AjaxButton("submit", form)
 		{
@@ -101,9 +131,16 @@ public class JoinGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				if ((null == nameInput.getModelObject())
+						|| ("".equals(nameInput.getModelObject().trim()))
+						|| (null == JoinGameModalWindow.this.decks.getModelObject())
+						|| (null == sideInput.getDefaultModelObjectAsString()))
+				{
+					return;
+				}
+
 				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
 						.getDefaultModelObjectAsString());
-
 
 				final Game game = JoinGameModalWindow.this.persistenceService.getGame(_id);
 				if (null == game)
@@ -375,8 +412,8 @@ public class JoinGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("joinSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.decks, nameLabel, nameInput, sideLabel, sideInput, gameIdLabel,
-				this.gameIdInput, submit);
+		form.add(chooseDeck, this.deckParent, nameLabel, nameInput, sideLabel, sideInput,
+				gameIdLabel, this.gameIdInput, submit);
 
 		this.add(form);
 	}

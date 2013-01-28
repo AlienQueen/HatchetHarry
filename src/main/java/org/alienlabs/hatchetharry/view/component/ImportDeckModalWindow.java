@@ -2,10 +2,8 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.io.UnsupportedEncodingException;
 
-import org.alienlabs.hatchetharry.model.channel.RegenerateGameLinksCometChannel;
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.basic.Label;
@@ -79,9 +77,11 @@ public class ImportDeckModalWindow extends Panel
 					return;
 				}
 
+				// TODO: remove this
 				// post a message for all players connected to HH
-				final RegenerateGameLinksCometChannel rglcc = new RegenerateGameLinksCometChannel();
-				EventBus.get().post(rglcc);
+				// final RegenerateGameLinksCometChannel rglcc = new
+				// RegenerateGameLinksCometChannel();
+				// EventBus.get().post(rglcc);
 			}
 		};
 

@@ -6,23 +6,37 @@
 	<packaging>war</packaging>
 	<version>0.1.0-SNAPSHOT</version>
 	<name>hatchetharry</name>
-	<description></description>
+	<description>HatchetHarry is a Magic: the Gathering playing webapp.
+It is free software licensed under the terms of the GNU Affero General Public License, version 3.
+You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license.</description>
+	<scm>
+		<developerConnection>AlienQueen: goupilpierre@gmail.com</developerConnection>
+	</scm>
 	<organization>
 		<name>AlienLabs</name>
 		<url>mailto:goupilpierre@gmail.com</url>
 	</organization>
+	<url>http://hatchetharry.net/</url>
+	<issueManagement>
+		<system>JTrac</system>
+		<url>http://hatchetharry.net/jtrac</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://hatchetharry.net/jenkins</url>
+	</ciManagement>
 	<licenses>
 		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<name>GNU Affero General Public License, version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.6.0-SNAPSHOT</wicket.version>
+		<wicket.version>6.5.0-SNAPSHOT</wicket.version>
 		<wicketstuff.version>6.4.0</wicketstuff.version>
 		<wicket-atmosphere.version>0.8-SNAPSHOT</wicket-atmosphere.version>
-		<atmosphere.version>1.0.8</atmosphere.version>
+		<atmosphere.version>1.0.9</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.6.4</slf4j.version>
@@ -30,7 +44,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<targetJdk>1.6</targetJdk>
 		<project.build.finalName>ROOT</project.build.finalName>
-		<selenium.version>2.14.0</selenium.version>
+		<selenium.version>2.25.0</selenium.version>
 	</properties>
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
@@ -183,17 +197,6 @@
         	<scope>provided</scope>
         </dependency>
         <dependency>
-        	<groupId>org.seleniumhq.selenium</groupId>
-        	<artifactId>selenium-firefox-driver</artifactId>
-        	<version>${selenium.version}</version>
-           	<exclusions>
-        		<exclusion>
-          			<groupId>commons-logging</groupId>
-          			<artifactId>commons-logging</artifactId>
-        		</exclusion>
-      		</exclusions>        	
-        </dependency>
-        <dependency>
         	<groupId>org.jvnet.hudson</groupId>
         	<artifactId>selenium-grid</artifactId>
         	<version>1.0.7-hudson-1</version>
@@ -288,7 +291,7 @@
         	<artifactId>javassist</artifactId>
         	<version>3.15.0-GA</version>
         </dependency>
-        <dependency>
+       <!--  <dependency>
         	<groupId>org.apache.maven.plugins</groupId>
         	<artifactId>maven-site-plugin</artifactId>
         	<version>3.0</version>
@@ -298,7 +301,7 @@
           			<artifactId>commons-logging</artifactId>
         		</exclusion>
       		</exclusions>        	
-        </dependency>
+        </dependency>-->
         <dependency>
         	<groupId>org.apache.maven.skins</groupId>
         	<artifactId>maven-default-skin</artifactId>
@@ -519,6 +522,11 @@
    			<artifactId>atmosphere-compat-jetty</artifactId>
    			<version>0.9.0.RC3</version>
    			<type>jar</type>
+   		</dependency>
+   		<dependency>
+   			<groupId>org.seleniumhq.selenium</groupId>
+   			<artifactId>selenium-firefox-driver</artifactId>
+   			<version>2.29.0</version>
    		</dependency>
 	</dependencies>
 	

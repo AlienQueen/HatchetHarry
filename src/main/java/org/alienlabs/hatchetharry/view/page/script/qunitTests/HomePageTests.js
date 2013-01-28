@@ -1,6 +1,4 @@
-jQuery(document)
-		.ready(
-				function() {
+jQuery(function() {
 
 					module("hand");
 					test(
@@ -53,4 +51,4 @@ jQuery(document)
 												+ " It should exist and point to 'Documentation', and it appears to be: "
 												+ menubaritem2.html());
 							});
-				});
+});

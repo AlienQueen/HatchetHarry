@@ -657,6 +657,11 @@ public class HomePage extends TestReportPage
 	private Player createPlayerAndDeck(final String _jsessionid, final String _side,
 			final String _name, final Long _lifePoints, final Long id)
 	{
+		if ((HomePage.this.persistenceService.getDeck(id)) != null)
+		{
+			return null;
+		}
+
 		final Player p = new Player();
 		p.setSide(_side);
 		p.setName(_name);
@@ -1481,17 +1486,19 @@ public class HomePage extends TestReportPage
 				event.getGameId());
 	}
 
+	// TODO remove this and useless parents
 	@Subscribe
 	public void regenerateGameLinks(final AjaxRequestTarget target,
 			final RegenerateGameLinksCometChannel event)
 	{
-		this.generateCreateGameLinkParent.addOrReplace(this.generateCreateGameModalWindow(
-				this.player, this.galleryParent, this.firstSidePlaceholderParent, target));
-		target.add(this.generateCreateGameLinkParent);
-
-		this.generateJoinGameLinkParent.addOrReplace(this.generateJoinGameModalWindow(this.player,
-				this.galleryParent, this.secondSidePlaceholderParent, target));
-		target.add(this.generateJoinGameLinkParent);
+		// this.generateCreateGameLinkParent.addOrReplace(this.generateCreateGameModalWindow(
+		// this.player, this.galleryParent, this.firstSidePlaceholderParent,
+		// target));
+		// target.add(this.generateCreateGameLinkParent);
+		//
+		// this.generateJoinGameLinkParent.addOrReplace(this.generateJoinGameModalWindow(this.player,
+		// this.galleryParent, this.secondSidePlaceholderParent, target));
+		// target.add(this.generateJoinGameLinkParent);
 	}
 
 	@Override

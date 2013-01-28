@@ -268,7 +268,7 @@ public class HomePageTest
 
 	private static void testModalWindow(final String _window, final String linkToActivateWindow)
 	{
-		// assert about modal window is in the page
+		// assert about & team info modal window are in the page
 		HomePageTest.tester.assertComponent(_window, ModalWindow.class);
 		final ModalWindow window = (ModalWindow)HomePageTest.tester
 				.getComponentFromLastRenderedPage(_window);
@@ -289,7 +289,7 @@ public class HomePageTest
 	private static void testModalWindowWithParent(final String windowParent, final String _window,
 			final String parentOfLinkToActivateWindow, final String linkToActivateWindow)
 	{
-		// assert about modal window is in the page
+		// assert about game windows are in the page
 		HomePageTest.tester.assertComponent(windowParent + ":" + _window, ModalWindow.class);
 		final ModalWindow window = (ModalWindow)HomePageTest.tester
 				.getComponentFromLastRenderedPage(windowParent + ":" + _window);

@@ -18,6 +18,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
@@ -25,7 +26,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -43,12 +44,14 @@ public class CreateGameModalWindow extends Panel
 
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
 
-	final DropDownChoice<Deck> decks;
 	final Player player;
 	final Game game;
 	final WebMarkupContainer sidePlaceholderParent;
 
 	final HomePage homePage;
+
+	WebMarkupContainer deckParent;
+	DropDownChoice<Deck> decks;
 
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
@@ -62,20 +65,49 @@ public class CreateGameModalWindow extends Panel
 
 		final Form<String> form = new Form<String>("form");
 
+		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
+		final Model<String> nameModel = new Model<String>("");
+		final TextField<String> nameInput = new TextField<String>("name", nameModel);
+		nameInput.setOutputMarkupId(true);
+
+		nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(final AjaxRequestTarget target)
+			{
+				if ((null != target) && (null == CreateGameModalWindow.this.decks.getModelObject()))
+				{
+					final ArrayList<Deck> _allDecks = (ArrayList<Deck>)CreateGameModalWindow.this.persistenceService
+							.getAllDecks();
+					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
+					CreateGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
+							new Model<Deck>(), _decksModel);
+
+					CreateGameModalWindow.this.deckParent
+							.addOrReplace(CreateGameModalWindow.this.decks);
+					target.add(CreateGameModalWindow.this.deckParent);
+				}
+			}
+		});
+
 		final Label chooseDeck = new Label("chooseDeck", "Choose a deck: ");
 
 		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService.getAllDecks();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
+
+		this.deckParent = new WebMarkupContainer("deckParent");
+		this.deckParent.setOutputMarkupId(true);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
+		this.decks.setOutputMarkupId(true);
+		this.deckParent.add(this.decks);
 
 		this.game = this.player.getGame();
 		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
 				+ ". You'll have to provide it to your opponent(s).");
 		HatchetHarrySession.get().setGameId(this.game.getId());
 
-		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
-		final Model<String> nameModel = new Model<String>("");
-		final RequiredTextField<String> nameInput = new RequiredTextField<String>("name", nameModel);
 
 		final ArrayList<String> allSides = new ArrayList<String>();
 		allSides.add("infrared");
@@ -92,6 +124,14 @@ public class CreateGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				if ((null == nameInput.getModelObject())
+						|| ("".equals(nameInput.getModelObject().trim()))
+						|| (null == CreateGameModalWindow.this.decks.getModelObject())
+						|| (null == sideInput.getDefaultModelObjectAsString()))
+				{
+					return;
+				}
+
 				_modal.close(target);
 
 				final Game g = CreateGameModalWindow.this.persistenceService
@@ -106,7 +146,7 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
-				Deck deck = (Deck)CreateGameModalWindow.this.decks.getDefaultModelObject();
+				Deck deck = CreateGameModalWindow.this.decks.getModelObject();
 				deck.shuffleLibrary();
 
 				final List<MagicCard> cards = new ArrayList<MagicCard>();
@@ -266,7 +306,8 @@ public class CreateGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("createSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.decks, gameId, nameLabel, nameInput, sideLabel, sideInput, submit);
+		form.add(chooseDeck, this.deckParent, gameId, nameLabel, nameInput, sideLabel, sideInput,
+				submit);
 
 		this.add(form);
 	}
