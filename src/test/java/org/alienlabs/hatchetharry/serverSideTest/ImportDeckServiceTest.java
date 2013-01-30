@@ -92,7 +92,7 @@ public class ImportDeckServiceTest
 	// TODO use a tool like Unitils, DBUnit or DBSetUp
 	private static void resetDb()
 	{
-		((PersistenceService)HomePageTest.context.getBean("persistenceService")).resetDb();
+		((PersistenceService)ImportDeckServiceTest.context.getBean("persistenceService")).resetDb();
 	}
 
 }

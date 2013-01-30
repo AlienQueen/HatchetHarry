@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
+import java.net.MalformedURLException;
+
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -22,16 +24,17 @@ public class VerifyQUnitTests
 	private WebDriver operaDriver;
 	private WebDriver firefoxDriver;
 	private WebDriver chromeDriver1, chromeDriver2;
-	private final String port = "8080";
+	private final String port = "9999";
 
 	@Before
-	public void setUp()
+	public void setUp() throws MalformedURLException
 	{
-		this.firefoxDriver = new FirefoxDriver();
-		this.firefoxDriver.get("http://localhost:" + this.port + "/");
 
 		this.operaDriver = new OperaDriver();
 		this.operaDriver.get("http://localhost:" + this.port + "/");
+
+		this.firefoxDriver = new FirefoxDriver();
+		this.firefoxDriver.get("http://localhost:" + this.port + "/");
 
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		this.chromeDriver1 = new ChromeDriver();
@@ -86,10 +89,10 @@ public class VerifyQUnitTests
 	@After
 	public void tearDown()
 	{
+		this.operaDriver.quit();
 		this.firefoxDriver.quit();
 		this.chromeDriver1.quit();
 		this.chromeDriver2.quit();
-		this.operaDriver.quit();
 	}
 
 }
