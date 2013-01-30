@@ -11,8 +11,6 @@ import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.AbstractAjaxBehavior;
-import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -59,23 +57,6 @@ public class HomePageTest
 	}
 
 	@Test
-	public void testRenderMyPage()
-	{
-		// start and render the test page
-		HomePageTest.tester.startPage(HomePage.class);
-
-		// assert rendered page class
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
-
-		// assert rendered label component
-		final Label message = (Label)HomePageTest.tester
-				.getComponentFromLastRenderedPage("message1");
-		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
-		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
-
-	}
-
-	@Test
 	public void testRenderHand()
 	{
 		// start and render the test page
@@ -91,11 +72,29 @@ public class HomePageTest
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.tester
 				.getLastResponse().getDocument(), "class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
-		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// assert number of thumbnails
 		Assert.assertEquals(7, tagTester.size());
+
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+	}
+
+	@Test
+	public void testRenderMyPage()
+	{
+		// start and render the test page
+		HomePageTest.tester.startPage(HomePage.class);
+
+		// assert rendered page class
+		HomePageTest.tester.assertRenderedPage(HomePage.class);
+
+		// assert rendered label component
+		final Label message = (Label)HomePageTest.tester
+				.getComponentFromLastRenderedPage("message1");
+		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
+		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
 	}
 
 	@Test
@@ -161,6 +160,8 @@ public class HomePageTest
 
 		// assert DataBox is present
 		HomePageTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
+
+		// System.out.println(HomePageTest.tester.getLastResponse().getDocument());
 
 		// assert DataBox content
 		HomePageTest.tester.assertLabel(
@@ -260,15 +261,13 @@ public class HomePageTest
 
 		HomePageTest.testModalWindow("aboutWindow", "aboutLink");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLink");
-		HomePageTest.testModalWindowWithParent("generateCreateGameLinkParent", "createGameWindow",
-				"createGameLinkParent", "createGameLink");
-		HomePageTest.testModalWindowWithParent("generateJoinGameLinkParent", "joinGameWindow",
-				"joinGameLinkParent", "joinGameLink");
+		HomePageTest.testModalWindow("createGameWindow", "createGameLink");
+		HomePageTest.testModalWindow("joinGameWindow", "joinGameLink");
 	}
 
 	private static void testModalWindow(final String _window, final String linkToActivateWindow)
 	{
-		// assert about & team info modal window are in the page
+		// assert modal windows are in the page
 		HomePageTest.tester.assertComponent(_window, ModalWindow.class);
 		final ModalWindow window = (ModalWindow)HomePageTest.tester
 				.getComponentFromLastRenderedPage(_window);
@@ -278,31 +277,7 @@ public class HomePageTest
 		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)HomePageTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(aboutLink);
-		final Behavior b = aboutLink.getBehaviors().get(0);
-		Assert.assertNotNull(b);
-		HomePageTest.tester.executeBehavior((AbstractAjaxBehavior)b);
-		HomePageTest.tester.assertVisible(window.getPageRelativePath() + ":"
-				+ window.getContentId());
-	}
-
-
-	private static void testModalWindowWithParent(final String windowParent, final String _window,
-			final String parentOfLinkToActivateWindow, final String linkToActivateWindow)
-	{
-		// assert about game windows are in the page
-		HomePageTest.tester.assertComponent(windowParent + ":" + _window, ModalWindow.class);
-		final ModalWindow window = (ModalWindow)HomePageTest.tester
-				.getComponentFromLastRenderedPage(windowParent + ":" + _window);
-		HomePageTest.tester.assertInvisible(window.getPageRelativePath() + ":"
-				+ window.getContentId());
-
-		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)HomePageTest.tester
-				.getComponentFromLastRenderedPage(parentOfLinkToActivateWindow + ":"
-						+ linkToActivateWindow);
-		Assert.assertNotNull(aboutLink);
-		final Behavior b = aboutLink.getBehaviors().get(0);
-		Assert.assertNotNull(b);
-		HomePageTest.tester.executeBehavior((AbstractAjaxBehavior)b);
+		HomePageTest.tester.clickLink(linkToActivateWindow, true);
 		HomePageTest.tester.assertVisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 	}

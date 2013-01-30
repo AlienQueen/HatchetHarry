@@ -65,6 +65,14 @@ public class CreateGameModalWindow extends Panel
 
 		final Form<String> form = new Form<String>("form");
 
+		final ArrayList<String> allSides = new ArrayList<String>();
+		allSides.add("infrared");
+		allSides.add("ultraviolet");
+		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
+		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
+		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
+				new Model<String>(), sidesModel);
+
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
 		final Model<String> nameModel = new Model<String>("");
 		final TextField<String> nameInput = new TextField<String>("name", nameModel);
@@ -108,14 +116,6 @@ public class CreateGameModalWindow extends Panel
 				+ ". You'll have to provide it to your opponent(s).");
 		HatchetHarrySession.get().setGameId(this.game.getId());
 
-
-		final ArrayList<String> allSides = new ArrayList<String>();
-		allSides.add("infrared");
-		allSides.add("ultraviolet");
-		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
-		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
-		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
-				new Model<String>(), sidesModel);
 
 		final AjaxButton submit = new AjaxButton("submit", form)
 		{
@@ -191,8 +191,8 @@ public class CreateGameModalWindow extends Panel
 					CreateGameModalWindow.this.persistenceService.saveOrUpdateCard(aCard);
 					firstCards.add(i, aCard);
 					HatchetHarrySession.get().addCardIdInHand(i, aCard.getId()); // TODO
-																					// remove
-																					// this
+					// remove
+					// this
 					deck.getCards().remove(aCard);
 				}
 
@@ -306,7 +306,7 @@ public class CreateGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("createSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.deckParent, gameId, nameLabel, nameInput, sideLabel, sideInput,
+		form.add(chooseDeck, this.deckParent, gameId, sideLabel, nameLabel, nameInput, sideInput,
 				submit);
 
 		this.add(form);

@@ -73,6 +73,14 @@ public class JoinGameModalWindow extends Panel
 		final Form<String> form = new Form<String>("form");
 
 
+		final ArrayList<String> allSides = new ArrayList<String>();
+		allSides.add("infrared");
+		allSides.add("ultraviolet");
+		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
+		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
+		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
+				new Model<String>(), sidesModel);
+
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
 		final Model<String> nameModel = new Model<String>("");
 		final TextField<String> nameInput = new TextField<String>("name", nameModel);
@@ -110,14 +118,6 @@ public class JoinGameModalWindow extends Panel
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
 		this.decks.setOutputMarkupId(true);
 		this.deckParent.add(this.decks);
-
-		final ArrayList<String> allSides = new ArrayList<String>();
-		allSides.add("infrared");
-		allSides.add("ultraviolet");
-		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
-		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
-		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
-				new Model<String>(), sidesModel);
 
 		final Label gameIdLabel = new Label("gameIdLabel",
 				"Please provide the game id given by your opponent: ");
@@ -213,9 +213,6 @@ public class JoinGameModalWindow extends Panel
 				deck = JoinGameModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
 
 				JoinGameModalWindow.this.player.setDeck(deck);
-				// TODO remove this
-				// JoinGameModalWindow.this.persistenceService
-				// .updatePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
@@ -256,12 +253,9 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player.setName(nameInput.getDefaultModelObjectAsString());
 				JoinGameModalWindow.this.player.setGame(game);
 
-				// game =
-				// JoinGameModalWindow.this.persistenceService.getGame(game.getId());
 				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
-				// JoinGameModalWindow.this.persistenceService.updateGame(game);
 
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
@@ -412,7 +406,7 @@ public class JoinGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("joinSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.deckParent, nameLabel, nameInput, sideLabel, sideInput,
+		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, nameInput, sideInput,
 				gameIdLabel, this.gameIdInput, submit);
 
 		this.add(form);

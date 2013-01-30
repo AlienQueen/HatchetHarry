@@ -84,5 +84,15 @@ public class ImportDeckServiceTest
 		Assert.assertEquals(initialNumberOfDecks + 1, finalNumberOfDecks);
 		Assert.assertEquals(initialNumberOfCollectibleCards + 60, finalNumberOfCollectibleCards);
 		Assert.assertEquals(initialNumberOfMagicCards + 60, finalNumberOfMagicCards);
+
+		ImportDeckServiceTest.resetDb();
 	}
+
+
+	// TODO use a tool like Unitils, DBUnit or DBSetUp
+	private static void resetDb()
+	{
+		((PersistenceService)HomePageTest.context.getBean("persistenceService")).resetDb();
+	}
+
 }

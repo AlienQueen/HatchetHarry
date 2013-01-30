@@ -94,97 +94,104 @@ public class RuntimeDataGenerator implements Serializable
 	@Transactional
 	public Deck generateData(final Long playerId)
 	{
-		final DeckArchive deckArchive1 = new DeckArchive();
-		deckArchive1.setDeckName("aggro-combo Red / Black");
-		this.persistenceService.saveDeckArchive(deckArchive1);
-
-		Deck deck1 = new Deck();
-		deck1.setPlayerId(playerId);
-		deck1.setDeckArchive(deckArchive1);
-		deck1 = this.deckDao.save(deck1);
-
-		final DeckArchive deckArchive2 = new DeckArchive();
-		deckArchive2.setDeckName("burn mono-Red");
-		this.persistenceService.saveDeckArchive(deckArchive2);
-
-		Deck deck2 = new Deck();
-		deck2.setPlayerId(playerId);
-		deck2.setDeckArchive(deckArchive2);
-		deck2 = this.deckDao.save(deck2);
-
-		final List<Deck> decks = new ArrayList<Deck>();
-		decks.add(0, deck1);
-		decks.add(1, deck2);
-
-		for (int j = 1; j < 3; j++)
+		if ((null == this.persistenceService.getDeck(1))
+				&& (null == this.persistenceService.getDeck(2)))
 		{
-			for (int i = 0; i < 60; i++)
+			final DeckArchive deckArchive1 = new DeckArchive();
+			deckArchive1.setDeckName("aggro-combo Red / Black");
+			this.persistenceService.saveDeckArchive(deckArchive1);
+
+			Deck deck1 = new Deck();
+			deck1.setPlayerId(playerId);
+			deck1.setDeckArchive(deckArchive1);
+			deck1 = this.deckDao.save(deck1);
+
+			final DeckArchive deckArchive2 = new DeckArchive();
+			deckArchive2.setDeckName("burn mono-Red");
+			this.persistenceService.saveDeckArchive(deckArchive2);
+
+			Deck deck2 = new Deck();
+			deck2.setPlayerId(playerId);
+			deck2.setDeckArchive(deckArchive2);
+			deck2 = this.deckDao.save(deck2);
+
+			final List<Deck> decks = new ArrayList<Deck>();
+			decks.add(0, deck1);
+			decks.add(1, deck2);
+
+			for (int j = 1; j < 3; j++)
 			{
-
-				final CollectibleCard c = new CollectibleCard();
-				c.setTitle((j == 1
-						? RuntimeDataGenerator.TITLES1[i]
-						: RuntimeDataGenerator.TITLES2[i]));
-				c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
-						.getDeckArchiveId());
-				this.persistenceService.saveCollectibleCard(c);
-
-				if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
+				for (int i = 0; i < 60; i++)
 				{
-					this.deckArchiveDao.save(j == 1 ? deckArchive1 : deckArchive2);
-					this.collectibleCardDao.save(c);
-				}
 
-				if (j == 1l)
-				{
-					MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
-							+ "_small.jpg", "cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg",
-							"cards/" + RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
-							RuntimeDataGenerator.TITLES1[i], "");
-					card.setGameId(1l);
-					card.setDeck(decks.get(j - 1));
-					card.setUuidObject(UUID.randomUUID());
-					card.setZone(CardZone.LIBRARY);
-					card = this.magicCardDao.save(card);
+					final CollectibleCard c = new CollectibleCard();
+					c.setTitle((j == 1
+							? RuntimeDataGenerator.TITLES1[i]
+							: RuntimeDataGenerator.TITLES2[i]));
+					c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
+							.getDeckArchiveId());
+					this.persistenceService.saveCollectibleCard(c);
 
-					final List<MagicCard> cards = decks.get(j - 1).getCards();
-					cards.add(card);
-					decks.get(j - 1).setCards(cards);
-				}
-				else
-				{
-					MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
-							+ "_small.jpg", "cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg",
-							"cards/" + RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
-							RuntimeDataGenerator.TITLES1[i], "");
-					card.setGameId(1l);
-					card.setDeck(decks.get(j - 1));
-					card.setUuidObject(UUID.randomUUID());
-					card.setX(16l);
-					card.setY(16l);
-					card.setZone(CardZone.LIBRARY);
-					card = this.magicCardDao.save(card);
+					if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
+					{
+						this.deckArchiveDao.save(j == 1 ? deckArchive1 : deckArchive2);
+						this.collectibleCardDao.save(c);
+					}
 
-					final List<MagicCard> cards = decks.get(j - 1).getCards();
-					cards.add(card);
-					decks.get(j - 1).setCards(cards);
+					if (j == 1l)
+					{
+						MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
+								+ "_small.jpg",
+								"cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg", "cards/"
+										+ RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
+								RuntimeDataGenerator.TITLES1[i], "");
+						card.setGameId(1l);
+						card.setDeck(decks.get(j - 1));
+						card.setUuidObject(UUID.randomUUID());
+						card.setZone(CardZone.LIBRARY);
+						card = this.magicCardDao.save(card);
 
-					this.deckDao.save(decks.get(j - 1));
+						final List<MagicCard> cards = decks.get(j - 1).getCards();
+						cards.add(card);
+						decks.get(j - 1).setCards(cards);
+					}
+					else
+					{
+						MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
+								+ "_small.jpg",
+								"cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg", "cards/"
+										+ RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
+								RuntimeDataGenerator.TITLES1[i], "");
+						card.setGameId(1l);
+						card.setDeck(decks.get(j - 1));
+						card.setUuidObject(UUID.randomUUID());
+						card.setX(16l);
+						card.setY(16l);
+						card.setZone(CardZone.LIBRARY);
+						card = this.magicCardDao.save(card);
+
+						final List<MagicCard> cards = decks.get(j - 1).getCards();
+						cards.add(card);
+						decks.get(j - 1).setCards(cards);
+
+						this.deckDao.save(decks.get(j - 1));
+					}
 				}
 			}
+
+			final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
+					"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
+					"Isn't it a spoiler?");
+			card.setUuidObject(UUID.randomUUID());
+			final Deck fake = new Deck();
+			fake.setPlayerId(-1l);
+			card.setDeck(fake);
+			card.setGameId(-1l);
+			this.magicCardDao.save(card);
+
+			return deck1;
 		}
-
-		final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
-				"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
-				"Isn't it a spoiler?");
-		card.setUuidObject(UUID.randomUUID());
-		final Deck fake = new Deck();
-		fake.setPlayerId(-1l);
-		card.setDeck(fake);
-		card.setGameId(-1l);
-		this.magicCardDao.save(card);
-
-		return deck1;
+		return this.persistenceService.getDeck(1);
 	}
 
 }

@@ -76,12 +76,6 @@ public class ImportDeckModalWindow extends Panel
 					ImportDeckModalWindow.LOGGER.error("error parsing deck file", e);
 					return;
 				}
-
-				// TODO: remove this
-				// post a message for all players connected to HH
-				// final RegenerateGameLinksCometChannel rglcc = new
-				// RegenerateGameLinksCometChannel();
-				// EventBus.get().post(rglcc);
 			}
 		};
 

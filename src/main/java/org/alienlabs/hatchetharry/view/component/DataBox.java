@@ -43,7 +43,6 @@ public class DataBox extends Panel
 		this.setOutputMarkupId(true);
 
 		final List<Player> players = this.persistenceService.getAllPlayersOfGame(_gameId);
-
 		final ListView<Player> box = new ListView<Player>("box", players)
 		{
 			private static final long serialVersionUID = -9108376429848438800L;

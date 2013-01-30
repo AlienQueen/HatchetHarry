@@ -69,19 +69,15 @@
 	  </div>-->
 	
 	  <div id="menu_3" class="mbmenu">
-	  	<span wicket:id="createGameLinkParent">
-		    <a wicket:id="createGameLink">
-		        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
-	    	</a>
-		</span>
-		<span wicket:id="joinGameLinkParent">
-			<a wicket:id="joinGameLink">
-		        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
-		    </a>
-		</span>
+	  	<a wicket:id="createGameLink">
+			<img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a game<br/>
+	    </a>
+		<a wicket:id="joinGameLink">
+			<img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join a game<br/>
+		</a>
 		 <a rel="separator"> </a>
 		 <a wicket:id="importDeckLink" class="{action: 'showMessage(\'menu_2.4\')'}">
-	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import a deck<br/>
+	        <img src="/image/browser.png" alt="" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import a deck<br/>
 	    </a>
 	    <a rel="separator"> </a>
 			<a wicket:id="resetDbLink" class="{action: 'showMessage(\'menu_2.5\')'}">
@@ -145,7 +141,7 @@
 	      <tr>
 	        <td>
 	          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64"></div>
-	          <a wicket:id="aboutLink">About HatychetHarry</a>
+	          <a wicket:id="aboutLink">About HatchetHarry</a>
 	          <a wicket:id="teamInfoLink">HatchetHarry team info</a>
 	          <a target="_blank">Preferences</a>
 	        </td>
@@ -315,13 +311,8 @@
 	<div wicket:id="aboutWindowResponsive"></div>
 	<div wicket:id="teamInfoWindowResponsive"></div>
 
-	<span wicket:id="generateCreateGameLinkParent">
-		<div wicket:id="createGameWindow"></div>
-	</span>
-	
-	<span wicket:id="generateJoinGameLinkParent">
-		<div wicket:id="joinGameWindow"></div>
-	</span>
+	<div wicket:id="createGameWindow"></div>
+	<div wicket:id="joinGameWindow"></div>
 	
 	<div wicket:id="importDeckWindow"></div>
 	
