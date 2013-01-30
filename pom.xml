@@ -822,6 +822,14 @@ You are free to modify any part of its source code (client-side or server-side),
 	</build>
 	<reporting>
    		<plugins>
+				<plugin>
+					    <groupId>org.apache.maven.plugins</groupId>
+					    <artifactId>maven-surefire-report-plugin</artifactId>
+					    <version>2.12</version>
+					    <configuration>
+					        <outputDirectory>${project.build.directory}/htmlreport</outputDirectory>
+					    </configuration>
+				</plugin>
      			<plugin>
        			<groupId>org.codehaus.mojo</groupId>
        			<artifactId>jdepend-maven-plugin</artifactId>
