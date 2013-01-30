@@ -1,12 +1,242 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
-<beans default-autowire="byName">
+<beans default-autowire="byName" xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd" >
 
-	<!-- beans can't come before imports so have to have these in an import -->
-	<import resource="classpath:common.xml"/>
-	<import resource="classpath:persistence.hibernate.xml"/>
+		<!--
+		allow the use of properties from application.properties
+		 throughout this configuration file
+	-->
+<!--	<bean id="placeholderConfig"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"><value>classpath:application.properties</value></property>
+		<property name="systemPropertiesModeName"><value>SYSTEM_PROPERTIES_MODE_OVERRIDE</value></property>
+	</bean>-->
 
+	<!-- 
+		
+		     _       _                                       
+		  __| | __ _| |_ __ _   ___  ___  _   _ _ __ ___ ___ 
+		 / _` |/ _` | __/ _` | / __|/ _ \| | | | '__/ __/ _ \
+		| (_| | (_| | || (_| | \__ \ (_) | |_| | | | (_|  __/
+		 \__,_|\__,_|\__\__,_| |___/\___/ \__,_|_|  \___\___|
+	-->
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+		<property name="url"><value>jdbc:mysql://localhost:3306/hh</value></property>
+		<property name="username"><value>less</value></property>
+		<property name="password"><value>more</value></property>
+	</bean>
+	
+	<!--	
+		 _             _         _____         _                    _         
+		| | ___   __ _(_)_ __   |___ / _ __ __| |  _ __   __ _ _ __| |_ _   _ 
+		| |/ _ \ / _` | | '_ \    |_ \| '__/ _` | | '_ \ / _` | '__| __| | | |
+		| | (_) | (_| | | | | |  ___) | | | (_| | | |_) | (_| | |  | |_| |_| |
+		|_|\___/ \__, |_|_| |_| |____/|_|  \__,_| | .__/ \__,_|_|   \__|\__, |
+		         |___/                            |_|                   |___/ 
+		                   _ _           _   _                 
+		  __ _ _ __  _ __ | (_) ___ __ _| |_(_) ___  _ __  ___ 
+		 / _` | '_ \| '_ \| | |/ __/ _` | __| |/ _ \| '_ \/ __|
+		| (_| | |_) | |_) | | | (_| (_| | |_| | (_) | | | \__ \
+		 \__,_| .__/| .__/|_|_|\___\__,_|\__|_|\___/|_| |_|___/
+		      |_|   |_|                                        
+	-->
+	
+<!--	<bean id="facebookAuthenticationProvider" 
+                class="org.xaloon.wicket.component.security.plugin.AuthenticationProvider">
+		<property name="consumerKey" value="d349aca5d6a0291429599a99b818d3b6"/>
+		<property name="consumerSecret" value="c6c9068a4823cc92f2e6cf8df3934af1"/>
+	</bean>
+	
+	<bean id="facebookAuthenticationFacade" 
+		class="org.xaloon.wicket.component.security.impl.FacebookOauthAuthenticationFacadeImpl">
+		<property name="authenticationProvider" ref="facebookAuthenticationProvider"/>
+	</bean>
+	
+	<bean id="googleOpenidAuthenticationFacade" 
+		class="org.xaloon.wicket.component.security.impl.OpenidAuthenticationFacadeImpl">
+		<property name="claimedIdentity" value="https://www.google.com/accounts/o8/id" />
+	</bean>
+	<bean id="yahooOpenidAuthenticationFacade" 
+		class="org.xaloon.wicket.component.security.impl.OpenidAuthenticationFacadeImpl">
+		<property name="claimedIdentity" value="http://yahoo.com/" />
+	</bean>  -->
+	
+		<context:annotation-config/>
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
+
+
+					<!--  
+						 ____  _                 _                     
+						|  _ \| |_   _ _ __ ___ | |__   ___ _ __ _   _ 
+						| |_) | | | | | '_ ` _ \| '_ \ / _ \ '__| | | |
+						|  __/| | |_| | | | | | | |_) |  __/ |  | |_| |
+						|_|   |_|\__,_|_| |_| |_|_.__/ \___|_|   \__, |
+						                                         |___/ 
+					-->
+					
+
+  					
+	<!-- setup hibernate session factory -->
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource"> <ref bean="dataSource"/></property>
+
+        <property name="annotatedClasses">
+            <list>
+                <value>org.alienlabs.hatchetharry.model.MagicCard</value>
+				<value>org.alienlabs.hatchetharry.model.Player</value>
+				<value>org.alienlabs.hatchetharry.model.CollectibleCard</value>
+				<value>org.alienlabs.hatchetharry.model.Deck</value>
+				<value>org.alienlabs.hatchetharry.model.DeckArchive</value>
+				<value>org.alienlabs.hatchetharry.model.Game</value>
+				<value>org.alienlabs.hatchetharry.model.Side</value>
+				<value>org.alienlabs.hatchetharry.model.CardCollection</value>
+            </list> 
+        </property>
+
+		<property name="hibernateProperties">
+			<props>
+				<!--  create= provide data at start-up by dropping tables, update= no start-up data model modification -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.connection.pool_size">100</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+            	<prop key="validation.query">select 1</prop>
+				<prop key="hibernate.c3p0.timeout">300</prop>
+    			<prop key="hibernate.c3p0.idle_test_periods">150</prop>    
+				<!-- We tell Hibernate that we use a second-level cache -->
+            	<prop key="hibernate.cache.use_second_level_cache">true</prop>
+            	<prop key="hibernate.cache.use_query_cache">true</prop>
+				<!-- We tell Hibernate that we use EhCache -->
+            	<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+
+					<!-- 
+						 ____               _     _                      
+						|  _ \ ___ _ __ ___(_)___| |_ ___ _ __   ___ ___ 
+						| |_) / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \
+						|  __/  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/
+						|_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|
+						                                                 
+					 -->
+	<!-- setup transaction manager	-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+       <property name="sessionFactory" ref="sessionFactory"/>
+	   <property name="dataSource" ref="dataSource"/>
+    </bean>
+	
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />	
+	
+	<!-- This tells Spring to activate annotation-driven transactions -->
+    <tx:annotation-driven/>
+	
+	<!-- setup DAOs  -->
+	<bean id="deckDao" class="org.alienlabs.hatchetharry.persistence.dao.DeckDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="deckArchiveDao" class="org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="collectibleCardDao" class="org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="magicCardDao" class="org.alienlabs.hatchetharry.persistence.dao.MagicCardDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="playerDao" class="org.alienlabs.hatchetharry.persistence.dao.PlayerDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="gameDao" class="org.alienlabs.hatchetharry.persistence.dao.GameDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="sideDao" class="org.alienlabs.hatchetharry.persistence.dao.SideDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	<bean id="cardCollectionDao" class="org.alienlabs.hatchetharry.persistence.dao.CardCollectionDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+<!--	<bean id="playerDaoTarget" class="org.alienlabs.ajax.persistence.dao.PlayerDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+-->
+	
+	<!-- setup transactions -->
+
+<!--	<bean id="playerDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="playerDaoTarget"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save">PROPAGATION_REQUIRED</prop>
+				<prop key="delete">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+-->
+	
+	
+	
+					<!-- 
+						 ____                  _               
+						/ ___|  ___ _ ____   _(_) ___ ___  ___ 
+						\___ \ / _ \ '__\ \ / / |/ __/ _ \/ __|
+						 ___) |  __/ |   \ V /| | (_|  __/\__ \
+						|____/ \___|_|    \_/ |_|\___\___||___/
+						
+					 -->
+ 	<bean id="persistenceService" class="org.alienlabs.hatchetharry.service.PersistenceService">
+		<property name="magicCardDao" ref="magicCardDao"/>
+		<property name="deckDao" ref="deckDao"/>
+		<property name="deckArchiveDao" ref="deckArchiveDao"/>
+		<property name="collectibleCardDao" ref="collectibleCardDao"/>
+		<property name="playerDao" ref="playerDao"/>
+		<property name="gameDao" ref="gameDao"/>
+		<property name="sideDao" ref="sideDao"/>
+		<property name="cardCollectionDao" ref="cardCollectionDao"/>
+	</bean>
+	<!-- setup data generator that will add some data into the db when the app starts up -->
+	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">
+		<property name="deckDao" ref="deckDao"/>
+		<property name="deckArchiveDao" ref="deckArchiveDao"/>
+		<property name="collectibleCardDao" ref="collectibleCardDao"/>
+		<property name="magicCardDao" ref="magicCardDao"/>
+		<property name="persistenceService" ref="persistenceService"/>
+	</bean>
+	<bean id="importDeckService" class="org.alienlabs.hatchetharry.service.ImportDeckService">
+		<property name="persistenceService" ref="persistenceService"/>
+	</bean>
+	
+					<!-- 
+						 ____    _    ___  
+						|  _ \  / \  / _ \ 
+						| | | |/ _ \| | | |
+						| |_| / ___ \ |_| |
+						|____/_/   \_\___/ 
+
+					-->
+
+	
 	<!-- To mark a bean property as being 'required-to-be-set' (i.e. an annotated (setter) method of a class must be configured
 		to be dependency injected with a value), else an Exception will be thrown by the Spring container at runtime.
 	-->
