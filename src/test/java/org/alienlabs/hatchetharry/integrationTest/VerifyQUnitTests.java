@@ -25,7 +25,7 @@ public class VerifyQUnitTests
 	private final String port = "9999";
 
 	@Before
-	public void setUp()
+	public void setUp() throws InterruptedException
 	{
 
 		this.operaDriver = new OperaDriver();
@@ -41,7 +41,7 @@ public class VerifyQUnitTests
 		this.chromeDriver2 = new ChromeDriver();
 		this.chromeDriver2.get("http://localhost:" + this.port + "/");
 
-
+		Thread.sleep(3000);
 	}
 
 	@Test
