@@ -174,10 +174,6 @@ You are free to modify any part of its source code (client-side or server-side),
         	<artifactId>atmosphere-runtime</artifactId>
         	<version>${atmosphere.version}</version>
         	<exclusions>
-        	    <exclusion>
-          			<groupId>org.atmosphere</groupId>
-          			<artifactId>atmosphere-compat-tomcat7</artifactId>
-        		</exclusion>
         		<exclusion>
           			<groupId>org.atmosphere</groupId>
           			<artifactId>atmosphere-ping</artifactId>
@@ -189,6 +185,13 @@ You are free to modify any part of its source code (client-side or server-side),
         	<artifactId>atmosphere-compat-tomcat</artifactId>
         	<version>${atmosphere.version}</version>
         </dependency>
+        <!-- This is for Jetty (integration tests) -->
+        <dependency>
+       		<groupId>org.atmosphere</groupId>
+        	<artifactId>atmosphere-compat-tomcat7</artifactId>
+        	<version>${atmosphere.version}</version>
+        	<scope>test</scope>
+     	</dependency>
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-jgroups</artifactId>
@@ -764,6 +767,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		        <artifactId>jetty-maven-plugin</artifactId>
 		        <version>7.6.8.v20121106</version>
 		        <configuration>
+		        	<useTestClasspath>true</useTestClasspath>
 		            <daemon>true</daemon>
 		           <webApp>
       					<contextPath>/</contextPath>

@@ -53,8 +53,8 @@ public class ImportDeckServiceTest
 		final ImportDeckService importDeckService = ImportDeckServiceTest.context
 				.getBean(ImportDeckService.class);
 
-		final boolean auraBantAlreadyExists = null != persistenceService
-				.getDeckArchiveByName("Aura Bant");
+		final boolean auraBantAlreadyExists = (null != persistenceService
+				.getDeckArchiveByName("Aura Bant"));
 
 		final int initialNumberOfDeckArchives = persistenceService.countDeckArchives();
 		final int initialNumberOfDecks = persistenceService.countDecks();
@@ -93,9 +93,9 @@ public class ImportDeckServiceTest
 		else
 		{
 			Assert.assertEquals(initialNumberOfDeckArchives + 1, finalNumberOfDeckArchives);
-			Assert.assertEquals(initialNumberOfDecks + 2, finalNumberOfDecks);
+			Assert.assertEquals(initialNumberOfDecks + 1, finalNumberOfDecks);
 			Assert.assertEquals(initialNumberOfCollectibleCards + 60, finalNumberOfCollectibleCards);
-			Assert.assertEquals(initialNumberOfMagicCards + 120, finalNumberOfMagicCards);
+			Assert.assertEquals(initialNumberOfMagicCards + 60, finalNumberOfMagicCards);
 		}
 	}
 
