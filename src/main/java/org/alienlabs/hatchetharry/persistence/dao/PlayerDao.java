@@ -50,7 +50,7 @@ public interface PlayerDao extends Serializable
 	 * @param Player
 	 * @return persistent instance of contact
 	 */
-	Player save(Player contact);
+	void save(Player contact);
 
 	/**
 	 * Delete a {@link Player} from the DB, given it's <tt>id</tt>.

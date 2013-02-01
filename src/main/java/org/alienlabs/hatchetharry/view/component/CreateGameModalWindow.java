@@ -183,7 +183,7 @@ public class CreateGameModalWindow extends Panel
 
 				deck.setCards(cards);
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
-				CreateGameModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
+				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
 
 				CreateGameModalWindow.this.player.setDeck(deck);
 				CreateGameModalWindow.this.persistenceService

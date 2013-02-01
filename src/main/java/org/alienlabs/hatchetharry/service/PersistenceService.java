@@ -158,12 +158,7 @@ public class PersistenceService implements Serializable
 	public void updatePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
-		if (p.getId() != null)
-		{
-			session.merge(p);
-			return;
-		}
-		session.saveOrUpdate(p);
+		session.merge(p);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
@@ -184,21 +179,6 @@ public class PersistenceService implements Serializable
 	public void updateGame(final Game g)
 	{
 		this.gameDao.save(g);
-	}
-
-	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Long savePlayer(final Player p)
-	{
-		final Session session = this.playerDao.getSession();
-		final Long l = (Long)session.save(p);
-		return (l);
-	}
-
-	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void saveOrUpdatePlayer(final Player p)
-	{
-		final Session session = this.playerDao.getSession();
-		session.saveOrUpdate(p);
 	}
 
 	@Transactional
@@ -277,30 +257,16 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
-	public Deck updateDeck(final Deck d)
+	public void updateDeck(final Deck d)
 	{
 		final Session session = this.deckDao.getSession();
-		session.saveOrUpdate(d);
-
-		return d;
+		session.update(d);
 	}
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public Deck saveDeck(final Deck d)
 	{
-		final Session session = this.deckDao.getSession();
-		session.update(d);
-
-		return d;
-	}
-
-	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
-	public Deck saveOrUpdateDeck(final Deck d)
-	{
-		final Session session = this.deckDao.getSession();
-		session.saveOrUpdate(d);
-
-		return d;
+		return this.deckDao.save(d);
 	}
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
@@ -563,12 +529,12 @@ public class PersistenceService implements Serializable
 		final Set<Player> set = game.getPlayers();
 		set.add(player);
 		game.setPlayers(set);
-		
-		player.setGame(game);
-		
-		this.playerDao.getSession().save(player);
 
-		this.gameDao.getSession().save(game);
+		player.setGame(game);
+
+		this.playerDao.save(player);
+
+		this.gameDao.save(game);
 		return game;
 	}
 

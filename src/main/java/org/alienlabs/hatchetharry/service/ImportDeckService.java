@@ -43,6 +43,8 @@ public class ImportDeckService implements Serializable
 		deck.setDeckArchive(deckArchive);
 		final List<MagicCard> allMagicCards = deck.getCards();
 
+		deck = this.persistenceService.saveDeck(deck);
+
 		for (final String line : fileContent.split("\n"))
 		{
 			ImportDeckService.LOGGER.info("line: " + line);
@@ -76,7 +78,7 @@ public class ImportDeckService implements Serializable
 
 				allMagicCards.add(card);
 
-				this.persistenceService.saveOrUpdateDeck(deck);
+				this.persistenceService.updateDeck(deck);
 				this.persistenceService.saveOrUpdateCard(card);
 			}
 		}

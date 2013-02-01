@@ -107,7 +107,7 @@ public class RuntimeDataGenerator implements Serializable
 			}
 
 			Deck deck1 = new Deck();
-			deck1.setPlayerId(playerId);
+			// deck1.setPlayerId(playerId); TODO to remove
 			deck1.setDeckArchive(deckArchive1);
 			deck1 = this.deckDao.save(deck1);
 
@@ -199,7 +199,49 @@ public class RuntimeDataGenerator implements Serializable
 			card.setGameId(-1l);
 			this.magicCardDao.save(card);
 
-			return deck1;
+			return deck2;
+		}
+		else if ((1l != playerId.longValue()) && (2l != playerId.longValue()))
+		{
+			final DeckArchive deckArchive = this.persistenceService
+					.getDeckArchiveByName("aggro-combo Red / Black");
+
+			Deck deck = new Deck();
+			deck.setPlayerId(playerId);
+			deck.setDeckArchive(deckArchive);
+			deck = this.deckDao.save(deck);
+
+			for (int i = 0; i < 60; i++) // TODO count number of cards in deck
+			{
+
+				final CollectibleCard c = new CollectibleCard();
+				c.setTitle(RuntimeDataGenerator.TITLES1[i]);
+				c.setDeckArchiveId(deckArchive.getDeckArchiveId());
+				this.persistenceService.saveCollectibleCard(c);
+
+				if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
+				{
+					this.deckArchiveDao.save(deckArchive);
+					this.collectibleCardDao.save(c);
+				}
+
+				MagicCard card = new MagicCard("cards/" + c.getTitle() + "_small.jpg", "cards/"
+						+ c.getTitle() + ".jpg", "cards/" + c.getTitle() + "Thumb.jpg",
+						c.getTitle(), "");
+				card.setGameId(1l);
+				card.setDeck(deck);
+				card.setUuidObject(UUID.randomUUID());
+				card.setX(16l);
+				card.setY(16l);
+				card.setZone(CardZone.LIBRARY);
+				card = this.magicCardDao.save(card);
+
+				final List<MagicCard> cards = deck.getCards();
+				cards.add(card);
+				deck.setCards(cards);
+				this.deckDao.save(deck);
+			}
+			return deck;
 		}
 		return this.persistenceService.getDeck(1);
 	}

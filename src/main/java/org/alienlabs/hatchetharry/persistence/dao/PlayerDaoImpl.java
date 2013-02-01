@@ -92,9 +92,9 @@ public class PlayerDaoImpl implements PlayerDao
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Player save(final Player Player)
+	public void save(final Player Player)
 	{
-		return (Player)this.getSession().merge(Player);
+		this.getSession().save(Player);
 	}
 
 	/**

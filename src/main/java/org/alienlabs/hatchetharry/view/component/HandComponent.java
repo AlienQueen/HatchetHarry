@@ -6,6 +6,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -25,9 +26,12 @@ public class HandComponent extends Panel
 	private final ListView<MagicCard> allCards;
 	private final WebMarkupContainer thumbsPlaceholder;
 
+	private final List<MagicCard> allCardsInHand;
+
 	public HandComponent(final String id)
 	{
 		super(id);
+		Injector.get().inject(this);
 
 		this.setOutputMarkupId(true);
 		this.setMarkupId("handGallery");
@@ -35,12 +39,12 @@ public class HandComponent extends Panel
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 
-		final List<MagicCard> allCardsInHand = this.persistenceService
-				.getAllCardsInHandForAGameAndAPlayer(HatchetHarrySession.get().getPlayer()
-						.getGame().getId(), HatchetHarrySession.get().getPlayer().getId(),
-						HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(
+				HatchetHarrySession.get().getPlayer().getGame().getId(), HatchetHarrySession.get()
+						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
+						.getDeckId());
 
-		this.allCards = new ListView<MagicCard>("handCards", allCardsInHand)
+		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -76,7 +80,7 @@ public class HandComponent extends Panel
 		this.add(this.handCardsPlaceholder);
 
 		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
-		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", allCardsInHand)
+		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", this.allCardsInHand)
 		{
 			private static final long serialVersionUID = -787466183866875L;
 
@@ -121,7 +125,7 @@ public class HandComponent extends Panel
 
 	public List<MagicCard> getAllCards()
 	{
-		return (List<MagicCard>)this.allCards.getList();
+		return this.allCardsInHand;
 	}
 
 }

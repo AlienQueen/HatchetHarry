@@ -218,7 +218,7 @@ public class JoinGameModalWindow extends Panel
 
 				deck.setCards(cards);
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
-				JoinGameModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
+				JoinGameModalWindow.this.persistenceService.updateDeck(deck);
 
 				JoinGameModalWindow.this.player.setDeck(deck);
 				session.setPlayer(JoinGameModalWindow.this.player);

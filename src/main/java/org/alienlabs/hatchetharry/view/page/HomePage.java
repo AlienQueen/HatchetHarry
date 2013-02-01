@@ -378,17 +378,20 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final Component galleryToUpdate;
 				final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
-				galleryToUpdate = isHandDisplayed
-						? new WebMarkupContainer("gallery")
-						: new HandComponent("gallery");
 
-				HomePage.this.galleryParent.addOrReplace(galleryToUpdate);
+				if (isHandDisplayed)
+				{
+					HomePage.this.galleryParent.addOrReplace(new WebMarkupContainer("gallery"));
+					target.add(HomePage.this.galleryParent);
+				}
+				else
+				{
+					JavaScriptUtils.updateHand(target);
+
+				}
+
 				HatchetHarrySession.get().setHandDisplayed(!isHandDisplayed);
-
-				target.add(HomePage.this.galleryParent);
-				target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
 			}
 
 			@Override
@@ -418,19 +421,18 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final Component graveyardToUpdate;
 				final boolean isGraveyardDisplayed = HatchetHarrySession.get()
 						.isGraveyardDisplayed();
-				graveyardToUpdate = isGraveyardDisplayed
-						? new WebMarkupContainer("graveyard")
-						: new GraveyardComponent("graveyard");
 
-				HomePage.this.graveyardParent.addOrReplace(graveyardToUpdate);
-				target.add(HomePage.this.graveyardParent);
-
-				if (!isGraveyardDisplayed)
+				if (isGraveyardDisplayed)
 				{
-					target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
+					HomePage.this.graveyardParent.addOrReplace(new WebMarkupContainer("graveyard"));
+					target.add(HomePage.this.graveyardParent);
+				}
+				else
+				{
+					JavaScriptUtils.updateGraveyard(target);
+
 				}
 
 				HatchetHarrySession.get().setGraveyardDisplayed(!isGraveyardDisplayed);
@@ -590,7 +592,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
-	private Player createPlayer()
+	private void createPlayer()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
@@ -600,12 +602,15 @@ public class HomePage extends TestReportPage
 
 		if (this.persistenceService.getFirstPlayer() == null)
 		{
-			return this.createPlayerAndDeck(jsessionid, "infrared", "infrared");
+			this.createPlayerAndDeck(jsessionid, "infrared", "infrared");
 		}
-		return this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet");
+		else
+		{
+			this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet");
+		}
 	}
 
-	private Player createPlayerAndDeck(final String _jsessionid, final String _side,
+	private void createPlayerAndDeck(final String _jsessionid, final String _side,
 			final String _name)
 	{
 		Player p = new Player();
@@ -624,15 +629,13 @@ public class HomePage extends TestReportPage
 		this.deck = this.runtimeDataGenerator.generateData(p.getId());
 		this.deck.setCards(this.deck.shuffleLibrary());
 		this.deck.setPlayerId(p.getId());
-		this.deck = this.persistenceService.saveDeck(this.deck);
 
 		p.setDeck(this.deck);
-		this.persistenceService.saveOrUpdatePlayer(p);
-		HatchetHarrySession.get().setPlayer(p);
+		this.persistenceService.updatePlayer(p);
 		HatchetHarrySession.get().setGameId(game.getId());
 
+		HatchetHarrySession.get().setPlayer(p);
 		this.player = p;
-		return p;
 	}
 
 	private void generatePlayCardLink(final List<MagicCard> mc)
@@ -754,7 +757,7 @@ public class HomePage extends TestReportPage
 					final Deck _deck = HomePage.this.persistenceService.getDeck(session.getPlayer()
 							.getDeck().getDeckId());
 					_deck.getCards().remove(cards.get(0));
-					HomePage.this.persistenceService.saveOrUpdateDeck(_deck);
+					HomePage.this.persistenceService.saveDeck(_deck);
 
 					card.setZone(CardZone.HAND);
 					HomePage.this.persistenceService.saveOrUpdateCard(card);
