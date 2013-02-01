@@ -52,8 +52,8 @@ public class VerifyQUnitTests
 		final String chromeTotal1 = parent1.findElement(By.className("total")).getText();
 		final String chromeFailed1 = parent1.findElement(By.className("failed")).getText();
 
-		Assert.assertEquals("0", chromePassed1);
-		Assert.assertEquals("0", chromeTotal1);
+		Assert.assertEquals("8", chromePassed1);
+		Assert.assertEquals("8", chromeTotal1);
 		Assert.assertEquals("0", chromeFailed1);
 
 		final WebElement parent2 = this.chromeDriver2.findElement(By.id("qunit-testresult"));
@@ -61,8 +61,8 @@ public class VerifyQUnitTests
 		final String chromeTotal2 = parent2.findElement(By.className("total")).getText();
 		final String chromeFailed2 = parent2.findElement(By.className("failed")).getText();
 
-		Assert.assertEquals("0", chromePassed2);
-		Assert.assertEquals("0", chromeTotal2);
+		Assert.assertEquals("8", chromePassed2);
+		Assert.assertEquals("8", chromeTotal2);
 		Assert.assertEquals("0", chromeFailed2);
 
 		final WebElement parent3 = this.firefoxDriver.findElement(By.id("qunit-testresult"));
@@ -70,8 +70,8 @@ public class VerifyQUnitTests
 		final String firefoxTotal3 = parent3.findElement(By.className("total")).getText();
 		final String firefoxFailed3 = parent3.findElement(By.className("failed")).getText();
 
-		Assert.assertEquals("0", firefoxPassed3);
-		Assert.assertEquals("0", firefoxTotal3);
+		Assert.assertEquals("8", firefoxPassed3);
+		Assert.assertEquals("8", firefoxTotal3);
 		Assert.assertEquals("0", firefoxFailed3);
 
 		final WebElement parent4 = this.operaDriver.findElement(By.id("qunit-testresult"));
@@ -79,8 +79,8 @@ public class VerifyQUnitTests
 		final String operaTotal4 = parent4.findElement(By.className("total")).getText();
 		final String operaFailed4 = parent4.findElement(By.className("failed")).getText();
 
-		Assert.assertEquals("0", operaPassed4);
-		Assert.assertEquals("0", operaTotal4);
+		Assert.assertEquals("8", operaPassed4);
+		Assert.assertEquals("8", operaTotal4);
 		Assert.assertEquals("0", operaFailed4);
 	}
 

@@ -872,7 +872,7 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/dock/dock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/qunitTests/qUnit.js")));
+						HomePage.class, "script/qunitTests/qunit-1.11.0.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(

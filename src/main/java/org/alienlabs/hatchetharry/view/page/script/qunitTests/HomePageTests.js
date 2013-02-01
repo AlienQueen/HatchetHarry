@@ -20,10 +20,9 @@ jQuery(function() {
 										'span#gallery a.cross-link:first img')
 										.attr('src');
 								ok(
-										((attribute.indexOf("resource") != -1)
-												&& (attribute.indexOf("image") != -1) && (attribute
-												.indexOf("jpg") != -1)),
-										"the first of these images should have a source URL containing 'resource', 'image' and 'jpg', and it appears to be: "
+										((attribute.indexOf("cards") != -1) && (attribute
+												.indexOf(".jpg") != -1)),
+										"the first of these images should have a source URL containing 'cards' and '.jpg', and it appears to be: "
 												+ attribute);
 							});
 					module("menubar");
@@ -46,9 +45,9 @@ jQuery(function() {
 
 								var menubaritem2 = jQuery('td.myMenu table.rootVoices tr td.rootVoice:nth-child(2)');
 								ok(
-										(menubaritem2.html() === "Documentation"),
+										(menubaritem2.html() === "Game"),
 										"the second menubar option is the second td of class rootVoice of the td of class myMenu which contains a table of class rootVoices and a tr."
-												+ " It should exist and point to 'Documentation', and it appears to be: "
+												+ " It should exist and point to 'Game', and it appears to be: "
 												+ menubaritem2.html());
 							});
 });

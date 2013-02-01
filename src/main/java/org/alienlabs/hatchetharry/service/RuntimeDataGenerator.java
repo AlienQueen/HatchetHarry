@@ -97,18 +97,28 @@ public class RuntimeDataGenerator implements Serializable
 		if ((null == this.persistenceService.getDeck(1))
 				&& (null == this.persistenceService.getDeck(2)))
 		{
-			final DeckArchive deckArchive1 = new DeckArchive();
-			deckArchive1.setDeckName("aggro-combo Red / Black");
-			this.persistenceService.saveDeckArchive(deckArchive1);
+			DeckArchive deckArchive1 = this.persistenceService
+					.getDeckArchiveByName("aggro-combo Red / Black");
+			if (null == deckArchive1)
+			{
+				deckArchive1 = new DeckArchive();
+				deckArchive1.setDeckName("aggro-combo Red / Black");
+				this.persistenceService.saveDeckArchive(deckArchive1);
+			}
 
 			Deck deck1 = new Deck();
 			deck1.setPlayerId(playerId);
 			deck1.setDeckArchive(deckArchive1);
 			deck1 = this.deckDao.save(deck1);
 
-			final DeckArchive deckArchive2 = new DeckArchive();
-			deckArchive2.setDeckName("burn mono-Red");
-			this.persistenceService.saveDeckArchive(deckArchive2);
+			DeckArchive deckArchive2 = this.persistenceService
+					.getDeckArchiveByName("burn mono-Red");
+			if (null == deckArchive2)
+			{
+				deckArchive2 = new DeckArchive();
+				deckArchive2.setDeckName("burn mono-Red");
+				this.persistenceService.saveDeckArchive(deckArchive2);
+			}
 
 			Deck deck2 = new Deck();
 			deck2.setPlayerId(playerId);
