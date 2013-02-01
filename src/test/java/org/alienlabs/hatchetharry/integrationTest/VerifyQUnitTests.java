@@ -41,7 +41,7 @@ public class VerifyQUnitTests
 		this.chromeDriver2 = new ChromeDriver();
 		this.chromeDriver2.get("http://localhost:" + this.port + "/");
 
-		Thread.sleep(3000);
+		Thread.sleep(10000);
 	}
 
 	@Test
