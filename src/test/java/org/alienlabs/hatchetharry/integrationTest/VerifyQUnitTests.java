@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
-import java.net.MalformedURLException;
-
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -27,7 +25,7 @@ public class VerifyQUnitTests
 	private final String port = "9999";
 
 	@Before
-	public void setUp() throws MalformedURLException
+	public void setUp()
 	{
 
 		this.operaDriver = new OperaDriver();

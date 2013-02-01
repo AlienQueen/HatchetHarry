@@ -53,6 +53,9 @@ public class ImportDeckServiceTest
 		final ImportDeckService importDeckService = ImportDeckServiceTest.context
 				.getBean(ImportDeckService.class);
 
+		final boolean auraBantAlreadyExists = null != persistenceService
+				.getDeckArchiveByName("Aura Bant");
+
 		final int initialNumberOfDeckArchives = persistenceService.countDeckArchives();
 		final int initialNumberOfDecks = persistenceService.countDecks();
 		final int initialNumberOfCollectibleCards = persistenceService.countCollectibleCards();
@@ -72,7 +75,7 @@ public class ImportDeckServiceTest
 		final String deckContent = new String(content, "UTF-8");
 
 		// Run
-		importDeckService.importDeck(deckContent, "Aura Bant");
+		importDeckService.importDeck(deckContent, "Aura Bant", true);
 
 		// Verify
 		final int finalNumberOfDeckArchives = persistenceService.countDeckArchives();
@@ -80,10 +83,20 @@ public class ImportDeckServiceTest
 		final int finalNumberOfCollectibleCards = persistenceService.countCollectibleCards();
 		final int finalNumberOfMagicCards = persistenceService.countMagicCards();
 
-		Assert.assertEquals(initialNumberOfDeckArchives + 1, finalNumberOfDeckArchives);
-		Assert.assertEquals(initialNumberOfDecks + 1, finalNumberOfDecks);
-		Assert.assertEquals(initialNumberOfCollectibleCards + 60, finalNumberOfCollectibleCards);
-		Assert.assertEquals(initialNumberOfMagicCards + 60, finalNumberOfMagicCards);
+		if (auraBantAlreadyExists)
+		{
+			Assert.assertEquals(initialNumberOfDeckArchives, finalNumberOfDeckArchives);
+			Assert.assertEquals(initialNumberOfDecks, finalNumberOfDecks);
+			Assert.assertEquals(initialNumberOfCollectibleCards, finalNumberOfCollectibleCards);
+			Assert.assertEquals(initialNumberOfMagicCards, finalNumberOfMagicCards);
+		}
+		else
+		{
+			Assert.assertEquals(initialNumberOfDeckArchives + 1, finalNumberOfDeckArchives);
+			Assert.assertEquals(initialNumberOfDecks + 2, finalNumberOfDecks);
+			Assert.assertEquals(initialNumberOfCollectibleCards + 60, finalNumberOfCollectibleCards);
+			Assert.assertEquals(initialNumberOfMagicCards + 120, finalNumberOfMagicCards);
+		}
 	}
-	
+
 }

@@ -40,7 +40,7 @@ public class TeamInfoModalWindow extends Panel
 
 		final AjaxButton submit = new AjaxButton("submit", form)
 		{
-			private static final long serialVersionUID = 5612763286127668L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)

@@ -54,13 +54,8 @@ public class HandComponent extends Panel
 				wrapper.setMarkupId("wrapper" + item.getIndex());
 				wrapper.setOutputMarkupId(true);
 
-				// TODO OK?
 				final ExternalImage handImagePlaceholder = new ExternalImage(
 						"handImagePlaceholder", card.getBigImageFilename());
-				// final Image handImagePlaceholder = new
-				// Image("handImagePlaceholder",
-				// new PackageResourceReference(HomePage.class,
-				// card.getBigImageFilename()));
 				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
 				handImagePlaceholder.setOutputMarkupId(true);
 
@@ -74,7 +69,10 @@ public class HandComponent extends Panel
 
 			}
 		};
-		this.handCardsPlaceholder.add(this.allCards);
+		this.allCards.setOutputMarkupId(true);
+		this.handCardsPlaceholder.setOutputMarkupId(true);
+
+		this.handCardsPlaceholder.addOrReplace(this.allCards);
 		this.add(this.handCardsPlaceholder);
 
 		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
@@ -96,12 +94,8 @@ public class HandComponent extends Panel
 				crossLink.setMarkupId("cross-link" + item.getIndex());
 				crossLink.setOutputMarkupId(true);
 
-				// TODO OK?
 				final ExternalImage thumb = new ExternalImage("thumbPlaceholder",
 						card.getThumbnailFilename());
-				// final Image thumb = new Image("thumbPlaceholder", new
-				// PackageResourceReference(
-				// HomePage.class, card.getThumbnailFilename()));
 				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
 				thumb.setOutputMarkupId(true);
 
@@ -113,7 +107,7 @@ public class HandComponent extends Panel
 		thumbs.setOutputMarkupId(true);
 		this.thumbsPlaceholder.setOutputMarkupId(true);
 
-		this.thumbsPlaceholder.add(thumbs);
+		this.thumbsPlaceholder.addOrReplace(thumbs);
 		this.add(this.thumbsPlaceholder);
 
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
@@ -123,6 +117,11 @@ public class HandComponent extends Panel
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	public List<MagicCard> getAllCards()
+	{
+		return (List<MagicCard>)this.allCards.getList();
 	}
 
 }

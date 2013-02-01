@@ -60,10 +60,17 @@ public class JoinGameModalWindow extends Panel
 	WebMarkupContainer deckParent;
 	DropDownChoice<Deck> decks;
 
+	final TextField<String> nameInput;
+
+	final DropDownChoice<String> sideInput;
+
+	final ModalWindow modal;
+
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
+		this.modal = _modal;
 		Injector.get().inject(this);
 
 		this.player = _player;
@@ -78,15 +85,14 @@ public class JoinGameModalWindow extends Panel
 		allSides.add("ultraviolet");
 		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
 		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
-		final DropDownChoice<String> sideInput = new DropDownChoice<String>("sideInput",
-				new Model<String>(), sidesModel);
+		this.sideInput = new DropDownChoice<String>("sideInput", new Model<String>(), sidesModel);
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
 		final Model<String> nameModel = new Model<String>("");
-		final TextField<String> nameInput = new TextField<String>("name", nameModel);
-		nameInput.setOutputMarkupId(true);
+		this.nameInput = new TextField<String>("name", nameModel);
+		this.nameInput.setOutputMarkupId(true);
 
-		nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
+		this.nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -96,7 +102,7 @@ public class JoinGameModalWindow extends Panel
 				if ((null != target) && (null == JoinGameModalWindow.this.decks.getModelObject()))
 				{
 					final ArrayList<Deck> _allDecks = (ArrayList<Deck>)JoinGameModalWindow.this.persistenceService
-							.getAllDecks();
+							.getAllDecksFromDeckArchives();
 					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
 					JoinGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
 							new Model<Deck>(), _decksModel);
@@ -110,7 +116,8 @@ public class JoinGameModalWindow extends Panel
 
 		final Label chooseDeck = new Label("chooseDeck", "Choose a deck: ");
 
-		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService.getAllDecks();
+		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService
+				.getAllDecksFromDeckArchives();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 
 		this.deckParent = new WebMarkupContainer("deckParent");
@@ -131,10 +138,11 @@ public class JoinGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				if ((null == nameInput.getModelObject())
-						|| ("".equals(nameInput.getModelObject().trim()))
+				if ((null == JoinGameModalWindow.this.nameInput.getModelObject())
+						|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == JoinGameModalWindow.this.decks.getModelObject())
-						|| (null == sideInput.getDefaultModelObjectAsString()))
+						|| (null == JoinGameModalWindow.this.sideInput
+								.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
@@ -145,7 +153,7 @@ public class JoinGameModalWindow extends Panel
 				final Game game = JoinGameModalWindow.this.persistenceService.getGame(_id);
 				if (null == game)
 				{
-					_modal.close(target);
+					JoinGameModalWindow.this.modal.close(target);
 					target.appendJavaScript("alert('The selected game (id= "
 							+ JoinGameModalWindow.this.gameIdInput.getDefaultModelObjectAsString()
 							+ ") does not exist!');");
@@ -181,7 +189,7 @@ public class JoinGameModalWindow extends Panel
 				session.setGameId(_id);
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
 
-				Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
+				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				deck.shuffleLibrary();
 
 				final List<MagicCard> cards = new ArrayList<MagicCard>();
@@ -210,7 +218,7 @@ public class JoinGameModalWindow extends Panel
 
 				deck.setCards(cards);
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
-				deck = JoinGameModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
+				JoinGameModalWindow.this.persistenceService.saveOrUpdateDeck(deck);
 
 				JoinGameModalWindow.this.player.setDeck(deck);
 				session.setPlayer(JoinGameModalWindow.this.player);
@@ -249,8 +257,10 @@ public class JoinGameModalWindow extends Panel
 
 				session.setFirstCardsInHand(firstCards);
 
-				JoinGameModalWindow.this.player.setSide(sideInput.getDefaultModelObjectAsString());
-				JoinGameModalWindow.this.player.setName(nameInput.getDefaultModelObjectAsString());
+				JoinGameModalWindow.this.player.setSide(JoinGameModalWindow.this.sideInput
+						.getDefaultModelObjectAsString());
+				JoinGameModalWindow.this.player.setName(JoinGameModalWindow.this.nameInput
+						.getDefaultModelObjectAsString());
 				JoinGameModalWindow.this.player.setGame(game);
 
 				final Set<Player> players = game.getPlayers();
@@ -282,8 +292,8 @@ public class JoinGameModalWindow extends Panel
 				final String jsessionid = request.getRequestedSessionId();
 
 				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
-						sideInput.getDefaultModelObjectAsString(), JoinGameModalWindow.this.hp,
-						UUID.randomUUID());
+						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
+						JoinGameModalWindow.this.hp, UUID.randomUUID());
 				spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(), jsessionid,
 						JoinGameModalWindow.this.hp,
 						JoinGameModalWindow.this.hp.getDataBoxParent(), session.getGameId()));
@@ -291,13 +301,13 @@ public class JoinGameModalWindow extends Panel
 						+ session.getGameId());
 				spp.setOutputMarkupId(true);
 
-				session.putMySidePlaceholderInSesion(sideInput.getDefaultModelObjectAsString());
+				session.putMySidePlaceholderInSesion(JoinGameModalWindow.this.sideInput
+						.getDefaultModelObjectAsString());
 
 				JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent().addOrReplace(spp);
 
-				final int posX = ("infrared".equals(sideInput.getDefaultModelObjectAsString()))
-						? 300
-						: 900;
+				final int posX = ("infrared".equals(JoinGameModalWindow.this.sideInput
+						.getDefaultModelObjectAsString())) ? 300 : 900;
 
 				javaScript
 						.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
@@ -309,7 +319,7 @@ public class JoinGameModalWindow extends Panel
 								+ "px'); "
 								+ "card.css('top', '500px'); }, 3000); ");
 
-				final String opponentSide = ("infrared".equals(sideInput
+				final String opponentSide = ("infrared".equals(JoinGameModalWindow.this.sideInput
 						.getDefaultModelObjectAsString())) ? "ultraviolet" : "infrared";
 
 				final SidePlaceholderPanel spp2 = new SidePlaceholderPanel("firstSidePlaceholder",
@@ -336,13 +346,13 @@ public class JoinGameModalWindow extends Panel
 				javaScript.append("window.gameId = " + session.getGameId() + "; ");
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
-						sideInput.getDefaultModelObjectAsString());
+						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
 
 				final Side s = new Side();
 				s.setGame(game);
-				s.setSide(sideInput.getDefaultModelObjectAsString());
+				s.setSide(JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				s.setUuid(spp.getUuid().toString());
 				s.setWicketId("secondSidePlaceholder");
 				s.setX(Long.valueOf(posX));
@@ -366,8 +376,8 @@ public class JoinGameModalWindow extends Panel
 				target.appendJavaScript(javaScript.toString());
 
 				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
-						sideInput.getDefaultModelObjectAsString(), jsessionid, spp.getUuid(),
-						Long.valueOf(posX), 500l);
+						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
+						jsessionid, spp.getUuid(), Long.valueOf(posX), 500l);
 				EventBus.get().post(jgcc);
 
 				final Long _gameId = game.getId();
@@ -406,7 +416,7 @@ public class JoinGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("joinSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, nameInput, sideInput,
+		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, this.nameInput, this.sideInput,
 				gameIdLabel, this.gameIdInput, submit);
 
 		this.add(form);

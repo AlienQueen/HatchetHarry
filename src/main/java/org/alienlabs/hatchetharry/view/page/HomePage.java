@@ -600,21 +600,23 @@ public class HomePage extends TestReportPage
 
 		if (this.persistenceService.getFirstPlayer() == null)
 		{
-			return this.createPlayerAndDeck(jsessionid, "infrared", "infrared", 20l, 1l);
+			return this.createPlayerAndDeck(jsessionid, "infrared", "infrared");
 		}
-		return this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet", 20l, 2l);
+		return this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet");
 	}
 
 	private Player createPlayerAndDeck(final String _jsessionid, final String _side,
-			final String _name, final Long _lifePoints, final Long id)
+			final String _name)
 	{
-		final Player p = new Player();
+		Player p = new Player();
 		p.setSide(_side);
 		p.setName(_name);
 		p.setJsessionid(_jsessionid);
-		p.setLifePoints(_lifePoints);
+		p.setLifePoints(20l);
 
-		final Game game = this.persistenceService.createGame(p, 0l);
+		Game game = new Game();
+		game = this.persistenceService.createGameAndPlayer(game, p);
+		p = game.getPlayers().iterator().next();
 		p.setGame(game);
 
 		HatchetHarrySession.get().setPlayerHasBeenCreated();

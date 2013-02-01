@@ -69,7 +69,7 @@ public class ImportDeckModalWindow extends Panel
 				{
 					ImportDeckModalWindow.this.importDeckService.importDeck(
 							new String(fupload.getBytes(), "UTF-8"),
-							ImportDeckModalWindow.this.nameInput.getModelObject());
+							ImportDeckModalWindow.this.nameInput.getModelObject(), false);
 				}
 				catch (final UnsupportedEncodingException e)
 				{

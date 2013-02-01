@@ -47,4 +47,11 @@ public class DeckArchive implements Serializable
 	{
 		this.deckName = _deckName;
 	}
+
+	@Override
+	public String toString()
+	{
+		return this.deckName;
+	}
+
 }

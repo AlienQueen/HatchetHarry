@@ -78,7 +78,6 @@ public class HomePageTest
 
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
-
 	}
 
 	@Test
@@ -161,8 +160,6 @@ public class HomePageTest
 		// assert DataBox is present
 		HomePageTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
 
-		// System.out.println(HomePageTest.tester.getLastResponse().getDocument());
-
 		// assert DataBox content
 		HomePageTest.tester.assertLabel(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
@@ -211,26 +208,45 @@ public class HomePageTest
 		// The first click must hide the hand
 		HomePageTest.tester.assertComponent("handLink", AjaxLink.class);
 		HomePageTest.tester.clickLink("handLink", true);
+
 		WebMarkupContainer handParent = (WebMarkupContainer)HomePageTest.tester
 				.getComponentFromLastRenderedPage("galleryParent");
 		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
-
-		final Component gallery = HomePageTest.tester
-				.getComponentFromLastRenderedPage("galleryParent:gallery");
+		Component gallery = handParent.get("gallery");
 		Assert.assertNotNull(gallery);
 		Assert.assertFalse(gallery instanceof HandComponent);
-		HomePageTest.tester.assertComponent("galleryParent:gallery", WebMarkupContainer.class);
 
 		// The second click must show the hand
+		HomePageTest.tester.assertComponent("handLink", AjaxLink.class);
 		HomePageTest.tester.clickLink("handLink", true);
+
 		handParent = (WebMarkupContainer)HomePageTest.tester
 				.getComponentFromLastRenderedPage("galleryParent");
 		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
+		gallery = handParent.get("gallery");
+		Assert.assertNotNull(gallery);
+		Assert.assertTrue(gallery instanceof HandComponent);
 
-		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
-		final HandComponent hand = (HandComponent)HomePageTest.tester
-				.getComponentFromLastRenderedPage("galleryParent:gallery");
-		Assert.assertNotNull(hand);
+		// The hand must be contain 7 cards again
+		Assert.assertEquals(7, ((HandComponent)gallery).getAllCards().size());
+
+		final String allMarkup = HomePageTest.tester.getLastResponseAsString();
+		final String markupAfterOpeningCdata = allMarkup.split("<!\\[CDATA\\[")[1];
+		final String markupWithoutCdata = markupAfterOpeningCdata.split("<!\\[CDATA\\[")[0];
+
+		final List<TagTester> tagTester = TagTester.createTagsByAttribute(markupWithoutCdata,
+				"class", "nav-thumb", false);
+		Assert.assertNotNull(tagTester);
+
+		// assert number of thumbnails
+		Assert.assertEquals(7, tagTester.size());
+
+		// assert URL of two thumbnail
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+		Assert.assertNotNull(tagTester.get(1).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(1).getAttribute("src").contains(".jpg"));
 	}
 
 	// Assert dock element is present and contains a .gif

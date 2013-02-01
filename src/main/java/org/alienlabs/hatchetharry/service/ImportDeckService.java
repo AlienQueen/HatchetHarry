@@ -21,13 +21,24 @@ public class ImportDeckService implements Serializable
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public void importDeck(final String fileContent, final String deckName)
+	public void importDeck(final String fileContent, final String deckName, final boolean testDeck)
 	{
-		final DeckArchive deckArchive = new DeckArchive();
+		Deck deck;
+		DeckArchive deckArchive;
+
+		if (testDeck)
+		{
+			deckArchive = this.persistenceService.getDeckArchiveByName(deckName);
+			if (null != deckArchive)
+			{
+				return;
+			}
+		}
+		deckArchive = new DeckArchive();
 		deckArchive.setDeckName(deckName);
 		this.persistenceService.saveDeckArchive(deckArchive);
 
-		final Deck deck = new Deck();
+		deck = new Deck();
 		deck.setPlayerId(1l);
 		deck.setDeckArchive(deckArchive);
 		final List<MagicCard> allMagicCards = deck.getCards();

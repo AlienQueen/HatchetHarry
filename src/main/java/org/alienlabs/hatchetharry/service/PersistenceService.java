@@ -107,6 +107,12 @@ public class PersistenceService implements Serializable
 		this.magicCardDao.getSession().saveOrUpdate(c);
 	}
 
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public void updateCard(final MagicCard c)
+	{
+		this.magicCardDao.getSession().update(c);
+	}
+
 	@Transactional
 	public MagicCard getCardFromUuid(final UUID uuid)
 	{
@@ -227,6 +233,30 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
+	public int countCollectibleCardsInDeckArchive(final DeckArchive deckArchive)
+	{
+		final Session session = this.collectibleCardDao.getSession();
+
+		final Query query = session
+				.createQuery("from CollectibleCard cc where cc.deckArchiveId = ?");
+		query.setLong(0, deckArchive.getDeckArchiveId());
+
+		return query.list().size();
+	}
+
+	@Transactional
+	public List<CollectibleCard> giveAllCollectibleCardsInDeckArchive(final DeckArchive deckArchive)
+	{
+		final Session session = this.collectibleCardDao.getSession();
+
+		final Query query = session
+				.createQuery("from CollectibleCard cc where cc.deckArchiveId = ?");
+		query.setLong(0, deckArchive.getDeckArchiveId());
+
+		return query.list();
+	}
+
+	@Transactional
 	public int countMagicCards()
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -315,6 +345,18 @@ public class PersistenceService implements Serializable
 		query.addEntity(Player.class);
 		query.setLong(0, l);
 		return query.list();
+	}
+
+	@Transactional
+	public DeckArchive getDeckArchiveByName(final String name)
+	{
+		final Session session = this.deckDao.getSession();
+
+		final SQLQuery query = session
+				.createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=? and da.deckArchiveId = d.Deck_DeckArchive");
+		query.addEntity(DeckArchive.class);
+		query.setString(0, name);
+		return (DeckArchive)query.uniqueResult();
 	}
 
 	@Transactional
@@ -482,26 +524,52 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public Game createGame(final Player player, final Long gameId)
+	@Transactional
+	public List<DeckArchive> getAllDeckArchives()
 	{
-		final Session session = this.gameDao.getSession();
+		final Session session = this.deckDao.getSession();
+		final Query query = session.createQuery("from DeckArchive d where d.deckName != null");
 
-		Game game = this.gameDao.load(gameId);
-		if (null == game)
-		{
-			game = new Game();
-		}
+		return query.list();
+	}
 
+	@Transactional
+	public Deck getFirstDeckFromDeckArchiveForPlayer(final Long playerId) // TODO:
+																			// remove
+																			// this
+	{
+		final Session session = this.deckDao.getSession();
+		final SQLQuery query = session
+				.createSQLQuery("select d.deckId, d.playerId, distinct(d.Deck_DeckArchive) from Deck d, DeckArchive da where d.Deck_DeckArchive = da.deckArchiveId");
+		query.addEntity(Deck.class);
+
+		return (Deck)query.list().get(0);
+	}
+
+	@Transactional
+	public List<Deck> getAllDecksFromDeckArchives()
+	{
+		final Session session = this.deckDao.getSession();
+		final SQLQuery query = session
+				.createSQLQuery("select dd.* from Deck dd where dd.Deck_DeckArchive in (select distinct da.deckArchiveId from  Deck de, DeckArchive da where de.Deck_DeckArchive = da.deckArchiveId and da.deckName is not null) group by dd.Deck_DeckArchive");
+		query.addEntity(Deck.class);
+
+		return query.list();
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public Game createGameAndPlayer(final Game game, final Player player)
+	{
 		final Set<Player> set = game.getPlayers();
 		set.add(player);
 		game.setPlayers(set);
-		game.setId(gameId);
-
+		
+		player.setGame(game);
+		
 		this.playerDao.getSession().save(player);
 
-		final Long id = (Long)session.save(game);
-		return (Game)session.load(Game.class, id);
+		this.gameDao.getSession().save(game);
+		return game;
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
