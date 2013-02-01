@@ -178,6 +178,10 @@ You are free to modify any part of its source code (client-side or server-side),
           			<groupId>org.atmosphere</groupId>
           			<artifactId>atmosphere-ping</artifactId>
         		</exclusion>
+        		<exclusion>
+			       	<groupId>org.atmosphere</groupId>
+			        <artifactId>atmosphere-compat-tomcat7</artifactId>
+     			</exclusion>
         	</exclusions>
         </dependency>
         <dependency>
@@ -185,13 +189,6 @@ You are free to modify any part of its source code (client-side or server-side),
         	<artifactId>atmosphere-compat-tomcat</artifactId>
         	<version>${atmosphere.version}</version>
         </dependency>
-        <!-- This is for Jetty (integration tests) -->
-        <dependency>
-       		<groupId>org.atmosphere</groupId>
-        	<artifactId>atmosphere-compat-tomcat7</artifactId>
-        	<version>${atmosphere.version}</version>
-        	<scope>test</scope>
-     	</dependency>
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-jgroups</artifactId>
@@ -766,8 +763,19 @@ You are free to modify any part of its source code (client-side or server-side),
 		        <groupId>org.mortbay.jetty</groupId>
 		        <artifactId>jetty-maven-plugin</artifactId>
 		        <version>7.6.8.v20121106</version>
+		        <dependencies>
+		        	<dependency>
+			       		<groupId>org.atmosphere</groupId>
+			        	<artifactId>atmosphere-compat-tomcat7</artifactId>
+			        	<version>${atmosphere.version}</version>
+     				</dependency>
+    				<dependency>
+			        	<groupId>org.atmosphere</groupId>
+			        	<artifactId>atmosphere-compat-tomcat</artifactId>
+			        	<version>${atmosphere.version}</version>
+			        </dependency>
+     			</dependencies>
 		        <configuration>
-		        	<useTestClasspath>true</useTestClasspath>
 		            <daemon>true</daemon>
 		           <webApp>
       					<contextPath>/</contextPath>
