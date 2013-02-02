@@ -856,7 +856,13 @@ You are free to modify any part of its source code (client-side or server-side),
 			              		<goal>compress</goal>
 			            	</goals>
 			          	</execution>
-			        </executions>        
+			        </executions> 
+			        <excludes>
+            			<exclude>**/draggableHandle/*.js</exclude>
+            			<exclude>**/playCard/*.js</exclude>
+            			<exclude>**/rotate/*.js</exclude>
+            			<exclude>**/tootip/*.js</exclude>
+          			</excludes>       
 			        <nosuffix>true</nosuffix>
 			        </configuration>
 			    </plugin>
