@@ -850,25 +850,18 @@ You are free to modify any part of its source code (client-side or server-side),
 			        <artifactId>yuicompressor-maven-plugin</artifactId>
 			        <version>1.3.2</version>
 			        <configuration>
-			        <executions>
-			          	<execution>
-			            	<goals>
-			              		<goal>compress</goal>
-			            	</goals>
-			          	</execution>
-			        </executions> 
-			        <excludes>
-            			<exclude>**/cardMove.js</exclude>
-            			<exclude>**/initDrag.js</exclude>
-            			<exclude>**/initSidePlaceholderDrag.js</exclude>
-            			<exclude>**/jquery.ui.draggable.sidePlaceholder.js</exclude>
-            			<exclude>**/sidePlaceholderMove.js</exclude>
-            			<exclude>**/playCard.js</exclude>
-            			<exclude>**/playCardFromGraveyard.js</exclude>
-            			<exclude>**/cardRotate.js</exclude>
-            			<exclude>**/initTooltip.js</exclude>
-          			</excludes>       
-			        <nosuffix>true</nosuffix>
+				        <excludes>
+	            			<exclude>**/cardMove.js</exclude>
+	            			<exclude>**/initDrag.js</exclude>
+	            			<exclude>**/initSidePlaceholderDrag.js</exclude>
+	            			<exclude>**/jquery.ui.draggable.sidePlaceholder.js</exclude>
+	            			<exclude>**/sidePlaceholderMove.js</exclude>
+	            			<exclude>**/playCard.js</exclude>
+	            			<exclude>**/playCardFromGraveyard.js</exclude>
+	            			<exclude>**/cardRotate.js</exclude>
+	            			<exclude>**/initTooltip.js</exclude>
+	          			</excludes>       
+				        <nosuffix>true</nosuffix>
 			        </configuration>
 			    </plugin>
 				<plugin>
