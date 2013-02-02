@@ -848,11 +848,12 @@ You are free to modify any part of its source code (client-side or server-side),
 		        <executions>
 		          <execution>
 		            <id>default-minify</id>
-		            <goals>
-		              <goal>minify</goal>
-		            </goals>
-		            <phase>process-resources</phase>
+            		<phase>process-resources</phase>
+            		<goals>
+              			<goal>minify</goal>
+            		</goals>
 		            <configuration>
+		              <jsEngine>yui</jsEngine>
 		              <charset>utf-8</charset>
 		              <cssSourceDir>src/main/</cssSourceDir>
 		              <jsSourceDir>src/main</jsSourceDir>
