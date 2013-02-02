@@ -855,7 +855,7 @@ You are free to modify any part of its source code (client-side or server-side),
 	            			<exclude>initDrag.js</exclude>
 	            			<exclude>initSidePlaceholderDrag.js</exclude>
 	            			<exclude>jquery.ui.draggable.sidePlaceholder.js</exclude>
-	            			<exclude>sidePlaceholderMove.js</exclude>
+	            			<exclude>src/main/java/org/alienlabs/hatchetharry/view/page/script/draggableHandle/sidePlaceholderMove.js</exclude>
 	            			<exclude>playCard.js</exclude>
 	            			<exclude>playCardFromGraveyard.js</exclude>
 	            			<exclude>cardRotate.js</exclude>
