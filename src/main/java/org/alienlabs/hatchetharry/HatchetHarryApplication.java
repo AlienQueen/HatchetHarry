@@ -32,6 +32,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.google.javascript.jscomp.CompilationLevel;
+
+import de.agilecoders.wicket.Bootstrap;
+import de.agilecoders.wicket.javascript.GoogleClosureJavaScriptCompressor;
+import de.agilecoders.wicket.javascript.YuiCssCompressor;
+import de.agilecoders.wicket.settings.BootstrapSettings;
+
 /**
  * Application object for your web application. If you want to run this
  * application without deploying, run the Start class.
@@ -83,6 +90,12 @@ public class HatchetHarryApplication extends WebApplication
 				new SpringComponentInjector(this, applicationContext));
 		// this.getComponentPostOnBeforeRenderListeners().add(new
 		// WicketDebugListener());
+
+		// CSS & JS minification
+		Bootstrap.install(Application.get(), new BootstrapSettings());
+		this.getResourceSettings().setJavaScriptCompressor(
+				new GoogleClosureJavaScriptCompressor(CompilationLevel.SIMPLE_OPTIMIZATIONS));
+		this.getResourceSettings().setCssCompressor(new YuiCssCompressor());
 
 		this.eventBus = new EventBus(this);
 		this.eventBus.addRegistrationListener(this);
