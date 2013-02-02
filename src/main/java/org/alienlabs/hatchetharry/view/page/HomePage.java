@@ -210,6 +210,31 @@ public class HomePage extends TestReportPage
 		this.clockPanel.setOutputMarkupId(true);
 		this.add(this.clockPanel);
 
+		// Sides
+		this.sidePlaceholderMove = new BookmarkablePageLink<SidePlaceholderMovePage>(
+				"sidePlaceholderMove", SidePlaceholderMovePage.class);
+		this.sidePlaceholderMove.setMarkupId("sidePlaceholderMove");
+		this.add(this.sidePlaceholderMove);
+
+		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
+		this.secondSidePlaceholderParent.setOutputMarkupId(true);
+		this.secondSidePlaceholderParent.setMarkupId("secondSidePlaceholderParent");
+		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
+				"secondSidePlaceholder");
+		secondSidePlaceholder.setOutputMarkupId(true);
+		secondSidePlaceholder.setMarkupId("secondSidePlaceholder");
+		this.secondSidePlaceholderParent.add(secondSidePlaceholder);
+
+		this.firstSidePlaceholderParent = new WebMarkupContainer("firstSidePlaceholderParent");
+		this.firstSidePlaceholderParent.setOutputMarkupId(true);
+		this.firstSidePlaceholderParent.setMarkupId("firstSidePlaceholderParent");
+		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
+				"firstSidePlaceholder");
+		firstSidePlaceholder.setOutputMarkupId(true);
+		this.firstSidePlaceholderParent.add(firstSidePlaceholder);
+
+		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
+
 		if (!HatchetHarrySession.get().isGameCreated())
 		{
 			this.createPlayer();
@@ -281,30 +306,6 @@ public class HomePage extends TestReportPage
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		request.getRequestedSessionId();
-
-		this.sidePlaceholderMove = new BookmarkablePageLink<SidePlaceholderMovePage>(
-				"sidePlaceholderMove", SidePlaceholderMovePage.class);
-		this.sidePlaceholderMove.setMarkupId("sidePlaceholderMove");
-		this.add(this.sidePlaceholderMove);
-
-		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
-		this.secondSidePlaceholderParent.setOutputMarkupId(true);
-		this.secondSidePlaceholderParent.setMarkupId("secondSidePlaceholderParent");
-		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
-				"secondSidePlaceholder");
-		secondSidePlaceholder.setOutputMarkupId(true);
-		secondSidePlaceholder.setMarkupId("secondSidePlaceholder");
-		this.secondSidePlaceholderParent.add(secondSidePlaceholder);
-
-		this.firstSidePlaceholderParent = new WebMarkupContainer("firstSidePlaceholderParent");
-		this.firstSidePlaceholderParent.setOutputMarkupId(true);
-		this.firstSidePlaceholderParent.setMarkupId("firstSidePlaceholderParent");
-		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
-				"firstSidePlaceholder");
-		firstSidePlaceholder.setOutputMarkupId(true);
-		this.firstSidePlaceholderParent.add(firstSidePlaceholder);
-
-		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
 
 		this.add(this.generateCreateGameModalWindow(this.player, this.galleryParent,
 				this.firstSidePlaceholderParent));
@@ -840,7 +841,7 @@ public class HomePage extends TestReportPage
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery/jquery-1.7.2.js")));
+						HomePage.class, "script/jquery/jquery-1.7.2.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -868,15 +869,15 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/utilities.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/container_core.js")));
+						HomePage.class, "script/menubar/container_core-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/menu.js")));
+						HomePage.class, "script/menubar/menu-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/element.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/dock/dock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/qunitTests/qunit-1.11.0.js")));
+						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -897,6 +898,8 @@ public class HomePage extends TestReportPage
 						HomePage.class,
 						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js")));
 
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/myStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/menu.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
