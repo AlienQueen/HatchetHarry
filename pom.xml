@@ -846,30 +846,31 @@ You are free to modify any part of its source code (client-side or server-side),
 	<reporting>
    		<plugins>
    				<plugin>
-			        <groupId>org.zkoss.maven</groupId>
-			        <artifactId>yuicompressor-maven-plugin-zk</artifactId>
-			        <version>1.1.6</version>
-			        <configuration>
-			            <executions>
-          					<execution>
-            					<goals>
-              						<goal>compress</goal>
-            					</goals>
-          					</execution>
-        				</executions>  
-				        <excludes>
-	            			<exclude>cardMove.js</exclude>
-	            			<exclude>initDrag.js</exclude>
-	            			<exclude>initSidePlaceholderDrag.js</exclude>
-	            			<exclude>jquery.ui.draggable.sidePlaceholder.js</exclude>
-	            			<exclude>sidePlaceholderMove.js</exclude>
-	            			<exclude>playCard.js</exclude>
-	            			<exclude>playCardFromGraveyard.js</exclude>
-	            			<exclude>cardRotate.js</exclude>
-	            			<exclude>initTooltip.js</exclude>
-	          			</excludes>       
-				        <nosuffix>true</nosuffix>
-			        </configuration>
+			        <groupId>com.samaxes.maven</groupId>
+			        <artifactId>minify-maven-plugin</artifactId>
+			        <version>1.6</version>
+			        <executions>
+			          <execution>
+			            <id>default-minify</id>
+			            <phase>process-resources</phase>
+			            <configuration>
+			              <charset>utf-8</charset>
+			              <cssSourceDir>src/main/</cssSourceDir>
+			              <jsSourceDir>src/main</jsSourceDir>
+	            		  <jsSourceExcludes>cardMove.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>initDrag.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>initSidePlaceholderDrag.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>jquery.ui.draggable.sidePlaceholder.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>sidePlaceholderMove.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>playCard.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>playCardFromGraveyard.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>cardRotate.js</jsSourceExcludes>
+	            		  <jsSourceExcludes>initTooltip.js</jsSourceExcludes>
+			            </configuration>
+			            <goals>
+			              <goal>minify</goal>
+			            </goals>
+			          </execution>
 			    </plugin>
 				<plugin>
 					    <groupId>org.apache.maven.plugins</groupId>
