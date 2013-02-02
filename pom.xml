@@ -855,8 +855,8 @@ You are free to modify any part of its source code (client-side or server-side),
 		            <configuration>
 		              <jsEngine>yui</jsEngine>
 		              <charset>utf-8</charset>
-		              <cssSourceDir>src/main/</cssSourceDir>
-		              <jsSourceDir>src/main</jsSourceDir>
+		              <cssSourceDir>ROOT</cssSourceDir>
+		              <jsSourceDir>ROOT</jsSourceDir>
             		  <jsSourceExcludes>
             		  	<jsSourceExclude>cardMove.js</jsSourceExclude>
             		  	<jsSourceExclude>initDrag.js</jsSourceExclude>
