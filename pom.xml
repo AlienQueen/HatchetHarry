@@ -857,15 +857,17 @@ You are free to modify any part of its source code (client-side or server-side),
 		              <charset>utf-8</charset>
 		              <cssSourceDir>src/main/</cssSourceDir>
 		              <jsSourceDir>src/main</jsSourceDir>
-            		  <jsSourceExcludes>cardMove.js</jsSourceExcludes>
-            		  <jsSourceExcludes>initDrag.js</jsSourceExcludes>
-            		  <jsSourceExcludes>initSidePlaceholderDrag.js</jsSourceExcludes>
-            		  <jsSourceExcludes>jquery.ui.draggable.sidePlaceholder.js</jsSourceExcludes>
-            		  <jsSourceExcludes>sidePlaceholderMove.js</jsSourceExcludes>
-            		  <jsSourceExcludes>playCard.js</jsSourceExcludes>
-            		  <jsSourceExcludes>playCardFromGraveyard.js</jsSourceExcludes>
-            		  <jsSourceExcludes>cardRotate.js</jsSourceExcludes>
-            		  <jsSourceExcludes>initTooltip.js</jsSourceExcludes>
+            		  <jsSourceExcludes>
+            		  	<jsSourceExclude>cardMove.js</jsSourceExclude>
+            		  	<jsSourceExclude>initDrag.js</jsSourceExclude>
+            		  	<jsSourceExclude>initSidePlaceholderDrag.js</jsSourceExclude>
+            		  	<jsSourceExclude>jquery.ui.draggable.sidePlaceholder.js</jsSourceExclude>
+            		  	<jsSourceExclude>sidePlaceholderMove.js</jsSourceExclude>
+            		  	<jsSourceExclude>playCard.js</jsSourceExclude>
+            		  	<jsSourceExclude>playCardFromGraveyard.js</jsSourceExclude>
+            		  	<jsSourceExclude>cardRotate.js</jsSourceExclude>
+            		  	<jsSourceExclude>initTooltip.js</jsSourceExclude>
+            		  </jsSourceExcludes>
             		  <suffix></suffix>
 		            </configuration>
 		          </execution>
