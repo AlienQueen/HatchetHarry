@@ -845,6 +845,21 @@ You are free to modify any part of its source code (client-side or server-side),
 	</build>
 	<reporting>
    		<plugins>
+   				<plugin>
+			        <groupId>net.alchim31.maven</groupId>
+			        <artifactId>yuicompressor-maven-plugin</artifactId>
+			        <version>1.3.2</version>
+			        <configuration>
+			        <executions>
+			          	<execution>
+			            	<goals>
+			              		<goal>compress</goal>
+			            	</goals>
+			          	</execution>
+			        </executions>        
+			        <nosuffix>true</nosuffix>
+			        </configuration>
+			    </plugin>
 				<plugin>
 					    <groupId>org.apache.maven.plugins</groupId>
 					    <artifactId>maven-surefire-report-plugin</artifactId>
