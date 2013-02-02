@@ -866,11 +866,13 @@ You are free to modify any part of its source code (client-side or server-side),
 	            		  <jsSourceExcludes>playCardFromGraveyard.js</jsSourceExcludes>
 	            		  <jsSourceExcludes>cardRotate.js</jsSourceExcludes>
 	            		  <jsSourceExcludes>initTooltip.js</jsSourceExcludes>
+	            		  <suffix></suffix>
 			            </configuration>
 			            <goals>
 			              <goal>minify</goal>
 			            </goals>
 			          </execution>
+			        </executions>
 			    </plugin>
 				<plugin>
 					    <groupId>org.apache.maven.plugins</groupId>
