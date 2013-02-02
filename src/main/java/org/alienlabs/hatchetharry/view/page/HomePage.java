@@ -525,8 +525,9 @@ public class HomePage extends TestReportPage
 							playerToWhomToSend);
 
 					final UntapAllCometChannel uacc = new UntapAllCometChannel(HatchetHarrySession
-							.get().getGameId(), HatchetHarrySession.get().getPlayer().getId(),
-							HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+							.get().getPlayer().getGame().getId(), HatchetHarrySession.get()
+							.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
+							.getDeckId());
 					EventBus.get().post(uacc, pageUuid);
 				}
 			}
