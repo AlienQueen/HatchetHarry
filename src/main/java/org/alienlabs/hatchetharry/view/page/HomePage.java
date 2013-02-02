@@ -669,11 +669,6 @@ public class HomePage extends TestReportPage
 	{
 		HomePage.LOGGER.info("Generating playCardFromGraveyard link");
 
-		final WebMarkupContainer playCardFromGraveyardPlaceholder = new WebMarkupContainer(
-				"playCardFromGraveyardPlaceholder");
-		playCardFromGraveyardPlaceholder.setMarkupId("playCardFromGraveyardPlaceholder0");
-		playCardFromGraveyardPlaceholder.setOutputMarkupId(true);
-
 		this.playCardFromGraveyardLink = new WebMarkupContainer("playCardFromGraveyardLink");
 		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
 		this.playCardFromGraveyardLink.setOutputMarkupId(true);
@@ -684,12 +679,7 @@ public class HomePage extends TestReportPage
 
 		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
 		this.playCardFromGraveyardLink.setOutputMarkupId(true);
-		playCardFromGraveyardPlaceholder.add(this.playCardFromGraveyardLink);
-
-		this.add(playCardFromGraveyardPlaceholder);
-
-		// TODO: put this in PlayCardFromGraveyardBehavior
-		// target.appendJavaScript("jQuery(\"#menu_4_0\").hide(); ");
+		this.add(this.playCardFromGraveyardLink);
 	}
 
 	private void buildCombatLink()
@@ -875,6 +865,8 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/element.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/menubar/jMenu.jquery.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/dock/dock.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
@@ -902,6 +894,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/myStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/menu.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/jMenu.jquery.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/layout.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(

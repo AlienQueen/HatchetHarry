@@ -125,13 +125,7 @@ public class HomePageTest
 
 		// Assert menubar
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.tester
-				.getLastResponse().getDocument(), "class", "myMenu", false);
-		Assert.assertNotNull(tagTester);
-		Assert.assertEquals(1, tagTester.size());
-
-		// Assert menu entries
-		tagTester = TagTester.createTagsByAttribute(HomePageTest.tester.getLastResponse()
-				.getDocument(), "class", "mbmenu", false);
+				.getLastResponse().getDocument(), "class", "fNiv", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(3, tagTester.size());
 
@@ -146,6 +140,13 @@ public class HomePageTest
 			}
 		}
 		Assert.assertTrue(containsText);
+
+		// Assert menu entries
+		tagTester = TagTester.createTagsByAttribute(HomePageTest.tester.getLastResponse()
+				.getDocument(), "class", "arrow", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(3, tagTester.size());
+
 	}
 
 	@Test
