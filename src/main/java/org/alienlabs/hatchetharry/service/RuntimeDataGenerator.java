@@ -206,6 +206,10 @@ public class RuntimeDataGenerator implements Serializable
 			final DeckArchive deckArchive = this.persistenceService
 					.getDeckArchiveByName("aggro-combo Red / Black");
 
+			if (null == deckArchive)
+			{
+				throw new RuntimeException("no deck in DB!");
+			}
 			Deck deck = new Deck();
 			deck.setPlayerId(playerId);
 			deck.setDeckArchive(deckArchive);
