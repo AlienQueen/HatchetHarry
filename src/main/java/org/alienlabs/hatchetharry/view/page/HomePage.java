@@ -37,6 +37,7 @@
  */
 package org.alienlabs.hatchetharry.view.page;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -179,7 +180,7 @@ public class HomePage extends TestReportPage
 	private AjaxLink<Void> createGameLink;
 	private AjaxLink<Void> joinGameLink;
 
-	public HomePage()
+	public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
 
@@ -202,12 +203,13 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
-		final Label message2 = new Label("message2", "built on Friday, 1st of February 2013.");
+		final Label message2 = new Label("message2", "built on Wednesday, 6th of February 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
 		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
 		this.clockPanel.setOutputMarkupId(true);
+		this.clockPanel.setMarkupId("clock");
 		this.add(this.clockPanel);
 
 		// Sides
@@ -252,35 +254,30 @@ public class HomePage extends TestReportPage
 			this.buildDataBox(this.player.getGame().getId());
 		}
 
-		// TODO remove this?
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
 		this.createCardPanelPlaceholders();
 
 		this.buildGraveyardMarkup();
 		this.buildDock();
 
-		// final WebMarkupContainer balduParent = new
-		// WebMarkupContainer("balduParent");
-		// balduParent.setOutputMarkupId(true);
-		//
-		// final MagicCard card =
-		// this.persistenceService.findCardByName("Balduvian Horde");
-		// if ((null != card)
-		// && (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
-		// HatchetHarrySession.get().getPlayer().getSide())))
-		// {
-		// balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(),
-		// card
-		// .getBigImageFilename(), card.getUuidObject()));
-		// }
-		// else
-		// {
-		// balduParent.add(new WebMarkupContainer("baldu"));
-		// }
-		// this.add(balduParent);
-		// final MagicCard card =
-		// this.persistenceService.findCardByName("Balduvian Horde");
-		// HatchetHarrySession.get().getAllMagicCardsInBattleField().add(card);
+		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
+		balduParent.setOutputMarkupId(true);
+		balduParent.setMarkupId("tour_6");
+
+		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
+		if ((null != card)
+				&& (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
+						HatchetHarrySession.get().getPlayer().getSide())))
+		{
+			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
+					.getBigImageFilename(), card.getUuidObject()));
+			HatchetHarrySession.get().getAllMagicCardsInBattleField().add(card);
+		}
+		else
+		{
+			balduParent.add(new WebMarkupContainer("baldu"));
+		}
+		this.add(balduParent);
 
 		// Links from the menubar
 		this.aboutWindow = new ModalWindow("aboutWindow");
@@ -335,7 +332,7 @@ public class HomePage extends TestReportPage
 	// TODO: really necessary?
 	private final void generateCardPanels()
 	{
-		this.parentPlaceholder.add(this.generateCardListView());
+		this.parentPlaceholder.add(this.generateCardListView(this.player.getGame().getId()));
 	}
 
 	private void generateHideAllTooltipsLink()
@@ -594,7 +591,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
-	private void createPlayer()
+	private void createPlayer() throws IOException
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
@@ -613,7 +610,7 @@ public class HomePage extends TestReportPage
 	}
 
 	private void createPlayerAndDeck(final String _jsessionid, final String _side,
-			final String _name)
+			final String _name) throws IOException
 	{
 		Player p = new Player();
 		p.setSide(_side);
@@ -752,7 +749,7 @@ public class HomePage extends TestReportPage
 					HomePage.this.persistenceService.saveDeck(_deck);
 
 					card.setZone(CardZone.HAND);
-					HomePage.this.persistenceService.saveOrUpdateCard(card);
+					HomePage.this.persistenceService.updateCard(card);
 
 					final ArrayList<MagicCard> list = session.getFirstCardsInHand();
 					list.add(card);
@@ -843,9 +840,7 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tour/jquery.cookie.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/modernizr.mq.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/jquery.joyride-1.0.5.js")));
+						HomePage.class, "script/tour/pageguide.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/jquery.metadata.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -889,6 +884,8 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class,
 						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/tooltip/easyTooltip.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/myStyle.css")));
@@ -901,7 +898,7 @@ public class HomePage extends TestReportPage
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/menu_black.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/jquery.jquerytour.css")));
+						HomePage.class, "stylesheet/pageguide.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/galleryStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -985,11 +982,9 @@ public class HomePage extends TestReportPage
 				final MagicCard mc = this.deck.getCards().get(i);
 				mc.setZone(CardZone.HAND);
 				mc.setGameId(HatchetHarrySession.get().getPlayer().getGame().getId());
-				this.persistenceService.saveCard(mc);
+				this.persistenceService.updateCard(mc);
 
 				cards.add(i, mc);
-				// TODO remove this
-				HatchetHarrySession.get().addCardIdInHand(i, i);
 			}
 
 			HatchetHarrySession.get().setFirstCardsInHand(cards);
@@ -1171,14 +1166,17 @@ public class HomePage extends TestReportPage
 
 		if (!jsessionid.equals(event.getJsessionid()))
 		{
-			final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
-					event.getSide(), this, event.getUuid());
+			// final SidePlaceholderPanel spp = new
+			// SidePlaceholderPanel("secondSidePlaceholder",
+			// event.getSide(), this, event.getUuid());
 
-			final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
-					event.getUuid(), jsessionid, this, this.getDataBoxParent(), HatchetHarrySession
-							.get().getGameId());
-			spp.add(spmb);
-			spp.setOutputMarkupId(true);
+			// final SidePlaceholderMoveBehavior spmb = new
+			// SidePlaceholderMoveBehavior(spp,
+			// event.getUuid(), jsessionid, this, this.getDataBoxParent(),
+			// HatchetHarrySession
+			// .get().getGameId());
+			// spp.add(spmb);
+			// spp.setOutputMarkupId(true);
 			HomePage.LOGGER.info("### aPlayerJoinedIn(), gameId: "
 					+ HatchetHarrySession.get().getGameId());
 
@@ -1186,8 +1184,8 @@ public class HomePage extends TestReportPage
 			session.putMySidePlaceholderInSesion(event.getSide());
 
 
-			this.secondSidePlaceholderParent.addOrReplace(spp);
-			target.add(this.secondSidePlaceholderParent);
+			// this.secondSidePlaceholderParent.addOrReplace(spp);
+			// target.add(this.secondSidePlaceholderParent);
 
 			HomePage.LOGGER.info("### " + event.getUuid());
 			final int posX = ("infrared".equals(event.getSide())) ? 300 : 900;
@@ -1196,26 +1194,27 @@ public class HomePage extends TestReportPage
 					+ event.getJsessionid());
 			HomePage.LOGGER.info("### aPlayerJoinedIn(), jsessionid from request: " + jsessionid);
 
-			target.appendJavaScript("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
-					+ event.getUuid()
-					+ "'); "
-					+ "card.css('position', 'absolute'); "
-					+ "card.css('left', '"
-					+ posX
-					+ "px'); "
-					+ "card.css('top', '500px'); "
-					+ "jQuery(\"#"
-					+ spp.getMarkupId()
-					+ "\").draggable({ handle : \"#handleImage"
-					+ event.getUuid()
-					+ "\" });"
-					+ "jQuery(\"#handleImage"
-					+ spp.getUuid()
-					+ "\").data(\"url\",\"" + spmb.getCallbackUrl() + "\"); }, 3000); ");
+			// target.appendJavaScript("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
+			// + event.getUuid()
+			// + "'); "
+			// + "card.css('position', 'absolute'); "
+			// + "card.css('left', '"
+			// + posX
+			// + "px'); "
+			// + "card.css('top', '500px'); "
+			// + "jQuery(\"#"
+			// + spp.getMarkupId()
+			// + "\").draggable({ handle : \"#handleImage"
+			// + event.getUuid()
+			// + "\" });"
+			// + "jQuery(\"#handleImage"
+			// + spp.getUuid()
+			// + "\").data(\"url\",\"" + spmb.getCallbackUrl() +
+			// "\"); }, 3000); ");
 
-			spp.setPosX(posX);
-			spp.setPosY(500);
-			session.setMySidePlaceholder(spp);
+			// spp.setPosX(posX);
+			// spp.setPosY(500);
+			// session.setMySidePlaceholder(spp);
 		}
 	}
 
@@ -1296,7 +1295,7 @@ public class HomePage extends TestReportPage
 		{
 			buf.append("jQuery('#card" + mc.getUuid().toString() + "').rotate(0); ");
 			mc.setTapped(false);
-			this.persistenceService.saveCard(mc);
+			this.persistenceService.updateCard(mc);
 		}
 
 		target.appendJavaScript(buf.toString());
@@ -1336,7 +1335,7 @@ public class HomePage extends TestReportPage
 	public void removeCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToGraveyardCometChannel event)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target);
+		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
 	}
@@ -1344,9 +1343,10 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
-		target.appendJavaScript("var card = jQuery('#menutoggleButton" + event.getUniqueid()
-				+ "');" + "card.css('position', 'absolute');" + "card.css('left', '"
-				+ event.getMouseX() + "');" + "card.css('top', '" + event.getMouseY() + "');");
+		target.appendJavaScript("var card = jQuery('#cardHandle"
+				+ event.getUniqueid().replace("-", "_") + "');"
+				+ "card.css('position', 'absolute');" + "card.css('left', '" + event.getMouseX()
+				+ "');" + "card.css('top', '" + event.getMouseY() + "');");
 	}
 
 	@Subscribe
@@ -1359,11 +1359,12 @@ public class HomePage extends TestReportPage
 
 		if (event.isTapped())
 		{
-			buf.append("window.setTimeout(function() { jQuery('#card" + event.getCardUuid()
+			buf.append("window.setTimeout(function() { jQuery('#card"
+					+ event.getCardUuid().replace("-", "_")
 					+ "').rotate(90); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
+			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(0); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
+			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(90); }, 500); }, 500); }, 500);");
 		}
 		else
@@ -1383,7 +1384,7 @@ public class HomePage extends TestReportPage
 	public void putToHandFromBattlefield(final AjaxRequestTarget target,
 			final PutToHandFromBattlefieldCometChannel event)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target);
+		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
 	}
@@ -1392,7 +1393,12 @@ public class HomePage extends TestReportPage
 	public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target);
+		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+
+		mc.setZone(CardZone.BATTLEFIELD);
+		this.persistenceService.updateCard(mc);
+
+		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
 	}
@@ -1401,7 +1407,7 @@ public class HomePage extends TestReportPage
 	public void playCardFromGraveyard(final AjaxRequestTarget target,
 			final PlayCardFromGraveyardCometChannel event)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target);
+		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
 	}
@@ -1430,7 +1436,8 @@ public class HomePage extends TestReportPage
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.addOrReplace(galleryToUpdate);
 
-		for (final CardPanel cp : HatchetHarrySession.get().getAllCardsInBattleField())
+		// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
+		for (final CardPanel cp : HatchetHarrySession.get().getAllCardPanelsInBattleField())
 		{
 			this.playCardParent.addOrReplace(cp);
 		}
@@ -1486,8 +1493,9 @@ public class HomePage extends TestReportPage
 	final void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
 	{
 		final StringBuffer js = new StringBuffer();
+		// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
 		final Collection<CardPanel> allCards = Collections
-				.synchronizedCollection(HatchetHarrySession.get().getAllCardsInBattleField());
+				.synchronizedCollection(HatchetHarrySession.get().getAllCardPanelsInBattleField());
 
 		for (final CardPanel cp : allCards)
 		{
@@ -1618,13 +1626,14 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public final ListView<MagicCard> generateCardListView()
+	public final ListView<MagicCard> generateCardListView(final Long gameId)
 	{
 		final List<MagicCard> allCardsInBattlefield = HomePage.this.persistenceService
-				.getAllCardsInBattleFieldForAGame(HatchetHarrySession.get().getPlayer().getGame()
-						.getId());
+				.getAllCardsInBattleFieldForAGame(gameId);
 
-		return new ListView<MagicCard>("handCards", allCardsInBattlefield)
+		HomePage.LOGGER.error("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
+
+		final ListView<MagicCard> list = new ListView<MagicCard>("handCards", allCardsInBattlefield)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -1635,10 +1644,11 @@ public class HomePage extends TestReportPage
 						.getSmallImageFilename(), item.getModelObject().getBigImageFilename(), item
 						.getModelObject().getUuidObject());
 				cp.setOutputMarkupId(true);
-				// TODO placeholderId ?
-				item.add(cp);
+				item.addOrReplace(cp);
 			}
 		};
+
+		return list;
 	}
 
 }

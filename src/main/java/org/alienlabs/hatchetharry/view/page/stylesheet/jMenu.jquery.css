@@ -1,3 +1,14 @@
+.imageEntry {
+	position:absolute;
+	margin-top:-1%;
+	margin-left:-25px;
+}
+
+.logoEntry {
+	position:absolute;
+	margin-top:5%;
+}
+
 .jMenu {
     display: table;
     margin: 0;
@@ -12,13 +23,12 @@
 }
 
 .jMenu li a {
-    padding: 10px;
+    padding: 20%;
     display: block;
     background-color: transparent;
-    color: white;
-    text-transform: uppercase;
+    color: gray;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 150%;
 }
 
 /* Lower levels */
@@ -49,9 +59,9 @@
 }
 
 .jMenu li ul li a {
-    font-size: 11px;
+    font-size: 150%;
     text-transform: none;
-    padding: 7px;
+    padding: 10%;
     display: block;
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;

@@ -5,13 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -42,6 +41,7 @@ public class ImportDeckServiceTest
 			}
 		};
 		ImportDeckServiceTest.tester = new WicketTester(ImportDeckServiceTest.webApp);
+		ImportDeckServiceTest.context.getBean(PersistenceService.class).resetDb();
 	}
 
 	@Test

@@ -97,14 +97,14 @@
 
         <property name="annotatedClasses">
             <list>
-                <value>org.alienlabs.hatchetharry.model.MagicCard</value>
-				<value>org.alienlabs.hatchetharry.model.Player</value>
+				<value>org.alienlabs.hatchetharry.model.CardCollection</value>
 				<value>org.alienlabs.hatchetharry.model.CollectibleCard</value>
 				<value>org.alienlabs.hatchetharry.model.Deck</value>
 				<value>org.alienlabs.hatchetharry.model.DeckArchive</value>
 				<value>org.alienlabs.hatchetharry.model.Game</value>
+                <value>org.alienlabs.hatchetharry.model.MagicCard</value>
+				<value>org.alienlabs.hatchetharry.model.Player</value>
 				<value>org.alienlabs.hatchetharry.model.Side</value>
-				<value>org.alienlabs.hatchetharry.model.CardCollection</value>
             </list> 
         </property>
 
@@ -209,22 +209,18 @@
 		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="deckDao" ref="deckDao"/>
 		<property name="deckArchiveDao" ref="deckArchiveDao"/>
-		<property name="collectibleCardDao" ref="collectibleCardDao"/>
 		<property name="playerDao" ref="playerDao"/>
 		<property name="gameDao" ref="gameDao"/>
 		<property name="sideDao" ref="sideDao"/>
-		<property name="cardCollectionDao" ref="cardCollectionDao"/>
 	</bean>
 	<!-- setup data generator that will add some data into the db when the app starts up -->
-	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">
-		<property name="deckDao" ref="deckDao"/>
-		<property name="deckArchiveDao" ref="deckArchiveDao"/>
-		<property name="collectibleCardDao" ref="collectibleCardDao"/>
-		<property name="magicCardDao" ref="magicCardDao"/>
-		<property name="persistenceService" ref="persistenceService"/>
-	</bean>
 	<bean id="importDeckService" class="org.alienlabs.hatchetharry.service.ImportDeckService">
 		<property name="persistenceService" ref="persistenceService"/>
+	</bean>
+	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">
+		<property name="magicCardDao" ref="magicCardDao"/>
+		<property name="persistenceService" ref="persistenceService"/>
+		<property name="importDeckService" ref="importDeckService"/>
 	</bean>
 	
 					<!-- 
@@ -248,10 +244,6 @@
         
 	<!-- setup data generator that will add some data into the db when the app starts up -->
 	<bean id="dataGenerator" class="org.alienlabs.hatchetharry.service.DataGenerator">
-		<property name="deckDao" ref="deckDao"/>
-		<property name="deckArchiveDao" ref="deckArchiveDao"/>
-		<property name="collectibleCardDao" ref="collectibleCardDao"/>
-		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="cardCollectionDao" ref="cardCollectionDao"/>
 		<property name="persistenceService" ref="persistenceService"/>
 		<property name="generateData" value="false"/>

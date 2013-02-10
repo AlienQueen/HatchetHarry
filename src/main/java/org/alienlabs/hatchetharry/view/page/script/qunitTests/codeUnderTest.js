@@ -2,7 +2,7 @@
 jQuery(function(){
 	jQuery("#jMenu").jMenu({
 		  openClick : false,
-		  ulWidth : 'auto',
+		  ulWidth : '250',
 		  effects : {
 			effectSpeedOpen : 150,
 			effectSpeedClose : 150,
@@ -12,35 +12,11 @@ jQuery(function(){
 			effectClose : 'linear'
 		  },
 		  TimeBeforeOpening : 100,
-		  TimeBeforeClosing : 11,
+		  TimeBeforeClosing : 3000,
 		  animatedText : false,
 		  paddingLeft: 1
 		});
 });
-//jQuery(function() {
-//
-//	jQuery('.myMenu').buildMenu({
-//		additionalData : 'pippo=1',
-//		menuWidth : 200,
-//		openOnRight : false,
-//		menuSelector : '.menuContainer',
-//		iconPath : '/image/',
-//		hasImages : true,
-//		fadeInTime : 100,
-//		fadeOutTime : 3000,
-//		adjustLeft : 0,
-//		minZindex : 'auto',
-//		adjustTop : 0,
-//		opacity : .95,
-//		shadow : true,
-//		shadowColor : '#ccc',
-//		hoverIntent : 0,
-//		openOnClick : false,
-//		closeOnMouseOut : true,
-//		closeAfter : 5000,
-//		submenuHoverIntent : 200
-//	});
-//});
 
 // The toolbar, a jQuery plugin
 jQuery(function() {
@@ -97,7 +73,16 @@ jQuery(window).resize(function() {
 	}
 });
 
+jQuery(function() {	
+	// @see: initTooltip.js
+	jQuery("#card249c4f0b_cad0_4606_b5ea_eaee8866a347").easyTooltip({
+		useElement: "cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347"				   
+	});
+	
+	console.log("set tooltip for Baldu");
+});
+
 //The website tour, a jQuery plugin
-jQuery(window).load(function() {
-	jQuery(this).joyride();
+jQuery(function() {
+	tl.pg.init({ 'pg_caption' : 'Site tour', 'auto_show_first': true});
 });

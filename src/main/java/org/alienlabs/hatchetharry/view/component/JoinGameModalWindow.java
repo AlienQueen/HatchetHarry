@@ -25,8 +25,8 @@ import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.atmosphere.EventBus;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -131,7 +131,7 @@ public class JoinGameModalWindow extends Panel
 		final Model<Long> gameId = new Model<Long>(0l);
 		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
 
-		final AjaxButton submit = new AjaxButton("submit", form)
+		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
 			private static final long serialVersionUID = 561276328198198L;
 
@@ -166,44 +166,40 @@ public class JoinGameModalWindow extends Panel
 						.getPlayer(session.getPlayer().getId());
 
 				final Game oldGame = session.getPlayer().getGame();
-				session.getPlayer().setGame(null);
-				oldGame.getPlayers().clear();
-				final Set<Side> sides = oldGame.getSides();
 
-				for (final Side s : sides)
+				for (final Side s : oldGame.getSides())
 				{
-					if (oldGame.equals(s.getGame()))
-					{
-						s.setGame(null);
-					}
+					s.setGame(null);
+					JoinGameModalWindow.this.persistenceService.updateSide(s);
+				}
+				for (final Player p : oldGame.getPlayers())
+				{
+					p.setGame(null);
+					JoinGameModalWindow.this.persistenceService.updatePlayer(p);
 				}
 
-				session.getPlayer().setGame(game);
-				JoinGameModalWindow.this.persistenceService.updatePlayer(session.getPlayer());
-				JoinGameModalWindow.this.persistenceService.saveSides(sides);
-				sides.clear();
+				oldGame.getSides().clear();
+				oldGame.getPlayers().clear();
 				JoinGameModalWindow.this.persistenceService.deleteGame(oldGame);
-
 
 				JoinGameModalWindow.this.player.setGame(game);
 				session.setGameId(_id);
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
 
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
-				deck.shuffleLibrary();
+				deck.getCards().clear();
 
-				final List<MagicCard> cards = new ArrayList<MagicCard>();
-				final List<String> allTitles = new ArrayList<String>();
+				final List<CollectibleCard> allCollectibleCardsInDeckArchive = JoinGameModalWindow.this.persistenceService
+						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
+				JoinGameModalWindow.LOGGER.error("deck.getDeckArchive().getDeckArchiveId(): "
+						+ deck.getDeckArchive().getDeckArchiveId());
+				JoinGameModalWindow.LOGGER.error("allCollectibleCardsInDeckArchive.size(): "
+						+ allCollectibleCardsInDeckArchive.size());
 
-				for (final MagicCard m : deck.getCards())
+				final List<MagicCard> allMagicCard = new ArrayList<MagicCard>();
+
+				for (final CollectibleCard cc : allCollectibleCardsInDeckArchive)
 				{
-					allTitles.add(m.getTitle());
-				}
-				for (final String title : allTitles)
-				{
-					final CollectibleCard cc = JoinGameModalWindow.this.persistenceService
-							.findCollectibleCardByName(title);
-
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
 									+ "Thumb.jpg", cc.getTitle(), "");
@@ -211,51 +207,43 @@ public class JoinGameModalWindow extends Panel
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
 					card.setZone(CardZone.LIBRARY);
-
-					JoinGameModalWindow.this.persistenceService.saveOrUpdateCard(card);
-					cards.add(card);
+					allMagicCard.add(card);
 				}
+				deck.getCards().addAll(allMagicCard);
+				deck.shuffleLibrary();
 
-				deck.setCards(cards);
-				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
+				JoinGameModalWindow.this.persistenceService.saveAllMagicCards(deck.getCards());
 				JoinGameModalWindow.this.persistenceService.updateDeck(deck);
-
-				JoinGameModalWindow.this.player.setDeck(deck);
-				session.setPlayer(JoinGameModalWindow.this.player);
+				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
+						+ ", deckId: " + deck.getDeckId());
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 
 				for (int i = 0; i < 7; i++)
 				{
-					final MagicCard aCard = cards.get(i);
+					final MagicCard aCard = deck.getCards().get(i);
 					aCard.setZone(CardZone.HAND);
-					JoinGameModalWindow.this.persistenceService.saveCard(aCard);
-					firstCards.add(i, aCard);
-					HatchetHarrySession.get().addCardIdInHand(i, i); // TODO
-																		// remove
-																		// this
-					deck.getCards().remove(cards.get(i));
+					JoinGameModalWindow.this.persistenceService.updateCard(aCard);
+					firstCards.add(aCard);
 				}
 
-				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
+				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
+						+ ", deckId: " + deck.getDeckId());
 
-				final List<CardPanel> cardToRemove = HatchetHarrySession.get()
-						.getAllCardsInBattleField();
-				final StringBuffer javaScript = new StringBuffer();
+				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
+				deck.setPlayerId(session.getPlayer().getId());
+				JoinGameModalWindow.this.player.setDeck(deck);
+				JoinGameModalWindow.this.player.setGame(game);
+				JoinGameModalWindow.this.persistenceService
+						.updatePlayer(JoinGameModalWindow.this.player);
+				session.setPlayer(JoinGameModalWindow.this.player);
 
-				if ((null != cardToRemove) && (cardToRemove.size() > 0))
-				{
-					for (final CardPanel cp : cardToRemove)
-					{
-						javaScript.append("jQuery('#" + cp.getMarkupId() + "').remove();");
-						JoinGameModalWindow.LOGGER.info("cp.getMarkupId(): " + cp.getMarkupId());
-						HatchetHarrySession.get().addCardInToRemoveList(cp);
-					}
-					JoinGameModalWindow.this.persistenceService.deleteAllCardsInBattleField();
-					HatchetHarrySession.get().removeAllCardsFromBattleField();
-				}
+				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
+						+ ", deckId: " + deck.getDeckId());
 
-				session.setFirstCardsInHand(firstCards);
+				// Remove Balduvian Horde
+				target.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
+				HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
 
 				JoinGameModalWindow.this.player.setSide(JoinGameModalWindow.this.sideInput
 						.getDefaultModelObjectAsString());
@@ -282,8 +270,8 @@ public class JoinGameModalWindow extends Panel
 					JavaScriptUtils.updateHand(target);
 				}
 
-				javaScript
-						.append("jQuery('#joyRidePopup0').remove(); jQuery('[id^=\"menutoggleButton\"]').remove(); jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
+				final StringBuffer buf = new StringBuffer(
+						"jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 				JoinGameModalWindow.LOGGER.info("close!");
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
@@ -291,93 +279,103 @@ public class JoinGameModalWindow extends Panel
 				final HttpServletRequest request = servletWebRequest.getContainerRequest();
 				final String jsessionid = request.getRequestedSessionId();
 
-				final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
-						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-						JoinGameModalWindow.this.hp, UUID.randomUUID());
-				spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(), jsessionid,
-						JoinGameModalWindow.this.hp,
-						JoinGameModalWindow.this.hp.getDataBoxParent(), session.getGameId()));
-				JoinGameModalWindow.LOGGER.info("gameId in JoinGameModalWindow: "
-						+ session.getGameId());
-				spp.setOutputMarkupId(true);
-
-				session.putMySidePlaceholderInSesion(JoinGameModalWindow.this.sideInput
-						.getDefaultModelObjectAsString());
-
-				JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent().addOrReplace(spp);
+				// TODO: re-write this in Wicket-Atmosphere
+				// final SidePlaceholderPanel spp = new
+				// SidePlaceholderPanel("secondSidePlaceholder",
+				// JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
+				// JoinGameModalWindow.this.hp, UUID.randomUUID());
+				// spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(),
+				// jsessionid,
+				// JoinGameModalWindow.this.hp,
+				// JoinGameModalWindow.this.hp.getDataBoxParent(),
+				// session.getGameId()));
+				// JoinGameModalWindow.LOGGER.info("gameId in JoinGameModalWindow: "
+				// + session.getGameId());
+				// spp.setOutputMarkupId(true);
+				//
+				// session.putMySidePlaceholderInSesion(JoinGameModalWindow.this.sideInput
+				// .getDefaultModelObjectAsString());
+				//
+				// JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent().addOrReplace(spp);
 
 				final int posX = ("infrared".equals(JoinGameModalWindow.this.sideInput
 						.getDefaultModelObjectAsString())) ? 300 : 900;
 
-				javaScript
-						.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
-								+ spp.getUuid()
-								+ "'); "
-								+ "card.css('position', 'absolute'); "
-								+ "card.css('left', '"
-								+ posX
-								+ "px'); "
-								+ "card.css('top', '500px'); }, 3000); ");
+				// buf.append("window.setTimeout(function() { ");
+
+				// buf.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
+				// + spp.getUuid() + "'); " +
+				// "card.css('position', 'absolute'); "
+				// + "card.css('left', '" + posX + "px'); "
+				// + "card.css('top', '500px'); }, 3000); ");
 
 				final String opponentSide = ("infrared".equals(JoinGameModalWindow.this.sideInput
 						.getDefaultModelObjectAsString())) ? "ultraviolet" : "infrared";
 
-				final SidePlaceholderPanel spp2 = new SidePlaceholderPanel("firstSidePlaceholder",
-						opponentSide, JoinGameModalWindow.this.hp, UUID.randomUUID());
-				spp2.add(new SidePlaceholderMoveBehavior(spp2, spp2.getUuid(), jsessionid,
-						JoinGameModalWindow.this.hp,
-						JoinGameModalWindow.this.hp.getDataBoxParent(), session.getGameId()));
-				spp2.setOutputMarkupId(true);
-
-				JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
+				// final SidePlaceholderPanel spp2 = new
+				// SidePlaceholderPanel("firstSidePlaceholder",
+				// opponentSide, JoinGameModalWindow.this.hp,
+				// UUID.randomUUID());
+				// spp2.add(new SidePlaceholderMoveBehavior(spp2,
+				// spp2.getUuid(), jsessionid,
+				// JoinGameModalWindow.this.hp,
+				// JoinGameModalWindow.this.hp.getDataBoxParent(),
+				// session.getGameId()));
+				// spp2.setOutputMarkupId(true);
+				//
+				// JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
 
 				final int posX2 = (posX == 300) ? 900 : 300;
-				javaScript
-						.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
-								+ spp2.getUuid()
-								+ "'); "
-								+ "card.css('position', 'absolute'); "
-								+ "card.css('left', '"
-								+ posX2
-								+ "px'); "
-								+ "card.css('top', '500px'); }, 3000); ");
+
+				// TODO: re-write this in Wicket-Atmosphere
+				// buf.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
+				// + spp2.getUuid() + "'); " +
+				// "card.css('position', 'absolute'); "
+				// + "card.css('left', '" + posX2 + "px'); "
+				// + "card.css('top', '500px'); }, 3000); ");
 				// TODO remove gameId management since we now have Comet
 				// channels
-				javaScript.append("window.gameId = " + session.getGameId() + "; ");
+				buf.append("window.gameId = " + session.getGameId() + "; ");
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
 						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
 
-				final Side s = new Side();
-				s.setGame(game);
-				s.setSide(JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
-				s.setUuid(spp.getUuid().toString());
-				s.setWicketId("secondSidePlaceholder");
-				s.setX(Long.valueOf(posX));
-				s.setY(Long.valueOf(500));
+				// final Side s = new Side();
+				// s.setGame(game);
+				// s.setSide(JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
+				// s.setUuid(spp.getUuid().toString());
+				// s.setWicketId("secondSidePlaceholder");
+				// s.setX(Long.valueOf(posX));
+				// s.setY(Long.valueOf(500));
 				JoinGameModalWindow.this.persistenceService.updateGame(game); // TODO
-				JoinGameModalWindow.this.persistenceService.saveSide(s);
+				// TODO: comment this out when it is in Wicket-Atmosphere
+				// JoinGameModalWindow.this.persistenceService.saveSide(s);
 
-				spp.setPosX(posX);
-				spp.setPosY(500);
-				session.setMySidePlaceholder(spp);
-				spp2.setPosX(posX2);
-				spp2.setPosY(500);
-				session.setMySidePlaceholder(spp2);
+				// TODO: re-write this in Wicket-Atmosphere
+				// spp.setPosX(posX);
+				// spp.setPosY(500);
+				// session.setMySidePlaceholder(spp);
+				// spp2.setPosX(posX2);
+				// spp2.setPosY(500);
+				// session.setMySidePlaceholder(spp2);
 
 				session.setGameCreated();
 
 				_modal.close(target);
 				target.add(JoinGameModalWindow.this.hp.getDataBoxParent());
-				target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
-				target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
-				target.appendJavaScript(javaScript.toString());
+				// target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
+				// target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
+				target.appendJavaScript(buf.toString());
 
+				// TODO: re-write this in Wicket-Atmosphere
+				// final JoinGameCometChannel jgcc = new JoinGameCometChannel(
+				// JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
+				// jsessionid, spp.getUuid(), Long.valueOf(posX), 500l);
 				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
 						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-						jsessionid, spp.getUuid(), Long.valueOf(posX), 500l);
+						jsessionid, null, Long.valueOf(posX), 500l);
 				EventBus.get().post(jgcc);
 
 				final Long _gameId = game.getId();

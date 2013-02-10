@@ -8,6 +8,4 @@
 
 jQuery('#menutoggleButton758f66a4-513b-40db-a3d9-83ec7e91f1e4').wicketAtmosphere({"url" : "http://localhost:8080/?0-1.IBehaviorListener.1-balduParent-baldu-menutoggleButton&uuid=758f66a4-513b-40db-a3d9-83ec7e91f1e4&_=1353358682233" });
 
-- minify CSS & JS: mvn net.alchim31.maven:yuicompressor-maven-plugin:compress
-  Beware: minified files overwrite readable files!
-  This is used on hatchetharry.net at project re-deployment, so that we don't have to change the file names from .js to min.js or from .css to min.css
+- never use: blahDao.save(blah) but blahDao.getSession().save(blah) otherwise you'll get strange bugs due to data duplication. Think about it in the PersistenceService!!!

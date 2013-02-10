@@ -2,7 +2,6 @@ package org.alienlabs.hatchetharry;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -24,6 +23,7 @@ import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceStreamResource;
 import org.apache.wicket.request.resource.SharedResourceReference;
+import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.time.Duration;
@@ -32,11 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.google.javascript.jscomp.CompilationLevel;
-
 import de.agilecoders.wicket.Bootstrap;
-import de.agilecoders.wicket.javascript.GoogleClosureJavaScriptCompressor;
-import de.agilecoders.wicket.javascript.YuiCssCompressor;
 import de.agilecoders.wicket.settings.BootstrapSettings;
 
 /**
@@ -93,9 +89,10 @@ public class HatchetHarryApplication extends WebApplication
 
 		// CSS & JS minification
 		Bootstrap.install(Application.get(), new BootstrapSettings());
-		this.getResourceSettings().setJavaScriptCompressor(
-				new GoogleClosureJavaScriptCompressor(CompilationLevel.SIMPLE_OPTIMIZATIONS));
-		this.getResourceSettings().setCssCompressor(new YuiCssCompressor());
+		// this.getResourceSettings().setJavaScriptCompressor(
+		// new
+		// GoogleClosureJavaScriptCompressor(CompilationLevel.WHITESPACE_ONLY));
+		// this.getResourceSettings().setCssCompressor(new YuiCssCompressor());
 
 		this.eventBus = new EventBus(this);
 		this.eventBus.addRegistrationListener(this);
@@ -106,14 +103,7 @@ public class HatchetHarryApplication extends WebApplication
 			@Override
 			public void run()
 			{
-				try
-				{
-					HatchetHarryApplication.this.eventBus.post(new Date());
-				}
-				catch (final Exception e)
-				{
-					HatchetHarryApplication.LOGGER.error("error in clock Comet channel!", e);
-				}
+				// HatchetHarryApplication.this.eventBus.post(new Date());
 			}
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
@@ -264,6 +254,14 @@ public class HatchetHarryApplication extends WebApplication
 				"image/delete.png"));
 		this.mountResource("image/quit.png", new PackageResourceReference(HomePage.class,
 				"image/quit.png"));
+		this.mountResource("image/arrow_down.png", new PackageResourceReference(HomePage.class,
+				"image/arrow_down.png"));
+		this.mountResource("image/arrow_right.png", new PackageResourceReference(HomePage.class,
+				"image/arrow_right.png"));
+		this.mountResource("image/tlyguide_arrow.png", new PackageResourceReference(HomePage.class,
+				"image/tlyguide_arrow.png"));
+		this.mountResource("image/tlyguide_icon.png", new PackageResourceReference(HomePage.class,
+				"image/tlyguide_icon.png"));
 
 		this.getJavaScriptLibrarySettings().setJQueryReference(
 				new PackageResourceReference(HomePage.class, "script/google-analytics.js"));
@@ -274,6 +272,9 @@ public class HatchetHarryApplication extends WebApplication
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 
+		this.getExceptionSettings().setUnexpectedExceptionDisplay(
+				IExceptionSettings.SHOW_EXCEPTION_PAGE);
+
 		this.getSharedResources().add("cards",
 				new FolderContentResource(new File("/home/nostromo/cards/")));
 		this.mountResource("cards", new SharedResourceReference("cards"));
@@ -283,7 +284,7 @@ public class HatchetHarryApplication extends WebApplication
 	public RuntimeConfigurationType getConfigurationType()
 	{
 
-		return RuntimeConfigurationType.DEPLOYMENT;
+		return RuntimeConfigurationType.DEVELOPMENT;
 	}
 
 	@Override

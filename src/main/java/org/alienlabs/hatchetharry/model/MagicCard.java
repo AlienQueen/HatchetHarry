@@ -1,3 +1,13 @@
+/*
+ * A MagicCard is a card in a Deck currently played, i.e. it has game state-related information.
+ * It is instantiated (i.e. duplicated in DB) via the CollectibleCard object which represent the list
+ * of cards in the Deck but without any game state information.
+ * 
+ * @see: Deck 
+ * @see: DeckArchive
+ * @See: CollectibleCard
+ */
+
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;

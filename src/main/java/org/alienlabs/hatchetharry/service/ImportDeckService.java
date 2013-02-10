@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.DeckArchive;
@@ -36,7 +37,7 @@ public class ImportDeckService implements Serializable
 		}
 		deckArchive = new DeckArchive();
 		deckArchive.setDeckName(deckName);
-		this.persistenceService.saveDeckArchive(deckArchive);
+		deckArchive = this.persistenceService.saveDeckArchive(deckArchive);
 
 		deck = new Deck();
 		deck.setPlayerId(1l);
@@ -68,21 +69,25 @@ public class ImportDeckService implements Serializable
 				cc.setTitle(cardName);
 				cc.setDeckArchiveId(deckArchive.getDeckArchiveId());
 
+				// A CollectibleCard can be duplicated: lands, normal cards
+				// which may be present 4 times in a Deck...
 				this.persistenceService.saveCollectibleCard(cc);
 
 				final MagicCard card = new MagicCard("cards/" + cardName + "_small.jpg", "cards/"
 						+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "");
 				card.setGameId(1l);
 				card.setDeck(deck);
+				card.setZone(CardZone.LIBRARY);
 				card.setUuidObject(UUID.randomUUID());
 
 				allMagicCards.add(card);
 
+				deck.setDeckArchive(deckArchive);
+				// updateDeck is enough to save allMagicCards by cascade
 				this.persistenceService.updateDeck(deck);
-				this.persistenceService.saveOrUpdateCard(card);
 			}
 		}
-		this.persistenceService.saveOrUpdateDeckArchive(deckArchive);
+		this.persistenceService.updateDeckArchive(deckArchive);
 	}
 
 	@Required

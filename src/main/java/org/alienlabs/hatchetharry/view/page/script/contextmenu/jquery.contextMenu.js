@@ -128,8 +128,10 @@ if (jQuery)
 																										menu)
 																										.css(
 																												{
-																													top : y,
-																													left : x
+																													top: srcElement.pageY - 40,
+																													left: srcElement.pageX
+//																													top : y,
+//																													left : x
 																												})
 																										.fadeIn(
 																												o.inSpeed);

@@ -34,7 +34,11 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
+
+	private String url, graveyardUrl, handUrl;
 	private final UUID uuid;
+	private String uuidValidForJs;
+
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardBehavior;
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 
@@ -77,7 +81,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			}
 			mc.setX(Long.parseLong(_mouseX));
 			mc.setY(Long.parseLong(_mouseY));
-			this.persistenceService.saveCard(mc);
+			this.persistenceService.updateCard(mc);
 		}
 		catch (final IllegalArgumentException e)
 		{
@@ -131,16 +135,22 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.uuid);
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 		variables.put("graveyardUrl", this.putToGraveyardBehavior.getCallbackUrl());
 		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
+
+		this.url = this.getCallbackUrl().toString();
+		this.uuidValidForJs = this.uuid.toString().replace("-", "_");
+		this.graveyardUrl = this.putToGraveyardBehavior.getCallbackUrl().toString();
+		this.handUrl = this.putToHandFromBattlefieldBehavior.getCallbackUrl().toString();
 
 		final TextTemplate template4 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.js");
 		template4.interpolate(variables);
 		js = js.append("\n" + template4.asString());
 
+		// TODO in reality, cardMove.js configures the context menu: move it in
+		// its own Behavior
 		final TextTemplate template5 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/cardMove.js");
 		template5.interpolate(variables);
@@ -158,6 +168,31 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	public String getUrl()
+	{
+		return this.url;
+	}
+
+	public String getGraveyardUrl()
+	{
+		return this.graveyardUrl;
+	}
+
+	public String getHandUrl()
+	{
+		return this.handUrl;
+	}
+
+	public UUID getUuid()
+	{
+		return this.uuid;
+	}
+
+	public String getUuidValidForJs()
+	{
+		return this.uuidValidForJs;
 	}
 
 }

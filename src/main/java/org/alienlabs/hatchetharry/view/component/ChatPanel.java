@@ -38,7 +38,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
@@ -55,7 +54,6 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.atmosphere.cpr.BroadcastFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -75,14 +73,10 @@ public class ChatPanel extends Panel
 
 	static final Logger LOGGER = LoggerFactory.getLogger(ChatPanel.class);
 
-	final List<BroadcastFilter> list;
-
 	public ChatPanel(final String id, final Long _playerId)
 	{
 		super(id);
 		Injector.get().inject(this);
-
-		this.list = new LinkedList<BroadcastFilter>();
 
 		final Form<String> form = new Form<String>("chatForm");
 

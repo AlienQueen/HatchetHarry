@@ -35,6 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author igor
  */
+// TODO remove all non-used methods in all DAOs: find(), uniqueNames(),
+// count()...
 public class DeckDaoImpl implements DeckDao
 {
 	private static final long serialVersionUID = 1L;

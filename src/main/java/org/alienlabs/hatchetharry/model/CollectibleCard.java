@@ -1,3 +1,14 @@
+/*
+ * CollectibleCards are the list of cards in a particular DeckArchive.
+ * The CollectibleCard has got only a name and if it is present multiple times in a DeckArchive, that number of CollectibleCard objects are 
+ * linked to their DeckArchive.
+ * If a player chooses to play the deck corresponding to the DeckArchive onto which a CollectibleCard points to,
+ * the CollectibleCard is not duplicated, as the DeckArchive is itself unique in DB.
+ * 
+ * @see: DeckArchive
+ * @See: Deck
+ * @see: MagicCard 
+ */
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;

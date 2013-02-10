@@ -1,3 +1,14 @@
+/*
+ * 
+ * A Deck is what a player chooses to play. It is instantiated (i.e. duplicated in DB) each time a player chooses the underlying DeckArchive.
+ * The MagicCard objects are duplicated too, since they represent the state of a particular card in the Deck, and they are instantiated using the
+ * CollectibleCard object, which itself only represents the list of cards in a DeckArchive, without any game-related information.
+ * 
+ * @see: MagicCard 
+ * @see: DeckArchive
+ * @See: CollectibleCard
+ */
+
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;

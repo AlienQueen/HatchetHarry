@@ -1,6 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +24,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackageTextTemplate;
-import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -41,6 +38,9 @@ public class CardPanel extends Panel
 	private PersistenceService persistenceService;
 
 	private final UUID uuid;
+
+	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
+	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 
 	public CardPanel(final String id, final String smallImage, final String bigImage,
 			final UUID _uuid)
@@ -68,9 +68,13 @@ public class CardPanel extends Panel
 			}
 		});
 
+		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
+		cardHandle.setOutputMarkupId(true);
+		cardHandle.setMarkupId("cardHandle" + this.uuid.toString().replace("-", "_"));
+
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
-		menutoggleButton.setMarkupId("menutoggleButton" + this.uuid.toString());
+		menutoggleButton.setMarkupId("menutoggleButton" + this.uuid.toString().replace("-", "_"));
 
 		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.uuid);
 		menutoggleButton.add(new AttributeModifier("style", "position: absolute; top: "
@@ -79,18 +83,19 @@ public class CardPanel extends Panel
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
-		final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(
+		this.putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(
 				this.uuid);
-		menutoggleButton.add(putToGraveyardFromBattlefieldBehavior);
+		menutoggleButton.add(this.putToGraveyardFromBattlefieldBehavior);
 
-		final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(
-				this.uuid);
-		menutoggleButton.add(putToHandFromBattlefieldBehavior);
+		this.putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(this.uuid);
+		menutoggleButton.add(this.putToHandFromBattlefieldBehavior);
 
-		menutoggleButton.add(new CardMoveBehavior(this, this.uuid,
-				putToGraveyardFromBattlefieldBehavior, putToHandFromBattlefieldBehavior));
+		final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this, this.uuid,
+				this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior);
+		menutoggleButton.add(cardMoveBehavior);
 
-		menutoggleButton.add(new CardRotateBehavior(this, this.uuid));
+		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid);
+		menutoggleButton.add(cardRotateBehavior);
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				this.getHttpServletRequest().getRequestedSessionId()));
@@ -109,21 +114,17 @@ public class CardPanel extends Panel
 
 		final Image handleImage = new Image("handleImage", new PackageResourceReference(
 				"images/arrow.png"));
-		handleImage.setMarkupId("handleImage" + this.uuid.toString());
+		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
 		handleImage.setOutputMarkupId(true);
 
 		final Image tapHandleImage = new Image("tapHandleImage", new PackageResourceReference(
 				"images/rightArrow.png"));
-		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString());
+		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString().replace("-", "_"));
 		tapHandleImage.setOutputMarkupId(true);
 
-		// TODO OK?
 		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
-		// final Image cardImage = new Image("cardImage", new
-		// PackageResourceReference(HomePage.class,
-		// smallImage));
 		cardImage.setOutputMarkupId(true);
-		cardImage.setMarkupId("card" + this.uuid.toString());
+		cardImage.setMarkupId("card" + this.uuid.toString().replace("-", "_"));
 
 		final MagicCard mc = this.persistenceService.getCardFromUuid(this.uuid);
 
@@ -145,29 +146,28 @@ public class CardPanel extends Panel
 				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage,
 						owner.getSide());
 				cardBubbleTip.setOutputMarkupId(true);
-				cardBubbleTip.setMarkupId("cardTooltip" + this.uuid);
+				cardBubbleTip.setMarkupId("cardTooltip" + this.uuid.toString().replace("-", "_"));
 				cardBubbleTip.add(new AttributeModifier("style", "display: none;"));
 
 				form.add(cardBubbleTip);
 			}
 			else
 			{
-				form.add(new WebMarkupContainer("cardTooltip"));
+				cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
+				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage,
+						"yellow");
+				cardBubbleTip.setOutputMarkupId(true);
+				cardBubbleTip.setMarkupId("cardTooltip" + this.uuid.toString().replace("-", "_"));
+				cardBubbleTip.add(new AttributeModifier("style", "display: none;"));
+
+				form.add(cardBubbleTip);
 			}
 		}
 
 		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage);
 		menutoggleButton.add(form);
-		this.add(menutoggleButton);
-
-		// TODO: remove this
-		// Placeholders for CardPanel-adding with AjaxRequestTarget
-		final WebMarkupContainer cp = new WebMarkupContainer("cardParent4");
-		cp.setOutputMarkupId(true);
-		final WebMarkupContainer cardPlaceholder = new WebMarkupContainer("cardPlaceholder4");
-		cardPlaceholder.setOutputMarkupId(true);
-		cp.add(cardPlaceholder);
-		this.add(cp);
+		cardHandle.add(menutoggleButton);
+		this.add(cardHandle);
 	}
 
 	public HttpServletRequest getHttpServletRequest()
@@ -181,27 +181,20 @@ public class CardPanel extends Panel
 		return this.uuid;
 	}
 
-	@Override
-	public void renderHead(final IHeaderResponse response)
-	{
-		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-				"script/tooltip/easyTooltip.js");
-		final StringBuffer js = new StringBuffer().append(template1.asString());
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "easyTooltip.js"));
-
-		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
-				"script/tooltip/initTooltip.js");
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
-		variables.put("uuid", this.uuid);
-		template2.interpolate(variables);
-		final StringBuffer js2 = new StringBuffer().append(template2.asString());
-		response.render(JavaScriptHeaderItem.forScript(js2.toString(), "initTooltip.js" + this.uuid));
-	}
-
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	public PutToGraveyardFromBattlefieldBehavior getPutToGraveyardFromBattlefieldBehavior()
+	{
+		return this.putToGraveyardFromBattlefieldBehavior;
+	}
+
+	public PutToHandFromBattlefieldBehavior getPutToHandFromBattlefieldBehavior()
+	{
+		return this.putToHandFromBattlefieldBehavior;
 	}
 
 }

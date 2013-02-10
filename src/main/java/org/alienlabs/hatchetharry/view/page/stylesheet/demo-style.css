@@ -50,7 +50,6 @@ our demo gets from this sheet) */
 	.row .offset-by-ten 	{ margin-left: 87%;  }
 	.row .offset-by-eleven 	{ margin-left: 95.7%;  }
 	
-	img, object, embed { max-width: 100%; }
 	img { -ms-interpolation-mode: bicubic; }
 		
 	

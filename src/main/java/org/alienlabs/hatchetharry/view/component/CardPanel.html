@@ -1,15 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
-        xml:lang="en"
-        lang="en">
 <wicket:head>
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/fonts/fonts-min.css" />
 
 <style type="text/css">
+	
+		.magicCard {
+			z-index:1000;
+		}
 		p, h4, li
 		{
 			font-family: Arial, Tahoma, Verdana;
@@ -79,11 +76,8 @@
 				font-size: 11px;
 				width: 150px;
 			}
-			.ui-widget-header { border: 1px solid #000000; background: #464646
-								50% 50% repeat-x; color: #000000; font-weight: bold;
-								width: 20px; height: 20px; cursor: move;
-							  }
-			.tap-handle-image{ cursor: ne-resize; }			 
+			.drag-handle-image { width: 30px; height: 30px; cursor: move; }
+			.tap-handle-image{ cursor: ne-resize; width: 30px; height: 30px;}			 
 			
 </style>
 </wicket:head>
@@ -92,33 +86,30 @@
 	
 	<h2 id="status2"/>
 	<br/><br/>
-		<span id="menutoggleImage">
-			<span id="special">
+		<span wicket:id="cardHandle">
+			<span id="special" class="magicCard">
 				<div wicket:id="menutoggleButton" id="menutoggleButton" class="tour_5">
 					<form wicket:id="form">
 						<input wicket:id="jsessionid" id="jsessionid" type="text" style="display: none;"></input>
 						<input wicket:id="mouseX" id="mouseX" type="text" style="display: none;"></input>
 						<input wicket:id="mouseY" id="mouseY" type="text" style="display: none;"></input>
-						<img wicket:id="handleImage" id="handle" class="ui-widget-header"></img>
+						<img wicket:id="handleImage" id="handle" class="drag-handle-image"></img>
 						<img wicket:id="cardImage" id="card"></img>
+						<div wicket:id="cardTooltip" id="cardTooltip"></div>
 						<img wicket:id="tapHandleImage" id="tapHandleImage" class="tap-handle-image"></img>
-						<span wicket:id="cardTooltip" id="cardTooltip"></span>
+						<ul id="myMenu" class="contextMenu">
+		
+							<li class="edit"><a href="#edit">&nbsp;Put to graveyard</a></li>
+							<li class="cut separator"><a href="#cut">&nbsp;Put to hand</a></li>
+							<li class="copy"><a href="#copy">&nbsp;Copy</a></li>
+							<li class="paste"><a href="#paste">&nbsp;Paste</a></li>
+							<li class="delete"><a href="#delete">&nbsp;Delete</a></li>
+							<li class="quit separator"><a href="#quit">&nbsp;Quit</a></li>
+				
+						</ul>
 					</form>
 				</div>
-				<ul id="myMenu" class="contextMenu">
-
-					<li class="edit"><a href="#edit">&nbsp;Put to graveyard</a></li>
-					<li class="cut separator"><a href="#cut">&nbsp;Put to hand</a></li>
-					<li class="copy"><a href="#copy">&nbsp;Copy</a></li>
-					<li class="paste"><a href="#paste">&nbsp;Paste</a></li>
-					<li class="delete"><a href="#delete">&nbsp;Delete</a></li>
-					<li class="quit separator"><a href="#quit">&nbsp;Quit</a></li>
-		
-				</ul>
 			</span>
 		</span>
 		
-	<span wicket:id="cardParent4"><span wicket:id="cardPlaceholder4"></span></span>
-
 </wicket:panel>
-</html>

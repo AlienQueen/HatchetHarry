@@ -35,10 +35,6 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.persistence.dao.CardCollectionDao;
-import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
-import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
-import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
-import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -78,14 +74,6 @@ public class DataGenerator implements InitializingBean
 			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
-	private DeckDao deckDao;
-	@SpringBean
-	private DeckArchiveDao deckArchiveDao;
-	@SpringBean
-	private CollectibleCardDao collectibleCardDao;
-	@SpringBean
-	private MagicCardDao magicCardDao;
-	@SpringBean
 	private PersistenceService persistenceService;
 	@SpringBean
 	private CardCollectionDao cardCollectionDao;
@@ -95,30 +83,6 @@ public class DataGenerator implements InitializingBean
 
 	@SpringBean
 	private transient boolean generateCardCollection;
-
-	@Required
-	public void setDeckDao(final DeckDao _deckDao)
-	{
-		this.deckDao = _deckDao;
-	}
-
-	@Required
-	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao)
-	{
-		this.deckArchiveDao = _deckArchiveDao;
-	}
-
-	@Required
-	public void setCollectibleCardDao(final CollectibleCardDao _collectibleCardDao)
-	{
-		this.collectibleCardDao = _collectibleCardDao;
-	}
-
-	@Required
-	public void setMagicCardDao(final MagicCardDao _magicCardDao)
-	{
-		this.magicCardDao = _magicCardDao;
-	}
 
 	@Required
 	public void setCardCollectionDao(final CardCollectionDao _cardCollectionDao)
@@ -162,25 +126,43 @@ public class DataGenerator implements InitializingBean
 
 		if (this.generateData)
 		{
-			Deck deck1 = new Deck();
-			deck1.setPlayerId(1l);
+			DeckArchive deckArchive1 = this.persistenceService
+					.getDeckArchiveByName("aggro-combo Red / Black");
+			if (null == deckArchive1)
+			{
+				deckArchive1 = new DeckArchive();
+				deckArchive1.setDeckName("aggro-combo Red / Black");
+				this.persistenceService.saveDeckArchive(deckArchive1);
+			}
 
-			final DeckArchive deckArchive1 = new DeckArchive();
-			deckArchive1.setDeckName("aggro-combo Red / Black");
-			deck1.setDeckArchive(deckArchive1);
+			Deck deck1 = this.persistenceService.getDeck(1l);
+			if (null == deck1)
+			{
+				deck1 = new Deck();
+				deck1.setPlayerId(1l);
+				deck1.setDeckArchive(deckArchive1);
+			}
 
-			deck1 = this.deckDao.save(deck1);
+			DeckArchive deckArchive2 = this.persistenceService
+					.getDeckArchiveByName("burn mono-Red");
+			if (null == deckArchive2)
+			{
+				deckArchive2 = new DeckArchive();
+				deckArchive2.setDeckName("burn mono-Red");
+				this.persistenceService.saveDeckArchive(deckArchive2);
+			}
 
-			Deck deck2 = new Deck();
-			deck2.setPlayerId(2l);
-
-			final DeckArchive deckArchive2 = new DeckArchive();
-			deckArchive2.setDeckName("burn mono-Red");
-			deck2.setDeckArchive(deckArchive2);
-
-			deck2 = this.deckDao.save(deck2);
+			Deck deck2 = this.persistenceService.getDeck(1l);
+			if (null == deck2)
+			{
+				deck2 = new Deck();
+				deck2.setPlayerId(2l);
+				deck2.setDeckArchive(deckArchive2);
+			}
 
 			final List<Deck> decks = new ArrayList<Deck>();
+			deck1 = this.persistenceService.saveDeck(deck1);
+			deck2 = this.persistenceService.saveDeck(deck2);
 			decks.add(0, deck1);
 			decks.add(1, deck2);
 
@@ -193,15 +175,13 @@ public class DataGenerator implements InitializingBean
 					c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
 					c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
 							.getDeckArchiveId());
-					if (!this.persistenceService.doesCollectibleCardAlreadyExistsInDb(c.getTitle()))
-					{
-						this.deckArchiveDao.save(j == 1 ? deckArchive1 : deckArchive2);
-						this.collectibleCardDao.save(c);
-					}
+					// A CollectibleCard can be duplicated: lands, normal cards
+					// which may be present 4 times in a Deck...
+					this.persistenceService.saveCollectibleCard(c);
 
 					if (j == 1l)
 					{
-						MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
+						final MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
 								+ "_small.jpg", "cards/" + DataGenerator.TITLES1[i] + ".jpg",
 								"cards/" + DataGenerator.TITLES1[i] + "Thumb.jpg",
 								DataGenerator.TITLES1[i], "");
@@ -209,7 +189,7 @@ public class DataGenerator implements InitializingBean
 						card.setDeck(decks.get(j - 1));
 						card.setUuidObject(UUID.randomUUID());
 						card.setZone(CardZone.LIBRARY);
-						card = this.magicCardDao.save(card);
+						this.persistenceService.saveCard(card);
 
 						final List<MagicCard> cards = decks.get(j - 1).getCards();
 						cards.add(card);
@@ -217,7 +197,7 @@ public class DataGenerator implements InitializingBean
 					}
 					else
 					{
-						MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
+						final MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
 								+ "_small.jpg", "cards/" + DataGenerator.TITLES1[i] + ".jpg",
 								"cards/" + DataGenerator.TITLES1[i] + "Thumb.jpg",
 								DataGenerator.TITLES1[i], "");
@@ -227,24 +207,37 @@ public class DataGenerator implements InitializingBean
 						card.setX(16l);
 						card.setY(16l);
 						card.setZone(CardZone.LIBRARY);
-						card = this.magicCardDao.save(card);
+						this.persistenceService.saveCard(card);
 
 						final List<MagicCard> cards = decks.get(j - 1).getCards();
 						cards.add(card);
 						decks.get(j - 1).setCards(cards);
 					}
 				}
+				this.persistenceService.updateDeck(decks.get(j - 1));
 			}
 
-			final MagicCard card = new MagicCard("image/BalduvianHorde_small.jpg",
-					"image/BalduvianHorde.jpg", "image/BalduvianHordeThumb.jpg", "Balduvian Horde",
-					"Isn't it a spoiler?");
-			card.setUuidObject(UUID.randomUUID());
-			final Deck fake = new Deck();
-			fake.setPlayerId(-1l);
-			card.setDeck(fake);
-			card.setGameId(-1l);
-			this.magicCardDao.save(card);
+			decks.get(0).setDeckArchive(deckArchive1);
+			decks.get(1).setDeckArchive(deckArchive2);
+			this.persistenceService.updateDeck(decks.get(0));
+			this.persistenceService.updateDeck(decks.get(1));
+			this.persistenceService.updateDeckArchive(deckArchive1);
+			this.persistenceService.updateDeckArchive(deckArchive2);
+
+			if (null == this.persistenceService.getCardFromUuid(UUID
+					.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347")))
+			{
+				final MagicCard card = new MagicCard("cards/Balduvian Horde_small.jpg",
+						"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
+						"Balduvian Horde", "Isn't it a spoiler?");
+				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
+				final Deck fake = new Deck();
+				fake.setPlayerId(-1l);
+				card.setDeck(fake);
+				card.setGameId(-1l);
+				card.setZone(CardZone.BATTLEFIELD);
+				this.persistenceService.saveCard(card);
+			}
 		}
 	}
 

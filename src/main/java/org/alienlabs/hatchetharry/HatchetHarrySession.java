@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -31,7 +30,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String INDEX_OF_CURRENT_CARD = "INDEX_OF_CURRENT_CARD";
 	private static final String INDEX_NEXT_PLAYER = "INDEX_NEXT_PLAYER";
 	private static final String GAME_CREATED = "GAME_CREATED";
-	private static final String CARDS_IN_BATTLEFIELD = "CARDS_IN_BATTLEFIELD";
+	private static final String ALL_CARD_PANELS_IN_BATTLEFIELD = "ALL_CARD_PANELS_IN_BATTLEFIELD";
 	private static final String DATA_BOX = "DATA_BOX";
 	private static final String DATA_BOX_PARENT = "DATA_BOX_PARENT";
 	private static final String TO_REMOVE = "TO_REMOVE";
@@ -46,7 +45,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
 	private static final String COMET_UUID = "COMET_UUID";
 	private static final String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
-	private static final String ALL_CARD_PANELS_IN_BATTLEFIELD = "ALL_CARD_PANELS_IN_BATTLEFIELD";
+	private static final String ALL_MAGIC_CARDS_IN_BATTLEFIELD = "ALL_MAGIC_CARDS_IN_BATTLEFIELD";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -56,7 +55,8 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
 		this.setAttribute(HatchetHarrySession.GAME_CREATED, false);
-		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
+		this.setAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD,
+				new ArrayList<CardPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, true);
@@ -66,7 +66,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD,
 				new ArrayList<MagicCard>());
-		this.setAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD,
+		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
 	}
 
@@ -236,14 +236,6 @@ public class HatchetHarrySession extends WebSession
 		return (Boolean)this.getAttribute(HatchetHarrySession.GAME_CREATED);
 	}
 
-	public void addCardInBattleField(final CardPanel cp)
-	{
-		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
-				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
-		cards.add(cp);
-		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
-	}
-
 	public void addCardInToRemoveList(final CardPanel cp)
 	{
 		ArrayList<CardPanel> cards;
@@ -267,43 +259,12 @@ public class HatchetHarrySession extends WebSession
 		return cards;
 	}
 
-	public void removeAllCardsFromBattleField()
-	{
-		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, new ArrayList<CardPanel>());
-	}
-
-	public ArrayList<CardPanel> getAllCardsInBattleField()
+	// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
+	public ArrayList<CardPanel> getAllCardPanelsInBattleField()
 	{
 		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
-				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
+				.getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
 		return cards;
-	}
-
-	public void setAllCardsInBattleField(final ArrayList<CardPanel> cards)
-	{
-		this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
-	}
-
-	public CardPanel removeACardFromBattleField()
-	{
-		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
-				.getAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD);
-
-		final Iterator<CardPanel> it = cards.iterator();
-		final boolean next = it.hasNext();
-		boolean success;
-
-		if (next)
-		{
-			final CardPanel cp = it.next();
-			success = cards.remove(cp);
-			if (success)
-			{
-				this.setAttribute(HatchetHarrySession.CARDS_IN_BATTLEFIELD, cards);
-				return cp;
-			}
-		}
-		return null;
 	}
 
 	public List<SidePlaceholderPanel> getMySidePlaceholder()
@@ -432,12 +393,12 @@ public class HatchetHarrySession extends WebSession
 	public ArrayList<MagicCard> getAllMagicCardsInBattleField()
 	{
 		return (ArrayList<MagicCard>)this
-				.getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
+				.getAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD);
 	}
 
 	public void setAllMagicCardsInBattleField(final ArrayList<MagicCard> list)
 	{
-		this.setAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD, list);
+		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD, list);
 	}
 
 }

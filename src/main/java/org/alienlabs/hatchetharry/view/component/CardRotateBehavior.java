@@ -58,7 +58,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
 				.fromString(uuidToLookFor));
 		card.setTapped(!card.isTapped());
-		this.persistenceService.saveCard(card);
+		this.persistenceService.updateCard(card);
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
 
 		final Long gameId = card.getGameId();
@@ -83,7 +83,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.uuid);
+		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/rotate/cardRotate.js");

@@ -70,7 +70,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		card.setZone(CardZone.BATTLEFIELD);
 		card.setX(card.getX());
 		card.setY(card.getY());
-		this.persistenceService.saveCard(card);
+		this.persistenceService.updateCard(card);
 
 		JavaScriptUtils.updateGraveyard(target);
 

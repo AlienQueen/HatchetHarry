@@ -1,6 +1,8 @@
+// TODO in reality, cardMove.js configures the context menu: move it in its own Behavior
+
 window.setTimeout(function() {
 			// Show menu when #myDiv is clicked
-			jQuery("#card${uuid}").contextMenu(
+			jQuery("#card${uuidValidForJs}").contextMenu(
 					{
 						menu : 'myMenu'
 					},
@@ -8,9 +10,9 @@ window.setTimeout(function() {
 						var uuid = jQuery(el).attr('id').replace('card', '');
 						
 						if (action === 'edit') {
-							Wicket.Ajax.get({ 'u' : '${graveyardUrl}&uuid=' + uuid });
+							Wicket.Ajax.get({ 'u' : '${graveyardUrl}&uuid=' + uuid }); // TODO: uuid or uuidValidForJs???
 						} else if (action === 'cut') {
-							Wicket.Ajax.get({ 'u' : '${handUrl}&uuid=' + uuid });
+							Wicket.Ajax.get({ 'u' : '${handUrl}&uuid=' + uuid }); // TODO: uuid or uuidValidForJs???
 						}
 //						alert('Action: ' + action + '\n\n' + 'Element ID: '
 //								+ jQuery(el).attr('id') + '\n\n' + 'X: '

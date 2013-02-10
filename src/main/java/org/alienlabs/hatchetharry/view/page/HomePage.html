@@ -25,7 +25,8 @@
 	<link rel="stylesheet" href="stylesheet/tipsy.css" type="text/css" /> 
 </head>
 <body class="myBody" id="yahoo-com">
-
+  <span id="tour_1"></span>
+  <span id="tour_128"></span>
   <span wicket:id="headResources"></span>
   
   <!-- Menus -->
@@ -35,8 +36,9 @@
 	  <li><a><img src="/image/logoh1.gif" alt="HH" width="32" class="fNiv"/></a><!-- Do not forget the "fNiv" class for the first level links !! -->
 	    
 			 	<ul>
-			 		<li>
-			          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64"/></div>
+			 		<li class="arrow"></li>
+					<li>
+			          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64" class="logoEntry"/></div>
 					</li>
 					<li><a wicket:id="aboutLink">About HatchetHarry</a>
 					</li>
@@ -50,15 +52,15 @@
 		  
 			  	<ul>
 			  		<li><a wicket:id="createGameLink">
-						<img src="/image/browser.png" alt="create" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px;"/>Create a game
+						<img src="/image/browser.png" alt="create" class="imageEntry"/>Create a game
 				    	</a>
 					</li>
 					<li><a wicket:id="joinGameLink">
-						<img src="/image/browser.png" alt="join" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px;"/>Join a game
+						<img src="/image/browser.png" alt="join" class="imageEntry"/>Join a game
 						</a>
 					</li>
 					<li><a wicket:id="importDeckLink">
-				        <img src="/image/browser.png" alt="import" style="position:absolute;margin-top:-20px; margin-left:-25px;margin-bottom:10px;"/>Import a deck
+				        <img src="/image/browser.png" alt="import" class="imageEntry"/>Import a deck
 				    	</a>
 					</li>
 					<li><a wicket:id="resetDbLink">Reset database</a>
@@ -110,83 +112,16 @@
       </ul>
     </div>
   <!-- end menus -->
-	
-	<!-- Tour Content -->
-    <ol id="joyRideTipContent">
-      <li data-id="tour_1" data-text="Take the tour!" class="custom" data-options="tipLocation:top right;tipAnimation:fade">
-        <h2>First time here?</h2>
-        <p><br/>Wanna go for a ride?<br/><br/></p>
-      </li>
-      <li data-id="tour_2" data-text="Next" class="custom" data-options="tipLocation:top;tipAnimation:fade">
-        <h2>Step #1</h2>
-        <p><br/>NEW!<br/><br/> You can untap all your permanents at once using the toolbar button.<br/><br/></p>
-      </li>
-      <li data-id="tour_3" data-text="Next" data-options="tipLocation:bottom;tipAnimation:fade">
-        <h2>Step #2</h2>
-        <p><br/>NEW!<br/><br/> When you've joined a game, you'll be able to draw cards, thanks to the button in this toolbar.<br/><br/></p>
-      </li>
-      <li data-id="tour_4" data-text="Next" data-options="tipLocation:bottom;tipAnimation:fade">
-        <h2>Step #3</h2>
-        <p><br/>NEW!<br/><br/> You can play cards and the opponent will see them on the battlefield.<br/><br/></p>
-      </li>
-      <li data-id="tour_5" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #4</h2>
-        <p><br/><br/>This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu entries.<br/><br/></p>
-      </li>
-      <li data-id="tour_6" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #5</h2>
-        <p><br/><br/>This is a card. You can move it by drag and drop using the small, green handle on its left. If you do so, the opponent will see its move matched in her own browser. Additionaly, you can call a context menu by right-clicking on the card itself.<br/><br/></p>
-      </li>
-      <li data-id="tour_6" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #6</h2>
-        <p><br/><br/>One more thing about this card: using the small green arrow on its right, you can tap and untap it.<br/><br/></p>
-      </li>
-      <li data-id="clock" data-text="Next" data-options="tipLocation:bottom left;tipAnimation:fade">
-        <h2><br/>Step #7</h2>
-        <p><br/><br/>This is the reference clock. It displays the hour on the server, so it's the same hour for every player.<br/><br/></p>
-      </li>
-      <li data-id="page-wrap" data-text="Next" data-options="tipLocation:bottom;tipAnimation:fade">
-        <h2><br/>Step #8</h2>
-        <p><br/><br/>This is your hand. You can browse the cards in it and play one of them.<br/><br/></p>
-      </li>
-      <li data-id="tour_9" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #9</h2>
-        <p><br/><br/>This is the dock. You can show the different zones of Magic using its icons.<br/><br/></p>
-      </li>
-      <li data-id="tour_10" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #10</h2>
-        <p><br/><br/>Hide or display your hand using this button.<br/><br/></p>
-      </li>
-      <li data-id="tour_11" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #11</h2>
-        <p><br/><br/>Browse through your graveyard using this button. Your opponent will be notified of this action.<br/><br/></p>
-      </li>
-      <li data-id="tour_12" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #12</h2>
-        <p><br/><br/>Browse through the exiled cards using this button. Your opponent will be notified of this action.<br/><br/></p>
-      </li>                                    
-      <li data-id="tour_13" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2><br/>Step #13</h2>
-        <p><br/><br/>Hide every zone of the game except the battlefield using this button. Only the permanents remain, so that you can have a vista of the game. If you click here again, the previously displayed zones will be restored, at the same places.<br/><br/></p>
-      </li>
-      <li data-id="tour_14" data-text="Next" data-options="tipLocation:top right;tipAnimation:fade">
-        <h2><br/>Step #14</h2>
-        <p><br/><br/>Browse through your library using this button. Your opponent will be notified of this action. Beware: you're supposed to play fair! Don't forget the rules of the game.<br/><br/></p>
-      </li>
-      <li data-id="chatPanel" data-text="Next" data-options="tipLocation:bottom;tipAnimation:fade">
-        <h2><br/>Step #15</h2>
-        <p><br/><br/>This is a chat. Its behavior is standard and you DON'T need to refresh your browser in order to receive new messages.<br/><br/></p>
-      </li> 
-      <li data-id="tour_1" data-text="Close" data-options="tipLocation:top right;tipAnimation:fade">
-        <h2><br/>You're done!</h2>
-        <p><br/><br/>Have fun!<br/><br/></p>
-      </li> 
-    </ol>
     
 	<br/><br/><br/><br/><br/>
-	<h3><strong class="gothic">Welcome to HatchetHarry
-			<span wicket:id="message1" id="message1" class="gothic">message will be here</span><br/>
-			<span wicket:id="message2" id="message2" class="gothic">message will be here</span>
+		
+	<span wicket:id="balduParent" id="tour_6">
+		<span wicket:id="baldu"></span>
+	</span>
+	<br/><br/>
+	<h3><strong class="myfont">Welcome to HatchetHarry
+			<span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
+			<span wicket:id="message2" id="message2" class="myfont">message will be here</span>
 		</strong>
 	</h3>
 	
@@ -225,11 +160,11 @@
 	<br/>
 	<br/>
   	<br/><br/>
-	<span wicket:id="dataBoxParent" class="gothic">
+	<span wicket:id="dataBoxParent" class="myfont">
 		<span wicket:id="dataBox"></span>
 	</span><br/>
-	<span wicket:id="clockPanel" id="clock" class="gothic">Clock Panel</span><br/>
-	<span wicket:id="chatPanel" id="chatPanel">Chat Panel</span>
+	<span wicket:id="clockPanel" id="clock" class="myfont">Clock Panel</span><br/>
+	<span wicket:id="chatPanel">Chat Panel</span>
 	
 	<div wicket:id="aboutWindow"></div>
 	<div wicket:id="teamInfoWindow"></div>
@@ -265,12 +200,13 @@
   	<span wicket:id="feedback"></span>
 	<br/><br/><br/>
 	
-	<span wicket:id="parentPlaceholder" id="tour_6">
-		<span wicket:id="handCards">
-			<span wicket:id="cardPanel">
-			</span>		
-		</span>
-	</span>
+	<div wicket:id="parentPlaceholder">
+			<table>
+				<tr wicket:id="handCards">
+					<td wicket:id="cardPanel"></td>
+				</tr>
+			</table>
+	</div>
 		
 	
 	<span wicket:id="cardPlaceholder"></span>
@@ -312,9 +248,7 @@
 	<div id="content"> 
 	</div>
 
- 	<div id="tour_2">
- 	<div id="tour_3">
- 	<div id="tour_4">
+ 	<div>
 		<div id="floatingbar"> 
 	
 	         <ul class="gallery clearfix">
@@ -322,12 +256,12 @@
 						<a wicket:id="untapAndDrawLink" id="twitterlink"><img class="toolbarIcon" src="image/tweet.png"></img> Untap & draw</a>
 					</li>
 					
-					<li wicket:id="untapAllPlaceholder" class="toolbarLink" title="Untall all your permanents" style="cursor: pointer">
+					<li id="untapAllPlaceholder" wicket:id="untapAllPlaceholder" class="toolbarLink" title="Untall all your permanents" style="cursor: pointer">
 						<a wicket:id="untapAllLink"><span><img class="toolbarIcon" src="image/googlebuzz.png"></img> Untap all</span></a>
 					</li>
 					
-					<li rel="prettyPhoto[iframe]" style="cursor: pointer">
-						<a wicket:id="drawCardLink" class="toolbarLink tour_2" title="Draw a card ">
+					<li rel="prettyPhoto[iframe]" style="cursor: pointer" id="tour_3">
+						<a wicket:id="drawCardLink" class="toolbarLink" title="Draw a card ">
 							<img class="toolbarIcon" src="image/youtube.png"></img>
 							 Draw a card
 						</a>
@@ -349,7 +283,58 @@
 	
 		</div> 
 	</div>
-	</div>
-	</div>
+	
+	<!-- Tour Content -->
+    <ul id="tlyPageGuide" data-tourtitle="First time here? Wanna go for a ride?" class="myfont">
+      <li data-tourtarget="#untapAllPlaceholder" class="tlypageguide_top">
+        <div>You can untap all your permanents at once using the toolbar button.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_3" class="tlypageguide_top">
+        <div>When you've joined a game, you'll be able to draw cards, thanks to the button in this toolbar.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#playCardPlaceholder0" class="tlypageguide_top">
+        <div>You can play cards and the opponent will see them on the battlefield.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#jMenu" class="tlypageguide_bottom">
+        <div>This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu entries.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_6" class="tlypageguide_right">
+        <div>This is a card. You can move it by drag and drop using the small, green handle on its left. If you do so, the opponent will see its move matched in her own browser. Additionaly, you can call a context menu by right-clicking on the card itself.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_6" class="tlypageguide_top">
+        <div>One more thing about this card: using the small green arrow on its right, you can tap and untap it.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#clock" class="tlypageguide_right">
+        <div>This is the reference clock. It displays the hour on the server, so it's the same hour for every player.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#page-wrap" class="tlypageguide_right">
+        <div>This is your hand. You can browse the cards in it and play one of them.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_9" class="tlypageguide_top">
+        <div>This is the dock. You can show the different zones of Magic using its icons.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_10" class="tlypageguide_bottom">
+        <div>Hide or display your hand using this button.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_11" class="tlypageguide_bottom">
+        <div>Browse through your graveyard using this button. Your opponent will be notified of this action.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_12" class="tlypageguide_bottom">
+        <div>Browse through the exiled cards using this button. Your opponent will be notified of this action.<br/><br/></div>
+      </li>                                    
+      <li data-tourtarget="#tour_13" class="tlypageguide_bottom">
+        <div>Hide every zone of the game except the battlefield using this button. Only the permanents remain, so that you can have a vista of the game. If you click here again, the previously displayed zones will be restored, at the same places.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#tour_14" class="tlypageguide_bottom">
+        <div>Browse through your library using this button. Your opponent will be notified of this action. Beware: you're supposed to play fair! Don't forget the rules of the game.<br/><br/></div>
+      </li>
+      <li data-tourtarget="#chat" class="tlypageguide_top">
+        <div>This is a chat. Its behavior is standard and you DON'T need to refresh your browser in order to receive new messages.<br/><br/></div>
+      </li> 
+      <li data-tourtarget="#tour_1" class="tlypageguide_right">
+        <div><h2>You're done!</h2><br/><br/>Have fun!<br/><br/></div>
+      </li> 
+    </ul>
+	
 </body>
 </html>

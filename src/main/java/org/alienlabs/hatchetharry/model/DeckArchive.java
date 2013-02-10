@@ -1,3 +1,12 @@
+/*
+ * A DeckArchive is the name of a Deck, linked to CollectibleCard which both represent the deck and its cards list.
+ * The DeckArchive name must be unique in DB and if a Player uses it as deck for his game, it is not duplicated, hence the suffix "Archive".
+ * 
+ * @see: CollectibleCard
+ * @See: Deck
+ * @see: MagicCard 
+ */
+
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
