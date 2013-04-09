@@ -203,7 +203,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.2.0 (release Pass Me By),");
-		final Label message2 = new Label("message2", "built on Wednesday, 6th of February 2013.");
+		final Label message2 = new Label("message2", "built on Wednesday, 10th of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -745,7 +745,7 @@ public class HomePage extends TestReportPage
 
 					final Deck _deck = HomePage.this.persistenceService.getDeck(session.getPlayer()
 							.getDeck().getDeckId());
-					_deck.getCards().remove(cards.get(0));
+					_deck.getCards().remove(card);
 					HomePage.this.persistenceService.saveDeck(_deck);
 
 					card.setZone(CardZone.HAND);
@@ -753,14 +753,6 @@ public class HomePage extends TestReportPage
 
 					final ArrayList<MagicCard> list = session.getFirstCardsInHand();
 					list.add(card);
-
-					final Deck d = HomePage.this.persistenceService.getDeck(session.getPlayer()
-							.getDeck().getDeckId());
-					final List<MagicCard> deckList = d.getCards();
-					deckList.remove(card);
-					d.setCards(deckList);
-					HomePage.this.persistenceService.saveDeck(d);
-
 					session.setFirstCardsInHand(list);
 
 					JavaScriptUtils.updateHand(target);
@@ -781,7 +773,17 @@ public class HomePage extends TestReportPage
 						final NotifierCometChannel ncc = new NotifierCometChannel(
 								NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(),
 								me.getSide(), null, null, null);
-						EventBus.get().post(ncc, pageUuid);
+
+						try
+						{
+							EventBus.get().post(ncc, pageUuid);
+						}
+						catch (final RuntimeException ex)
+						{
+							// NPE in unit tests
+							HomePage.LOGGER
+									.error("exception thrown while posting in event bus", ex);
+						}
 					}
 				}
 			}
@@ -1293,7 +1295,7 @@ public class HomePage extends TestReportPage
 
 		for (final MagicCard mc : allCardsInBattlefieldOnMySide)
 		{
-			buf.append("jQuery('#card" + mc.getUuid().toString() + "').rotate(0); ");
+			buf.append("jQuery('#card" + mc.getUuid().replace("-", "_") + "').rotate(0); ");
 			mc.setTapped(false);
 			this.persistenceService.updateCard(mc);
 		}
@@ -1369,11 +1371,12 @@ public class HomePage extends TestReportPage
 		}
 		else
 		{
-			buf.append("window.setTimeout(function() {jQuery('#card" + event.getCardUuid()
+			buf.append("window.setTimeout(function() {jQuery('#card"
+					+ event.getCardUuid().replace("-", "_")
 					+ "').rotate(0); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
+			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(90); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid()
+			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(0); }, 750); }, 750); }, 750);");
 		}
 
@@ -1513,11 +1516,13 @@ public class HomePage extends TestReportPage
 
 					if (mc.isTapped())
 					{
-						js.append("jQuery('#card" + cp.getUuid() + "').rotate(90);");
+						js.append("jQuery('#card" + cp.getUuid().toString().replace("-", "_")
+								+ "').rotate(90);");
 					}
 					else
 					{
-						js.append("jQuery('#card" + cp.getUuid() + "').rotate(0);");
+						js.append("jQuery('#card" + cp.getUuid().toString().replace("-", "_")
+								+ "').rotate(0);");
 					}
 				}
 
@@ -1644,10 +1649,10 @@ public class HomePage extends TestReportPage
 						.getSmallImageFilename(), item.getModelObject().getBigImageFilename(), item
 						.getModelObject().getUuidObject());
 				cp.setOutputMarkupId(true);
-				item.addOrReplace(cp);
+				item.add(cp);
 			}
 		};
-
+		list.setOutputMarkupId(true);
 		return list;
 	}
 
