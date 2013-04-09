@@ -50,4 +50,3 @@ jQuery(function() {
 												+ menubaritem2.text());
 							});
 });
-});
