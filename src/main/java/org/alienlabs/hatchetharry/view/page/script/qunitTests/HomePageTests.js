@@ -1,7 +1,7 @@
 jQuery(function() {
 
 					module("hand"); 
-					test(
+					test( 
 							"a basic hand visibility test",
 							function() {
 								ok((jQuery('span#handGallery').length == 1),
