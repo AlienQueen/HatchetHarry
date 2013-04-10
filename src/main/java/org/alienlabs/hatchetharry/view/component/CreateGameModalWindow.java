@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
@@ -28,7 +26,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -243,10 +240,12 @@ public class CreateGameModalWindow extends Panel
 				// session.putMySidePlaceholderInSesion(CreateGameModalWindow.this.sideInput
 				// .getDefaultModelObjectAsString());
 
-				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
-						.getRequest();
-				final HttpServletRequest request = servletWebRequest.getContainerRequest();
-				final String jsessionid = request.getRequestedSessionId();
+				// final ServletWebRequest servletWebRequest =
+				// (ServletWebRequest)this.getPage()
+				// .getRequest();
+				// final HttpServletRequest request =
+				// servletWebRequest.getContainerRequest();
+				// final String jsessionid = request.getRequestedSessionId();
 
 				// final SidePlaceholderMoveBehavior spmb = new
 				// SidePlaceholderMoveBehavior(spp,
@@ -298,7 +297,7 @@ public class CreateGameModalWindow extends Panel
 				// s.setY(Long.valueOf(500));
 				// CreateGameModalWindow.this.persistenceService.saveSide(s);
 
-				final DataBox db = new DataBox("dataBox", Long.valueOf(g.getId()));
+				final DataBox db = new DataBox("dataBox", g.getId());
 				CreateGameModalWindow.this.homePage.getDataBoxParent().addOrReplace(db);
 				db.setOutputMarkupId(true);
 				target.add(CreateGameModalWindow.this.homePage.getDataBoxParent());

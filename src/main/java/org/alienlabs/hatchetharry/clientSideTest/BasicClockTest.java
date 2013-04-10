@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.clientSideTest;
 
+import java.io.Serializable;
+
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -11,10 +13,12 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class BasicClockTest
+public class BasicClockTest implements Serializable
 {
 	private WicketTester tester;
 	private HatchetHarryApplication webApp;
+
+	private static final long serialVersionUID = 1L;
 
 	@Before
 	public void setUp()

@@ -304,11 +304,9 @@ public class HomePage extends TestReportPage
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		request.getRequestedSessionId();
 
-		this.add(this.generateCreateGameModalWindow(this.player, this.galleryParent,
-				this.firstSidePlaceholderParent));
+		this.add(this.generateCreateGameModalWindow(this.player, this.firstSidePlaceholderParent));
 
-		this.add(this.generateJoinGameModalWindow(this.player, this.galleryParent,
-				this.secondSidePlaceholderParent));
+		this.add(this.generateJoinGameModalWindow(this.player));
 
 		this.generatePlayCardLink(this.hand);
 		this.generatePlayCardFromGraveyardLink();
@@ -1057,7 +1055,6 @@ public class HomePage extends TestReportPage
 	}
 
 	private final ModalWindow generateCreateGameModalWindow(final Player _player,
-			final WebMarkupContainer _handCardsParent,
 			final WebMarkupContainer sidePlaceholderParent)
 	{
 		this.createGameWindow = new ModalWindow("createGameWindow");
@@ -1090,9 +1087,7 @@ public class HomePage extends TestReportPage
 		return this.createGameWindow;
 	}
 
-	private final ModalWindow generateJoinGameModalWindow(final Player _player,
-			final WebMarkupContainer _handCardsParent,
-			final WebMarkupContainer sidePlaceholderParent)
+	private final ModalWindow generateJoinGameModalWindow(final Player _player)
 	{
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
 		this.joinGameWindow.setInitialWidth(475);
@@ -1131,8 +1126,8 @@ public class HomePage extends TestReportPage
 		this.importDeckWindow.setInitialHeight(290);
 		this.importDeckWindow.setTitle("Import a deck");
 
-		this.importDeckWindow.setContent(new ImportDeckModalWindow(this.importDeckWindow,
-				this.importDeckWindow.getContentId()));
+		this.importDeckWindow.setContent(new ImportDeckModalWindow(this.importDeckWindow
+				.getContentId()));
 		this.importDeckWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
 		this.importDeckWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.importDeckWindow);
@@ -1327,7 +1322,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void updateDataBox(final AjaxRequestTarget target, final UpdateDataBoxCometChannel event)
 	{
-		final DataBox db = new DataBox("dataBox", Long.valueOf(event.getGameId()));
+		final DataBox db = new DataBox("dataBox", event.getGameId());
 		this.getDataBoxParent().addOrReplace(db);
 		db.setOutputMarkupId(true);
 		target.add(this.getDataBoxParent());

@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -32,7 +31,7 @@ public class ImportDeckModalWindow extends Panel
 
 	RequiredTextField<String> nameInput;
 
-	public ImportDeckModalWindow(final ModalWindow _modal, final String id)
+	public ImportDeckModalWindow(final String id)
 	{
 		super(id);
 		Injector.get().inject(this);

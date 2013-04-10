@@ -43,14 +43,7 @@ public class MagicCardFinderQueryBuilder
 		final StringBuilder hql = new StringBuilder();
 		this.addCountClause(hql);
 		hql.append("from MagicCard target where 1=1 ");
-		if (this.filter.getUuidObject() != null)
-		{
-			this.addMatchingCondition(hql, this.filter.getUuidObject().toString(), "uuid");
-		}
-		else
-		{
-			this.addMatchingCondition(hql, "*", "uuid");
-		}
+		this.addMatchingCondition(hql, this.filter.getUuidObject().toString(), "uuid");
 		this.addMatchingCondition(hql, Long.toString(this.filter.getGameId()), "gameId");
 		this.addOrderByClause(hql);
 		return hql.toString();
