@@ -13,13 +13,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.opera.core.systems.OperaDriver;
-
 public class VerifyQUnitTests
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyQUnitTests.class);
 
-	private WebDriver operaDriver;
+	// private WebDriver operaDriver;
 	private WebDriver firefoxDriver;
 	private WebDriver chromeDriver1, chromeDriver2;
 	private final String port = "9999";
@@ -37,8 +35,8 @@ public class VerifyQUnitTests
 		this.firefoxDriver = new FirefoxDriver();
 		this.firefoxDriver.get("http://localhost:" + this.port + "/");
 
-		this.operaDriver = new OperaDriver();
-		this.operaDriver.get("http://localhost:" + this.port + "/");
+		// this.operaDriver = new OperaDriver();
+		// this.operaDriver.get("http://localhost:" + this.port + "/");
 	}
 
 	@Test
@@ -71,20 +69,24 @@ public class VerifyQUnitTests
 		Assert.assertEquals("8", firefoxTotal3);
 		Assert.assertEquals("0", firefoxFailed3);
 
-		final WebElement parent4 = this.operaDriver.findElement(By.id("qunit-testresult"));
-		final String operaPassed4 = parent4.findElement(By.className("passed")).getText();
-		final String operaTotal4 = parent4.findElement(By.className("total")).getText();
-		final String operaFailed4 = parent4.findElement(By.className("failed")).getText();
-
-		Assert.assertEquals("8", operaPassed4);
-		Assert.assertEquals("8", operaTotal4);
-		Assert.assertEquals("0", operaFailed4);
+		// final WebElement parent4 =
+		// this.operaDriver.findElement(By.id("qunit-testresult"));
+		// final String operaPassed4 =
+		// parent4.findElement(By.className("passed")).getText();
+		// final String operaTotal4 =
+		// parent4.findElement(By.className("total")).getText();
+		// final String operaFailed4 =
+		// parent4.findElement(By.className("failed")).getText();
+		//
+		// Assert.assertEquals("8", operaPassed4);
+		// Assert.assertEquals("8", operaTotal4);
+		// Assert.assertEquals("0", operaFailed4);
 	}
 
 	@After
 	public void tearDown()
 	{
-		this.operaDriver.quit();
+		// this.operaDriver.quit();
 		this.firefoxDriver.quit();
 		this.chromeDriver1.quit();
 		this.chromeDriver2.quit();
