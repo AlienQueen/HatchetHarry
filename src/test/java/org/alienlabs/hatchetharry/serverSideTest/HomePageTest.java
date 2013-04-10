@@ -29,7 +29,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Simple test using the WicketTester
+ * Tests of basic scenarios of the HomePage using the WicketTester.
  */
 public class HomePageTest
 {

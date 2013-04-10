@@ -1342,8 +1342,8 @@ public class HomePage extends TestReportPage
 	{
 		target.appendJavaScript("var card = jQuery('#cardHandle"
 				+ event.getUniqueid().replace("-", "_") + "');"
-				+ "card.css('position', 'absolute');" + "card.css('left', '" + event.getMouseX()
-				+ "');" + "card.css('top', '" + event.getMouseY() + "');");
+				+ "card.css('position', 'absolute'); card.css('left', '" + event.getMouseX()
+				+ "'); card.css('top', '" + event.getMouseY() + "');");
 	}
 
 	@Subscribe

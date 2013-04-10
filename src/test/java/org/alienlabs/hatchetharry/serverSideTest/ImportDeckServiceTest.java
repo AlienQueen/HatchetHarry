@@ -16,6 +16,9 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * Test of the ImportDeckService (it only uses the WicketTester in order to load the Spring context).
+ */
 public class ImportDeckServiceTest
 {
 	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
@@ -30,7 +33,6 @@ public class ImportDeckServiceTest
 		ImportDeckServiceTest.webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
-
 
 			@Override
 			public void init()

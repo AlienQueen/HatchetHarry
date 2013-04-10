@@ -164,7 +164,11 @@ public class CardPanel extends Panel
 			}
 		}
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage);
+		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
+		contextMenu.setOutputMarkupId(true);
+		contextMenu.setMarkupId("contextMenu" + this.uuid.toString().replace("-", "_"));
+
+		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, contextMenu);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 		this.add(cardHandle);

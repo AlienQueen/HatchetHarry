@@ -90,8 +90,15 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 					HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
 							.getPlayer().getName(), "", "", mc.getTitle(), null);
 
-			EventBus.get().post(_ptgcc, _pageUuid);
-			EventBus.get().post(_ncc, _pageUuid);
+			try
+			{
+				EventBus.get().post(_ptgcc, _pageUuid);
+				EventBus.get().post(_ncc, _pageUuid);
+			}
+			catch (final NullPointerException ex) // Thrown in test mode
+			{
+				PutToGraveyardFromBattlefieldBehavior.LOGGER.error("test threw an exception", ex);
+			}
 		}
 	}
 

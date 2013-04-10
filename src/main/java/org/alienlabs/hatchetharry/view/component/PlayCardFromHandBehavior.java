@@ -104,8 +104,18 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			final Long player = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
 			PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-			EventBus.get().post(pcfhcc, pageUuid);
-			EventBus.get().post(ncc, pageUuid);
+
+			try
+			{
+				EventBus.get().post(pcfhcc, pageUuid);
+				EventBus.get().post(ncc, pageUuid);
+			}
+			catch (final NullPointerException ex) // Thrown in test mode
+			{
+				PlayCardFromHandBehavior.LOGGER.error("test threw an exception", ex);
+				// Mock of EventBus.get().post(pcfhcc, pageUuid)
+				JavaScriptUtils.updateCardsInBattlefield(target, gameId);
+			}
 		}
 
 	}

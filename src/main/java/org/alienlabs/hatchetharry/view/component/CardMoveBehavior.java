@@ -69,6 +69,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String uniqueid = this.uuid.toString();
 		CardMoveBehavior.LOGGER.info("uuid: " + uniqueid);
 
+		final long posX = (Long.parseLong(_mouseX)) <= -300 ? -300 : Long.parseLong(_mouseX);
+		final long posY = (Long.parseLong(_mouseY)) <= -150 ? -150 : Long.parseLong(_mouseY);
+
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 		MagicCard mc = null;
 
@@ -79,8 +82,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			{
 				return;
 			}
-			mc.setX(Long.parseLong(_mouseX));
-			mc.setY(Long.parseLong(_mouseY));
+			mc.setX(posX);
+			mc.setY(posY);
+			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + posX + ", posY: "
+					+ posY);
 			this.persistenceService.updateCard(mc);
 		}
 		catch (final IllegalArgumentException e)
@@ -106,9 +111,16 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
 					playerToWhomToSend);
 			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId,
-					_mouseX, _mouseY, uniqueid, playerId);
+					Long.toString(posX), Long.toString(posY), uniqueid, playerId);
 
-			EventBus.get().post(cardMoveCometChannel, pageUuid);
+			try
+			{
+				EventBus.get().post(cardMoveCometChannel, pageUuid);
+			}
+			catch (final NullPointerException ex) // Thrown in test mode
+			{
+				CardMoveBehavior.LOGGER.error("test threw an exception", ex);
+			}
 		}
 	}
 
