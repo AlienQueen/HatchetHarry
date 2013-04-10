@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -276,8 +277,11 @@ public class HatchetHarryApplication extends WebApplication
 		this.getExceptionSettings().setUnexpectedExceptionDisplay(
 				IExceptionSettings.SHOW_EXCEPTION_PAGE);
 
-		this.getSharedResources().add("cards",
-				new FolderContentResource(new File("/home/nostromo/cards/")));
+		this.getSharedResources().add(
+				"cards",
+				new FolderContentResource(new File(ResourceBundle.getBundle(
+						HatchetHarryApplication.class.getCanonicalName()).getString(
+						"SharedResourceFolder"))));
 		this.mountResource("cards", new SharedResourceReference("cards"));
 	}
 

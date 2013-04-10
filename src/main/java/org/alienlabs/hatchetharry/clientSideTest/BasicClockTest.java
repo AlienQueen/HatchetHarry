@@ -15,7 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BasicClockTest implements Serializable
 {
-	private WicketTester tester;
+	private transient WicketTester tester;
 	private HatchetHarryApplication webApp;
 
 	private static final long serialVersionUID = 1L;

@@ -21,6 +21,7 @@ package org.alienlabs.hatchetharry.service;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
@@ -108,8 +109,9 @@ public class DataGenerator implements InitializingBean
 						.newInstance(CardCollectionRootElement.class);
 				final Unmarshaller um = context.createUnmarshaller();
 				final CardCollectionRootElement cardCollection = (CardCollectionRootElement)um
-						.unmarshal(new File(
-								"/home/nostromo/hatchetharry/src/main/java/org/alienlabs/hatchetharry/service/return_to_ravnica.xml"));
+						.unmarshal(new File(ResourceBundle.getBundle(
+								DataGenerator.class.getCanonicalName()).getString(
+								"AllCardsInCollectionUntilReturnToRavnica")));
 
 				final Object[] array = cardCollection.getCardCollectionList().toArray();
 

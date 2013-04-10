@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.model.CardZone;
@@ -101,7 +102,8 @@ public class RuntimeDataGenerator implements Serializable
 
 		if (null == this.persistenceService.getDeckArchiveByName("Aura Bant"))
 		{
-			final File _deck = new File("/home/nostromo/Aura Bant.txt");
+			final File _deck = new File(ResourceBundle.getBundle(
+					RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 			final byte[] content = new byte[475];
 
 			final FileInputStream fis = new FileInputStream(_deck);
