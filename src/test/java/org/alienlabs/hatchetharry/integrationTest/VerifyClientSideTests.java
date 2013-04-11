@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.opera.core.systems.OperaDriver;
 
@@ -97,6 +99,10 @@ public class VerifyClientSideTests
 	@Test
 	public void testMistletoe()
 	{
+		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
+		new WebDriverWait(VerifyClientSideTests.chromeDriver1, 3).until(ExpectedConditions
+				.presenceOfElementLocated(By.id("runsSummary")));
+
 		final String chromeTotal = VerifyClientSideTests.chromeDriver1.findElement(
 				By.id("runsSummary")).getText();
 		final String chromeFailed = VerifyClientSideTests.chromeDriver1.findElement(
