@@ -30,7 +30,7 @@ public class VerifyClientSideTests
 	private static final String port = "9999";
 
 	@BeforeClass
-	public static void setUp()
+	public static void setUpClass()
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		VerifyClientSideTests.chromeDriver1 = new ChromeDriver();
@@ -107,7 +107,7 @@ public class VerifyClientSideTests
 	}
 
 	@AfterClass
-	public void tearDown()
+	public static void tearDownClass()
 	{
 		VerifyClientSideTests.chromeDriver1.quit();
 		VerifyClientSideTests.chromeDriver2.quit();
