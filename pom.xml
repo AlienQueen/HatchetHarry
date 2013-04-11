@@ -90,20 +90,13 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
-			<scope>test</scope>
 		</dependency>
 
 		<!--  JETTY DEPENDENCIES FOR TESTING  -->
 		<dependency>
 			<groupId>ch.qos.mistletoe</groupId>
 			<artifactId>mistletoe-wicket</artifactId>
-			<version>0.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.wicket</groupId>
-					<artifactId>wicket</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>0.3</version>
 		</dependency>
 		<!--<dependency>
 		  <groupId>pl.rabbitsoftware</groupId>

@@ -776,7 +776,7 @@ public class HomePage extends TestReportPage
 						{
 							EventBus.get().post(ncc, pageUuid);
 						}
-						catch (final RuntimeException ex)
+						catch (final NullPointerException ex)
 						{
 							// NPE in unit tests
 							HomePage.LOGGER

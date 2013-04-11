@@ -7,7 +7,6 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
-import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -72,10 +71,6 @@ public class HatchetHarrySession extends WebSession
 
 	public static HatchetHarrySession get(final Request request)
 	{
-		if (((HatchetHarryApplication)Application.get()).isMistletoeTest())
-		{
-			return new HatchetHarrySession(request);
-		}
 		return (HatchetHarrySession)Session.get();
 	}
 

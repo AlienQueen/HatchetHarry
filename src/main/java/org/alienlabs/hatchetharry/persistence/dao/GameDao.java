@@ -65,4 +65,12 @@ public interface GameDao extends Serializable
 	 * @return the list of all unique last names in the database
 	 */
 	List<String> getUniqueLastNames();
+
+
+	/**
+	 * Return the number of Games in the DB.
+	 * 
+	 * @return count
+	 */
+	int count();
 }

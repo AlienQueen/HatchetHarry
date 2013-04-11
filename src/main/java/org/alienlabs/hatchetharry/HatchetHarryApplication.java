@@ -49,7 +49,6 @@ public class HatchetHarryApplication extends WebApplication
 			ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
-	private boolean mistletoeTest = false;
 	transient EventBus eventBus;
 
 	// Map of playerId and Atmosphere UUID
@@ -296,16 +295,6 @@ public class HatchetHarryApplication extends WebApplication
 	public Session newSession(final Request request, final Response response)
 	{
 		return new HatchetHarrySession(request);
-	}
-
-	public boolean isMistletoeTest()
-	{
-		return this.mistletoeTest;
-	}
-
-	public void setMistletoeTest(final boolean _mistletoeTest)
-	{
-		this.mistletoeTest = _mistletoeTest;
 	}
 
 	public static Map<Long, String> getCometResources()

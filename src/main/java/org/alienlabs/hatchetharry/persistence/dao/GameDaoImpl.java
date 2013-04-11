@@ -122,4 +122,17 @@ public class GameDaoImpl implements GameDao
 								+ " from Game target order by target.lastname").list();
 	}
 
+	/**
+	 * Return the number of Games in the DB.
+	 * 
+	 * @return count
+	 */
+	@Override
+	@Transactional
+	public int count()
+	{
+		return this.getSession()
+				.createQuery("select distinct target.id " + " from Game target order by target.id")
+				.list().size();
+	}
 }

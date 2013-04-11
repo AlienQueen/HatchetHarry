@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ BasicClockTest.class })
+@SuiteClasses({ BasicDatabaseTest.class })
 public class AllMistletoeTests
 {
 
