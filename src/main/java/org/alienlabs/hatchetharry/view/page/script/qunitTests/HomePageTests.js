@@ -1,3 +1,5 @@
+var before, after;
+
 jQuery(function() {
 
 					module("hand"); 
@@ -48,5 +50,18 @@ jQuery(function() {
 										"the second menubar option is the first <a> contained in a <li> class fNiv in a <ul> class jMenu."
 												+ " It should exist and point to 'Game', and it appears to be: "
 												+ menubaritem2.text());
+							});
+					module("clock"); 
+					asyncTest( 
+							"test the clock",
+							function() {
+								expect(1);
+								before = jQuery("#clock").text();
+								
+								window.setTimeout(function() {
+									after = jQuery("#clock").text();
+									ok((before !== after), "the clock should tick");
+									start();
+								}, 4000);
 							});
 });
