@@ -5,12 +5,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,25 +24,16 @@ public class VerifyClientSideTests
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyClientSideTests.class);
 
+	private static WebDriver chromeDriver;
 	private static WebDriver operaDriver;
-	private static WebDriver firefoxDriver;
-	private static WebDriver chromeDriver1, chromeDriver2;
-	private static final String port = "9999";
+	private static final String port = "8088";
 
 	@BeforeClass
 	public static void setUpClass()
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
-		VerifyClientSideTests.chromeDriver1 = new ChromeDriver();
-		VerifyClientSideTests.chromeDriver1.get("http://localhost:" + VerifyClientSideTests.port
-				+ "/");
-
-		VerifyClientSideTests.chromeDriver2 = new ChromeDriver();
-		VerifyClientSideTests.chromeDriver2.get("http://localhost:" + VerifyClientSideTests.port
-				+ "/");
-
-		VerifyClientSideTests.firefoxDriver = new FirefoxDriver();
-		VerifyClientSideTests.firefoxDriver.get("http://localhost:" + VerifyClientSideTests.port
+		VerifyClientSideTests.chromeDriver = new ChromeDriver();
+		VerifyClientSideTests.chromeDriver.get("http://localhost:" + VerifyClientSideTests.port
 				+ "/");
 
 		VerifyClientSideTests.operaDriver = new OperaDriver();
@@ -56,45 +44,36 @@ public class VerifyClientSideTests
 	@Test
 	public void testQunit()
 	{
-		final WebElement parent1 = VerifyClientSideTests.chromeDriver1.findElement(By
-				.id("qunit-testresult"));
-		final String chromePassed1 = parent1.findElement(By.className("passed")).getText();
-		final String chromeTotal1 = parent1.findElement(By.className("total")).getText();
-		final String chromeFailed1 = parent1.findElement(By.className("failed")).getText();
+		try
+		{
+			Thread.sleep(4000);
+		}
+		catch (final InterruptedException e)
+		{
+			VerifyClientSideTests.LOGGER.error("error while sleeping in testQunit()", e);
+		}
 
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, chromePassed1);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, chromeTotal1);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, chromeFailed1);
+		final String passed1 = VerifyClientSideTests.chromeDriver.findElement(By.id("passed"))
+				.getText();
+		final String total1 = VerifyClientSideTests.chromeDriver.findElement(By.id("total"))
+				.getText();
+		final String failed1 = VerifyClientSideTests.chromeDriver.findElement(By.id("failed"))
+				.getText();
 
-		final WebElement parent2 = VerifyClientSideTests.chromeDriver2.findElement(By
-				.id("qunit-testresult"));
-		final String chromePassed2 = parent2.findElement(By.className("passed")).getText();
-		final String chromeTotal2 = parent2.findElement(By.className("total")).getText();
-		final String chromeFailed2 = parent2.findElement(By.className("failed")).getText();
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed1);
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, total1);
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, failed1);
 
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, chromePassed2);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, chromeTotal2);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, chromeFailed2);
+		final String passed2 = VerifyClientSideTests.operaDriver.findElement(By.id("passed"))
+				.getText();
+		final String total2 = VerifyClientSideTests.operaDriver.findElement(By.id("total"))
+				.getText();
+		final String failed2 = VerifyClientSideTests.operaDriver.findElement(By.id("failed"))
+				.getText();
 
-		final WebElement parent3 = VerifyClientSideTests.firefoxDriver.findElement(By
-				.id("qunit-testresult"));
-		final String firefoxPassed3 = parent3.findElement(By.className("passed")).getText();
-		final String firefoxTotal3 = parent3.findElement(By.className("total")).getText();
-		final String firefoxFailed3 = parent3.findElement(By.className("failed")).getText();
-
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, firefoxPassed3);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, firefoxTotal3);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, firefoxFailed3);
-
-		final WebElement parent4 = VerifyClientSideTests.operaDriver.findElement(By
-				.id("qunit-testresult"));
-		final String operaPassed4 = parent4.findElement(By.className("passed")).getText();
-		final String operaTotal4 = parent4.findElement(By.className("total")).getText();
-		final String operaFailed4 = parent4.findElement(By.className("failed")).getText();
-
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, operaPassed4);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, operaTotal4);
-		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, operaFailed4);
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed2);
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, total2);
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, failed2);
 	}
 
 	@Test
@@ -109,13 +88,22 @@ public class VerifyClientSideTests
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
 		}
 
-		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
-		new WebDriverWait(VerifyClientSideTests.chromeDriver1, 3).until(ExpectedConditions
-				.presenceOfElementLocated(By.id("runsSummary")));
+		((JavascriptExecutor)VerifyClientSideTests.chromeDriver)
+				.executeScript("window.scrollBy(0,1000)");
+		VerifyClientSideTests.chromeDriver.findElement(By.id("runMistletoe")).click();
 
-		final String chromeTotal = VerifyClientSideTests.chromeDriver1.findElement(
+		try
+		{
+			Thread.sleep(6000);
+		}
+		catch (final InterruptedException e)
+		{
+			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
+		}
+
+		final String chromeTotal = VerifyClientSideTests.chromeDriver.findElement(
 				By.id("runsSummary")).getText();
-		final String chromeFailed = VerifyClientSideTests.chromeDriver1.findElement(
+		final String chromeFailed = VerifyClientSideTests.chromeDriver.findElement(
 				By.id("errorsSummary")).getText();
 
 		Assert.assertEquals(VerifyClientSideTests.MISTLETOE_TOTAL_TESTS, chromeTotal);
@@ -125,9 +113,7 @@ public class VerifyClientSideTests
 	@AfterClass
 	public static void tearDownClass()
 	{
-		VerifyClientSideTests.chromeDriver1.quit();
-		VerifyClientSideTests.chromeDriver2.quit();
-		VerifyClientSideTests.firefoxDriver.quit();
+		VerifyClientSideTests.chromeDriver.quit();
 		VerifyClientSideTests.operaDriver.quit();
 	}
 

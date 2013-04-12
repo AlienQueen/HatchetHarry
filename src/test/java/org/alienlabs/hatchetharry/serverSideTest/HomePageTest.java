@@ -217,8 +217,6 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
-	// @Ignore("change in CardPanels implementation")
-	// TODO activate me again
 	public void testRenderBaldu()
 	{
 		// Test the baldu and its different children
