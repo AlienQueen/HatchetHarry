@@ -10,7 +10,6 @@ import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
-import org.alienlabs.hatchetharry.serverSideTest.SpringContextLoaderBaseTest;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.junit.Assert;
@@ -18,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Required;
 
-public class BasicDatabaseTest extends SpringContextLoaderBaseTest implements Serializable
+public class BasicDatabaseTest implements Serializable
 {
 	@SpringBean
 	private CardCollectionDao cardCollectionDao;
