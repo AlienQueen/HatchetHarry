@@ -11,7 +11,6 @@ import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
-import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -67,7 +66,6 @@ public class BasicDatabaseTest implements Serializable
 				BasicDatabaseTest.context = BasicDatabaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
 						new SpringComponentInjector(this, BasicDatabaseTest.context, true));
-				BasicDatabaseTest.context.getBean(PersistenceService.class).resetDb();
 			}
 		};
 
