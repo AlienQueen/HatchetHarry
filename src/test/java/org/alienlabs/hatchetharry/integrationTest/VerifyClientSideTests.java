@@ -89,7 +89,7 @@ public class VerifyClientSideTests
 		}
 
 		((JavascriptExecutor)VerifyClientSideTests.chromeDriver)
-				.executeScript("window.scrollBy(0,1000)");
+				.executeScript("window.scrollBy(0,300)");
 		VerifyClientSideTests.chromeDriver.findElement(By.id("runMistletoe")).click();
 
 		try
