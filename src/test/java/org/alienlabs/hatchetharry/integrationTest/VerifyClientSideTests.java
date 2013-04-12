@@ -46,7 +46,7 @@ public class VerifyClientSideTests
 			+ "    (top + height) <= (window.pageYOffset + window.innerHeight) &&\n"
 			+ "    (left + width) <= (window.pageXOffset + window.innerWidth)\n"
 			+ "  )\n;"
-			+ "}\n"
+			+ "};\n"
 			+ "\n"
 			+ "var elementToLookFor = document.getElementById('runMistletoe');\n"
 			+ "\n"
