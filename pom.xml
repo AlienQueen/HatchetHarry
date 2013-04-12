@@ -781,7 +781,7 @@ You are free to modify any part of its source code (client-side or server-side),
 			        </dependency>
       			</dependencies>
 		        <configuration>
-					<scanIntervalSeconds>2</scanIntervalSeconds>
+					<scanIntervalSeconds>600</scanIntervalSeconds>
 					<stopKey>foo</stopKey>
                 	<stopPort>9999</stopPort>
            			<daemon>true</daemon>
