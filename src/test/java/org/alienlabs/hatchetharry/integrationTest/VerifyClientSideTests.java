@@ -11,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.opera.core.systems.OperaDriver;
 
@@ -23,8 +25,7 @@ public class VerifyClientSideTests
 	private static final String MISTLETOE_FAILED_TESTS = "Errors/Failures: 0";
 	private static final String MISTLETOE_TOTAL_TESTS = "Total tests: 2";
 
-	// private static final Logger LOGGER =
-	// LoggerFactory.getLogger(VerifyClientSideTests.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyClientSideTests.class);
 
 	private static WebDriver operaDriver;
 	private static WebDriver firefoxDriver;
@@ -99,6 +100,15 @@ public class VerifyClientSideTests
 	@Test
 	public void testMistletoe()
 	{
+		try
+		{
+			Thread.sleep(4000);
+		}
+		catch (final InterruptedException e)
+		{
+			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
+		}
+
 		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 		new WebDriverWait(VerifyClientSideTests.chromeDriver1, 3).until(ExpectedConditions
 				.presenceOfElementLocated(By.id("runsSummary")));

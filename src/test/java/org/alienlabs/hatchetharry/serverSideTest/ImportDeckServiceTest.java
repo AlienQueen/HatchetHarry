@@ -5,54 +5,26 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Test of the ImportDeckService (it only uses the WicketTester in order to load the Spring context).
+ * Test of the ImportDeckService (it only uses the WicketTester in order to load
+ * the Spring context).
  */
-public class ImportDeckServiceTest
+public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 {
-	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml" });
-	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
-	protected static transient ApplicationContext context;
-
-	@BeforeClass
-	public static void setUpBeforeClass()
-	{
-		ImportDeckServiceTest.webApp = new HatchetHarryApplication()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void init()
-			{
-				ImportDeckServiceTest.context = ImportDeckServiceTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
-				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, ImportDeckServiceTest.context, true));
-			}
-		};
-		ImportDeckServiceTest.tester = new WicketTester(ImportDeckServiceTest.webApp);
-		ImportDeckServiceTest.context.getBean(PersistenceService.class).resetDb();
-	}
-
 	@Test
 	public void testImportDeck() throws FileNotFoundException, IOException
 	{
 		// Init
-		final PersistenceService persistenceService = ImportDeckServiceTest.context
+		SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
+
+		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
 				.getBean(PersistenceService.class);
-		final ImportDeckService importDeckService = ImportDeckServiceTest.context
+		final ImportDeckService importDeckService = SpringContextLoaderBaseTest.context
 				.getBean(ImportDeckService.class);
 
 		final boolean auraBantAlreadyExists = (null != persistenceService

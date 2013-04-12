@@ -3,7 +3,6 @@ package org.alienlabs.hatchetharry.serverSideTest;
 import java.util.List;
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -14,74 +13,27 @@ import org.alienlabs.hatchetharry.view.component.PutToGraveyardFromBattlefieldBe
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
-import org.apache.wicket.util.tester.WicketTester;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Non regression tests using the WicketTester.
  */
-public class NonRegressionTest
+public class NonRegressionTest extends SpringContextLoaderBaseTest
 {
-	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml" });
-	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
-	protected static transient ApplicationContext context;
-	protected static String pageDocument;
-
-	@BeforeClass
-	public static void setUpBeforeClass()
-	{
-		NonRegressionTest.webApp = new HatchetHarryApplication()
-		{
-			private static final long serialVersionUID = 1L;
-
-
-			@Override
-			public void init()
-			{
-				NonRegressionTest.context = NonRegressionTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
-				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, NonRegressionTest.context, true));
-				NonRegressionTest.context.getBean(PersistenceService.class).resetDb();
-			}
-		};
-
-		NonRegressionTest.tester = new WicketTester(NonRegressionTest.webApp);
-
-		// start and render the test page
-		NonRegressionTest.tester.startPage(HomePage.class);
-
-		// assert rendered page class
-		NonRegressionTest.tester.assertRenderedPage(HomePage.class);
-
-		NonRegressionTest.pageDocument = NonRegressionTest.tester.getLastResponse().getDocument();
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass()
-	{
-		NonRegressionTest.context.getBean(PersistenceService.class).resetDb();
-	}
-
 	@Test
 	public void testDrawingACardShouldRaiseTheNumberOfCardsInHandToHeight()
 	{
 		// Init
 		// assert hand is present
-		NonRegressionTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
 
 		// assert URL of a thumbnail
-		List<TagTester> tagTester = TagTester.createTagsByAttribute(NonRegressionTest.pageDocument,
-				"class", "nav-thumb", false);
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(
+				SpringContextLoaderBaseTest.pageDocument, "class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -91,21 +43,23 @@ public class NonRegressionTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// Run
-		NonRegressionTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		NonRegressionTest.tester.clickLink("drawCardLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("drawCardLink", true);
 
 		// Verify
-		NonRegressionTest.pageDocument = NonRegressionTest.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+				.getLastResponse().getDocument();
 		final String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ajax-response><component id=\"galleryParent\" ><![CDATA[<span id=\"galleryParent\">";
-		final int toRemoveHeader = NonRegressionTest.pageDocument.indexOf(header);
-		NonRegressionTest.pageDocument = NonRegressionTest.pageDocument.substring(toRemoveHeader
-				+ header.length());
-		final int toRemoveFooter = NonRegressionTest.pageDocument.indexOf("]]></component>");
-		NonRegressionTest.pageDocument = NonRegressionTest.pageDocument
+		final int toRemoveHeader = SpringContextLoaderBaseTest.pageDocument.indexOf(header);
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.pageDocument
+				.substring(toRemoveHeader + header.length());
+		final int toRemoveFooter = SpringContextLoaderBaseTest.pageDocument
+				.indexOf("]]></component>");
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.pageDocument
 				.substring(0, toRemoveFooter);
 
-		tagTester = TagTester.createTagsByAttribute(NonRegressionTest.pageDocument, "class",
-				"nav-thumb", false);
+		tagTester = TagTester.createTagsByAttribute(SpringContextLoaderBaseTest.pageDocument,
+				"class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -125,12 +79,13 @@ public class NonRegressionTest
 	public void testPuttingACardToGraveyardShouldNotMoveCardsInBattlefield()
 	{
 		// Create game
-		NonRegressionTest.tester.assertComponent("createGameLink", AjaxLink.class);
-		NonRegressionTest.tester.clickLink("createGameLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("createGameLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("createGameLink", true);
 
-		NonRegressionTest.pageDocument = NonRegressionTest.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+				.getLastResponse().getDocument();
 
-		final FormTester createGameForm = NonRegressionTest.tester
+		final FormTester createGameForm = SpringContextLoaderBaseTest.tester
 				.newFormTester("createGameWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "0");
@@ -138,30 +93,31 @@ public class NonRegressionTest
 		createGameForm.submit();
 
 		// Retrieve PlayCardFromHandBehavior
-		NonRegressionTest.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		NonRegressionTest.tester.assertComponent("playCardPlaceholder:playCardLink",
+		SpringContextLoaderBaseTest.tester.assertComponent("playCardPlaceholder",
 				WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)NonRegressionTest.tester
+		SpringContextLoaderBaseTest.tester.assertComponent("playCardPlaceholder:playCardLink",
+				WebMarkupContainer.class);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 				.getBehaviors().get(0);
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final PersistenceService persistenceService = NonRegressionTest.context
+		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
 				.getBean(PersistenceService.class);
 		List<MagicCard> allCardsInBattlefield = persistenceService
 				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play two cards
-		NonRegressionTest.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		NonRegressionTest.tester.executeBehavior(pcfhb);
+		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
 
-		NonRegressionTest.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(1).getUuid());
-		NonRegressionTest.tester.executeBehavior(pcfhb);
+		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
 
 		// We should have two cards on the battlefield
 		// Of coordinates (100l + currentPlaceholderId*16) & (100l +
@@ -186,8 +142,8 @@ public class NonRegressionTest
 				|| (secondCard.getY().longValue() == 148l));
 
 		// Move the two cards
-		NonRegressionTest.tester.assertRenderedPage(HomePage.class);
-		final HomePage hp = (HomePage)NonRegressionTest.tester.getLastRenderedPage();
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		final HomePage hp = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
 		final WebMarkupContainer firstCardButton = (WebMarkupContainer)hp
 				.get("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(firstCardButton);
@@ -202,13 +158,13 @@ public class NonRegressionTest
 				CardMoveBehavior.class).get(0);
 		Assert.assertNotNull(secondMoveBehavior);
 
-		NonRegressionTest.tester.getRequest().setParameter("posX", "100");
-		NonRegressionTest.tester.getRequest().setParameter("posY", "100");
-		NonRegressionTest.tester.executeBehavior(firstMoveBehavior);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posX", "100");
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posY", "100");
+		SpringContextLoaderBaseTest.tester.executeBehavior(firstMoveBehavior);
 
-		NonRegressionTest.tester.getRequest().setParameter("posX", "200");
-		NonRegressionTest.tester.getRequest().setParameter("posY", "200");
-		NonRegressionTest.tester.executeBehavior(secondMoveBehavior);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posX", "200");
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posY", "200");
+		SpringContextLoaderBaseTest.tester.executeBehavior(secondMoveBehavior);
 
 		final MagicCard _firstCard = persistenceService.getCardFromUuid(UUID
 				.fromString(allCardsInBattlefield.get(0).getUuid()));
@@ -224,7 +180,7 @@ public class NonRegressionTest
 		final PutToGraveyardFromBattlefieldBehavior graveyardBehavior = firstCardButton
 				.getBehaviors(PutToGraveyardFromBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(graveyardBehavior);
-		NonRegressionTest.tester.executeBehavior(graveyardBehavior);
+		SpringContextLoaderBaseTest.tester.executeBehavior(graveyardBehavior);
 
 		// We expect the second card not to move
 		_secondCard = persistenceService.getCardFromUuid(UUID.fromString(allCardsInBattlefield.get(

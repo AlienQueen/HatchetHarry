@@ -44,7 +44,7 @@ public class BasicDatabaseTest implements Serializable
 	}
 
 	@Test
-	public void testDependencyInjectionWorks()
+	public void testDependencyInjection()
 	{
 		Assert.assertNotNull(this.cardCollectionDao);
 		Assert.assertNotNull(this.collectibleCardDao);
