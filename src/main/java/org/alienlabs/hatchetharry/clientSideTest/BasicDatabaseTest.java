@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.clientSideTest;
 
 import java.io.Serializable;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.persistence.dao.CardCollectionDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
@@ -10,12 +11,19 @@ import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
+import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BasicDatabaseTest implements Serializable
 {
@@ -37,6 +45,42 @@ public class BasicDatabaseTest implements Serializable
 	private SideDao sideDao;
 
 	private static final long serialVersionUID = 1L;
+
+	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+			new String[] { "applicationContext.xml" });
+	protected static transient WicketTester tester;
+	protected static HatchetHarryApplication webApp;
+	protected static transient ApplicationContext context;
+	protected static String pageDocument;
+
+	@BeforeClass
+	public static void setUpBeforeClass()
+	{
+		BasicDatabaseTest.webApp = new HatchetHarryApplication()
+		{
+			private static final long serialVersionUID = 1L;
+
+
+			@Override
+			public void init()
+			{
+				BasicDatabaseTest.context = BasicDatabaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
+				this.getComponentInstantiationListeners().add(
+						new SpringComponentInjector(this, BasicDatabaseTest.context, true));
+				BasicDatabaseTest.context.getBean(PersistenceService.class).resetDb();
+			}
+		};
+
+		BasicDatabaseTest.tester = new WicketTester(BasicDatabaseTest.webApp);
+
+		// start and render the test page
+		BasicDatabaseTest.tester.startPage(HomePage.class);
+
+		// assert rendered page class
+		BasicDatabaseTest.tester.assertRenderedPage(HomePage.class);
+
+		BasicDatabaseTest.pageDocument = BasicDatabaseTest.tester.getLastResponse().getDocument();
+	}
 
 	@Before
 	public void setUp()

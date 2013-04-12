@@ -309,8 +309,10 @@ public class JoinGameModalWindow extends Panel
 				// + "card.css('left', '" + posX + "px'); "
 				// + "card.css('top', '500px'); }, 3000); ");
 
-				final String opponentSide = ("infrared".equals(JoinGameModalWindow.this.sideInput
-						.getDefaultModelObjectAsString())) ? "ultraviolet" : "infrared";
+				// final String opponentSide =
+				// ("infrared".equals(JoinGameModalWindow.this.sideInput
+				// .getDefaultModelObjectAsString())) ? "ultraviolet" :
+				// "infrared";
 
 				// final SidePlaceholderPanel spp2 = new
 				// SidePlaceholderPanel("firstSidePlaceholder",
@@ -325,7 +327,7 @@ public class JoinGameModalWindow extends Panel
 				//
 				// JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
 
-				final int posX2 = (posX == 300) ? 900 : 300;
+				// final int posX2 = (posX == 300) ? 900 : 300;
 
 				// TODO: re-write this in Wicket-Atmosphere
 				// buf.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
