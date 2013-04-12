@@ -28,6 +28,35 @@ public class VerifyClientSideTests
 	private static WebDriver operaDriver;
 	private static final String port = "8088";
 
+	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "var elementInViewport = function(el) {\n"
+			+ "  var top = el.offsetTop;\n"
+			+ "  var left = el.offsetLeft;\n"
+			+ "  var width = el.offsetWidth\n;"
+			+ "  var height = el.offsetHeight;\n"
+			+ "\n"
+			+ "  while(el.offsetParent) {\n"
+			+ "    el = el.offsetParent\n;"
+			+ "    top += el.offsetTop\n;"
+			+ "    left += el.offsetLeft;\n"
+			+ "  }\n"
+			+ "}\n"
+			+ "  return (\n"
+			+ "    top >= window.pageYOffset &&\n"
+			+ "    left >= window.pageXOffset &&\n"
+			+ "    (top + height) <= (window.pageYOffset + window.innerHeight) &&\n"
+			+ "    (left + width) <= (window.pageXOffset + window.innerWidth)\n"
+			+ "  )\n;"
+			+ "}\n"
+			+ "\n"
+			+ "var elementToLookFor = document.getElementById('runMistletoe');\n"
+			+ "window.scrollBy(100, 0);\n"
+			+ "\n"
+			+ "for (var i = 0; i < 5000; i = i + 100) {\n"
+			+ "	if (elementInViewport(elementToLookFor)) {\n"
+			+ "		break;\n"
+			+ "	} else {\n"
+			+ "		window.scrollBy(0,100);\n" + "	}\n" + "}\n";
+
 	@BeforeClass
 	public static void setUpClass()
 	{
@@ -89,7 +118,7 @@ public class VerifyClientSideTests
 		}
 
 		((JavascriptExecutor)VerifyClientSideTests.chromeDriver)
-				.executeScript("window.scrollBy(0,300)");
+				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.chromeDriver.findElement(By.id("runMistletoe")).click();
 
 		try
