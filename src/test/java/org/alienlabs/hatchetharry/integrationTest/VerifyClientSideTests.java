@@ -49,7 +49,6 @@ public class VerifyClientSideTests
 			+ "}\n"
 			+ "\n"
 			+ "var elementToLookFor = document.getElementById('runMistletoe');\n"
-			+ "window.scrollBy(100, 0);\n"
 			+ "\n"
 			+ "for (var i = 0; i < 5000; i = i + 100) {\n"
 			+ "	if (elementInViewport(elementToLookFor)) {\n"
