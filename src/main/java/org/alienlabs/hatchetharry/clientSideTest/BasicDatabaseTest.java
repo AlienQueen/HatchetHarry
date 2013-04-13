@@ -47,9 +47,9 @@ public class BasicDatabaseTest implements Serializable
 
 	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml" });
-	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
-	protected static transient ApplicationContext context;
+	static transient WicketTester tester;
+	static HatchetHarryApplication webApp;
+	static transient ApplicationContext context;
 	protected static String pageDocument;
 
 	@BeforeClass

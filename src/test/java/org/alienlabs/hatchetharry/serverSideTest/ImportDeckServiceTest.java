@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,7 +37,8 @@ public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 		final int initialNumberOfCollectibleCards = persistenceService.countCollectibleCards();
 		final int initialNumberOfMagicCards = persistenceService.countMagicCards();
 
-		final File deck = new File("/home/nostromo/Aura Bant.txt");
+		final File deck = new File(ResourceBundle.getBundle(
+				RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 		final byte[] content = new byte[475];
 
 		final FileInputStream fis = new FileInputStream(deck);
