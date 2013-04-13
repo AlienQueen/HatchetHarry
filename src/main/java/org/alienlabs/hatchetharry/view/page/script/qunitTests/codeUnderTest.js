@@ -78,8 +78,6 @@ jQuery(function() {
 	jQuery("#card249c4f0b_cad0_4606_b5ea_eaee8866a347").easyTooltip({
 		useElement: "cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347"				   
 	});
-	
-	console.log("set tooltip for Baldu");
 });
 
 //The website tour, a jQuery plugin
