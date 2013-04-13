@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,6 +130,9 @@ public class VerifyClientSideTests
 		{
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
 		}
+
+		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("runsSummary")));
 
 		final String chromeTotal = VerifyClientSideTests.chromeDriver.findElement(
 				By.id("runsSummary")).getText();
