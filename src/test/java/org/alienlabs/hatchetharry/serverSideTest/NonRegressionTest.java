@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.CardMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
@@ -16,6 +17,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -70,6 +72,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
+	@Ignore
 	/** 
 	 * Init: we create a game, we play two cards, we move them to know positions
 	 * Run: then, we put the first card to the graveyard

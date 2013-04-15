@@ -66,7 +66,6 @@ import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChanne
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
-import org.alienlabs.hatchetharry.model.channel.SimplePredicate;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -92,7 +91,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -483,7 +481,7 @@ public class HomePage extends TestReportPage
 							NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(),
 							me.getSide(), null, null, null);
 
-					EventBus.get().post(ncc, pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 
 				HatchetHarrySession.get().setCombatInProgress(false);
@@ -524,7 +522,7 @@ public class HomePage extends TestReportPage
 							.get().getPlayer().getGame().getId(), HatchetHarrySession.get()
 							.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
 							.getDeckId());
-					EventBus.get().post(uacc, pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
 				}
 			}
 
@@ -707,7 +705,7 @@ public class HomePage extends TestReportPage
 							HatchetHarrySession.get().getPlayer().getName(), "", "", "",
 							HatchetHarrySession.get().isCombatInProgress());
 
-					EventBus.get().post(ncc, pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 
 				HatchetHarrySession.get().setCombatInProgress(
@@ -774,7 +772,7 @@ public class HomePage extends TestReportPage
 
 						try
 						{
-							EventBus.get().post(ncc, pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 						}
 						catch (final NullPointerException ex)
 						{
@@ -1298,8 +1296,7 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(buf.toString());
 	}
 
-	// TODO remove SimplePredicate.class
-	@Subscribe(filter = SimplePredicate.class)
+	@Subscribe
 	public void displayJoinGameMessage(final AjaxRequestTarget target,
 			final JoinGameNotificationCometChannel event)
 	{

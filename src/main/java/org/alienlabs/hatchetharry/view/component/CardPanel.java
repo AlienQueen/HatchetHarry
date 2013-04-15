@@ -68,17 +68,17 @@ public class CardPanel extends Panel
 			}
 		});
 
+		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.uuid);
+
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
 		cardHandle.setOutputMarkupId(true);
 		cardHandle.setMarkupId("cardHandle" + this.uuid.toString().replace("-", "_"));
+		cardHandle.add(new AttributeModifier("style", "position: absolute; top: " + myCard.getY()
+				+ "px; left: " + myCard.getX() + "px;"));
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("menutoggleButton" + this.uuid.toString().replace("-", "_"));
-
-		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.uuid);
-		menutoggleButton.add(new AttributeModifier("style", "position: absolute; top: "
-				+ myCard.getY() + "px; left: " + myCard.getX() + "px;"));
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
@@ -125,6 +125,7 @@ public class CardPanel extends Panel
 		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString().replace("-", "_"));
+
 
 		final MagicCard mc = this.persistenceService.getCardFromUuid(this.uuid);
 

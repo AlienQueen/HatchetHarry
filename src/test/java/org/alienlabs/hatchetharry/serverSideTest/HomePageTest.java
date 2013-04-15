@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.serverSideTest;
 
 import java.util.List;
 
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;

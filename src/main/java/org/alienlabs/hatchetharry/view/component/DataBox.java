@@ -10,7 +10,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -91,7 +90,7 @@ public class DataBox extends Panel
 							final String pageUuid = HatchetHarryApplication.getCometResources()
 									.get(p);
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-							EventBus.get().post(udbcc, pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 						}
 					}
 				};
@@ -126,7 +125,7 @@ public class DataBox extends Panel
 							final String pageUuid = HatchetHarryApplication.getCometResources()
 									.get(p);
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-							EventBus.get().post(udbcc, pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 						}
 					}
 				};

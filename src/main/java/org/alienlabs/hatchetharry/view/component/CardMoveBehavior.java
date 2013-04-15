@@ -16,7 +16,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -35,7 +34,6 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
 	private final CardPanel panel;
 
-	private String url, graveyardUrl, handUrl;
 	private final UUID uuid;
 	private String uuidValidForJs;
 
@@ -113,14 +111,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId,
 					Long.toString(posX), Long.toString(posY), uniqueid, playerId);
 
-			try
-			{
-				EventBus.get().post(cardMoveCometChannel, pageUuid);
-			}
-			catch (final NullPointerException ex) // Thrown in test mode
-			{
-				CardMoveBehavior.LOGGER.error("test threw an exception", ex);
-			}
+			HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel, pageUuid);
 		}
 	}
 
@@ -151,11 +142,6 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("graveyardUrl", this.putToGraveyardBehavior.getCallbackUrl());
 		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
 
-		this.url = this.getCallbackUrl().toString();
-		this.uuidValidForJs = this.uuid.toString().replace("-", "_");
-		this.graveyardUrl = this.putToGraveyardBehavior.getCallbackUrl().toString();
-		this.handUrl = this.putToHandFromBattlefieldBehavior.getCallbackUrl().toString();
-
 		final TextTemplate template4 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.draggable.js");
 		template4.interpolate(variables);
@@ -180,21 +166,6 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
-	}
-
-	public String getUrl()
-	{
-		return this.url;
-	}
-
-	public String getGraveyardUrl()
-	{
-		return this.graveyardUrl;
-	}
-
-	public String getHandUrl()
-	{
-		return this.handUrl;
 	}
 
 	public UUID getUuid()

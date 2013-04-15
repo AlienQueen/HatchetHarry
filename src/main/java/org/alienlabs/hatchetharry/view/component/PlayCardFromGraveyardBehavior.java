@@ -20,7 +20,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -91,8 +90,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 			final Long player = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
 
-			EventBus.get().post(pcfgcc, pageUuid);
-			EventBus.get().post(ncc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(pcfgcc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.serverSideTest;
+package org.alienlabs.hatchetharry.serverSideTest.util;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -34,6 +34,8 @@ public class SpringContextLoaderBaseTest
 				this.getComponentInstantiationListeners()
 						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
+				this.eventBus = new EventBusMock(this);
+
 				SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
 			}
 		};

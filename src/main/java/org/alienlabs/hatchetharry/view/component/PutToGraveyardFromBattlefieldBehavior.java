@@ -15,7 +15,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -90,15 +89,8 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 					HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
 							.getPlayer().getName(), "", "", mc.getTitle(), null);
 
-			try
-			{
-				EventBus.get().post(_ptgcc, _pageUuid);
-				EventBus.get().post(_ncc, _pageUuid);
-			}
-			catch (final NullPointerException ex) // Thrown in test mode
-			{
-				PutToGraveyardFromBattlefieldBehavior.LOGGER.error("test threw an exception", ex);
-			}
+			HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
 		}
 	}
 

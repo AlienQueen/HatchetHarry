@@ -46,7 +46,6 @@ import org.alienlabs.hatchetharry.model.channel.ChatCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.Form;
@@ -116,7 +115,7 @@ public class ChatPanel extends Panel
 
 					final ChatCometChannel ccc = new ChatCometChannel(gameId, chatMessage);
 
-					EventBus.get().post(ccc, pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(ccc, pageUuid);
 				}
 
 			}

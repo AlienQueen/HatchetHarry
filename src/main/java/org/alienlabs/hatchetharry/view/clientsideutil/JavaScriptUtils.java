@@ -43,9 +43,6 @@ public final class JavaScriptUtils
 			final MagicCard aCard = allCardsInBattlefield.get(i);
 
 			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
-			buf.append("var card = jQuery('#cardHandle" + uuidValidForJs + "'); "
-					+ "card.css('position', 'absolute'); " + "card.css('left', '" + aCard.getX()
-					+ "px'); " + "card.css('top', '" + aCard.getY() + "px'); ");
 
 			if (aCard.isTapped())
 			{

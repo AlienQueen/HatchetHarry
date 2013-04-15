@@ -25,7 +25,6 @@ import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.injection.Injector;
@@ -378,12 +377,12 @@ public class JoinGameModalWindow extends Panel
 				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
 						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
 						jsessionid, null, Long.valueOf(posX), 500l);
-				EventBus.get().post(jgcc);
+				HatchetHarryApplication.get().getEventBus().post(jgcc);
 
 				final Long _gameId = game.getId();
 				final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(
 						JoinGameModalWindow.this.player.getName(), jsessionid, _gameId);
-				EventBus.get().post(jgncc);
+				HatchetHarryApplication.get().getEventBus().post(jgncc);
 
 				final List<BigInteger> allPlayersInGameExceptMe = JoinGameModalWindow.this.persistenceService
 						.giveAllPlayersFromGameExceptMe(_gameId,
@@ -397,7 +396,7 @@ public class JoinGameModalWindow extends Panel
 					final Long p = allPlayersInGameExceptMe.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
 					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-					EventBus.get().post(udbcc, pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 				}
 
 				session.resetCardsInGraveyard();

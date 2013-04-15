@@ -15,7 +15,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -96,19 +95,9 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 							.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer()
 							.getName(), "", "", mc.getTitle(), null);
 
-			EventBus.get().post(pthfbcc, pageUuid);
-			EventBus.get().post(ncc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(pthfbcc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 		}
-
-		// return;
-		// }
-		// PutToHandFromBattlefieldBehavior.LOGGER.info("could not remove card uuid= "
-		// + mc.getUuid());
-		// return;
-		// }
-		// PutToHandFromBattlefieldBehavior.LOGGER.info("could not find CardPanel uuid= "
-		// + mc.getUuid() + " in allCardsInBattlefield from session");
-		// }
 	}
 
 	@Required

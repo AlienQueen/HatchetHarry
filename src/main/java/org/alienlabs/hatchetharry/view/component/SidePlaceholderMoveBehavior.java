@@ -57,7 +57,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		{
 			this.uuid = UUID.fromString(request.getParameter("uuid"));
 		}
-		catch (final Exception e)
+		catch (final IllegalArgumentException e)
 		{
 			SidePlaceholderMoveBehavior.LOGGER.error("error parsing UUID: " + e.getMessage());
 			return;

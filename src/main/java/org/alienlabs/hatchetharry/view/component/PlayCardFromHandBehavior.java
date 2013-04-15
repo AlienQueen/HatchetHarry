@@ -21,7 +21,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -105,17 +104,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
 			PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 
-			try
-			{
-				EventBus.get().post(pcfhcc, pageUuid);
-				EventBus.get().post(ncc, pageUuid);
-			}
-			catch (final NullPointerException ex) // Thrown in test mode
-			{
-				PlayCardFromHandBehavior.LOGGER.error("test threw an exception", ex);
-				// Mock of EventBus.get().post(pcfhcc, pageUuid)
-				JavaScriptUtils.updateCardsInBattlefield(target, gameId);
-			}
+			HatchetHarryApplication.get().getEventBus().post(pcfhcc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 		}
 
 	}

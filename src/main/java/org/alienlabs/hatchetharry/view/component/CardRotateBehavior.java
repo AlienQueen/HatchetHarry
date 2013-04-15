@@ -16,7 +16,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -72,7 +71,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 					playerToWhomToSend);
 			final CardRotateCometChannel crcc = new CardRotateCometChannel(gameId, card.getUuid(),
 					card.isTapped());
-			EventBus.get().post(crcc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(crcc, pageUuid);
 		}
 	}
 

@@ -49,7 +49,7 @@ public class HatchetHarryApplication extends WebApplication
 			ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
-	transient EventBus eventBus;
+	protected transient EventBus eventBus;
 
 	// Map of playerId and Atmosphere UUID
 	private static Map<Long, String> cometResources = new HashMap<Long, String>();
@@ -340,6 +340,11 @@ public class HatchetHarryApplication extends WebApplication
 			final ResourceStreamResource resource = new ResourceStreamResource(fileResourceStream);
 			resource.respond(attributes);
 		}
+	}
+
+	public EventBus getEventBus()
+	{
+		return this.eventBus;
 	}
 
 }

@@ -33,9 +33,9 @@ You are free to modify any part of its source code (client-side or server-side),
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.5.0</wicket.version>
+		<wicket.version>6.6.0</wicket.version>
 		<wicketstuff.version>6.4.0</wicketstuff.version>
-		<wicket-atmosphere.version>0.8-SNAPSHOT</wicket-atmosphere.version>
+		<wicket-atmosphere.version>0.9</wicket-atmosphere.version>
 		<atmosphere.version>1.0.12</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
@@ -834,8 +834,15 @@ You are free to modify any part of its source code (client-side or server-side),
                         <artifactId>maven-pmd-plugin</artifactId>
                         <version>3.0.1</version>
                         <configuration>
-                                        <targetJdk>1.6</targetJdk>
-                                        <minimumPriority>5</minimumPriority>
+                                <targetJdk>1.6</targetJdk>
+	                        <minimumPriority>0</minimumPriority>
+			          <rulesets>
+				    <ruleset>/home/nostromo/rulesets/basic.xml</ruleset>
+				    <ruleset>/home/nostromo/rulesets/imports.xml</ruleset>
+				    <ruleset>/home/nostromo/rulesets/optimizations.xml</ruleset>
+				    <ruleset>/home/nostromo/rulesets/unnecessary.xml</ruleset>
+				    <ruleset>/home/nostromo/rulesets/unusedcode.xml</ruleset>
+				  </rulesets>
                         </configuration>
                 </plugin>
                 <plugin>
@@ -844,7 +851,7 @@ You are free to modify any part of its source code (client-side or server-side),
                         <version>2.5.2</version>
                         <configuration>
                                 <effort>Max</effort>
-                                <threshold>High</threshold>
+                                <threshold>Default</threshold>
                         </configuration>
                 </plugin>
 	</plugins>
