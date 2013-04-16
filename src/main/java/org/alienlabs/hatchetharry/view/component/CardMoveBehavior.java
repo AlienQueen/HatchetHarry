@@ -67,8 +67,19 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String uniqueid = this.uuid.toString();
 		CardMoveBehavior.LOGGER.info("uuid: " + uniqueid);
 
-		final long posX = (Long.parseLong(_mouseX)) <= -300 ? -300 : Long.parseLong(_mouseX);
-		final long posY = (Long.parseLong(_mouseY)) <= -150 ? -150 : Long.parseLong(_mouseY);
+		final long posX;
+		final long posY;
+
+		try
+		{
+			posX = (Long.parseLong(_mouseX)) <= -300 ? -300 : Long.parseLong(_mouseX);
+			posY = (Long.parseLong(_mouseY)) <= -150 ? -150 : Long.parseLong(_mouseY);
+		}
+		catch (final NumberFormatException e)
+		{
+			CardMoveBehavior.LOGGER.error("error parsing coordinates of moved card", e);
+			return;
+		}
 
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 		MagicCard mc = null;
