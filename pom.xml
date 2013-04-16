@@ -267,7 +267,7 @@ You are free to modify any part of its source code (client-side or server-side),
           			<artifactId>commons-logging</artifactId>
         		</exclusion>
       		</exclusions>        	
-        </dependency>-->
+        </dependency>
         <dependency>
         	<groupId>org.seleniumhq.webdriver</groupId>
         	<artifactId>webdriver-ie</artifactId>
