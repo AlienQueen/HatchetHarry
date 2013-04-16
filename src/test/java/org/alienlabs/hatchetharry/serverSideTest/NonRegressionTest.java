@@ -5,19 +5,20 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
+import org.alienlabs.hatchetharry.serverSideTest.util.EventBusMock;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.component.CardMoveBehavior;
+import org.alienlabs.hatchetharry.view.component.CardRotateBehavior;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
-import org.alienlabs.hatchetharry.view.component.PutToGraveyardFromBattlefieldBehavior;
+import org.alienlabs.hatchetharry.view.component.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -72,21 +73,17 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
-	@Ignore
 	/** 
-	 * Init: we create a game, we play two cards, we move them to know positions
-	 * Run: then, we put the first card to the graveyard
-	 * Verify: the second card shall not have moved.
+	 * Init: we create a game, we play a card, we tap it, we put it back to hand
+	 * Run: we play it again
+	 * Verify: the card should be untapped.
 	 * 
 	 */
-	public void testPuttingACardToGraveyardShouldNotMoveCardsInBattlefield()
+	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped()
 	{
 		// Create game
 		SpringContextLoaderBaseTest.tester.assertComponent("createGameLink", AjaxLink.class);
 		SpringContextLoaderBaseTest.tester.clickLink("createGameLink", true);
-
-		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
-				.getLastResponse().getDocument();
 
 		final FormTester createGameForm = SpringContextLoaderBaseTest.tester
 				.newFormTester("createGameWindow:content:form");
@@ -102,8 +99,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				WebMarkupContainer.class);
 		final WebMarkupContainer playCardLink = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
+		PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(
+				0);
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -113,82 +110,64 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
-		// Play two cards
+		// Play a card
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
 
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
-				HatchetHarrySession.get().getFirstCardsInHand().get(1).getUuid());
+		// We should have one card on the battlefield, untapped
+		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+		MagicCard card = persistenceService.getCardFromUuid(UUID.fromString(allCardsInBattlefield
+				.get(0).getUuid()));
+		Assert.assertFalse(card.isTapped());
+
+		// Tap card
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
+		final HomePage hp = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
+		final WebMarkupContainer cardButton = (WebMarkupContainer)hp
+				.get("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton");
+		Assert.assertNotNull(cardButton);
+		final CardRotateBehavior rotateBehavior = cardButton.getBehaviors(CardRotateBehavior.class)
+				.get(0);
+		Assert.assertNotNull(rotateBehavior);
+
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("uuid", card.getUuid());
+		SpringContextLoaderBaseTest.tester.executeBehavior(rotateBehavior);
+
+		// Assert card is tapped
+		card = persistenceService.getCardFromUuid(UUID.fromString(allCardsInBattlefield.get(0)
+				.getUuid()));
+		Assert.assertTrue(card.isTapped());
+
+		// Put the first card back to hand
+		final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior = cardButton
+				.getBehaviors(PutToHandFromBattlefieldBehavior.class).get(0);
+		Assert.assertNotNull(putToHandFromBattlefieldBehavior);
+		SpringContextLoaderBaseTest.tester.executeBehavior(putToHandFromBattlefieldBehavior);
+
+		// We should have no card on the battlefield
+		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		Assert.assertEquals(0, allCardsInBattlefield.size());
+
+		// Play card again
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
+		pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(0);
+		Assert.assertNotNull(pcfhb);
+
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card", card.getUuid());
 		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
 
-		// We should have two cards on the battlefield
-		// Of coordinates (100l + currentPlaceholderId*16) & (100l +
-		// (currentPlaceholderId+1)*16)
+		// We should have one card on the battlefield, untapped
 		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
-		Assert.assertEquals(2, allCardsInBattlefield.size());
-
-		final MagicCard firstCard = persistenceService.getCardFromUuid(UUID
-				.fromString(allCardsInBattlefield.get(0).getUuid()));
-		Assert.assertTrue((firstCard.getX().longValue() == 116l)
-				|| (firstCard.getX().longValue() == 132l) || (firstCard.getX().longValue() == 148l));
-		Assert.assertTrue((firstCard.getY().longValue() == 116l)
-				|| (firstCard.getY().longValue() == 132l) || (firstCard.getY().longValue() == 148l));
-
-		final MagicCard secondCard = persistenceService.getCardFromUuid(UUID
-				.fromString(allCardsInBattlefield.get(1).getUuid()));
-		Assert.assertTrue((secondCard.getX().longValue() == 116l)
-				|| (secondCard.getX().longValue() == 132l)
-				|| (secondCard.getX().longValue() == 148l));
-		Assert.assertTrue((secondCard.getY().longValue() == 116l)
-				|| (secondCard.getY().longValue() == 132l)
-				|| (secondCard.getY().longValue() == 148l));
-
-		// Move the two cards
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		final HomePage hp = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
-		final WebMarkupContainer firstCardButton = (WebMarkupContainer)hp
-				.get("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton");
-		Assert.assertNotNull(firstCardButton);
-		final CardMoveBehavior firstMoveBehavior = firstCardButton.getBehaviors(
-				CardMoveBehavior.class).get(0);
-		Assert.assertNotNull(firstMoveBehavior);
-
-		final WebMarkupContainer secondCardPanelButton = (WebMarkupContainer)hp
-				.get("parentPlaceholder:handCards:1:cardPanel:cardHandle:menutoggleButton");
-		Assert.assertNotNull(secondCardPanelButton);
-		final CardMoveBehavior secondMoveBehavior = secondCardPanelButton.getBehaviors(
-				CardMoveBehavior.class).get(0);
-		Assert.assertNotNull(secondMoveBehavior);
-
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posX", "100");
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posY", "100");
-		SpringContextLoaderBaseTest.tester.executeBehavior(firstMoveBehavior);
-
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posX", "200");
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posY", "200");
-		SpringContextLoaderBaseTest.tester.executeBehavior(secondMoveBehavior);
-
-		final MagicCard _firstCard = persistenceService.getCardFromUuid(UUID
-				.fromString(allCardsInBattlefield.get(0).getUuid()));
-		Assert.assertTrue(_firstCard.getX().longValue() == 100l);
-		Assert.assertTrue(_firstCard.getY().longValue() == 100l);
-
-		MagicCard _secondCard = persistenceService.getCardFromUuid(UUID
-				.fromString(allCardsInBattlefield.get(1).getUuid()));
-		Assert.assertTrue((_secondCard.getX().longValue() == 200l));
-		Assert.assertTrue((_secondCard.getY().longValue() == 200l));
-
-		// Put the first card to graveyard
-		final PutToGraveyardFromBattlefieldBehavior graveyardBehavior = firstCardButton
-				.getBehaviors(PutToGraveyardFromBattlefieldBehavior.class).get(0);
-		Assert.assertNotNull(graveyardBehavior);
-		SpringContextLoaderBaseTest.tester.executeBehavior(graveyardBehavior);
-
-		// We expect the second card not to move
-		_secondCard = persistenceService.getCardFromUuid(UUID.fromString(allCardsInBattlefield.get(
-				1).getUuid()));
-		Assert.assertTrue((_secondCard.getX().longValue() == 200l));
-		Assert.assertTrue((_secondCard.getY().longValue() == 200l));
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+		final List<Object> allMessages = EventBusMock.getMessages();
+		System.out.println(allMessages);
+		Assert.assertFalse(persistenceService.getCardFromUuid(
+				((PlayCardFromHandCometChannel)allMessages.get(6)).getUuidToLookFor()).isTapped());
 	}
 }

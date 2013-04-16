@@ -69,6 +69,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 				+ HatchetHarrySession.get().getPlayer().getId());
 
 		mc.setZone(CardZone.HAND);
+		mc.setTapped(false);
 		this.persistenceService.updateCard(mc);
 
 		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();

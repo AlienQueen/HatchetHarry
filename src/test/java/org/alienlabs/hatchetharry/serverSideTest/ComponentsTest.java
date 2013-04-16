@@ -23,4 +23,10 @@ public class ComponentsTest// extends SpringContextLoaderBaseTest
 	{
 	}
 
+	@Test
+	@Ignore
+	public void testPlayCardFromGraveyardBehavior()
+	{
+	}
+
 }
