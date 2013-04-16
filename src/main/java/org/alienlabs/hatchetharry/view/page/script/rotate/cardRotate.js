@@ -1,5 +1,5 @@
 jQuery(function() { 
 	window.setTimeout(function() {
-		jQuery("#tapHandleImage${uuidValidForJs}").data("url","${url}");
+		jQuery("#tapHandleImage${uuidValidForJs}").data("tapUrl","${url}");
 	}, 1000);
 });

@@ -57,12 +57,26 @@ public final class JavaScriptUtils
 					+ "').easyTooltip({ useElement: 'cardTooltip" + uuidValidForJs + "'}); ");
 
 			buf.append("jQuery('#tapHandleImage" + uuidValidForJs + "').unbind('click'); ");
-			buf.append("var url = $('#tapHandleImage" + uuidValidForJs + "').data('url'); ");
-			buf.append("Wicket.Ajax.get({'u': url + '&uuid=" + aCard.getUuid()
+			buf.append("var tapUrl = $('#tapHandleImage" + uuidValidForJs + "').data('tapUrl'); ");
+			buf.append("Wicket.Ajax.get({'u': tapUrl + '&uuid=" + aCard.getUuid()
 					+ "', 'e': 'click', 'c' : 'tapHandleImage" + uuidValidForJs + "'}); ");
 
-			buf.append("jQuery('#cardHandle" + uuidValidForJs
-					+ "').draggable({ handle : '#handleImage" + uuidValidForJs + "' }); ");
+			buf.append("var dragUrl = $('#handleImage" + uuidValidForJs + "').data('dragUrl'); ");
+			buf.append("jQuery('#cardHandle"
+					+ uuidValidForJs
+					+ "').draggable({ handle : '#handleImage"
+					+ uuidValidForJs
+					+ "' , stop: function(event, ui) { "
+					+ "var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
+					+ "Wicket.Ajax.get({ 'u' : dragUrl + '&posX=' + card.position().left + '&posY=' + card.position().top}); "
+					+ "} }); ");
+			buf.append("var graveyardUrl = jQuery('#handleImage" + uuidValidForJs
+					+ "').data('graveyardUrl'); ");
+			buf.append("var handUrl = jQuery('#handleImage" + uuidValidForJs
+					+ "').data('handUrl'); ");
+			buf.append("jQuery('#putToGraveyard').droppable({  drop: function(event, ui) { "
+					+ "Wicket.Ajax.get({ 'u' : graveyardUrl + '&uuid=" + uuidValidForJs + "' }); "
+					+ "return false; } }); ");
 		}
 
 		buf.append(" }, 3000); ");

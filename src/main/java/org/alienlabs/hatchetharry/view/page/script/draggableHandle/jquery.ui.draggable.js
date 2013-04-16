@@ -262,12 +262,6 @@
 									this._clear();
 								}
 							}
-
-							var element = $("#" + event.target.id); 
-							var url = element.data("url");
-							var card = $("#" + event.target.id.replace('handleImage','cardHandle'));
-							
-							Wicket.Ajax.get({ 'u' : url + '&posX=' + card.position().left + '&posY=' + card.position().top});
 							return true;
 						},
 

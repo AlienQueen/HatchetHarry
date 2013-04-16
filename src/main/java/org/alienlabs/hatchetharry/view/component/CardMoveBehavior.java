@@ -158,17 +158,22 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		template4.interpolate(variables);
 		js = js.append("\n" + template4.asString());
 
-		// TODO in reality, cardMove.js configures the context menu: move it in
-		// its own Behavior
 		final TextTemplate template5 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/cardMove.js");
+				"script/draggableHandle/jquery.ui.droppable.1.8.18.js");
 		template5.interpolate(variables);
 		js = js.append("\n" + template5.asString());
 
+		// TODO in reality, cardMove.js configures the context menu: move it in
+		// its own Behavior
 		final TextTemplate template6 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/initDrag.js");
+				"script/draggableHandle/cardMove.js");
 		template6.interpolate(variables);
 		js = js.append("\n" + template6.asString());
+
+		final TextTemplate template8 = new PackageTextTemplate(HomePage.class,
+				"script/draggableHandle/initDrag.js");
+		template8.interpolate(variables);
+		js = js.append("\n" + template8.asString());
 
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 	}

@@ -53,9 +53,18 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String uuidToLookFor = request.getParameter("uuid");
+		final MagicCard card;
+		try
+		{
+			card = this.persistenceService.getCardFromUuid(UUID.fromString(uuidToLookFor));
+		}
+		catch (final NullPointerException e)
+		{
+			CardRotateBehavior.LOGGER.error("Error parsing UUID " + uuidToLookFor
+					+ " in CardRotateBehavior", e);
+			return;
+		}
 
-		final MagicCard card = this.persistenceService.getCardFromUuid(UUID
-				.fromString(uuidToLookFor));
 		card.setTapped(!card.isTapped());
 		this.persistenceService.updateCard(card);
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
