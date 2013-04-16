@@ -225,11 +225,11 @@ You are free to modify any part of its source code (client-side or server-side),
         		</exclusion>
       		</exclusions>        	
         </dependency>
- <!--        <dependency>
+        <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-chrome-driver</artifactId>
         	<version>${selenium.version}</version>
-        </dependency>--> 
+        </dependency> 
         <dependency>
         	<groupId>org.seleniumhq.selenium</groupId>
         	<artifactId>selenium-ie-driver</artifactId>
@@ -246,7 +246,7 @@ You are free to modify any part of its source code (client-side or server-side),
         	<artifactId>selenium-iphone-driver</artifactId>
         	<version>${selenium.version}</version>
         </dependency>
-   <!--      <dependency>
+        <dependency>
         	<groupId>org.seleniumhq.webdriver</groupId>
         	<artifactId>webdriver-chrome</artifactId>
         	<version>0.9.7376</version>
