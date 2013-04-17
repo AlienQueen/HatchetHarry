@@ -65,11 +65,12 @@ public final class JavaScriptUtils
 
 			buf.append("var dragUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
 					+ "').data('dragUrl'); ");
+			buf.append("var shouldDrag" + uuidValidForJs + " = true; ");
 			buf.append("jQuery('#cardHandle"
 					+ uuidValidForJs
 					+ "').draggable({ handle : '#handleImage"
 					+ uuidValidForJs
-					+ "' , stop: function(event, ui) { "
+					+ "', stop: function(event, ui) { "
 					+ "var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
 					+ "Wicket.Ajax.get({ 'u' : dragUrl" + uuidValidForJs
 					+ " + '&posX=' + card.position().left + '&posY=' + card.position().top}); "
@@ -78,12 +79,32 @@ public final class JavaScriptUtils
 					+ uuidValidForJs + "').data('graveyardUrl'); ");
 			buf.append("var handUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
 					+ "').data('handUrl'); ");
-			buf.append("jQuery('#putToGraveyard').droppable({  drop: function(event, ui) { "
-					+ "Wicket.Ajax.get({ 'u' : graveyardUrl" + uuidValidForJs + " + '&uuid="
-					+ uuidValidForJs + "' }); " + "return false; } }); ");
 		}
 
-		buf.append(" }, 3000); ");
+		buf.append("jQuery('#putToGraveyard').droppable({ ");
+		buf.append("accept: '");
+
+		if (allCardsInBattlefield.size() >= 1)
+		{
+			final MagicCard aCard = allCardsInBattlefield.get(0);
+			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
+			buf.append("#cardHandle" + uuidValidForJs);
+		}
+
+		for (int i = 1; i < allCardsInBattlefield.size(); i++)
+		{
+			final MagicCard aCard = allCardsInBattlefield.get(i);
+			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
+
+			buf.append(", #cardHandle" + uuidValidForJs);
+		}
+
+		buf.append("', drop: function(event, ui) { ");
+		buf.append("jQuery('#putToGraveyard').droppable('destroy'); ");
+		buf.append("Wicket.Ajax.get({ 'u' : ");
+		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
+
+		buf.append("}, 3000); ");
 
 		target.appendJavaScript(buf.toString());
 	}

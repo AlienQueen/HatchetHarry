@@ -15,6 +15,12 @@
         </element>
       </root>
     </artifact>
+    <artifact type="exploded-ear" name="hatchetharry:ear exploded">
+      <output-path>$PROJECT_DIR$/out/artifacts/hatchetharry_ear_exploded</output-path>
+      <root id="root">
+        <element id="javaee-facet-resources" facet="hatchetharry/javaeeApplication/javaEEApplication" />
+      </root>
+    </artifact>
   </component>
   <component name="CodeStyleManager">
     <option name="USE_DEFAULT_CODE_STYLE_SCHEME" value="true" />
@@ -36,7 +42,7 @@
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="EntryPointsManager">
-    <entry_points />
+    <entry_points version="2.0" />
   </component>
   <component name="ExportToHTMLSettings">
     <option name="PRINT_LINE_NUMBERS" value="false" />
@@ -77,6 +83,7 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
@@ -242,12 +249,110 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="JPA 2.0-2.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/javax.persistence.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="spring-3.2.2" type="spring">
+      <properties version="3.2.2" />
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/spring-aop-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-aspects-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-beans-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-context-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-context-support-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-core-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-expression-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-instrument-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-instrument-tomcat-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-jdbc-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-jms-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-orm-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-oxm-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-test-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-tx-3.2.2.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/aopalliance-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="spring-integration-2.2.3" type="spring-integration">
+      <properties version="2.2.3" />
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-amqp-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-core-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-event-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-feed-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-file-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-ftp-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-gemfire-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-groovy-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-http-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-ip-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-jdbc-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-jms-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-jmx-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-jpa-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-mail-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-mongodb-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-redis-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-rmi-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-scripting-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-security-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-sftp-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-stream-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-test-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-twitter-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-ws-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-xml-2.2.3.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring-integration-xmpp-2.2.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="wicket-6.6.0" type="wicket">
+      <properties version="6.6.0" />
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/wicket-core-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-util-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-datetime-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-request-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-devutils-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-extensions-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-ioc-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-cdi-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-spring-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-velocity-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-auth-roles-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-guice-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/wicket-jmx-6.6.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.4.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
+    <option name="annotationTypeSettings">
+      <map>
+        <entry key="ExpPriority" value="-16777216;-1;-8355712;WAVE_UNDERSCORE;0;" />
+        <entry key="HighPriority" value="-65536;-1;-65536;WAVE_UNDERSCORE;1;" />
+        <entry key="IgnorePriority" value="-16777216;-1;-8650628;WAVE_UNDERSCORE;0;" />
+        <entry key="LowPriority" value="-16777216;-1;-16711936;BOXED;0;" />
+        <entry key="NormalPriority" value="-16777216;-1;-5066240;WAVE_UNDERSCORE;2;" />
+      </map>
+    </option>
     <option name="_basePreferences">
       <map>
         <entry key="property.analysisEffortLevel" value="default" />
         <entry key="property.analyzeAfterCompile" value="false" />
+        <entry key="property.annotationGutterIconEnabled" value="true" />
+        <entry key="property.annotationSuppressWarningsClass" value="edu.umd.cs.findbugs.annotations.SuppressWarnings" />
+        <entry key="property.annotationTextRangeMarkupEnabled" value="true" />
         <entry key="property.exportAsHtml" value="true" />
         <entry key="property.exportAsXml" value="true" />
         <entry key="property.exportBaseDir" value="" />
@@ -262,7 +367,7 @@
     <option name="_detectors">
       <map>
         <entry key="AppendingToAnObjectOutputStream" value="true" />
-        <entry key="BCPMethodReturnCheck" value="false" />
+        <entry key="AtomicityProblem" value="true" />
         <entry key="BadAppletConstructor" value="false" />
         <entry key="BadResultSetAccess" value="true" />
         <entry key="BadSyntaxForRegularExpression" value="true" />
@@ -282,6 +387,7 @@
         <entry key="ConfusedInheritance" value="true" />
         <entry key="ConfusionBetweenInheritedAndOuterMethod" value="true" />
         <entry key="CrossSiteScripting" value="true" />
+        <entry key="DefaultEncodingDetector" value="true" />
         <entry key="DoInsideDoPrivileged" value="true" />
         <entry key="DontCatchIllegalMonitorStateException" value="true" />
         <entry key="DontIgnoreResultOfPutIfAbsent" value="true" />
@@ -291,13 +397,11 @@
         <entry key="DumbMethods" value="true" />
         <entry key="DuplicateBranches" value="true" />
         <entry key="EmptyZipFileEntry" value="true" />
-        <entry key="EqStringTest" value="false" />
         <entry key="EqualsOperandShouldHaveClassCompatibleWithThis" value="true" />
+        <entry key="ExplicitSerialization" value="true" />
         <entry key="FieldItemSummary" value="true" />
         <entry key="FinalizerNullsFields" value="true" />
-        <entry key="FindBadCast" value="false" />
         <entry key="FindBadCast2" value="true" />
-        <entry key="FindBadEqualsImplementation" value="false" />
         <entry key="FindBadForLoop" value="true" />
         <entry key="FindBugsSummaryStats" value="true" />
         <entry key="FindCircularDependencies" value="false" />
@@ -338,8 +442,10 @@
         <entry key="FindUnreleasedLock" value="true" />
         <entry key="FindUnsatisfiedObligation" value="true" />
         <entry key="FindUnsyncGet" value="true" />
+        <entry key="FindUseOfNonSerializableValue" value="true" />
         <entry key="FindUselessControlFlow" value="true" />
         <entry key="FormatStringChecker" value="true" />
+        <entry key="FunctionsThatMightBeMistakenForProcedures" value="true" />
         <entry key="HugeSharedStringConstants" value="true" />
         <entry key="IDivResultCastToDouble" value="true" />
         <entry key="IncompatMask" value="true" />
@@ -348,15 +454,15 @@
         <entry key="InefficientToArray" value="true" />
         <entry key="InfiniteLoop" value="true" />
         <entry key="InfiniteRecursiveLoop" value="true" />
-        <entry key="InfiniteRecursiveLoop2" value="false" />
         <entry key="InheritanceUnsafeGetResource" value="true" />
         <entry key="InitializationChain" value="true" />
+        <entry key="InitializeNonnullFieldsInConstructor" value="true" />
         <entry key="InstantiateStaticClass" value="true" />
+        <entry key="IntCast2LongAsInstant" value="true" />
         <entry key="InvalidJUnitTest" value="true" />
         <entry key="IteratorIdioms" value="true" />
         <entry key="LazyInit" value="true" />
         <entry key="LoadOfKnownNullValue" value="true" />
-        <entry key="LockedFields" value="false" />
         <entry key="LostLoggerDueToWeakReference" value="true" />
         <entry key="MethodReturnCheck" value="true" />
         <entry key="Methods" value="true" />
@@ -367,7 +473,6 @@
         <entry key="Noise" value="false" />
         <entry key="NoiseNullDeref" value="false" />
         <entry key="NoteAnnotationRetention" value="true" />
-        <entry key="NoteCheckReturnValue" value="true" />
         <entry key="NoteCheckReturnValueAnnotations" value="true" />
         <entry key="NoteDirectlyRelevantTypeQualifiers" value="true" />
         <entry key="NoteJCIPAnnotation" value="true" />
@@ -401,14 +506,15 @@
         <entry key="TestASM" value="false" />
         <entry key="TestDataflowAnalysis" value="false" />
         <entry key="TestingGround" value="false" />
+        <entry key="TestingGround2" value="false" />
         <entry key="TrainFieldStoreTypes" value="true" />
+        <entry key="TrainLongInstantfParams" value="true" />
         <entry key="TrainNonNullAnnotations" value="true" />
         <entry key="TrainUnconditionalDerefParams" value="true" />
         <entry key="URLProblems" value="true" />
         <entry key="UncallableMethodOfAnonymousClass" value="true" />
         <entry key="UnnecessaryMath" value="true" />
         <entry key="UnreadFields" value="true" />
-        <entry key="UseObjectEquals" value="false" />
         <entry key="UselessSubclassMethod" value="false" />
         <entry key="VarArgsProblems" value="true" />
         <entry key="VolatileUsage" value="true" />
@@ -429,6 +535,15 @@
         <entry key="PERFORMANCE" value="true" />
         <entry key="SECURITY" value="true" />
         <entry key="STYLE" value="true" />
+      </map>
+    </option>
+    <option name="_annotationTypeSettings">
+      <map>
+        <entry key="ExpPriority" value="-16777216;-1;-8355712;WAVE_UNDERSCORE;0;" />
+        <entry key="HighPriority" value="-65536;-1;-65536;WAVE_UNDERSCORE;1;" />
+        <entry key="IgnorePriority" value="-16777216;-1;-8650628;WAVE_UNDERSCORE;0;" />
+        <entry key="LowPriority" value="-16777216;-1;-16711936;BOXED;0;" />
+        <entry key="NormalPriority" value="-16777216;-1;-5066240;WAVE_UNDERSCORE;2;" />
       </map>
     </option>
   </component>

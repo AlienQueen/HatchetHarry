@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
@@ -67,8 +68,13 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setZone(CardZone.BATTLEFIELD);
-		card.setX(card.getX());
-		card.setY(card.getY());
+		final Game game = this.persistenceService.getGame(gameId);
+		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
+		game.setCurrentPlaceholderId(currentPlaceholderId);
+		this.persistenceService.updateGame(game);
+
+		card.setX(300l + (currentPlaceholderId * 16));
+		card.setY(300l + (currentPlaceholderId * 16));
 		this.persistenceService.updateCard(card);
 
 		JavaScriptUtils.updateGraveyard(target);
