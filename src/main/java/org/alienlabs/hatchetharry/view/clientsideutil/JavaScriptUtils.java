@@ -11,8 +11,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public final class JavaScriptUtils
 {
-	public static final String REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT = "var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard(); ";
-	public static final String REACTIVATE_HAND_JAVASCRIPT_COMPONENT = "var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ";
+	public static final String REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT = "var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard(); ";
+	public static final String REACTIVATE_HAND_COMPONENT_JAVASCRIPT = "var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); ";
 
 	private JavaScriptUtils()
 	{
@@ -65,7 +65,7 @@ public final class JavaScriptUtils
 
 			buf.append("var dragUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
 					+ "').data('dragUrl'); ");
-			buf.append("var shouldDrag" + uuidValidForJs + " = true; ");
+			
 			buf.append("jQuery('#cardHandle"
 					+ uuidValidForJs
 					+ "').draggable({ handle : '#handleImage"
@@ -75,12 +75,9 @@ public final class JavaScriptUtils
 					+ "Wicket.Ajax.get({ 'u' : dragUrl" + uuidValidForJs
 					+ " + '&posX=' + card.position().left + '&posY=' + card.position().top}); "
 					+ "} }); ");
-			buf.append("var graveyardUrl" + uuidValidForJs + " = jQuery('#handleImage"
-					+ uuidValidForJs + "').data('graveyardUrl'); ");
-			buf.append("var handUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
-					+ "').data('handUrl'); ");
 		}
 
+		// Put to graveyard by drag & drop
 		buf.append("jQuery('#putToGraveyard').droppable({ ");
 		buf.append("accept: '");
 
@@ -104,6 +101,30 @@ public final class JavaScriptUtils
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
+		// Put to hand by drag & drop
+		buf.append("jQuery('#putToHand').droppable({ ");
+		buf.append("accept: '");
+
+		if (allCardsInBattlefield.size() >= 1)
+		{
+			final MagicCard aCard = allCardsInBattlefield.get(0);
+			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
+			buf.append("#cardHandle" + uuidValidForJs);
+		}
+
+		for (int i = 1; i < allCardsInBattlefield.size(); i++)
+		{
+			final MagicCard aCard = allCardsInBattlefield.get(i);
+			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
+
+			buf.append(", #cardHandle" + uuidValidForJs);
+		}
+
+		buf.append("', drop: function(event, ui) { ");
+		buf.append("jQuery('#putToHand').droppable('destroy'); ");
+		buf.append("Wicket.Ajax.get({ 'u' : ");
+		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
+
 		buf.append("}, 3000); ");
 
 		target.appendJavaScript(buf.toString());
@@ -114,9 +135,8 @@ public final class JavaScriptUtils
 		((HomePage)target.getPage()).getGalleryParent().addOrReplace(new HandComponent("gallery"));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_JAVASCRIPT_COMPONENT);
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT);
 	}
-
 
 	public static void updateGraveyard(final AjaxRequestTarget target)
 	{
@@ -124,6 +144,6 @@ public final class JavaScriptUtils
 				new GraveyardComponent("graveyard"));
 		target.add(((HomePage)target.getPage()).getGraveyardParent());
 
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_JAVASCRIPT_COMPONENT);
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
 	}
 }
