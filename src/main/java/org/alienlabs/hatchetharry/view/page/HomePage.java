@@ -883,6 +883,8 @@ public class HomePage extends TestReportPage
 						HomePage.class,
 						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tooltip/easyTooltip.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(

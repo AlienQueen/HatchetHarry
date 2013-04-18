@@ -57,6 +57,19 @@ public final class JavaScriptUtils
 			buf.append("jQuery('#card" + uuidValidForJs
 					+ "').easyTooltip({ useElement: 'cardTooltip" + uuidValidForJs + "'}); ");
 
+			// For mobile
+			buf.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
+					+ "').hammer(); ");
+			buf.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
+			buf.append("  jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: block'); ");
+			buf.append("var hideTooltip" + uuidValidForJs + " = jQuery('#cardTooltip"
+					+ uuidValidForJs + "').hammer(); ");
+			buf.append("hideTooltip" + uuidValidForJs + ".on('tap', function(ev) { ");
+			buf.append("  jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: none'); });");
+			buf.append("}); ");
+
 			buf.append("jQuery('#tapHandleImage" + uuidValidForJs + "').unbind('click'); ");
 			buf.append("var tapUrl" + uuidValidForJs + " = $('#tapHandleImage" + uuidValidForJs
 					+ "').data('tapUrl'); ");
