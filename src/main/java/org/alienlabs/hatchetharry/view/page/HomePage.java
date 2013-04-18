@@ -123,6 +123,8 @@ import ch.qos.mistletoe.wicket.TestReportPage;
  */
 public class HomePage extends TestReportPage
 {
+	final HatchetHarrySession session;
+
 	private static final long serialVersionUID = 1L;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
@@ -181,6 +183,7 @@ public class HomePage extends TestReportPage
 	public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
+		this.session = HatchetHarrySession.get();
 
 		// Resources
 		this.addHeadResources();
@@ -235,7 +238,7 @@ public class HomePage extends TestReportPage
 
 		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
 
-		if (!HatchetHarrySession.get().isGameCreated())
+		if (!this.session.isGameCreated())
 		{
 			this.createPlayer();
 
@@ -245,7 +248,7 @@ public class HomePage extends TestReportPage
 		}
 		else
 		{
-			this.player = HatchetHarrySession.get().getPlayer();
+			this.player = this.session.getPlayer();
 
 			this.buildHandCards();
 			this.restoreBattlefieldState();
@@ -264,12 +267,11 @@ public class HomePage extends TestReportPage
 
 		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
 		if ((null != card)
-				&& (!HatchetHarrySession.get().isMySidePlaceholderInSesion(
-						HatchetHarrySession.get().getPlayer().getSide())))
+				&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer().getSide())))
 		{
 			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
 					.getBigImageFilename(), card.getUuidObject()));
-			HatchetHarrySession.get().getAllMagicCardsInBattleField().add(card);
+			this.session.getAllMagicCardsInBattleField().add(card);
 		}
 		else
 		{
@@ -372,7 +374,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+				final boolean isHandDisplayed = HomePage.this.session.isHandDisplayed();
 
 				if (isHandDisplayed)
 				{
@@ -385,7 +387,7 @@ public class HomePage extends TestReportPage
 
 				}
 
-				HatchetHarrySession.get().setHandDisplayed(!isHandDisplayed);
+				HomePage.this.session.setHandDisplayed(!isHandDisplayed);
 			}
 
 			@Override
@@ -415,8 +417,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final boolean isGraveyardDisplayed = HatchetHarrySession.get()
-						.isGraveyardDisplayed();
+				final boolean isGraveyardDisplayed = HomePage.this.session.isGraveyardDisplayed();
 
 				if (isGraveyardDisplayed)
 				{
@@ -429,7 +430,7 @@ public class HomePage extends TestReportPage
 
 				}
 
-				HatchetHarrySession.get().setGraveyardDisplayed(!isGraveyardDisplayed);
+				HomePage.this.session.setGraveyardDisplayed(!isGraveyardDisplayed);
 			}
 
 			@Override
@@ -466,9 +467,9 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final Player me = HatchetHarrySession.get().getPlayer();
+				final Player me = HomePage.this.session.getPlayer();
 				final Long gameId = HomePage.this.persistenceService
-						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
+						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 
@@ -484,7 +485,7 @@ public class HomePage extends TestReportPage
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 
-				HatchetHarrySession.get().setCombatInProgress(false);
+				HomePage.this.session.setCombatInProgress(false);
 			}
 
 		};
@@ -508,7 +509,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final Long gameId = HatchetHarrySession.get().getGameId();
+				final Long gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 
@@ -518,10 +519,10 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 
-					final UntapAllCometChannel uacc = new UntapAllCometChannel(HatchetHarrySession
-							.get().getPlayer().getGame().getId(), HatchetHarrySession.get()
-							.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
-							.getDeckId());
+					final UntapAllCometChannel uacc = new UntapAllCometChannel(
+							HomePage.this.session.getPlayer().getGame().getId(),
+							HomePage.this.session.getPlayer().getId(), HomePage.this.session
+									.getPlayer().getDeck().getDeckId());
 					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
 				}
 			}
@@ -564,10 +565,10 @@ public class HomePage extends TestReportPage
 		this.dataBoxParent = new WebMarkupContainer("dataBoxParent");
 		this.dataBoxParent.setMarkupId("dataBoxParent");
 		this.dataBoxParent.setOutputMarkupId(true);
-		HatchetHarrySession.get().setDataBoxParent(this.dataBoxParent);
+		this.session.setDataBoxParent(this.dataBoxParent);
 
 		this.dataBox = new DataBox("dataBox", _gameId);
-		HatchetHarrySession.get().setDataBox(this.dataBox);
+		this.session.setDataBox(this.dataBox);
 		this.dataBox.setOutputMarkupId(true);
 		this.dataBoxParent.add(this.dataBox);
 
@@ -577,9 +578,9 @@ public class HomePage extends TestReportPage
 
 	private final void buildHandCards()
 	{
-		if (HatchetHarrySession.get().isHandHasBeenCreated())
+		if (this.session.isHandHasBeenCreated())
 		{
-			this.hand = HatchetHarrySession.get().getFirstCardsInHand();
+			this.hand = this.session.getFirstCardsInHand();
 		}
 		else
 		{
@@ -593,7 +594,7 @@ public class HomePage extends TestReportPage
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		final String jsessionid = request.getRequestedSessionId();
 
-		HatchetHarrySession.get().setGameCreated();
+		this.session.setGameCreated();
 
 		if (this.persistenceService.getFirstPlayer() == null)
 		{
@@ -619,7 +620,7 @@ public class HomePage extends TestReportPage
 		p = game.getPlayers().iterator().next();
 		p.setGame(game);
 
-		HatchetHarrySession.get().setPlayerHasBeenCreated();
+		this.session.setPlayerHasBeenCreated();
 
 		this.deck = this.runtimeDataGenerator.generateData(p.getId());
 		this.deck.setCards(this.deck.shuffleLibrary());
@@ -627,9 +628,9 @@ public class HomePage extends TestReportPage
 
 		p.setDeck(this.deck);
 		this.persistenceService.updatePlayer(p);
-		HatchetHarrySession.get().setGameId(game.getId());
+		this.session.setGameId(game.getId());
 
-		HatchetHarrySession.get().setPlayer(p);
+		this.session.setPlayer(p);
 		this.player = p;
 	}
 
@@ -647,7 +648,7 @@ public class HomePage extends TestReportPage
 		if (mc.size() > 0)
 		{
 			this.playCardBehavior = new PlayCardFromHandBehavior(mc.get(0).getUuidObject(), 0,
-					HatchetHarrySession.get().getPlayer().getSide());
+					this.session.getPlayer().getSide());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -666,8 +667,8 @@ public class HomePage extends TestReportPage
 		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
 		this.playCardFromGraveyardLink.setOutputMarkupId(true);
 
-		this.playCardFromGraveyardBehavior = new PlayCardFromGraveyardBehavior(HatchetHarrySession
-				.get().getPlayer().getSide());
+		this.playCardFromGraveyardBehavior = new PlayCardFromGraveyardBehavior(this.session
+				.getPlayer().getSide());
 		this.playCardFromGraveyardLink.add(this.playCardFromGraveyardBehavior);
 
 		this.playCardFromGraveyardLink.setMarkupId("playCardFromGraveyardLink0");
@@ -690,7 +691,7 @@ public class HomePage extends TestReportPage
 			{
 				HomePage.LOGGER.info("clicked on declare combat");
 				final Long gameId = HomePage.this.persistenceService
-						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
+						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 
@@ -702,14 +703,14 @@ public class HomePage extends TestReportPage
 
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null,
-							HatchetHarrySession.get().getPlayer().getName(), "", "", "",
-							HatchetHarrySession.get().isCombatInProgress());
+							HomePage.this.session.getPlayer().getName(), "", "", "",
+							HomePage.this.session.isCombatInProgress());
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 
-				HatchetHarrySession.get().setCombatInProgress(
-						!HatchetHarrySession.get().isCombatInProgress());
+				HomePage.this.session.setCombatInProgress(!HomePage.this.session
+						.isCombatInProgress());
 			}
 		};
 		combatLink.setMarkupId("combatLink");
@@ -729,34 +730,32 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final HatchetHarrySession session = HatchetHarrySession.get();
 				final List<MagicCard> cards = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(
-								session.getPlayer().getGame().getId(), session.getPlayer().getId(),
-								session.getPlayer().getDeck().getDeckId());
+						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getPlayer()
+								.getGame().getId(), HomePage.this.session.getPlayer().getId(),
+								HomePage.this.session.getPlayer().getDeck().getDeckId());
 
 				if ((cards != null) && (!cards.isEmpty()))
 				{
 					final MagicCard card = cards.get(0);
 
-					final Deck _deck = HomePage.this.persistenceService.getDeck(session.getPlayer()
-							.getDeck().getDeckId());
+					final Deck _deck = HomePage.this.persistenceService
+							.getDeck(HomePage.this.session.getPlayer().getDeck().getDeckId());
 					_deck.getCards().remove(card);
 					HomePage.this.persistenceService.saveDeck(_deck);
 
 					card.setZone(CardZone.HAND);
 					HomePage.this.persistenceService.updateCard(card);
 
-					final ArrayList<MagicCard> list = session.getFirstCardsInHand();
+					final ArrayList<MagicCard> list = HomePage.this.session.getFirstCardsInHand();
 					list.add(card);
-					session.setFirstCardsInHand(list);
+					HomePage.this.session.setFirstCardsInHand(list);
 
 					JavaScriptUtils.updateHand(target);
 
-					final Player me = session.getPlayer();
+					final Player me = HomePage.this.session.getPlayer();
 					final Long gameId = HomePage.this.persistenceService
-							.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame()
-							.getId();
+							.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
 
@@ -938,7 +937,7 @@ public class HomePage extends TestReportPage
 	private void buildHandMarkup()
 	{
 		final Component galleryToUpdate;
-		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+		final boolean isHandDisplayed = this.session.isHandDisplayed();
 		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
 				"gallery");
 
@@ -949,7 +948,7 @@ public class HomePage extends TestReportPage
 	private void buildGraveyardMarkup()
 	{
 		final Component graveyardToUpdate;
-		final boolean isGraveyardDisplayed = HatchetHarrySession.get().isGraveyardDisplayed();
+		final boolean isGraveyardDisplayed = this.session.isGraveyardDisplayed();
 		graveyardToUpdate = isGraveyardDisplayed
 				? new GraveyardComponent("graveyard")
 				: new WebMarkupContainer("graveyard");
@@ -960,9 +959,9 @@ public class HomePage extends TestReportPage
 
 	private final List<MagicCard> createFirstCards()
 	{
-		if (HatchetHarrySession.get().isPlayerCreated())
+		if (this.session.isPlayerCreated())
 		{
-			this.player = HatchetHarrySession.get().getPlayer();
+			this.player = this.session.getPlayer();
 			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
 			if (this.deck == null)
 			{
@@ -972,7 +971,7 @@ public class HomePage extends TestReportPage
 			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 
-			if (!HatchetHarrySession.get().isHandCardsHaveBeenBuilt())
+			if (!this.session.isHandCardsHaveBeenBuilt())
 			{
 				this.deck.shuffleLibrary();
 			}
@@ -981,14 +980,14 @@ public class HomePage extends TestReportPage
 			{
 				final MagicCard mc = this.deck.getCards().get(i);
 				mc.setZone(CardZone.HAND);
-				mc.setGameId(HatchetHarrySession.get().getPlayer().getGame().getId());
+				mc.setGameId(this.session.getPlayer().getGame().getId());
 				this.persistenceService.updateCard(mc);
 
 				cards.add(i, mc);
 			}
 
-			HatchetHarrySession.get().setFirstCardsInHand(cards);
-			HatchetHarrySession.get().setHandHasBeenCreated();
+			this.session.setFirstCardsInHand(cards);
+			this.session.setHandHasBeenCreated();
 
 			this.hand = cards;
 			return cards;
@@ -1161,7 +1160,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void aPlayerJoinedIn(final AjaxRequestTarget target, final JoinGameCometChannel event)
 	{
-		final String jsessionid = HatchetHarrySession.get().getId();
+		final String jsessionid = this.session.getId();
 
 		if (!jsessionid.equals(event.getJsessionid()))
 		{
@@ -1176,12 +1175,9 @@ public class HomePage extends TestReportPage
 			// .get().getGameId());
 			// spp.add(spmb);
 			// spp.setOutputMarkupId(true);
-			HomePage.LOGGER.info("### aPlayerJoinedIn(), gameId: "
-					+ HatchetHarrySession.get().getGameId());
+			HomePage.LOGGER.info("### aPlayerJoinedIn(), gameId: " + this.session.getGameId());
 
-			final HatchetHarrySession session = HatchetHarrySession.get();
-			session.putMySidePlaceholderInSesion(event.getSide());
-
+			this.session.putMySidePlaceholderInSesion(event.getSide());
 
 			// this.secondSidePlaceholderParent.addOrReplace(spp);
 			// target.add(this.secondSidePlaceholderParent);
@@ -1304,7 +1300,7 @@ public class HomePage extends TestReportPage
 	public void displayJoinGameMessage(final AjaxRequestTarget target,
 			final JoinGameNotificationCometChannel event)
 	{
-		final String fromSession = HatchetHarrySession.get().getPlayer().getName();
+		final String fromSession = this.session.getPlayer().getName();
 		final String fromEvent = event.getPlayerName();
 		final boolean cond = fromSession.equals(fromEvent);
 
@@ -1352,7 +1348,7 @@ public class HomePage extends TestReportPage
 	{
 		final StringBuffer buf = new StringBuffer();
 
-		final String toId = HatchetHarrySession.get().getId();
+		final String toId = this.session.getId();
 		buf.append("var toId = \"" + toId + "\"; ");
 
 		if (event.isTapped())
@@ -1414,10 +1410,10 @@ public class HomePage extends TestReportPage
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
-		if (HatchetHarrySession.get() != null)
+		if (this.session != null)
 		{
-			final Locale originalLocale = HatchetHarrySession.get().getLocale();
-			HatchetHarrySession.get().setLocale(originalLocale);
+			final Locale originalLocale = this.session.getLocale();
+			this.session.setLocale(originalLocale);
 		}
 
 		final String encoding = "text/html;charset=utf-8";
@@ -1428,7 +1424,7 @@ public class HomePage extends TestReportPage
 	private final void restoreBattlefieldState()
 	{
 		final Component galleryToUpdate;
-		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+		final boolean isHandDisplayed = this.session.isHandDisplayed();
 		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
 				"gallery");
 
@@ -1436,13 +1432,12 @@ public class HomePage extends TestReportPage
 		this.galleryParent.addOrReplace(galleryToUpdate);
 
 		// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
-		for (final CardPanel cp : HatchetHarrySession.get().getAllCardPanelsInBattleField())
+		for (final CardPanel cp : this.session.getAllCardPanelsInBattleField())
 		{
 			this.playCardParent.addOrReplace(cp);
 		}
 
-		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
-				.getMySidePlaceholder();
+		final List<SidePlaceholderPanel> allSides = this.session.getMySidePlaceholder();
 		for (final SidePlaceholderPanel spp : allSides)
 		{
 			final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
@@ -1454,25 +1449,23 @@ public class HomePage extends TestReportPage
 			{
 				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
 						spp.getUuid(), jsessionid, HomePage.this, HomePage.this.getDataBoxParent(),
-						HatchetHarrySession.get().getGameId());
+						this.session.getGameId());
 				spp.removeAll();
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);
 				this.firstSidePlaceholderParent.addOrReplace(spp);
 				this.addOrReplace(this.firstSidePlaceholderParent);
-				HatchetHarrySession.get().setFirstSideMoveCallbackUrl(
-						spmb.getCallbackUrl().toString());
+				this.session.setFirstSideMoveCallbackUrl(spmb.getCallbackUrl().toString());
 			}
 			else if ("secondSidePlaceholder".equals(spp.getId()))
 			{
 				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
 						spp.getUuid(), jsessionid, HomePage.this, HomePage.this.getDataBoxParent(),
-						HatchetHarrySession.get().getGameId());
+						this.session.getGameId());
 				spp.add(spmb);
 				spp.setOutputMarkupId(true);
 				this.secondSidePlaceholderParent.addOrReplace(spp);
-				HatchetHarrySession.get().setSecondSideMoveCallbackUrl(
-						spmb.getCallbackUrl().toString());
+				this.session.setSecondSideMoveCallbackUrl(spmb.getCallbackUrl().toString());
 			}
 		}
 
@@ -1493,8 +1486,8 @@ public class HomePage extends TestReportPage
 	{
 		final StringBuffer js = new StringBuffer();
 		// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
-		final Collection<CardPanel> allCards = Collections
-				.synchronizedCollection(HatchetHarrySession.get().getAllCardPanelsInBattleField());
+		final Collection<CardPanel> allCards = Collections.synchronizedCollection(this.session
+				.getAllCardPanelsInBattleField());
 
 		for (final CardPanel cp : allCards)
 		{
@@ -1529,8 +1522,7 @@ public class HomePage extends TestReportPage
 			}
 		}
 
-		final List<SidePlaceholderPanel> allSides = HatchetHarrySession.get()
-				.getMySidePlaceholder();
+		final List<SidePlaceholderPanel> allSides = this.session.getMySidePlaceholder();
 		HomePage.LOGGER.info("size: " + allSides.size());
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
@@ -1542,11 +1534,11 @@ public class HomePage extends TestReportPage
 			String callbackUrl = "";
 			if ("firstSidePlaceholder".equals(spp.getId()))
 			{
-				callbackUrl = HatchetHarrySession.get().getFirstSideMoveCallbackUrl();
+				callbackUrl = this.session.getFirstSideMoveCallbackUrl();
 			}
 			else if ("secondSidePlaceholder".equals(spp.getId()))
 			{
-				callbackUrl = HatchetHarrySession.get().getSecondSideMoveCallbackUrl();
+				callbackUrl = this.session.getSecondSideMoveCallbackUrl();
 			}
 			final HashMap<String, Object> variables = new HashMap<String, Object>();
 			variables.put("url", callbackUrl);
