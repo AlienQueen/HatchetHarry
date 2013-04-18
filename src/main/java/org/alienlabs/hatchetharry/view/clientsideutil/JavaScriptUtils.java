@@ -33,6 +33,7 @@ public final class JavaScriptUtils
 			final PersistenceService persistenceService, final Long gameId)
 	{
 		final StringBuffer buf = new StringBuffer();
+		buf.append("var shouldMove = true; ");
 		buf.append("window.setTimeout(function() { ");
 
 		final List<MagicCard> allCardsInBattlefield = persistenceService
@@ -65,12 +66,15 @@ public final class JavaScriptUtils
 
 			buf.append("var dragUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
 					+ "').data('dragUrl'); ");
-			
+
+			buf.append("jQuery('#cardHandle" + uuidValidForJs + "').draggable('destroy'); ");
+
 			buf.append("jQuery('#cardHandle"
 					+ uuidValidForJs
 					+ "').draggable({ handle : '#handleImage"
 					+ uuidValidForJs
 					+ "', stop: function(event, ui) { "
+					+ " if (!shouldMove) { shouldMove = true; return; } "
 					+ "var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
 					+ "Wicket.Ajax.get({ 'u' : dragUrl" + uuidValidForJs
 					+ " + '&posX=' + card.position().left + '&posY=' + card.position().top}); "
@@ -121,6 +125,7 @@ public final class JavaScriptUtils
 		}
 
 		buf.append("', drop: function(event, ui) { ");
+		buf.append("shouldMove = false; ");
 		buf.append("jQuery('#putToHand').droppable('destroy'); ");
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
