@@ -33,7 +33,7 @@ import org.hibernate.Session;
  */
 public interface CardCollectionDao extends Serializable
 {
-	public Session getSession();
+	Session getSession();
 
 	/**
 	 * Load a {@link CardCollection} from the DB, given it's <tt>id</tt>.

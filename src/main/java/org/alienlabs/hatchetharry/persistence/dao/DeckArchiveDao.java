@@ -31,7 +31,7 @@ import org.hibernate.Session;
  */
 public interface DeckArchiveDao extends Serializable
 {
-	public Session getSession();
+	Session getSession();
 
 	/**
 	 * Load a {@link DeckArchive} from the DB, given it's <tt>id</tt>.

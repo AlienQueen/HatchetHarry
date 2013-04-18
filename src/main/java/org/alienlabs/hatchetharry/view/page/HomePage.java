@@ -157,10 +157,12 @@ public class HomePage extends TestReportPage
 	WebMarkupContainer graveyardThumbsPlaceholder;
 
 	private AjaxLink<Void> endTurnLink;
+	private AjaxLink<Void> endTurnActionLink;
 	private AjaxLink<Void> untapAllLink;
 	private AjaxLink<Void> untapAndDrawLink;
 
 	WebMarkupContainer endTurnPlaceholder;
+	WebMarkupContainer endTurnActionPlaceholder;
 	WebMarkupContainer untapAllPlaceholder;
 	WebMarkupContainer untapAndDrawPlaceholder;
 
@@ -318,6 +320,7 @@ public class HomePage extends TestReportPage
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
 
 		this.buildEndTurnLink();
+		this.buildEndTurnActionLink();
 		this.buildUntapAllLink();
 		this.buildUntapAndDrawLink();
 		this.buildCombatLink();
@@ -494,6 +497,47 @@ public class HomePage extends TestReportPage
 
 		this.endTurnPlaceholder.add(this.endTurnLink);
 		this.add(this.endTurnPlaceholder);
+	}
+
+	private void buildEndTurnActionLink()
+	{
+		this.endTurnActionPlaceholder = new WebMarkupContainer("endTurnActionPlaceholder");
+		this.endTurnActionPlaceholder.setMarkupId("endTurnActionPlaceholder");
+		this.endTurnActionPlaceholder.setOutputMarkupId(true);
+
+		this.endTurnActionLink = new AjaxLink<Void>("endTurnActionLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Player me = HomePage.this.session.getPlayer();
+				final Long gameId = HomePage.this.persistenceService
+						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					final NotifierCometChannel ncc = new NotifierCometChannel(
+							NotifierAction.END_OF_TURN_ACTION_ACTION, null, me.getId(),
+							me.getName(), me.getSide(), null, null, null);
+
+					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+				}
+
+			}
+
+		};
+		this.endTurnActionLink.setMarkupId("endTurnActionLink");
+		this.endTurnActionLink.setOutputMarkupId(true);
+
+		this.endTurnActionPlaceholder.add(this.endTurnActionLink);
+		this.add(this.endTurnActionPlaceholder);
 	}
 
 	private void buildUntapAllLink()
@@ -885,6 +929,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tooltip/easyTooltip.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/notificon.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/myStyle.css")));
@@ -1228,6 +1274,7 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
 						+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				HomePage.this.session.setPlayerEndingHerTurn(event.getPlayerName());
 				break;
 
 			case PLAY_CARD_FROM_HAND_ACTION :
@@ -1244,7 +1291,7 @@ public class HomePage extends TestReportPage
 						+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD :
+			case PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
 						+ "', text : \"has put '"
@@ -1252,7 +1299,7 @@ public class HomePage extends TestReportPage
 						+ "' to graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD :
+			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
 						+ "', text : \"has put '"
@@ -1274,6 +1321,12 @@ public class HomePage extends TestReportPage
 							+ "', text : 'is declaring combat!', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				break;
+
+			case END_OF_TURN_ACTION_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has an action to play at the end of "
+						+ HomePage.this.session.getPlayerEndingHerTurn()
+						+ "'s turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 		}
 	}
 

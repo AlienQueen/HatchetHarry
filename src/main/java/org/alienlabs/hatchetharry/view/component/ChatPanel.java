@@ -132,6 +132,8 @@ public class ChatPanel extends Panel
 	@Subscribe
 	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event)
 	{
+		target.appendJavaScript("var text = ['! ', '', '! ', '', '! ', '']; var index = 0; var showChatNotif = function() { if (index < 6) { window.setTimeout(function() { Notificon(text[index++], 'http://hatchetharry.net/favicon.ico'); showChatNotif(); }, 500); } }; showChatNotif(); ");
+
 		target.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
 				+ event.getMessage()
 				+ "\" + \"&#013;&#010;\"; chatPanel.scrollTop = chatPanel.scrollHeight");

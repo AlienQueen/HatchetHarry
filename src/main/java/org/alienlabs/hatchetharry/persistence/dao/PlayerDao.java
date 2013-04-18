@@ -33,7 +33,7 @@ import org.hibernate.Session;
  */
 public interface PlayerDao extends Serializable
 {
-	public Session getSession();
+	Session getSession();
 
 	/**
 	 * Load a {@link Player} from the DB, given it's <tt>id</tt>.

@@ -32,7 +32,7 @@ import org.hibernate.Session;
  */
 public interface GameDao extends Serializable
 {
-	public Session getSession();
+	Session getSession();
 
 	/**
 	 * Load a {@link Game} from the DB, given it's <tt>id</tt>.

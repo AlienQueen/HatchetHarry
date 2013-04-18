@@ -85,7 +85,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 
 			final PutToGraveyardCometChannel _ptgcc = new PutToGraveyardCometChannel(gameId, mc);
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
-					NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD, gameId,
+					NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId,
 					HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
 							.getPlayer().getName(), "", "", mc.getTitle(), null);
 

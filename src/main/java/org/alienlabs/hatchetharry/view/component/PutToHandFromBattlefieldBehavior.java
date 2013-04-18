@@ -92,7 +92,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			final PutToHandFromBattlefieldCometChannel pthfbcc = new PutToHandFromBattlefieldCometChannel(
 					gameId);
 			final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD, gameId, HatchetHarrySession
+					NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION, gameId, HatchetHarrySession
 							.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer()
 							.getName(), "", "", mc.getTitle(), null);
 
