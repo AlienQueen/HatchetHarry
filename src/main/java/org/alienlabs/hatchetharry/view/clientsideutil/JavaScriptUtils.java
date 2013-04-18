@@ -144,7 +144,7 @@ public final class JavaScriptUtils
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
-		buf.append("}, 1000); ");
+		buf.append("}, 1500); ");
 
 		target.appendJavaScript(buf.toString());
 	}
