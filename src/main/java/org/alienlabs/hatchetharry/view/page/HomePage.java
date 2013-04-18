@@ -1371,7 +1371,7 @@ public class HomePage extends TestReportPage
 			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(90); window.setTimeout(function() {");
 			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
-					+ "').rotate(0); }, 750); }, 750); }, 750);");
+					+ "').rotate(0); }, 500); }, 500); }, 500);");
 		}
 
 		target.appendJavaScript(buf.toString());

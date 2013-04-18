@@ -82,6 +82,7 @@ public final class JavaScriptUtils
 		}
 
 		// Put to graveyard by drag & drop
+		buf.append("jQuery('#putToGraveyard').droppable('destroy'); ");
 		buf.append("jQuery('#putToGraveyard').droppable({ ");
 		buf.append("accept: '");
 
@@ -101,11 +102,12 @@ public final class JavaScriptUtils
 		}
 
 		buf.append("', drop: function(event, ui) { ");
-		buf.append("jQuery('#putToGraveyard').droppable('destroy'); ");
+		buf.append("shouldMove = false; ");
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
 		// Put to hand by drag & drop
+		buf.append("jQuery('#putToHand').droppable('destroy'); ");
 		buf.append("jQuery('#putToHand').droppable({ ");
 		buf.append("accept: '");
 
@@ -126,11 +128,10 @@ public final class JavaScriptUtils
 
 		buf.append("', drop: function(event, ui) { ");
 		buf.append("shouldMove = false; ");
-		buf.append("jQuery('#putToHand').droppable('destroy'); ");
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
-		buf.append("}, 3000); ");
+		buf.append("}, 1000); ");
 
 		target.appendJavaScript(buf.toString());
 	}
