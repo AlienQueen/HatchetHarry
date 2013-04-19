@@ -167,3 +167,15 @@ a, a:visited {
 	font-family: 'Black Ops One', cursive;
 	color: gray;
 }
+
+/* for the light (white) version of the gritter notice */
+.gritter-light .gritter-item,
+.gritter-light .gritter-bottom,
+.gritter-light .gritter-top,
+.gritter-close {
+	color: red;
+}
+
+.gritter-light .gritter-title {
+	text-shadow: none;
+} 

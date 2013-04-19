@@ -46,9 +46,9 @@ jQuery(function() {
 
 								var menubaritem2 = jQuery('ul.jMenu li.fNiv a:first');
 								ok(
-										(menubaritem2.text() === "Game"),
+										(menubaritem2.text().indexOf("Game") == 0),
 										"the second menubar option is the first <a> contained in a <li> class fNiv in a <ul> class jMenu."
-												+ " It should exist and point to 'Game', and it appears to be: "
+												+ " It should exist and start with 'Game', and it appears to be: "
 												+ menubaritem2.text());
 							});
 					module("clock"); 

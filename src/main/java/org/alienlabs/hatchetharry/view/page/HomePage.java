@@ -1339,10 +1339,11 @@ public class HomePage extends TestReportPage
 				break;
 
 			case END_OF_TURN_ACTION_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
 						+ "', text : \"has an action to play at the end of "
 						+ HomePage.this.session.getPlayerEndingHerTurn()
-						+ "'s turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+						+ "'s turn!\" , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 		}
 	}
 
