@@ -28,7 +28,14 @@ public class HandComponent extends Panel
 
 	private final List<MagicCard> allCardsInHand;
 
-	public HandComponent(final String id)
+	/**
+	 * 
+	 * @param id
+	 *            wicket:id
+	 * @param ids
+	 *            gameId, playerId, deckId
+	 */
+	public HandComponent(final String id, final Long... ids)
 	{
 		super(id);
 		Injector.get().inject(this);
@@ -39,10 +46,12 @@ public class HandComponent extends Panel
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 
-		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(
-				HatchetHarrySession.get().getPlayer().getGame().getId(), HatchetHarrySession.get()
-						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
-						.getDeckId());
+		this.allCardsInHand = this.persistenceService
+				.getAllCardsInHandForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
+						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0
+						? HatchetHarrySession.get().getPlayer().getId()
+						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
+						.getDeck().getDeckId() : ids[2]));
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)
 		{

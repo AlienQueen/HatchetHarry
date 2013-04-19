@@ -157,10 +157,30 @@ public final class JavaScriptUtils
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT);
 	}
 
+	public static void updateHand(final AjaxRequestTarget target, final Long gameId,
+			final Long playerId, final Long deckId)
+	{
+		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
+				new HandComponent("gallery", gameId, playerId, deckId));
+		target.add(((HomePage)target.getPage()).getGalleryParent());
+
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT);
+	}
+
 	public static void updateGraveyard(final AjaxRequestTarget target)
 	{
 		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
 				new GraveyardComponent("graveyard"));
+		target.add(((HomePage)target.getPage()).getGraveyardParent());
+
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
+	}
+
+	public static void updateGraveyard(final AjaxRequestTarget target, final Long gameId,
+			final Long playerId, final Long deckId)
+	{
+		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
+				new GraveyardComponent("graveyard", gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGraveyardParent());
 
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);

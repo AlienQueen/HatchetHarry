@@ -44,6 +44,10 @@ public class Player implements Serializable
 	@Cascade({ CascadeType.ALL })
 	@JoinColumn(name = "deck")
 	private Deck deck;
+	@Column
+	private boolean isHandDisplayed = true;
+	@Column
+	private boolean isGraveyardDisplayed;
 
 	public Long getId()
 	{
@@ -164,6 +168,26 @@ public class Player implements Serializable
 	public void setDeck(final Deck _deck)
 	{
 		this.deck = _deck;
+	}
+
+	public boolean isHandDisplayed()
+	{
+		return this.isHandDisplayed;
+	}
+
+	public void setHandDisplayed(final boolean _isHandDisplayed)
+	{
+		this.isHandDisplayed = _isHandDisplayed;
+	}
+
+	public boolean isGraveyardDisplayed()
+	{
+		return this.isGraveyardDisplayed;
+	}
+
+	public void setGraveyardDisplayed(final boolean _isGraveyardDisplayed)
+	{
+		this.isGraveyardDisplayed = _isGraveyardDisplayed;
 	}
 
 }

@@ -39,8 +39,6 @@ public class HatchetHarrySession extends WebSession
 	private static final String MY_SIDE_POS_Y = "MY_SIDE_POS_Y";
 	private static final String FIST_SIDE_MOVE_CALLBACK_URL = "FIST_SIDE_MOVE_CALLBACK_URL";
 	private static final String SECOND_SIDE_MOVE_CALLBACK_URL = "SECOND_SIDE_MOVE_CALLBACK_URL";
-	private static final String IS_HAND_DISPLAYED = "IS_HAND_DISPLAYED";
-	private static final String IS_GRAVEYARD_DISPLAYED = "IS_GRAVEYARD_DISPLAYED";
 	private static final String IS_COMBAT_IN_PROGRESS = "IS_COMBAT_IN_PROGRESS";
 	private static final String COMET_UUID = "COMET_UUID";
 	private static final String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
@@ -59,8 +57,6 @@ public class HatchetHarrySession extends WebSession
 				new ArrayList<CardPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
-		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, true);
-		this.setAttribute(HatchetHarrySession.IS_GRAVEYARD_DISPLAYED, false);
 		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, false);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
@@ -333,26 +329,6 @@ public class HatchetHarrySession extends WebSession
 	public void setSecondSideMoveCallbackUrl(final String callbackUrl)
 	{
 		this.setAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL, callbackUrl);
-	}
-
-	public boolean isHandDisplayed()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.IS_HAND_DISPLAYED);
-	}
-
-	public void setHandDisplayed(final boolean isDisplayed)
-	{
-		this.setAttribute(HatchetHarrySession.IS_HAND_DISPLAYED, isDisplayed);
-	}
-
-	public boolean isGraveyardDisplayed()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.IS_GRAVEYARD_DISPLAYED);
-	}
-
-	public void setGraveyardDisplayed(final boolean isDisplayed)
-	{
-		this.setAttribute(HatchetHarrySession.IS_GRAVEYARD_DISPLAYED, isDisplayed);
 	}
 
 	public boolean isCombatInProgress()

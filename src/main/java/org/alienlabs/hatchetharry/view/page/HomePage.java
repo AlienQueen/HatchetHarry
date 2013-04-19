@@ -206,7 +206,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Wednesday, 17th of April 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 19th of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -377,7 +377,9 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final boolean isHandDisplayed = HomePage.this.session.isHandDisplayed();
+				final Player _player = HomePage.this.persistenceService
+						.getPlayer(HomePage.this.session.getPlayer().getId());
+				final boolean isHandDisplayed = _player.isHandDisplayed();
 
 				if (isHandDisplayed)
 				{
@@ -390,7 +392,8 @@ public class HomePage extends TestReportPage
 
 				}
 
-				HomePage.this.session.setHandDisplayed(!isHandDisplayed);
+				_player.setHandDisplayed(!isHandDisplayed);
+				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
 			@Override
@@ -420,7 +423,9 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final boolean isGraveyardDisplayed = HomePage.this.session.isGraveyardDisplayed();
+				final Player _player = HomePage.this.persistenceService
+						.getPlayer(HomePage.this.session.getPlayer().getId());
+				final boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
 
 				if (isGraveyardDisplayed)
 				{
@@ -433,7 +438,8 @@ public class HomePage extends TestReportPage
 
 				}
 
-				HomePage.this.session.setGraveyardDisplayed(!isGraveyardDisplayed);
+				_player.setGraveyardDisplayed(!isGraveyardDisplayed);
+				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
 			@Override
@@ -483,7 +489,7 @@ public class HomePage extends TestReportPage
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(),
-							me.getSide(), null, null, null);
+							me.getSide(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
@@ -525,7 +531,7 @@ public class HomePage extends TestReportPage
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.END_OF_TURN_ACTION_ACTION, null, me.getId(),
-							me.getName(), me.getSide(), null, null, null);
+							me.getName(), me.getSide(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
@@ -748,7 +754,7 @@ public class HomePage extends TestReportPage
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null,
 							HomePage.this.session.getPlayer().getName(), "", "", "",
-							HomePage.this.session.isCombatInProgress());
+							HomePage.this.session.isCombatInProgress(), "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
@@ -811,7 +817,7 @@ public class HomePage extends TestReportPage
 
 						final NotifierCometChannel ncc = new NotifierCometChannel(
 								NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(),
-								me.getSide(), null, null, null);
+								me.getSide(), null, null, null, "");
 
 						try
 						{
@@ -983,7 +989,8 @@ public class HomePage extends TestReportPage
 	private void buildHandMarkup()
 	{
 		final Component galleryToUpdate;
-		final boolean isHandDisplayed = this.session.isHandDisplayed();
+		final boolean isHandDisplayed = this.persistenceService.getPlayer(
+				this.session.getPlayer().getId()).isHandDisplayed();
 		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
 				"gallery");
 
@@ -994,7 +1001,8 @@ public class HomePage extends TestReportPage
 	private void buildGraveyardMarkup()
 	{
 		final Component graveyardToUpdate;
-		final boolean isGraveyardDisplayed = this.session.isGraveyardDisplayed();
+		final boolean isGraveyardDisplayed = this.persistenceService.getPlayer(
+				this.session.getPlayer().getId()).isGraveyardDisplayed();
 		graveyardToUpdate = isGraveyardDisplayed
 				? new GraveyardComponent("graveyard")
 				: new WebMarkupContainer("graveyard");
@@ -1296,7 +1304,11 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : \"has put '"
 						+ event.getCardName()
-						+ "' to graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+						+ "' to "
+						+ (event.getTargetPlayerName().equals(event.getPlayerName())
+								? "his (her)"
+								: event.getTargetPlayerName() + "'s")
+						+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION :
@@ -1304,7 +1316,11 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : \"has put '"
 						+ event.getCardName()
-						+ "' to his (her) hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+						+ "' to "
+						+ (event.getTargetPlayerName().equals(event.getPlayerName())
+								? "his (her)"
+								: event.getTargetPlayerName() + "'s")
+						+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			case COMBAT_IN_PROGRESS_ACTION :
@@ -1382,6 +1398,11 @@ public class HomePage extends TestReportPage
 	public void removeCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToGraveyardCometChannel event)
 	{
+		if (event.isShouldUpdateGraveyard())
+		{
+			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
+					event.getDeckId());
+		}
 		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
@@ -1432,6 +1453,11 @@ public class HomePage extends TestReportPage
 	public void putToHandFromBattlefield(final AjaxRequestTarget target,
 			final PutToHandFromBattlefieldCometChannel event)
 	{
+		if (event.isShouldUpdateHand())
+		{
+			JavaScriptUtils.updateHand(target, event.getGameId(), event.getTargetPlayerId(),
+					event.getDeckId());
+		}
 		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
@@ -1477,7 +1503,8 @@ public class HomePage extends TestReportPage
 	private final void restoreBattlefieldState()
 	{
 		final Component galleryToUpdate;
-		final boolean isHandDisplayed = this.session.isHandDisplayed();
+		final boolean isHandDisplayed = this.persistenceService.getPlayer(
+				this.session.getPlayer().getId()).isHandDisplayed();
 		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
 				"gallery");
 

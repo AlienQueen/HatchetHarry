@@ -11,10 +11,12 @@ public class NotifierCometChannel
 	private final String jsessionid;
 	private final String cardName;
 	private final Boolean combatInProgress;
+	private final String targetPlayerName;
 
 	public NotifierCometChannel(final NotifierAction _action, final Long _gameId,
 			final Long _playerId, final String _playerName, final String _side,
-			final String _jsessionid, final String _cardName, final Boolean _combatInProgress)
+			final String _jsessionid, final String _cardName, final Boolean _combatInProgress,
+			final String _targetPlayerName)
 	{
 		this.action = _action;
 		this.gameId = _gameId;
@@ -24,6 +26,7 @@ public class NotifierCometChannel
 		this.jsessionid = _jsessionid;
 		this.cardName = _cardName;
 		this.combatInProgress = _combatInProgress;
+		this.targetPlayerName = _targetPlayerName;
 	}
 
 	public NotifierAction getAction()
@@ -64,6 +67,11 @@ public class NotifierCometChannel
 	public Boolean isCombatInProgress()
 	{
 		return this.combatInProgress;
+	}
+
+	public String getTargetPlayerName()
+	{
+		return this.targetPlayerName;
 	}
 
 }

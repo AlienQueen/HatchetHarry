@@ -8,11 +8,11 @@ import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
@@ -60,37 +60,47 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 			return;
 		}
 
+		final HatchetHarrySession session = HatchetHarrySession.get();
 		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
-				+ HatchetHarrySession.get().getPlayer().getId());
+				+ session.getPlayer().getId());
 
 		mc.setZone(CardZone.GRAVEYARD);
 		mc.setTapped(false);
 		this.persistenceService.updateCard(mc);
 
-		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
+		final Long gameId = session.getPlayer().getGame().getId();
 		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
-
-		final boolean isGraveyardDisplayed = HatchetHarrySession.get().isGraveyardDisplayed();
-		if (isGraveyardDisplayed)
-		{
-			JavaScriptUtils.updateGraveyard(target);
-		}
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+
 			final String _pageUuid = HatchetHarryApplication.getCometResources().get(
 					playerToWhomToSend);
 
-			final PutToGraveyardCometChannel _ptgcc = new PutToGraveyardCometChannel(gameId, mc);
+			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
+					.getPlayerId());
+			final String targetPlayerName = targetPlayer.getName();
+			final Long targetDeckId = mc.getDeck().getDeckId();
+
+			final PutToGraveyardCometChannel _ptgcc = new PutToGraveyardCometChannel(gameId, mc,
+					session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
+					targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
+							.longValue()));
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
-					NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId,
-					HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
-							.getPlayer().getName(), "", "", mc.getTitle(), null);
+					NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId, session
+							.getPlayer().getId(), session.getPlayer().getName(), "", "",
+					mc.getTitle(), null, targetPlayerName);
 
 			HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
 			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
+
+			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
+			{
+				targetPlayer.setGraveyardDisplayed(true);
+				this.persistenceService.updatePlayer(targetPlayer);
+			}
 		}
 	}
 

@@ -8,6 +8,7 @@ import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
@@ -65,21 +66,23 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			return;
 		}
 
+		final HatchetHarrySession session = HatchetHarrySession.get();
 		PutToHandFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
-				+ HatchetHarrySession.get().getPlayer().getId());
+				+ session.getPlayer().getId());
 
 		mc.setZone(CardZone.HAND);
 		mc.setTapped(false);
 		this.persistenceService.updateCard(mc);
 
-		final boolean isHandDisplayed = HatchetHarrySession.get().isHandDisplayed();
+		final boolean isHandDisplayed = this.persistenceService.getPlayer(
+				session.getPlayer().getId()).isHandDisplayed();
 		if (isHandDisplayed)
 		{
 			JavaScriptUtils.updateHand(target);
 		}
 
 		final Long gameId = PutToHandFromBattlefieldBehavior.this.persistenceService
-				.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
+				.getPlayer(session.getPlayer().getId()).getGame().getId();
 		final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
@@ -89,15 +92,28 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
 					playerToWhomToSend);
 
+			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
+					.getPlayerId());
+			final String targetPlayerName = targetPlayer.getName();
+			final Long targetDeckId = mc.getDeck().getDeckId();
+
 			final PutToHandFromBattlefieldCometChannel pthfbcc = new PutToHandFromBattlefieldCometChannel(
-					gameId);
+					gameId, mc, session.getPlayer().getName(), targetPlayerName,
+					targetPlayer.getId(), targetDeckId,
+					(allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()));
 			final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION, gameId, HatchetHarrySession
-							.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer()
-							.getName(), "", "", mc.getTitle(), null);
+					NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION, gameId, session
+							.getPlayer().getId(), session.getPlayer().getName(), "", "",
+					mc.getTitle(), null, targetPlayerName);
 
 			HatchetHarryApplication.get().getEventBus().post(pthfbcc, pageUuid);
 			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+
+			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
+			{
+				targetPlayer.setHandDisplayed(true);
+				this.persistenceService.updatePlayer(targetPlayer);
+			}
 		}
 	}
 

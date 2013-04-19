@@ -85,7 +85,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
 						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
-				"", card.getTitle(), null);
+				"", card.getTitle(), null, "");
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 				.giveAllPlayersFromGame(gameId);

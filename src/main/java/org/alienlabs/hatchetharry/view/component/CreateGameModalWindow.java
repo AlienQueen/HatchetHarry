@@ -40,7 +40,7 @@ public class CreateGameModalWindow extends Panel
 
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
 
-	final Player player;
+	Player player;
 	final Game game;
 	final WebMarkupContainer sidePlaceholderParent;
 
@@ -217,7 +217,8 @@ public class CreateGameModalWindow extends Panel
 				target.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
 				HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
 
-				if (HatchetHarrySession.get().isHandDisplayed())
+
+				if (CreateGameModalWindow.this.player.isHandDisplayed())
 				{
 					JavaScriptUtils.updateHand(target);
 				}
@@ -305,7 +306,7 @@ public class CreateGameModalWindow extends Panel
 				session.setGameCreated();
 				session.resetCardsInGraveyard();
 
-				if (session.isGraveyardDisplayed())
+				if (CreateGameModalWindow.this.player.isGraveyardDisplayed())
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}

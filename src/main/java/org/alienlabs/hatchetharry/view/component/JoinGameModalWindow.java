@@ -264,7 +264,7 @@ public class JoinGameModalWindow extends Panel
 				dataBox.setOutputMarkupId(true);
 				JoinGameModalWindow.this.hp.getDataBoxParent().addOrReplace(dataBox);
 
-				if (HatchetHarrySession.get().isHandDisplayed())
+				if (JoinGameModalWindow.this.player.isHandDisplayed())
 				{
 					JavaScriptUtils.updateHand(target);
 				}
@@ -401,7 +401,7 @@ public class JoinGameModalWindow extends Panel
 
 				session.resetCardsInGraveyard();
 
-				if (session.isGraveyardDisplayed())
+				if (JoinGameModalWindow.this.player.isGraveyardDisplayed())
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}

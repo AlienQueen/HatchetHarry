@@ -25,7 +25,14 @@ public class GraveyardComponent extends Panel
 	private final ListView<MagicCard> allCards;
 	private final WebMarkupContainer thumbsPlaceholder;
 
-	public GraveyardComponent(final String id)
+	/**
+	 * 
+	 * @param id
+	 *            wicket:id
+	 * @param ids
+	 *            gameId, playerId, deckId
+	 */
+	public GraveyardComponent(final String id, final Long... ids)
 	{
 		super(id);
 
@@ -36,9 +43,11 @@ public class GraveyardComponent extends Panel
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 
 		final List<MagicCard> allCardsInGraveyard = this.persistenceService
-				.getAllCardsInGraveyardForAGameAndAPlayer(HatchetHarrySession.get().getPlayer()
-						.getGame().getId(), HatchetHarrySession.get().getPlayer().getId(),
-						HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+				.getAllCardsInGraveyardForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession
+						.get().getPlayer().getGame().getId() : ids[0]), (ids.length == 0
+						? HatchetHarrySession.get().getPlayer().getId()
+						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
+						.getDeck().getDeckId() : ids[2]));
 
 		this.allCards = new ListView<MagicCard>("graveyardCards", allCardsInGraveyard)
 		{
