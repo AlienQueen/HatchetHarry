@@ -63,8 +63,24 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
-		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
+		try
+		{
+			this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
+		}
+		catch (final IllegalArgumentException ex)
+		{
+			PlayCardFromHandBehavior.LOGGER.error(
+					"No card with UUID= " + request.getParameter("card") + " found!", ex);
+		}
+
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
+
+		if (null == card)
+		{
+			PlayCardFromHandBehavior.LOGGER.error("UUID " + this.uuidToLookFor
+					+ " retrieved no MagicCard!");
+			return;
+		}
 
 		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 
