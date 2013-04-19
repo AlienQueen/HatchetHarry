@@ -86,7 +86,9 @@ public class ChatPanel extends Panel
 		form.add(user);
 		final RequiredTextField<String> message = new RequiredTextField<String>("message",
 				new Model<String>(""));
+		message.setOutputMarkupId(true).setMarkupId("message");
 		form.add(message);
+
 		final AjaxButton button = new AjaxButton("submit")
 		{
 			private static final long serialVersionUID = 1L;
@@ -132,6 +134,7 @@ public class ChatPanel extends Panel
 	@Subscribe
 	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event)
 	{
+		target.appendJavaScript("document.getElementById('message').value=''; ");
 		target.appendJavaScript("var text = ['! ', '', '! ', '', '! ', '']; var index = 0; var showChatNotif = function() { if (index < 6) { window.setTimeout(function() { Notificon(text[index++], '/favicon.ico'); showChatNotif(); }, 500); } }; showChatNotif(); ");
 
 		target.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
