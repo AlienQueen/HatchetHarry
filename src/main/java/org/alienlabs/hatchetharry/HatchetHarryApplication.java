@@ -152,6 +152,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/transpBlack.png"));
 		this.mountResource("image/endOfTurnAction.png", new PackageResourceReference(
 				HomePage.class, "image/endOfTurnAction.png"));
+		this.mountResource("image/acceptEndOfTurn.png", new PackageResourceReference(
+				HomePage.class, "image/acceptEndOfTurn.png"));
 
 		this.mountResource("image/logoh2.gif", new PackageResourceReference(HomePage.class,
 				"image/logoh2.gif"));

@@ -168,6 +168,6 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		final List<Object> allMessages = EventBusMock.getMessages();
 		System.out.println(allMessages);
 		Assert.assertFalse(persistenceService.getCardFromUuid(
-				((PlayCardFromHandCometChannel)allMessages.get(6)).getUuidToLookFor()).isTapped());
+				((PlayCardFromHandCometChannel)allMessages.get(7)).getUuidToLookFor()).isTapped());
 	}
 }

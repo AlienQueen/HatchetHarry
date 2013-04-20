@@ -255,37 +255,40 @@
 		<div id="floatingbar"> 
 	
 	         <ul class="gallery clearfix">
-					<li wicket:id="untapAndDrawPlaceholder" class="toolbarLink" title="Untap your permanents & draw a card " style="cursor: pointer">
-						<a wicket:id="untapAndDrawLink" id="twitterlink"><img class="toolbarIcon" src="image/tweet.png"></img> Untap & draw</a>
+					<li wicket:id="untapAndDrawPlaceholder" title="Untap your permanents & draw a card">
+						<a wicket:id="untapAndDrawLink" id="twitterlink" style="cursor: pointer; color: white;"><img src="image/tweet.png"></img> Untap & draw</a>
 					</li>
 					
-					<li id="untapAllPlaceholder" wicket:id="untapAllPlaceholder" class="toolbarLink" title="Untall all your permanents" style="cursor: pointer">
-						<a wicket:id="untapAllLink"><span><img class="toolbarIcon" src="image/googlebuzz.png"></img> Untap all</span></a>
+					<li id="untapAllPlaceholder" wicket:id="untapAllPlaceholder" title="Untall all your permanents">
+						<a wicket:id="untapAllLink" style="cursor: pointer; color: white;"><span><img src="image/googlebuzz.png"></img> Untap all</span></a>
 					</li>
 					
-					<li rel="prettyPhoto[iframe]" style="cursor: pointer" id="tour_3">
-						<a wicket:id="drawCardLink" class="toolbarLink" title="Draw a card ">
-							<img class="toolbarIcon" src="image/youtube.png"></img>
-							 Draw a card
+					<li rel="prettyPhoto[iframe]" id="tour_3">
+						<a wicket:id="drawCardLink" title="Draw a card " style="cursor: pointer; color: white;">
+							<img src="image/youtube.png"></img>
+							 Draw card
 						</a>
 					</li>
 					
-					<li wicket:id="playCardPlaceholder" class="toolbarLink" title="Play the card currently shown in your hand" style="cursor: pointer">
-						<a wicket:id="playCardLink"><img style="color: white;" src="image/playCard.png"> Play card</img></a>
+					<li wicket:id="playCardPlaceholder" title="Play the card currently shown in your hand">
+						<a wicket:id="playCardLink" style="cursor: pointer; color: white;"><img src="image/playCard.png"> Play card</img></a>
 					</li>
 					
-					<li wicket:id="combatPlaceholder" class="toolbarLink" title="Start and end combat phase" style="cursor: pointer">
-						<a wicket:id="combatLink" id="combatlink"><img class="toolbarIcon" src="image/battle.png"></img> Declare combat</a>
+					<li wicket:id="combatPlaceholder" title="Start and end combat phase">
+						<a wicket:id="combatLink" id="combatlink" style="cursor: pointer; color: white;"><img src="image/battle.png"></img> Declare combat</a>
 					</li>
 					
-					<li wicket:id="endTurnPlaceholder" class="toolbarLink" title="Put an end to your turn" style="cursor: pointer">
-						<a wicket:id="endTurnLink" class="#"><img class="toolbarIcon" src="image/contact.png"></img> End of turn</a>
+					<li wicket:id="endTurnPlaceholder" title="Put an end to your turn">
+						<a wicket:id="endTurnLink" style="cursor: pointer; color: white;"><img src="image/contact.png"></img> End turn</a>
 					</li>
 										
-					<li wicket:id="endTurnActionPlaceholder" class="toolbarLink" title="Play an action at the end of the turn" style="cursor: pointer">
-						<a wicket:id="endTurnActionLink" class="#"><img class="toolbarIcon" src="image/endOfTurnAction.png"></img> End of turn action</a>
+					<li wicket:id="endTurnActionPlaceholder" title="Play an action at the end of the turn">
+						<a wicket:id="endTurnActionLink" style="cursor: pointer; color: white;"><img src="image/endOfTurnAction.png"></img> End turn action</a>
 					</li>
-					
+										
+					<li wicket:id="acceptEndTurnPlaceholder" title="Accept the end of the turn">
+						<a wicket:id="acceptEndTurnLink" style="cursor: wait; color: black;"><img src="image/acceptEndOfTurn.png"></img> Accept end</a>
+					</li>
 			</ul>
 	
 		</div> 

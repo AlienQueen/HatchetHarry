@@ -56,6 +56,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
@@ -72,6 +73,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
+import org.alienlabs.hatchetharry.view.component.AcceptEndTurnBehavior;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
@@ -158,11 +160,13 @@ public class HomePage extends TestReportPage
 
 	private AjaxLink<Void> endTurnLink;
 	private AjaxLink<Void> endTurnActionLink;
+	private WebMarkupContainer acceptEndTurnLink;
 	private AjaxLink<Void> untapAllLink;
 	private AjaxLink<Void> untapAndDrawLink;
 
 	WebMarkupContainer endTurnPlaceholder;
 	WebMarkupContainer endTurnActionPlaceholder;
+	WebMarkupContainer acceptEndTurnPlaceholder;
 	WebMarkupContainer untapAllPlaceholder;
 	WebMarkupContainer untapAndDrawPlaceholder;
 
@@ -206,7 +210,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Friday, 19th of April 2013.");
+		final Label message2 = new Label("message2", "built on Saturday, 20th of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -321,6 +325,7 @@ public class HomePage extends TestReportPage
 
 		this.buildEndTurnLink();
 		this.buildEndTurnActionLink();
+		this.buildAcceptEndTurnLink(null, false);
 		this.buildUntapAllLink();
 		this.buildUntapAndDrawLink();
 		this.buildCombatLink();
@@ -492,6 +497,9 @@ public class HomePage extends TestReportPage
 							me.getSide(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+
+					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(true);
+					HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
 				}
 
 				HomePage.this.session.setCombatInProgress(false);
@@ -546,6 +554,33 @@ public class HomePage extends TestReportPage
 		this.add(this.endTurnActionPlaceholder);
 	}
 
+	private void buildAcceptEndTurnLink(final AjaxRequestTarget target,
+			final boolean shouldActivateAcceptEndTurnLink)
+	{
+		this.acceptEndTurnLink = new WebMarkupContainer("acceptEndTurnLink");
+		this.acceptEndTurnLink.setMarkupId("acceptEndTurnLink");
+		this.acceptEndTurnLink.setOutputMarkupId(true);
+
+		if (null != target)
+		{
+			if (shouldActivateAcceptEndTurnLink)
+			{
+				final AcceptEndTurnBehavior acceptEndTurnBehavior = new AcceptEndTurnBehavior();
+				this.acceptEndTurnLink.add(acceptEndTurnBehavior);
+			}
+			this.acceptEndTurnPlaceholder.addOrReplace(this.acceptEndTurnLink);
+			target.add(this.acceptEndTurnPlaceholder);
+		}
+		else
+		{
+			this.acceptEndTurnPlaceholder = new WebMarkupContainer("acceptEndTurnPlaceholder");
+			this.acceptEndTurnPlaceholder.setMarkupId("acceptEndTurnPlaceholder");
+			this.acceptEndTurnPlaceholder.setOutputMarkupId(true);
+			this.add(this.acceptEndTurnPlaceholder);
+			this.acceptEndTurnPlaceholder.add(this.acceptEndTurnLink);
+		}
+	}
+
 	private void buildUntapAllLink()
 	{
 		this.untapAllPlaceholder = new WebMarkupContainer("untapAllPlaceholder");
@@ -574,6 +609,9 @@ public class HomePage extends TestReportPage
 							HomePage.this.session.getPlayer().getId(), HomePage.this.session
 									.getPlayer().getDeck().getDeckId());
 					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
+
+					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
+					HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
 				}
 			}
 
@@ -822,6 +860,18 @@ public class HomePage extends TestReportPage
 						try
 						{
 							HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+						}
+						catch (final NullPointerException ex)
+						{
+							// NPE in unit tests
+							HomePage.LOGGER
+									.error("exception thrown while posting in event bus", ex);
+						}
+
+						final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
+						try
+						{
+							HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
 						}
 						catch (final NullPointerException ex)
 						{
@@ -1344,12 +1394,21 @@ public class HomePage extends TestReportPage
 						+ "', text : \"has an action to play at the end of "
 						+ HomePage.this.session.getPlayerEndingHerTurn()
 						+ "'s turn!\" , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
+				break;
+			case ACCEPT_END_OF_TURN_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'accepts the end of turn.', image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
 		}
 	}
 
 	@Subscribe
 	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
 	{
+		this.buildAcceptEndTurnLink(target, false);
+		target.appendJavaScript(JavaScriptUtils.DEACTIVATE_ACCEPT_END_OF_TURN_LINK);
+
 		final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(event.getGameId(), event.getPlayerId(),
 						event.getDeckId());
@@ -1485,6 +1544,21 @@ public class HomePage extends TestReportPage
 		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
+	}
+
+	@Subscribe
+	public void acceptEndTurn(final AjaxRequestTarget target, final AcceptEndTurnCometChannel event)
+	{
+		if (event.isShouldActivateAcceptEndTurnLink())
+		{
+			this.buildAcceptEndTurnLink(target, true);
+			target.appendJavaScript(JavaScriptUtils.REACTIVATE_ACCEPT_END_OF_TURN_LINK);
+		}
+		else
+		{
+			this.buildAcceptEndTurnLink(target, false);
+			target.appendJavaScript(JavaScriptUtils.DEACTIVATE_ACCEPT_END_OF_TURN_LINK);
+		}
 	}
 
 	@Override
