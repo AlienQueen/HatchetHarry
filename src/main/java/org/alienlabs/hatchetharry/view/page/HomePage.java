@@ -73,7 +73,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
-import org.alienlabs.hatchetharry.view.component.AcceptEndTurnBehavior;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
@@ -160,7 +159,7 @@ public class HomePage extends TestReportPage
 
 	private AjaxLink<Void> endTurnLink;
 	private AjaxLink<Void> endTurnActionLink;
-	private WebMarkupContainer acceptEndTurnLink;
+	private AjaxLink<Void> acceptEndTurnLink;
 	private AjaxLink<Void> untapAllLink;
 	private AjaxLink<Void> untapAndDrawLink;
 
@@ -210,7 +209,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Saturday, 20th of April 2013.");
+		final Label message2 = new Label("message2", "built on Sunday, 21st of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -325,7 +324,7 @@ public class HomePage extends TestReportPage
 
 		this.buildEndTurnLink();
 		this.buildEndTurnActionLink();
-		this.buildAcceptEndTurnLink(null, false);
+		this.buildAcceptEndTurnLink();
 		this.buildUntapAllLink();
 		this.buildUntapAndDrawLink();
 		this.buildCombatLink();
@@ -484,6 +483,11 @@ public class HomePage extends TestReportPage
 				final Player me = HomePage.this.session.getPlayer();
 				final Long gameId = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+
+				final Game game = HomePage.this.persistenceService.getGame(gameId);
+				game.setAcceptEndOfTurnPending(true);
+				HomePage.this.persistenceService.updateGame(game);
+
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 
@@ -526,11 +530,17 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
+				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
+						.getGameId());
+
+				if (!game.isAcceptEndOfTurnPending())
+				{
+					return;
+				}
+
 				final Player me = HomePage.this.session.getPlayer();
-				final Long gameId = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(gameId);
+						.giveAllPlayersFromGame(game.getId());
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -554,31 +564,48 @@ public class HomePage extends TestReportPage
 		this.add(this.endTurnActionPlaceholder);
 	}
 
-	private void buildAcceptEndTurnLink(final AjaxRequestTarget target,
-			final boolean shouldActivateAcceptEndTurnLink)
+	private void buildAcceptEndTurnLink()
 	{
-		this.acceptEndTurnLink = new WebMarkupContainer("acceptEndTurnLink");
-		this.acceptEndTurnLink.setMarkupId("acceptEndTurnLink");
-		this.acceptEndTurnLink.setOutputMarkupId(true);
+		this.acceptEndTurnPlaceholder = new WebMarkupContainer("acceptEndTurnPlaceholder");
+		this.acceptEndTurnPlaceholder.setOutputMarkupId(true);
+		this.acceptEndTurnPlaceholder.setMarkupId("acceptEndTurnPlaceholder");
 
-		if (null != target)
+		this.acceptEndTurnLink = new AjaxLink<Void>("acceptEndTurnLink")
 		{
-			if (shouldActivateAcceptEndTurnLink)
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
-				final AcceptEndTurnBehavior acceptEndTurnBehavior = new AcceptEndTurnBehavior();
-				this.acceptEndTurnLink.add(acceptEndTurnBehavior);
+				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
+						.getGameId());
+
+				if (!game.isAcceptEndOfTurnPending())
+				{
+					return;
+				}
+
+				final Player me = HomePage.this.session.getPlayer();
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(game.getId());
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					final NotifierCometChannel ncc = new NotifierCometChannel(
+							NotifierAction.ACCEPT_END_OF_TURN_ACTION, null, null, me.getName(),
+							null, null, null, null, "");
+
+					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+				}
 			}
-			this.acceptEndTurnPlaceholder.addOrReplace(this.acceptEndTurnLink);
-			target.add(this.acceptEndTurnPlaceholder);
-		}
-		else
-		{
-			this.acceptEndTurnPlaceholder = new WebMarkupContainer("acceptEndTurnPlaceholder");
-			this.acceptEndTurnPlaceholder.setMarkupId("acceptEndTurnPlaceholder");
-			this.acceptEndTurnPlaceholder.setOutputMarkupId(true);
-			this.add(this.acceptEndTurnPlaceholder);
-			this.acceptEndTurnPlaceholder.add(this.acceptEndTurnLink);
-		}
+		};
+
+		this.acceptEndTurnLink.setOutputMarkupId(true).setMarkupId("acceptEndTurnLink");
+		this.acceptEndTurnPlaceholder.add(this.acceptEndTurnLink);
+		this.add(this.acceptEndTurnPlaceholder);
 	}
 
 	private void buildUntapAllLink()
@@ -597,6 +624,10 @@ public class HomePage extends TestReportPage
 				final Long gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
+
+				final Game game = HomePage.this.persistenceService.getGame(gameId);
+				game.setAcceptEndOfTurnPending(false);
+				HomePage.this.persistenceService.updateGame(game);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -844,6 +875,11 @@ public class HomePage extends TestReportPage
 					final Player me = HomePage.this.session.getPlayer();
 					final Long gameId = HomePage.this.persistenceService
 							.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+
+					final Game game = HomePage.this.persistenceService.getGame(gameId);
+					game.setAcceptEndOfTurnPending(false);
+					HomePage.this.persistenceService.updateGame(game);
+
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
 
@@ -924,6 +960,8 @@ public class HomePage extends TestReportPage
 			@Override
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
+				super.renderHead(component, response);
+
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery-1.7.2.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -1406,8 +1444,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
 	{
-		this.buildAcceptEndTurnLink(target, false);
-		target.appendJavaScript(JavaScriptUtils.DEACTIVATE_ACCEPT_END_OF_TURN_LINK);
+		target.appendJavaScript(JavaScriptUtils.DEACTIVATE_END_OF_TURN_LINKS);
 
 		final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(event.getGameId(), event.getPlayerId(),
@@ -1551,13 +1588,11 @@ public class HomePage extends TestReportPage
 	{
 		if (event.isShouldActivateAcceptEndTurnLink())
 		{
-			this.buildAcceptEndTurnLink(target, true);
-			target.appendJavaScript(JavaScriptUtils.REACTIVATE_ACCEPT_END_OF_TURN_LINK);
+			target.appendJavaScript(JavaScriptUtils.REACTIVATE_END_OF_TURN_LINKS);
 		}
 		else
 		{
-			this.buildAcceptEndTurnLink(target, false);
-			target.appendJavaScript(JavaScriptUtils.DEACTIVATE_ACCEPT_END_OF_TURN_LINK);
+			target.appendJavaScript(JavaScriptUtils.DEACTIVATE_END_OF_TURN_LINKS);
 		}
 	}
 
@@ -1631,6 +1666,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
+				super.renderHead(component, response);
 				HomePage.this.restoreStateOfAllCardsInBattlefield(response);
 			}
 

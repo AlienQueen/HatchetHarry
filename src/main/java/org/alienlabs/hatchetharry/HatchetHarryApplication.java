@@ -296,7 +296,7 @@ public class HatchetHarryApplication extends WebApplication
 	public RuntimeConfigurationType getConfigurationType()
 	{
 
-		return RuntimeConfigurationType.DEVELOPMENT;
+		return RuntimeConfigurationType.DEPLOYMENT;
 	}
 
 	@Override

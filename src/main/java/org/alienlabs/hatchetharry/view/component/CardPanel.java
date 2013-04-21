@@ -59,6 +59,7 @@ public class CardPanel extends Panel
 			@Override
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
+				super.renderHead(component, response);
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/menu.css")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(

@@ -87,6 +87,7 @@ public class NotifierBehavior extends AbstractDefaultAjaxBehavior
 	public void renderHead(final Component component, final IHeaderResponse response)
 	{
 		super.renderHead(component, response);
+
 		final int before = this.getCallbackUrl().toString().indexOf("&jsessionid=");
 		final int after = this.getCallbackUrl().toString().indexOf("&random=");
 		boolean isSameSessionId = false;

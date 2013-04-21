@@ -38,6 +38,8 @@ public class Game implements Serializable
 	private Set<Side> sides = new HashSet<Side>();
 	@Column
 	private Long currentPlaceholderId = 0L;
+	@Column
+	private boolean isAcceptEndOfTurnPending;
 
 
 	public Long getId()
@@ -117,6 +119,16 @@ public class Game implements Serializable
 	public void setCurrentPlaceholderId(final Long _currentPlaceholderId)
 	{
 		this.currentPlaceholderId = _currentPlaceholderId;
+	}
+
+	public boolean isAcceptEndOfTurnPending()
+	{
+		return this.isAcceptEndOfTurnPending;
+	}
+
+	public void setAcceptEndOfTurnPending(final boolean _isAcceptEndOfTurnPending)
+	{
+		this.isAcceptEndOfTurnPending = _isAcceptEndOfTurnPending;
 	}
 
 }
