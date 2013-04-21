@@ -150,8 +150,15 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
+				CreateGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(
+						CreateGameModalWindow.this.game.getId(), CreateGameModalWindow.this.decks
+								.getModelObject().getDeckId());
+
 				final Deck deck = CreateGameModalWindow.this.decks.getModelObject();
 				deck.getCards().clear();
+				CreateGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(
+						CreateGameModalWindow.this.game.getId(), CreateGameModalWindow.this.player
+								.getDeck().getDeckId());
 
 				CreateGameModalWindow.LOGGER
 						.error("deck.cards().size(): " + deck.getCards().size());
@@ -183,7 +190,6 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.LOGGER.error("deck.getCards().size(): "
 						+ deck.getCards().size());
-				CreateGameModalWindow.this.persistenceService.saveAllMagicCards(deck.getCards());
 				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());

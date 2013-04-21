@@ -37,6 +37,7 @@
  */
 package org.alienlabs.hatchetharry.view.page;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -67,6 +69,7 @@ import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChanne
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -85,6 +88,7 @@ import org.alienlabs.hatchetharry.view.component.ImportDeckModalWindow;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
+import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
@@ -117,6 +121,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
 
+import com.google.common.io.Files;
+
 /**
  * Bootstrap class
  * 
@@ -142,6 +148,7 @@ public class HomePage extends TestReportPage
 	ModalWindow createGameWindow;
 	ModalWindow joinGameWindow;
 	ModalWindow importDeckWindow;
+	ModalWindow revealTopLibraryCardWindow;
 
 	Player player;
 	Deck deck;
@@ -330,6 +337,7 @@ public class HomePage extends TestReportPage
 		this.buildCombatLink();
 
 		this.generateImportDeckLink();
+		this.generateRevealTopLibraryCardLink();
 		this.generateResetDbLink();
 		this.generateHideAllTooltipsLink();
 	}
@@ -1290,6 +1298,80 @@ public class HomePage extends TestReportPage
 		this.add(importDeckLink);
 	}
 
+	private final void generateRevealTopLibraryCardLink()
+	{
+		this.revealTopLibraryCardWindow = new ModalWindow("revealTopLibraryCardWindow");
+		this.revealTopLibraryCardWindow.setInitialWidth(400);
+		this.revealTopLibraryCardWindow.setInitialHeight(350);
+
+		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
+				this.revealTopLibraryCardWindow.getContentId()));
+		this.revealTopLibraryCardWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.revealTopLibraryCardWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.revealTopLibraryCardWindow.setOutputMarkupId(true);
+		this.add(this.revealTopLibraryCardWindow);
+
+		final AjaxLink<Void> revealTopLibraryCardLink = new AjaxLink<Void>(
+				"revealTopLibraryCardLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Deck _deck = HomePage.this.persistenceService.getDeck(HatchetHarrySession
+						.get().getPlayer().getDeck().getDeckId());
+				String topCardName = "";
+
+				for (final MagicCard mc : _deck.getCards())
+				{
+					if (mc.getZone().equals(CardZone.LIBRARY))
+					{
+						topCardName = mc.getBigImageFilename();
+						break;
+					}
+					// TODO do something when library is empty
+				}
+				final String cardPath = ResourceBundle.getBundle(
+						HatchetHarryApplication.class.getCanonicalName()).getString(
+						"SharedResourceFolder");
+				final String cardPathAndName = cardPath.replace("/cards", "") + topCardName;
+				final File from = new File(cardPathAndName);
+				final File to = new File(cardPath + "topLibraryCard.jpg");
+
+				try
+				{
+					Files.copy(from, to);
+				}
+				catch (final IOException e)
+				{
+					HomePage.LOGGER.error("could not copy from: " + cardPathAndName + " to: "
+							+ cardPath + "topLibraryCard.jpg", e);
+				}
+
+				final Long gameId = HomePage.this.persistenceService
+						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
+							HomePage.this.session.getPlayer().getName());
+
+					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
+				}
+			}
+		};
+
+		revealTopLibraryCardLink.setOutputMarkupId(true);
+		this.add(revealTopLibraryCardLink);
+	}
+
 	@Subscribe
 	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
@@ -1594,6 +1676,20 @@ public class HomePage extends TestReportPage
 		{
 			target.appendJavaScript(JavaScriptUtils.DEACTIVATE_END_OF_TURN_LINKS);
 		}
+	}
+
+	@Subscribe
+	public void revealTopLibraryCard(final AjaxRequestTarget target,
+			final RevealTopLibraryCardCometChannel event)
+	{
+		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+
+		this.revealTopLibraryCardWindow.setTitle("This is the top card of " + event.getPlayerName()
+				+ "'s library: ");
+		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
+				this.revealTopLibraryCardWindow.getContentId()));
+
+		this.revealTopLibraryCardWindow.show(target);
 	}
 
 	@Override

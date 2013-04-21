@@ -185,8 +185,14 @@ public class JoinGameModalWindow extends Panel
 				session.setGameId(_id);
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
 
+				JoinGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(_id,
+						JoinGameModalWindow.this.decks.getModelObject().getDeckId());
+
 				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
 				deck.getCards().clear();
+				JoinGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(_id,
+						JoinGameModalWindow.this.player.getDeck().getDeckId());
+
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = JoinGameModalWindow.this.persistenceService
 						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
@@ -211,7 +217,6 @@ public class JoinGameModalWindow extends Panel
 				deck.getCards().addAll(allMagicCard);
 				deck.shuffleLibrary();
 
-				JoinGameModalWindow.this.persistenceService.saveAllMagicCards(deck.getCards());
 				JoinGameModalWindow.this.persistenceService.updateDeck(deck);
 				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());

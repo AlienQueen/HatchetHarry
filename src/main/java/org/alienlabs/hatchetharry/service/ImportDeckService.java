@@ -42,6 +42,7 @@ public class ImportDeckService implements Serializable
 		deck = new Deck();
 		deck.setPlayerId(1l);
 		deck.setDeckArchive(deckArchive);
+		deck.setDeckId(-1l);
 		final List<MagicCard> allMagicCards = deck.getCards();
 
 		deck = this.persistenceService.saveDeck(deck);

@@ -789,6 +789,19 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
+	public void clearAllMagicCardsForGameAndDeck(final Long gameId, final Long deckId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final Query query = session
+				.createSQLQuery("delete from MagicCard where gameId = ? and card_deck = ?");
+		query.setLong(0, gameId);
+		query.setLong(1, deckId);
+
+		query.executeUpdate();
+	}
+
+	@Transactional
 	public void resetDb()
 	{
 		final Session session = this.gameDao.getSession();
