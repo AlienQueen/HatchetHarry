@@ -856,7 +856,6 @@ You are free to modify any part of its source code (client-side or server-side),
 					<threshold>Default</threshold>
 				</configuration>
 			</plugin>
-			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
