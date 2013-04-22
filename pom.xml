@@ -10,7 +10,7 @@
 It is free software licensed under the terms of the GNU Affero General Public License, version 3.
 You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license.</description>
 	<scm>
-		<developerConnection>scm:AlienQueen</developerConnection>
+		<developerConnection>scm:git:git://zalmareddp.com:/home/git/repositories/hatchetharry.git</developerConnection>
 	</scm>
 	<organization>
 		<name>AlienLabs</name>
