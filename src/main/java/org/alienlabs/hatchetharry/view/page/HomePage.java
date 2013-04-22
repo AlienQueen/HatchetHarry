@@ -61,6 +61,7 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
+import org.alienlabs.hatchetharry.model.channel.CountCardsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
@@ -79,6 +80,7 @@ import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
+import org.alienlabs.hatchetharry.view.component.CountCardsModalWindow;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
@@ -149,6 +151,7 @@ public class HomePage extends TestReportPage
 	ModalWindow joinGameWindow;
 	ModalWindow importDeckWindow;
 	ModalWindow revealTopLibraryCardWindow;
+	ModalWindow countCardsWindow;
 
 	Player player;
 	Deck deck;
@@ -216,7 +219,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Sunday, 21st of April 2013.");
+		final Label message2 = new Label("message2", "built on Monday, 22nd of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -338,6 +341,7 @@ public class HomePage extends TestReportPage
 
 		this.generateImportDeckLink();
 		this.generateRevealTopLibraryCardLink();
+		this.generateCountCardsLink();
 		this.generateResetDbLink();
 		this.generateHideAllTooltipsLink();
 	}
@@ -750,7 +754,7 @@ public class HomePage extends TestReportPage
 		this.session.setPlayerHasBeenCreated();
 
 		this.deck = this.runtimeDataGenerator.generateData(p.getId());
-		this.deck.setCards(this.deck.shuffleLibrary());
+		this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
 		this.deck.setPlayerId(p.getId());
 
 		p.setDeck(this.deck);
@@ -1070,6 +1074,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/demo-style.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/mobile.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/blue_gradient_table.css")));
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
@@ -1107,7 +1113,7 @@ public class HomePage extends TestReportPage
 		this.graveyardParent.add(graveyardToUpdate);
 	}
 
-	private final List<MagicCard> createFirstCards()
+	private List<MagicCard> createFirstCards()
 	{
 		if (this.session.isPlayerCreated())
 		{
@@ -1123,7 +1129,7 @@ public class HomePage extends TestReportPage
 
 			if (!this.session.isHandCardsHaveBeenBuilt())
 			{
-				this.deck.shuffleLibrary();
+				this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
 			}
 
 			for (int i = 0; i < 7; i++)
@@ -1152,7 +1158,7 @@ public class HomePage extends TestReportPage
 		window.setInitialHeight(675);
 		window.setTitle("About HatchetHarry");
 		window.setContent(new AboutModalWindow(window.getContentId(), window));
-		window.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(window);
 
@@ -1181,7 +1187,7 @@ public class HomePage extends TestReportPage
 		window.setInitialHeight(635);
 		window.setTitle("HatchetHarry Team info");
 		window.setContent(new TeamInfoModalWindow(window.getContentId(), window));
-		window.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(window);
 
@@ -1203,7 +1209,7 @@ public class HomePage extends TestReportPage
 		return window;
 	}
 
-	private final ModalWindow generateCreateGameModalWindow(final Player _player,
+	private ModalWindow generateCreateGameModalWindow(final Player _player,
 			final WebMarkupContainer sidePlaceholderParent)
 	{
 		this.createGameWindow = new ModalWindow("createGameWindow");
@@ -1213,7 +1219,7 @@ public class HomePage extends TestReportPage
 
 		this.createGameWindow.setContent(new CreateGameModalWindow(this.createGameWindow,
 				this.createGameWindow.getContentId(), _player, sidePlaceholderParent, this));
-		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.createGameWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		this.createGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
 		this.createGameLink = new AjaxLink<Void>("createGameLink")
@@ -1236,7 +1242,7 @@ public class HomePage extends TestReportPage
 		return this.createGameWindow;
 	}
 
-	private final ModalWindow generateJoinGameModalWindow(final Player _player)
+	private ModalWindow generateJoinGameModalWindow(final Player _player)
 	{
 		this.joinGameWindow = new ModalWindow("joinGameWindow");
 		this.joinGameWindow.setInitialWidth(475);
@@ -1245,7 +1251,7 @@ public class HomePage extends TestReportPage
 
 		this.joinGameWindow.setContent(new JoinGameModalWindow(this.joinGameWindow,
 				this.joinGameWindow.getContentId(), _player, this.dataBoxParent, this));
-		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.joinGameWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		this.joinGameWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
 		this.joinGameLink = new AjaxLink<Void>("joinGameLink")
@@ -1268,7 +1274,7 @@ public class HomePage extends TestReportPage
 		return this.joinGameWindow;
 	}
 
-	private final void generateImportDeckLink()
+	private void generateImportDeckLink()
 	{
 		this.importDeckWindow = new ModalWindow("importDeckWindow");
 		this.importDeckWindow.setInitialWidth(475);
@@ -1277,7 +1283,7 @@ public class HomePage extends TestReportPage
 
 		this.importDeckWindow.setContent(new ImportDeckModalWindow(this.importDeckWindow
 				.getContentId()));
-		this.importDeckWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.importDeckWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		this.importDeckWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.importDeckWindow);
 
@@ -1298,7 +1304,7 @@ public class HomePage extends TestReportPage
 		this.add(importDeckLink);
 	}
 
-	private final void generateRevealTopLibraryCardLink()
+	private void generateRevealTopLibraryCardLink()
 	{
 		this.revealTopLibraryCardWindow = new ModalWindow("revealTopLibraryCardWindow");
 		this.revealTopLibraryCardWindow.setInitialWidth(400);
@@ -1306,7 +1312,7 @@ public class HomePage extends TestReportPage
 
 		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
 				this.revealTopLibraryCardWindow.getContentId()));
-		this.revealTopLibraryCardWindow.setCssClassName(ModalWindow.CSS_CLASS_BLUE);
+		this.revealTopLibraryCardWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		this.revealTopLibraryCardWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.revealTopLibraryCardWindow.setOutputMarkupId(true);
 		this.add(this.revealTopLibraryCardWindow);
@@ -1370,6 +1376,48 @@ public class HomePage extends TestReportPage
 
 		revealTopLibraryCardLink.setOutputMarkupId(true);
 		this.add(revealTopLibraryCardLink);
+	}
+
+	private void generateCountCardsLink()
+	{
+		this.countCardsWindow = new ModalWindow("countCardsWindow");
+		this.countCardsWindow.setInitialWidth(740);
+		this.countCardsWindow.setInitialHeight(550);
+
+		this.countCardsWindow.setContent(new CountCardsModalWindow(this.countCardsWindow
+				.getContentId(), this.session.getGameId()));
+		this.countCardsWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
+		this.countCardsWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.countCardsWindow.setOutputMarkupId(true);
+		this.add(this.countCardsWindow);
+
+		final AjaxLink<Void> countCardsLink = new AjaxLink<Void>("countCardsLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Long gameId = HomePage.this.persistenceService
+						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					final CountCardsCometChannel cccc = new CountCardsCometChannel(gameId);
+
+					HatchetHarryApplication.get().getEventBus().post(cccc, pageUuid);
+				}
+			}
+		};
+
+		countCardsLink.setOutputMarkupId(true);
+		this.add(countCardsLink);
 	}
 
 	@Subscribe
@@ -1690,6 +1738,19 @@ public class HomePage extends TestReportPage
 				this.revealTopLibraryCardWindow.getContentId()));
 
 		this.revealTopLibraryCardWindow.show(target);
+	}
+
+	@Subscribe
+	public void countCards(final AjaxRequestTarget target, final CountCardsCometChannel event)
+	{
+		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+
+		this.countCardsWindow.setTitle("Number of cards by zone for each player of game #"
+				+ event.getGameId() + ": ");
+		this.countCardsWindow.setContent(new CountCardsModalWindow(this.countCardsWindow
+				.getContentId(), event.getGameId()));
+
+		this.countCardsWindow.show(target);
 	}
 
 	@Override

@@ -52,14 +52,42 @@ public class Deck implements Serializable
 	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
-	public List<MagicCard> shuffleLibrary()
+	/**
+	 * Shuffle the library.
+	 * 
+	 * @param _cards
+	 *            all cards in the player's library
+	 * @return the same cards in another order
+	 */
+	public List<MagicCard> shuffleLibrary(final List<MagicCard> _cards)
 	{
-		Collections.shuffle(this.cards);
-		Collections.shuffle(this.cards);
-		Collections.shuffle(this.cards);
-		Collections.shuffle(this.cards);
-		Collections.shuffle(this.cards);
-		return this.cards;
+		Collections.shuffle(_cards);
+		Collections.shuffle(_cards);
+		Collections.shuffle(_cards);
+		Collections.shuffle(_cards);
+		Collections.shuffle(_cards);
+		return _cards;
+	}
+
+	/**
+	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone.
+	 * 
+	 * @param _cards
+	 *            all cards of a player in a certain zone
+	 * @return the same cards, in the same order, in the same zone but with
+	 *         zoneOrder reorder without any gap
+	 */
+	public List<MagicCard> reorderMagicCards(final List<MagicCard> _cards)
+	{
+		final List<MagicCard> orderedCards = new ArrayList<MagicCard>();
+
+		for (int i = 0; i < _cards.size(); i++)
+		{
+			orderedCards.add(_cards.get(i));
+			orderedCards.get(i).setZoneOrder((long)i);
+		}
+
+		return orderedCards;
 	}
 
 	public Long getPlayerId()

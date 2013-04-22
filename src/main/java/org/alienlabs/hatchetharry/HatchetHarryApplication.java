@@ -271,7 +271,10 @@ public class HatchetHarryApplication extends WebApplication
 				"image/tlyguide_arrow.png"));
 		this.mountResource("image/tlyguide_icon.png", new PackageResourceReference(HomePage.class,
 				"image/tlyguide_icon.png"));
-
+		this.mountResource("image/llsh.gif", new PackageResourceReference(HomePage.class,
+				"image/llsh.gif"));
+		this.mountResource("image/teaser.gif", new PackageResourceReference(HomePage.class,
+				"image/teaser.gif"));
 		this.getJavaScriptLibrarySettings().setJQueryReference(
 				new PackageResourceReference(HomePage.class, "script/google-analytics.js"));
 		this.getJavaScriptLibrarySettings().setWicketEventReference(

@@ -69,6 +69,8 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	@Enumerated(value = EnumType.STRING)
 	private CardZone zone;
+	@Column
+	private Long zoneOrder;
 
 	public MagicCard()
 	{
@@ -290,6 +292,16 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setZone(final CardZone _zone)
 	{
 		this.zone = _zone;
+	}
+
+	public Long getZoneOrder()
+	{
+		return this.zoneOrder;
+	}
+
+	public void setZoneOrder(final Long _zoneOrder)
+	{
+		this.zoneOrder = _zoneOrder;
 	}
 
 }

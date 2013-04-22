@@ -35,8 +35,6 @@ public class SpringContextLoaderBaseTest
 						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
 				this.eventBus = new EventBusMock(this);
-
-				SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
 			}
 		};
 

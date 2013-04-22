@@ -214,8 +214,7 @@ public class JoinGameModalWindow extends Panel
 					card.setZone(CardZone.LIBRARY);
 					allMagicCard.add(card);
 				}
-				deck.getCards().addAll(allMagicCard);
-				deck.shuffleLibrary();
+				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCard)));
 
 				JoinGameModalWindow.this.persistenceService.updateDeck(deck);
 				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()

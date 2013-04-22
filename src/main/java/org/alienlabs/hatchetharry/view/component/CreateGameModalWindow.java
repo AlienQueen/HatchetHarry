@@ -185,8 +185,7 @@ public class CreateGameModalWindow extends Panel
 				}
 
 				CreateGameModalWindow.LOGGER.error("allMagicCard.size(): " + allMagicCard.size());
-				deck.getCards().addAll(allMagicCard);
-				deck.shuffleLibrary();
+				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCard)));
 
 				CreateGameModalWindow.LOGGER.error("deck.getCards().size(): "
 						+ deck.getCards().size());

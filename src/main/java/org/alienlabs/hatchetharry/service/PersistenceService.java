@@ -818,4 +818,20 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("truncate table Game_Side").executeUpdate();
 	}
 
+	@Transactional
+	public int getNumberOfCardsInACertainZoneForAGameAndADeck(final CardZone zone,
+			final Long gameId, final Long deckId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final Query query = session
+				.createQuery("from MagicCard where zone = ? and gameId = ? and card_deck = ?");
+		query.setString(0, zone.toString());
+		query.setLong(1, gameId);
+		query.setLong(2, deckId);
+
+		final List<MagicCard> cards = query.list();
+		return (cards == null) ? 0 : cards.size();
+	}
+
 }
