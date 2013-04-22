@@ -91,11 +91,11 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveAllMagicCards(final List<MagicCard> allMagicCards)
+	public void updateAllMagicCards(final List<MagicCard> allMagicCards)
 	{
 		for (final MagicCard card : allMagicCards)
 		{
-			this.magicCardDao.getSession().save(card);
+			this.magicCardDao.getSession().update(card);
 		}
 	}
 
@@ -404,7 +404,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ?");
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ? order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong(0, gameId);
 		query.setString(1, CardZone.LIBRARY.toString());
@@ -625,7 +625,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ?");
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ? order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong(0, gameId);
 		query.setString(1, CardZone.HAND.toString());
@@ -674,7 +674,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId  and d.deckId = ?");
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId  and d.deckId = ? order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong(0, gameId);
 		query.setString(1, CardZone.BATTLEFIELD.toString());

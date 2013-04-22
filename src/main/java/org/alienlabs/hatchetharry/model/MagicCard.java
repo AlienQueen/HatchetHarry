@@ -70,7 +70,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Enumerated(value = EnumType.STRING)
 	private CardZone zone;
 	@Column
-	private Long zoneOrder;
+	private Long zoneOrder = 0l;
 
 	public MagicCard()
 	{

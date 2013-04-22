@@ -888,6 +888,18 @@ public class HomePage extends TestReportPage
 					final Long gameId = HomePage.this.persistenceService
 							.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
+					final Deck d = me.getDeck();
+					final List<MagicCard> _hand = d
+							.reorderMagicCards(HomePage.this.persistenceService
+									.getAllCardsInHandForAGameAndAPlayer(gameId, me.getId(),
+											d.getDeckId()));
+					HomePage.this.persistenceService.updateAllMagicCards(_hand);
+					final List<MagicCard> library = d
+							.reorderMagicCards(HomePage.this.persistenceService
+									.getAllCardsInLibraryForDeckAndPlayer(gameId, me.getId(),
+											d.getDeckId()));
+					HomePage.this.persistenceService.updateAllMagicCards(library);
+
 					final Game game = HomePage.this.persistenceService.getGame(gameId);
 					game.setAcceptEndOfTurnPending(false);
 					HomePage.this.persistenceService.updateGame(game);
@@ -1325,19 +1337,16 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final Deck _deck = HomePage.this.persistenceService.getDeck(HatchetHarrySession
-						.get().getPlayer().getDeck().getDeckId());
-				String topCardName = "";
-
-				for (final MagicCard mc : _deck.getCards())
+				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
+						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
+								HomePage.this.session.getPlayer().getId(), HomePage.this.session
+										.getPlayer().getDeck().getDeckId());
+				if ((null == allCardsInLibrary) || (allCardsInLibrary.isEmpty()))
 				{
-					if (mc.getZone().equals(CardZone.LIBRARY))
-					{
-						topCardName = mc.getBigImageFilename();
-						break;
-					}
-					// TODO do something when library is empty
+					return;
 				}
+				final String topCardName = allCardsInLibrary.get(0).getBigImageFilename();
+
 				final String cardPath = ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
 						"SharedResourceFolder");
@@ -1409,7 +1418,8 @@ public class HomePage extends TestReportPage
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
-					final CountCardsCometChannel cccc = new CountCardsCometChannel(gameId);
+					final CountCardsCometChannel cccc = new CountCardsCometChannel(gameId,
+							HomePage.this.session.getPlayer().getName());
 
 					HatchetHarryApplication.get().getEventBus().post(cccc, pageUuid);
 				}
@@ -1745,8 +1755,9 @@ public class HomePage extends TestReportPage
 	{
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
-		this.countCardsWindow.setTitle("Number of cards by zone for each player of game #"
-				+ event.getGameId() + ": ");
+		this.countCardsWindow.setTitle(event.getRequestingPlayerName()
+				+ " asks the number of cards by zone for each player of game #" + event.getGameId()
+				+ ": ");
 		this.countCardsWindow.setContent(new CountCardsModalWindow(this.countCardsWindow
 				.getContentId(), event.getGameId()));
 

@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
@@ -98,7 +100,18 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		card.setX(300l + (currentPlaceholderId * 16));
 		card.setY(300l + (currentPlaceholderId * 16));
+
 		this.persistenceService.updateCard(card);
+
+		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
+				.getId());
+		final Deck d = p.getDeck();
+		final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(hand);
+		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(battlefield);
 
 		JavaScriptUtils.updateHand(target);
 

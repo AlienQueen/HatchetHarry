@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
@@ -78,6 +80,16 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateCard(card);
 
 		JavaScriptUtils.updateGraveyard(target);
+
+		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
+				.getId());
+		final Deck d = p.getDeck();
+		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(graveyard);
+		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
 				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);

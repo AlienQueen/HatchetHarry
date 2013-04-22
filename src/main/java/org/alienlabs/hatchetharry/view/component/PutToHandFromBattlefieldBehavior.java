@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
@@ -83,6 +84,16 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 
 		final Long gameId = PutToHandFromBattlefieldBehavior.this.persistenceService
 				.getPlayer(session.getPlayer().getId()).getGame().getId();
+
+		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
+		final Deck d = p.getDeck();
+		final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(hand);
+		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(battlefield);
+
 		final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 

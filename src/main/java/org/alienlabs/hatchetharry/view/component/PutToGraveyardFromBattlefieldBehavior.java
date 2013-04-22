@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
@@ -69,6 +70,16 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		this.persistenceService.updateCard(mc);
 
 		final Long gameId = session.getPlayer().getGame().getId();
+
+		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
+		final Deck d = p.getDeck();
+		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(graveyard);
+		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		this.persistenceService.updateAllMagicCards(battlefield);
+
 		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
