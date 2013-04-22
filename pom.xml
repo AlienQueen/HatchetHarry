@@ -814,7 +814,7 @@ You are free to modify any part of its source code (client-side or server-side),
 				<version>2.5.2</version>
 				<configuration>
 					<effort>Max</effort>
-					<threshold>Default</threshold>
+					<threshold>Low</threshold>
 				</configuration>
 			</plugin>
 		</plugins>
