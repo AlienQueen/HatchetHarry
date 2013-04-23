@@ -68,8 +68,10 @@ import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
@@ -219,7 +221,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Monday, 22nd of April 2013.");
+		final Label message2 = new Label("message2", "built on Tuesday, 23rd of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1320,10 +1322,11 @@ public class HomePage extends TestReportPage
 	{
 		this.revealTopLibraryCardWindow = new ModalWindow("revealTopLibraryCardWindow");
 		this.revealTopLibraryCardWindow.setInitialWidth(400);
-		this.revealTopLibraryCardWindow.setInitialHeight(350);
+		this.revealTopLibraryCardWindow.setInitialHeight(510);
 
 		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
-				this.revealTopLibraryCardWindow.getContentId()));
+				this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow,
+				null));
 		this.revealTopLibraryCardWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		this.revealTopLibraryCardWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.revealTopLibraryCardWindow.setOutputMarkupId(true);
@@ -1345,7 +1348,8 @@ public class HomePage extends TestReportPage
 				{
 					return;
 				}
-				final String topCardName = allCardsInLibrary.get(0).getBigImageFilename();
+				final MagicCard firstCard = allCardsInLibrary.get(0);
+				final String topCardName = firstCard.getBigImageFilename();
 
 				final String cardPath = ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
@@ -1376,7 +1380,7 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 					final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
-							HomePage.this.session.getPlayer().getName());
+							HomePage.this.session.getPlayer().getName(), firstCard);
 
 					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
 				}
@@ -1578,6 +1582,44 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : 'accepts the end of turn.', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+			case PLAY_TOP_LIBRARY_CARD :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has played the top card of "
+						+ (event.getPlayerName().equals(event.getTargetPlayerName())
+								? "his (her) "
+								: event.getTargetPlayerName() + "'s ") + "library, which is: "
+						+ event.getCardName()
+						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case PUT_TOP_LIBRARY_CARD_TO_HAND :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has put the top card of "
+						+ (event.getPlayerName().equals(event.getTargetPlayerName())
+								? "his (her) "
+								: event.getTargetPlayerName() + "'s ")
+						+ "library in "
+						+ (event.getPlayerName().equals(event.getTargetPlayerName())
+								? "his (her) "
+								: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
+						+ event.getCardName()
+						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has put the top card of "
+						+ (event.getPlayerName().equals(event.getTargetPlayerName())
+								? "his (her) "
+								: event.getTargetPlayerName() + "'s ")
+						+ "library in "
+						+ (event.getPlayerName().equals(event.getTargetPlayerName())
+								? "his (her) "
+								: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
+						+ event.getCardName()
+						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
 		}
 	}
 
@@ -1715,6 +1757,39 @@ public class HomePage extends TestReportPage
 	}
 
 	@Subscribe
+	public void playTopLibraryCard(final AjaxRequestTarget target,
+			final PlayTopLibraryCardCometChannel event)
+	{
+		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+				event.getGameId());
+	}
+
+	@Subscribe
+	public void putTopLibraryCardToHand(final AjaxRequestTarget target,
+			final PutTopLibraryCardToHandCometChannel event)
+	{
+		if (event.getPlayerId().longValue() == HatchetHarrySession.get().getPlayer().getId()
+				.longValue())
+		{
+			JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
+					event.getDeckId());
+		}
+	}
+
+	@Subscribe
+	public void putTopLibraryCardToGraveyard(final AjaxRequestTarget target,
+			final PutTopLibraryCardToHandCometChannel event)
+	{
+		if (event.getPlayerId().longValue() == HatchetHarrySession.get().getPlayer().getId()
+				.longValue())
+		{
+			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
+					event.getDeckId());
+		}
+	}
+
+	@Subscribe
 	public void playCardFromGraveyard(final AjaxRequestTarget target,
 			final PlayCardFromGraveyardCometChannel event)
 	{
@@ -1745,7 +1820,8 @@ public class HomePage extends TestReportPage
 		this.revealTopLibraryCardWindow.setTitle("This is the top card of " + event.getPlayerName()
 				+ "'s library: ");
 		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
-				this.revealTopLibraryCardWindow.getContentId()));
+				this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow,
+				event.getCard()));
 
 		this.revealTopLibraryCardWindow.show(target);
 	}

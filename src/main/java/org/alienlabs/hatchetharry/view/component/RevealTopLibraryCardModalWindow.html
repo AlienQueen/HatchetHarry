@@ -1,10 +1,14 @@
 <wicket:panel>
 
 		<div style="position:absolute; left: 15%;">
-			<form action="">
-				
-				<br/><img wicket:id="topLibraryCard"></img><br/>
-				
+			<br/><img wicket:id="topLibraryCard"></img><br/>
+			<br/><br/><br/>
+			
+			<form wicket:id="form" action="">
+				<button wicket:id="doNothing" type="submit">OK</button> <br/><br/>
+				<button wicket:id="putToBattlefield" type="submit">Play this card</button> <br/><br/>
+				<button wicket:id="putToHand" type="submit">Put to hand</button> <br/><br/>
+				<button wicket:id="putToGraveyard" type="submit">Put to graveyard</button> <br/><br/>
 			</form>
 		</div>
 		
