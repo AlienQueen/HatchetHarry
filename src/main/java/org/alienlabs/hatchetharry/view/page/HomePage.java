@@ -1322,7 +1322,7 @@ public class HomePage extends TestReportPage
 	private void generateRevealTopLibraryCardLink()
 	{
 		this.revealTopLibraryCardWindow = new ModalWindow("revealTopLibraryCardWindow");
-		this.revealTopLibraryCardWindow.setInitialWidth(400);
+		this.revealTopLibraryCardWindow.setInitialWidth(500);
 		this.revealTopLibraryCardWindow.setInitialHeight(510);
 
 		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(

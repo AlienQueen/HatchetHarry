@@ -8,7 +8,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -72,12 +71,7 @@ public class HandComponent extends Panel
 				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
 				handImagePlaceholder.setOutputMarkupId(true);
 
-				final Label titlePlaceholder = new Label("titlePlaceholder", card.getTitle());
-				titlePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_")
-						+ "_placeholder");
-				titlePlaceholder.setOutputMarkupId(true);
-
-				wrapper.add(handImagePlaceholder, titlePlaceholder);
+				wrapper.add(handImagePlaceholder);
 				item.add(wrapper);
 
 			}
@@ -111,6 +105,7 @@ public class HandComponent extends Panel
 						card.getThumbnailFilename());
 				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
 				thumb.setOutputMarkupId(true);
+				thumb.add(new AttributeModifier("name", card.getTitle()));
 
 				crossLink.add(thumb);
 				crossLinkDiv.add(crossLink);

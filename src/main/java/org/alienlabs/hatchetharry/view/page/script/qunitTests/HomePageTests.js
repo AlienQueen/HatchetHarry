@@ -14,12 +14,12 @@ jQuery(function() {
 								ok((myGalleryContent.length > 0),
 										"it should itself contain other elements, actually found: "
 												+ myGalleryContent.length);
-								var slideElements = jQuery('span#gallery a.cross-link');
+								var slideElements = jQuery('span#gallery span.cross-link');
 								ok((slideElements.length == 7),
 										"these elements should contain the 7 images in the hand, actually found: "
 												+ slideElements.length);
 								var attribute = jQuery(
-										'span#gallery a.cross-link:first img')
+										'span#gallery span.cross-link:first img')
 										.attr('src');
 								ok(
 										((attribute.indexOf("cards") != -1) && (attribute
@@ -39,10 +39,10 @@ jQuery(function() {
 												+ menubaritem1.attr('src'));
 								menubaritem1 = jQuery('ul.jMenu li ul li a:first');
 								ok(
-										(menubaritem1.text() === "About HatchetHarry"),
+										(menubaritem1.text().indexOf("About HatchetHarry") != -1),
 										"the very first menubar entry is the <a> contained in a <li>, a <ul>, a <li> in a <ul> of class jMenu"
-												+ ", it should exist and contain 'About HatchetHarry', and it appears to be: "
-												+ menubaritem1.text());
+												+ ", it should exist and contain 'About HatchetHarry', and it appears to be: '"
+												+ menubaritem1.text() + "'");
 
 								var menubaritem2 = jQuery('ul.jMenu li.fNiv a:first');
 								ok(

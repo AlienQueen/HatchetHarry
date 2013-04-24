@@ -85,3 +85,19 @@ jQuery(function() {
 jQuery(function() {
 	tl.pg.init({ 'pg_caption' : 'Site tour', 'auto_show_first': true});
 });
+
+// Display the name of the currently displayed card in the hand
+function updateHandLabel(){
+	var handCardName = jQuery('#handGallery .active-thumbGraveyard .nav-thumb').attr('name');
+	if (handCardName == undefined) {
+		handCardName = jQuery('#handGallery .active-thumb .nav-thumb').attr('name');
+	}
+	jQuery('#cardLabel').text(handCardName);
+};
+
+jQuery(function() {
+	setTimeout(function() {
+		updateHandLabel();
+		jQuery('#handGallery .cross-link .nav-thumb').click(updateHandLabel);
+	}, 2000);
+});

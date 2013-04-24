@@ -30,7 +30,7 @@
 
 #floatingbar ul { list-style-type:none;}
 #floatingbar ul li { float:left; padding:14px; color:#666; margin-top:-3px;  }
-#floatingbar ul li a { text-decoration:none; padding: 10px;  font-size:12px;  font-weight:normal; font-family:Arial;}
+#floatingbar ul li a { text-decoration:none; padding: 10px;  font-size:10px;  font-weight:normal; font-family: 'Black Ops One', cursive; color: white;}
 #floatingbar ul li a:hover { color:#000033;}
 #floatingbar ul li a img { float:left; border:none;}
 .translateicon { float:right;margin-right:-5px;}

@@ -179,3 +179,11 @@ a, a:visited {
 .gritter-light .gritter-title {
 	text-shadow: none;
 }
+
+div.wicket-modal h3.w_captionText {
+	font-family: 'Black Ops One', cursive;
+}
+
+.cardLabelFont {
+	text-decoration:none; padding: 10px;  font-size:12px;  font-weight:normal; font-family: 'Black Ops One', cursive; color: gray;
+}

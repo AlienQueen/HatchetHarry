@@ -4,7 +4,7 @@
   		    <span id="content">
     			<span id="gallery" class="tour_7">
 	   			<div id="page-wrap">
-						
+					<span id="cardLabel" class="cardLabelFont" style="z-index: 1024; position:absolute; top: 345px; left:15px;"></span>
 					<div class="slider-wrap">
 						<div id="main-photo-slider" class="csw">
 							<div class="panelContainer">
@@ -13,7 +13,6 @@
 									<div class="panel">
 										<div wicket:id="wrapper" class="wrapper">
 											<img wicket:id="handImagePlaceholder" id="#"></img>
-											<div wicket:id="titlePlaceholder" class="photo-meta-data"></div>
 										</div>
 									</div>
 								</span>
@@ -22,7 +21,7 @@
 						</div>
 						<div wicket:id="thumbsPlaceholder">
 							<div wicket:id="thumbs" id="movers-row">
-								<div wicket:id="crossLinkDiv"><a wicket:id="crossLink" class="cross-link"><img wicket:id="thumbPlaceholder" class="nav-thumb"></img></a></div>
+								<div wicket:id="crossLinkDiv"><span wicket:id="crossLink" class="cross-link" style="cursor: pointer;"><img wicket:id="thumbPlaceholder" class="nav-thumb"></img></span></div>
 							</div>
 						</div>
 					</div>

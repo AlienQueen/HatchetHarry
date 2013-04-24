@@ -34,52 +34,52 @@
   <!-- The main (desktop) menu bar -->
   <span>
   <ul id="jMenu">
-	  <li><a><img src="/image/logoh1.gif" alt="HH" width="32" class="fNiv"/>&nbsp;&nbsp;</a><!-- Do not forget the "fNiv" class for the first level links !! -->
+	  <li><a><img src="/image/logoh1.gif" alt="HH" width="32" class="fNiv"/>&nbsp;&nbsp;&nbsp;&nbsp;</a><!-- Do not forget the "fNiv" class for the first level links !! -->
 	    
 			 	<ul>
 			 		<li class="arrow"></li>
 					<li>
 			          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64" class="logoEntry"/></div>
 					</li>
-					<li><a wicket:id="aboutLink">About HatchetHarry</a>
+					<li class="myfont"><a wicket:id="aboutLink"><img src="/image/about.png" alt="About HatchetHarry" class="imageEntry"/>&nbsp;&nbsp;About HatchetHarry</a>
 					</li>
-			        <li><a wicket:id="teamInfoLink">HatchetHarry team info</a>
+			        <li class="myfont"><a wicket:id="teamInfoLink"><img src="/image/team info.png" alt="team info" class="imageEntry"/>&nbsp;&nbsp;HatchetHarry team info</a>
 					</li>
-			        <li><a>Preferences</a>
+			        <li class="myfont"><a>Preferences</a>
 					</li>
 				</ul>
 	  </li>
-	  <li class="fNiv"><a>Game&nbsp;&nbsp;</a>
+	  <li class="fNiv"><a class="myfont">Game&nbsp;&nbsp;&nbsp;&nbsp;</a>
 		  
 			  	<ul>
-			  		<li><a wicket:id="createGameLink">
-						<img src="/image/browser.png" alt="create" class="imageEntry"/>Create a game
+			  		<li class="myfont"><a wicket:id="createGameLink">
+						<img src="/image/create game.png" alt="create" class="imageEntry"/>&nbsp;&nbsp;Create a game
 				    	</a>
 					</li>
-					<li><a wicket:id="joinGameLink">
-						<img src="/image/browser.png" alt="join" class="imageEntry"/>Join a game
+					<li class="myfont"><a wicket:id="joinGameLink">
+						<img src="/image/join game.png" alt="join" class="imageEntry"/>&nbsp;&nbsp;Join a game
 						</a>
 					</li>
-					<li><a wicket:id="importDeckLink">
-				        <img src="/image/browser.png" alt="import" class="imageEntry"/>Import a deck
+					<li class="myfont"><a wicket:id="importDeckLink">
+				        <img src="/image/import deck.png" alt="import" class="imageEntry"/>&nbsp;&nbsp;Import a deck
 				    	</a>
 					</li>
-					<li><a wicket:id="resetDbLink">Reset database</a>
+					<li class="myfont"><a wicket:id="resetDbLink">Reset database</a>
 					</li>
-					<li><a wicket:id="hideAllTooltipsLink">Hide all tooltips</a>
+					<li class="myfont"><a wicket:id="hideAllTooltipsLink">Hide all tooltips</a>
 					</li>
 				</ul>
 	  </li>
-	  <li class="fNiv"><a>Zones&nbsp;&nbsp;</a>
+	  <li class="fNiv"><a class="myfont">Zones&nbsp;&nbsp;&nbsp;&nbsp;</a>
 			 	<ul>
-			        <li><a wicket:id="playCardFromGraveyardLink">Play card from graveyard</a>
+			        <li class="myfont"><a wicket:id="playCardFromGraveyardLink"><img src="/image/play from graveyard.png" alt="Play card from graveyard" class="imageEntry"/>&nbsp;&nbsp;Play card from graveyard</a>
 					</li>
-					<li><a wicket:id="revealTopLibraryCardLink">
-				        <img src="/image/browser.png" alt="import" class="imageEntry"/>Reveal top card of your library
+					<li class="myfont"><a wicket:id="revealTopLibraryCardLink">
+				        	<img src="/image/Library Folder.png" alt="Reveal top card of your library" class="imageEntry"/>&nbsp;&nbsp;Reveal top card of your library
 				    	</a>
 					</li>
-					<li><a wicket:id="countCardsLink">
-				        <img src="/image/browser.png" alt="import" class="imageEntry"/>Count all cards
+					<li class="myfont"><a wicket:id="countCardsLink">
+				        <img src="/image/count cards.png" alt="Count all cards" class="imageEntry"/>&nbsp;&nbsp;Count all cards
 				    	</a>
 					</li>
 				</ul>
@@ -97,9 +97,9 @@
   </div>
    <div class="categories">
       <ul>
-        <li><a wicket:id="aboutLinkResponsive">* About HatychetHarry&nbsp;&nbsp;</a></li>
-        <li><a wicket:id="teamInfoLinkResponsive">* HatchetHarry team info&nbsp;&nbsp;</a></li>
-        <li><a target="_blank">* Preferences</a></li>
+        <li class="myfont"><a wicket:id="aboutLinkResponsive">* About HatychetHarry&nbsp;&nbsp;</a></li>
+        <li class="myfont"><a wicket:id="teamInfoLinkResponsive">* HatchetHarry team info&nbsp;&nbsp;</a></li>
+        <li class="myfont"><a target="_blank">* Preferences</a></li>
       </ul>
       <br/><br/>
       <ul>
@@ -233,9 +233,9 @@
 		<div wicket:id="parent">
   			<span wicket:id="feedback"></span>
 	    	<form wicket:id="runFormMistletoe">
-	      		Name of Mistletoe suite or test to run: 
-	      		<input wicket:id="testClassName" type="text" size="70"></input>
-	      		<input wicket:id="runMistletoe" type="submit" value="Run" id="runMistletoe"></input>
+	      		<span class="myfont">Name of Mistletoe suite or test to run: </span> 
+	      		<input wicket:id="testClassName" type="text" size="70" class="myfont"></input>
+	      		<input wicket:id="runMistletoe" type="submit" value="Run" id="runMistletoe" class="myfont"></input>
 	    	</form>
 			  <div style="width:40em; min-width:40em;">
 			    <table wicket:id="summary">    
@@ -265,7 +265,7 @@
 	
 	         <ul class="gallery clearfix">
 					<li wicket:id="untapAndDrawPlaceholder" title="Untap your permanents & draw a card">
-						<a wicket:id="untapAndDrawLink" id="twitterlink" style="cursor: pointer; color: white;"><img src="image/tweet.png"></img> Untap & draw</a>
+						<a wicket:id="untapAndDrawLink" id="twitterlink" style="cursor: pointer; color: white"><img src="image/tweet.png"></img> Untap & draw</a>
 					</li>
 					
 					<li id="untapAllPlaceholder" wicket:id="untapAllPlaceholder" title="Untall all your permanents">

@@ -250,6 +250,22 @@ public class HatchetHarryApplication extends WebApplication
 				HomePage.class, "image/logobouclierrouge.png"));
 		this.mountResource("image/logobouclierviolet.png", new PackageResourceReference(
 				HomePage.class, "image/logobouclierviolet.png"));
+		this.mountResource("image/about.png", new PackageResourceReference(HomePage.class,
+				"image/about.png"));
+		this.mountResource("image/count cards.png", new PackageResourceReference(HomePage.class,
+				"image/count cards.png"));
+		this.mountResource("image/create game.png", new PackageResourceReference(HomePage.class,
+				"image/create game.png"));
+		this.mountResource("image/import deck.png", new PackageResourceReference(HomePage.class,
+				"image/import deck.png"));
+		this.mountResource("image/join game.png", new PackageResourceReference(HomePage.class,
+				"image/join game.png"));
+		this.mountResource("image/Library Folder.png", new PackageResourceReference(HomePage.class,
+				"image/Library Folder.png"));
+		this.mountResource("image/play from graveyard.png", new PackageResourceReference(
+				HomePage.class, "image/play from graveyard.png"));
+		this.mountResource("image/team info.png", new PackageResourceReference(HomePage.class,
+				"image/team info.png"));
 
 		this.mountResource("image/edit.png", new PackageResourceReference(HomePage.class,
 				"image/edit.png"));
@@ -283,6 +299,7 @@ public class HatchetHarryApplication extends WebApplication
 				new PackageResourceReference(HomePage.class, "blah.js"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
+		this.getResourceSettings().setDefaultCacheDuration(Duration.seconds(2));
 
 		this.getExceptionSettings().setUnexpectedExceptionDisplay(
 				IExceptionSettings.SHOW_EXCEPTION_PAGE);
