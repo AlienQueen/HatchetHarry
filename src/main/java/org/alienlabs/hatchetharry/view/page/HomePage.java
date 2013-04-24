@@ -71,6 +71,7 @@ import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
@@ -221,7 +222,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Tuesday, 23rd of April 2013.");
+		final Label message2 = new Label("message2", "built on Wednesday, 24th of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1772,6 +1773,9 @@ public class HomePage extends TestReportPage
 		if (event.getPlayerId().longValue() == HatchetHarrySession.get().getPlayer().getId()
 				.longValue())
 		{
+			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
+			p.setHandDisplayed(true);
+			this.persistenceService.updatePlayer(p);
 			JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
 		}
@@ -1779,11 +1783,14 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void putTopLibraryCardToGraveyard(final AjaxRequestTarget target,
-			final PutTopLibraryCardToHandCometChannel event)
+			final PutTopLibraryCardToGraveyardCometChannel event)
 	{
 		if (event.getPlayerId().longValue() == HatchetHarrySession.get().getPlayer().getId()
 				.longValue())
 		{
+			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
+			p.setGraveyardDisplayed(true);
+			this.persistenceService.updatePlayer(p);
 			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
 		}
