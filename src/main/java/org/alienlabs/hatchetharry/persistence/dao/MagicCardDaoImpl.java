@@ -18,12 +18,10 @@
  */
 package org.alienlabs.hatchetharry.persistence.dao;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -111,33 +109,6 @@ public class MagicCardDaoImpl implements MagicCardDao
 	}
 
 	/**
-	 * Query the DB, using the supplied query details.
-	 * 
-	 * @param qp
-	 *            Query Parameters to use.
-	 * @return The results of the query as an Iterator.
-	 */
-	@Override
-	@Transactional
-	public Iterator<MagicCard> find(final QueryParam qp, final MagicCard filter)
-	{
-		return this.buildFindQuery(qp, filter, false).list().iterator();
-
-	}
-
-	/**
-	 * Return the number of MagicCards in the DB.
-	 * 
-	 * @return count
-	 */
-	@Override
-	@Transactional
-	public int count(final MagicCard filter)
-	{
-		return ((Long)this.buildFindQuery(null, filter, true).uniqueResult()).intValue();
-	}
-
-	/**
 	 * Returns a list of unique last names
 	 */
 	@Override
@@ -149,32 +120,6 @@ public class MagicCardDaoImpl implements MagicCardDao
 				.createQuery(
 						"select distinct target.lastname "
 								+ " from MagicCard target order by target.lastname").list();
-	}
-
-	/**
-	 * builds a query object to satisfy the provided parameters
-	 * 
-	 * @param qp
-	 *            sorting and paging criteria
-	 * @param filter
-	 *            filter criteria
-	 * @param count
-	 *            true if this is a query meant to retrieve the number of rows
-	 * @return query object that satisfies the provided criteria
-	 */
-	protected Query buildFindQuery(final QueryParam qp, final MagicCard filter, final boolean count)
-	{
-		final MagicCardFinderQueryBuilder builder = new MagicCardFinderQueryBuilder();
-		builder.setQueryParam(qp);
-		builder.setFilter(filter);
-		builder.setCount(count);
-		final Query query = this.getSession().createQuery(builder.buildHql());
-		query.setParameters(builder.getParameters(), builder.getTypes());
-		if (!count && (qp != null))
-		{
-			query.setFirstResult(qp.getFirst()).setMaxResults(qp.getCount());
-		}
-		return query;
 	}
 
 }

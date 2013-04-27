@@ -19,7 +19,6 @@
 package org.alienlabs.hatchetharry.persistence.dao;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -59,22 +58,6 @@ public interface MagicCardDao extends Serializable
 	 *            The id of the MagicCard to delete.
 	 */
 	void delete(long id);
-
-	/**
-	 * Query the DB, using the supplied query details.
-	 * 
-	 * @param qp
-	 *            Query Paramaters to use.
-	 * @return The results of the query as an Iterator.
-	 */
-	Iterator<MagicCard> find(QueryParam qp, MagicCard filter);
-
-	/**
-	 * Return the number of MagicCards in the DB.
-	 * 
-	 * @return count
-	 */
-	int count(MagicCard filter);
 
 	/**
 	 * Returns the list of all unique last names in the database

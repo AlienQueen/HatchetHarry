@@ -19,7 +19,6 @@
 package org.alienlabs.hatchetharry.persistence.dao;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.Player;
@@ -59,22 +58,6 @@ public interface PlayerDao extends Serializable
 	 *            The id of the Player to delete.
 	 */
 	void delete(long id);
-
-	/**
-	 * Query the DB, using the supplied query details.
-	 * 
-	 * @param qp
-	 *            Query Paramaters to use.
-	 * @return The results of the query as an Iterator.
-	 */
-	Iterator<Player> find(QueryParam qp, Player filter);
-
-	/**
-	 * Return the number of Players in the DB.
-	 * 
-	 * @return count
-	 */
-	int count(Player filter);
 
 	/**
 	 * Returns the list of all unique last names in the database

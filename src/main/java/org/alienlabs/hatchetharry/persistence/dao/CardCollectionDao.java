@@ -19,7 +19,6 @@
 package org.alienlabs.hatchetharry.persistence.dao;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.model.CardCollection;
@@ -59,15 +58,6 @@ public interface CardCollectionDao extends Serializable
 	 *            The id of the CardCollection to delete.
 	 */
 	void delete(long id);
-
-	/**
-	 * Query the DB, using the supplied query details.
-	 * 
-	 * @param qp
-	 *            Query Paramaters to use.
-	 * @return The results of the query as an Iterator.
-	 */
-	Iterator<CardCollection> find(QueryParam qp, CardCollection filter);
 
 	/**
 	 * Return the number of CardCollections in the DB.
