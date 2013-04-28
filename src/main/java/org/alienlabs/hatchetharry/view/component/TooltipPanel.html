@@ -6,8 +6,30 @@
         xml:lang="en"
         lang="en">
 <wicket:panel>
-		<pre class="tip" id="status2"></pre>
-		<img wicket:id="bubbleTipImg1" width="339" height="480"  style="position:relative; z-index: 5000;" class="cardTooltip">
-		</img><br/>
+			<span class="cardTooltip">
+				
+				<pre class="tip" id="status2"></pre><a wicket:id="closeTooltip" href="#"><img src="image/closeTooltip.png" style="position:relative; z-index: 5000; top: -480px; left: 360px;"></img></a>
+				<img wicket:id="bubbleTipImg1" width="339" height="480"  style="position:relative; z-index: 5000;">
+				</img><br/>
+				<span class="myfont">Add counter : </span>
+				<form wicket:id="form">
+					<input wicket:id="counterAddName" type="text" class="myfont"></input>
+					<a wicket:id="submit" class="myfont" href="#" style="color: gray;">Submit</a>				
+				</form> 
+				<br/><br/> 
+				<span wicket:id="counters">
+					<span wicket:id="counterName"></span> counter :  
+					<span wicket:id="numberOfCounters">
+					</span>
+					&nbsp;
+					<a wicket:id="addCounterLink" href="#">
+						<img wicket:id="counterPlus" title="add 1 counter"></img>&nbsp;
+					</a>
+					<a wicket:id="removeCounterLink" href="#">
+						<img wicket:id="counterMinus" title="remove 1 counter"></img>
+					</a>
+					<br/><br/>
+				</span>
+		</span>
 </wicket:panel>
 </html>

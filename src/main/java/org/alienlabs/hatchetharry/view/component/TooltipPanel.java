@@ -1,19 +1,74 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Counter;
+import org.alienlabs.hatchetharry.model.Game;
+import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.NotifierAction;
+import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
+import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class TooltipPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
-	private final String ownerSide;
+	static final Logger LOGGER = LoggerFactory.getLogger(TooltipPanel.class);
 
-	public TooltipPanel(final String id, final String bigImage, final String _ownerSide)
+	final WebMarkupContainer cardHandle;
+	final UUID uuid;
+	private final String bigImage;
+	final String ownerSide;
+
+	@SpringBean
+	PersistenceService persistenceService;
+
+	public TooltipPanel(final String id, final WebMarkupContainer _cardHandle, final UUID _uuid,
+			final String _bigImage, final String _ownerSide)
 	{
 		super(id);
+		this.cardHandle = _cardHandle;
+		this.uuid = _uuid;
+		this.bigImage = _bigImage;
 		this.ownerSide = _ownerSide;
 
-		final ExternalImage bubbleTipImg1 = new ExternalImage("bubbleTipImg1", bigImage);
+		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavaScript("jQuery('.tooltip').attr('style', 'display: none;'); ");
+			}
+		};
+
+		final ExternalImage bubbleTipImg1 = new ExternalImage("bubbleTipImg1", this.bigImage);
 
 		if ("infrared".equals(this.ownerSide))
 		{
@@ -28,7 +83,190 @@ public class TooltipPanel extends Panel
 			bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid yellow;"));
 		}
 
-		this.add(bubbleTipImg1);
+
+		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.uuid);
+
+		final Form<String> form = new Form<String>("form");
+		final TextField<String> counterAddName = new TextField<String>("counterAddName",
+				new Model<String>(""));
+		counterAddName.setOutputMarkupId(true);
+
+		final AjaxSubmitLink submit = new AjaxSubmitLink("submit")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			{
+				final MagicCard _myCard = TooltipPanel.this.persistenceService
+						.getCardFromUuid(TooltipPanel.this.uuid);
+
+				final String _counterName = counterAddName.getDefaultModelObjectAsString();
+				final Counter counter = new Counter();
+				counter.setCounterName(_counterName);
+				counter.setNumberOfCounters(1l);
+				counter.setCard(_myCard);
+				TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
+
+				final Set<Counter> counters = _myCard.getCounters();
+				counters.add(counter);
+				_myCard.setCounters(counters);
+				TooltipPanel.this.persistenceService.updateCard(_myCard);
+
+				final Player targetPlayer = TooltipPanel.this.persistenceService.getPlayer(myCard
+						.getDeck().getPlayerId());
+				final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+						.getGame().getId());
+				final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+						.giveAllPlayersFromGame(game.getId());
+
+				final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
+						game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+						targetPlayer.getName(), myCard.getTitle(), counter.getCounterName(),
+						counter.getNumberOfCounters(), NotifierAction.ADD_COUNTER);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long p = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
+					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
+				}
+			}
+		};
+		submit.setOutputMarkupId(true);
+
+		final List<Counter> cardCounters = new ArrayList<Counter>(myCard.getCounters());
+		final ListView<Counter> counters = new ListView<Counter>("counters", cardCounters)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(final ListItem<Counter> item)
+			{
+				final Counter counter = item.getModelObject();
+				item.add(new Label("counterName", counter.getCounterName()).setOutputMarkupId(true));
+				item.add(new Label("numberOfCounters", counter.getNumberOfCounters())
+						.setOutputMarkupId(true));
+
+				final AjaxLink<Void> addCounterLink = new AjaxLink<Void>("addCounterLink")
+				{
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						counter.setNumberOfCounters(counter.getNumberOfCounters() + 1);
+						try
+						{
+							TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
+						}
+						catch (final Exception ex)
+						{
+							TooltipPanel.LOGGER.error(
+									"error occured while trying to add a counter: ", ex);
+							return;
+						}
+
+						final Player targetPlayer = TooltipPanel.this.persistenceService
+								.getPlayer(myCard.getDeck().getPlayerId());
+						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+								.getGame().getId());
+						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+								.giveAllPlayersFromGame(game.getId());
+
+						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
+								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+								targetPlayer.getName(), myCard.getTitle(),
+								counter.getCounterName(), counter.getNumberOfCounters(),
+								NotifierAction.ADD_COUNTER);
+
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
+						}
+					}
+				};
+				addCounterLink.setOutputMarkupId(true);
+
+				final Image counterPlus = new Image("counterPlus", new PackageResourceReference(
+						HomePage.class, "image/plusLife.png"));
+				counterPlus.setOutputMarkupId(true);
+				addCounterLink.add(counterPlus);
+				final AjaxLink<Void> removeCounterLink = new AjaxLink<Void>("removeCounterLink")
+				{
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						counter.setNumberOfCounters(counter.getNumberOfCounters() - 1);
+						NotifierAction action;
+
+						if (counter.getNumberOfCounters().longValue() == 0)
+						{
+							TooltipPanel.this.persistenceService.deleteCounter(counter, myCard);
+							action = NotifierAction.CLEAR_COUNTER;
+						}
+						else
+						{
+							try
+							{
+								TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
+								action = NotifierAction.REMOVE_COUNTER;
+							}
+							catch (final Exception ex)
+							{
+								TooltipPanel.LOGGER.error(
+										"error occured while trying to remove a counter: ", ex);
+								return;
+							}
+						}
+
+						final Player targetPlayer = TooltipPanel.this.persistenceService
+								.getPlayer(myCard.getDeck().getPlayerId());
+						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+								.getGame().getId());
+						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+								.giveAllPlayersFromGame(game.getId());
+						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
+								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+								targetPlayer.getName(), myCard.getTitle(),
+								counter.getCounterName(), counter.getNumberOfCounters(), action);
+
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
+						}
+					}
+				};
+				removeCounterLink.setOutputMarkupId(true);
+
+				final Image counterMinus = new Image("counterMinus", new PackageResourceReference(
+						HomePage.class, "image/minusLife.png"));
+				counterMinus.setOutputMarkupId(true);
+				removeCounterLink.add(counterMinus);
+
+				item.add(addCounterLink, removeCounterLink);
+			}
+		};
+
+		form.add(counterAddName, submit);
+		this.add(closeTooltip, bubbleTipImg1, form, counters);
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
 	}
 
 }

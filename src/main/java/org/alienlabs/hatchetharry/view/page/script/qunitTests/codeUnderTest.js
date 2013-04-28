@@ -76,8 +76,17 @@ jQuery(window).resize(function() {
 jQuery(function() {	
 	// @see: initTooltip.js
 	// TODO: re-activate Dnd + tap handle for baldu
-	jQuery("#card249c4f0b_cad0_4606_b5ea_eaee8866a347").easyTooltip({
-		useElement: "cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347"				   
+	jQuery("#card249c4f0b_cad0_4606_b5ea_eaee8866a347").mouseover(
+	function(e) {
+		jQuery("#cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347").attr('style', 'display: block');
+	});
+	jQuery("#cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347").mouseover(
+	function(e) {
+		jQuery("#cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347").attr('style', 'display: block');
+	});
+	jQuery("#cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347").mouseout(
+	function(e) {
+		jQuery("#cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347").attr('style', 'display: none');
 	});
 });
 

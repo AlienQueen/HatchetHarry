@@ -105,13 +105,14 @@
                 <value>org.alienlabs.hatchetharry.model.MagicCard</value>
 				<value>org.alienlabs.hatchetharry.model.Player</value>
 				<value>org.alienlabs.hatchetharry.model.Side</value>
+				<value>org.alienlabs.hatchetharry.model.Counter</value>
             </list> 
         </property>
 
 		<property name="hibernateProperties">
 			<props>
 				<!--  create= provide data at start-up by dropping tables, update= no start-up data model modification -->
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="hibernate.connection.pool_size">100</prop>
 				<prop key="hibernate.show_sql">false</prop>
@@ -175,10 +176,9 @@
 	<bean id="cardCollectionDao" class="org.alienlabs.hatchetharry.persistence.dao.CardCollectionDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
-<!--	<bean id="playerDaoTarget" class="org.alienlabs.ajax.persistence.dao.PlayerDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
+	<bean id="counterDao" class="org.alienlabs.hatchetharry.persistence.dao.CounterDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
--->
 	
 	<!-- setup transactions -->
 
@@ -212,6 +212,7 @@
 		<property name="playerDao" ref="playerDao"/>
 		<property name="gameDao" ref="gameDao"/>
 		<property name="sideDao" ref="sideDao"/>
+		<property name="counterDao" ref="counterDao"/>
 	</bean>
 	<!-- setup data generator that will add some data into the db when the app starts up -->
 	<bean id="importDeckService" class="org.alienlabs.hatchetharry.service.ImportDeckService">

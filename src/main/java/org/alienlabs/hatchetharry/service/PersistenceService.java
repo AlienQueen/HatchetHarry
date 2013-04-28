@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
+import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.Game;
@@ -16,6 +17,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
+import org.alienlabs.hatchetharry.persistence.dao.CounterDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.GameDao;
@@ -53,6 +55,8 @@ public class PersistenceService implements Serializable
 	private GameDao gameDao;
 	@SpringBean
 	private SideDao sideDao;
+	@SpringBean
+	private CounterDao counterDao;
 
 	public PersistenceService()
 	{
@@ -88,6 +92,12 @@ public class PersistenceService implements Serializable
 	public void saveCard(final MagicCard c)
 	{
 		this.magicCardDao.getSession().save(c);
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void saveOrUpdateCounter(final Counter c)
+	{
+		this.counterDao.getSession().saveOrUpdate(c);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
@@ -499,6 +509,12 @@ public class PersistenceService implements Serializable
 		this.gameDao = _gameDao;
 	}
 
+	@Required
+	public void setCounterDao(final CounterDao _counterDao)
+	{
+		this.counterDao = _counterDao;
+	}
+
 	@Transactional
 	public List<?> getCardsByDeckId(final long gameId)
 	{
@@ -526,19 +542,6 @@ public class PersistenceService implements Serializable
 		final Query query = session.createQuery("from DeckArchive d where d.deckName != null");
 
 		return query.list();
-	}
-
-	@Transactional
-	public Deck getFirstDeckFromDeckArchiveForPlayer(final Long playerId) // TODO:
-																			// remove
-																			// this
-	{
-		final Session session = this.deckDao.getSession();
-		final SQLQuery query = session
-				.createSQLQuery("select d.deckId, d.playerId, distinct(d.Deck_DeckArchive) from Deck d, DeckArchive da where d.Deck_DeckArchive = da.deckArchiveId");
-		query.addEntity(Deck.class);
-
-		return (Deck)query.list().get(0);
 	}
 
 	@Transactional
@@ -816,6 +819,8 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("truncate table DeckArchive").executeUpdate();
 		session.createSQLQuery("truncate table CollectibleCard").executeUpdate();
 		session.createSQLQuery("truncate table Game_Side").executeUpdate();
+		session.createSQLQuery("truncate table Counter").executeUpdate();
+		session.createSQLQuery("truncate table Card_Counter").executeUpdate();
 	}
 
 	@Transactional
@@ -832,6 +837,23 @@ public class PersistenceService implements Serializable
 
 		final List<MagicCard> cards = query.list();
 		return (cards == null) ? 0 : cards.size();
+	}
+
+	@Transactional
+	public void deleteCounter(final Counter counter, final MagicCard card)
+	{
+		card.getCounters().remove(counter);
+
+		final Session session = this.counterDao.getSession();
+		Query query = session.createSQLQuery("delete from Card_Counter where counterId = ?");
+		query.setLong(0, counter.getId());
+		query.executeUpdate();
+
+		query = session.createSQLQuery("delete from Counter where counterId = ?");
+		query.setLong(0, counter.getId());
+		query.executeUpdate();
+
+		this.updateCard(card);
 	}
 
 }

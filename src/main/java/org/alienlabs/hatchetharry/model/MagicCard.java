@@ -11,6 +11,8 @@
 package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Cacheable;
@@ -24,7 +26,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.wicket.model.Model;
@@ -71,6 +75,9 @@ public class MagicCard implements SlideshowImage, Serializable
 	private CardZone zone;
 	@Column
 	private Long zoneOrder = 0l;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "counterId"))
+	private Set<Counter> counters = new HashSet<Counter>();
 
 	public MagicCard()
 	{
@@ -302,6 +309,16 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setZoneOrder(final Long _zoneOrder)
 	{
 		this.zoneOrder = _zoneOrder;
+	}
+
+	public Set<Counter> getCounters()
+	{
+		return this.counters;
+	}
+
+	public void setCounters(final Set<Counter> _counters)
+	{
+		this.counters = _counters;
 	}
 
 }

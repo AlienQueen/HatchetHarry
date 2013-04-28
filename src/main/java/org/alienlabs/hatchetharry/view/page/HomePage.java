@@ -75,6 +75,7 @@ import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCome
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
+import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
@@ -222,7 +223,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Wednesday, 24th of April 2013.");
+		final Label message2 = new Label("message2", "built on Sunday, 28th of April 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1049,8 +1050,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tooltip/easyTooltip.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/notificon.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -1675,6 +1674,43 @@ public class HomePage extends TestReportPage
 	}
 
 	@Subscribe
+	@SuppressWarnings("incomplete-switch")
+	public void updateCardTooltip(final AjaxRequestTarget target,
+			final UpdateCardPanelCometChannel event)
+	{
+		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+				event.getGameId());
+
+		switch (event.getAction())
+		{
+			case ADD_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName() + "', text : \"has put "
+						+ event.getNumberOfCounters() + " " + event.getCounterName()
+						+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
+						+ event.getCardName()
+						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case REMOVE_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName() + "', text : \"has put "
+						+ event.getNumberOfCounters() + " " + event.getCounterName()
+						+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
+						+ event.getCardName()
+						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case CLEAR_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName() + "', text : \"has cleared the "
+						+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
+						+ "'s card: " + event.getCardName()
+						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+		}
+	}
+
+	@Subscribe
 	public void removeCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToGraveyardCometChannel event)
 	{
@@ -1942,8 +1978,6 @@ public class HomePage extends TestReportPage
 							+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
 							+ mc.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY()
 							+ "px\");\n");
-					js.append("jQuery(\"#card" + cp.getUuid() + "\").easyTooltip({"
-							+ "useElement: \"cardTooltip" + cp.getUuid() + "\"});\n");
 
 					if (mc.isTapped())
 					{

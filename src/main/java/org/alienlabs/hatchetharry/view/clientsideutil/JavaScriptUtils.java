@@ -57,7 +57,14 @@ public final class JavaScriptUtils
 			}
 
 			buf.append("jQuery('#card" + uuidValidForJs
-					+ "').easyTooltip({ useElement: 'cardTooltip" + uuidValidForJs + "'}); ");
+					+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: block'); }); ");
+			buf.append("jQuery('#cardTooltip" + uuidValidForJs
+					+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: block'); }); ");
+			buf.append("jQuery('#cardTooltip" + uuidValidForJs
+					+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: none'); }); ");
 
 			// For mobile
 			buf.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
@@ -65,11 +72,6 @@ public final class JavaScriptUtils
 			buf.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
 			buf.append("  jQuery('#cardTooltip" + uuidValidForJs
 					+ "').attr('style', 'display: block'); ");
-			buf.append("var hideTooltip" + uuidValidForJs + " = jQuery('#cardTooltip"
-					+ uuidValidForJs + "').hammer(); ");
-			buf.append("hideTooltip" + uuidValidForJs + ".on('tap', function(ev) { ");
-			buf.append("  jQuery('#cardTooltip" + uuidValidForJs
-					+ "').attr('style', 'display: none'); });");
 			buf.append("}); ");
 
 			buf.append("jQuery('#tapHandleImage" + uuidValidForJs + "').unbind('click'); ");

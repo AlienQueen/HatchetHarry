@@ -35,12 +35,14 @@ public class CardPanel extends Panel
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardPanel.class);
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
-	private final UUID uuid;
+	final UUID uuid;
 
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
+
+	Player owner;
 
 	public CardPanel(final String id, final String smallImage, final String bigImage,
 			final UUID _uuid)
@@ -132,21 +134,21 @@ public class CardPanel extends Panel
 
 		if (null != mc)
 		{
-			final Player owner = this.persistenceService.getPlayer(mc.getDeck().getPlayerId());
+			this.owner = this.persistenceService.getPlayer(mc.getDeck().getPlayerId());
 
-			if (null != owner)
+			if (null != this.owner)
 			{
-				if ("infrared".equals(owner.getSide()))
+				if ("infrared".equals(this.owner.getSide()))
 				{
 					cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
 				}
-				else if ("ultraviolet".equals(owner.getSide()))
+				else if ("ultraviolet".equals(this.owner.getSide()))
 				{
 					cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 				}
 
-				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage,
-						owner.getSide());
+				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", cardHandle,
+						this.uuid, bigImage, this.owner.getSide());
 				cardBubbleTip.setOutputMarkupId(true);
 				cardBubbleTip.setMarkupId("cardTooltip" + this.uuid.toString().replace("-", "_"));
 				cardBubbleTip.add(new AttributeModifier("style", "display: none;"));
@@ -156,8 +158,8 @@ public class CardPanel extends Panel
 			else
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
-				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", bigImage,
-						"yellow");
+				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", cardHandle,
+						this.uuid, bigImage, "yellow");
 				cardBubbleTip.setOutputMarkupId(true);
 				cardBubbleTip.setMarkupId("cardTooltip" + this.uuid.toString().replace("-", "_"));
 				cardBubbleTip.add(new AttributeModifier("style", "display: none;"));
