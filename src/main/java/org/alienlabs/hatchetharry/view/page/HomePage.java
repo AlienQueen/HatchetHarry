@@ -1620,6 +1620,9 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+			default :
+				throw new IllegalArgumentException(
+						"can not treat this case in HomePage#displayNotification()");
 		}
 	}
 
@@ -1707,6 +1710,9 @@ public class HomePage extends TestReportPage
 						+ "'s card: " + event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+			default :
+				throw new IllegalArgumentException(
+						"can not treat this case in HomePage#updateCardTooltip()");
 		}
 	}
 
