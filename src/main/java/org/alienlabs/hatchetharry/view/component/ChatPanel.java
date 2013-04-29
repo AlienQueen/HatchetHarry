@@ -139,7 +139,7 @@ public class ChatPanel extends Panel
 
 		target.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
 				+ event.getMessage()
-				+ "\" + \"&#013;&#010;\"; chatPanel.scrollTop = chatPanel.scrollHeight; ");
+				+ "\" + \"&#013;&#010;\"; chatPanel.scrollTop = chatPanel.scrollHeight; document.activeElement.blur(); ");
 	}
 
 	@Required
