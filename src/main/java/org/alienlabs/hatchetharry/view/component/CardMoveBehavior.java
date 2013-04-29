@@ -72,8 +72,14 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		try
 		{
-			posX = (Long.parseLong(_mouseX)) <= -300 ? -300 : Long.parseLong(_mouseX);
-			posY = (Long.parseLong(_mouseY)) <= -150 ? -150 : Long.parseLong(_mouseY);
+			final String roundedX = _mouseX.substring(0,
+					(_mouseX.contains(".")) ? _mouseX.indexOf(".") : _mouseX.length());
+			final String roundedY = _mouseY.substring(0,
+					(_mouseY.contains(".")) ? _mouseY.indexOf(".") : _mouseY.length());
+			final long _x = Long.parseLong(roundedX);
+			final long _y = Long.parseLong(roundedY);
+			posX = _x <= -300 ? -300 : _x;
+			posY = _y <= -150 ? -150 : _y;
 		}
 		catch (final NumberFormatException e)
 		{
