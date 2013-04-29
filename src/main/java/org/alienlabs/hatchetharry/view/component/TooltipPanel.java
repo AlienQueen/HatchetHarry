@@ -42,7 +42,7 @@ public class TooltipPanel extends Panel
 
 	final WebMarkupContainer cardHandle;
 	final UUID uuid;
-	private final String bigImage;
+	final String bigImage;
 	final String ownerSide;
 
 	@SpringBean
@@ -123,7 +123,9 @@ public class TooltipPanel extends Panel
 				final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 						game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 						targetPlayer.getName(), myCard.getTitle(), counter.getCounterName(),
-						counter.getNumberOfCounters(), NotifierAction.ADD_COUNTER);
+						counter.getNumberOfCounters(), NotifierAction.ADD_COUNTER,
+						TooltipPanel.this.cardHandle, TooltipPanel.this.uuid,
+						TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -132,7 +134,10 @@ public class TooltipPanel extends Panel
 					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
 				}
+
+				TooltipPanel.this.redisplayTooltip(myCard, target);
 			}
+
 		};
 		submit.setOutputMarkupId(true);
 
@@ -179,7 +184,9 @@ public class TooltipPanel extends Panel
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 								targetPlayer.getName(), myCard.getTitle(),
 								counter.getCounterName(), counter.getNumberOfCounters(),
-								NotifierAction.ADD_COUNTER);
+								NotifierAction.ADD_COUNTER, TooltipPanel.this.cardHandle,
+								TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
+								TooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
 						{
@@ -189,6 +196,8 @@ public class TooltipPanel extends Panel
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 							HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
 						}
+
+						TooltipPanel.this.redisplayTooltip(myCard, target);
 					}
 				};
 				addCounterLink.setOutputMarkupId(true);
@@ -236,7 +245,9 @@ public class TooltipPanel extends Panel
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 								targetPlayer.getName(), myCard.getTitle(),
-								counter.getCounterName(), counter.getNumberOfCounters(), action);
+								counter.getCounterName(), counter.getNumberOfCounters(), action,
+								TooltipPanel.this.cardHandle, TooltipPanel.this.uuid,
+								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
 						{
@@ -246,6 +257,8 @@ public class TooltipPanel extends Panel
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 							HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
 						}
+
+						TooltipPanel.this.redisplayTooltip(myCard, target);
 					}
 				};
 				removeCounterLink.setOutputMarkupId(true);
@@ -261,6 +274,25 @@ public class TooltipPanel extends Panel
 
 		form.add(counterAddName, submit);
 		this.add(closeTooltip, bubbleTipImg1, form, counters);
+	}
+
+	void redisplayTooltip(final MagicCard _myCard, final AjaxRequestTarget target)
+	{
+		final MagicCard myCard = this.persistenceService.getCardFromUuid(_myCard.getUuidObject());
+		final String uuidValidForJs = myCard.getUuid().replace("-", "_");
+		final StringBuffer buf = new StringBuffer("window.setTimeout(function() { ");
+		buf.append("jQuery('#card" + uuidValidForJs
+				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+				+ "').attr('style', 'display: block'); }); ");
+		buf.append("jQuery('#cardTooltip" + uuidValidForJs
+				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+				+ "').attr('style', 'display: block'); }); ");
+		buf.append("jQuery('#cardTooltip" + uuidValidForJs
+				+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+				+ "').attr('style', 'display: none'); }); ");
+		buf.append("jQuery('#cardTooltip" + uuidValidForJs + "').attr('style', 'display: block'); ");
+		buf.append("}, 3000); ");
+		target.appendJavaScript(buf.toString());
 	}
 
 	@Required
