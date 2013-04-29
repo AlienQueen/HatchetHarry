@@ -134,8 +134,6 @@ public class TooltipPanel extends Panel
 					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
 				}
-
-				TooltipPanel.this.redisplayTooltip(myCard, target);
 			}
 
 		};
@@ -196,8 +194,6 @@ public class TooltipPanel extends Panel
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 							HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
 						}
-
-						TooltipPanel.this.redisplayTooltip(myCard, target);
 					}
 				};
 				addCounterLink.setOutputMarkupId(true);
@@ -257,8 +253,6 @@ public class TooltipPanel extends Panel
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 							HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
 						}
-
-						TooltipPanel.this.redisplayTooltip(myCard, target);
 					}
 				};
 				removeCounterLink.setOutputMarkupId(true);
@@ -274,25 +268,6 @@ public class TooltipPanel extends Panel
 
 		form.add(counterAddName, submit);
 		this.add(closeTooltip, bubbleTipImg1, form, counters);
-	}
-
-	void redisplayTooltip(final MagicCard _myCard, final AjaxRequestTarget target)
-	{
-		final MagicCard myCard = this.persistenceService.getCardFromUuid(_myCard.getUuidObject());
-		final String uuidValidForJs = myCard.getUuid().replace("-", "_");
-		final StringBuffer buf = new StringBuffer("window.setTimeout(function() { ");
-		buf.append("jQuery('#card" + uuidValidForJs
-				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-				+ "').attr('style', 'display: block'); }); ");
-		buf.append("jQuery('#cardTooltip" + uuidValidForJs
-				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-				+ "').attr('style', 'display: block'); }); ");
-		buf.append("jQuery('#cardTooltip" + uuidValidForJs
-				+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-				+ "').attr('style', 'display: none'); }); ");
-		buf.append("jQuery('#cardTooltip" + uuidValidForJs + "').attr('style', 'display: block'); ");
-		buf.append("}, 3000); ");
-		target.appendJavaScript(buf.toString());
 	}
 
 	@Required

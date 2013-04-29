@@ -98,6 +98,8 @@ import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
+import org.alienlabs.hatchetharry.view.component.TooltipPanel;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -1437,7 +1439,8 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
-		target.prependJavaScript("if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clock').innerHTML = '" + event.toString() + "'; document.getElementById('chat').scrollTop = chatPos; }");
+		target.prependJavaScript("if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clock').innerHTML = '"
+				+ event.toString() + "'; document.getElementById('chat').scrollTop = chatPos; }");
 		this.clockPanel.setDefaultModelObject(event.toString());
 	}
 
@@ -1682,6 +1685,30 @@ public class HomePage extends TestReportPage
 		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
+
+		final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", event.getCardHandle(),
+				event.getUuid(), event.getBigImage(), event.getOwnerSide());
+		cardBubbleTip.setOutputMarkupId(true);
+		cardBubbleTip.setMarkupId("cardTooltip" + event.getUuid().toString().replace("-", "_"));
+		cardBubbleTip.add(new AttributeModifier("style", "display: block;"));
+
+		event.getCardHandle().addOrReplace(cardBubbleTip);
+		target.add(event.getCardHandle());
+
+		final String uuidValidForJs = event.getUuid().toString().replace("-", "_");
+		final StringBuffer buf = new StringBuffer("window.setTimeout(function() { ");
+		buf.append("jQuery('#card" + uuidValidForJs
+				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+				+ "').attr('style', 'display: block'); }); ");
+		buf.append("jQuery('#cardTooltip" + uuidValidForJs
+				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+				+ "').attr('style', 'display: block'); }); ");
+		buf.append("jQuery('#cardTooltip" + uuidValidForJs
+				+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+				+ "').attr('style', 'display: none'); }); ");
+		buf.append("jQuery('#cardTooltip" + uuidValidForJs + "').attr('style', 'display: block'); ");
+		buf.append("}, 3000); ");
+		target.appendJavaScript(buf.toString());
 
 		switch (event.getAction())
 		{
