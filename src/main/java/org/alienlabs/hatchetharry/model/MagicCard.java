@@ -69,7 +69,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private Long y = 64l; // y coordinate
 	@Column
-	private boolean tapped = false;
+	private boolean tapped;
 	@Column
 	@Enumerated(value = EnumType.STRING)
 	private CardZone zone;

@@ -24,7 +24,6 @@ public class ImportDeckService implements Serializable
 
 	public void importDeck(final String fileContent, final String deckName, final boolean testDeck)
 	{
-		Deck deck;
 		DeckArchive deckArchive;
 
 		if (testDeck)
@@ -39,7 +38,7 @@ public class ImportDeckService implements Serializable
 		deckArchive.setDeckName(deckName);
 		deckArchive = this.persistenceService.saveDeckArchive(deckArchive);
 
-		deck = new Deck();
+		Deck deck = new Deck();
 		deck.setPlayerId(1l);
 		deck.setDeckArchive(deckArchive);
 		deck.setDeckId(-1l);

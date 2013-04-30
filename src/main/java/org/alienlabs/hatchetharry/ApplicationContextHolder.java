@@ -9,7 +9,7 @@ public final class ApplicationContextHolder implements ApplicationContextAware
 {
 
 	/** Contexte Spring qui sera injecte par Spring directement */
-	private static ApplicationContext context = null;
+	private static ApplicationContext context;
 
 	private ApplicationContextHolder()
 	{

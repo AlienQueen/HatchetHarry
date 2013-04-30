@@ -87,8 +87,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			return;
 		}
 
-		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
-		MagicCard mc = null;
+		final MagicCard mc;
+		final Long gameId;
 
 		try
 		{
@@ -97,6 +97,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			{
 				return;
 			}
+			gameId = mc.getGameId();
 			mc.setX(posX);
 			mc.setY(posY);
 			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + posX + ", posY: "
@@ -106,17 +107,14 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IllegalArgumentException e)
 		{
 			CardMoveBehavior.LOGGER.error("error parsing UUID of moved card", e);
-		}
-
-		if (null == mc)
-		{
 			return;
 		}
+
+		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 
 		CardMoveBehavior.LOGGER.info("playerId in respond(): "
 				+ HatchetHarrySession.get().getPlayer().getId());
 
-		final Long gameId = mc.getGameId();
 		final List<BigInteger> allPlayersInGame = CardMoveBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
