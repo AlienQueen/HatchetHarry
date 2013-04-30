@@ -61,15 +61,15 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 
-		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
 		if (!CardZone.GRAVEYARD.equals(card.getZone()))
 		{
 			return;
 		}
-
 		card.setZone(CardZone.BATTLEFIELD);
+
+		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 		final Game game = this.persistenceService.getGame(gameId);
 		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
 		game.setCurrentPlaceholderId(currentPlaceholderId);

@@ -52,7 +52,7 @@ public class Token implements Serializable
 	@Column
 	private Long y = 64l; // y coordinate
 	@Column
-	private boolean tapped = false;
+	private boolean tapped;
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
 	private Set<Counter> counters = new HashSet<Counter>();

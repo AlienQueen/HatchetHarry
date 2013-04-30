@@ -84,7 +84,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			return;
 		}
 
-		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 
 		if (!CardZone.HAND.equals(card.getZone()))
 		{
@@ -93,6 +92,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		card.setZone(CardZone.BATTLEFIELD);
 
+		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 		final Game game = this.persistenceService.getGame(gameId);
 		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
 		game.setCurrentPlaceholderId(currentPlaceholderId);

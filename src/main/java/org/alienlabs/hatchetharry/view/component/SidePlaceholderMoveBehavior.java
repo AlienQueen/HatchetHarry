@@ -48,11 +48,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.parent.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		this.jsessionid = request.getRequestedSessionId();
-		final String _sideX = request.getParameter("posX");
-		final String _sideY = request.getParameter("posY");
-		final String stop = request.getParameter("stop");
 
-		this.uuid = null;
 		try
 		{
 			this.uuid = UUID.fromString(request.getParameter("uuid"));
@@ -62,6 +58,10 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 			SidePlaceholderMoveBehavior.LOGGER.error("error parsing UUID: " + e.getMessage());
 			return;
 		}
+		final String _sideX = request.getParameter("posX");
+		final String _sideY = request.getParameter("posY");
+		final String stop = request.getParameter("stop");
+
 		final String _side = request.getParameter("side");
 
 		if ("true".equals(stop))
