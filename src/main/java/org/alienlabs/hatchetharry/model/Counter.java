@@ -34,6 +34,11 @@ public class Counter implements Serializable
 	@JoinColumn(name = "card")
 	private MagicCard card;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.ALL })
+	@JoinColumn(name = "token")
+	private Token token;
+
 	public String getCounterName()
 	{
 		return this.counterName;
@@ -72,6 +77,16 @@ public class Counter implements Serializable
 	public void setId(final Long _id)
 	{
 		this.counterId = _id;
+	}
+
+	public Token getToken()
+	{
+		return this.token;
+	}
+
+	public void setToken(final Token _token)
+	{
+		this.token = _token;
 	}
 
 }

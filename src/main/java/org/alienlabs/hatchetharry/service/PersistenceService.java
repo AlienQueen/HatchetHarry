@@ -16,6 +16,7 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
+import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.CounterDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
@@ -24,6 +25,7 @@ import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
+import org.alienlabs.hatchetharry.persistence.dao.TokenDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
@@ -57,6 +59,8 @@ public class PersistenceService implements Serializable
 	private SideDao sideDao;
 	@SpringBean
 	private CounterDao counterDao;
+	@SpringBean
+	private TokenDao tokenDao;
 
 	public PersistenceService()
 	{
@@ -120,7 +124,7 @@ public class PersistenceService implements Serializable
 	{
 		final Session session = this.magicCardDao.getSession();
 		final Query query = session
-				.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid=?");
+				.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid= ? ");
 		query.setString(0, uuid.toString());
 		PersistenceService.LOGGER.debug("card UUID: " + uuid.toString());
 
@@ -131,6 +135,23 @@ public class PersistenceService implements Serializable
 		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public Token getTokenFromUuid(final UUID uuid)
+	{
+		final Session session = this.tokenDao.getSession();
+		final Query query = session.createQuery("from Token token0 where token0.uuid= ? ");
+		query.setString(0, uuid.toString());
+		PersistenceService.LOGGER.debug("token UUID: " + uuid.toString());
+
+		if (query.list().size() > 1)
+		{
+			return (Token)query.list().get(0);
+		}
+		final Token t = (Token)query.uniqueResult();
+
+		return t;
 	}
 
 	@Transactional
@@ -513,6 +534,12 @@ public class PersistenceService implements Serializable
 	public void setCounterDao(final CounterDao _counterDao)
 	{
 		this.counterDao = _counterDao;
+	}
+
+	@Required
+	public void setTokenDao(final TokenDao _tokenDao)
+	{
+		this.tokenDao = _tokenDao;
 	}
 
 	@Transactional

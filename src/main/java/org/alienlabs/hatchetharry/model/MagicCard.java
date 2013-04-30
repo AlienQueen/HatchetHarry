@@ -76,7 +76,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private Long zoneOrder = 0l;
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "counterId"))
+	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
 	private Set<Counter> counters = new HashSet<Counter>();
 
 	public MagicCard()

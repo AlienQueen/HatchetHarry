@@ -66,11 +66,6 @@ public class HatchetHarrySession extends WebSession
 				new ArrayList<MagicCard>());
 	}
 
-	public static HatchetHarrySession get(final Request request)
-	{
-		return (HatchetHarrySession)Session.get();
-	}
-
 	public static HatchetHarrySession get()
 	{
 		return (HatchetHarrySession)Session.get();

@@ -1678,7 +1678,6 @@ public class HomePage extends TestReportPage
 	}
 
 	@Subscribe
-	@SuppressWarnings("incomplete-switch")
 	public void updateCardTooltip(final AjaxRequestTarget target,
 			final UpdateCardPanelCometChannel event)
 	{

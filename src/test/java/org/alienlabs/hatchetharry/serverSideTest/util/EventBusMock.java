@@ -11,6 +11,11 @@ public class EventBusMock extends EventBus
 	private static List<Object> messages = new ArrayList<Object>();
 	private static EventBus eventBus;
 
+	/**
+	 * @param application
+	 *            ignored, lest Wicket-Atmosphere throws a NullPointerException
+	 *            if using super(application);
+	 */
 	public EventBusMock(final WebApplication application)
 	{
 		super();
