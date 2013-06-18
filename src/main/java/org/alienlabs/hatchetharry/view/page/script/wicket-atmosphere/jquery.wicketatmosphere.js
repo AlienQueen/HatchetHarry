@@ -39,7 +39,7 @@
 					logLevel : "debug",
 					transport : "websocket",
 					// transport : "streaming",
-					// transport : "long-polling",
+					 fallbackTransport : "long-polling",
 					maxRequests : 100000
 				});
 		callbackAdded = true;
