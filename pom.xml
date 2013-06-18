@@ -55,7 +55,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
-			<version>6.8.0-moi</version>
+			<version>6.7.0-moi</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
