@@ -33,7 +33,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.7.0-moi</wicket.version>
+		<wicket.version>6.8.0-moi</wicket.version>
 		<wicketstuff.version>6.4.0</wicketstuff.version>
 		<wicket-atmosphere.version>0.9</wicket-atmosphere.version>
 		<atmosphere.version>1.0.12</atmosphere.version>
