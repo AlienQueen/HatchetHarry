@@ -26,10 +26,6 @@ jQuery(function() {
 	}).animate({
 		height : '38'
 	}, 'slow');
-	jQuery('.toolbarLink').tipsy({
-		gravity : 's'
-	});
-
 });
 
 jQuery(function() {

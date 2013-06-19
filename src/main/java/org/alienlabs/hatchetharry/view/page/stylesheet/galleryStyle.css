@@ -19,7 +19,8 @@ a											{ outline: none; }
 */
 #page-wrap 									{ width: 262px; margin: 25px auto; position: absolute; top: 3%; left: 75%; min-height: 420px;
 											  background: url(/image/bg.png) top center; }
-
+#graveyard-page-wrap 									{ width: 262px; margin: 25px auto; position: absolute; top: 25%; left: 75%; min-height: 420px;
+											  background: url(/image/tombe1.png) top center; }
 /*
 	TYPOGRAPHY
 */
@@ -39,6 +40,7 @@ blockquote									{ padding: 0 20px; margin-left: 20px; border-left: 20px solid
 .stripViewer .panelContainer				{ position: relative; left: -1px; top: 0; }
 .stripViewer .panelContainer .panel			{ float: left; height: 360px; position: relative; width: 440px; }
 .stripNavL, .stripNavR, .stripNav			{ display: none; }
+.stripNavLGraveyard, .stripNavRGraveyard, .stripNavGraveyard			{ display: none; }
 .nav-thumb 									{ border: 1px solid black; margin-right: 5px; }
 #movers-row									{ margin: 30px 0 0 0; }
 #movers-row div								{ width: 7%; float: left; }
@@ -49,6 +51,7 @@ blockquote									{ padding: 0 20px; margin-left: 20px; border-left: 20px solid
 .cross-link									{ display: block; width: 23px; margin-top: 0px; 
 											  position: relative; padding-top: 0px; z-index: 2; }
 .active-thumb 								{ background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat; }
+.active-thumbGraveyard						{ background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat; }
 
 .wrapper-image								{ position:relative; }
 .play-card-link								{ z-index: 555; position: absolute; cursor: pointer; }

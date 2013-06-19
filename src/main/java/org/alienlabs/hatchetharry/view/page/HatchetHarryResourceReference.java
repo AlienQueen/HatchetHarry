@@ -85,11 +85,7 @@ public class HatchetHarryResourceReference extends JavaScriptResourceReference
 		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
 				"stylesheet/menu_black.css")));
 		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
-				"stylesheet/jquery.jquerytour.css")));
-		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
 				"stylesheet/galleryStyle.css")));
-		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
-				"stylesheet/graveyardStyle.css")));
 		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
 				"stylesheet/jquery.gritter.css")));
 		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
@@ -101,8 +97,6 @@ public class HatchetHarryResourceReference extends JavaScriptResourceReference
 		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
 				"stylesheet/toolbarStyle.css")));
 		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
-				"stylesheet/tipsy.css")));
-		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
 				"script/dock/dock.css")));
 		dependencies.add(CssHeaderItem.forReference(new CssResourceReference(HomePage.class,
 				"stylesheet/joyride-1.0.5.css")));
@@ -113,8 +107,6 @@ public class HatchetHarryResourceReference extends JavaScriptResourceReference
 
 		dependencies.add(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 				HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
-		dependencies.add(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-				HomePage.class, "script/toolbar/jquery.tipsy.js")));
 		dependencies.add(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 				HomePage.class, "script/notifier/jquery.gritter.min.js")));
 

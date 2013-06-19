@@ -1007,24 +1007,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tour/pageguide.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/jquery.metadata.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/jquery.hoverIntent.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/mbMenu.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/yahoo-dom-event.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/animation.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/utilities.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/container_core-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/menu-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/element.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/jMenu.jquery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/dock/dock.js")));
@@ -1069,8 +1051,6 @@ public class HomePage extends TestReportPage
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/galleryStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/graveyardStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/jquery.gritter.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/fixed4all.css")));
@@ -1080,8 +1060,9 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/prettyPhoto.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/toolbarStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/tipsy.css")));
+				// response.render(CssHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "stylesheet/tipsy.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/dock/dock.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -1095,8 +1076,9 @@ public class HomePage extends TestReportPage
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/toolbar/jquery.tipsy.js")));
+				// response.render(JavaScriptHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "script/toolbar/jquery.tipsy.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/notifier/jquery.gritter.min.js")));
 			}
