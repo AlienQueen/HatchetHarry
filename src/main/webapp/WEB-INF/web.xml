@@ -6,17 +6,6 @@
 
 	<display-name>HatchetHarry</display-name>
 
-	 <!--  
-	      There are three means to configure Wickets configuration mode and they are
-	      tested in the order given. 
-	      1) A system property: -Dwicket.configuration
-	      2) servlet specific <init-param>
-	      3) context specific <context-param>
-	      The value might be either "development" (reloading when templates change)
-	      or "deployment". If no configuration is found, "development" is the default.
-	-->
-	
-		
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:applicationContext.xml</param-value>
@@ -57,7 +46,7 @@
 		</init-param>
 	    <init-param>
             <param-name>org.atmosphere.useWebSocket</param-name>
-            <param-value>false</param-value>
+            <param-value>true</param-value>
       </init-param>
       <init-param>
             <param-name>org.atmosphere.useNative</param-name>
@@ -79,10 +68,6 @@
             <param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
             <param-value>org.atmosphere.client.FormParamFilter,org.atmosphere.client.JavascriptClientFilter</param-value>
       </init-param> -->
-		<init-param> 
-            <param-name>configuration</param-name> 
-            <param-value>development</param-value>
-        </init-param>
         <init-param> 
 	   		<param-name>defaultTestSuite</param-name>
 	   		<param-value>org.alienlabs.hatchetharry.clientSideTest.AllMistletoeTests</param-value>
