@@ -112,7 +112,6 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
@@ -188,8 +187,6 @@ public class HomePage extends TestReportPage
 
 	private Component dataBox;
 
-	private final BookmarkablePageLink<SidePlaceholderMovePage> sidePlaceholderMove;
-
 	private final WebMarkupContainer firstSidePlaceholderParent;
 	private final WebMarkupContainer secondSidePlaceholderParent;
 
@@ -234,11 +231,6 @@ public class HomePage extends TestReportPage
 		this.add(this.clockPanel);
 
 		// Sides
-		this.sidePlaceholderMove = new BookmarkablePageLink<SidePlaceholderMovePage>(
-				"sidePlaceholderMove", SidePlaceholderMovePage.class);
-		this.sidePlaceholderMove.setMarkupId("sidePlaceholderMove");
-		this.add(this.sidePlaceholderMove);
-
 		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
 		this.secondSidePlaceholderParent.setOutputMarkupId(true);
 		this.secondSidePlaceholderParent.setMarkupId("secondSidePlaceholderParent");
