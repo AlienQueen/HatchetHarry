@@ -62,7 +62,6 @@ import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CountCardsCometChannel;
-import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
@@ -1427,62 +1426,6 @@ public class HomePage extends TestReportPage
 	}
 
 	@Subscribe
-	public void aPlayerJoinedIn(final AjaxRequestTarget target, final JoinGameCometChannel event)
-	{
-		final String jsessionid = this.session.getId();
-
-		if (!jsessionid.equals(event.getJsessionid()))
-		{
-			// final SidePlaceholderPanel spp = new
-			// SidePlaceholderPanel("secondSidePlaceholder",
-			// event.getSide(), this, event.getUuid());
-
-			// final SidePlaceholderMoveBehavior spmb = new
-			// SidePlaceholderMoveBehavior(spp,
-			// event.getUuid(), jsessionid, this, this.getDataBoxParent(),
-			// HatchetHarrySession
-			// .get().getGameId());
-			// spp.add(spmb);
-			// spp.setOutputMarkupId(true);
-			HomePage.LOGGER.info("### aPlayerJoinedIn(), gameId: " + this.session.getGameId());
-
-			this.session.putMySidePlaceholderInSesion(event.getSide());
-
-			// this.secondSidePlaceholderParent.addOrReplace(spp);
-			// target.add(this.secondSidePlaceholderParent);
-
-			HomePage.LOGGER.info("### " + event.getUuid());
-			final int posX = ("infrared".equals(event.getSide())) ? 300 : 900;
-			HomePage.LOGGER.info("### aPlayerJoinedIn(), posX: " + posX);
-			HomePage.LOGGER.info("### aPlayerJoinedIn(), jsessionid from event: "
-					+ event.getJsessionid());
-			HomePage.LOGGER.info("### aPlayerJoinedIn(), jsessionid from request: " + jsessionid);
-
-			// target.appendJavaScript("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
-			// + event.getUuid()
-			// + "'); "
-			// + "card.css('position', 'absolute'); "
-			// + "card.css('left', '"
-			// + posX
-			// + "px'); "
-			// + "card.css('top', '500px'); "
-			// + "jQuery(\"#"
-			// + spp.getMarkupId()
-			// + "\").draggable({ handle : \"#handleImage"
-			// + event.getUuid()
-			// + "\" });"
-			// + "jQuery(\"#handleImage"
-			// + spp.getUuid()
-			// + "\").data(\"url\",\"" + spmb.getCallbackUrl() +
-			// "\"); }, 3000); ");
-
-			// spp.setPosX(posX);
-			// spp.setPosY(500);
-			// session.setMySidePlaceholder(spp);
-		}
-	}
-
-	@Subscribe
 	public void displayNotification(final AjaxRequestTarget target, final NotifierCometChannel event)
 	{
 		switch (event.getAction())
@@ -1630,24 +1573,16 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(buf.toString());
 	}
 
+	/**
+	 * @param event
+	 *            not used, since Comet channels are managed by
+	 *            JoinGameModalWindow
+	 */
 	@Subscribe
 	public void displayJoinGameMessage(final AjaxRequestTarget target,
 			final JoinGameNotificationCometChannel event)
 	{
-		final String fromSession = this.session.getPlayer().getName();
-		final String fromEvent = event.getPlayerName();
-		final boolean cond = fromSession.equals(fromEvent);
-
-		if (cond)
-		{
-			// TODO remove gameId management since we now have Comet
-			// channels
-			target.appendJavaScript("var id = jQuery(jQuery('input[name=\"jsessionid\"]')[1]).attr(\"value\"); if ((typeof id != 'undefined') && (id != \""
-					+ event.getJsessionid()
-					+ "\") && (typeof window.gameId != 'undefined') && (window.gameId == "
-					+ event.getGameId()
-					+ ")) { jQuery.gritter.add({ title : 'A player joined in', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''}); }");
-		}
+		target.appendJavaScript("jQuery.gritter.add({ title : 'A player joined in!', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
 	@Subscribe

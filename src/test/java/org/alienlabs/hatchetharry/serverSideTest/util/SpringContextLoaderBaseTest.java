@@ -12,11 +12,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringContextLoaderBaseTest
 {
-	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml" });
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
-	protected static transient ApplicationContext context;
+	public static transient ApplicationContext context;
 	protected static String pageDocument;
 
 	@BeforeClass

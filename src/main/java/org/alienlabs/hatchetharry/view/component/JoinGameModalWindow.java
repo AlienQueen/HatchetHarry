@@ -17,7 +17,6 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
-import org.alienlabs.hatchetharry.model.channel.JoinGameCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -378,15 +377,10 @@ public class JoinGameModalWindow extends Panel
 				// final JoinGameCometChannel jgcc = new JoinGameCometChannel(
 				// JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
 				// jsessionid, spp.getUuid(), Long.valueOf(posX), 500l);
-				final JoinGameCometChannel jgcc = new JoinGameCometChannel(
-						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-						jsessionid, null, Long.valueOf(posX), 500l);
-				HatchetHarryApplication.get().getEventBus().post(jgcc);
 
 				final Long _gameId = game.getId();
 				final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(
 						JoinGameModalWindow.this.player.getName(), jsessionid, _gameId);
-				HatchetHarryApplication.get().getEventBus().post(jgncc);
 
 				final List<BigInteger> allPlayersInGameExceptMe = JoinGameModalWindow.this.persistenceService
 						.giveAllPlayersFromGameExceptMe(_gameId,
@@ -400,6 +394,8 @@ public class JoinGameModalWindow extends Panel
 					final Long p = allPlayersInGameExceptMe.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
 					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+
+					HatchetHarryApplication.get().getEventBus().post(jgncc, pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 				}
 

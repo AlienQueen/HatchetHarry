@@ -836,18 +836,18 @@ public class PersistenceService implements Serializable
 	{
 		final Session session = this.gameDao.getSession();
 
-		session.createSQLQuery("truncate table Player").executeUpdate();
-		session.createSQLQuery("truncate table Game").executeUpdate();
-		session.createSQLQuery("truncate table Player_Game").executeUpdate();
-		session.createSQLQuery("truncate table Side").executeUpdate();
-		session.createSQLQuery("truncate table Deck").executeUpdate();
-		session.createSQLQuery("truncate table MagicCard").executeUpdate();
-		session.createSQLQuery("truncate table MagicCard__cardPlaceholderId").executeUpdate();
-		session.createSQLQuery("truncate table DeckArchive").executeUpdate();
-		session.createSQLQuery("truncate table CollectibleCard").executeUpdate();
-		session.createSQLQuery("truncate table Game_Side").executeUpdate();
-		session.createSQLQuery("truncate table Counter").executeUpdate();
-		session.createSQLQuery("truncate table Card_Counter").executeUpdate();
+		session.createSQLQuery("delete from Player_Game").executeUpdate();
+		session.createSQLQuery("delete from Player").executeUpdate();
+		session.createSQLQuery("delete from Game_Side").executeUpdate();
+		session.createSQLQuery("delete from Game").executeUpdate();
+		session.createSQLQuery("delete from Side").executeUpdate();
+		session.createSQLQuery("delete from MagicCard__cardPlaceholderId").executeUpdate();
+		session.createSQLQuery("delete from MagicCard").executeUpdate();
+		session.createSQLQuery("delete from Deck").executeUpdate();
+		session.createSQLQuery("delete from DeckArchive").executeUpdate();
+		session.createSQLQuery("delete from CollectibleCard").executeUpdate();
+		session.createSQLQuery("delete from Card_Counter").executeUpdate();
+		session.createSQLQuery("delete from Counter").executeUpdate();
 	}
 
 	@Transactional
