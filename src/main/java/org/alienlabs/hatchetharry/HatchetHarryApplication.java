@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -100,7 +101,7 @@ public class HatchetHarryApplication extends WebApplication
 			@Override
 			public void run()
 			{
-				// HatchetHarryApplication.this.eventBus.post(new Date());
+				HatchetHarryApplication.this.eventBus.post(new Date());
 			}
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
