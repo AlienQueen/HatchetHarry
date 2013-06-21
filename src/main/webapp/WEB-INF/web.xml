@@ -46,7 +46,7 @@
 		</init-param>
 	    <init-param>
             <param-name>org.atmosphere.useWebSocket</param-name>
-            <param-value>true</param-value>
+            <param-value>false</param-value>
       </init-param>
       <init-param>
             <param-name>org.atmosphere.useNative</param-name>
@@ -55,11 +55,11 @@
       <!--<init-param>
 			<param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
 			<param-value>30000</param-value>
-		</init-param>-->
+		</init-param>
 		<init-param>
 			<param-name>org.atmosphere.websocket.WebSocketProtocol</param-name>
 			<param-value>org.atmosphere.websocket.protocol.EchoProtocol</param-value>
-		</init-param>
+		</init-param>-->
       <init-param>
             <param-name>filterMappingUrlPattern</param-name>
             <param-value>/*</param-value>
