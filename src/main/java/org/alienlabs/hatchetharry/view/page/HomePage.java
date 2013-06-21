@@ -224,7 +224,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Monday, 29th of April 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 21st of June 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
