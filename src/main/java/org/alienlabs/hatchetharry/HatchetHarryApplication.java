@@ -2,7 +2,6 @@ package org.alienlabs.hatchetharry;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -33,9 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import de.agilecoders.wicket.Bootstrap;
-import de.agilecoders.wicket.settings.BootstrapSettings;
 
 /**
  * Application object for your web application. If you want to run this
@@ -89,7 +85,7 @@ public class HatchetHarryApplication extends WebApplication
 		// WicketDebugListener());
 
 		// CSS & JS minification
-		Bootstrap.install(Application.get(), new BootstrapSettings());
+		// Bootstrap.install(Application.get(), new BootstrapSettings());
 		// this.getResourceSettings().setJavaScriptCompressor(
 		// new
 		// GoogleClosureJavaScriptCompressor(CompilationLevel.WHITESPACE_ONLY));
@@ -104,7 +100,7 @@ public class HatchetHarryApplication extends WebApplication
 			@Override
 			public void run()
 			{
-				HatchetHarryApplication.this.eventBus.post(new Date());
+				// HatchetHarryApplication.this.eventBus.post(new Date());
 			}
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
