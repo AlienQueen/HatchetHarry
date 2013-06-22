@@ -22,10 +22,8 @@ jQuery(function(){
 jQuery(function() {
 
 	jQuery('#floatingbar').css({
-		height : 0
-	}).animate({
-		height : '38'
-	}, 'slow');
+		height : 38
+	});
 });
 
 jQuery(function() {
