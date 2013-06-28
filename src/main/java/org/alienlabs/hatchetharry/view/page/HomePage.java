@@ -100,9 +100,9 @@ import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.TooltipPanel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.atmosphere.JQueryWicketAtmosphereResourceReference;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -221,7 +221,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Friday, 21st of June 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 28th of June 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -984,13 +984,9 @@ public class HomePage extends TestReportPage
 				super.renderHead(component, response);
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery/jquery-1.7.2.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						AbstractDefaultAjaxBehavior.class, "res/js/wicket-event-jquery.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						AbstractDefaultAjaxBehavior.class, "res/js/wicket-ajax-jquery.min.js")));
+				response.render(JavaScriptHeaderItem
+						.forReference(JQueryWicketAtmosphereResourceReference.get()));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tour/jquery.easing.1.3.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -1000,7 +996,7 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/menubar/jMenu.jquery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/dock/dock.js")));
+						HomePage.class, "script/dock/jquery.jqdock.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -1051,11 +1047,6 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/prettyPhoto.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/toolbarStyle.css")));
-				// response.render(CssHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "stylesheet/tipsy.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/dock/dock.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/joyride-1.0.5.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -1067,11 +1058,12 @@ public class HomePage extends TestReportPage
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "script/toolbar/jquery.tipsy.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/notifier/jquery.gritter.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/viewportSize-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/google-analytics.js")));
 			}
 		});
 		this.add(c);
@@ -1414,7 +1406,6 @@ public class HomePage extends TestReportPage
 	{
 		target.prependJavaScript("if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clock').innerHTML = '"
 				+ event.toString() + "'; document.getElementById('chat').scrollTop = chatPos; }");
-		this.clockPanel.setDefaultModelObject(event.toString());
 	}
 
 	@Subscribe

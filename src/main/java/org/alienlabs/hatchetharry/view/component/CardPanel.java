@@ -100,13 +100,13 @@ public class CardPanel extends Panel
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid);
 		menutoggleButton.add(cardRotateBehavior);
 
+		final String requestedSessionId = this.getHttpServletRequest().getRequestedSessionId();
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-				this.getHttpServletRequest().getRequestedSessionId()));
+				requestedSessionId));
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
-		CardPanel.LOGGER
-				.info("jsessionid: " + this.getHttpServletRequest().getRequestedSessionId());
+		CardPanel.LOGGER.info("jsessionid: " + requestedSessionId);
 		CardPanel.LOGGER.info("uuid: " + this.uuid);
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));

@@ -1,3 +1,8 @@
+// The dock
+jQuery(function(){
+	jQuery('#dock').jqDock();
+});
+
 // The menubar, a jQuery plugin
 jQuery(function(){
 	jQuery("#jMenu").jMenu({
@@ -32,39 +37,14 @@ jQuery(function() {
 
 // The drop-down menu for mobile
 jQuery(function() {
-	var height = jQuery(window).height();
-	var width = jQuery(window).width();
+	// Landscape mode menubar by default
+	jQuery("#jMenu").show();
+	jQuery('.dropdownmenu').hide();
+	jQuery('.categories').hide();
 
-	if (width>height) {
-		// Landscape
-		jQuery("#jMenu").show();
-		jQuery('.dropdownmenu').hide();
-		jQuery('.categories').hide();
-	} else {
-		// Portrait
-		jQuery("#jMenu").hide();
-		jQuery('.dropdownmenu').show();
-	}
 	jQuery('.dropdownmenu').click(function(){ 
 		jQuery('.categories').toggle();
 	});
-});
-
-// We switch the menu to full bar or small drop-down depending upon the size of the screen
-jQuery(window).resize(function() {
-	var height = jQuery(window).height();
-	var width = jQuery(window).width();
-	
-	if (width>height) {
-		// Landscape
-		jQuery("#jMenu").show();
-		jQuery('.dropdownmenu').hide();
-		jQuery('.categories').hide();
-	} else {
-		// Portrait
-		jQuery("#jMenu").hide();
-		jQuery('.dropdownmenu').show();
-	}
 });
 
 jQuery(function() {	
@@ -102,5 +82,22 @@ jQuery(function() {
 	setTimeout(function() {
 		updateHandLabel();
 		jQuery('#handGallery .cross-link .nav-thumb').click(updateHandLabel);
-	}, 2000);
+		
+		// We switch the menu to full bar or small drop-down depending upon the size of the screen
+		jQuery(window).resize(function() {
+		    var width = viewportSize.getWidth();
+			var height = viewportSize.getHeight();
+
+			if ((typeof(width) != "undefined") && (typeof(height) != "undefined") && (null != width) && (null != height) && (width<height)) {
+				// Portrait
+				jQuery("#jMenu").hide();
+				jQuery('.dropdownmenu').show();
+			} else {
+				// Landscape
+				jQuery("#jMenu").show();
+				jQuery('.dropdownmenu').hide();
+				jQuery('.categories').hide();
+			}
+		});
+	}, 12000);
 });

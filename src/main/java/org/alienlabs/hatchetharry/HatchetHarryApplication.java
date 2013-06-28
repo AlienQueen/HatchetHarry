@@ -17,6 +17,8 @@ import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.ResourceRegistrationListener;
+import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
+import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
@@ -35,8 +37,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Application object for your web application. If you want to run this
- * application without deploying, run the Start class.
+ * Application object for HatchetHarry.
  * 
  * 
  */
@@ -51,7 +52,7 @@ public class HatchetHarryApplication extends WebApplication
 	// Map of playerId and Atmosphere UUID
 	private static Map<Long, String> cometResources = new HashMap<Long, String>();
 
-	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(HatchetHarryApplication.class);
 
 	/**
 	 * Constructor
@@ -94,6 +95,8 @@ public class HatchetHarryApplication extends WebApplication
 
 		this.eventBus = new EventBus(this);
 		this.eventBus.addRegistrationListener(this);
+		this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
+		this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final Runnable beeper = new Runnable()
@@ -101,7 +104,14 @@ public class HatchetHarryApplication extends WebApplication
 			@Override
 			public void run()
 			{
-				HatchetHarryApplication.this.eventBus.post(new Date());
+				try
+				{
+					HatchetHarryApplication.this.eventBus.post(new Date());
+				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
@@ -290,12 +300,6 @@ public class HatchetHarryApplication extends WebApplication
 				"image/llsh.gif"));
 		this.mountResource("image/teaser.gif", new PackageResourceReference(HomePage.class,
 				"image/teaser.gif"));
-		this.getJavaScriptLibrarySettings().setJQueryReference(
-				new PackageResourceReference(HomePage.class, "script/google-analytics.js"));
-		this.getJavaScriptLibrarySettings().setWicketEventReference(
-				new PackageResourceReference(HomePage.class, "blah.js"));
-		this.getJavaScriptLibrarySettings().setWicketAjaxReference(
-				new PackageResourceReference(HomePage.class, "blah.js"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.seconds(2));

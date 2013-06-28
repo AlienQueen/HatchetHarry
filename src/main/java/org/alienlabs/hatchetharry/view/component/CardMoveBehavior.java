@@ -135,9 +135,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/jquery.ui.core.js");
-		StringBuffer js = new StringBuffer().append(template1.asString());
+		StringBuffer js = new StringBuffer();
 
 		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/jquery.ui.widget.js");
