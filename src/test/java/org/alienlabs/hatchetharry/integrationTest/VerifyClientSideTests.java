@@ -52,11 +52,11 @@ public class VerifyClientSideTests
 			+ "\n"
 			+ "var elementToLookFor = document.getElementById('runMistletoe');\n"
 			+ "\n"
-			+ "for (var i = 0; i < 5000; i = i + 10) {\n"
+			+ "for (var i = 0; i < 5000; i = i + 5) {\n"
 			+ "	if (elementInViewport(elementToLookFor)) {\n"
 			+ "		break;\n"
 			+ "	} else {\n"
-			+ "		window.scrollBy(10,50);\n}\n}";
+			+ "		window.scrollBy(10,25);\n}\n}";
 
 	@BeforeClass
 	public static void setUpClass()
