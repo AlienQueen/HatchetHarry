@@ -93,8 +93,8 @@ public class RuntimeDataGenerator implements Serializable
 
 			baldu.setDeck(fake);
 			baldu.setGameId(-1l);
-			baldu.setX(250l);
-			baldu.setY(250l);
+			baldu.setX(350l);
+			baldu.setY(350l);
 			baldu.setZone(CardZone.BATTLEFIELD);
 			this.persistenceService.saveDeck(fake);
 			this.persistenceService.saveCard(baldu);

@@ -137,33 +137,11 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		StringBuffer js = new StringBuffer();
 
-		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/jquery.ui.widget.js");
-		js = js.append("\n" + template2.asString());
-
-		final TextTemplate template3 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/jquery.ui.mouse.js");
-		js = js.append("\n" + template3.asString());
-
-		final TextTemplate template7 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/jquery.ui.touch-punch.js");
-		js = js.append("\n" + template7.asString());
-
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 		variables.put("graveyardUrl", this.putToGraveyardBehavior.getCallbackUrl());
 		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
-
-		final TextTemplate template4 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/jquery.ui.draggable.js");
-		template4.interpolate(variables);
-		js = js.append("\n" + template4.asString());
-
-		final TextTemplate template5 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/jquery.ui.droppable.1.8.18.js");
-		template5.interpolate(variables);
-		js = js.append("\n" + template5.asString());
 
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior

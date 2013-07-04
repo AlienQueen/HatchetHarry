@@ -54,7 +54,6 @@
             #myMenu {
 
                 margin: 0 0 10px 0;
-                z-index: 100;
             }
             
             em#logo {
@@ -145,7 +144,9 @@
 }
 
 .dropdownmenu {
+	position: fixed;
 	cursor: pointer;
+	z-index: 200;
 }
 
 a, a:visited {

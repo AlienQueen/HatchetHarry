@@ -9,6 +9,23 @@
 	margin-top:5%;
 }
 
+.navbar-fixed-top {
+    left: 0;
+    margin-bottom: 0;
+    position: fixed;
+    right: 0;
+    z-index: 1;
+}
+
+.zone-images {
+    left: 0;
+    margin-bottom: 0;
+    position: fixed;
+    right: 0;
+	top: 100px;
+    z-index: 0;
+}
+
 .jMenu {
     display: table;
     margin: 0;

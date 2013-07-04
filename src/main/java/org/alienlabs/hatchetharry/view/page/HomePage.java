@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -119,8 +118,6 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackageTextTemplate;
-import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -221,7 +218,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Friday, 28th of June 2013.");
+		final Label message2 = new Label("message2", "built on Thursday, 4th of July 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -983,10 +980,22 @@ public class HomePage extends TestReportPage
 			{
 				super.renderHead(component, response);
 
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery/jquery-ui-1.8.18.core.mouse.widget.js")));
 				response.render(JavaScriptHeaderItem
 						.forReference(JQueryWicketAtmosphereResourceReference.get()));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery-ui-1.10.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.ui.core-1.10.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.ui.widget-1.10.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.ui.mouse-1.10.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.ui.touch-punch.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.ui.draggable-1.10.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.ui.droppable-1.10.3.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tour/jquery.easing.1.3.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -1016,9 +1025,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/rotate/jQueryRotate.2.1.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class,
-						"script/draggableHandle/jquery.ui.draggable.sidePlaceholder.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/notificon.js")));
@@ -1047,8 +1053,6 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/prettyPhoto.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/toolbarStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/joyride-1.0.5.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/demo-style.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -1660,7 +1664,7 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript("var card = jQuery('#cardHandle"
 				+ event.getUniqueid().replace("-", "_") + "');"
 				+ "card.css('position', 'absolute'); card.css('left', '" + event.getMouseX()
-				+ "'); card.css('top', '" + event.getMouseY() + "');");
+				+ "px'); card.css('top', '" + event.getMouseY() + "px');");
 	}
 
 	@Subscribe
@@ -1930,45 +1934,6 @@ public class HomePage extends TestReportPage
 
 		final List<SidePlaceholderPanel> allSides = this.session.getMySidePlaceholder();
 		HomePage.LOGGER.info("size: " + allSides.size());
-
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-		final String jsessionid = request.getRequestedSessionId();
-
-		for (final SidePlaceholderPanel spp : allSides)
-		{
-			String callbackUrl = "";
-			if ("firstSidePlaceholder".equals(spp.getId()))
-			{
-				callbackUrl = this.session.getFirstSideMoveCallbackUrl();
-			}
-			else if ("secondSidePlaceholder".equals(spp.getId()))
-			{
-				callbackUrl = this.session.getSecondSideMoveCallbackUrl();
-			}
-			final HashMap<String, Object> variables = new HashMap<String, Object>();
-			variables.put("url", callbackUrl);
-			variables.put("uuid", spp.getUuid());
-			variables.put("uuidValidForJs", spp.getUuid().toString().replace("-", "_"));
-			variables.put("jsessionid", jsessionid);
-			variables.put("side", spp.getSide());
-
-			final TextTemplate template = new PackageTextTemplate(HomePage.class,
-					"script/draggableHandle/initSidePlaceholderDrag.js");
-			template.interpolate(variables);
-			js.append("\n" + template.asString() + "\n");
-		}
-
-		for (final SidePlaceholderPanel s : allSides)
-		{
-			HomePage.LOGGER.info("side: " + s.getUuid() + ", X= " + s.getPosX() + ", Y= "
-					+ s.getPosY());
-			js.append("var card = jQuery('#sidePlaceholder" + s.getUuid() + "'); "
-					+ "card.css('position', 'absolute'); " + "card.css('left', '" + s.getPosX()
-					+ "px'); " + "card.css('top', '" + s.getPosY() + "px'); ");
-		}
-		// Don't show website tour on page refresh
-		js.append("jQuery('#tourcontrols').remove();");
 
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), "homePage"));
 	}

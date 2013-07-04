@@ -1,5 +1,6 @@
+<!DOCTYPE HTML>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-<head profile="http://www.w3.org/2005/10/profile">
+<head>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -11,7 +12,7 @@
 	<link rel="shortcut icon" href="http://hatchetharry.net/favicon.ico" />
     
 </head>
-<body class="myBody" id="yahoo-com">
+<body class="myBody">
   <span id="tour_1"></span>
   <span id="tour_128"></span>
   <span wicket:id="headResources"></span>
@@ -19,7 +20,7 @@
   <!-- Menus -->
   
   <!-- The main (desktop) menu bar -->
-  <span>
+  <nav class="navbar-fixed-top">
   <ul id="jMenu">
 	  <li><a><img src="/image/logoh1.gif" alt="HH" width="32" class="fNiv"/>&nbsp;&nbsp;&nbsp;&nbsp;</a><!-- Do not forget the "fNiv" class for the first level links !! -->
 	    
@@ -72,45 +73,48 @@
 				</ul>
 	  </li>
   </ul>
+  </nav>
 	<br/>
+  <nav class="zone-images">
 	<img id="putToHand" src="image/hand.jpg" alt="Put back to hand" title="Drag a card here to put it back to hand" style="border-color: white; border-width: 1px; border-style: solid;">&nbsp;&nbsp;
 	<img id="putToGraveyard" src="image/graveyard.jpg" alt="Put back to graveyard" title="Drag a card here to put it back to graveyard" style="border-color: white; border-width: 1px; border-style: solid;">
-  </span>
-
+  </nav>
   <!-- The mobile drop down menu -->
-  <div class="dropdownmenu">
-  		<img src="/image/logoh1.gif" width="32" height="32"/>
-	  	<img src="/image/browse.png" id="browse" height="32" width="32"/>
-  </div>
-   <div class="categories">
-      <ul>
-        <li class="myfont"><a wicket:id="aboutLinkResponsive">* About HatychetHarry&nbsp;&nbsp;</a></li>
-        <li class="myfont"><a wicket:id="teamInfoLinkResponsive">* HatchetHarry team info&nbsp;&nbsp;</a></li>
-        <li class="myfont"><a target="_blank">* Preferences</a></li>
-      </ul>
-      <br/><br/>
-      <ul>
-        <li><a href="http://papermashup.com/category/oauth/">OAuth</a></li>
-        <li><a href="http://papermashup.com/category/memcache/">Memcache</a></li>
-        <li><a href="http://papermashup.com/category/css/">CSS</a></li>
-        <li><a href="http://papermashup.com/category/api/javascript">JavaScript</a></li>
-        <li><a href="http://papermashup.com/category/jquery/">jQuery</a></li>
-        <li><a href="http://papermashup.com/category/mootools/">MooTools</a></li>
-        <li><a href="http://papermashup.com/category/mobile/">Mobile</a></li>
-        <li><a href="http://papermashup.com/category/iphone/">iPhone</a></li>
-        <li><a href="http://papermashup.com/category/web-tools/">Web Tools</a></li>
-        <li><a href="http://papermashup.com/category/frameworks/">Frameworks</a></li>
-        <li><a href="http://papermashup.com/category/analytics/">Analytics</a></li>
-        <li><a href="http://papermashup.com/category/social-media/">Social Media</a></li>
-        <li><a href="http://papermashup.com/category/widgets/">Widgets</a></li>
-        <li><a href="http://papermashup.com/category/reviews/">Reviews</a></li>
-        <li><a href="http://papermashup.com/category/trends/">Trends</a></li>
-        <li><a href="http://papermashup.com/category/social-networks/">Social Networks</a></li>
-        <li><a href="http://papermashup.com/category/social-bookmarking/">Bookmarking</a></li>
-        <li><a href="http://papermashup.com/category/facebook/">Facebook</a></li>
-        <div class="clear"></div>
-      </ul>
-    </div>
+  <nav class="dropdownmenu">
+	  <div>
+	  		<img src="/image/logoh1.gif" width="32" height="32"/>
+		  	<img src="/image/browse.png" id="browse" height="32" width="32"/>
+	  </div>
+	   <div class="categories">
+	      <ul>
+	        <li class="myfont"><a wicket:id="aboutLinkResponsive">* About HatychetHarry&nbsp;&nbsp;</a></li>
+	        <li class="myfont"><a wicket:id="teamInfoLinkResponsive">* HatchetHarry team info&nbsp;&nbsp;</a></li>
+	        <li class="myfont"><a target="_blank">* Preferences</a></li>
+	      </ul>
+	      <br/><br/>
+	      <ul>
+	        <li><a href="http://papermashup.com/category/oauth/">OAuth</a></li>
+	        <li><a href="http://papermashup.com/category/memcache/">Memcache</a></li>
+	        <li><a href="http://papermashup.com/category/css/">CSS</a></li>
+	        <li><a href="http://papermashup.com/category/api/javascript">JavaScript</a></li>
+	        <li><a href="http://papermashup.com/category/jquery/">jQuery</a></li>
+	        <li><a href="http://papermashup.com/category/mootools/">MooTools</a></li>
+	        <li><a href="http://papermashup.com/category/mobile/">Mobile</a></li>
+	        <li><a href="http://papermashup.com/category/iphone/">iPhone</a></li>
+	        <li><a href="http://papermashup.com/category/web-tools/">Web Tools</a></li>
+	        <li><a href="http://papermashup.com/category/frameworks/">Frameworks</a></li>
+	        <li><a href="http://papermashup.com/category/analytics/">Analytics</a></li>
+	        <li><a href="http://papermashup.com/category/social-media/">Social Media</a></li>
+	        <li><a href="http://papermashup.com/category/widgets/">Widgets</a></li>
+	        <li><a href="http://papermashup.com/category/reviews/">Reviews</a></li>
+	        <li><a href="http://papermashup.com/category/trends/">Trends</a></li>
+	        <li><a href="http://papermashup.com/category/social-networks/">Social Networks</a></li>
+	        <li><a href="http://papermashup.com/category/social-bookmarking/">Bookmarking</a></li>
+	        <li><a href="http://papermashup.com/category/facebook/">Facebook</a></li>
+	        <div class="clear"></div>
+	      </ul>
+	    </div>
+	</nav>
   <!-- end menus -->
     
 	<br/><br/><br/><br/><br/>
@@ -118,13 +122,13 @@
 	<span wicket:id="balduParent" id="tour_6">
 		<span wicket:id="baldu"></span>
 	</span>
-	<br/><br/>
+	<br/><br/><br/><br/>
 	<h3><strong class="myfont">Welcome to HatchetHarry
 			<span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
 			<span wicket:id="message2" id="message2" class="myfont">message will be here</span>
 		</strong>
 	</h3>
-	<br/><br/>
+	<br/><br/><br/><br/>
 	<span id="tour_9">
 		<div id="dock">
 					<a wicket:id="handLink" title="Hand" id="tour_10">
@@ -151,7 +155,7 @@
 	<span wicket:id="dataBoxParent" class="myfont">
 		<span wicket:id="dataBox"></span>
 	</span><br/>
-	<span wicket:id="clockPanel" id="clock" class="myfont">Clock Panel</span><br/>
+	<span wicket:id="clockPanel" id="clock" class="myfont">Clock Panel</span><br/><br/>
 	<span wicket:id="chatPanel">Chat Panel</span>
 	
 	<div wicket:id="aboutWindow"></div>
@@ -179,10 +183,7 @@
 	</span>
 	
 	<span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
-	
-	<iframe id="cometFrame" name="cometFrame" width="0" height="0" border="0" style="border-width: 0px">
-    </iframe>
-	
+	<br/><br/>
 	<div wicket:id="parentPlaceholder">
 			<table>
 				<tr wicket:id="handCards">
@@ -193,6 +194,15 @@
 		
 	
 	<span wicket:id="cardPlaceholder"></span>
+	
+	<br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/>
 	
   	<span>
   		<h2 id="qunit-header">HH QUnit tests</h2>

@@ -90,13 +90,13 @@ jQuery(function() {
 
 			if ((typeof(width) != "undefined") && (typeof(height) != "undefined") && (null != width) && (null != height) && (width<height)) {
 				// Portrait
-				jQuery("#jMenu").hide();
-				jQuery('.dropdownmenu').show();
-			} else {
-				// Landscape
 				jQuery("#jMenu").show();
 				jQuery('.dropdownmenu').hide();
 				jQuery('.categories').hide();
+			} else {
+				// Landscape
+				jQuery("#jMenu").hide();
+				jQuery('.dropdownmenu').show();
 			}
 		});
 	}, 12000);

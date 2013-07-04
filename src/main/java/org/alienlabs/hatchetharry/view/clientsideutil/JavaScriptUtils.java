@@ -84,8 +84,6 @@ public final class JavaScriptUtils
 			buf.append("var dragUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
 					+ "').data('dragUrl'); ");
 
-			buf.append("jQuery('#cardHandle" + uuidValidForJs + "').draggable('destroy'); ");
-
 			buf.append("jQuery('#cardHandle"
 					+ uuidValidForJs
 					+ "').draggable({ handle : '#handleImage"
@@ -99,7 +97,6 @@ public final class JavaScriptUtils
 		}
 
 		// Put to graveyard by drag & drop
-		buf.append("jQuery('#putToGraveyard').droppable('destroy'); ");
 		buf.append("jQuery('#putToGraveyard').droppable({ ");
 		buf.append("accept: '");
 
@@ -124,7 +121,6 @@ public final class JavaScriptUtils
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
 		// Put to hand by drag & drop
-		buf.append("jQuery('#putToHand').droppable('destroy'); ");
 		buf.append("jQuery('#putToHand').droppable({ ");
 		buf.append("accept: '");
 
