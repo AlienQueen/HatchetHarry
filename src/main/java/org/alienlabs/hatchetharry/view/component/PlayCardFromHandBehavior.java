@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -36,144 +37,183 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 
-	@SpringBean
-	private PersistenceService persistenceService;
+    @SpringBean
+    private PersistenceService persistenceService;
 
-	private UUID uuidToLookFor;
-	private final int currentCard;
+    private UUID uuidToLookFor;
+    private final int currentCard;
 
-	private String side;
+    private String side;
 
-	public PlayCardFromHandBehavior(final UUID _uuidToLookFor, final int _currentCard,
-			final String _side)
+    public PlayCardFromHandBehavior(final UUID _uuidToLookFor, final int _currentCard,
+	    final String _side)
+    {
+	super();
+	Injector.get().inject(this);
+	this.uuidToLookFor = _uuidToLookFor;
+	this.currentCard = _currentCard;
+	this.side = _side;
+    }
+
+    @Override
+    protected void respond(final AjaxRequestTarget target)
+    {
+	final Date first = new Date();
+
+	final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+		.getRequest();
+	final HttpServletRequest request = servletWebRequest.getContainerRequest();
+
+	try
 	{
-		super();
-		Injector.get().inject(this);
-		this.uuidToLookFor = _uuidToLookFor;
-		this.currentCard = _currentCard;
-		this.side = _side;
+	    this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
+	}
+	catch (final IllegalArgumentException ex)
+	{
+	    PlayCardFromHandBehavior.LOGGER.error(
+		    "No card with UUID= " + request.getParameter("card") + " found!", ex);
 	}
 
-	@Override
-	protected void respond(final AjaxRequestTarget target)
+	Date before = new Date();
+	final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
+	Date after = new Date();
+	LOGGER.info("getCardFromUuid: " + (after.getTime() - before.getTime()) + "ms");
+
+	if (null == card)
 	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-				.getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-
-		try
-		{
-			this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
-		}
-		catch (final IllegalArgumentException ex)
-		{
-			PlayCardFromHandBehavior.LOGGER.error(
-					"No card with UUID= " + request.getParameter("card") + " found!", ex);
-		}
-
-		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
-
-		if (null == card)
-		{
-			PlayCardFromHandBehavior.LOGGER.error("UUID " + this.uuidToLookFor
-					+ " retrieved no MagicCard!");
-			return;
-		}
-
-
-		if (!CardZone.HAND.equals(card.getZone()))
-		{
-			return;
-		}
-
-		card.setZone(CardZone.BATTLEFIELD);
-
-		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
-		final Game game = this.persistenceService.getGame(gameId);
-		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
-		game.setCurrentPlaceholderId(currentPlaceholderId);
-		this.persistenceService.updateGame(game);
-
-		card.setX(300l + (currentPlaceholderId * 16));
-		card.setY(300l + (currentPlaceholderId * 16));
-
-		this.persistenceService.updateCard(card);
-
-		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
-				.getId());
-		final Deck d = p.getDeck();
-		final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
-				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		this.persistenceService.updateAllMagicCards(hand);
-		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		this.persistenceService.updateAllMagicCards(battlefield);
-
-		JavaScriptUtils.updateHand(target);
-
-		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);
-
-		final NotifierCometChannel ncc = new NotifierCometChannel(
-				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
-						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
-				"", card.getTitle(), null, "");
-
-		final List<BigInteger> allPlayersInGame = this.persistenceService
-				.giveAllPlayersFromGame(gameId);
-
-		// post a message for all players in the game
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long player = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
-			PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-
-			HatchetHarryApplication.get().getEventBus().post(pcfhcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-		}
-
+	    PlayCardFromHandBehavior.LOGGER.error("UUID " + this.uuidToLookFor
+		    + " retrieved no MagicCard!");
+	    return;
 	}
 
-	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
+
+	if (!CardZone.HAND.equals(card.getZone()))
 	{
-		super.renderHead(component, response);
-
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
-		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.uuidToLookFor.toString());
-		variables.put("uuidValidForJs", this.uuidToLookFor.toString().replace("-", "_"));
-		variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));
-		variables.put("clicked", this.currentCard);
-		variables.put("side", this.side);
-
-		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-				"script/playCard/playCard.js");
-		template1.interpolate(variables);
-
-		PlayCardFromHandBehavior.LOGGER.info("### clicked: " + this.currentCard);
-		response.render(JavaScriptHeaderItem.forScript(template1.asString(), "playCardFromHand"));
+	    return;
 	}
 
-	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
-		this.persistenceService = _persistenceService;
-	}
+	card.setZone(CardZone.BATTLEFIELD);
 
-	public String getSide()
-	{
-		return this.side;
-	}
+	final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 
-	public void setSide(final String _side)
+	before = new Date();
+	final Game game = this.persistenceService.getGame(gameId);
+	after = new Date();
+	LOGGER.info("getGame: " + (after.getTime() - before.getTime()) + "ms");
+
+	final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
+	game.setCurrentPlaceholderId(currentPlaceholderId);
+
+	before = new Date();
+	this.persistenceService.updateGame(game);
+	after = new Date();
+	LOGGER.info("updateGame: " + (after.getTime() - before.getTime()) + "ms");
+
+	card.setX(300l + (currentPlaceholderId * 16));
+	card.setY(300l + (currentPlaceholderId * 16));
+
+	before = new Date();
+	this.persistenceService.updateCard(card);
+	after = new Date();
+	LOGGER.info("updateCard: " + (after.getTime() - before.getTime()) + "ms");
+
+	before = new Date();
+	final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
+		.getId());
+	after = new Date();
+	LOGGER.info("getPlayer: " + (after.getTime() - before.getTime()) + "ms");
+
+	final Deck d = p.getDeck();
+
+	before = new Date();
+	final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
+		.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+	after = new Date();
+	LOGGER.info("reorderMagicCards(getAllCardsInHandForAGameAndAPlayer()): " + (after.getTime() - before.getTime()) + "ms");
+
+	before = new Date();
+	this.persistenceService.updateAllMagicCards(hand);
+	after = new Date();
+	LOGGER.info("updateAllMagicCards: " + (after.getTime() - before.getTime()) + "ms");
+
+	before = new Date();
+	final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
+		.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+	this.persistenceService.updateAllMagicCards(battlefield);
+	after = new Date();
+	LOGGER.info("reorderMagicCards(getAllCardsInBattlefieldForAGameAndAPlayer()): " + (after.getTime() - before.getTime()) + "ms");
+
+	JavaScriptUtils.updateHand(target);
+
+	final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
+		this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);
+
+	final NotifierCometChannel ncc = new NotifierCometChannel(
+		NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
+		.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+		"", card.getTitle(), null, "");
+
+	final List<BigInteger> allPlayersInGame = this.persistenceService
+		.giveAllPlayersFromGame(gameId);
+
+	before = new Date();
+	// post a message for all players in the game
+	for (int i = 0; i < allPlayersInGame.size(); i++)
 	{
-		this.side = _side;
+	    final Long player = allPlayersInGame.get(i).longValue();
+	    final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
+	    PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+
+	    HatchetHarryApplication.get().getEventBus().post(pcfhcc, pageUuid);
+	    HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 	}
+	after = new Date();
+	LOGGER.info("post: " + (after.getTime() - before.getTime()) + "ms");
+
+	final Date last = new Date();
+	LOGGER.info("total: " + (last.getTime() - first.getTime()) + "ms");
+
+    }
+
+    @Override
+    public void renderHead(final Component component, final IHeaderResponse response)
+    {
+	super.renderHead(component, response);
+
+	final HashMap<String, Object> variables = new HashMap<String, Object>();
+	variables.put("url", this.getCallbackUrl());
+	variables.put("uuid", this.uuidToLookFor.toString());
+	variables.put("uuidValidForJs", this.uuidToLookFor.toString().replace("-", "_"));
+	variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));
+	variables.put("clicked", this.currentCard);
+	variables.put("side", this.side);
+
+	final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
+		"script/playCard/playCard.js");
+	template1.interpolate(variables);
+
+	PlayCardFromHandBehavior.LOGGER.info("### clicked: " + this.currentCard);
+	response.render(JavaScriptHeaderItem.forScript(template1.asString(), "playCardFromHand"));
+    }
+
+    @Required
+    public void setPersistenceService(final PersistenceService _persistenceService)
+    {
+	this.persistenceService = _persistenceService;
+    }
+
+    public String getSide()
+    {
+	return this.side;
+    }
+
+    public void setSide(final String _side)
+    {
+	this.side = _side;
+    }
 
 }
