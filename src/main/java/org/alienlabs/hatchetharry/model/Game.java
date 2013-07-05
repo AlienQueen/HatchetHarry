@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "Game")
@@ -29,6 +30,7 @@ public class Game implements Serializable
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Index(name = "Game_index")
 	private Long gameId;
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))

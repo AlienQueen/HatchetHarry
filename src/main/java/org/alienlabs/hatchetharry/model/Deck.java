@@ -31,6 +31,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "Deck")
@@ -43,6 +44,7 @@ public class Deck implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckId")
+	@Index(name = "Deck_index")
 	private Long deckId;
 	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Deck_DeckArchive")

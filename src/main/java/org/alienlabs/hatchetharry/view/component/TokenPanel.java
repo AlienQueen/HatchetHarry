@@ -61,8 +61,6 @@ public class TokenPanel extends Panel
 			public void renderHead(final Component component, final IHeaderResponse response)
 			{
 				super.renderHead(component, response);
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/menu.css")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(

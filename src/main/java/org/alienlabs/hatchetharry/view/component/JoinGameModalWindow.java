@@ -187,11 +187,10 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(_id,
 						JoinGameModalWindow.this.decks.getModelObject().getDeckId());
 
-				final Deck deck = (Deck)JoinGameModalWindow.this.decks.getDefaultModelObject();
-				deck.getCards().clear();
-				JoinGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(_id,
-						JoinGameModalWindow.this.player.getDeck().getDeckId());
-
+				final Deck deck = new Deck();
+				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
+				deck.setDeckArchive(JoinGameModalWindow.this.decks.getModelObject()
+						.getDeckArchive());
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = JoinGameModalWindow.this.persistenceService
 						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
@@ -215,7 +214,7 @@ public class JoinGameModalWindow extends Panel
 				}
 				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCard)));
 
-				JoinGameModalWindow.this.persistenceService.updateDeck(deck);
+				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
 				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
@@ -233,7 +232,6 @@ public class JoinGameModalWindow extends Panel
 						+ ", deckId: " + deck.getDeckId());
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
-				deck.setPlayerId(session.getPlayer().getId());
 				JoinGameModalWindow.this.player.setDeck(deck);
 				JoinGameModalWindow.this.player.setGame(game);
 				JoinGameModalWindow.this.persistenceService
@@ -281,102 +279,19 @@ public class JoinGameModalWindow extends Panel
 				final HttpServletRequest request = servletWebRequest.getContainerRequest();
 				final String jsessionid = request.getRequestedSessionId();
 
-				// TODO: re-write this in Wicket-Atmosphere
-				// final SidePlaceholderPanel spp = new
-				// SidePlaceholderPanel("secondSidePlaceholder",
-				// JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-				// JoinGameModalWindow.this.hp, UUID.randomUUID());
-				// spp.add(new SidePlaceholderMoveBehavior(spp, spp.getUuid(),
-				// jsessionid,
-				// JoinGameModalWindow.this.hp,
-				// JoinGameModalWindow.this.hp.getDataBoxParent(),
-				// session.getGameId()));
-				// JoinGameModalWindow.LOGGER.info("gameId in JoinGameModalWindow: "
-				// + session.getGameId());
-				// spp.setOutputMarkupId(true);
-				//
-				// session.putMySidePlaceholderInSesion(JoinGameModalWindow.this.sideInput
-				// .getDefaultModelObjectAsString());
-				//
-				// JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent().addOrReplace(spp);
-
 				final int posX = ("infrared".equals(JoinGameModalWindow.this.sideInput
 						.getDefaultModelObjectAsString())) ? 300 : 900;
-
-				// buf.append("window.setTimeout(function() { ");
-
-				// buf.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
-				// + spp.getUuid() + "'); " +
-				// "card.css('position', 'absolute'); "
-				// + "card.css('left', '" + posX + "px'); "
-				// + "card.css('top', '500px'); }, 3000); ");
-
-				// final String opponentSide =
-				// ("infrared".equals(JoinGameModalWindow.this.sideInput
-				// .getDefaultModelObjectAsString())) ? "ultraviolet" :
-				// "infrared";
-
-				// final SidePlaceholderPanel spp2 = new
-				// SidePlaceholderPanel("firstSidePlaceholder",
-				// opponentSide, JoinGameModalWindow.this.hp,
-				// UUID.randomUUID());
-				// spp2.add(new SidePlaceholderMoveBehavior(spp2,
-				// spp2.getUuid(), jsessionid,
-				// JoinGameModalWindow.this.hp,
-				// JoinGameModalWindow.this.hp.getDataBoxParent(),
-				// session.getGameId()));
-				// spp2.setOutputMarkupId(true);
-				//
-				// JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent().addOrReplace(spp2);
-
-				// final int posX2 = (posX == 300) ? 900 : 300;
-
-				// TODO: re-write this in Wicket-Atmosphere
-				// buf.append("window.setTimeout(function() { var card = jQuery('#sidePlaceholder"
-				// + spp2.getUuid() + "'); " +
-				// "card.css('position', 'absolute'); "
-				// + "card.css('left', '" + posX2 + "px'); "
-				// + "card.css('top', '500px'); }, 3000); ");
-				// TODO remove gameId management since we now have Comet
-				// channels
-				buf.append("window.gameId = " + session.getGameId() + "; ");
 
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
 						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
-
-				// final Side s = new Side();
-				// s.setGame(game);
-				// s.setSide(JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
-				// s.setUuid(spp.getUuid().toString());
-				// s.setWicketId("secondSidePlaceholder");
-				// s.setX(Long.valueOf(posX));
-				// s.setY(Long.valueOf(500));
-				JoinGameModalWindow.this.persistenceService.updateGame(game); // TODO
-				// TODO: comment this out when it is in Wicket-Atmosphere
-				// JoinGameModalWindow.this.persistenceService.saveSide(s);
-
-				// TODO: re-write this in Wicket-Atmosphere
-				// spp.setPosX(posX);
-				// spp.setPosY(500);
-				// session.setMySidePlaceholder(spp);
-				// spp2.setPosX(posX2);
-				// spp2.setPosY(500);
-				// session.setMySidePlaceholder(spp2);
+				JoinGameModalWindow.this.persistenceService.updateGame(game);
 
 				session.setGameCreated();
-
 				_modal.close(target);
 				target.add(JoinGameModalWindow.this.hp.getDataBoxParent());
-				// target.add(JoinGameModalWindow.this.hp.getSecondSidePlaceholderParent());
-				// target.add(JoinGameModalWindow.this.hp.getFirstSidePlaceholderParent());
 				target.appendJavaScript(buf.toString());
-
-				// TODO: re-write this in Wicket-Atmosphere
-				// final JoinGameCometChannel jgcc = new JoinGameCometChannel(
-				// JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-				// jsessionid, spp.getUuid(), Long.valueOf(posX), 500l);
 
 				final Long _gameId = game.getId();
 				final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(

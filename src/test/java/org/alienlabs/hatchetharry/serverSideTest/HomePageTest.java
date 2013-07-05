@@ -114,6 +114,9 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	@Test
 	public void testRenderDock()
 	{
+		super.tearDownAfterClass();
+		super.setUpBeforeClass();
+
 		// Assert hand
 		HomePageTest.testDockElement("Hand");
 
@@ -184,11 +187,11 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 
 		final TagTester tt = tagTester.get(0);
 		Assert.assertNotNull(tt);
-		final TagTester tt2 = tt.getChild("alt", name);
-		Assert.assertNotNull(tt2);
-		Assert.assertFalse(tt.equals(tt2));
-		Assert.assertNotNull(tt2.getAttribute("src"));
-		Assert.assertTrue(tt2.getAttribute("src").contains(".gif"));
+		final String attr = tt.getAttribute("alt");
+		Assert.assertNotNull(attr);
+		Assert.assertTrue(name.equals(attr));
+		Assert.assertNotNull(tt.getAttribute("src"));
+		Assert.assertTrue(tt.getAttribute("src").contains(".gif"));
 	}
 
 	@Test

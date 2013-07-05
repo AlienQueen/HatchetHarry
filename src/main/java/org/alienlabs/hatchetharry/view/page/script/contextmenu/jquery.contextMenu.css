@@ -1,7 +1,8 @@
 /* Generic context menu styles */
 .contextMenu {
 	position: absolute;
-	width: 135px;
+	width: 160px;
+	top: -140px;
 	z-index: 99999;
 	border: solid 1px #CCC;
 	background: #EEE;

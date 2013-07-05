@@ -17,6 +17,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "Player")
@@ -28,6 +29,7 @@ public class Player implements Serializable
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Index(name = "Player_index")
 	private Long playerId;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE })

@@ -300,6 +300,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/llsh.gif"));
 		this.mountResource("image/teaser.gif", new PackageResourceReference(HomePage.class,
 				"image/teaser.gif"));
+		this.mountResource("image/tipsy.gif", new PackageResourceReference(HomePage.class,
+				"image/tipsy.gif"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.seconds(2));

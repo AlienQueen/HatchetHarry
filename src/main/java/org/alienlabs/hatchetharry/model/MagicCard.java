@@ -34,6 +34,7 @@ import javax.persistence.Table;
 import org.apache.wicket.model.Model;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "MagicCard")
@@ -58,8 +59,10 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private String description = "";
 	@Column
+	@Index(name = "MagicCard_index")
 	private String uuid;
 	@Column
+	@Index(name = "MagicCard_index")
 	private Long gameId;
 	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "card_deck")

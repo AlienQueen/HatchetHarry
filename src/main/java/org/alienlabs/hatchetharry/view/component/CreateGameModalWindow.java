@@ -151,19 +151,13 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
 				CreateGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(
-						CreateGameModalWindow.this.game.getId(), CreateGameModalWindow.this.decks
-								.getModelObject().getDeckId());
-
-				final Deck deck = CreateGameModalWindow.this.decks.getModelObject();
-				deck.getCards().clear();
-				CreateGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(
 						CreateGameModalWindow.this.game.getId(), CreateGameModalWindow.this.player
 								.getDeck().getDeckId());
 
-				CreateGameModalWindow.LOGGER
-						.error("deck.cards().size(): " + deck.getCards().size());
-
+				final Deck deck = new Deck();
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
+				deck.setDeckArchive(CreateGameModalWindow.this.decks.getModelObject()
+						.getDeckArchive());
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = CreateGameModalWindow.this.persistenceService
 						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
@@ -189,7 +183,7 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.LOGGER.error("deck.getCards().size(): "
 						+ deck.getCards().size());
-				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
+				CreateGameModalWindow.this.persistenceService.saveDeck(deck);
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
@@ -208,7 +202,6 @@ public class CreateGameModalWindow extends Panel
 						+ ", deckId: " + deck.getDeckId());
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
-				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
 				CreateGameModalWindow.this.player.setDeck(deck);
 				CreateGameModalWindow.this.player.setGame(g);
 				CreateGameModalWindow.this.persistenceService
@@ -230,54 +223,12 @@ public class CreateGameModalWindow extends Panel
 
 				final StringBuffer buf = new StringBuffer(
 						"jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
-				// TODO remove gameId management since we now have Comet
-				// channels
-				buf.append("window.gameId = " + CreateGameModalWindow.this.game.getId() + "; ");
 
 				CreateGameModalWindow.LOGGER.info("close!");
-
-				// final UUID uuid = UUID.randomUUID();
-				// final SidePlaceholderPanel spp = new
-				// SidePlaceholderPanel("firstSidePlaceholder",
-				// CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-				// hp,
-				// uuid);
 				final HatchetHarrySession session = HatchetHarrySession.get();
-				// session.putMySidePlaceholderInSesion(CreateGameModalWindow.this.sideInput
-				// .getDefaultModelObjectAsString());
-
-				// final ServletWebRequest servletWebRequest =
-				// (ServletWebRequest)this.getPage()
-				// .getRequest();
-				// final HttpServletRequest request =
-				// servletWebRequest.getContainerRequest();
-				// final String jsessionid = request.getRequestedSessionId();
-
-				// final SidePlaceholderMoveBehavior spmb = new
-				// SidePlaceholderMoveBehavior(spp,
-				// spp.getUuid(), jsessionid,
-				// CreateGameModalWindow.this.homePage,
-				// CreateGameModalWindow.this.homePage.getDataBoxParent(),
-				// CreateGameModalWindow.this.game.getId());
-				// spp.add(spmb);
-				// spp.setOutputMarkupId(true);
-
-				// CreateGameModalWindow.this.sidePlaceholderParent.addOrReplace(spp);
-				// target.add(CreateGameModalWindow.this.sidePlaceholderParent);
 
 				final int posX = ("infrared".equals(CreateGameModalWindow.this.sideInput
 						.getDefaultModelObjectAsString())) ? 300 : 900;
-
-				// buf.append("window.setTimeout(function() { var card = jQuery(\"#sidePlaceholder"
-				// + spp.getUuid() + "\"); " +
-				// "card.css(\"position\", \"absolute\"); "
-				// + "card.css(\"left\", \"" + posX + "px\"); "
-				// + "card.css(\"top\", \"500px\");" + "jQuery(\"#" +
-				// spp.getMarkupId()
-				// + "\").draggable({ handle : \"#handleImage" + uuid + "\" });"
-				// + "jQuery(\"#handleImage" + uuid + "\").data(\"url\",\""
-				// + spmb.getCallbackUrl() + "\");" + " }, 3000); ");
-
 				target.appendJavaScript(buf.toString());
 
 				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
@@ -289,19 +240,6 @@ public class CreateGameModalWindow extends Panel
 						CreateGameModalWindow.this.nameInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
-
-				// spp.setPosX(posX);
-				// spp.setPosY(500);
-				// session.setMySidePlaceholder(spp);
-
-				// final Side s = new Side();
-				// s.setGame(CreateGameModalWindow.this.persistenceService.getGame(session.getGameId()));
-				// s.setSide(CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
-				// s.setUuid(spp.getUuid().toString());
-				// s.setWicketId("firstSidePlaceholder");
-				// s.setX(Long.valueOf(posX));
-				// s.setY(Long.valueOf(500));
-				// CreateGameModalWindow.this.persistenceService.saveSide(s);
 
 				final DataBox db = new DataBox("dataBox", g.getId());
 				CreateGameModalWindow.this.homePage.getDataBoxParent().addOrReplace(db);

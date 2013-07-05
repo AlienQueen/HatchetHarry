@@ -19,7 +19,7 @@ a											{ outline: none; }
 */
 #page-wrap 									{ width: 262px; margin: 25px auto; position: absolute; top: 3%; left: 75%; min-height: 420px;
 											  background: url(/image/bg.png) top center; }
-#graveyard-page-wrap 									{ width: 262px; margin: 25px auto; position: absolute; top: 25%; left: 75%; min-height: 420px;
+#graveyard-page-wrap 									{ width: 262px; margin: 25px auto; position: absolute; top: 85%; left: 75%; min-height: 420px;
 											  background: url(/image/tombe1.png) top center; }
 /*
 	TYPOGRAPHY

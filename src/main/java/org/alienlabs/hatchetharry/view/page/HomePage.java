@@ -355,7 +355,29 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript("jQuery('.cardTooltip').attr('style', 'display: none;');");
+				final List<MagicCard> allCardsInBattlefield = HomePage.this.persistenceService
+						.getAllCardsInBattleFieldForAGame(HatchetHarrySession.get().getGameId());
+				final StringBuffer buf = new StringBuffer();
+
+				for (int i = 0; i < allCardsInBattlefield.size(); i++)
+				{
+					final MagicCard aCard = allCardsInBattlefield.get(i);
+
+					final String uuidValidForJs = aCard.getUuid().replace("-", "_");
+
+					buf.append("jQuery('#cardTooltip" + uuidValidForJs
+							+ "').attr('style', 'display: none'); ");
+					buf.append("jQuery('#card" + uuidValidForJs
+							+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+							+ "').attr('style', 'display: block'); }); ");
+					buf.append("jQuery('#cardTooltip" + uuidValidForJs
+							+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+							+ "').attr('style', 'display: block'); }); ");
+					buf.append("jQuery('#cardTooltip" + uuidValidForJs
+							+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+							+ "').attr('style', 'display: none'); }); ");
+				}
+				target.appendJavaScript(buf.toString());
 			}
 
 		});
@@ -983,8 +1005,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem
 						.forReference(JQueryWicketAtmosphereResourceReference.get()));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery-ui-1.10.3.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.ui.core-1.10.3.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.ui.widget-1.10.3.js")));
@@ -1032,8 +1052,6 @@ public class HomePage extends TestReportPage
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/myStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/menu.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/jMenu.jquery.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/layout.css")));
@@ -1059,6 +1077,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/mobile.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/blue_gradient_table.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/tipsy.css")));
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
@@ -1066,6 +1086,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/notifier/jquery.gritter.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/viewportSize-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/jquery.tipsy.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/google-analytics.js")));
 			}

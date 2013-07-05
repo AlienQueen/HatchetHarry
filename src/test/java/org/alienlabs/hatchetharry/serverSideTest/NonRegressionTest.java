@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.serverSideTest.util.EventBusMock;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -79,41 +80,15 @@ public class NonRegressionTest
 	 */
 	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped()
 	{
-		// Create game
-		NonRegressionTest.tester.assertComponent("createGameLink", AjaxLink.class);
-		NonRegressionTest.tester.clickLink("createGameLink", true);
+		NonRegressionTest.startAGameAndPlayACard();
 
-		final FormTester createGameForm = NonRegressionTest.tester
-				.newFormTester("createGameWindow:content:form");
-		createGameForm.setValue("name", "Zala");
-		createGameForm.setValue("sideInput", "0");
-		createGameForm.setValue("deckParent:decks", "0");
-		createGameForm.submit();
-
-		// Retrieve PlayCardFromHandBehavior
-		NonRegressionTest.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		NonRegressionTest.tester.assertComponent("playCardPlaceholder:playCardLink",
-				WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)NonRegressionTest.tester
-				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
-		PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(
-				0);
-
-		// For the moment, we should have no card in the battlefield
-		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = NonRegressionTest.context
 				.getBean(PersistenceService.class);
-		List<MagicCard> allCardsInBattlefield = persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
-		Assert.assertEquals(0, allCardsInBattlefield.size());
-
-		// Play a card
-		NonRegressionTest.tester.getRequest().setParameter("card",
-				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		NonRegressionTest.tester.executeBehavior(pcfhb);
+		final Long gameId = HatchetHarrySession.get().getGameId();
 
 		// We should have one card on the battlefield, untapped
-		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		List<MagicCard> allCardsInBattlefield = persistenceService
+				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 		MagicCard card = persistenceService.getCardFromUuid(UUID.fromString(allCardsInBattlefield
 				.get(0).getUuid()));
@@ -153,6 +128,14 @@ public class NonRegressionTest
 		NonRegressionTest.tester.startPage(HomePage.class);
 		NonRegressionTest.tester.assertRenderedPage(HomePage.class);
 
+		NonRegressionTest.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
+		NonRegressionTest.tester.assertComponent("playCardPlaceholder:playCardLink",
+				WebMarkupContainer.class);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer)NonRegressionTest.tester
+				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
+
+		PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(
+				0);
 		pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(0);
 		Assert.assertNotNull(pcfhb);
 
@@ -167,4 +150,82 @@ public class NonRegressionTest
 		Assert.assertFalse(persistenceService.getCardFromUuid(
 				((PlayCardFromHandCometChannel)allMessages.get(5)).getUuidToLookFor()).isTapped());
 	}
+
+	@Test
+	public void whenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
+	{
+		NonRegressionTest.startAGameAndPlayACard();
+
+		final PersistenceService persistenceService = NonRegressionTest.context
+				.getBean(PersistenceService.class);
+		final Player p = persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId()).get(0);
+		Assert.assertEquals(60, p.getDeck().getCards().size());
+	}
+
+	@Test
+	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
+	{
+		NonRegressionTest.startAGameAndPlayACard();
+
+		final PersistenceService persistenceService = NonRegressionTest.context
+				.getBean(PersistenceService.class);
+		final Player p1 = persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId()).get(0);
+		Assert.assertEquals(60, p1.getDeck().getCards().size());
+
+		// Create game
+		NonRegressionTest.tester.assertComponent("joinGameLink", AjaxLink.class);
+		NonRegressionTest.tester.clickLink("joinGameLink", true);
+
+		final FormTester joinGameForm = NonRegressionTest.tester
+				.newFormTester("joinGameWindow:content:form");
+		joinGameForm.setValue("name", "Zala");
+		joinGameForm.setValue("sideInput", "1");
+		joinGameForm.setValue("deckParent:decks", "1");
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		joinGameForm.setValue("gameIdInput", String.valueOf(gameId));
+		joinGameForm.submit();
+
+		final Player p2 = persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId()).get(0);
+		Assert.assertEquals(60, p1.getDeck().getCards().size());
+	}
+
+	private static void startAGameAndPlayACard()
+	{
+		// Create game
+		NonRegressionTest.tester.assertComponent("createGameLink", AjaxLink.class);
+		NonRegressionTest.tester.clickLink("createGameLink", true);
+
+		final FormTester createGameForm = NonRegressionTest.tester
+				.newFormTester("createGameWindow:content:form");
+		createGameForm.setValue("name", "Zala");
+		createGameForm.setValue("sideInput", "0");
+		createGameForm.setValue("deckParent:decks", "0");
+		createGameForm.submit();
+
+		// Retrieve PlayCardFromHandBehavior
+		NonRegressionTest.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
+		NonRegressionTest.tester.assertComponent("playCardPlaceholder:playCardLink",
+				WebMarkupContainer.class);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer)NonRegressionTest.tester
+				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
+		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
+				.getBehaviors().get(0);
+
+		// For the moment, we should have no card in the battlefield
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final PersistenceService persistenceService = NonRegressionTest.context
+				.getBean(PersistenceService.class);
+		final List<MagicCard> allCardsInBattlefield = persistenceService
+				.getAllCardsInBattleFieldForAGame(gameId);
+		Assert.assertEquals(0, allCardsInBattlefield.size());
+
+		// Play a card
+		NonRegressionTest.tester.getRequest().setParameter("card",
+				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
+		NonRegressionTest.tester.executeBehavior(pcfhb);
+	}
+
 }
