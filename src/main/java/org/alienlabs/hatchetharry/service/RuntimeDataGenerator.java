@@ -58,6 +58,8 @@ public class RuntimeDataGenerator implements Serializable
 	@SpringBean
 	private ImportDeckService importDeckService;
 
+	private boolean importDeck;
+
 	@Required
 	public void setMagicCardDao(final MagicCardDao _magicCardDao)
 	{
@@ -74,6 +76,13 @@ public class RuntimeDataGenerator implements Serializable
 	public void setImportDeckService(final ImportDeckService _importDeckService)
 	{
 		this.importDeckService = _importDeckService;
+	}
+
+	@Required
+	public void setImportDeck(final boolean _importDeck)
+	{
+		this.importDeck = _importDeck;
+
 	}
 
 	@Transactional
@@ -100,21 +109,24 @@ public class RuntimeDataGenerator implements Serializable
 			this.persistenceService.saveCard(baldu);
 		}
 
-		if (null == this.persistenceService.getDeckArchiveByName("Aura Bant"))
+		if (this.importDeck)
 		{
-			final File _deck = new File(ResourceBundle.getBundle(
-					RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
-			final byte[] content = new byte[475];
-
-			final FileInputStream fis = new FileInputStream(_deck);
-			if (fis.read(content) == -1)
+			if (null == this.persistenceService.getDeckArchiveByName("Aura Bant"))
 			{
-				fis.close();
-			}
-			fis.close();
+				final File _deck = new File(ResourceBundle.getBundle(
+						RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
+				final byte[] content = new byte[475];
 
-			final String deckContent = new String(content, "UTF-8");
-			this.importDeckService.importDeck(deckContent, "Aura Bant", false);
+				final FileInputStream fis = new FileInputStream(_deck);
+				if (fis.read(content) == -1)
+				{
+					fis.close();
+				}
+				fis.close();
+
+				final String deckContent = new String(content, "UTF-8");
+				this.importDeckService.importDeck(deckContent, "Aura Bant", false);
+			}
 		}
 
 		final Deck deckToReturn;

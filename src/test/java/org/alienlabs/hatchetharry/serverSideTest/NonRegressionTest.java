@@ -146,7 +146,7 @@ public class NonRegressionTest
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 		final List<Object> allMessages = EventBusMock.getMessages();
 		Assert.assertFalse(persistenceService.getCardFromUuid(
-				((PlayCardFromHandCometChannel)allMessages.get(5)).getUuidToLookFor()).isTapped());
+				((PlayCardFromHandCometChannel)allMessages.get(9)).getUuidToLookFor()).isTapped());
 	}
 
 	@Test
