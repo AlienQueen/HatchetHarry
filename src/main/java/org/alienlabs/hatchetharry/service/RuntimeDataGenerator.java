@@ -219,7 +219,7 @@ public class RuntimeDataGenerator implements Serializable
 
 			if (null == deckArchive)
 			{
-				throw new RuntimeException("no such deck in DB!");
+				throw new IllegalArgumentException("no such deck in DB!");
 			}
 
 			Deck deck = this.persistenceService.getDeckByDeckArchiveIdAndPlayerId(

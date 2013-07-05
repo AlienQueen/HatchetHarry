@@ -28,7 +28,7 @@ public class VerifyClientSideTests
 
 	private static WebDriver chromeDriver;
 	private static WebDriver operaDriver;
-	private static final String port = "8088";
+	private static final String PORT = "8088";
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "function elementInViewport(el) {\n"
 			+ "  var top = el.offsetTop;\n"
@@ -63,11 +63,11 @@ public class VerifyClientSideTests
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		VerifyClientSideTests.chromeDriver = new ChromeDriver();
-		VerifyClientSideTests.chromeDriver.get("http://localhost:" + VerifyClientSideTests.port
+		VerifyClientSideTests.chromeDriver.get("http://localhost:" + VerifyClientSideTests.PORT
 				+ "/");
 
 		VerifyClientSideTests.operaDriver = new OperaDriver();
-		VerifyClientSideTests.operaDriver.get("http://localhost:" + VerifyClientSideTests.port
+		VerifyClientSideTests.operaDriver.get("http://localhost:" + VerifyClientSideTests.PORT
 				+ "/");
 	}
 
@@ -131,7 +131,7 @@ public class VerifyClientSideTests
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
 		}
 
-		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver, 10);
+		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("runsSummary")));
 
 		final String chromeTotal = VerifyClientSideTests.chromeDriver.findElement(

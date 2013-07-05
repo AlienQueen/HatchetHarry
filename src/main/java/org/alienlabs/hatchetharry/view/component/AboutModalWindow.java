@@ -36,7 +36,7 @@ public class AboutModalWindow extends Panel
 		final Label text3 = new Label(
 				"text3",
 				new Model<String>(
-						"You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license."));
+						"You are free to modify any part of its source code (client-side or server-side), as long as the changes keep this license."));
 
 		final Label text4 = new Label("text4",
 				new Model<String>("(c) 2011-2013 Zala Pierre GOUPIL"));
@@ -47,17 +47,12 @@ public class AboutModalWindow extends Panel
 
 		final AjaxButton submit = new AjaxButton("submit", form)
 		{
-			private static final long serialVersionUID = 5612763286127668L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				_modal.close(target);
-			}
-
-			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
-			{
 			}
 		};
 
