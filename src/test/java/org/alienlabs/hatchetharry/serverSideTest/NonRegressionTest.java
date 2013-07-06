@@ -10,12 +10,16 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.serverSideTest.util.EventBusMock;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.CardRotateBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
@@ -197,6 +201,78 @@ public class NonRegressionTest
 		joinGameForm.submit();
 
 		Assert.assertEquals(60, player.getDeck().getCards().size());
+	}
+
+	@Test
+	public void itIsPossibleToAddACounterToACard()
+	{
+		this.startAGameAndPlayACard();
+
+		final PersistenceService persistenceService = NonRegressionTest.context
+				.getBean(PersistenceService.class);
+
+		// We should have one card in the battlefield
+		this.tester.startPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
+
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final List<MagicCard> allCardsInBattlefield = persistenceService
+				.getAllCardsInBattleFieldForAGame(gameId);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+
+		// Retrieve card
+		this.tester.assertComponent("parentPlaceholder:handCards:0:cardPanel", CardPanel.class);
+		final CardPanel card = (CardPanel)this.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel");
+		Assert.assertNotNull(card);
+
+		// Retrieve counter text area and submit link
+		this.tester
+				.assertComponent(
+						"parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:form:counterAddName",
+						TextField.class);
+		final TextField<String> counterTextArea = (TextField<String>)this.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:form:counterAddName");
+		Assert.assertNotNull(counterTextArea);
+
+		this.tester
+				.assertComponent(
+						"parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:form:submit",
+						AjaxSubmitLink.class);
+		final AjaxSubmitLink counterSubmitLink = (AjaxSubmitLink)this.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:form:submit");
+		Assert.assertNotNull(counterSubmitLink);
+
+		// Add counter
+		final FormTester counterSubmitForm = this.tester
+				.newFormTester("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:form");
+		final String counterName = "test counter";
+		counterSubmitForm.setValue("counterAddName", counterName);
+		this.tester
+				.clickLink(
+						"parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:form:submit",
+						true);
+
+		// Verify
+		this.tester.startPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
+		this.tester
+				.assertComponent(
+						"parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:counters:0:counterName",
+						Label.class);
+		final Label counterNameLabel = (Label)this.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:counters:0:counterName");
+		Assert.assertNotNull(counterNameLabel);
+		Assert.assertEquals(counterName, counterNameLabel.getDefaultModelObjectAsString());
+
+		this.tester
+				.assertComponent(
+						"parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:counters:0:numberOfCounters",
+						Label.class);
+		final Label numberOfCountersLabel = (Label)this.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:counters:0:numberOfCounters");
+		Assert.assertNotNull(numberOfCountersLabel);
+		Assert.assertEquals(1l, numberOfCountersLabel.getDefaultModelObject());
 	}
 
 	private void startAGameAndPlayACard()

@@ -26,7 +26,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -78,8 +77,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	private CardZone zone;
 	@Column
 	private Long zoneOrder = 0l;
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "card")
 	private Set<Counter> counters = new HashSet<Counter>();
 
 	public MagicCard()

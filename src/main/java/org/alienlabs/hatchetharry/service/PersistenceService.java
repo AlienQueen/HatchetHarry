@@ -842,12 +842,12 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("delete from Game").executeUpdate();
 		session.createSQLQuery("delete from Side").executeUpdate();
 		session.createSQLQuery("delete from MagicCard__cardPlaceholderId").executeUpdate();
+		session.createSQLQuery("delete from Counter").executeUpdate();
 		session.createSQLQuery("delete from MagicCard").executeUpdate();
 		session.createSQLQuery("delete from Deck").executeUpdate();
 		session.createSQLQuery("delete from DeckArchive").executeUpdate();
 		session.createSQLQuery("delete from CollectibleCard").executeUpdate();
 		session.createSQLQuery("delete from Card_Counter").executeUpdate();
-		session.createSQLQuery("delete from Counter").executeUpdate();
 	}
 
 	@Transactional

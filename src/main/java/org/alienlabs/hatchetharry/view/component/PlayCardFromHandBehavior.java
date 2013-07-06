@@ -84,7 +84,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			return;
 		}
 
-
 		if (!CardZone.HAND.equals(card.getZone()))
 		{
 			return;

@@ -30,7 +30,6 @@ public class Counter implements Serializable
 	private Long numberOfCounters = 0l;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.ALL })
 	@JoinColumn(name = "card")
 	private MagicCard card;
 

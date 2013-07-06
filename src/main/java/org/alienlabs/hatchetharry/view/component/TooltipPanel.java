@@ -106,11 +106,9 @@ public class TooltipPanel extends Panel
 				counter.setCounterName(_counterName);
 				counter.setNumberOfCounters(1l);
 				counter.setCard(_myCard);
-				TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
 
 				final Set<Counter> counters = _myCard.getCounters();
 				counters.add(counter);
-				_myCard.setCounters(counters);
 				TooltipPanel.this.persistenceService.updateCard(_myCard);
 
 				final Player targetPlayer = TooltipPanel.this.persistenceService.getPlayer(myCard
