@@ -145,8 +145,20 @@ public class NonRegressionTest
 		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 		final List<Object> allMessages = EventBusMock.getMessages();
-		Assert.assertFalse(persistenceService.getCardFromUuid(
-				((PlayCardFromHandCometChannel)allMessages.get(9)).getUuidToLookFor()).isTapped());
+
+		boolean success = false;
+		for (int index = allMessages.size() - 1; index >= 0; index--)
+		{
+			if ((allMessages.get(index) instanceof PlayCardFromHandCometChannel))
+			{
+				Assert.assertFalse(persistenceService.getCardFromUuid(
+						((PlayCardFromHandCometChannel)allMessages.get(index)).getUuidToLookFor())
+						.isTapped());
+				success = true;
+				break;
+			}
+		}
+		Assert.assertTrue("No PlayCardFromHandCometChannel found in EventBus!", success);
 	}
 
 	@Test
