@@ -24,7 +24,7 @@
   <ul id="jMenu">
 	  <li><a><img src="/image/logoh1.gif" alt="HH" width="32" class="fNiv"/>&nbsp;&nbsp;&nbsp;&nbsp;</a><!-- Do not forget the "fNiv" class for the first level links !! -->
 	    
-			 	<ul>
+			 	<ul class="categories">
 			 		<li class="arrow"></li>
 					<li>
 			          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64" class="logoEntry"/></div>
@@ -39,7 +39,7 @@
 	  </li>
 	  <li class="fNiv"><a class="myfont">Game&nbsp;&nbsp;&nbsp;&nbsp;</a>
 		  
-			  	<ul>
+			  	<ul class="categories">
 			  		<li class="myfont"><a wicket:id="createGameLink">
 						<img src="/image/create game.png" alt="create" class="imageEntry"/>&nbsp;&nbsp;Create a game
 				    	</a>
@@ -59,8 +59,8 @@
 				</ul>
 	  </li>
 	  <li class="fNiv"><a class="myfont">Zones&nbsp;&nbsp;&nbsp;&nbsp;</a>
-			 	<ul>
-			        <li class="myfont"><a wicket:id="playCardFromGraveyardLink"><img src="/image/play from graveyard.png" alt="Play card from graveyard" class="imageEntry"/>&nbsp;&nbsp;Play card from graveyard</a>
+			 	<ul class="categories">
+			        <li class="myfont"><a wicket:id="playCardFromGraveyardLinkDesktop"><img src="/image/play from graveyard.png" alt="Play card from graveyard" class="imageEntry"/>&nbsp;&nbsp;Play card from graveyard</a>
 					</li>
 					<li class="myfont"><a wicket:id="revealTopLibraryCardLink">
 				        	<img src="/image/Library Folder.png" alt="Reveal top card of your library" class="imageEntry"/>&nbsp;&nbsp;Reveal top card of your library
@@ -85,7 +85,7 @@
 	  		<img src="/image/logoh1.gif" width="32" height="32"/>
 		  	<img src="/image/browse.png" id="browse" height="32" width="32"/>
 	  </div>
-	   <div class="categories">
+	  <div class="categories">
 	      <ul>
 	        <li class="myfont"><a wicket:id="aboutLinkResponsive">* About HatychetHarry&nbsp;&nbsp;</a></li>
 	        <li class="myfont"><a wicket:id="teamInfoLinkResponsive">* HatchetHarry team info&nbsp;&nbsp;</a></li>
@@ -93,28 +93,20 @@
 	      </ul>
 	      <br/><br/>
 	      <ul>
-	        <li><a href="http://papermashup.com/category/oauth/">OAuth</a></li>
-	        <li><a href="http://papermashup.com/category/memcache/">Memcache</a></li>
-	        <li><a href="http://papermashup.com/category/css/">CSS</a></li>
-	        <li><a href="http://papermashup.com/category/api/javascript">JavaScript</a></li>
-	        <li><a href="http://papermashup.com/category/jquery/">jQuery</a></li>
-	        <li><a href="http://papermashup.com/category/mootools/">MooTools</a></li>
-	        <li><a href="http://papermashup.com/category/mobile/">Mobile</a></li>
-	        <li><a href="http://papermashup.com/category/iphone/">iPhone</a></li>
-	        <li><a href="http://papermashup.com/category/web-tools/">Web Tools</a></li>
-	        <li><a href="http://papermashup.com/category/frameworks/">Frameworks</a></li>
-	        <li><a href="http://papermashup.com/category/analytics/">Analytics</a></li>
-	        <li><a href="http://papermashup.com/category/social-media/">Social Media</a></li>
-	        <li><a href="http://papermashup.com/category/widgets/">Widgets</a></li>
-	        <li><a href="http://papermashup.com/category/reviews/">Reviews</a></li>
-	        <li><a href="http://papermashup.com/category/trends/">Trends</a></li>
-	        <li><a href="http://papermashup.com/category/social-networks/">Social Networks</a></li>
-	        <li><a href="http://papermashup.com/category/social-bookmarking/">Bookmarking</a></li>
-	        <li><a href="http://papermashup.com/category/facebook/">Facebook</a></li>
-	        <div class="clear"></div>
+	        <li class="myfont"><a wicket:id="createGameLinkResponsive">* Create a game&nbsp;&nbsp;</a></li>
+	        <li class="myfont"><a wicket:id="joinGameLinkResponsive">* Join a game&nbsp;&nbsp;</a></li>
+	        <li class="myfont"><a wicket:id="importDeckLinkResponsive">* Import a deck&nbsp;&nbsp;</a></li>
+    	    <li class="myfont"><a wicket:id="resetDbLinkResponsive">* Reset database&nbsp;&nbsp;</a></li>
+	        <li class="myfont"><a wicket:id="hideAllTooltipsLinkResponsive">* Hide all tooltips&nbsp;&nbsp;</a></li>
 	      </ul>
-	    </div>
-	</nav>
+	      <br/><br/>
+	      <ul>
+	        <li class="myfont"><a wicket:id="playCardFromGraveyardLinkResponsive">* Play card from graveyard&nbsp;&nbsp;</a></li>
+	        <li class="myfont"><a wicket:id="revealTopLibraryCardLinkResponsive">* Reveal top card of your library&nbsp;&nbsp;</a></li>
+	        <li class="myfont"><a wicket:id="countCardsLinkResponsive">* Count all cards&nbsp;&nbsp;</a></li>
+	      </ul>
+    </div>
+  </nav>
   <!-- end menus -->
     
 	<br/><br/><br/><br/><br/>
@@ -160,8 +152,6 @@
 	
 	<div wicket:id="aboutWindow"></div>
 	<div wicket:id="teamInfoWindow"></div>
-	<div wicket:id="aboutWindowResponsive"></div>
-	<div wicket:id="teamInfoWindowResponsive"></div>
 
 	<div wicket:id="createGameWindow"></div>
 	<div wicket:id="joinGameWindow"></div>

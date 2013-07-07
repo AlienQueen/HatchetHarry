@@ -1,7 +1,7 @@
 
 jQuery(document).ready(function() {
 	
-	jQuery("#playCardFromGraveyardLink0").click(function () {
+	jQuery("#playCardFromGraveyardLinkDesktop, #playCardFromGraveyardLinkResponsive").click(function () {
 		if (document.getElementById('graveyard-content') == null || document.getElementById('graveyard-content').nodeName === 'DIV') {
 			return false;
 		}

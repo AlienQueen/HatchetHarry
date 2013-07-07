@@ -10,3 +10,4 @@
 /src/main/webapp/META-INF/maven/
 /chromedriver.log
 /libpeerconnection.log
+/.pmd

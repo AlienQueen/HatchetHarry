@@ -57,6 +57,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
+		target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();

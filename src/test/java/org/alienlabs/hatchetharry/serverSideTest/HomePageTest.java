@@ -9,6 +9,7 @@ import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.ExternalImage;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -197,10 +198,27 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	@Test
 	public void testRenderModalWindows()
 	{
+		// Re-init because of testRenderModalWindowsInMobileMenu()
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
 		HomePageTest.testModalWindow("aboutWindow", "aboutLink");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLink");
 		HomePageTest.testModalWindow("createGameWindow", "createGameLink");
 		HomePageTest.testModalWindow("joinGameWindow", "joinGameLink");
+	}
+
+	@Test
+	public void testRenderModalWindowsInMobileMenu()
+	{
+		// Re-init because of testRenderModalWindows()
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
+		HomePageTest.testModalWindow("aboutWindow", "aboutLinkResponsive");
+		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLinkResponsive");
+		HomePageTest.testModalWindow("createGameWindow", "createGameLinkResponsive");
+		HomePageTest.testModalWindow("joinGameWindow", "joinGameLinkResponsive");
 	}
 
 	private static void testModalWindow(final String _window, final String linkToActivateWindow)
@@ -240,7 +258,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	@Test
 	public void testRenderToolbar()
 	{
-		// Test the baldu and its different children
+		// Test the toolbar at the bottom of the screen
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
 		SpringContextLoaderBaseTest.tester.assertComponent("playCardPlaceholder",
 				WebMarkupContainer.class);
