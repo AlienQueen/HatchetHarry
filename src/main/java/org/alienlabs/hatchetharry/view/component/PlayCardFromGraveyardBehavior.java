@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,8 @@ import org.springframework.beans.factory.annotation.Required;
 public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromGraveyardBehavior.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(PlayCardFromGraveyardBehavior.class);
 
 	@SpringBean
 	private PersistenceService persistenceService;
@@ -122,12 +124,20 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("url", this.getCallbackUrl());
 		variables.put("side", this.side);
 
-		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
+		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/playCard/playCardFromGraveyard.js");
-		template1.interpolate(variables);
+		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template1.asString(),
-				"playCardFromGraveyard"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "playCardFromGraveyard"));
+		try
+		{
+			template.close();
+		}
+		catch (final IOException e)
+		{
+			PlayCardFromGraveyardBehavior.LOGGER.error(
+					"unable to close template in PlayCardFromGraveyardBehavior#renderHead()!", e);
+		}
 	}
 
 	@Required

@@ -172,7 +172,6 @@ public class DataGenerator implements InitializingBean
 			{
 				for (int i = 0; i < 60; i++)
 				{
-
 					final CollectibleCard c = new CollectibleCard();
 					c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
 					c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2

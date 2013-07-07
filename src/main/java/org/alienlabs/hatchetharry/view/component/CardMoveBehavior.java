@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -145,17 +146,35 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior
-		final TextTemplate template6 = new PackageTextTemplate(HomePage.class,
+		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/cardMove.js");
-		template6.interpolate(variables);
-		js = js.append("\n" + template6.asString());
+		template1.interpolate(variables);
+		js = js.append("\n" + template1.asString());
 
-		final TextTemplate template8 = new PackageTextTemplate(HomePage.class,
+		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/initDrag.js");
-		template8.interpolate(variables);
-		js = js.append("\n" + template8.asString());
+		template2.interpolate(variables);
+		js = js.append("\n" + template2.asString());
 
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
+		try
+		{
+			template1.close();
+		}
+		catch (final IOException e)
+		{
+			CardMoveBehavior.LOGGER.error(
+					"unable to close template1 in CardMoveBehavior#renderHead()!", e);
+		}
+		try
+		{
+			template2.close();
+		}
+		catch (final IOException e)
+		{
+			CardMoveBehavior.LOGGER.error(
+					"unable to close template2 in CardMoveBehavior#renderHead()!", e);
+		}
 	}
 
 	@Required

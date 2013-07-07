@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -153,12 +154,21 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("clicked", this.currentCard);
 		variables.put("side", this.side);
 
-		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
+		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/playCard/playCard.js");
-		template1.interpolate(variables);
+		template.interpolate(variables);
 
 		PlayCardFromHandBehavior.LOGGER.info("### clicked: " + this.currentCard);
-		response.render(JavaScriptHeaderItem.forScript(template1.asString(), "playCardFromHand"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "playCardFromHand"));
+		try
+		{
+			template.close();
+		}
+		catch (final IOException e)
+		{
+			PlayCardFromHandBehavior.LOGGER.error(
+					"unable to close template in PlayCardFromHandBehavior#renderHead()!", e);
+		}
 	}
 
 	@Required

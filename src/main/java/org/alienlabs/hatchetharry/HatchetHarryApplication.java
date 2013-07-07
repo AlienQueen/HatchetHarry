@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -372,6 +373,15 @@ public class HatchetHarryApplication extends WebApplication
 			final FileResourceStream fileResourceStream = new FileResourceStream(file);
 			final ResourceStreamResource resource = new ResourceStreamResource(fileResourceStream);
 			resource.respond(attributes);
+			try
+			{
+				fileResourceStream.close();
+			}
+			catch (final IOException e)
+			{
+				HatchetHarryApplication.LOGGER.error(
+						"unable to close FileResourceStream in FolderContentResource!", e);
+			}
 		}
 	}
 

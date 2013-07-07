@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +99,15 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		try
+		{
+			template.close();
+		}
+		catch (final IOException e)
+		{
+			CardRotateBehavior.LOGGER.error(
+					"unable to close template in CardRotateBehavior#renderHead()!", e);
+		}
 	}
 
 	@Required
