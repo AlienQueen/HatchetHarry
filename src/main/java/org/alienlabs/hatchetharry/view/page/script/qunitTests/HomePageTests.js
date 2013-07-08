@@ -62,6 +62,6 @@ jQuery(function() {
 									after = jQuery("#clock").text();
 									ok((before !== after), "the clock should tick");
 									start();
-								}, 6000);
+								}, 4000);
 							});
 });

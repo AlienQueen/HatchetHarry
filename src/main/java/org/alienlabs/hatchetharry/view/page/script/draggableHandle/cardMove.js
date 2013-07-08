@@ -16,4 +16,4 @@ window.setTimeout(function() {
 						}
 					}
 			);
-}, 1000);
+}, 500);
