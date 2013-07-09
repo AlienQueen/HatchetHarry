@@ -717,7 +717,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("untap and draw");
-				target.appendJavaScript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 500);");
+				target.appendJavaScript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 250);");
 			}
 
 		};
@@ -1648,7 +1648,7 @@ public class HomePage extends TestReportPage
 				+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
 				+ "').attr('style', 'display: none'); }); ");
 		buf.append("jQuery('#cardTooltip" + uuidValidForJs + "').attr('style', 'display: block'); ");
-		buf.append("}, 1500); ");
+		buf.append("}, 500); ");
 		target.appendJavaScript(buf.toString());
 
 		switch (event.getAction())
