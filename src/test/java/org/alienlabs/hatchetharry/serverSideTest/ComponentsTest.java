@@ -7,8 +7,10 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
+import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.PutToGraveyardFromBattlefieldBehavior;
+import org.alienlabs.hatchetharry.view.component.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -51,17 +53,38 @@ public class ComponentsTest extends SpringContextLoaderBaseTest
 		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
-		final List<MagicCard> allCardsInGraveyard = persistenceService
+		List<MagicCard> allCardsInGraveyard = persistenceService
 				.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertEquals(1, allCardsInGraveyard.size());
 
 		// Now, put it back in play
-
+		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior)SpringContextLoaderBaseTest.tester
+				.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop")
+				.getBehaviorById(0);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+				allCardsInGraveyard.get(0).getUuid());
+		SpringContextLoaderBaseTest.tester.executeBehavior(pcfgb);
 		// Verify
+		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+
+		allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(gameId);
+		Assert.assertEquals(0, allCardsInGraveyard.size());
 
 		// Put it back to hand
+		final PutToHandFromBattlefieldBehavior pthfbb = card.getPutToHandFromBattlefieldBehavior();
+		// SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		// allCardsInGraveyard.get(0).getUuid());
+		SpringContextLoaderBaseTest.tester.executeBehavior(pthfbb);
 
 		// Verify
+		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		Assert.assertEquals(0, allCardsInBattlefield.size());
+
+		final List<MagicCard> allCardsInHand = persistenceService
+				.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
+						.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+		Assert.assertEquals(7, allCardsInHand.size());
 	}
 
 	@Test
