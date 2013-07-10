@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.serverSideTest;
+package org.alienlabs.hatchetharry.service;
 
 import java.io.File;
 import java.io.FileInputStream;

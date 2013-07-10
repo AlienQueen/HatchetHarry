@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.serverSideTest;
+package org.alienlabs.hatchetharry.view.page;
 
 import java.util.List;
 

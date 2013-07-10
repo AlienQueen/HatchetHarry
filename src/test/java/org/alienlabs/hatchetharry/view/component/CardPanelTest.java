@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.serverSideTest;
+package org.alienlabs.hatchetharry.view.component;
 
 import java.util.List;
 
@@ -19,13 +19,13 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class ComponentsTest extends SpringContextLoaderBaseTest
+public class CardPanelTest extends SpringContextLoaderBaseTest
 {
 	@Test
 	public void testCardPanel()
 	{
 		// Start a game and play a card
-		ComponentsTest.startAGameAndPlayACard();
+		CardPanelTest.startAGameAndPlayACard();
 
 		// We should have one card in the battlefield
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
