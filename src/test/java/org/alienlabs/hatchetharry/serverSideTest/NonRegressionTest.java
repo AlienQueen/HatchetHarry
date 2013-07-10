@@ -9,6 +9,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.serverSideTest.util.EventBusMock;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.CardRotateBehavior;
@@ -84,7 +85,7 @@ public class NonRegressionTest
 	 */
 	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped()
 	{
-		this.startAGameAndPlayACard();
+		SpringContextLoaderBaseTest.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		final PersistenceService persistenceService = NonRegressionTest.context
 				.getBean(PersistenceService.class);
@@ -168,7 +169,7 @@ public class NonRegressionTest
 	@Test
 	public void whenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
 	{
-		this.startAGameAndPlayACard();
+		SpringContextLoaderBaseTest.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		final PersistenceService persistenceService = NonRegressionTest.context
 				.getBean(PersistenceService.class);
@@ -180,7 +181,7 @@ public class NonRegressionTest
 	@Test
 	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
 	{
-		this.startAGameAndPlayACard();
+		SpringContextLoaderBaseTest.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		final PersistenceService persistenceService = NonRegressionTest.context
 				.getBean(PersistenceService.class);
@@ -206,7 +207,7 @@ public class NonRegressionTest
 	@Test
 	public void itIsPossibleToAddACounterToACard()
 	{
-		this.startAGameAndPlayACard();
+		SpringContextLoaderBaseTest.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		final PersistenceService persistenceService = NonRegressionTest.context
 				.getBean(PersistenceService.class);
@@ -273,41 +274,6 @@ public class NonRegressionTest
 				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton:form:cardTooltip:counters:0:numberOfCounters");
 		Assert.assertNotNull(numberOfCountersLabel);
 		Assert.assertEquals(1l, numberOfCountersLabel.getDefaultModelObject());
-	}
-
-	private void startAGameAndPlayACard()
-	{
-		// Create game
-		this.tester.assertComponent("createGameLink", AjaxLink.class);
-		this.tester.clickLink("createGameLink", true);
-
-		final FormTester createGameForm = this.tester
-				.newFormTester("createGameWindow:content:form");
-		createGameForm.setValue("name", "Zala");
-		createGameForm.setValue("sideInput", "0");
-		createGameForm.setValue("deckParent:decks", "0");
-		createGameForm.submit();
-
-		// Retrieve PlayCardFromHandBehavior
-		this.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		this.tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
-				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
-
-		// For the moment, we should have no card in the battlefield
-		final Long gameId = HatchetHarrySession.get().getGameId();
-		final PersistenceService persistenceService = NonRegressionTest.context
-				.getBean(PersistenceService.class);
-		final List<MagicCard> allCardsInBattlefield = persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
-		Assert.assertEquals(0, allCardsInBattlefield.size());
-
-		// Play a card
-		this.tester.getRequest().setParameter("card",
-				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		this.tester.executeBehavior(pcfhb);
 	}
 
 }
