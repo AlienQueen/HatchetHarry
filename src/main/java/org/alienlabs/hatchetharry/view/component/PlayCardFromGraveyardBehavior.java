@@ -93,6 +93,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateAllMagicCards(graveyard);
 		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+
 		this.persistenceService.updateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
