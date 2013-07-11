@@ -1,15 +1,19 @@
 package org.alienlabs.hatchetharry.view.page;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.ExternalImage;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
-import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -70,6 +74,11 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	@Test
 	public void testRenderMenuBar()
 	{
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+				.getLastResponse().getDocument();
+
 		// Assert menubar
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(
 				SpringContextLoaderBaseTest.pageDocument, "class", "fNiv", false);
@@ -230,8 +239,9 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertInvisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
+		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage(linkToActivateWindow);
+		.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(aboutLink);
 		SpringContextLoaderBaseTest.tester.clickLink(linkToActivateWindow, true);
 		SpringContextLoaderBaseTest.tester.assertVisible(window.getPageRelativePath() + ":"
@@ -268,6 +278,74 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 				WebMarkupContainer.class);
 		SpringContextLoaderBaseTest.tester.assertComponent("endTurnPlaceholder:endTurnLink",
 				AjaxLink.class);
+	}
+
+	/**
+	 * When drawing a card, it should appear at the left of the hand thumb list,
+	 * hence be visible in the hand component
+	 * @throws Exception
+	 */
+	@Test
+	public void testGenerateDrawCardLink()
+	{
+		SpringContextLoaderBaseTest.startAGameAndPlayACard(SpringContextLoaderBaseTest.tester, SpringContextLoaderBaseTest.context);
+
+		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context.getBean(PersistenceService.class);
+		final HatchetHarrySession session = HatchetHarrySession.get();
+		assertTrue(persistenceService.getAllCardsInLibraryForDeckAndPlayer(session.getGameId(), session.getPlayer().getId(), session.getPlayer().getDeck().getDeckId()).size() > 0);
+		// assert hand is present
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
+
+		// assert presence of a thumbnail
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+				.getLastResponse().getDocument();
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(
+				SpringContextLoaderBaseTest.pageDocument, "class", "nav-thumb", false);
+		Assert.assertNotNull(tagTester);
+
+		// assert number of thumbnails
+		Assert.assertEquals(6, tagTester.size());
+
+		// assert id of thumbnails
+		Assert.assertNotNull(tagTester.get(0).getAttribute("id"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("id").contains("placeholder"));
+
+		final String firstCardIdBeforeDraw = tagTester.get(0).getAttribute("id");
+
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+				.getLastResponse().getDocument();
+
+		// Draw a card
+		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
+		@SuppressWarnings("unchecked")
+		final AjaxLink<String> drawCardLink = (AjaxLink<String>)SpringContextLoaderBaseTest.tester.getComponentFromLastRenderedPage("drawCardLink");
+		SpringContextLoaderBaseTest.tester.executeAjaxEvent(drawCardLink, "onclick");
+
+		// assert presence of a thumbnail
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+				.getLastResponse().getDocument();
+		tagTester = TagTester.createTagsByAttribute(
+				SpringContextLoaderBaseTest.pageDocument, "class", "nav-thumb", false);
+		Assert.assertNotNull(tagTester);
+
+		// assert number of thumbnails
+		Assert.assertEquals(7, tagTester.size());
+
+		// assert id of thumbnails
+		Assert.assertNotNull(tagTester.get(0).getAttribute("id"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("id").contains("placeholder"));
+
+		// Drawing card successful?
+		final String firstCardIdAfterDraw = tagTester.get(0).getAttribute("id");
+		assertFalse("The first thumb of the hand component has not changed!", firstCardIdBeforeDraw.equals(firstCardIdAfterDraw));
+
+		Assert.assertNotNull(tagTester.get(1).getAttribute("id"));
+		Assert.assertTrue(tagTester.get(1).getAttribute("id").contains("placeholder"));
+		final String secondCardIdAfterDraw = tagTester.get(1).getAttribute("id");
+		assertTrue(firstCardIdBeforeDraw.equals(secondCardIdAfterDraw));
 	}
 
 }
