@@ -109,7 +109,7 @@ public class PersistenceService implements Serializable
 	{
 		for (final MagicCard card : allMagicCards)
 		{
-			this.magicCardDao.getSession().merge(card);
+			this.magicCardDao.getSession().update(card);
 		}
 	}
 
@@ -841,6 +841,7 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("delete from Game_Side").executeUpdate();
 		session.createSQLQuery("delete from Game").executeUpdate();
 		session.createSQLQuery("delete from Side").executeUpdate();
+		session.createSQLQuery("delete from MagicCard__cardPlaceholderId").executeUpdate();
 		session.createSQLQuery("delete from Counter").executeUpdate();
 		session.createSQLQuery("delete from MagicCard").executeUpdate();
 		session.createSQLQuery("delete from Deck").executeUpdate();

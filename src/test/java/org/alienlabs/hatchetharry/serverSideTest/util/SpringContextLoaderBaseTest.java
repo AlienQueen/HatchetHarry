@@ -9,7 +9,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
@@ -42,8 +41,8 @@ public class SpringContextLoaderBaseTest
 			{
 				SpringContextLoaderBaseTest.context = SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners()
-				.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
-						true));
+						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
+								true));
 				this.eventBus = new EventBusMock(this);
 			}
 		};
@@ -77,8 +76,7 @@ public class SpringContextLoaderBaseTest
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "0");
 		createGameForm.setValue("deckParent:decks", "0");
-		final IndicatingAjaxButton submitButton = (IndicatingAjaxButton)_tester.getComponentFromLastRenderedPage("createGameWindow:content:form:submit");
-		_tester.executeAjaxEvent(submitButton, "onclick");
+		createGameForm.submit();
 
 		// Retrieve PlayCardFromHandBehavior
 		_tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
@@ -91,7 +89,7 @@ public class SpringContextLoaderBaseTest
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = _context.getBean(PersistenceService.class);
-		List<MagicCard> allCardsInBattlefield = persistenceService
+		final List<MagicCard> allCardsInBattlefield = persistenceService
 				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
@@ -99,10 +97,6 @@ public class SpringContextLoaderBaseTest
 		_tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		_tester.executeBehavior(pcfhb);
-		
-		allCardsInBattlefield = persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
-		Assert.assertEquals(1, allCardsInBattlefield.size());
 	}
 
 

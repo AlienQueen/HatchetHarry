@@ -217,7 +217,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Thursday, 11th of July 2013.");
+		final Label message2 = new Label("message2", "built on Sunday, 7th of July 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -890,7 +890,7 @@ public class HomePage extends TestReportPage
 	private void generateDrawCardLink()
 	{
 		final AjaxLink<String> drawCardLink = new AjaxLink<String>("drawCardLink")
-				{
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -911,17 +911,23 @@ public class HomePage extends TestReportPage
 					HomePage.this.persistenceService.saveDeck(_deck);
 
 					card.setZone(CardZone.HAND);
+					HomePage.this.persistenceService.updateCard(card);
 
 					final ArrayList<MagicCard> list = HomePage.this.session.getFirstCardsInHand();
-					list.add(0, card);
+					list.add(card);
 					HomePage.this.session.setFirstCardsInHand(list);
+
+					JavaScriptUtils.updateHand(target);
 
 					final Player me = HomePage.this.session.getPlayer();
 					final Long gameId = HomePage.this.persistenceService
 							.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
 					final Deck d = me.getDeck();
-					final List<MagicCard> _hand = d.reorderMagicCards(list);
+					final List<MagicCard> _hand = d
+							.reorderMagicCards(HomePage.this.persistenceService
+									.getAllCardsInHandForAGameAndAPlayer(gameId, me.getId(),
+											d.getDeckId()));
 					HomePage.this.persistenceService.updateAllMagicCards(_hand);
 					final List<MagicCard> library = d
 							.reorderMagicCards(HomePage.this.persistenceService
@@ -932,8 +938,6 @@ public class HomePage extends TestReportPage
 					final Game game = HomePage.this.persistenceService.getGame(gameId);
 					game.setAcceptEndOfTurnPending(false);
 					HomePage.this.persistenceService.updateGame(game);
-
-					JavaScriptUtils.updateHand(target);
 
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
@@ -952,11 +956,11 @@ public class HomePage extends TestReportPage
 						{
 							HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 						}
-						catch (final NullPointerException ex) // TODO thanks to the mock, it doesn't throw anymore
+						catch (final NullPointerException ex)
 						{
 							// NPE in unit tests
 							HomePage.LOGGER
-							.error("exception thrown while posting in event bus", ex);
+									.error("exception thrown while posting in event bus", ex);
 						}
 
 						final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
@@ -964,11 +968,11 @@ public class HomePage extends TestReportPage
 						{
 							HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
 						}
-						catch (final NullPointerException ex) // TODO thanks to the mock, it doesn't throw anymore
+						catch (final NullPointerException ex)
 						{
 							// NPE in unit tests
 							HomePage.LOGGER
-							.error("exception thrown while posting in event bus", ex);
+									.error("exception thrown while posting in event bus", ex);
 						}
 					}
 				}
@@ -990,14 +994,13 @@ public class HomePage extends TestReportPage
 				}
 
 			}
-				};
+		};
 
-				drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
-				this.add(drawCardLink);
+		drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
+		this.add(drawCardLink);
 
 
 	}
-
 
 	private void createCardPanelPlaceholders()
 	{

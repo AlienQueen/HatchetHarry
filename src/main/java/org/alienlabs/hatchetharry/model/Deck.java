@@ -4,7 +4,7 @@
  * The MagicCard objects are duplicated too, since they represent the state of a particular card in the Deck, and they are instantiated using the
  * CollectibleCard object, which itself only represents the list of cards in a DeckArchive, without any game-related information.
  * 
- * @see: MagicCard
+ * @see: MagicCard 
  * @see: DeckArchive
  * @See: CollectibleCard
  */
@@ -85,8 +85,8 @@ public class Deck implements Serializable
 
 		for (int i = 0; i < _cards.size(); i++)
 		{
-			_cards.get(i).setZoneOrder((long)i);
 			orderedCards.add(_cards.get(i));
+			orderedCards.get(i).setZoneOrder((long)i);
 		}
 
 		return orderedCards;
