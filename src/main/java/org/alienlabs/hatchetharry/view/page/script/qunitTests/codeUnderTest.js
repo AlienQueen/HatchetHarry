@@ -99,7 +99,7 @@ jQuery(function() {
 				jQuery('.categories').hide();
 			}
 		});
-	}, 20000);
+	}, 4000);
 });
 
 // The tooltips

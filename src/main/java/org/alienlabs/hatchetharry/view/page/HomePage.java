@@ -217,7 +217,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.3.0 (release Water Mirror),");
-		final Label message2 = new Label("message2", "built on Sunday, 7th of July 2013.");
+		final Label message2 = new Label("message2", "built on Saturday, 13th of July 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1637,8 +1637,7 @@ public class HomePage extends TestReportPage
 		target.add(event.getCardHandle());
 
 		final String uuidValidForJs = event.getUuid().toString().replace("-", "_");
-		final StringBuffer buf = new StringBuffer("window.setTimeout(function() { ");
-		buf.append("jQuery('#card" + uuidValidForJs
+		final StringBuffer buf = new StringBuffer("jQuery('#card" + uuidValidForJs
 				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
 				+ "').attr('style', 'display: block'); }); ");
 		buf.append("jQuery('#cardTooltip" + uuidValidForJs
@@ -1648,7 +1647,6 @@ public class HomePage extends TestReportPage
 				+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
 				+ "').attr('style', 'display: none'); }); ");
 		buf.append("jQuery('#cardTooltip" + uuidValidForJs + "').attr('style', 'display: block'); ");
-		buf.append("}, 500); ");
 		target.appendJavaScript(buf.toString());
 
 		switch (event.getAction())
