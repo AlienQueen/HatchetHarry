@@ -1,1 +1,5 @@
-jQuery("#tapHandleImage${uuidValidForJs}").data("tapUrl","${url}");
+jQuery(function() { 
+	window.setTimeout(function() {
+		jQuery("#tapHandleImage${uuidValidForJs}").data("tapUrl","${url}");
+	}, 125);
+});

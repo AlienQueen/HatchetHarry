@@ -1637,7 +1637,8 @@ public class HomePage extends TestReportPage
 		target.add(event.getCardHandle());
 
 		final String uuidValidForJs = event.getUuid().toString().replace("-", "_");
-		final StringBuffer buf = new StringBuffer("jQuery('#card" + uuidValidForJs
+		final StringBuffer buf = new StringBuffer("window.setTimeout(function() { ");
+		buf.append("jQuery('#card" + uuidValidForJs
 				+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
 				+ "').attr('style', 'display: block'); }); ");
 		buf.append("jQuery('#cardTooltip" + uuidValidForJs
@@ -1647,6 +1648,7 @@ public class HomePage extends TestReportPage
 				+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
 				+ "').attr('style', 'display: none'); }); ");
 		buf.append("jQuery('#cardTooltip" + uuidValidForJs + "').attr('style', 'display: block'); ");
+		buf.append("}, 125); ");
 		target.appendJavaScript(buf.toString());
 
 		switch (event.getAction())
