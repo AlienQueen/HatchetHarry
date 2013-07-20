@@ -109,7 +109,7 @@ public class PersistenceService implements Serializable
 	{
 		for (final MagicCard card : allMagicCards)
 		{
-			this.magicCardDao.getSession().update(card);
+			this.magicCardDao.getSession().saveOrUpdate(card);
 		}
 	}
 
