@@ -92,6 +92,29 @@ public class Deck implements Serializable
 		return orderedCards;
 	}
 
+	/**
+	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone and
+	 * increment it, the goal being to be able to put a MagicCard in front of
+	 * the list.
+	 * 
+	 * @param _cards
+	 *            all cards of a player in a certain zone
+	 * @return the same cards, in the same order, in the same zone but with
+	 *         zoneOrder reorder without any gap, and incremented
+	 */
+	public ArrayList<MagicCard> reorderAndIncrementMagicCards(final List<MagicCard> _cards)
+	{
+		final ArrayList<MagicCard> orderedCards = new ArrayList<MagicCard>(_cards.size() + 1);
+
+		for (int i = 0; i < _cards.size(); i++)
+		{
+			orderedCards.add(i, _cards.get(i));
+			orderedCards.get(i).setZoneOrder((long)i + 1);
+		}
+
+		return orderedCards;
+	}
+
 	public Long getPlayerId()
 	{
 		return this.playerId;

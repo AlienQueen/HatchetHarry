@@ -306,6 +306,13 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public Deck saveDeckOrUpdate(final Deck d)
+	{
+		this.deckDao.getSession().saveOrUpdate(d);
+		return d;
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public Side saveSide(final Side s)
 	{
 		this.sideDao.getSession().save(s);
@@ -387,7 +394,7 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public Deck getDeck(final long deckId)
 	{
-		final Session session = this.magicCardDao.getSession();
+		final Session session = this.deckDao.getSession();
 
 		final Query query = session.createQuery("from Deck deck0_ where deck0_.deckId=?");
 		query.setLong(0, deckId);
@@ -398,7 +405,7 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public Deck getDeckByDeckArchiveIdAndPlayerId(final long deckArchiveId, final long playerId)
 	{
-		final Session session = this.magicCardDao.getSession();
+		final Session session = this.deckDao.getSession();
 
 		final Query query = session
 				.createQuery("from Deck d where d.deckArchive=? and d.playerId=?");
@@ -841,7 +848,6 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("delete from Game_Side").executeUpdate();
 		session.createSQLQuery("delete from Game").executeUpdate();
 		session.createSQLQuery("delete from Side").executeUpdate();
-		session.createSQLQuery("delete from MagicCard__cardPlaceholderId").executeUpdate();
 		session.createSQLQuery("delete from Counter").executeUpdate();
 		session.createSQLQuery("delete from MagicCard").executeUpdate();
 		session.createSQLQuery("delete from Deck").executeUpdate();

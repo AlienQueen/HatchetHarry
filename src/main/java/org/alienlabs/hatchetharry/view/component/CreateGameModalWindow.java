@@ -158,13 +158,14 @@ public class CreateGameModalWindow extends Panel
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
 				deck.setDeckArchive(CreateGameModalWindow.this.decks.getModelObject()
 						.getDeckArchive());
+				CreateGameModalWindow.this.persistenceService.saveDeck(deck);
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = CreateGameModalWindow.this.persistenceService
 						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
 				CreateGameModalWindow.LOGGER.error("allCollectibleCardsInDeckArchive.size(): "
 						+ allCollectibleCardsInDeckArchive.size());
 
-				final List<MagicCard> allMagicCard = new ArrayList<MagicCard>();
+				final List<MagicCard> allMagicCards = new ArrayList<MagicCard>();
 
 				for (final CollectibleCard cc : allCollectibleCardsInDeckArchive)
 				{
@@ -175,15 +176,16 @@ public class CreateGameModalWindow extends Panel
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
 					card.setZone(CardZone.LIBRARY);
-					allMagicCard.add(card);
+					allMagicCards.add(card);
 				}
+				CreateGameModalWindow.this.persistenceService.updateAllMagicCards(allMagicCards);
+				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
 
-				CreateGameModalWindow.LOGGER.error("allMagicCard.size(): " + allMagicCard.size());
-				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCard)));
+				CreateGameModalWindow.LOGGER.error("allMagicCard.size(): " + allMagicCards.size());
+				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCards)));
 
 				CreateGameModalWindow.LOGGER.error("deck.getCards().size(): "
 						+ deck.getCards().size());
-				CreateGameModalWindow.this.persistenceService.saveDeck(deck);
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
@@ -194,6 +196,7 @@ public class CreateGameModalWindow extends Panel
 				{
 					final MagicCard aCard = deck.getCards().get(i);
 					aCard.setZone(CardZone.HAND);
+					aCard.setZoneOrder((long)i);
 					CreateGameModalWindow.this.persistenceService.updateCard(aCard);
 					firstCards.add(aCard);
 				}

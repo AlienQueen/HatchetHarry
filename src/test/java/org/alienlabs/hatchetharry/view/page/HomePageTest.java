@@ -312,19 +312,22 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 
 		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
 				.getLastResponse().getDocument();
+		System.out.println(SpringContextLoaderBaseTest.pageDocument);
 
 		// Draw a card
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		@SuppressWarnings("unchecked")
 		final AjaxLink<String> drawCardLink = (AjaxLink<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("drawCardLink");
 		SpringContextLoaderBaseTest.tester.executeAjaxEvent(drawCardLink, "onclick");
 
 		// assert presence of a thumbnail
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
 				HandComponent.class);
 		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
 				.getLastResponse().getDocument();
+		System.out.println(SpringContextLoaderBaseTest.pageDocument);
 		tagTester = TagTester.createTagsByAttribute(SpringContextLoaderBaseTest.pageDocument,
 				"class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
