@@ -48,7 +48,6 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final String uniqueid = this.uuid.toString();
 		MagicCard mc = null;
 
-		Date beginDate = new Date();
 		try
 		{
 			mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
@@ -57,9 +56,6 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		{
 			PutToGraveyardFromBattlefieldBehavior.LOGGER.error("error parsing UUID of card", e);
 		}
-		Date endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("getCardFromUuid: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
 		if (null == mc)
 		{
@@ -72,54 +68,25 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 
 		mc.setZone(CardZone.GRAVEYARD);
 		mc.setTapped(false);
-		beginDate = new Date();
 		this.persistenceService.updateCard(mc);
-		endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("updateCard: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
-
 
 		final Long gameId = session.getPlayer().getGame().getId();
 
-		beginDate = new Date();
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
-		endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("getPlayer: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
 		final Deck d = p.getDeck();
-		beginDate = new Date();
 		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("reorderMagicCards graveyard: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
-		beginDate = new Date();
 		this.persistenceService.updateAllMagicCards(graveyard);
-		endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("updateAllMagicCards graveyard: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
-		beginDate = new Date();
 		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("reorderMagicCards battlefield: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
-		beginDate = new Date();
 		this.persistenceService.updateAllMagicCards(battlefield);
-		endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("reorderMagicCards battlefield: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
-		beginDate = new Date();
 		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
-		endDate = new Date();
-		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("giveAllPlayersFromGame: "
-				+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
@@ -128,12 +95,8 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 			final String _pageUuid = HatchetHarryApplication.getCometResources().get(
 					playerToWhomToSend);
 
-			beginDate = new Date();
 			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
 					.getPlayerId());
-			endDate = new Date();
-			PutToGraveyardFromBattlefieldBehavior.LOGGER.info("getPlayer: "
-					+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
 			final String targetPlayerName = targetPlayer.getName();
 			final Long targetDeckId = mc.getDeck().getDeckId();
@@ -141,14 +104,9 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
 				targetPlayer.setGraveyardDisplayed(true);
-				beginDate = new Date();
 				this.persistenceService.updatePlayer(targetPlayer);
-				endDate = new Date();
-				PutToGraveyardFromBattlefieldBehavior.LOGGER.info("updatePlayer: "
-						+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 			}
 
-			beginDate = new Date();
 			final PutToGraveyardCometChannel _ptgcc = new PutToGraveyardCometChannel(gameId, mc,
 					session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
 					targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
@@ -157,16 +115,9 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 					NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId, session
 							.getPlayer().getId(), session.getPlayer().getName(), "", "",
 					mc.getTitle(), null, targetPlayerName);
-			endDate = new Date();
-			PutToGraveyardFromBattlefieldBehavior.LOGGER.info("build comet channel: "
-					+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 
-			beginDate = new Date();
 			HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
 			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
-			endDate = new Date();
-			PutToGraveyardFromBattlefieldBehavior.LOGGER.info("post: "
-					+ Long.toString(endDate.getTime() - beginDate.getTime()) + "msec");
 		}
 	}
 

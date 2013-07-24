@@ -234,6 +234,7 @@ public class DataGenerator implements InitializingBean
 				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 				final Deck fake = new Deck();
 				fake.setPlayerId(-1l);
+                fake.setDeckArchive(deckArchive1);
 				card.setDeck(fake);
 				card.setGameId(-1l);
 				card.setZone(CardZone.BATTLEFIELD);
