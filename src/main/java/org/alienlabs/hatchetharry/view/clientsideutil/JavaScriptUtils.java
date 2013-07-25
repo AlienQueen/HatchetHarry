@@ -118,6 +118,7 @@ public final class JavaScriptUtils
 
 		buf.append("', drop: function(event, ui) { ");
 		buf.append("shouldMove = false; ");
+        buf.append("jQuery('#' + ui.draggable.context.id).hide(); ");
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
@@ -142,6 +143,7 @@ public final class JavaScriptUtils
 
 		buf.append("', drop: function(event, ui) { ");
 		buf.append("shouldMove = false; ");
+        buf.append("jQuery('#' + ui.draggable.context.id).hide(); ");
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 

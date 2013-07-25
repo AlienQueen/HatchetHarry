@@ -66,7 +66,7 @@ public class PersistenceService implements Serializable
 	{
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public MagicCard getNthCardOfGame(final Long index)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -119,7 +119,7 @@ public class PersistenceService implements Serializable
 		this.magicCardDao.getSession().update(c);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public MagicCard getCardFromUuid(final UUID uuid)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -137,7 +137,7 @@ public class PersistenceService implements Serializable
 		return c;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public Token getTokenFromUuid(final UUID uuid)
 	{
 		final Session session = this.tokenDao.getSession();
@@ -154,7 +154,7 @@ public class PersistenceService implements Serializable
 		return t;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<MagicCard> getFirstHand(final long gameId)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -169,7 +169,7 @@ public class PersistenceService implements Serializable
 		return cards;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public Player getFirstPlayer()
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -209,7 +209,7 @@ public class PersistenceService implements Serializable
 		this.gameDao.getSession().update(g);
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public int countPlayers(final long l)
 	{
 		final Session session = this.playerDao.getSession();
@@ -220,7 +220,7 @@ public class PersistenceService implements Serializable
 		return query.list().size();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public int countDeckArchives()
 	{
 		final Session session = this.deckArchiveDao.getSession();
@@ -230,7 +230,7 @@ public class PersistenceService implements Serializable
 		return query.list().size();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public int countCollectibleCards()
 	{
 		final Session session = this.collectibleCardDao.getSession();
@@ -240,7 +240,7 @@ public class PersistenceService implements Serializable
 		return query.list().size();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public int countCollectibleCardsInDeckArchive(final DeckArchive deckArchive)
 	{
 		final Session session = this.collectibleCardDao.getSession();
@@ -252,7 +252,7 @@ public class PersistenceService implements Serializable
 		return query.list().size();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<CollectibleCard> giveAllCollectibleCardsInDeckArchive(final DeckArchive deckArchive)
 	{
 		final Session session = this.collectibleCardDao.getSession();
@@ -264,7 +264,7 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public int countMagicCards()
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -274,7 +274,7 @@ public class PersistenceService implements Serializable
 		return query.list().size();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public int countDecks()
 	{
 		final Session session = this.deckDao.getSession();
@@ -295,7 +295,7 @@ public class PersistenceService implements Serializable
 	public void saveOrUpdateDeck(final Deck d)
 	{
 		final Session session = this.deckDao.getSession();
-		session.saveOrUpdate(d);
+		session.merge(d);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
@@ -328,13 +328,13 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public Player getPlayer(final Long l)
 	{
 		return this.playerDao.load(l);
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public boolean getPlayerByGame(final long l)
 	{
 		final Session session = this.playerDao.getSession();
@@ -345,7 +345,7 @@ public class PersistenceService implements Serializable
 		return query.list().size() > 0;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Player> getAllPlayersOfGame(final long l)
 	{
 		final Session session = this.playerDao.getSession();
@@ -357,7 +357,7 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public DeckArchive getDeckArchiveByName(final String name)
 	{
 		final Session session = this.deckDao.getSession();
@@ -369,7 +369,7 @@ public class PersistenceService implements Serializable
 		return (DeckArchive)query.uniqueResult();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public boolean getPlayerByJsessionId(final String jsessionid)
 	{
 		final Session session = this.playerDao.getSession();
@@ -380,7 +380,7 @@ public class PersistenceService implements Serializable
 		return query.list().size() > 0;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public boolean doesCollectibleCardAlreadyExistsInDb(final String title)
 	{
 		final Session session = this.collectibleCardDao.getSession();
@@ -391,7 +391,7 @@ public class PersistenceService implements Serializable
 		return ((list != null) && (list.size() > 0));
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public Deck getDeck(final long deckId)
 	{
 		final Session session = this.deckDao.getSession();
@@ -402,7 +402,7 @@ public class PersistenceService implements Serializable
 		return (Deck)query.uniqueResult();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public Deck getDeckByDeckArchiveIdAndPlayerId(final long deckArchiveId, final long playerId)
 	{
 		final Session session = this.deckDao.getSession();
@@ -415,7 +415,7 @@ public class PersistenceService implements Serializable
 		return (Deck)query.uniqueResult();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public List<MagicCard> getAllCardsFromDeck(final long l)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -435,7 +435,7 @@ public class PersistenceService implements Serializable
 		return list;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public List<MagicCard> getAllCardsInLibraryForDeckAndPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
@@ -471,6 +471,7 @@ public class PersistenceService implements Serializable
 	public DeckArchive saveDeckArchive(final DeckArchive da)
 	{
 		final Session session = this.deckArchiveDao.getSession();
+/*
 
 		final SQLQuery query = session
 				.createSQLQuery("select * from DeckArchive where deckName = ?");
@@ -484,15 +485,18 @@ public class PersistenceService implements Serializable
 		{
 			return this.getDeckArchiveByName(da.getDeckName());
 		}
+*/
 
 		session.save(da);
 		return da;
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateDeckArchive(final DeckArchive da)
+	public DeckArchive updateDeckArchive(final DeckArchive da)
 	{
-		this.deckArchiveDao.getSession().update(da);
+		final Session session = this.deckArchiveDao.getSession();
+		session.merge(da);
+		return da;
 	}
 
 	@Required
@@ -549,7 +553,7 @@ public class PersistenceService implements Serializable
 		this.tokenDao = _tokenDao;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<?> getCardsByDeckId(final long gameId)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -560,7 +564,7 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Deck> getAllDecks()
 	{
 		final Session session = this.deckDao.getSession();
@@ -569,7 +573,7 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<DeckArchive> getAllDeckArchives()
 	{
 		final Session session = this.deckDao.getSession();
@@ -578,7 +582,7 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Deck> getAllDecksFromDeckArchives()
 	{
 		final Session session = this.deckDao.getSession();
@@ -604,7 +608,7 @@ public class PersistenceService implements Serializable
 		return game;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public MagicCard findCardByName(final String _name)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -624,7 +628,7 @@ public class PersistenceService implements Serializable
 
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly=true)
 	public CollectibleCard findCollectibleCardByName(final String title)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -643,7 +647,7 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public Game getGame(final Long _id)
 	{
 		return this.gameDao.load(_id);
@@ -655,7 +659,7 @@ public class PersistenceService implements Serializable
 		this.magicCardDao.delete(mc.getId());
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
@@ -681,7 +685,7 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<MagicCard> getAllCardsInBattleFieldForAGame(final Long gameId)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -704,7 +708,7 @@ public class PersistenceService implements Serializable
 	}
 
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
@@ -731,7 +735,7 @@ public class PersistenceService implements Serializable
 	}
 
 	// TODO remove this
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<MagicCard> getAllCardsInGraveyardForAGame(final Long gameId)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -753,7 +757,7 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<MagicCard> getAllCardsInGraveyardForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
@@ -779,7 +783,7 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Side> getSidesFromGame(final Game game)
 	{
 		final Session session = this.sideDao.getSession();
@@ -790,7 +794,7 @@ public class PersistenceService implements Serializable
 		return s;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<BigInteger> giveAllPlayersFromGameExceptMe(final Long gameId, final Long me)
 	{
 		final Session session = this.gameDao.getSession();
@@ -805,7 +809,7 @@ public class PersistenceService implements Serializable
 		return l;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<BigInteger> giveAllPlayersFromGame(final Long gameId)
 	{
 		final Session session = this.gameDao.getSession();
@@ -856,7 +860,7 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("delete from Card_Counter").executeUpdate();
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public int getNumberOfCardsInACertainZoneForAGameAndADeck(final CardZone zone,
 			final Long gameId, final Long deckId)
 	{
