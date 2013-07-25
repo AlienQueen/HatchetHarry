@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="53d66d2c-c1ab-4ba4-a372-63c0f71212f3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hatchetharry.iws" afterPath="$PROJECT_DIR$/hatchetharry.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" afterPath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" />
     </list>
     <ignored path="hatchetharry.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1406,7 +1404,11 @@
       <created>1374753426598</created>
       <updated>1374753426598</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="- FIXED performance problems thanks to DeckArchive not generating loads of MagicCard anymore">
+      <created>1374763926875</created>
+      <updated>1374763926875</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1500,7 +1502,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIXED performance problems thanks to &quot;@Transactional(readOnly=true)&quot; on PersistenceService's methods that are... read-only&#10;- FIXED bug occurring when dragging and dropping a card several times over the hand or the graveyard zones by means of hiding the card's HTML when droppable is taken into account" />
+    <option name="LAST_COMMIT_MESSAGE" value="- FIXED performance problems thanks to DeckArchive not generating loads of MagicCard anymore" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1514,6 +1516,7 @@
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="- FIXED performance problems thanks to &quot;@Transactional(readOnly=true)&quot; on PersistenceService's methods that are... read-only&#10;- FIXED bug occurring when dragging and dropping a card several times over the hand or the graveyard zones by means of hiding the card's HTML when droppable is taken into account" />
+    <MESSAGE value="- FIXED performance problems thanks to DeckArchive not generating loads of MagicCard anymore" />
   </component>
   <component name="VssConfiguration">
     <CheckoutOptions>
