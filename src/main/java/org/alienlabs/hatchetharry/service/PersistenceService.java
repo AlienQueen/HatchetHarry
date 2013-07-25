@@ -471,21 +471,16 @@ public class PersistenceService implements Serializable
 	public DeckArchive saveDeckArchive(final DeckArchive da)
 	{
 		final Session session = this.deckArchiveDao.getSession();
-/*
 
-		final SQLQuery query = session
-				.createSQLQuery("select * from DeckArchive where deckName = ?");
-		query.addEntity(DeckArchive.class);
-		query.setString(0, da.getDeckName());
+        final SQLQuery query = session
+                .createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=? and da.deckArchiveId = d.Deck_DeckArchive");
+        query.addEntity(DeckArchive.class);
+        query.setString(0, da.getDeckName());
 
-		final List<DeckArchive> list = query.list();
-
-		// The deck is already present in db!
-		if ((null != list) && (list.size() > 0))
-		{
-			return this.getDeckArchiveByName(da.getDeckName());
-		}
-*/
+        if (query.list().size() > 0)
+        {
+          return ((DeckArchive)query.list().get(0));
+        }
 
 		session.save(da);
 		return da;
@@ -495,7 +490,7 @@ public class PersistenceService implements Serializable
 	public DeckArchive updateDeckArchive(final DeckArchive da)
 	{
 		final Session session = this.deckArchiveDao.getSession();
-		session.merge(da);
+		session.update(da);
 		return da;
 	}
 
