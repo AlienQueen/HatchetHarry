@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="53d66d2c-c1ab-4ba4-a372-63c0f71212f3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hatchetharry.iws" afterPath="$PROJECT_DIR$/hatchetharry.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" afterPath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" />
     </list>
     <ignored path="hatchetharry.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1408,7 +1409,11 @@
       <created>1374763926875</created>
       <updated>1374763926875</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="- FIXED performance problems thanks to DeckArchive not generating loads of MagicCard anymore">
+      <created>1374763963320</created>
+      <updated>1374763963320</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
