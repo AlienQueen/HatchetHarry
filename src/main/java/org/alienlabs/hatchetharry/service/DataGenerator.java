@@ -134,7 +134,6 @@ public class DataGenerator implements InitializingBean
 			{
 				deckArchive1 = new DeckArchive();
 				deckArchive1.setDeckName("aggro-combo Red / Black");
-				this.persistenceService.saveDeckArchive(deckArchive1);
 			}
 
 			Deck deck1 = this.persistenceService.getDeck(1l);
@@ -151,7 +150,6 @@ public class DataGenerator implements InitializingBean
 			{
 				deckArchive2 = new DeckArchive();
 				deckArchive2.setDeckName("burn mono-Red");
-                this.persistenceService.saveDeckArchive(deckArchive2);
 			}
 
 			Deck deck2 = this.persistenceService.getDeck(1l);
@@ -163,9 +161,9 @@ public class DataGenerator implements InitializingBean
 			}
 
 			final List<Deck> decks = new ArrayList<Deck>();
-            this.persistenceService.updateDeckArchive(deckArchive1);
+            this.persistenceService.saveDeckArchive(deckArchive1);
 			deck1 = this.persistenceService.saveDeck(deck1);
-            this.persistenceService.updateDeckArchive(deckArchive2);
+            this.persistenceService.saveDeckArchive(deckArchive2);
 			deck2 = this.persistenceService.saveDeck(deck2);
 			decks.add(0, deck1);
 			decks.add(1, deck2);
