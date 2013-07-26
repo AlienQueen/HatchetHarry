@@ -83,25 +83,6 @@ public class TokenPanel extends Panel
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
-		// this.putToGraveyardFromBattlefieldBehavior = new
-		// PutToGraveyardFromBattlefieldBehavior(
-		// this.uuid);
-		// menutoggleButton.add(this.putToGraveyardFromBattlefieldBehavior);
-
-		// this.putToHandFromBattlefieldBehavior = new
-		// PutToHandFromBattlefieldBehavior(this.uuid);
-		// menutoggleButton.add(this.putToHandFromBattlefieldBehavior);
-
-		// final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this,
-		// this.uuid,
-		// this.putToGraveyardFromBattlefieldBehavior,
-		// this.putToHandFromBattlefieldBehavior);
-		// menutoggleButton.add(cardMoveBehavior);
-
-		// final CardRotateBehavior cardRotateBehavior = new
-		// CardRotateBehavior(this, this.uuid);
-		// menutoggleButton.add(cardRotateBehavior);
-
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				this.getHttpServletRequest().getRequestedSessionId()));
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
@@ -190,17 +171,5 @@ public class TokenPanel extends Panel
 	{
 		this.persistenceService = _persistenceService;
 	}
-
-	// public PutToGraveyardFromBattlefieldBehavior
-	// getPutToGraveyardFromBattlefieldBehavior()
-	// {
-	// return this.putToGraveyardFromBattlefieldBehavior;
-	// }
-	//
-	// public PutToHandFromBattlefieldBehavior
-	// getPutToHandFromBattlefieldBehavior()
-	// {
-	// return this.putToHandFromBattlefieldBehavior;
-	// }
 
 }
