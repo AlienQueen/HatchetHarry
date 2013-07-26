@@ -58,14 +58,8 @@ public final class JavaScriptUtils
 			}
 
 			buf.append("jQuery('#card" + uuidValidForJs
-					+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
+					+ "').click(function(e) { jQuery('#cardTooltip" + uuidValidForJs
 					+ "').attr('style', 'display: block'); }); ");
-			buf.append("jQuery('#cardTooltip" + uuidValidForJs
-					+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-					+ "').attr('style', 'display: block'); }); ");
-			buf.append("jQuery('#cardTooltip" + uuidValidForJs
-					+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-					+ "').attr('style', 'display: none'); }); ");
 
 			// For mobile
 			buf.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
@@ -147,7 +141,7 @@ public final class JavaScriptUtils
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
-		buf.append("}, 125); ");
+		buf.append("}, 350); ");
 
 		target.appendJavaScript(buf.toString());
 	}
