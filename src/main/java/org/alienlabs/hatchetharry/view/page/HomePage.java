@@ -127,9 +127,10 @@ import ch.qos.mistletoe.wicket.TestReportPage;
 import com.google.common.io.Files;
 
 /**
- * Bootstrap class
+ * HatchetHarry one and only WebPage
  * 
  * @author Andrey Belyaev
+ * @author Zala Goupil
  */
 public class HomePage extends TestReportPage
 {

@@ -131,7 +131,7 @@ public class VerifyClientSideTests
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
 		}
 
-		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver, 20);
+		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver, 60);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("runsSummary")));
 
 		final String chromeTotal = VerifyClientSideTests.chromeDriver.findElement(
