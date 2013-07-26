@@ -1634,8 +1634,7 @@ public class HomePage extends TestReportPage
 		cardBubbleTip.setMarkupId("cardTooltip" + event.getUuid().toString().replace("-", "_"));
 		cardBubbleTip.add(new AttributeModifier("style", "display: block;"));
 
-        event.getCardHandle().remove("cardTooltip");
-		event.getCardHandle().add(cardBubbleTip);
+		event.getCardHandle().addOrReplace(cardBubbleTip);
 		target.add(event.getCardHandle());
 
 		final String uuidValidForJs = event.getUuid().toString().replace("-", "_");
