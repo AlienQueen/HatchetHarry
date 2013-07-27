@@ -110,7 +110,7 @@ public class RuntimeDataGenerator implements Serializable
 		}
 
 		if ((this.importDeck) && (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
-			{
+		{
 				final File _deck = new File(ResourceBundle.getBundle(
 						RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 				final byte[] content = new byte[475];
@@ -124,7 +124,6 @@ public class RuntimeDataGenerator implements Serializable
 
 				final String deckContent = new String(content, "UTF-8");
 				this.importDeckService.importDeck(deckContent, "Aura Bant", false);
-			}
 		}
 
 		final Deck deckToReturn;
