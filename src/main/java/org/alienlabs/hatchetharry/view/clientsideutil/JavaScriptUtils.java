@@ -16,6 +16,7 @@ public final class JavaScriptUtils
 	public static final String DEACTIVATE_END_OF_TURN_LINKS = "jQuery('#acceptEndTurnLink').attr('style', 'cursor: wait; color: black;'); jQuery('#endTurnActionLink').attr('style', 'cursor: wait; color: black;'); ";
 	public static final String REACTIVATE_END_OF_TURN_LINKS = "jQuery('#acceptEndTurnLink').attr('style', 'cursor: pointer; color: white;'); jQuery('#endTurnActionLink').attr('style', 'cursor: pointer; color: white;'); ";
 	public static final String HIDE_MENUS = "jQuery('.categories').hide();";
+    public static final String HIDE_ALL_TOOLTIPS = "jQuery('.cardTooltip').hide();";
 
 	private JavaScriptUtils()
 	{
