@@ -27,7 +27,7 @@ jQuery(function(){
 jQuery(function() {
 
 	jQuery('#floatingbar').css({
-		height : 38
+		height : "38px"
 	});
 });
 
@@ -72,6 +72,14 @@ function updateHandLabel(){
 
 jQuery(function() {
 	setTimeout(function() {
+        // Freebox
+        var userAgent = jQuery("#qunit-userAgent").html();
+        if (userAgent.indexOf("FbxQmlTV") != -1) {
+            jQuery("#floatingbar").css("top", "-10px");
+            jQuery("#jMenu").css("top", "28px");
+            jQuery(".dropdownmenu").css("top", "28px");
+        }
+
 		updateHandLabel();
 		jQuery('#handGallery .cross-link .nav-thumb').click(updateHandLabel);
 		
