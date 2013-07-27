@@ -374,6 +374,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript(JavaScriptUtils.HIDE_ALL_TOOLTIPS);
+                target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
 			}
 
 		});
