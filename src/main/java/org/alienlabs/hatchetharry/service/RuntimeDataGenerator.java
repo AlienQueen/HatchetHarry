@@ -109,9 +109,7 @@ public class RuntimeDataGenerator implements Serializable
 			this.persistenceService.saveCard(baldu);
 		}
 
-		if (this.importDeck)
-		{
-			if (null == this.persistenceService.getDeckArchiveByName("Aura Bant"))
+		if ((this.importDeck) && (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
 			{
 				final File _deck = new File(ResourceBundle.getBundle(
 						RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
