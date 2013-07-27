@@ -1628,23 +1628,6 @@ public class HomePage extends TestReportPage
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
 				event.getGameId());
 
-		final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", event.getCardHandle(),
-				event.getUuid(), event.getBigImage(), event.getOwnerSide());
-		cardBubbleTip.setOutputMarkupId(true);
-		cardBubbleTip.setMarkupId("cardTooltip" + event.getUuid().toString().replace("-", "_"));
-		cardBubbleTip.add(new AttributeModifier("style", "display: block;"));
-
-		event.getCardHandle().addOrReplace(cardBubbleTip);
-		target.add(event.getCardHandle());
-
-		final String uuidValidForJs = event.getUuid().toString().replace("-", "_");
-        final StringBuffer buf = new StringBuffer("window.setTimeout(function() { ");
-        buf.append("jQuery('#card" + uuidValidForJs
-                + "').click(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-                + "').attr('style', 'display: block'); }); ");
-        buf.append("}, 350); ");
-		target.appendJavaScript(buf.toString());
-
 		switch (event.getAction())
 		{
 			case ADD_COUNTER :
