@@ -375,30 +375,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final List<MagicCard> allCardsInBattlefield = HomePage.this.persistenceService
-						.getAllCardsInBattleFieldForAGame(HatchetHarrySession.get().getGameId());
-				final StringBuffer buf = new StringBuffer();
-
-				for (int i = 0; i < allCardsInBattlefield.size(); i++)
-				{
-					final MagicCard aCard = allCardsInBattlefield.get(i);
-
-					final String uuidValidForJs = aCard.getUuid().replace("-", "_");
-
-					buf.append("jQuery('#cardTooltip" + uuidValidForJs
-							+ "').attr('style', 'display: none'); ");
-					buf.append("jQuery('#card" + uuidValidForJs
-							+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-							+ "').attr('style', 'display: block'); }); ");
-					buf.append("jQuery('#cardTooltip" + uuidValidForJs
-							+ "').mouseover(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-							+ "').attr('style', 'display: block'); }); ");
-					buf.append("jQuery('#cardTooltip" + uuidValidForJs
-							+ "').mouseout(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-							+ "').attr('style', 'display: none'); }); ");
-				}
 				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
-				target.appendJavaScript(buf.toString());
 			}
 
 		});
