@@ -74,7 +74,7 @@ public class TokenDaoImpl implements TokenDao
 	 * @return Token
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Token load(final long id)
 	{
 		return (Token)this.getSession().get(Token.class, Long.valueOf(id));

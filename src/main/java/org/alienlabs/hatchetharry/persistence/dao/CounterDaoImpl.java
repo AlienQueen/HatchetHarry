@@ -76,7 +76,7 @@ public class CounterDaoImpl implements CounterDao
 	 * @return Counter
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Counter load(final long id)
 	{
 		return (Counter)this.getSession().get(Counter.class, Long.valueOf(id));
@@ -109,7 +109,7 @@ public class CounterDaoImpl implements CounterDao
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public int count()
 	{
 		return this

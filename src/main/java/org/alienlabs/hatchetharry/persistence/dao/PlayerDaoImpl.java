@@ -76,7 +76,7 @@ public class PlayerDaoImpl implements PlayerDao
 	 * @return Player
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Player load(final long id)
 	{
 		return (Player)this.getSession().get(Player.class, Long.valueOf(id));
@@ -112,7 +112,7 @@ public class PlayerDaoImpl implements PlayerDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<String> getUniqueLastNames()
 	{
 		return this

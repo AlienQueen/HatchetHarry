@@ -74,7 +74,7 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao
 	 * @return DeckArchive
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public DeckArchive load(final long id)
 	{
 		return (DeckArchive)this.getSession().get(DeckArchive.class, Long.valueOf(id));

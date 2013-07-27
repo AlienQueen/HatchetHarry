@@ -78,7 +78,7 @@ public class DeckDaoImpl implements DeckDao
 	 * @return Deck
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Deck load(final long id)
 	{
 		return (Deck)this.getSession().get(Deck.class, Long.valueOf(id));

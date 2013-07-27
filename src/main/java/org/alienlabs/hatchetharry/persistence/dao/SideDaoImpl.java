@@ -51,7 +51,7 @@ public class SideDaoImpl implements SideDao
 	 * @return Side
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Side load(final long id)
 	{
 		return (Side)this.getSession().get(Side.class, Long.valueOf(id));

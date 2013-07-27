@@ -76,7 +76,7 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 	 * @return CardCollection
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public CardCollection load(final long id)
 	{
 		return (CardCollection)this.getSession().get(CardCollection.class, Long.valueOf(id));

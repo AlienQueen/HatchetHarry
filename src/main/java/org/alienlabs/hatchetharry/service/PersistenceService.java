@@ -126,6 +126,7 @@ public class PersistenceService implements Serializable
 		final Query query = session
 				.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid= ? ");
 		query.setString(0, uuid.toString());
+        query.setCacheable(true);
 		PersistenceService.LOGGER.debug("card UUID: " + uuid.toString());
 
 		if (query.list().size() > 1)
@@ -328,7 +329,7 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Player getPlayer(final Long l)
 	{
 		return this.playerDao.load(l);

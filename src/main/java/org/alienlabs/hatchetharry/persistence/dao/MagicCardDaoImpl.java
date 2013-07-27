@@ -76,7 +76,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 * @return MagicCard
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public MagicCard load(final long id)
 	{
 		return (MagicCard)this.getSession().get(MagicCard.class, Long.valueOf(id));
@@ -112,7 +112,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<String> getUniqueLastNames()
 	{
 		return this

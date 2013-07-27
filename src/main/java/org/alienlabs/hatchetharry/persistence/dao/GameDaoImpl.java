@@ -76,7 +76,7 @@ public class GameDaoImpl implements GameDao
 	 * @return Game
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Game load(final long id)
 	{
 		return (Game)this.getSession().get(Game.class, Long.valueOf(id));
@@ -112,7 +112,7 @@ public class GameDaoImpl implements GameDao
 	 * Returns a list of unique last names
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<String> getUniqueLastNames()
 	{
 		return this
@@ -128,7 +128,7 @@ public class GameDaoImpl implements GameDao
 	 * @return count
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public int count()
 	{
 		return this.getSession()
