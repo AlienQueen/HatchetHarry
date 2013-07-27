@@ -2,7 +2,7 @@
 .contextMenu {
 	position: absolute;
 	width: 160px;
-	top: -140px;
+	top: 70px;
 	z-index: 99999;
 	border: solid 1px #CCC;
 	background: #EEE;

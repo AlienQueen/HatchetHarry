@@ -175,6 +175,13 @@ a, a:visited {
 	color: red;
 }
 
+.gritter-green .gritter-item,
+.gritter-green .gritter-bottom,
+.gritter-green .gritter-top,
+.gritter-close{
+    color: green;
+}
+
 .gritter-light .gritter-title {
 	text-shadow: none;
 }

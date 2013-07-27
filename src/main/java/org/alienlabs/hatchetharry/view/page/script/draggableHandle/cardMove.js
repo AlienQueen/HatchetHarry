@@ -13,7 +13,16 @@ window.setTimeout(function() {
 							Wicket.Ajax.get({ 'u' : '${graveyardUrl}&uuid=' + uuid });
 						} else if (action === 'cut') {
 							Wicket.Ajax.get({ 'u' : '${handUrl}&uuid=' + uuid });
-						}
+						} else if (action === 'copy') {
+                            var body = document.getElementById('body');
+                            body.style.cursor='move';
+                            jQuery("body").click(function(event) {
+                                var url = jQuery('#handleImage' + uuid).data('dragUrl');
+                                body.style.cursor="default";
+                                Wicket.Ajax.get({ 'u' : url + '&uuid=' + uuid + '&posX=' + event.pageX + '&posY=' + event.pageY});
+                                jQuery("body").unbind('click');
+                            });
+                        }
 					}
 			);
 }, 75);
