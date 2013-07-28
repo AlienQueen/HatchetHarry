@@ -50,7 +50,7 @@ public class TooltipPanel extends Panel
 	PersistenceService persistenceService;
 
 	public TooltipPanel(final String id, final WebMarkupContainer _cardHandle, final UUID _uuid,
-			final String _bigImage, final String _ownerSide, MagicCard _card)
+			final String _bigImage, final String _ownerSide, final MagicCard _card)
 	{
 		super(id);
 		this.cardHandle = _cardHandle;
