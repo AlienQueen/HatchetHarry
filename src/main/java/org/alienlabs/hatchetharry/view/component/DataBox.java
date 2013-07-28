@@ -94,7 +94,9 @@ public class DataBox extends Panel
 						}
 					}
 				};
-				final Image playerPlus = new Image("playerPlus", new PackageResourceReference(
+
+                // TODO use ExternalImage
+                final Image playerPlus = new Image("playerPlus", new PackageResourceReference(
 						HomePage.class, "image/plusLife.png"));
 				playerPlus.setOutputMarkupId(true);
 				plus.add(playerPlus);
@@ -129,7 +131,9 @@ public class DataBox extends Panel
 						}
 					}
 				};
-				final Image playerMinus = new Image("playerMinus", new PackageResourceReference(
+
+                // TODO use ExternalImage
+                final Image playerMinus = new Image("playerMinus", new PackageResourceReference(
 						HomePage.class, "image/minusLife.png"));
 				playerMinus.setOutputMarkupId(true);
 				minus.add(playerMinus);

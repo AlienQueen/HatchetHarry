@@ -690,6 +690,7 @@ public class PersistenceService implements Serializable
 				.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
 		query.setLong("gameId", gameId);
 		query.setParameter("zone", CardZone.BATTLEFIELD);
+        query.setCacheable(true);
 
 		try
 		{

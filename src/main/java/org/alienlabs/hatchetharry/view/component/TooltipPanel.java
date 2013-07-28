@@ -44,18 +44,20 @@ public class TooltipPanel extends Panel
 	final UUID uuid;
 	final String bigImage;
 	final String ownerSide;
+    final MagicCard card;
 
 	@SpringBean
 	PersistenceService persistenceService;
 
 	public TooltipPanel(final String id, final WebMarkupContainer _cardHandle, final UUID _uuid,
-			final String _bigImage, final String _ownerSide)
+			final String _bigImage, final String _ownerSide, MagicCard _card)
 	{
 		super(id);
 		this.cardHandle = _cardHandle;
 		this.uuid = _uuid;
 		this.bigImage = _bigImage;
 		this.ownerSide = _ownerSide;
+        this.card = _card;
 
 		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
 		{
@@ -83,9 +85,6 @@ public class TooltipPanel extends Panel
 			bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid yellow;"));
 		}
 
-
-		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.uuid);
-
 		final Form<String> form = new Form<String>("form");
 		final TextField<String> counterAddName = new TextField<String>("counterAddName",
 				new Model<String>(""));
@@ -98,18 +97,18 @@ public class TooltipPanel extends Panel
 			@Override
 			public void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				final MagicCard _myCard = TooltipPanel.this.persistenceService
+				final MagicCard myCard = TooltipPanel.this.persistenceService
 						.getCardFromUuid(TooltipPanel.this.uuid);
 
 				final String _counterName = counterAddName.getDefaultModelObjectAsString();
 				final Counter counter = new Counter();
 				counter.setCounterName(_counterName);
 				counter.setNumberOfCounters(1l);
-				counter.setCard(_myCard);
+				counter.setCard(myCard);
 
-				final Set<Counter> counters = _myCard.getCounters();
+				final Set<Counter> counters = myCard.getCounters();
 				counters.add(counter);
-				TooltipPanel.this.persistenceService.updateCard(_myCard);
+				TooltipPanel.this.persistenceService.updateCard(myCard);
 
 				final Player targetPlayer = TooltipPanel.this.persistenceService.getPlayer(myCard
 						.getDeck().getPlayerId());
@@ -137,7 +136,7 @@ public class TooltipPanel extends Panel
 		};
 		submit.setOutputMarkupId(true);
 
-		final List<Counter> cardCounters = new ArrayList<Counter>(myCard.getCounters());
+		final List<Counter> cardCounters = new ArrayList<Counter>(this.card.getCounters());
 		final ListView<Counter> counters = new ListView<Counter>("counters", cardCounters)
 		{
 			private static final long serialVersionUID = 1L;
@@ -170,7 +169,7 @@ public class TooltipPanel extends Panel
 						}
 
 						final Player targetPlayer = TooltipPanel.this.persistenceService
-								.getPlayer(myCard.getDeck().getPlayerId());
+								.getPlayer(TooltipPanel.this.card.getDeck().getPlayerId());
 						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
 								.getGame().getId());
 						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
@@ -178,7 +177,7 @@ public class TooltipPanel extends Panel
 
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-								targetPlayer.getName(), myCard.getTitle(),
+								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
 								counter.getCounterName(), counter.getNumberOfCounters(),
 								NotifierAction.ADD_COUNTER, TooltipPanel.this.cardHandle,
 								TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
@@ -196,7 +195,8 @@ public class TooltipPanel extends Panel
 				};
 				addCounterLink.setOutputMarkupId(true);
 
-				final Image counterPlus = new Image("counterPlus", new PackageResourceReference(
+                // TODO use ExternalImage
+                final Image counterPlus = new Image("counterPlus", new PackageResourceReference(
 						HomePage.class, "image/plusLife.png"));
 				counterPlus.setOutputMarkupId(true);
 				addCounterLink.add(counterPlus);
@@ -212,7 +212,7 @@ public class TooltipPanel extends Panel
 
 						if (counter.getNumberOfCounters().longValue() == 0)
 						{
-							TooltipPanel.this.persistenceService.deleteCounter(counter, myCard);
+							TooltipPanel.this.persistenceService.deleteCounter(counter, TooltipPanel.this.card);
 							action = NotifierAction.CLEAR_COUNTER;
 						}
 						else
@@ -231,14 +231,14 @@ public class TooltipPanel extends Panel
 						}
 
 						final Player targetPlayer = TooltipPanel.this.persistenceService
-								.getPlayer(myCard.getDeck().getPlayerId());
+								.getPlayer(TooltipPanel.this.card.getDeck().getPlayerId());
 						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
 								.getGame().getId());
 						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
 								.giveAllPlayersFromGame(game.getId());
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-								targetPlayer.getName(), myCard.getTitle(),
+								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
 								counter.getCounterName(), counter.getNumberOfCounters(), action,
 								TooltipPanel.this.cardHandle, TooltipPanel.this.uuid,
 								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
@@ -255,7 +255,8 @@ public class TooltipPanel extends Panel
 				};
 				removeCounterLink.setOutputMarkupId(true);
 
-				final Image counterMinus = new Image("counterMinus", new PackageResourceReference(
+                // TODO use ExternalImage
+                final Image counterMinus = new Image("counterMinus", new PackageResourceReference(
 						HomePage.class, "image/minusLife.png"));
 				counterMinus.setOutputMarkupId(true);
 				removeCounterLink.add(counterMinus);
