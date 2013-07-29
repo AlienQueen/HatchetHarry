@@ -361,7 +361,7 @@ public class HomePage extends TestReportPage
 	// TODO: really necessary?
 	private final void generateCardPanels()
 	{
-		this.parentPlaceholder.add(this.generateCardListView(this.player.getGame().getId()));
+		this.parentPlaceholder.add(this.generateCardListView(persistenceService.getAllCardsInBattleFieldForAGame(this.player.getGame().getId())));
 	}
 
 	private void generateHideAllTooltipsLink(final String id)
@@ -1600,9 +1600,10 @@ public class HomePage extends TestReportPage
 	public void updateCardTooltip(final AjaxRequestTarget target,
 			final UpdateCardPanelCometChannel event)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+/*		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
+				event.getGameId());*/
 
 		switch (event.getAction())
 		{
@@ -1644,9 +1645,11 @@ public class HomePage extends TestReportPage
 			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
-		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+
+        /*JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
+				event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1699,9 +1702,10 @@ public class HomePage extends TestReportPage
 			JavaScriptUtils.updateHand(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
-		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        /*JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+          JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
+                  event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1713,18 +1717,21 @@ public class HomePage extends TestReportPage
 		mc.setZone(CardZone.BATTLEFIELD);
 		this.persistenceService.updateCard(mc);
 
-		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        /*JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
+				event.getGameId());*/
 	}
 
 	@Subscribe
 	public void playTopLibraryCard(final AjaxRequestTarget target,
 			final PlayTopLibraryCardCometChannel event)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+
+/*        JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
+				event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1761,9 +1768,10 @@ public class HomePage extends TestReportPage
 	public void playCardFromGraveyard(final AjaxRequestTarget target,
 			final PlayCardFromGraveyardCometChannel event)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+/*		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());
+				event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1983,13 +1991,8 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public final ListView<MagicCard> generateCardListView(final Long gameId)
+	public final ListView<MagicCard> generateCardListView(final List<MagicCard> allCardsInBattlefield)
 	{
-		final List<MagicCard> allCardsInBattlefield = HomePage.this.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
-
-		HomePage.LOGGER.error("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
-
 		final ListView<MagicCard> list = new ListView<MagicCard>("handCards", allCardsInBattlefield)
 		{
 			private static final long serialVersionUID = 1L;

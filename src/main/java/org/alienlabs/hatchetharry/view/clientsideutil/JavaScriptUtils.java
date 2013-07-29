@@ -22,10 +22,18 @@ public final class JavaScriptUtils
 	{
 	}
 
-	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final Long gameId)
+    public static void updateCardsAndRestoreStateInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final Long gameId)
+    {
+        final List<MagicCard> allCardsInBattlefield = persistenceService
+                .getAllCardsInBattleFieldForAGame(gameId);
+        JavaScriptUtils.updateCardsInBattlefield(target, allCardsInBattlefield);
+        JavaScriptUtils.restoreStateOfCardsInBattlefield(target, allCardsInBattlefield);
+    }
+
+	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final List<MagicCard> allCardsInBattlefield)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
-		homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(gameId));
+		homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCardsInBattlefield));
 		target.add(homePage.getParentPlaceholder());
 	}
 
@@ -33,15 +41,11 @@ public final class JavaScriptUtils
 	 * Three things to do: - card positions - card tapped / untapped state -
 	 * activate tooltip again
 	 */
-	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
-			final PersistenceService persistenceService, final Long gameId)
+	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target, final List<MagicCard> allCardsInBattlefield)
 	{
 		final StringBuffer buf = new StringBuffer();
 		buf.append("var shouldMove = true; ");
 		buf.append("window.setTimeout(function() { ");
-
-		final List<MagicCard> allCardsInBattlefield = persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
 
 		for (int i = 0; i < allCardsInBattlefield.size(); i++)
 		{

@@ -113,15 +113,11 @@ public class CardPanel extends Panel
 		mouseX.setOutputMarkupId(true);
 		mouseY.setOutputMarkupId(true);
 
-        // TODO use ExternalImage
-		final Image handleImage = new Image("handleImage", new PackageResourceReference(
-				"images/arrow.png"));
+		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
 		handleImage.setOutputMarkupId(true);
 
-        // TODO use ExternalImage
-		final Image tapHandleImage = new Image("tapHandleImage", new PackageResourceReference(
-				"images/rightArrow.png"));
+		final ExternalImage tapHandleImage = new ExternalImage("tapHandleImage", "image/rightArrow.png");
 		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString().replace("-", "_"));
 		tapHandleImage.setOutputMarkupId(true);
 

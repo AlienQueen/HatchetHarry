@@ -247,10 +247,10 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
 		final CardPanel baldu = (CardPanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("balduParent:baldu");
-		final Image tapHandleImage = (Image)baldu
+		final ExternalImage tapHandleImage = (ExternalImage)baldu
 				.get("cardHandle:menutoggleButton:form:tapHandleImage");
 		Assert.assertNotNull(tapHandleImage);
-		final Image handleImage = (Image)baldu.get("cardHandle:menutoggleButton:form:handleImage");
+		final ExternalImage handleImage = (ExternalImage)baldu.get("cardHandle:menutoggleButton:form:handleImage");
 		Assert.assertNotNull(handleImage);
 		final ExternalImage cardImage = (ExternalImage)baldu
 				.get("cardHandle:menutoggleButton:form:cardImage");

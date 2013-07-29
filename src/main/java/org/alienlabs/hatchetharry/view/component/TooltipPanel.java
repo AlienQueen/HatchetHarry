@@ -195,9 +195,7 @@ public class TooltipPanel extends Panel
 				};
 				addCounterLink.setOutputMarkupId(true);
 
-                // TODO use ExternalImage
-                final Image counterPlus = new Image("counterPlus", new PackageResourceReference(
-						HomePage.class, "image/plusLife.png"));
+                final ExternalImage counterPlus = new ExternalImage("counterPlus", "image/plusLife.png");
 				counterPlus.setOutputMarkupId(true);
 				addCounterLink.add(counterPlus);
 				final AjaxLink<Void> removeCounterLink = new AjaxLink<Void>("removeCounterLink")
@@ -255,9 +253,7 @@ public class TooltipPanel extends Panel
 				};
 				removeCounterLink.setOutputMarkupId(true);
 
-                // TODO use ExternalImage
-                final Image counterMinus = new Image("counterMinus", new PackageResourceReference(
-						HomePage.class, "image/minusLife.png"));
+                final ExternalImage counterMinus = new ExternalImage("counterMinus", "image/minusLife.png");
 				counterMinus.setOutputMarkupId(true);
 				removeCounterLink.add(counterMinus);
 
