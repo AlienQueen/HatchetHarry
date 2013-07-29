@@ -1601,9 +1601,6 @@ public class HomePage extends TestReportPage
 			final UpdateCardPanelCometChannel event)
 	{
         JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
-/*		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());*/
 
 		switch (event.getAction())
 		{
@@ -1646,10 +1643,6 @@ public class HomePage extends TestReportPage
 					event.getDeckId());
 		}
         JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
-
-        /*JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1703,9 +1696,6 @@ public class HomePage extends TestReportPage
 					event.getDeckId());
 		}
         JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
-        /*JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
-          JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-                  event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1718,9 +1708,6 @@ public class HomePage extends TestReportPage
 		this.persistenceService.updateCard(mc);
 
         JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
-        /*JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1728,10 +1715,6 @@ public class HomePage extends TestReportPage
 			final PlayTopLibraryCardCometChannel event)
 	{
         JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
-
-/*        JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());*/
 	}
 
 	@Subscribe
@@ -1769,9 +1752,6 @@ public class HomePage extends TestReportPage
 			final PlayCardFromGraveyardCometChannel event)
 	{
         JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
-/*		JavaScriptUtils.updateCardsInBattlefield(target, event.getGameId());
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, this.persistenceService,
-				event.getGameId());*/
 	}
 
 	@Subscribe
