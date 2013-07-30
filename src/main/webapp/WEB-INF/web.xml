@@ -86,7 +86,7 @@
       	</init-param>
         <init-param>
         	<param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
-        	<param-value>org.atmosphere.cache.SessionBroadcasterCache</param-value>
+        	<param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
       	</init-param>
 		<init-param>
           <param-name>org.atmosphere.cpr.sessionSupport</param-name>
