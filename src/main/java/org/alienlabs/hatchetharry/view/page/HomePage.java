@@ -116,6 +116,7 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.xmlbeans.impl.xb.xsdschema.LocalSimpleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -191,8 +192,9 @@ public class HomePage extends TestReportPage
 
 	private AjaxLink<Void> createGameLink;
 	private AjaxLink<Void> joinGameLink;
+    private ListView<MagicCard> allCardsInBattlefield;
 
-	public HomePage() throws IOException
+    public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
 		this.session = HatchetHarrySession.get();
@@ -216,7 +218,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.4.0 (release First Steps),");
-		final Label message2 = new Label("message2", "built on Saturday, 27th of July 2013.");
+		final Label message2 = new Label("message2", "built on Tuesday, 30th of July 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1600,7 +1602,7 @@ public class HomePage extends TestReportPage
 	public void updateCardTooltip(final AjaxRequestTarget target,
 			final UpdateCardPanelCometChannel event)
 	{
-        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId(),  null, true);
 
 		switch (event.getAction())
 		{
@@ -1642,7 +1644,7 @@ public class HomePage extends TestReportPage
 			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
-        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId(), event.getMagicCard(), false);
 	}
 
 	@Subscribe
@@ -1695,7 +1697,7 @@ public class HomePage extends TestReportPage
 			JavaScriptUtils.updateHand(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
-        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId(), event.getMc(), false);
 	}
 
 	@Subscribe
@@ -1707,14 +1709,15 @@ public class HomePage extends TestReportPage
 		mc.setZone(CardZone.BATTLEFIELD);
 		this.persistenceService.updateCard(mc);
 
-        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId(), mc, true);
 	}
 
 	@Subscribe
 	public void playTopLibraryCard(final AjaxRequestTarget target,
 			final PlayTopLibraryCardCometChannel event)
 	{
-        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId(), mc, true);
 	}
 
 	@Subscribe
@@ -1751,7 +1754,8 @@ public class HomePage extends TestReportPage
 	public void playCardFromGraveyard(final AjaxRequestTarget target,
 			final PlayCardFromGraveyardCometChannel event)
 	{
-        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId());
+        final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+        JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService, event.getGameId(), mc, true);
 	}
 
 	@Subscribe
@@ -1971,24 +1975,29 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public final ListView<MagicCard> generateCardListView(final List<MagicCard> allCardsInBattlefield)
+	public final ListView<MagicCard> generateCardListView(final List<MagicCard> allMagicCardsInBattlefield)
 	{
-		final ListView<MagicCard> list = new ListView<MagicCard>("handCards", allCardsInBattlefield)
-		{
-			private static final long serialVersionUID = 1L;
+        allCardsInBattlefield = new ListView<MagicCard>("handCards", allMagicCardsInBattlefield)
+        {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populateItem(final ListItem<MagicCard> item)
-			{
-				final CardPanel cp = new CardPanel("cardPanel", item.getModelObject()
-						.getSmallImageFilename(), item.getModelObject().getBigImageFilename(), item
-						.getModelObject().getUuidObject());
-				cp.setOutputMarkupId(true);
-				item.add(cp);
-			}
-		};
-		list.setOutputMarkupId(true);
-		return list;
+            @Override
+            protected void populateItem(final ListItem<MagicCard> item)
+            {
+                final CardPanel cp = new CardPanel("cardPanel", item.getModelObject()
+                        .getSmallImageFilename(), item.getModelObject().getBigImageFilename(), item
+                        .getModelObject().getUuidObject());
+                cp.setOutputMarkupId(true);
+                item.add(cp);
+            }
+        };
+		this.allCardsInBattlefield.setOutputMarkupId(true);
+        this.allCardsInBattlefield.setReuseItems(true);
+		return this.allCardsInBattlefield;
 	}
 
+    public final ListView<MagicCard> getAllCardsInBattlefield()
+    {
+        return this.allCardsInBattlefield;
+    }
 }

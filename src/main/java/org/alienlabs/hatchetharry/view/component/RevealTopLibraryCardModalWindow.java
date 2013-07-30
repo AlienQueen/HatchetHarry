@@ -96,7 +96,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						.updateAllMagicCards(battlefield);
 
 				final PlayTopLibraryCardCometChannel ptlccc = new PlayTopLibraryCardCometChannel(
-						gameId);
+						gameId, battlefield.get(0).getUuidObject());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PLAY_TOP_LIBRARY_CARD, gameId, p.getId(),

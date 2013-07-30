@@ -22,19 +22,36 @@ public final class JavaScriptUtils
 	{
 	}
 
-    public static void updateCardsAndRestoreStateInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final Long gameId)
+    public static void updateCardsAndRestoreStateInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final Long gameId, final MagicCard mc, final boolean added)
     {
         final List<MagicCard> allCardsInBattlefield = persistenceService
                 .getAllCardsInBattleFieldForAGame(gameId);
-        JavaScriptUtils.updateCardsInBattlefield(target, allCardsInBattlefield);
+        JavaScriptUtils.updateCardsInBattlefield(target, allCardsInBattlefield, mc, added);
         JavaScriptUtils.restoreStateOfCardsInBattlefield(target, allCardsInBattlefield);
     }
 
-	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final List<MagicCard> allCardsInBattlefield)
+	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final List<MagicCard> allCardsInBattlefield, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
-		homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCardsInBattlefield));
-		target.add(homePage.getParentPlaceholder());
+        final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+
+        if (null != mc)
+        {
+            if (added)
+            {
+                allCards.add(mc);
+            }
+            else
+            {
+                allCards.remove(mc);
+            }
+        }
+        else
+        {
+            homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCardsInBattlefield));
+            target.add(homePage.getParentPlaceholder());
+        }
+        target.add(homePage.getParentPlaceholder());
 	}
 
 	/*
@@ -61,6 +78,8 @@ public final class JavaScriptUtils
 			{
 				buf.append("jQuery('#card" + uuidValidForJs + "').rotate(0); ");
 			}
+
+            buf.append("var card = jQuery('#cardHandle" + uuidValidForJs + "'); card.css('position', 'absolute'); card.css('left', '" + aCard.getX() + "px'); card.css('top', '" + aCard.getY() + "px'); ");
 
 			buf.append("jQuery('#card" + uuidValidForJs
 					+ "').click(function(e) { jQuery('#cardTooltip" + uuidValidForJs
@@ -146,7 +165,7 @@ public final class JavaScriptUtils
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
-		buf.append("}, 350); ");
+		buf.append("}, 1000); ");
 
 		target.appendJavaScript(buf.toString());
 	}

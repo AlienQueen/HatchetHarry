@@ -1,8 +1,8 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import java.util.UUID;
-
 import org.apache.wicket.markup.html.WebMarkupContainer;
+
+import java.util.UUID;
 
 
 public class UpdateCardPanelCometChannel
