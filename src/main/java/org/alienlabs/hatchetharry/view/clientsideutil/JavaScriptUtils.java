@@ -25,11 +25,11 @@ public final class JavaScriptUtils
 	public static void updateCardsAndRestoreStateInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final Long gameId, final MagicCard mc, final boolean added)
 	{
 		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage()).getAllCardsInBattlefield().getModelObject();
-		JavaScriptUtils.updateCardsInBattlefield(target, allCardsInBattlefield, mc, added);
+		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, allCardsInBattlefield, mc, added);
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, allCardsInBattlefield);
 	}
 
-	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final List<MagicCard> allCardsInBattlefield, final MagicCard mc, final boolean added)
+	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final List<MagicCard> allCardsInBattlefield, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
 		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
@@ -44,13 +44,21 @@ public final class JavaScriptUtils
 			{
 				allCards.remove(mc);
 			}
+
+			for (int i = 0; i < allCards.size(); i++)
+			{
+				final MagicCard card = allCards.get(i);
+				final MagicCard temp = persistenceService.getCardFromUuid(card.getUuidObject());
+				card.setX(temp.getX());
+				card.setY(temp.getY());
+			}
+			target.add(homePage.getParentPlaceholder());
 		}
 		else
 		{
 			homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCardsInBattlefield));
 			target.add(homePage.getParentPlaceholder());
 		}
-		target.add(homePage.getParentPlaceholder());
 	}
 
 	/*
