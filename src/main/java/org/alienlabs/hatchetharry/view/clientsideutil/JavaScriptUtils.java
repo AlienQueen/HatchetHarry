@@ -31,17 +31,12 @@ public class JavaScriptUtils
 			final PersistenceService persistenceService, final Long gameId, final MagicCard mc,
 			final boolean added)
 	{
-		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage())
-				.getAllCardsInBattlefield().getModelObject();
-		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, allCardsInBattlefield,
-				mc, added);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService,
-				allCardsInBattlefield, added);
+		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, mc, added);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, added);
 	}
 
 	public static void updateCardsInBattlefield(final AjaxRequestTarget target,
-			final PersistenceService persistenceService,
-			final List<MagicCard> allCardsInBattlefield, final MagicCard mc, final boolean added)
+			final PersistenceService persistenceService, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
 		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
@@ -70,8 +65,7 @@ public class JavaScriptUtils
 		}
 		else
 		{
-			homePage.getParentPlaceholder().addOrReplace(
-					homePage.generateCardListView(allCardsInBattlefield));
+			homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCards));
 			target.add(homePage.getParentPlaceholder());
 		}
 	}
@@ -81,9 +75,11 @@ public class JavaScriptUtils
 	 * activate tooltip again
 	 */
 	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
-			final PersistenceService persistenceService,
-			final List<MagicCard> allCardsInBattlefield, final boolean added)
+			final PersistenceService persistenceService, final boolean added)
 	{
+		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage())
+				.getAllCardsInBattlefield().getModelObject();
+
 		StringBuffer buf = new StringBuffer();
 		buf.append("var shouldMove = true; ");
 		buf.append("window.setTimeout(function() { ");
@@ -197,9 +193,12 @@ public class JavaScriptUtils
 		if (!added)
 		{
 			buf = new StringBuffer("window.setTimeout(function() { ");
-			final List<MagicCard> allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
-			for (final MagicCard magicCard : allCardsInGraveyard) {
-				buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
+			final List<MagicCard> allCardsInGraveyard = persistenceService
+					.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
+			for (final MagicCard magicCard : allCardsInGraveyard)
+			{
+				buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_")
+						+ "').hide(); ");
 				JavaScriptUtils.LOGGER.info("hide from graveyard: " + magicCard.getTitle());
 			}
 
