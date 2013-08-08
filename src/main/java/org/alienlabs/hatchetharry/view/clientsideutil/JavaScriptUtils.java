@@ -192,22 +192,13 @@ public class JavaScriptUtils
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 		buf.append("}, 150); ");
 
-<<<<<<< HEAD
 		target.appendJavaScript(buf.toString());
 
 		buf = new StringBuffer("window.setTimeout(function() { ");
 		final List<MagicCard> allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
 		for (final MagicCard magicCard : allCardsInGraveyard) {
 			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
-=======
-		final List<MagicCard> allCardsInGraveyard = persistenceService
-				.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
-		for (final MagicCard magicCard : allCardsInGraveyard)
-		{
-			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_")
-					+ "').hide(); ");
 			JavaScriptUtils.LOGGER.info("hide from graveyard: " + magicCard.getTitle());
->>>>>>> 449d2525ce31b0957b219a7d225fd001199fa8cb
 		}
 
 		final List<MagicCard> allCardsInHands = persistenceService
