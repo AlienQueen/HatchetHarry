@@ -75,13 +75,15 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 
 		final Deck d = p.getDeck();
-		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
-				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		// TODO: reorder?
+		final List<MagicCard> graveyard = this.persistenceService
+				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
 		this.persistenceService.updateAllMagicCards(graveyard);
 
-		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		// TODO: reorder?
+		final List<MagicCard> battlefield = this.persistenceService
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
 		this.persistenceService.updateAllMagicCards(battlefield);
 
