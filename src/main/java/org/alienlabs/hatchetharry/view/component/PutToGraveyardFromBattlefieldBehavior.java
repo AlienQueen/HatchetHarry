@@ -64,6 +64,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final HatchetHarrySession session = HatchetHarrySession.get();
 		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
 				+ session.getPlayer().getId());
+		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("mc.getTitle(): " + mc.getTitle());
 
 		mc.setZone(CardZone.GRAVEYARD);
 		mc.setTapped(false);

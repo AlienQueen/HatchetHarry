@@ -9,8 +9,10 @@ import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public final class JavaScriptUtils
+public class JavaScriptUtils
 {
 	public static final String REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT = "var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard(); function updateGraveyardLabel(){ var graveyardCardName = jQuery('#graveyardGallery .active-thumbGraveyard .nav-thumb').attr('name'); if (graveyardCardName == undefined) { graveyardCardName = jQuery('#graveyardGallery .active-thumb .nav-thumb').attr('name'); } jQuery('#graveyardCardLabel').text(graveyardCardName); }; jQuery(function() { setTimeout(function() { updateGraveyardLabel(); jQuery('#graveyardGallery .cross-link .nav-thumb').click(updateGraveyardLabel); }, 500); });";
 	public static final String REACTIVATE_HAND_COMPONENT_JAVASCRIPT = "var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb'); $navthumb.eq(curclicked).parent().addClass('active-thumb'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); function updateHandLabel(){ var handCardName = jQuery('#handGallery .active-thumbGraveyard .nav-thumb').attr('name'); if (handCardName == undefined) { handCardName = jQuery('#handGallery .active-thumb .nav-thumb').attr('name'); } jQuery('#cardLabel').text(handCardName); }; jQuery(function() { setTimeout(function() { updateHandLabel(); jQuery('#handGallery .cross-link .nav-thumb').click(updateHandLabel); }, 500); }); ";
@@ -19,18 +21,27 @@ public final class JavaScriptUtils
 	public static final String HIDE_MENUS = "jQuery('.categories').hide();";
 	public static final String HIDE_ALL_TOOLTIPS = "jQuery('.tooltip').attr('style', 'display: none;'); ";
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(JavaScriptUtils.class);
+
 	private JavaScriptUtils()
 	{
 	}
 
-	public static void updateCardsAndRestoreStateInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final Long gameId, final MagicCard mc, final boolean added)
+	public static void updateCardsAndRestoreStateInBattlefield(final AjaxRequestTarget target,
+			final PersistenceService persistenceService, final Long gameId, final MagicCard mc,
+			final boolean added)
 	{
-		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage()).getAllCardsInBattlefield().getModelObject();
-		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, allCardsInBattlefield, mc, added);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, allCardsInBattlefield, added);
+		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage())
+				.getAllCardsInBattlefield().getModelObject();
+		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, allCardsInBattlefield,
+				mc, added);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService,
+				allCardsInBattlefield, added);
 	}
 
-	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final List<MagicCard> allCardsInBattlefield, final MagicCard mc, final boolean added)
+	public static void updateCardsInBattlefield(final AjaxRequestTarget target,
+			final PersistenceService persistenceService,
+			final List<MagicCard> allCardsInBattlefield, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
 		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
@@ -44,6 +55,7 @@ public final class JavaScriptUtils
 			else
 			{
 				allCards.remove(mc);
+				JavaScriptUtils.LOGGER.info("remove: " + mc.getTitle());
 			}
 
 			for (int i = 0; i < allCards.size(); i++)
@@ -58,7 +70,8 @@ public final class JavaScriptUtils
 		}
 		else
 		{
-			homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCardsInBattlefield));
+			homePage.getParentPlaceholder().addOrReplace(
+					homePage.generateCardListView(allCardsInBattlefield));
 			target.add(homePage.getParentPlaceholder());
 		}
 	}
@@ -67,7 +80,9 @@ public final class JavaScriptUtils
 	 * Three things to do: - card positions - card tapped / untapped state -
 	 * activate tooltip again
 	 */
-	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final List<MagicCard> allCardsInBattlefield, final boolean added)
+	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
+			final PersistenceService persistenceService,
+			final List<MagicCard> allCardsInBattlefield, final boolean added)
 	{
 		final StringBuffer buf = new StringBuffer();
 		buf.append("var shouldMove = true; ");
@@ -88,7 +103,9 @@ public final class JavaScriptUtils
 				buf.append("jQuery('#card" + uuidValidForJs + "').rotate(0); ");
 			}
 
-			buf.append("var card = jQuery('#cardHandle" + uuidValidForJs + "'); card.css('position', 'absolute'); card.css('left', '" + aCard.getX() + "px'); card.css('top', '" + aCard.getY() + "px'); ");
+			buf.append("var card = jQuery('#cardHandle" + uuidValidForJs
+					+ "'); card.css('position', 'absolute'); card.css('left', '" + aCard.getX()
+					+ "px'); card.css('top', '" + aCard.getY() + "px'); ");
 
 			buf.append("jQuery('#card" + uuidValidForJs
 					+ "').click(function(e) { jQuery('#cardTooltip" + uuidValidForJs
@@ -174,14 +191,22 @@ public final class JavaScriptUtils
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
 
-		final List<MagicCard> allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
-		for (final MagicCard magicCard : allCardsInGraveyard) {
-			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
+		final List<MagicCard> allCardsInGraveyard = persistenceService
+				.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
+		for (final MagicCard magicCard : allCardsInGraveyard)
+		{
+			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_")
+					+ "').hide(); ");
+			JavaScriptUtils.LOGGER.info("hide from graveyard: " + magicCard.getTitle());
 		}
 
-		final List<MagicCard> allCardsInHands = persistenceService.getAllCardsInHandsForAGame(HatchetHarrySession.get().getGameId());
-		for (final MagicCard magicCard : allCardsInHands) {
-			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
+		final List<MagicCard> allCardsInHands = persistenceService
+				.getAllCardsInHandsForAGame(HatchetHarrySession.get().getGameId());
+		for (final MagicCard magicCard : allCardsInHands)
+		{
+			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_")
+					+ "').hide(); ");
+			JavaScriptUtils.LOGGER.info("hide from hand: " + magicCard.getTitle());
 		}
 
 		buf.append("}, 300); ");

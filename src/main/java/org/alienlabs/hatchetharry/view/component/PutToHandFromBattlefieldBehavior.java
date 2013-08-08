@@ -82,8 +82,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			JavaScriptUtils.updateHand(target);
 		}
 
-		final Long gameId = PutToHandFromBattlefieldBehavior.this.persistenceService
-				.getPlayer(session.getPlayer().getId()).getGame().getId();
+		final Long gameId = session.getPlayer().getGame().getId();
 
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 		final Deck d = p.getDeck();
