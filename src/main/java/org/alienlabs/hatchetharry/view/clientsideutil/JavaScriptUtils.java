@@ -69,7 +69,7 @@ public final class JavaScriptUtils
 	 */
 	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final List<MagicCard> allCardsInBattlefield, final boolean added)
 	{
-		final StringBuffer buf = new StringBuffer();
+		StringBuffer buf = new StringBuffer();
 		buf.append("var shouldMove = true; ");
 		buf.append("window.setTimeout(function() { ");
 
@@ -173,7 +173,11 @@ public final class JavaScriptUtils
 		buf.append("jQuery('#' + ui.draggable.context.id).hide(); ");
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
+		buf.append("}, 150); ");
 
+		target.appendJavaScript(buf.toString());
+
+		buf = new StringBuffer("window.setTimeout(function() { ");
 		final List<MagicCard> allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
 		for (final MagicCard magicCard : allCardsInGraveyard) {
 			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
@@ -183,9 +187,7 @@ public final class JavaScriptUtils
 		for (final MagicCard magicCard : allCardsInHands) {
 			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
 		}
-
-		buf.append("}, 300); ");
-
+		buf.append("}, 500); ");
 		target.appendJavaScript(buf.toString());
 	}
 
