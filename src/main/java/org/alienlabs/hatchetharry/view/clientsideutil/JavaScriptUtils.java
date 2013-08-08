@@ -194,23 +194,26 @@ public class JavaScriptUtils
 
 		target.appendJavaScript(buf.toString());
 
-		buf = new StringBuffer("window.setTimeout(function() { ");
-		final List<MagicCard> allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
-		for (final MagicCard magicCard : allCardsInGraveyard) {
-			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
-			JavaScriptUtils.LOGGER.info("hide from graveyard: " + magicCard.getTitle());
-		}
-
-		final List<MagicCard> allCardsInHands = persistenceService
-				.getAllCardsInHandsForAGame(HatchetHarrySession.get().getGameId());
-		for (final MagicCard magicCard : allCardsInHands)
+		if (!added)
 		{
-			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_")
-					+ "').hide(); ");
-			JavaScriptUtils.LOGGER.info("hide from hand: " + magicCard.getTitle());
+			buf = new StringBuffer("window.setTimeout(function() { ");
+			final List<MagicCard> allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
+			for (final MagicCard magicCard : allCardsInGraveyard) {
+				buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
+				JavaScriptUtils.LOGGER.info("hide from graveyard: " + magicCard.getTitle());
+			}
+
+			final List<MagicCard> allCardsInHands = persistenceService
+					.getAllCardsInHandsForAGame(HatchetHarrySession.get().getGameId());
+			for (final MagicCard magicCard : allCardsInHands)
+			{
+				buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_")
+						+ "').hide(); ");
+				JavaScriptUtils.LOGGER.info("hide from hand: " + magicCard.getTitle());
+			}
+			buf.append("}, 500); ");
+			target.appendJavaScript(buf.toString());
 		}
-		buf.append("}, 500); ");
-		target.appendJavaScript(buf.toString());
 	}
 
 	public static void updateHand(final AjaxRequestTarget target)
