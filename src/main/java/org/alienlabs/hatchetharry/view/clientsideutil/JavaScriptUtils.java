@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.clientsideutil;
 
 import java.util.List;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
@@ -26,7 +27,7 @@ public final class JavaScriptUtils
 	{
 		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage()).getAllCardsInBattlefield().getModelObject();
 		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, allCardsInBattlefield, mc, added);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, allCardsInBattlefield);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, allCardsInBattlefield, added);
 	}
 
 	public static void updateCardsInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final List<MagicCard> allCardsInBattlefield, final MagicCard mc, final boolean added)
@@ -51,6 +52,7 @@ public final class JavaScriptUtils
 				final MagicCard temp = persistenceService.getCardFromUuid(card.getUuidObject());
 				card.setX(temp.getX());
 				card.setY(temp.getY());
+				card.setTapped(temp.isTapped());
 			}
 			target.add(homePage.getParentPlaceholder());
 		}
@@ -65,7 +67,7 @@ public final class JavaScriptUtils
 	 * Three things to do: - card positions - card tapped / untapped state -
 	 * activate tooltip again
 	 */
-	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target, final List<MagicCard> allCardsInBattlefield)
+	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target, final PersistenceService persistenceService, final List<MagicCard> allCardsInBattlefield, final boolean added)
 	{
 		final StringBuffer buf = new StringBuffer();
 		buf.append("var shouldMove = true; ");
@@ -171,6 +173,16 @@ public final class JavaScriptUtils
 		buf.append("jQuery('#' + ui.draggable.context.id).hide(); ");
 		buf.append("Wicket.Ajax.get({ 'u' : ");
 		buf.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
+
+		final List<MagicCard> allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(HatchetHarrySession.get().getGameId());
+		for (final MagicCard magicCard : allCardsInGraveyard) {
+			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
+		}
+
+		final List<MagicCard> allCardsInHands = persistenceService.getAllCardsInHandsForAGame(HatchetHarrySession.get().getGameId());
+		for (final MagicCard magicCard : allCardsInHands) {
+			buf.append("jQuery('#cardHandle" + magicCard.getUuid().replace("-", "_") + "').hide(); ");
+		}
 
 		buf.append("}, 300); ");
 
