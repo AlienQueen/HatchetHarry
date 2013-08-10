@@ -24,32 +24,32 @@ public class RuntimeDataGenerator implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
-		"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
-		"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
-		"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
-		"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
-		"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-		"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
-		"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
-		"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
-		"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
-		"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-		"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
-	"Swamp" };
+			"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
+			"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
+			"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
+			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
+			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+			"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
+			"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
+			"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
+			"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
+			"Swamp" };
 
 	private static final String[] TITLES2 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
-		"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
-		"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
-		"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
-		"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
-		"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
-		"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
-		"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
-		"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-		"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
-		"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-		"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-		"Mountain", "Mountain", "Mountain", "Mountain" };
+			"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
+			"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
+			"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
+			"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
+			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
+			"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
+			"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
+			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+			"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
+			"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
 	private MagicCardDao magicCardDao;
@@ -93,7 +93,7 @@ public class RuntimeDataGenerator implements Serializable
 		{
 			final MagicCard baldu = new MagicCard("cards/Balduvian Horde_small.jpg",
 					"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-					"Balduvian Horde", "Isn't it a spoiler?");
+					"Balduvian Horde", "Isn't it a spoiler?", "");
 			baldu.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 			final Deck fake = new Deck();
 			fake.setDeckArchive(null);
@@ -109,7 +109,8 @@ public class RuntimeDataGenerator implements Serializable
 			this.persistenceService.saveCard(baldu);
 		}
 
-		if ((this.importDeck) && (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
+		if ((this.importDeck)
+				&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
 		{
 			final File _deck = new File(ResourceBundle.getBundle(
 					RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
@@ -161,7 +162,7 @@ public class RuntimeDataGenerator implements Serializable
 					final CollectibleCard c = new CollectibleCard();
 					c.setTitle((j == 1
 							? RuntimeDataGenerator.TITLES1[i]
-									: RuntimeDataGenerator.TITLES2[i]));
+							: RuntimeDataGenerator.TITLES2[i]));
 					c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
 							.getDeckArchiveId());
 					// A CollectibleCard can be duplicated: lands, normal cards
@@ -169,10 +170,9 @@ public class RuntimeDataGenerator implements Serializable
 					this.persistenceService.saveCollectibleCard(c);
 
 					MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
-							+ "_small.jpg",
-							"cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg", "cards/"
-									+ RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
-									RuntimeDataGenerator.TITLES1[i], "");
+							+ "_small.jpg", "cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg",
+							"cards/" + RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
+							RuntimeDataGenerator.TITLES1[i], "", "");
 					card.setGameId(gameId);
 					card.setDeck(decks.get(j - 1));
 					card.setUuidObject(UUID.randomUUID());
@@ -231,7 +231,7 @@ public class RuntimeDataGenerator implements Serializable
 				final MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
 						+ "_small.jpg", "cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg",
 						"cards/" + RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
-						RuntimeDataGenerator.TITLES1[i], "");
+						RuntimeDataGenerator.TITLES1[i], "", "");
 				card.setGameId(gameId);
 				card.setDeck(deck);
 				card.setUuidObject(UUID.randomUUID());

@@ -84,12 +84,14 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 	@Ignore
 	public void testPlayCardFromHandBehavior()
 	{
+		// For later
 	}
 
 	@Test
 	@Ignore
 	public void testPlayCardFromGraveyardBehavior()
 	{
+		// For later
 	}
 
 }

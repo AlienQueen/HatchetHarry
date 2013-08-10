@@ -1553,6 +1553,10 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+			// $CASES-OMITTED$
+			// TODO: split this notifier action and the one of
+			// card counters
+			// $CASES-OMITTED$
 			default :
 				throw new IllegalArgumentException(
 						"can not treat this case in HomePage#displayNotification()");
@@ -1585,6 +1589,7 @@ public class HomePage extends TestReportPage
 	 *            not used, since Comet channels are managed by
 	 *            JoinGameModalWindow
 	 */
+	@SuppressWarnings("static-method")
 	@Subscribe
 	public void displayJoinGameMessage(final AjaxRequestTarget target,
 			final JoinGameNotificationCometChannel event)
@@ -1640,6 +1645,10 @@ public class HomePage extends TestReportPage
 						+ "'s card: " + event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+			// $CASES-OMITTED$
+			// TODO: split this card counters notifier action
+			// and the one of general messages
+			// $CASES-OMITTED$
 			default :
 				throw new IllegalArgumentException(
 						"can not treat this case in HomePage#updateCardTooltip()");
@@ -1659,6 +1668,7 @@ public class HomePage extends TestReportPage
 				event.getGameId(), event.getMagicCard(), false);
 	}
 
+	@SuppressWarnings("static-method")
 	@Subscribe
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
@@ -1771,6 +1781,9 @@ public class HomePage extends TestReportPage
 				event.getGameId(), mc, true);
 	}
 
+	@SuppressWarnings("static-method")
+	// TODO: test if static methods can be annotated with @Subscribe and still
+	// access Wicket context
 	@Subscribe
 	public void acceptEndTurn(final AjaxRequestTarget target, final AcceptEndTurnCometChannel event)
 	{
@@ -2017,9 +2030,7 @@ public class HomePage extends TestReportPage
 				final MagicCard mc = item.getModelObject();
 
 				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip",
-						mc.getUuidObject(), mc.getBigImageFilename(),
-						HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId())
-								.getSide(), mc);
+						mc.getUuidObject(), mc.getBigImageFilename(), mc.getOwnerSide(), mc);
 				cardBubbleTip.setOutputMarkupId(true);
 				cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
 				cardBubbleTip.add(new AttributeModifier("style",

@@ -121,16 +121,12 @@ public class ChatPanel extends Panel
 				}
 
 			}
-
-			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
-			{
-			}
 		};
 		form.add(button);
 		this.add(form);
 	}
 
+	@SuppressWarnings("static-method")
 	@Subscribe
 	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event)
 	{
@@ -140,7 +136,9 @@ public class ChatPanel extends Panel
 		target.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
 				+ event.getMessage()
 				+ "\" + \"&#013;&#010;\"; chatPanel.scrollTop = chatPanel.scrollHeight; document.activeElement.blur(); ");
-        target.appendJavaScript("jQuery.gritter.add({ title : '"+ event.getUser() + "', text : 'said something on the chat!' , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-green'});");
+		target.appendJavaScript("jQuery.gritter.add({ title : '"
+				+ event.getUser()
+				+ "', text : 'said something on the chat!' , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-green'});");
 	}
 
 	@Required

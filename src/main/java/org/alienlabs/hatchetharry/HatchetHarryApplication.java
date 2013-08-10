@@ -303,14 +303,14 @@ public class HatchetHarryApplication extends WebApplication
 				"image/teaser.gif"));
 		this.mountResource("image/tipsy.gif", new PackageResourceReference(HomePage.class,
 				"image/tipsy.gif"));
-        this.mountResource("image/arrow.png", new PackageResourceReference(HomePage.class,
-                "image/arrow.png"));
-        this.mountResource("image/rightArrow.png", new PackageResourceReference(HomePage.class,
-                "image/rightArrow.png"));
-        this.mountResource("image/minusLife.png", new PackageResourceReference(HomePage.class,
-                "image/minusLife.png"));
-        this.mountResource("image/plusLife.png", new PackageResourceReference(HomePage.class,
-                "image/plusLife.png"));
+		this.mountResource("image/arrow.png", new PackageResourceReference(HomePage.class,
+				"image/arrow.png"));
+		this.mountResource("image/rightArrow.png", new PackageResourceReference(HomePage.class,
+				"image/rightArrow.png"));
+		this.mountResource("image/minusLife.png", new PackageResourceReference(HomePage.class,
+				"image/minusLife.png"));
+		this.mountResource("image/plusLife.png", new PackageResourceReference(HomePage.class,
+				"image/plusLife.png"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.seconds(3600));
@@ -367,9 +367,9 @@ public class HatchetHarryApplication extends WebApplication
 
 		private final File rootFolder;
 
-		public FolderContentResource(final File rootFolder)
+		public FolderContentResource(final File _rootFolder)
 		{
-			this.rootFolder = rootFolder;
+			this.rootFolder = _rootFolder;
 		}
 
 		@Override

@@ -205,7 +205,8 @@ public class JoinGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-									+ "Thumb.jpg", cc.getTitle(), "");
+									+ "Thumb.jpg", cc.getTitle(), "",
+							JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 					card.setGameId(game.getId());
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
@@ -320,11 +321,6 @@ public class JoinGameModalWindow extends Panel
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}
-			}
-
-			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
-			{
 			}
 		};
 		submit.setOutputMarkupId(true);

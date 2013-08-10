@@ -185,7 +185,7 @@ public class DataGenerator implements InitializingBean
 						final MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
 								+ "_small.jpg", "cards/" + DataGenerator.TITLES1[i] + ".jpg",
 								"cards/" + DataGenerator.TITLES1[i] + "Thumb.jpg",
-								DataGenerator.TITLES1[i], "");
+								DataGenerator.TITLES1[i], "", "");
 						card.setGameId(1l);
 						card.setDeck(decks.get(j - 1));
 						card.setUuidObject(UUID.randomUUID());
@@ -201,7 +201,7 @@ public class DataGenerator implements InitializingBean
 						final MagicCard card = new MagicCard("cards/" + DataGenerator.TITLES1[i]
 								+ "_small.jpg", "cards/" + DataGenerator.TITLES1[i] + ".jpg",
 								"cards/" + DataGenerator.TITLES1[i] + "Thumb.jpg",
-								DataGenerator.TITLES1[i], "");
+								DataGenerator.TITLES1[i], "", "");
 						card.setGameId(1l);
 						card.setDeck(decks.get(j - 1));
 						card.setUuidObject(UUID.randomUUID());
@@ -231,7 +231,7 @@ public class DataGenerator implements InitializingBean
 			{
 				final MagicCard card = new MagicCard("cards/Balduvian Horde_small.jpg",
 						"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-						"Balduvian Horde", "Isn't it a spoiler?");
+						"Balduvian Horde", "Isn't it a spoiler?", "");
 				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 				final Deck fake = new Deck();
 				fake.setPlayerId(-1l);

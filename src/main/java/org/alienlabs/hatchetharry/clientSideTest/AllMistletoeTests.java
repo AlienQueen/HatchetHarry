@@ -8,5 +8,5 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ BasicDatabaseTest.class })
 public class AllMistletoeTests
 {
-
+	// Just a class to launch all Misteltoe tests, verified by Selenium.
 }

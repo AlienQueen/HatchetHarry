@@ -36,9 +36,9 @@ public class PutToHandFromBattlefieldCometChannel
 		return this.mc;
 	}
 
-	public void setMc(final MagicCard mc)
+	public void setMc(final MagicCard _mc)
 	{
-		this.mc = mc;
+		this.mc = _mc;
 	}
 
 	public String getRequestingPlayerName()
@@ -46,9 +46,9 @@ public class PutToHandFromBattlefieldCometChannel
 		return this.requestingPlayerName;
 	}
 
-	public void setRequestingPlayerName(final String requestingPlayerName)
+	public void setRequestingPlayerName(final String _requestingPlayerName)
 	{
-		this.requestingPlayerName = requestingPlayerName;
+		this.requestingPlayerName = _requestingPlayerName;
 	}
 
 	public String getTargetPlayerName()
@@ -56,9 +56,9 @@ public class PutToHandFromBattlefieldCometChannel
 		return this.targetPlayerName;
 	}
 
-	public void setTargetPlayerName(final String targetPlayerName)
+	public void setTargetPlayerName(final String _targetPlayerName)
 	{
-		this.targetPlayerName = targetPlayerName;
+		this.targetPlayerName = _targetPlayerName;
 	}
 
 	public Long getTargetPlayerId()
@@ -66,9 +66,9 @@ public class PutToHandFromBattlefieldCometChannel
 		return this.targetPlayerId;
 	}
 
-	public void setTargetPlayerId(final Long targetPlayerId)
+	public void setTargetPlayerId(final Long _targetPlayerId)
 	{
-		this.targetPlayerId = targetPlayerId;
+		this.targetPlayerId = _targetPlayerId;
 	}
 
 	public Long getDeckId()
@@ -76,9 +76,9 @@ public class PutToHandFromBattlefieldCometChannel
 		return this.deckId;
 	}
 
-	public void setDeckId(final Long deckId)
+	public void setDeckId(final Long _deckId)
 	{
-		this.deckId = deckId;
+		this.deckId = _deckId;
 	}
 
 	public boolean isShouldUpdateHand()

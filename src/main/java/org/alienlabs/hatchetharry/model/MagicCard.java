@@ -79,19 +79,23 @@ public class MagicCard implements SlideshowImage, Serializable
 	private Long zoneOrder = 0l;
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "card")
 	private Set<Counter> counters = new HashSet<Counter>();
+	@Column
+	private String ownerSide;
 
 	public MagicCard()
 	{
 	}
 
 	public MagicCard(final String _smallImageFilename, final String _bigImageFilename,
-			final String _thumbnailFilename, final String _title, final String _description)
+			final String _thumbnailFilename, final String _title, final String _description,
+			final String _ownerSide)
 	{
 		this.smallImageFilename = _smallImageFilename;
 		this.bigImageFilename = _bigImageFilename;
 		this.thumbnailFilename = _thumbnailFilename;
 		this.title = _title;
 		this.description = _description;
+		this.ownerSide = _ownerSide;
 	}
 
 	public Long getId()
@@ -320,6 +324,16 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setCounters(final Set<Counter> _counters)
 	{
 		this.counters = _counters;
+	}
+
+	public String getOwnerSide()
+	{
+		return this.ownerSide;
+	}
+
+	public void setOwnerSide(final String _ownerSide)
+	{
+		this.ownerSide = _ownerSide;
 	}
 
 }

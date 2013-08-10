@@ -47,11 +47,6 @@ public class TeamInfoModalWindow extends Panel
 			{
 				_modal.close(target);
 			}
-
-			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
-			{
-			}
 		};
 
 		form.add(founder, lead, dev1, gfx, tester1, tester2, submit);

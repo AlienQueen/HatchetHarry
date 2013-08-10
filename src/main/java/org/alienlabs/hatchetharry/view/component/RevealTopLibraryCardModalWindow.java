@@ -226,8 +226,8 @@ public class RevealTopLibraryCardModalWindow extends Panel
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService persistenceService)
+	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
-		this.persistenceService = persistenceService;
+		this.persistenceService = _persistenceService;
 	}
 }

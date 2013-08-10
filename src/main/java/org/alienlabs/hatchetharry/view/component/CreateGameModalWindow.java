@@ -171,7 +171,8 @@ public class CreateGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-									+ "Thumb.jpg", cc.getTitle(), "");
+									+ "Thumb.jpg", cc.getTitle(), "",
+							CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 					card.setGameId(g.getId());
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());

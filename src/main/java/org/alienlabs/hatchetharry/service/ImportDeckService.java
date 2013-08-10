@@ -74,7 +74,7 @@ public class ImportDeckService implements Serializable
 				this.persistenceService.saveCollectibleCard(cc);
 
 				final MagicCard card = new MagicCard("cards/" + cardName + "_small.jpg", "cards/"
-						+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "");
+						+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "", "");
 				card.setGameId(1l);
 				card.setDeck(deck);
 				card.setZone(CardZone.LIBRARY);

@@ -136,9 +136,9 @@ public class Deck implements Serializable
 		return this.deckId;
 	}
 
-	public void setDeckId(final Long deckId)
+	public void setDeckId(final Long _deckId)
 	{
-		this.deckId = deckId;
+		this.deckId = _deckId;
 	}
 
 	public DeckArchive getDeckArchive()
@@ -146,9 +146,9 @@ public class Deck implements Serializable
 		return this.deckArchive;
 	}
 
-	public void setDeckArchive(final DeckArchive deckArchive)
+	public void setDeckArchive(final DeckArchive _deckArchive)
 	{
-		this.deckArchive = deckArchive;
+		this.deckArchive = _deckArchive;
 	}
 
 	public List<MagicCard> getCards()
