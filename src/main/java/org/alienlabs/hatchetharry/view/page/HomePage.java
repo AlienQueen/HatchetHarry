@@ -71,7 +71,6 @@ import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
-import org.alienlabs.hatchetharry.model.channel.ReactivateTooltipsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
@@ -1816,14 +1815,6 @@ public class HomePage extends TestReportPage
 		this.countCardsWindow.show(target);
 	}
 
-	@Subscribe
-	public void reactivateTooltipsCometChannel(final AjaxRequestTarget target,
-			final ReactivateTooltipsCometChannel event)
-	{
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), null, false);
-	}
-
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
@@ -2026,13 +2017,14 @@ public class HomePage extends TestReportPage
 				final MagicCard mc = item.getModelObject();
 
 				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip",
-						mc.getUuidObject(), mc.getBigImageFilename(), HatchetHarrySession.get()
-								.getPlayer().getSide(), mc);
+						mc.getUuidObject(), mc.getBigImageFilename(),
+						HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId())
+								.getSide(), mc);
 				cardBubbleTip.setOutputMarkupId(true);
 				cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
 				cardBubbleTip.add(new AttributeModifier("style",
-						"'display: block; position: absolute; left: " + mc.getX() + "px; top: "
-								+ mc.getY() + "px; z-index: 50;'"));
+						"display: none; position: absolute; left: " + mc.getX() + "px; top: "
+								+ mc.getY() + "px; z-index: 50;"));
 
 				item.add(cardBubbleTip);
 			}

@@ -131,7 +131,7 @@ public class JoinGameModalWindow extends Panel
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
-			private static final long serialVersionUID = 561276328198198L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)

@@ -11,3 +11,5 @@
 /chromedriver.log
 /libpeerconnection.log
 /.pmd
+.idea
+META-INF

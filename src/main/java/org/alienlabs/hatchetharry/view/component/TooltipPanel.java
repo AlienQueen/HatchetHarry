@@ -13,13 +13,13 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
-import org.alienlabs.hatchetharry.model.channel.ReactivateTooltipsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -62,21 +62,9 @@ public class TooltipPanel extends Panel
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("jQuery('.tooltip').hide(); ");
-
-				final Long gameId = HatchetHarrySession.get().getGameId();
-				final ReactivateTooltipsCometChannel rtcc = new ReactivateTooltipsCometChannel(
-						gameId);
-				final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
-						.giveAllPlayersFromGame(gameId);
-
-				// post a message for all players in the game
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long player = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
-
-					HatchetHarryApplication.get().getEventBus().post(rtcc, pageUuid);
-				}
+				JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
+						TooltipPanel.this.persistenceService,
+						HatchetHarrySession.get().getGameId(), null, false);
 			}
 		};
 
@@ -100,12 +88,12 @@ public class TooltipPanel extends Panel
 				new Model<String>(""));
 		counterAddName.setOutputMarkupId(true);
 
-		final AjaxSubmitLink submit = new AjaxSubmitLink("submit")
+		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				final MagicCard myCard = TooltipPanel.this.persistenceService
 						.getCardFromUuid(TooltipPanel.this.uuid);
