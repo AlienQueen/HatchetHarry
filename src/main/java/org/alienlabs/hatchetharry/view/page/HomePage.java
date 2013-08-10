@@ -366,7 +366,7 @@ public class HomePage extends TestReportPage
 	private final void generateCardPanels()
 	{
 		this.generateCardListView(this.persistenceService
-				.getAllCardsInBattleFieldForAGame(this.player.getGame().getId()));
+				.getAllCardsInBattleFieldForAGame(this.player.getGame().getId()), false);
 	}
 
 	private void generateHideAllTooltipsLink(final String id)
@@ -2001,7 +2001,8 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public ListView<MagicCard> generateCardListView(final List<MagicCard> allMagicCardsInBattlefield)
+	public ListView<MagicCard> generateCardListView(
+			final List<MagicCard> allMagicCardsInBattlefield, final boolean replace)
 	{
 		this.allCardsInBattlefield = new ListView<MagicCard>("magicCards",
 				allMagicCardsInBattlefield)
@@ -2041,7 +2042,14 @@ public class HomePage extends TestReportPage
 		};
 		this.allTooltips.setOutputMarkupId(true);
 
-		this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
+		if (replace)
+		{
+			this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
+		}
+		else
+		{
+			this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
+		}
 
 		return this.allCardsInBattlefield;
 	}

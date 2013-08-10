@@ -74,7 +74,8 @@ public class JavaScriptUtils
 				card.setTapped(temp.isTapped());
 			}
 
-			homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCards));
+			homePage.getParentPlaceholder().addOrReplace(
+					homePage.generateCardListView(allCards, true));
 			target.add(homePage.getParentPlaceholder());
 		}
 	}
