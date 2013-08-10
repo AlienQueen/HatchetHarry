@@ -33,9 +33,9 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 
 		// Put it to graveyard
 		SpringContextLoaderBaseTest.tester.assertComponent(
-				"parentPlaceholder:handCards:0:cardPanel", CardPanel.class);
+				"parentPlaceholder:magicCards:0:cardPanel", CardPanel.class);
 		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel");
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:0:cardPanel");
 		Assert.assertNotNull(card);
 
 		final PutToGraveyardFromBattlefieldBehavior ptgfbb = card

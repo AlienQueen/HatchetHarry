@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-
 import java.util.UUID;
 
 
@@ -15,16 +13,14 @@ public class UpdateCardPanelCometChannel
 	private final String counterName;
 	private final Long numberOfCounters;
 	private final NotifierAction action;
-	private final WebMarkupContainer cardHandle;
 	private final UUID uuid;
 	private final String bigImage;
 	private final String ownerSide;
 
 	public UpdateCardPanelCometChannel(final Long _gameId, final String _requestingPlayerName,
 			final String _targetPlayerName, final String _cardName, final String _counterName,
-			final Long _numberOfCounters, final NotifierAction _action,
-			final WebMarkupContainer _cardHandle, final UUID _uuid, final String _bigImage,
-			final String _ownerSide)
+			final Long _numberOfCounters, final NotifierAction _action, final UUID _uuid,
+			final String _bigImage, final String _ownerSide)
 	{
 		this.gameId = _gameId;
 		this.requestingPlayerName = _requestingPlayerName;
@@ -33,7 +29,6 @@ public class UpdateCardPanelCometChannel
 		this.counterName = _counterName;
 		this.numberOfCounters = _numberOfCounters;
 		this.action = _action;
-		this.cardHandle = _cardHandle;
 		this.uuid = _uuid;
 		this.bigImage = _bigImage;
 		this.ownerSide = _ownerSide;
@@ -72,11 +67,6 @@ public class UpdateCardPanelCometChannel
 	public NotifierAction getAction()
 	{
 		return this.action;
-	}
-
-	public WebMarkupContainer getCardHandle()
-	{
-		return this.cardHandle;
 	}
 
 	public UUID getUuid()

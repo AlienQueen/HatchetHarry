@@ -53,7 +53,7 @@ public class DataGenerator implements InitializingBean
 			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
 			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
 			"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
-			"Tezzeret s Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
+			"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
 			"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
 			"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
 			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
@@ -161,9 +161,9 @@ public class DataGenerator implements InitializingBean
 			}
 
 			final List<Deck> decks = new ArrayList<Deck>();
-            this.persistenceService.saveDeckArchive(deckArchive1);
+			this.persistenceService.saveDeckArchive(deckArchive1);
 			deck1 = this.persistenceService.saveDeck(deck1);
-            this.persistenceService.saveDeckArchive(deckArchive2);
+			this.persistenceService.saveDeckArchive(deckArchive2);
 			deck2 = this.persistenceService.saveDeck(deck2);
 			decks.add(0, deck1);
 			decks.add(1, deck2);
@@ -208,7 +208,7 @@ public class DataGenerator implements InitializingBean
 						card.setX(16l);
 						card.setY(16l);
 						card.setZone(CardZone.LIBRARY);
-                        this.persistenceService.saveOrUpdateDeck(decks.get(j - 1));
+						this.persistenceService.saveOrUpdateDeck(decks.get(j - 1));
 						this.persistenceService.saveCard(card);
 
 						final List<MagicCard> cards = decks.get(j - 1).getCards();
@@ -235,7 +235,7 @@ public class DataGenerator implements InitializingBean
 				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 				final Deck fake = new Deck();
 				fake.setPlayerId(-1l);
-                fake.setDeckArchive(deckArchive1);
+				fake.setDeckArchive(deckArchive1);
 				card.setDeck(fake);
 				card.setGameId(-1l);
 				card.setZone(CardZone.BATTLEFIELD);

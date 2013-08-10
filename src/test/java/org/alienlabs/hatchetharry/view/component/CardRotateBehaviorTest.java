@@ -27,10 +27,10 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		SpringContextLoaderBaseTest.tester.assertComponent(
-				"parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton",
+				"parentPlaceholder:magicCards:0:cardPanel:cardHandle:menutoggleButton",
 				WebMarkupContainer.class);
 		final WebMarkupContainer button = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("parentPlaceholder:handCards:0:cardPanel:cardHandle:menutoggleButton");
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:0:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(button);
 		final List<Behavior> allCardBehaviors = (List<Behavior>)button.getBehaviors();
 		CardRotateBehavior crb = null;

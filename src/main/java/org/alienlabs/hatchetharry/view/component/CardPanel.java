@@ -74,7 +74,7 @@ public class CardPanel extends Panel
 		cardHandle.setOutputMarkupId(true);
 		cardHandle.setMarkupId("cardHandle" + this.uuid.toString().replace("-", "_"));
 		cardHandle.add(new AttributeModifier("style", "position: absolute; top: " + myCard.getY()
-				+ "px; left: " + myCard.getX() + "px;"));
+				+ "px; left: " + myCard.getX() + "px;  z-index: 0;"));
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
@@ -116,7 +116,8 @@ public class CardPanel extends Panel
 		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
 		handleImage.setOutputMarkupId(true);
 
-		final ExternalImage tapHandleImage = new ExternalImage("tapHandleImage", "image/rightArrow.png");
+		final ExternalImage tapHandleImage = new ExternalImage("tapHandleImage",
+				"image/rightArrow.png");
 		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString().replace("-", "_"));
 		tapHandleImage.setOutputMarkupId(true);
 
@@ -124,37 +125,22 @@ public class CardPanel extends Panel
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString().replace("-", "_"));
 
-        this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
-        if (null != this.owner)
-        {
-            if ("infrared".equals(this.owner.getSide()))
-            {
-                cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
-            }
-            else if ("ultraviolet".equals(this.owner.getSide()))
-            {
-                cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
-            }
-
-            final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", cardHandle,
-                    this.uuid, bigImage, this.owner.getSide(), myCard);
-            cardBubbleTip.setOutputMarkupId(true);
-            cardBubbleTip.setMarkupId("cardTooltip" + this.uuid.toString().replace("-", "_"));
-            cardBubbleTip.add(new AttributeModifier("style", "display: none;"));
-
-            form.add(cardBubbleTip);
-        }
-        else
-        {
-            cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
-            final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip", cardHandle,
-                    this.uuid, bigImage, "yellow", myCard);
-            cardBubbleTip.setOutputMarkupId(true);
-            cardBubbleTip.setMarkupId("cardTooltip" + this.uuid.toString().replace("-", "_"));
-            cardBubbleTip.add(new AttributeModifier("style", "display: none;"));
-
-            form.add(cardBubbleTip);
-        }
+		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
+		if (null != this.owner)
+		{
+			if ("infrared".equals(this.owner.getSide()))
+			{
+				cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
+			}
+			else if ("ultraviolet".equals(this.owner.getSide()))
+			{
+				cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
+			}
+		}
+		else
+		{
+			cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
+		}
 
 		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
 		contextMenu.setOutputMarkupId(true);

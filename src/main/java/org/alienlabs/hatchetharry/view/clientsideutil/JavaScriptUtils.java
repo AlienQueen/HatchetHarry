@@ -44,7 +44,7 @@ public class JavaScriptUtils
 		{
 			if (added)
 			{
-				 allCards.add(mc);
+				allCards.add(mc);
 			}
 			else
 			{
@@ -65,6 +65,15 @@ public class JavaScriptUtils
 		}
 		else
 		{
+			for (int i = 0; i < allCards.size(); i++)
+			{
+				final MagicCard card = allCards.get(i);
+				final MagicCard temp = persistenceService.getCardFromUuid(card.getUuidObject());
+				card.setX(temp.getX());
+				card.setY(temp.getY());
+				card.setTapped(temp.isTapped());
+			}
+
 			homePage.getParentPlaceholder().addOrReplace(homePage.generateCardListView(allCards));
 			target.add(homePage.getParentPlaceholder());
 		}
@@ -104,16 +113,24 @@ public class JavaScriptUtils
 					+ "px'); card.css('top', '" + aCard.getY() + "px'); ");
 
 			buf.append("jQuery('#card" + uuidValidForJs
-					+ "').click(function(e) { jQuery('#cardTooltip" + uuidValidForJs
-					+ "').attr('style', 'display: block'); }); ");
+					+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: block; position: absolute; left: "
+					+ (aCard.getX() + 127) + "px; top: " + (aCard.getY() + 56)
+					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+					+ " > span').attr('style', 'display: block;'); }); ");
+
 
 			// For mobile
 			buf.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
 					+ "').hammer(); ");
 			buf.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
 			buf.append("  jQuery('#cardTooltip" + uuidValidForJs
-					+ "').attr('style', 'display: block'); ");
-			buf.append("}); ");
+					+ "').attr('style', 'display: block; position: absolute; left: "
+					+ (aCard.getX() + 127) + "px; top: " + (aCard.getY() + 56)
+					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+					+ " > span').attr('style', 'display: block;'); }); ");
+
+			buf.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide();  ");
 
 			buf.append("jQuery('#tapHandleImage" + uuidValidForJs + "').unbind('click'); ");
 			buf.append("var tapUrl" + uuidValidForJs + " = $('#tapHandleImage" + uuidValidForJs

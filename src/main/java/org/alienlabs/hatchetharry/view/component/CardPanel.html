@@ -3,7 +3,8 @@
 <style type="text/css">
 	
 		.magicCard {
-			z-index:1000;
+			position: relative;
+			z-index:1;
 		}
 		p, h4, li
 		{
@@ -94,7 +95,6 @@
 						<img wicket:id="handleImage" id="handle" class="drag-handle-image"></img>
 						<img wicket:id="cardImage" id="card"></img>
 						<img wicket:id="tapHandleImage" id="tapHandleImage" class="tap-handle-image"></img>
-						<div wicket:id="cardTooltip" id="cardTooltip" class="tooltip"></div>
 						<ul wicket:id="contextMenu" id="contextMenu" class="contextMenu">
 		
 							<li class="edit"><a href="#edit">&nbsp;Put to graveyard&nbsp;&nbsp;&nbsp;</a></li>

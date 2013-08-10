@@ -13,13 +13,13 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
+import org.alienlabs.hatchetharry.model.channel.ReactivateTooltipsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -37,24 +37,22 @@ public class TooltipPanel extends Panel
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(TooltipPanel.class);
 
-	final WebMarkupContainer cardHandle;
 	final UUID uuid;
 	final String bigImage;
 	final String ownerSide;
-    final MagicCard card;
+	final MagicCard card;
 
 	@SpringBean
 	PersistenceService persistenceService;
 
-	public TooltipPanel(final String id, final WebMarkupContainer _cardHandle, final UUID _uuid,
-			final String _bigImage, final String _ownerSide, final MagicCard _card)
+	public TooltipPanel(final String id, final UUID _uuid, final String _bigImage,
+			final String _ownerSide, final MagicCard _card)
 	{
 		super(id);
-		this.cardHandle = _cardHandle;
 		this.uuid = _uuid;
 		this.bigImage = _bigImage;
 		this.ownerSide = _ownerSide;
-        this.card = _card;
+		this.card = _card;
 
 		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
 		{
@@ -63,7 +61,22 @@ public class TooltipPanel extends Panel
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript("jQuery('.tooltip').attr('style', 'display: none;'); ");
+				target.appendJavaScript("jQuery('.tooltip').hide(); ");
+
+				final Long gameId = HatchetHarrySession.get().getGameId();
+				final ReactivateTooltipsCometChannel rtcc = new ReactivateTooltipsCometChannel(
+						gameId);
+				final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				// post a message for all players in the game
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long player = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
+
+					HatchetHarryApplication.get().getEventBus().post(rtcc, pageUuid);
+				}
 			}
 		};
 
@@ -118,8 +131,8 @@ public class TooltipPanel extends Panel
 						game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 						targetPlayer.getName(), myCard.getTitle(), counter.getCounterName(),
 						counter.getNumberOfCounters(), NotifierAction.ADD_COUNTER,
-						TooltipPanel.this.cardHandle, TooltipPanel.this.uuid,
-						TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
+						TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
+						TooltipPanel.this.ownerSide);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -176,9 +189,8 @@ public class TooltipPanel extends Panel
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
 								counter.getCounterName(), counter.getNumberOfCounters(),
-								NotifierAction.ADD_COUNTER, TooltipPanel.this.cardHandle,
-								TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
-								TooltipPanel.this.ownerSide);
+								NotifierAction.ADD_COUNTER, TooltipPanel.this.uuid,
+								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
 						{
@@ -192,7 +204,8 @@ public class TooltipPanel extends Panel
 				};
 				addCounterLink.setOutputMarkupId(true);
 
-                final ExternalImage counterPlus = new ExternalImage("counterPlus", "image/plusLife.png");
+				final ExternalImage counterPlus = new ExternalImage("counterPlus",
+						"image/plusLife.png");
 				counterPlus.setOutputMarkupId(true);
 				addCounterLink.add(counterPlus);
 				final AjaxLink<Void> removeCounterLink = new AjaxLink<Void>("removeCounterLink")
@@ -207,7 +220,8 @@ public class TooltipPanel extends Panel
 
 						if (counter.getNumberOfCounters().longValue() == 0)
 						{
-							TooltipPanel.this.persistenceService.deleteCounter(counter, TooltipPanel.this.card);
+							TooltipPanel.this.persistenceService.deleteCounter(counter,
+									TooltipPanel.this.card);
 							action = NotifierAction.CLEAR_COUNTER;
 						}
 						else
@@ -235,8 +249,8 @@ public class TooltipPanel extends Panel
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
 								counter.getCounterName(), counter.getNumberOfCounters(), action,
-								TooltipPanel.this.cardHandle, TooltipPanel.this.uuid,
-								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
+								TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
+								TooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
 						{
@@ -250,7 +264,8 @@ public class TooltipPanel extends Panel
 				};
 				removeCounterLink.setOutputMarkupId(true);
 
-                final ExternalImage counterMinus = new ExternalImage("counterMinus", "image/minusLife.png");
+				final ExternalImage counterMinus = new ExternalImage("counterMinus",
+						"image/minusLife.png");
 				counterMinus.setOutputMarkupId(true);
 				removeCounterLink.add(counterMinus);
 

@@ -71,6 +71,7 @@ import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.ReactivateTooltipsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
@@ -96,6 +97,8 @@ import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
+import org.alienlabs.hatchetharry.view.component.TooltipPanel;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -192,6 +195,7 @@ public class HomePage extends TestReportPage
 	private AjaxLink<Void> createGameLink;
 	private AjaxLink<Void> joinGameLink;
 	private ListView<MagicCard> allCardsInBattlefield;
+	private ListView<MagicCard> allTooltips;
 
 	public HomePage() throws IOException
 	{
@@ -217,7 +221,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.4.0 (release First Steps),");
-		final Label message2 = new Label("message2", "built on Tuesday, 30th of July 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 9th of August 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -362,8 +366,8 @@ public class HomePage extends TestReportPage
 	// TODO: really necessary?
 	private final void generateCardPanels()
 	{
-		this.parentPlaceholder.add(this.generateCardListView(this.persistenceService
-				.getAllCardsInBattleFieldForAGame(this.player.getGame().getId())));
+		this.generateCardListView(this.persistenceService
+				.getAllCardsInBattleFieldForAGame(this.player.getGame().getId()));
 	}
 
 	private void generateHideAllTooltipsLink(final String id)
@@ -1602,8 +1606,15 @@ public class HomePage extends TestReportPage
 	public void updateCardTooltip(final AjaxRequestTarget target,
 			final UpdateCardPanelCometChannel event)
 	{
+		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuid());
+		final List<MagicCard> all = this.getAllCardsInBattlefield().getModelObject();
+		final int index = all.indexOf(mc);
+		all.remove(index);
+		all.add(index, mc);
+		this.getAllCardsInBattlefield().setModelObject(all);
+
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), null, true);
+				event.getGameId(), null, false);
 
 		switch (event.getAction())
 		{
@@ -1805,6 +1816,14 @@ public class HomePage extends TestReportPage
 		this.countCardsWindow.show(target);
 	}
 
+	@Subscribe
+	public void reactivateTooltipsCometChannel(final AjaxRequestTarget target,
+			final ReactivateTooltipsCometChannel event)
+	{
+		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+				event.getGameId(), null, false);
+	}
+
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
@@ -1978,10 +1997,9 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public final ListView<MagicCard> generateCardListView(
-			final List<MagicCard> allMagicCardsInBattlefield)
+	public ListView<MagicCard> generateCardListView(final List<MagicCard> allMagicCardsInBattlefield)
 	{
-		this.allCardsInBattlefield = new ListView<MagicCard>("handCards",
+		this.allCardsInBattlefield = new ListView<MagicCard>("magicCards",
 				allMagicCardsInBattlefield)
 		{
 			private static final long serialVersionUID = 1L;
@@ -1997,7 +2015,32 @@ public class HomePage extends TestReportPage
 			}
 		};
 		this.allCardsInBattlefield.setOutputMarkupId(true);
-		// this.allCardsInBattlefield.setReuseItems(true);
+
+		this.allTooltips = new ListView<MagicCard>("tooltips", allMagicCardsInBattlefield)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
+				final MagicCard mc = item.getModelObject();
+
+				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip",
+						mc.getUuidObject(), mc.getBigImageFilename(), HatchetHarrySession.get()
+								.getPlayer().getSide(), mc);
+				cardBubbleTip.setOutputMarkupId(true);
+				cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
+				cardBubbleTip.add(new AttributeModifier("style",
+						"'display: block; position: absolute; left: " + mc.getX() + "px; top: "
+								+ mc.getY() + "px; z-index: 50;'"));
+
+				item.add(cardBubbleTip);
+			}
+		};
+		this.allTooltips.setOutputMarkupId(true);
+
+		this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
+
 		return this.allCardsInBattlefield;
 	}
 

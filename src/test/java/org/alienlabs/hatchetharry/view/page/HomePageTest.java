@@ -17,7 +17,6 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -250,7 +249,8 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		final ExternalImage tapHandleImage = (ExternalImage)baldu
 				.get("cardHandle:menutoggleButton:form:tapHandleImage");
 		Assert.assertNotNull(tapHandleImage);
-		final ExternalImage handleImage = (ExternalImage)baldu.get("cardHandle:menutoggleButton:form:handleImage");
+		final ExternalImage handleImage = (ExternalImage)baldu
+				.get("cardHandle:menutoggleButton:form:handleImage");
 		Assert.assertNotNull(handleImage);
 		final ExternalImage cardImage = (ExternalImage)baldu
 				.get("cardHandle:menutoggleButton:form:cardImage");
