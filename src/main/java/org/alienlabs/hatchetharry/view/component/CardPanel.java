@@ -43,8 +43,7 @@ public class CardPanel extends Panel
 
 	Player owner;
 
-	public CardPanel(final String id, final String smallImage, final String bigImage,
-			final UUID _uuid)
+	public CardPanel(final String id, final String smallImage, final UUID _uuid)
 	{
 		super(id);
 		Injector.get().inject(this);

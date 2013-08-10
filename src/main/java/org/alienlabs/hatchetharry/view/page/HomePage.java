@@ -281,7 +281,7 @@ public class HomePage extends TestReportPage
 				&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer().getSide())))
 		{
 			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-					.getBigImageFilename(), card.getUuidObject()));
+					.getUuidObject()));
 			this.session.getAllMagicCardsInBattleField().add(card);
 		}
 		else
@@ -2012,8 +2012,7 @@ public class HomePage extends TestReportPage
 			protected void populateItem(final ListItem<MagicCard> item)
 			{
 				final CardPanel cp = new CardPanel("cardPanel", item.getModelObject()
-						.getSmallImageFilename(), item.getModelObject().getBigImageFilename(), item
-						.getModelObject().getUuidObject());
+						.getSmallImageFilename(), item.getModelObject().getUuidObject());
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 			}
@@ -2042,7 +2041,7 @@ public class HomePage extends TestReportPage
 		};
 		this.allTooltips.setOutputMarkupId(true);
 
-		this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
+		this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
 
 		return this.allCardsInBattlefield;
 	}
