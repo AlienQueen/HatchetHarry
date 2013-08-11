@@ -10,8 +10,10 @@ window.setTimeout(function() {
 						var uuid = jQuery(el).attr('id').replace('card', '');
 						
 						if (action === 'edit') {
+							jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
 							Wicket.Ajax.get({ 'u' : '${graveyardUrl}&uuid=' + uuid });
 						} else if (action === 'cut') {
+							jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
 							Wicket.Ajax.get({ 'u' : '${handUrl}&uuid=' + uuid });
 						} else if (action === 'copy') {
                             var body = document.getElementById('body');
