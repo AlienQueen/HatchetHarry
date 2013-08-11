@@ -11,7 +11,8 @@ public class UpdateCardPanelCometChannel
 	private final String targetPlayerName;
 	private final String cardName;
 	private final String counterName;
-	private final Long numberOfCounters;
+	private final Long targetNumberOfCounters;
+	private final Long originalNumberOfCounters;
 	private final NotifierAction action;
 	private final UUID uuid;
 	private final String bigImage;
@@ -19,15 +20,17 @@ public class UpdateCardPanelCometChannel
 
 	public UpdateCardPanelCometChannel(final Long _gameId, final String _requestingPlayerName,
 			final String _targetPlayerName, final String _cardName, final String _counterName,
-			final Long _numberOfCounters, final NotifierAction _action, final UUID _uuid,
-			final String _bigImage, final String _ownerSide)
+			final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
+			final NotifierAction _action, final UUID _uuid, final String _bigImage,
+			final String _ownerSide)
 	{
 		this.gameId = _gameId;
 		this.requestingPlayerName = _requestingPlayerName;
 		this.targetPlayerName = _targetPlayerName;
 		this.cardName = _cardName;
 		this.counterName = _counterName;
-		this.numberOfCounters = _numberOfCounters;
+		this.targetNumberOfCounters = _targetNumberOfCounters;
+		this.originalNumberOfCounters = _originalNumberOfCounters;
 		this.action = _action;
 		this.uuid = _uuid;
 		this.bigImage = _bigImage;
@@ -59,9 +62,9 @@ public class UpdateCardPanelCometChannel
 		return this.counterName;
 	}
 
-	public Long getNumberOfCounters()
+	public Long getTargetNumberOfCounters()
 	{
-		return this.numberOfCounters;
+		return this.targetNumberOfCounters;
 	}
 
 	public NotifierAction getAction()
@@ -82,6 +85,11 @@ public class UpdateCardPanelCometChannel
 	public String getOwnerSide()
 	{
 		return this.ownerSide;
+	}
+
+	public Long getOriginalNumberOfCounters()
+	{
+		return this.originalNumberOfCounters;
 	}
 
 }

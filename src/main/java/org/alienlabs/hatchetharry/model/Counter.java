@@ -17,7 +17,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Counter")
-public class Counter implements Serializable
+public class Counter implements Serializable, Comparable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -88,4 +88,10 @@ public class Counter implements Serializable
 		this.token = _token;
 	}
 
+	@Override
+	public int compareTo(final Object o)
+	{
+		return this.getCounterName().compareTo(((Counter)o).getCounterName());
+	}
+	
 }

@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -87,6 +88,7 @@ public class TooltipPanel extends Panel
 		final TextField<String> counterAddName = new TextField<String>("counterAddName",
 				new Model<String>(""));
 		counterAddName.setOutputMarkupId(true);
+		form.add(counterAddName);
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
@@ -98,11 +100,13 @@ public class TooltipPanel extends Panel
 				final MagicCard myCard = TooltipPanel.this.persistenceService
 						.getCardFromUuid(TooltipPanel.this.uuid);
 
-				final String _counterName = counterAddName.getDefaultModelObjectAsString();
+				final String _counterName = _form.get("counterAddName")
+						.getDefaultModelObjectAsString();
 				final Counter counter = new Counter();
 				counter.setCounterName(_counterName);
 				counter.setNumberOfCounters(1l);
 				counter.setCard(myCard);
+				TooltipPanel.this.persistenceService.saveCounter(counter);
 
 				final Set<Counter> counters = myCard.getCounters();
 				counters.add(counter);
@@ -117,8 +121,8 @@ public class TooltipPanel extends Panel
 
 				final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 						game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-						targetPlayer.getName(), myCard.getTitle(), counter.getCounterName(),
-						counter.getNumberOfCounters(), NotifierAction.ADD_COUNTER,
+						targetPlayer.getName(), myCard.getTitle(), _counterName,
+						counter.getNumberOfCounters(), 0l, NotifierAction.ADD_COUNTER,
 						TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
 						TooltipPanel.this.ownerSide);
 
@@ -133,8 +137,11 @@ public class TooltipPanel extends Panel
 
 		};
 		submit.setOutputMarkupId(true);
+		form.add(submit);
 
 		final List<Counter> cardCounters = new ArrayList<Counter>(this.card.getCounters());
+		Collections.sort(cardCounters);
+
 		final ListView<Counter> counters = new ListView<Counter>("counters", cardCounters)
 		{
 			private static final long serialVersionUID = 1L;
@@ -143,9 +150,6 @@ public class TooltipPanel extends Panel
 			protected void populateItem(final ListItem<Counter> item)
 			{
 				final Counter counter = item.getModelObject();
-				item.add(new Label("counterName", counter.getCounterName()).setOutputMarkupId(true));
-				item.add(new Label("numberOfCounters", counter.getNumberOfCounters())
-						.setOutputMarkupId(true));
 
 				final AjaxLink<Void> addCounterLink = new AjaxLink<Void>("addCounterLink")
 				{
@@ -176,7 +180,7 @@ public class TooltipPanel extends Panel
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
-								counter.getCounterName(), counter.getNumberOfCounters(),
+								counter.getCounterName(), counter.getNumberOfCounters(), 0l,
 								NotifierAction.ADD_COUNTER, TooltipPanel.this.uuid,
 								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
 
@@ -236,8 +240,8 @@ public class TooltipPanel extends Panel
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
-								counter.getCounterName(), counter.getNumberOfCounters(), action,
-								TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
+								counter.getCounterName(), counter.getNumberOfCounters(), 0l,
+								action, TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
 								TooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -257,11 +261,74 @@ public class TooltipPanel extends Panel
 				counterMinus.setOutputMarkupId(true);
 				removeCounterLink.add(counterMinus);
 
-				item.add(addCounterLink, removeCounterLink);
+				final Form<String> setCounterForm = new Form<String>("setCounterForm");
+				final TextField<Long> setCounterButton = new TextField<Long>("setCounterButton",
+						Model.of(counter.getNumberOfCounters()));
+				setCounterForm.add(setCounterButton);
+
+				final IndicatingAjaxButton setCounterSubmit = new IndicatingAjaxButton(
+						"setCounterSubmit", setCounterForm)
+				{
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+					{
+						NotifierAction action;
+						final Long originalNumberOfCounters = counter.getNumberOfCounters();
+						final Long targetNumberOfCounters = Long.parseLong((String)_form.get(
+								"setCounterButton").getDefaultModelObject());
+
+						if (targetNumberOfCounters.longValue() == 0)
+						{
+							TooltipPanel.this.persistenceService.deleteCounter(counter,
+									TooltipPanel.this.card);
+							action = NotifierAction.CLEAR_COUNTER;
+						}
+						else
+						{
+							counter.setNumberOfCounters(targetNumberOfCounters);
+							TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
+							action = NotifierAction.SET_COUNTER;
+						}
+
+						final Player targetPlayer = TooltipPanel.this.persistenceService
+								.getPlayer(TooltipPanel.this.card.getDeck().getPlayerId());
+						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+								.getGame().getId());
+						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+								.giveAllPlayersFromGame(game.getId());
+						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
+								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
+								counter.getCounterName(), targetNumberOfCounters,
+								originalNumberOfCounters, action, TooltipPanel.this.uuid,
+								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
+
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(ucpcc, pageUuid);
+						}
+					}
+				};
+
+				setCounterForm.add(new Label("counterName", counter.getCounterName())
+						.setOutputMarkupId(true));
+				setCounterForm.add(new Label("numberOfCounters", counter.getNumberOfCounters())
+						.setOutputMarkupId(true));
+
+				setCounterForm.add(setCounterSubmit, addCounterLink, removeCounterLink);
+				// setCounterSubmit.setDefaultFormProcessing(false);
+
+				setCounterForm.setOutputMarkupPlaceholderTag(false);
+				item.add(setCounterForm);
 			}
 		};
 
-		form.add(counterAddName, submit);
 		this.add(closeTooltip, bubbleTipImg1, form, counters);
 	}
 

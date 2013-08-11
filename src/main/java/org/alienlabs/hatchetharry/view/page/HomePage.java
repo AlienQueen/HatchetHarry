@@ -220,7 +220,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.4.0 (release First Steps),");
-		final Label message2 = new Label("message2", "built on Friday, 9th of August 2013.");
+		final Label message2 = new Label("message2", "built on Sunday, 11th of August 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1625,7 +1625,7 @@ public class HomePage extends TestReportPage
 			case ADD_COUNTER :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has put "
-						+ event.getNumberOfCounters() + " " + event.getCounterName()
+						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
 						+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
 						+ event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
@@ -1633,7 +1633,7 @@ public class HomePage extends TestReportPage
 			case REMOVE_COUNTER :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has put "
-						+ event.getNumberOfCounters() + " " + event.getCounterName()
+						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
 						+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
 						+ event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
@@ -1645,13 +1645,29 @@ public class HomePage extends TestReportPage
 						+ "'s card: " + event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+			case SET_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName()
+						+ "', text : \"has removed "
+						+ event.getOriginalNumberOfCounters()
+						+ " "
+						+ event.getCounterName()
+						+ " counter(s) on "
+						+ event.getTargetPlayerName()
+						+ "'s card: "
+						+ event.getCardName()
+						+ " and replaced them with "
+						+ event.getTargetNumberOfCounters()
+						+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
 			// $CASES-OMITTED$
 			// TODO: split this card counters notifier action
 			// and the one of general messages
 			// $CASES-OMITTED$
 			default :
 				throw new IllegalArgumentException(
-						"can not treat this case in HomePage#updateCardTooltip()");
+						"can not treat this case in HomePage#updateCardTooltip(): "
+								+ event.getAction());
 		}
 	}
 
