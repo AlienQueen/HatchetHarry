@@ -143,14 +143,19 @@ public class JavaScriptUtils
 			buf.append("var dragUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
 					+ "').data('dragUrl'); ");
 
+			buf.append("var getScrollPosition = function () { return Array((document.documentElement && document.documentElement.scrollLeft) || window.pageXOffset || self.pageXOffset || document.body.scrollLeft,(document.documentElement && document.documentElement.scrollTop) || window.pageYOffset || self.pageYOffset || document.body.scrollTop); }; ");
+
 			buf.append("jQuery('#cardHandle"
 					+ uuidValidForJs
 					+ "').draggable({ handle : '#handleImage"
 					+ uuidValidForJs
-					+ "', stop: function(event, ui) { "
+					+ "', helper : function() { jQuery('body').mousemove(function (event) { window.mouseXPos = event.pageX; window.mouseYPos = event.pageY; }); var cardToMove = jQuery('#cardHandle"
+					+ uuidValidForJs
+					+ "'); cardToMove.attr('style', 'display: block; position: absolute; ' + ((typeof(window.mouseXPos) === 'undefined') ? '' : 'left: ' + (window.mouseXPos - getScrollPosition()[0] - 24) + 'px; ') + ((typeof(window.mouseYPos) === 'undefined') ? '' : 'top: ' + (window.mouseYPos - getScrollPosition()[1] - 20) + 'px; ') +  'z-index: 50;'); return cardToMove;}, stop: function(event, ui) { "
 					+ " if (!shouldMove) { shouldMove = true; return; } "
 					+ "var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
-					+ "Wicket.Ajax.get({ 'u' : dragUrl" + uuidValidForJs
+					+ "jQuery(document).unbind('mousemove'); " + "Wicket.Ajax.get({ 'u' : dragUrl"
+					+ uuidValidForJs
 					+ " + '&posX=' + card.position().left + '&posY=' + card.position().top}); "
 					+ "} }); ");
 		}
