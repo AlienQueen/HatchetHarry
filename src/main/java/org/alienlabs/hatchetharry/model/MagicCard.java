@@ -38,7 +38,7 @@ import org.hibernate.annotations.Index;
 @Entity
 @Table(name = "MagicCard")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
 public class MagicCard implements SlideshowImage, Serializable
 {
 	private static final long serialVersionUID = -5115712217304615521L;

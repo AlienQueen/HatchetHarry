@@ -125,7 +125,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<!--  create= provide database model at start-up by dropping tables, update= no start-up data model modification -->
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">ypdate</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
 				<prop key="hibernate.connection.pool_size">100</prop>
 				<prop key="hibernate.show_sql">false</prop>
@@ -133,11 +133,13 @@
             	<prop key="validation.query">select 1</prop>
 				<prop key="hibernate.c3p0.timeout">300</prop>
     			<prop key="hibernate.c3p0.idle_test_periods">150</prop>    
-				<!-- We tell Hibernate that we use a second-level cache -->
+				<!-- We tell Hibernate that we use EhCache as a second-level cache -->
             	<prop key="hibernate.cache.use_second_level_cache">true</prop>
             	<prop key="hibernate.cache.use_query_cache">true</prop>
-				<!-- We tell Hibernate that we use EhCache -->
-            	<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
+            	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+            	<prop key="hibernate.cache.use_structured_entries">true</prop>     
+    			<prop key="hibernate.cache.generate_statistics">true</prop>
+            	<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
 			</props>
 		</property>
 	</bean>

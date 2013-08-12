@@ -36,7 +36,7 @@ import org.hibernate.annotations.Index;
 @Entity
 @Table(name = "Deck")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
 public class Deck implements Serializable
 {
 	private static final long serialVersionUID = 1L;

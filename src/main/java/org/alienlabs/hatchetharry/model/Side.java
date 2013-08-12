@@ -20,7 +20,7 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @Table(name = "Side")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
 public class Side implements Serializable
 {
 	private static final long serialVersionUID = -1703518536709468323L;
