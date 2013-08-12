@@ -623,7 +623,7 @@ public class PersistenceService implements Serializable
 		{
 			return (MagicCard)query.list().get(0);
 		}
-		catch (final ObjectNotFoundException e)
+		catch (final IndexOutOfBoundsException e)
 		{
 			PersistenceService.LOGGER.error("error!", e);
 			return null;
