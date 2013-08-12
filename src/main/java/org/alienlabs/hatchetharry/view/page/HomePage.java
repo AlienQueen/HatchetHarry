@@ -1425,6 +1425,7 @@ public class HomePage extends TestReportPage
 		this.add(countCardsLink);
 	}
 
+	@SuppressWarnings("static-method")
 	@Subscribe
 	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{

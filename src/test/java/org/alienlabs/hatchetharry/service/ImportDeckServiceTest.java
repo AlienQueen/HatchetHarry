@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
-import org.alienlabs.hatchetharry.service.ImportDeckService;
-import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,12 +16,11 @@ import org.junit.Test;
  */
 public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 {
+	@SuppressWarnings("static-method")
 	@Test
 	public void testImportDeck() throws FileNotFoundException, IOException
 	{
 		// Init
-		SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
-
 		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
 				.getBean(PersistenceService.class);
 		final ImportDeckService importDeckService = SpringContextLoaderBaseTest.context
