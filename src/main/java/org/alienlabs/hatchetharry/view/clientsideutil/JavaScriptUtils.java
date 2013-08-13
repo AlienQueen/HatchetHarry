@@ -143,21 +143,26 @@ public class JavaScriptUtils
 			buf.append("var dragUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
 					+ "').data('dragUrl'); ");
 
-			buf.append("var getScrollPosition = function () { return Array((document.documentElement && document.documentElement.scrollLeft) || window.pageXOffset || self.pageXOffset || document.body.scrollLeft,(document.documentElement && document.documentElement.scrollTop) || window.pageYOffset || self.pageYOffset || document.body.scrollTop); }; ");
+			buf.append("function getScrollXY() { var scrOfX = 0, scrOfY = 0; if( typeof( window.pageYOffset ) == 'number' ) { scrOfY = window.pageYOffset;     scrOfX = window.pageXOffset; } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) { scrOfY = document.body.scrollTop; scrOfX = document.body.scrollLeft; } else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) { scrOfY = document.documentElement.scrollTop; scrOfX = document.documentElement.scrollLeft; }; return [ scrOfX, scrOfY ];}; ");
 
 			buf.append("jQuery('#cardHandle"
 					+ uuidValidForJs
 					+ "').draggable({ handle : '#handleImage"
 					+ uuidValidForJs
-					+ "', helper : function() { jQuery('body').mousemove(function (event) { window.mouseXPos = event.pageX; window.mouseYPos = event.pageY; }); var cardToMove = jQuery('#cardHandle"
+					// +
+					// "', helper : function() { jQuery('body').mousemove(function (event) { window.mouseXPos = event.pageX; window.mouseYPos = event.pageY; }); var cardToMove = jQuery('#cardHandle"
+					// + uuidValidForJs
+					// +
+					// "'); cardToMove.attr('style', 'display: block; position: absolute; left: ' window.mouseXPos + 'px; top: ' + window.mouseYPos + 'px; ') +  'z-index: 50;'); return cardToMove;}"
+					+ "', drag: function(event, ui) { console.log(event.pageY); var cardToMove = jQuery('#cardHandle"
 					+ uuidValidForJs
-					+ "'); cardToMove.attr('style', 'display: block; position: absolute; ' + ((typeof(window.mouseXPos) === 'undefined') ? '' : 'left: ' + (window.mouseXPos - getScrollPosition()[0] - 24) + 'px; ') + ((typeof(window.mouseYPos) === 'undefined') ? '' : 'top: ' + (window.mouseYPos - getScrollPosition()[1] - 20) + 'px; ') +  'z-index: 50;'); return cardToMove;}, stop: function(event, ui) { "
+					+ "'); cardToMove.attr('style', 'display: block; position: absolute; left: ' + (event.pageX - getScrollXY()[0])+ 'px; top: ' + (event.pageY - getScrollXY()[1])+ 'px; z-index: 50;'); console.log('total: ' + (event.pageY - getScrollXY()[1]));} "
+					+ ", stop: function(event, ui) { "
 					+ " if (!shouldMove) { shouldMove = true; return; } "
 					+ "var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
 					+ "jQuery(document).unbind('mousemove'); " + "Wicket.Ajax.get({ 'u' : dragUrl"
 					+ uuidValidForJs
-					+ " + '&posX=' + card.position().left + '&posY=' + card.position().top}); "
-					+ "} }); ");
+					+ " + '&posX=' + event.pageX + '&posY=' + event.pageY}); } }); ");
 		}
 
 		// Put to graveyard by drag & drop
