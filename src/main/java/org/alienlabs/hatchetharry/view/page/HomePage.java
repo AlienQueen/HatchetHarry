@@ -220,7 +220,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.4.0 (release First Steps),");
-		final Label message2 = new Label("message2", "built on Monday, 12th of August 2013.");
+		final Label message2 = new Label("message2", "built on Tuesday, 13th of August 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1006,17 +1006,19 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem
 						.forReference(JQueryWicketAtmosphereResourceReference.get()));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.core-1.10.3.js")));
+						HomePage.class, "script/draggableHandle/jquery.ui.core.min-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.widget-1.10.3.js")));
+						HomePage.class, "script/draggableHandle/jquery.ui.widget.min-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.mouse-1.10.3.js")));
+						HomePage.class, "script/draggableHandle/jquery.ui.mouse.min-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.ui.touch-punch.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.draggable-1.10.3.js")));
+						HomePage.class, "script/draggableHandle/jquery.ui.draggable.min-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.droppable-1.10.3.js")));
+						HomePage.class, "script/draggableHandle/jquery.ui.droppable.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/offset.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/tour/jquery.easing.1.3.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(

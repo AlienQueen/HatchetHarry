@@ -18,12 +18,14 @@ jQuery(document).ready(function() {
 			return false;
 		}
 		
+		// TODO: maybe active-thumb should be replaced with active-thumb-hand
 		var img = jQuery(".active-thumb img");
 		var id = img.attr('id');
 		var withoutPlaceholder = id.split('placeholder')[1];
 		var withoutImg = withoutPlaceholder.split('_img')[0];
 		var uuid = withoutImg.replace(/_/g,"-");
 		
+		// TODO: maybe active-thumb should be replaced with active-thumb-hand
 		var a = jQuery(".active-thumb");
 		var aId = a.attr('id');
 		var currentCard = aId.split("cross-link")[1];
