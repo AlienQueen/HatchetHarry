@@ -1577,16 +1577,16 @@ public class HomePage extends TestReportPage
 				.getAllCardsInBattlefieldForAGameAndAPlayer(event.getGameId(), event.getPlayerId(),
 						event.getDeckId());
 
-		final StringBuffer buf = new StringBuffer();
+		final StringBuilder buil = new StringBuilder();
 
 		for (final MagicCard mc : allCardsInBattlefieldOnMySide)
 		{
-			buf.append("jQuery('#card" + mc.getUuid().replace("-", "_") + "').rotate(0); ");
+			buil.append("jQuery('#card" + mc.getUuid().replace("-", "_") + "').rotate(0); ");
 			mc.setTapped(false);
 			this.persistenceService.updateCard(mc);
 		}
 
-		target.appendJavaScript(buf.toString());
+		target.appendJavaScript(buil.toString());
 	}
 
 	/**
@@ -1702,33 +1702,33 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
-		final StringBuffer buf = new StringBuffer();
+		final StringBuilder buil = new StringBuilder();
 
 		final String toId = this.session.getId();
-		buf.append("var toId = \"" + toId + "\"; ");
+		buil.append("var toId = \"" + toId + "\"; ");
 
 		if (event.isTapped())
 		{
-			buf.append("window.setTimeout(function() { jQuery('#card"
+			buil.append("window.setTimeout(function() { jQuery('#card"
 					+ event.getCardUuid().replace("-", "_")
 					+ "').rotate(90); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
+			buil.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(0); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
+			buil.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(90); }, 500); }, 500); }, 500);");
 		}
 		else
 		{
-			buf.append("window.setTimeout(function() {jQuery('#card"
+			buil.append("window.setTimeout(function() {jQuery('#card"
 					+ event.getCardUuid().replace("-", "_")
 					+ "').rotate(0); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
+			buil.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(90); window.setTimeout(function() {");
-			buf.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
+			buil.append("jQuery('#card" + event.getCardUuid().replace("-", "_")
 					+ "').rotate(0); }, 500); }, 500); }, 500);");
 		}
 
-		target.appendJavaScript(buf.toString());
+		target.appendJavaScript(buil.toString());
 	}
 
 	@Subscribe
@@ -1928,7 +1928,7 @@ public class HomePage extends TestReportPage
 
 	final void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
 	{
-		final StringBuffer js = new StringBuffer();
+		final StringBuilder js = new StringBuilder();
 		// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
 		final Collection<CardPanel> allCards = Collections.synchronizedCollection(this.session
 				.getAllCardPanelsInBattleField());

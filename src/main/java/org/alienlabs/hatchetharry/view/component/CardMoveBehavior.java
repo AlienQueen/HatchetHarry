@@ -136,7 +136,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		StringBuffer js = new StringBuffer();
+		StringBuilder js = new StringBuilder();
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());

@@ -96,7 +96,7 @@ public class CreateGameModalWindow extends Panel
 							new Model<Deck>(), _decksModel);
 
 					CreateGameModalWindow.this.deckParent
-							.addOrReplace(CreateGameModalWindow.this.decks);
+					.addOrReplace(CreateGameModalWindow.this.decks);
 					target.add(CreateGameModalWindow.this.deckParent);
 				}
 			}
@@ -131,7 +131,7 @@ public class CreateGameModalWindow extends Panel
 						|| ("".equals(CreateGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == CreateGameModalWindow.this.decks.getModelObject())
 						|| (null == CreateGameModalWindow.this.sideInput
-								.getDefaultModelObjectAsString()))
+						.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
@@ -152,7 +152,7 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(
 						CreateGameModalWindow.this.game.getId(), CreateGameModalWindow.this.player
-								.getDeck().getDeckId());
+						.getDeck().getDeckId());
 
 				final Deck deck = new Deck();
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
@@ -171,7 +171,7 @@ public class CreateGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-									+ "Thumb.jpg", cc.getTitle(), "",
+							+ "Thumb.jpg", cc.getTitle(), "",
 							CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 					card.setGameId(g.getId());
 					card.setDeck(deck);
@@ -209,7 +209,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setDeck(deck);
 				CreateGameModalWindow.this.player.setGame(g);
 				CreateGameModalWindow.this.persistenceService
-						.updatePlayer(CreateGameModalWindow.this.player);
+				.updatePlayer(CreateGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
 
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
@@ -225,7 +225,7 @@ public class CreateGameModalWindow extends Panel
 					JavaScriptUtils.updateHand(target);
 				}
 
-				final StringBuffer buf = new StringBuffer(
+				final StringBuilder buil = new StringBuilder(
 						"jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 
 				CreateGameModalWindow.LOGGER.info("close!");
@@ -233,7 +233,7 @@ public class CreateGameModalWindow extends Panel
 
 				final int posX = ("infrared".equals(CreateGameModalWindow.this.sideInput
 						.getDefaultModelObjectAsString())) ? 300 : 900;
-				target.appendJavaScript(buf.toString());
+				target.appendJavaScript(buil.toString());
 
 				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
 						CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
