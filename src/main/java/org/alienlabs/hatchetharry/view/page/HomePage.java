@@ -756,7 +756,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
-	private void createPlayerAndDeck(final String _jsessionid, final String _side,
+	private synchronized void createPlayerAndDeck(final String _jsessionid, final String _side,
 			final String _name) throws IOException
 			{
 		Player p = new Player();
