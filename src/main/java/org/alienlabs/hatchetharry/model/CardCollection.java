@@ -18,7 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @XmlRootElement(name = "CardCollection")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Cacheable 
-@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL) 
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE) 
 public class CardCollection implements Serializable
 {
 	private static final long serialVersionUID = 1L;

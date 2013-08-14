@@ -23,7 +23,7 @@ import org.hibernate.annotations.Index;
 @Entity
 @Table(name = "Game")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Game implements Serializable
 {
 	private static final long serialVersionUID = 5336828396327485268L;
