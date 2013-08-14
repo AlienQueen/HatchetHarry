@@ -21,32 +21,32 @@ public class RuntimeDataGenerator implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
-		"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
-		"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
-		"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
-		"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
-		"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-		"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
-		"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
-		"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
-		"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
-		"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-		"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
-	"Swamp" };
+			"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
+			"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
+			"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
+			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
+			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+			"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
+			"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
+			"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
+			"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
+			"Swamp" };
 
 	private static final String[] TITLES2 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
-		"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
-		"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
-		"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
-		"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
-		"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
-		"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
-		"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
-		"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-		"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
-		"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-		"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-		"Mountain", "Mountain", "Mountain", "Mountain" };
+			"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
+			"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
+			"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
+			"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
+			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
+			"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
+			"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
+			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+			"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
+			"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
 	private MagicCardDao magicCardDao;
@@ -83,7 +83,8 @@ public class RuntimeDataGenerator implements Serializable
 	}
 
 	@Transactional
-	public synchronized Deck generateData(final Long gameId, final Long playerId) throws IOException
+	public synchronized Deck generateData(final Long gameId, final Long playerId)
+			throws IOException
 	{
 		if (null == this.persistenceService.getCardFromUuid(UUID
 				.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347")))
@@ -124,91 +125,74 @@ public class RuntimeDataGenerator implements Serializable
 			this.importDeckService.importDeck(deckContent, "Aura Bant", false);
 		}
 
-		//		final Deck deckToReturn;
-
-		//		if ((null == this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black"))
-		//				&& (null == this.persistenceService.getDeckArchiveByName("burn mono-Red")))
-		//		{
-		//			DeckArchive deckArchive1 = new DeckArchive();
-		//			deckArchive1.setDeckName("aggro-combo Red / Black");
-		//			deckArchive1 = this.persistenceService.saveDeckArchive(deckArchive1);
-		//
-		final Deck deck = new Deck();
-		deck.setPlayerId(playerId);
-		deck.setDeckArchive(this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black"));
-		//
-		//			DeckArchive deckArchive2 = new DeckArchive();
-		//			deckArchive2.setDeckName("burn mono-Red");
-		//			deckArchive2 = this.persistenceService.saveDeckArchive(deckArchive2);
-		//
-		//			final Deck deck2 = new Deck();
-		//			deck2.setPlayerId(playerId);
-		//			deck2.setDeckArchive(deckArchive2);
-		//
-		//			final List<Deck> decks = new ArrayList<Deck>();
-		//			//			deck1 = this.persistenceService.saveDeck(deck1);
-		//			//			deck2 = this.persistenceService.saveDeck(deck2);
-		//			decks.add(0, deck1);
-		//			decks.add(1, deck2);
-		//
-		//			for (int j = 1; j < 3; j++)
-		//			{
-		for (int i = 0; i < 60; i++)
+		final Deck deck1 = new Deck();
+		deck1.setPlayerId(playerId);
+		deck1.setDeckArchive(this.persistenceService
+				.getDeckArchiveByName("aggro-combo Red / Black"));
+		this.persistenceService.saveDeck(deck1);
+		
+		final Deck deck2 = new Deck();
+		deck2.setPlayerId(playerId);
+		deck2.setDeckArchive(this.persistenceService.getDeckArchiveByName("burn mono-Red"));
+		this.persistenceService.saveDeck(deck2);
+		
+		for (int j = 1; j < 3; j++)
 		{
-			//
-			//					final CollectibleCard c = new CollectibleCard();
-			//					c.setTitle((j == 1
-			//							? RuntimeDataGenerator.TITLES1[i]
-			//									: RuntimeDataGenerator.TITLES2[i]));
-			//					c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
-			//							.getDeckArchiveId());
-			//					// A CollectibleCard can be duplicated: lands, normal cards
-			//					// which may be present 4 times in a Deck...
-			//					this.persistenceService.saveCollectibleCard(c);
-			//
-			MagicCard card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i]
-					+ "_small.jpg", "cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg",
-					"cards/" + RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
-					RuntimeDataGenerator.TITLES1[i], "", "");
-			card.setGameId(gameId);
-			card.setDeck(deck);
-			card.setUuidObject(UUID.randomUUID());
-			card.setX(16l);
-			card.setY(16l);
-			card.setZone(CardZone.LIBRARY);
-			card = this.magicCardDao.save(card);
+			for (int i = 0; i < 60; i++)
+			{
+				// A CollectibleCard can be duplicated: lands, normal cards
+				// which may be present 4 times in a Deck...
+				MagicCard card;
 
-			final List<MagicCard> cards = deck.getCards();
-			cards.add(card);
-			deck.setCards(cards);
+				if (j == 1)
+				{
+					card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i] + "_small.jpg",
+							"cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg", "cards/"
+									+ RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
+							RuntimeDataGenerator.TITLES1[i], "", "");
+					card.setDeck(deck1);
+				}
+				else
+				{
+					card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES2[i] + "_small.jpg",
+							"cards/" + RuntimeDataGenerator.TITLES2[i] + ".jpg", "cards/"
+									+ RuntimeDataGenerator.TITLES2[i] + "Thumb.jpg",
+							RuntimeDataGenerator.TITLES2[i], "", "");
+					card.setDeck(deck2);
+				}
+
+				card.setGameId(gameId);
+				card.setUuidObject(UUID.randomUUID());
+				card.setX(16l);
+				card.setY(16l);
+				card.setZone(CardZone.LIBRARY);
+
+				if (j == 1)
+				{
+					final List<MagicCard> cards = deck1.getCards();
+					cards.add(card);
+					deck1.setCards(cards);
+					this.persistenceService.saveCard(card);
+				}
+				else
+				{
+					final List<MagicCard> cards = deck2.getCards();
+					cards.add(card);
+					deck2.setCards(cards);
+					this.persistenceService.saveCard(card);
+				}
+			}
+
+			if (j == 1)
+			{
+				this.persistenceService.updateDeck(deck1);
+			}
+			else
+			{
+				this.persistenceService.updateDeck(deck2);
+			}
 		}
-		//
-		//				//				this.persistenceService.updateDeck(decks.get(j - 1));
-		//				//				this.persistenceService.updateDeckArchive(deckArchive1);
-		//				//				this.persistenceService.updateDeckArchive(deckArchive2);
-		//
-		//			}
-		//
-		//			decks.get(0).setDeckArchive(deckArchive1);
-		//			decks.get(1).setDeckArchive(deckArchive2);
-		this.persistenceService.saveDeck(deck);
-		//			this.persistenceService.saveDeck(decks.get(1));
-		//			this.persistenceService.updateDeckArchive(deckArchive1);
-		//			this.persistenceService.updateDeckArchive(deckArchive2);
-		//
-		//			deckToReturn = deck2;
-		//		}
-		//		else
-		////		{
-		//			final DeckArchive deckArchive = this.persistenceService
-		//					.getDeckArchiveByName("aggro-combo Red / Black");
-		//
-		//			final Deck deck = this.persistenceService.getDeckByDeckArchiveIdAndPlayerId(
-		//					deckArchive.getDeckArchiveId(), playerId);
-		//
-		//			deck.setDeckArchive(deckArchive);
-		//			deckToReturn = deck;
-		//		}
-		return deck;
+		return deck1;
 	}
+
 }
