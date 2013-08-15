@@ -2084,7 +2084,6 @@ public class HomePage extends TestReportPage
 		};
 
 		this.allTooltips.setOutputMarkupId(true);
-		this.allTooltips.setReuseItems(true);
 
 		if (replace)
 		{
