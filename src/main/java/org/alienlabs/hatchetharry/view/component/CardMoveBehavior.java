@@ -98,12 +98,19 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			{
 				return;
 			}
+
+			final HomePage homePage = (HomePage)target.getPage();
+			final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+			final int index = allCards.indexOf(mc);
+			allCards.remove(mc);
+
 			gameId = mc.getGameId();
 			mc.setX(posX);
 			mc.setY(posY);
 			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + posX + ", posY: "
 					+ posY);
 			this.persistenceService.updateCard(mc);
+			allCards.add(index, mc);
 		}
 		catch (final IllegalArgumentException e)
 		{
@@ -124,7 +131,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
 					playerToWhomToSend);
-			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId,
+			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
 					Long.toString(posX), Long.toString(posY), uniqueid, playerId);
 
 			HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel, pageUuid);

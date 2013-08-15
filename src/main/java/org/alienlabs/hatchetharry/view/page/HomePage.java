@@ -220,7 +220,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.4.0 (release First Steps),");
-		final Label message2 = new Label("message2", "built on Wednesday, 14th of August 2013.");
+		final Label message2 = new Label("message2", "built on Thursday, 15th of August 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1693,6 +1693,17 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
+		final HomePage homePage = (HomePage)target.getPage();
+		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+
+		final MagicCard mc = event.getMc();
+		final int index = allCards.indexOf(mc);
+		allCards.remove(mc);
+
+		mc.setX(Long.parseLong(event.getMouseX()));
+		mc.setY(Long.parseLong(event.getMouseY()));
+		allCards.add(index, mc);
+
 		target.appendJavaScript("var card = jQuery('#cardHandle"
 				+ event.getUniqueid().replace("-", "_") + "');"
 				+ "card.css('position', 'absolute'); card.css('left', '" + event.getMouseX()
@@ -1702,6 +1713,16 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
+		final HomePage homePage = (HomePage)target.getPage();
+		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+
+		final MagicCard mc = event.getMc();
+		final int index = allCards.indexOf(mc);
+		allCards.remove(mc);
+
+		mc.setTapped(event.isTapped());
+		allCards.add(index, mc);
+
 		final StringBuilder buil = new StringBuilder();
 
 		final String toId = this.session.getId();

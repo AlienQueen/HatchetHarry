@@ -66,8 +66,15 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			return;
 		}
 
+		final HomePage homePage = (HomePage)target.getPage();
+		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+		final int index = allCards.indexOf(card);
+		allCards.remove(card);
+
 		card.setTapped(!card.isTapped());
 		this.persistenceService.updateCard(card);
+		allCards.add(index, card);
+
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
 
 		final Long gameId = card.getGameId();
@@ -79,8 +86,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
 					playerToWhomToSend);
-			final CardRotateCometChannel crcc = new CardRotateCometChannel(gameId, card.getUuid(),
-					card.isTapped());
+			final CardRotateCometChannel crcc = new CardRotateCometChannel(gameId, card,
+					card.getUuid(), card.isTapped());
 			HatchetHarryApplication.get().getEventBus().post(crcc, pageUuid);
 		}
 	}

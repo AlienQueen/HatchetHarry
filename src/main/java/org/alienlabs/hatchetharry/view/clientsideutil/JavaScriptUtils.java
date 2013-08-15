@@ -52,28 +52,10 @@ public class JavaScriptUtils
 				JavaScriptUtils.LOGGER.info("remove: " + mc.getTitle());
 			}
 
-			for (int i = 0; i < allCards.size(); i++)
-			{
-				final MagicCard card = allCards.get(i);
-				final MagicCard temp = persistenceService.getCardFromUuid(card.getUuidObject());
-				card.setX(temp.getX());
-				card.setY(temp.getY());
-				card.setTapped(temp.isTapped());
-			}
-
 			target.add(homePage.getParentPlaceholder());
 		}
 		else
 		{
-			for (int i = 0; i < allCards.size(); i++)
-			{
-				final MagicCard card = allCards.get(i);
-				final MagicCard temp = persistenceService.getCardFromUuid(card.getUuidObject());
-				card.setX(temp.getX());
-				card.setY(temp.getY());
-				card.setTapped(temp.isTapped());
-			}
-
 			homePage.getParentPlaceholder().addOrReplace(
 					homePage.generateCardListView(allCards, true));
 			target.add(homePage.getParentPlaceholder());
