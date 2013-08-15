@@ -14,6 +14,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class RuntimeDataGenerator implements Serializable
@@ -82,9 +83,8 @@ public class RuntimeDataGenerator implements Serializable
 
 	}
 
-	@Transactional
-	public synchronized Deck generateData(final Long gameId, final Long playerId)
-			throws IOException
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public Deck generateData(final Long gameId, final Long playerId) throws IOException
 	{
 		if (null == this.persistenceService.getCardFromUuid(UUID
 				.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347")))
@@ -130,12 +130,12 @@ public class RuntimeDataGenerator implements Serializable
 		deck1.setDeckArchive(this.persistenceService
 				.getDeckArchiveByName("aggro-combo Red / Black"));
 		this.persistenceService.saveDeck(deck1);
-		
+
 		final Deck deck2 = new Deck();
 		deck2.setPlayerId(playerId);
 		deck2.setDeckArchive(this.persistenceService.getDeckArchiveByName("burn mono-Red"));
 		this.persistenceService.saveDeck(deck2);
-		
+
 		for (int j = 1; j < 3; j++)
 		{
 			for (int i = 0; i < 60; i++)
