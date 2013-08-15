@@ -365,7 +365,9 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional(readOnly = true)
+	// Isolation level chosen to be consistent with
+	// RuntimeDataGenerator#generateData()
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
 	public DeckArchive getDeckArchiveByName(final String name)
 	{
 		final Session session = this.deckDao.getSession();
@@ -446,7 +448,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInLibraryForDeckAndPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-			{
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -467,7 +469,7 @@ public class PersistenceService implements Serializable
 			PersistenceService.LOGGER.error("error!", e);
 		}
 		return list;
-			}
+	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void saveCollectibleCard(final CollectibleCard cc)
@@ -665,7 +667,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-			{
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -686,7 +688,7 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-			}
+	}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInHandsForAGame(final Long gameId)
@@ -738,7 +740,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-			{
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -759,7 +761,7 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-			}
+	}
 
 	// TODO remove this
 	@Transactional(readOnly = true)
@@ -787,7 +789,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInGraveyardForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-			{
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -808,7 +810,7 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-			}
+	}
 
 	@Transactional(readOnly = true)
 	public List<Side> getSidesFromGame(final Game game)

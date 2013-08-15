@@ -83,7 +83,7 @@ public class RuntimeDataGenerator implements Serializable
 
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
 	public Deck generateData(final Long gameId, final Long playerId) throws IOException
 	{
 		if (null == this.persistenceService.getCardFromUuid(UUID
