@@ -115,7 +115,7 @@ public class HatchetHarryApplication extends WebApplication
 				}
 			}
 		};
-		scheduler.scheduleWithFixedDelay(beeper, 2, 2, TimeUnit.SECONDS);
+		scheduler.scheduleWithFixedDelay(beeper, 0, 5, TimeUnit.SECONDS);
 
 		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
 
