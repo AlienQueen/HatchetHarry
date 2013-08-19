@@ -76,7 +76,7 @@ public class VerifyClientSideTests
 	{
 		try
 		{
-			Thread.sleep(6000);
+			Thread.sleep(15000);
 		}
 		catch (final InterruptedException e)
 		{

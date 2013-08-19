@@ -1433,7 +1433,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
-		target.prependJavaScript("if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clock').innerHTML = '"
+		target.prependJavaScript("if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clockLabel').innerHTML = '"
 				+ event.toString() + "'; document.getElementById('chat').scrollTop = chatPos; }");
 	}
 

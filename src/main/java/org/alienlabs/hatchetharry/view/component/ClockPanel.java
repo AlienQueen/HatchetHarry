@@ -56,7 +56,7 @@ public class ClockPanel extends Panel
 		super(id, model);
 
 		this.time = model;
-		this.add(new Label("clock", this.time));
+		this.add(new Label("clockLabel", this.time));
 	}
 
 	public IModel<String> getTime()
