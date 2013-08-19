@@ -56,7 +56,7 @@ public class VerifyClientSideTests
 			+ "	if (elementInViewport(elementToLookFor)) {\n"
 			+ "		break;\n"
 			+ "	} else {\n"
-			+ "		window.scrollBy(0,250);\n}\n}";
+			+ "		window.scrollBy(0,400);\n}\n}";
 
 	@BeforeClass
 	public static void setUpClass()
