@@ -32,99 +32,109 @@ public class DataBox extends Panel
 	PersistenceService persistenceService;
 
 
-    public DataBox(final String id, final long _gameId)
+	public DataBox(final String id, final long _gameId)
 	{
 		super(id);
 		Injector.get().inject(this);
 		this.setOutputMarkupId(true);
 
 		final List<Player> players = this.persistenceService.getAllPlayersOfGame(_gameId);
-		final ListView<Player> box = new ListView<Player>("box", players) {
-            private static final long serialVersionUID = -9108376429848438800L;
+		final ListView<Player> box = new ListView<Player>("box", players)
+		{
+			private static final long serialVersionUID = 1L;
 
-            @Override
-            protected void populateItem(final ListItem<Player> item) {
-                final Player player = item.getModelObject();
+			@Override
+			protected void populateItem(final ListItem<Player> item)
+			{
+				final Player player = item.getModelObject();
 
-                final Label playerLabel = new Label("playerLabel", player.getName() + ": ");
-                playerLabel.setOutputMarkupId(true);
-                item.add(playerLabel);
+				final Label playerLabel = new Label("playerLabel", player.getName() + ": ");
+				playerLabel.setOutputMarkupId(true);
+				item.add(playerLabel);
 
-                final WebMarkupContainer playerLifePointsParent = new WebMarkupContainer(
-                        "playerLifePointsParent");
-                playerLifePointsParent.setOutputMarkupId(true);
-                playerLifePointsParent.setMarkupId("playerLifePointsParent" + player.getId());
-                final Label playerLifePoints = new Label("playerLifePoints", Long.toString(player
-                        .getLifePoints()) + " life points");
-                playerLifePoints.setOutputMarkupId(true);
-                playerLifePointsParent.add(playerLifePoints);
-                item.add(playerLifePointsParent);
+				final WebMarkupContainer playerLifePointsParent = new WebMarkupContainer(
+						"playerLifePointsParent");
+				playerLifePointsParent.setOutputMarkupId(true);
+				playerLifePointsParent.setMarkupId("playerLifePointsParent" + player.getId());
+				final Label playerLifePoints = new Label("playerLifePoints", Long.toString(player
+						.getLifePoints()) + " life points");
+				playerLifePoints.setOutputMarkupId(true);
+				playerLifePointsParent.add(playerLifePoints);
+				item.add(playerLifePointsParent);
 
-                final AjaxLink<Void> plus = new AjaxLink<Void>("playerPlusLink") {
-                    private static final long serialVersionUID = -2987998457733835993L;
+				final AjaxLink<Void> plus = new AjaxLink<Void>("playerPlusLink")
+				{
+					private static final long serialVersionUID = -2987998457733835993L;
 
-                    @Override
-                    public void onClick(final AjaxRequestTarget target) {
-                        final Player playerToUpdate = DataBox.this.persistenceService
-                                .getPlayer(player.getId());
-                        playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
-                        DataBox.this.persistenceService.updatePlayer(playerToUpdate);
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						final Player playerToUpdate = DataBox.this.persistenceService
+								.getPlayer(player.getId());
+						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
+						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-                        final Long g = playerToUpdate.getGame().getId();
-                        final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
-                                .giveAllPlayersFromGame(g);
-                        final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
+						final Long g = playerToUpdate.getGame().getId();
+						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
+								.giveAllPlayersFromGame(g);
+						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
 
-                        // post the DataBox update message to all players in the
-                        // game
-                        for (int i = 0; i < allPlayersInGame.size(); i++) {
-                            final Long p = allPlayersInGame.get(i).longValue();
-                            final String pageUuid = HatchetHarryApplication.getCometResources()
-                                    .get(p);
-                            PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-                            HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
-                        }
-                    }
-                };
+						// post the DataBox update message to all players in the
+						// game
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
+						}
+					}
+				};
 
-                final ExternalImage playerPlus = new ExternalImage("playerPlus", "image/plusLife.png");
-                playerPlus.setOutputMarkupId(true);
-                plus.add(playerPlus);
-                item.add(plus);
+				final ExternalImage playerPlus = new ExternalImage("playerPlus",
+						"image/plusLife.png");
+				playerPlus.setOutputMarkupId(true);
+				plus.add(playerPlus);
+				item.add(plus);
 
-                final AjaxLink<Void> minus = new AjaxLink<Void>("playerMinusLink") {
-                    private static final long serialVersionUID = -2987999764313835993L;
+				final AjaxLink<Void> minus = new AjaxLink<Void>("playerMinusLink")
+				{
+					private static final long serialVersionUID = -2987999764313835993L;
 
-                    @Override
-                    public void onClick(final AjaxRequestTarget target) {
-                        final Player playerToUpdate = DataBox.this.persistenceService
-                                .getPlayer(player.getId());
-                        playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
-                        DataBox.this.persistenceService.updatePlayer(playerToUpdate);
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						final Player playerToUpdate = DataBox.this.persistenceService
+								.getPlayer(player.getId());
+						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
+						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
-                        final Long g = playerToUpdate.getGame().getId();
-                        final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
-                                .giveAllPlayersFromGame(g);
-                        final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
+						final Long g = playerToUpdate.getGame().getId();
+						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
+								.giveAllPlayersFromGame(g);
+						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
 
-                        // post the DataBox update message to all players in the
-                        // game
-                        for (int i = 0; i < allPlayersInGame.size(); i++) {
-                            final Long p = allPlayersInGame.get(i).longValue();
-                            final String pageUuid = HatchetHarryApplication.getCometResources()
-                                    .get(p);
-                            PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-                            HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
-                        }
-                    }
-                };
+						// post the DataBox update message to all players in the
+						// game
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+							HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
+						}
+					}
+				};
 
-                final ExternalImage playerMinus = new ExternalImage("playerMinus", "image/minusLife.png");
-                playerMinus.setOutputMarkupId(true);
-                minus.add(playerMinus);
-                item.add(minus);
-            }
-        };
+				final ExternalImage playerMinus = new ExternalImage("playerMinus",
+						"image/minusLife.png");
+				playerMinus.setOutputMarkupId(true);
+				minus.add(playerMinus);
+				item.add(minus);
+			}
+		};
 		box.setOutputMarkupId(true);
 
 		final WebMarkupContainer parent = new WebMarkupContainer("parent");

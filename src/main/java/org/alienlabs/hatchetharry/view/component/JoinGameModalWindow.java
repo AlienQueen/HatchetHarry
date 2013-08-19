@@ -106,7 +106,7 @@ public class JoinGameModalWindow extends Panel
 							new Model<Deck>(), _decksModel);
 
 					JoinGameModalWindow.this.deckParent
-					.addOrReplace(JoinGameModalWindow.this.decks);
+							.addOrReplace(JoinGameModalWindow.this.decks);
 					target.add(JoinGameModalWindow.this.deckParent);
 				}
 			}
@@ -140,7 +140,7 @@ public class JoinGameModalWindow extends Panel
 						|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == JoinGameModalWindow.this.decks.getModelObject())
 						|| (null == JoinGameModalWindow.this.sideInput
-						.getDefaultModelObjectAsString()))
+								.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
@@ -205,7 +205,7 @@ public class JoinGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-							+ "Thumb.jpg", cc.getTitle(), "",
+									+ "Thumb.jpg", cc.getTitle(), "",
 							JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 					card.setGameId(game.getId());
 					card.setDeck(deck);
@@ -236,7 +236,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player.setDeck(deck);
 				JoinGameModalWindow.this.player.setGame(game);
 				JoinGameModalWindow.this.persistenceService
-				.updatePlayer(JoinGameModalWindow.this.player);
+						.updatePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
 
 				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
@@ -257,7 +257,7 @@ public class JoinGameModalWindow extends Panel
 				game.setPlayers(players);
 
 				JoinGameModalWindow.this.persistenceService
-				.updatePlayer(JoinGameModalWindow.this.player);
+						.updatePlayer(JoinGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(JoinGameModalWindow.this.player);
 
 				final DataBox dataBox = new DataBox("dataBox",

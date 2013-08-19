@@ -86,14 +86,7 @@ public class JavaScriptUtils
 			{
 				buil.append("jQuery('#card" + uuidValidForJs + "').rotate(90); ");
 			}
-			else
-			{
-				buil.append("jQuery('#card" + uuidValidForJs + "').rotate(0); ");
-			}
-
-			buil.append("var card = jQuery('#cardHandle" + uuidValidForJs
-					+ "'); card.css('position', 'absolute'); card.css('left', '" + aCard.getX()
-					+ "px'); card.css('top', '" + aCard.getY() + "px'); ");
+			// No else since cards are untapped by default
 
 			buil.append("jQuery('#card" + uuidValidForJs
 					+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
@@ -107,17 +100,17 @@ public class JavaScriptUtils
 			buil.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
 					+ "').hammer(); ");
 			buil.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
-			buil.append("  jQuery('#cardTooltip" + uuidValidForJs
+			buil.append("jQuery('#cardTooltip" + uuidValidForJs
 					+ "').attr('style', 'display: block; position: absolute; left: "
 					+ (aCard.getX() + 127) + "px; top: " + (aCard.getY() + 56)
 					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
 					+ " > span').attr('style', 'display: block;'); }); ");
 
-			buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide();  ");
+			buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide(); ");
 
 			buil.append("jQuery('#tapHandleImage" + uuidValidForJs + "').unbind('click'); ");
-			buil.append("var tapUrl" + uuidValidForJs + " = $('#tapHandleImage" + uuidValidForJs
-					+ "').data('tapUrl'); ");
+			buil.append("var tapUrl" + uuidValidForJs + " = jQuery('#tapHandleImage"
+					+ uuidValidForJs + "').data('tapUrl'); ");
 			buil.append("Wicket.Ajax.get({'u': tapUrl" + uuidValidForJs + " + '&uuid="
 					+ aCard.getUuid() + "', 'e': 'click', 'c' : 'tapHandleImage" + uuidValidForJs
 					+ "'}); ");
@@ -136,58 +129,23 @@ public class JavaScriptUtils
 					+ "Wicket.Ajax.get({ 'u' : dragUrl" + uuidValidForJs
 					+ " + '&posX=' + (event.pageX - 8) + '&posY=' + (event.pageY - 36)}); "
 					+ "} }); ");
+
+			// The hand image is a drop target
+			buil.append("jQuery('#putToHand').droppable({ accept: '.magicCard', drop: function(event, ui) { "
+					+ "shouldMove = false; "
+					+ "jQuery('#' + ui.draggable.context.id).hide(); "
+					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); "
+					+ "}}); ");
+
+			// The graveyard image is a drop target
+			buil.append("jQuery('#putToGraveyard').droppable({ accept: '.magicCard', drop: function(event, ui) { "
+					+ "shouldMove = false; "
+					+ "jQuery('#' + ui.draggable.context.id).hide(); "
+					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });"
+					+ "}}); ");
 		}
 
-		// Put to graveyard by drag & drop
-		buil.append("jQuery('#putToGraveyard').droppable({ ");
-		buil.append("accept: '");
-
-		if (allCardsInBattlefield.size() >= 1)
-		{
-			final MagicCard aCard = allCardsInBattlefield.get(0);
-			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
-			buil.append("#cardHandle" + uuidValidForJs);
-		}
-
-		for (int i = 1; i < allCardsInBattlefield.size(); i++)
-		{
-			final MagicCard aCard = allCardsInBattlefield.get(i);
-			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
-
-			buil.append(", #cardHandle" + uuidValidForJs);
-		}
-
-		buil.append("', drop: function(event, ui) { ");
-		buil.append("shouldMove = false; ");
-		buil.append("jQuery('#' + ui.draggable.context.id).hide(); ");
-		buil.append("Wicket.Ajax.get({ 'u' : ");
-		buil.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
-
-		// Put to hand by drag & drop
-		buil.append("jQuery('#putToHand').droppable({ ");
-		buil.append("accept: '");
-
-		if (allCardsInBattlefield.size() >= 1)
-		{
-			final MagicCard aCard = allCardsInBattlefield.get(0);
-			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
-			buil.append("#cardHandle" + uuidValidForJs);
-		}
-
-		for (int i = 1; i < allCardsInBattlefield.size(); i++)
-		{
-			final MagicCard aCard = allCardsInBattlefield.get(i);
-			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
-
-			buil.append(", #cardHandle" + uuidValidForJs);
-		}
-
-		buil.append("', drop: function(event, ui) { ");
-		buil.append("shouldMove = false; ");
-		buil.append("jQuery('#' + ui.draggable.context.id).hide(); ");
-		buil.append("Wicket.Ajax.get({ 'u' : ");
-		buil.append("jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); } }); ");
-		buil.append("}, 150); ");
+		buil.append("}, 175); ");
 
 		target.appendJavaScript(buil.toString());
 	}

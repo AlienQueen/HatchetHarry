@@ -27,4 +27,4 @@ window.setTimeout(function() {
                         }
 					}
 			);
-}, 75);
+}, 175);

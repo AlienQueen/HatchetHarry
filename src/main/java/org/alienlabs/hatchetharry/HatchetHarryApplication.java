@@ -313,7 +313,7 @@ public class HatchetHarryApplication extends WebApplication
 				"image/plusLife.png"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
-		this.getResourceSettings().setDefaultCacheDuration(Duration.seconds(3600));
+		this.getResourceSettings().setDefaultCacheDuration(Duration.hours(1));
 
 		this.getExceptionSettings().setUnexpectedExceptionDisplay(
 				IExceptionSettings.SHOW_EXCEPTION_PAGE);
