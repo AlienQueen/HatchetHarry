@@ -2055,6 +2055,7 @@ public class HomePage extends TestReportPage
 			}
 		};
 		this.allCardsInBattlefield.setOutputMarkupId(true);
+		this.allCardsInBattlefield.setReuseItems(true);
 
 		this.allTooltips = new ListView<MagicCard>("tooltips", allMagicCardsInBattlefield)
 		{
@@ -2078,6 +2079,7 @@ public class HomePage extends TestReportPage
 		};
 
 		this.allTooltips.setOutputMarkupId(true);
+		this.allTooltips.setReuseItems(true);
 
 		if (replace)
 		{
