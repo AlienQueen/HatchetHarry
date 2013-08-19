@@ -1429,7 +1429,6 @@ public class HomePage extends TestReportPage
 		this.add(countCardsLink);
 	}
 
-	@SuppressWarnings("static-method")
 	@Subscribe
 	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
@@ -1594,7 +1593,6 @@ public class HomePage extends TestReportPage
 	 *            not used, since Comet channels are managed by
 	 *            JoinGameModalWindow
 	 */
-	@SuppressWarnings("static-method")
 	@Subscribe
 	public void displayJoinGameMessage(final AjaxRequestTarget target,
 			final JoinGameNotificationCometChannel event)
@@ -1689,7 +1687,6 @@ public class HomePage extends TestReportPage
 				event.getGameId(), event.getMagicCard(), false);
 	}
 
-	@SuppressWarnings("static-method")
 	@Subscribe
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
@@ -1823,9 +1820,6 @@ public class HomePage extends TestReportPage
 				event.getGameId(), mc, true);
 	}
 
-	@SuppressWarnings("static-method")
-	// TODO: test if static methods can be annotated with @Subscribe and still
-	// access Wicket context
 	@Subscribe
 	public void acceptEndTurn(final AjaxRequestTarget target, final AcceptEndTurnCometChannel event)
 	{

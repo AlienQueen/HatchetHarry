@@ -111,7 +111,7 @@ public class VerifyClientSideTests
 	{
 		try
 		{
-			Thread.sleep(4000);
+			Thread.sleep(15000);
 		}
 		catch (final InterruptedException e)
 		{
@@ -124,7 +124,7 @@ public class VerifyClientSideTests
 
 		try
 		{
-			Thread.sleep(6000);
+			Thread.sleep(30000);
 		}
 		catch (final InterruptedException e)
 		{

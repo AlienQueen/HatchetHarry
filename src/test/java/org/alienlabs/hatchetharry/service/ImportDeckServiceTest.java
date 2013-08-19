@@ -16,7 +16,6 @@ import org.junit.Test;
  */
 public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 {
-	@SuppressWarnings("static-method")
 	@Test
 	public void testImportDeck() throws FileNotFoundException, IOException
 	{

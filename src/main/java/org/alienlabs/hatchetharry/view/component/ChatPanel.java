@@ -126,7 +126,6 @@ public class ChatPanel extends Panel
 		this.add(form);
 	}
 
-	@SuppressWarnings("static-method")
 	@Subscribe
 	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event)
 	{
