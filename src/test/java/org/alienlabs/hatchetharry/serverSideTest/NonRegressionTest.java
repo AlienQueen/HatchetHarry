@@ -101,7 +101,7 @@ public class NonRegressionTest
 
 		final HomePage hp = (HomePage)this.tester.getLastRenderedPage();
 		final WebMarkupContainer cardButton = (WebMarkupContainer)hp
-				.get("parentPlaceholder:magicCards:0:cardPanel:cardHandle:menutoggleButton");
+				.get("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(cardButton);
 		final CardRotateBehavior rotateBehavior = cardButton.getBehaviors(CardRotateBehavior.class)
 				.get(0);

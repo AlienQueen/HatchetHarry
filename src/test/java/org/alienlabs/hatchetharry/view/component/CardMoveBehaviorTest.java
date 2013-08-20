@@ -27,10 +27,10 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		SpringContextLoaderBaseTest.tester.assertComponent(
-				"parentPlaceholder:magicCards:0:cardPanel:cardHandle:menutoggleButton",
+				"parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton",
 				WebMarkupContainer.class);
 		final WebMarkupContainer button = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:0:cardPanel:cardHandle:menutoggleButton");
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(button);
 		final List<Behavior> allCardBehaviors = (List<Behavior>)button.getBehaviors();
 		CardMoveBehavior cmb = null;
@@ -48,9 +48,9 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 
 		// Move the card
 		SpringContextLoaderBaseTest.tester.assertComponent(
-				"parentPlaceholder:magicCards:0:cardPanel", CardPanel.class);
+				"parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
 		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:0:cardPanel");
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
 
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
