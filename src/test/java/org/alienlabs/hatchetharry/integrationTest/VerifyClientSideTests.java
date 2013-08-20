@@ -43,10 +43,10 @@ public class VerifyClientSideTests
 			+ "  }\n"
 			+ "\n"
 			+ "  return (\n"
-			+ "    top > (window.pageYOffset + 20) &&\n"
-			+ "    left > (window.pageXOffset + 20) &&\n"
-			+ "    (top + height + 20) < (window.pageYOffset + window.innerHeight) &&\n"
-			+ "    (left + width + 20) < (window.pageXOffset + window.innerWidth)\n"
+			+ "    top > (window.pageYOffset + 40) &&\n"
+			+ "    left > (window.pageXOffset + 40) &&\n"
+			+ "    (top + height + 40) < (window.pageYOffset + window.innerHeight) &&\n"
+			+ "    (left + width + 40) < (window.pageXOffset + window.innerWidth)\n"
 			+ "  );\n"
 			+ "}\n"
 			+ "\n"
@@ -111,7 +111,7 @@ public class VerifyClientSideTests
 	{
 		try
 		{
-			Thread.sleep(15000);
+			Thread.sleep(30000);
 		}
 		catch (final InterruptedException e)
 		{
