@@ -67,7 +67,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final HomePage homePage = (HomePage)target.getPage();
-		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+		final List<MagicCard> allCards = homePage.getAllMagicCardsInBattlefield();
 		final int index = allCards.indexOf(card);
 		allCards.remove(card);
 

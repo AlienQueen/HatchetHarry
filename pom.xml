@@ -33,7 +33,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.9.0</wicket.version>
+		<wicket.version>6.9.1</wicket.version>
 		<wicketstuff.version>6.9.0</wicketstuff.version>
 		<wicket-atmosphere.version>0.11</wicket-atmosphere.version>
 		<atmosphere.version>1.0.13</atmosphere.version>
@@ -541,6 +541,12 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>de.agilecoders.wicket</groupId>
 			<artifactId>bootstrap-extensions</artifactId>
 			<version>0.7.6</version>
+		</dependency>
+		<!-- For refreshing ListView with Ajax -->
+		<dependency>
+			<groupId>com.aplombee</groupId>
+			<artifactId>wicket-quickview</artifactId>
+			<version>${wicket.version}</version>
 		</dependency>
 	</dependencies>
 

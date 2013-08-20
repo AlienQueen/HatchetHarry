@@ -11,6 +11,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aplombee.QuickView;
+
 public class JavaScriptUtils
 {
 	public static final String REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT = "var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumbGraveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumbGraveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard(); function updateGraveyardLabel(){ var graveyardCardName = jQuery('#graveyardGallery .active-thumbGraveyard .nav-thumb').attr('name'); if (graveyardCardName == undefined) { graveyardCardName = jQuery('#graveyardGallery .active-thumb .nav-thumb').attr('name'); } jQuery('#graveyardCardLabel').text(graveyardCardName); }; jQuery(function() { setTimeout(function() { updateGraveyardLabel(); jQuery('#graveyardGallery .cross-link .nav-thumb').click(updateGraveyardLabel); }, 175); });";
@@ -38,26 +40,41 @@ public class JavaScriptUtils
 			final PersistenceService persistenceService, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
-		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+		final QuickView<MagicCard> list = homePage.getAllCardsInBattlefield();
 
 		if (null != mc)
 		{
+
 			if (added)
 			{
-				allCards.add(mc);
+				homePage.getAllMagicCardsInBattlefield().add(mc);
+				// just enough to create and add a new item in the end
+				list.addNewItems(mc);
 			}
+			// allCards.add(mc);
 			else
 			{
-				allCards.remove(mc);
+				// allCards.remove(mc);
+				for (int i = 0; i < list.size(); i++)
+				{
+					final MagicCard targetCard = homePage.getAllCardsInBattlefield().getItem(i)
+							.getModelObject();
+					if (mc.equals(targetCard))
+					{
+						homePage.getAllMagicCardsInBattlefield().remove(mc);
+						list.remove(homePage.getAllCardsInBattlefield().getItem(i));
+						break;
+					}
+				}
 				JavaScriptUtils.LOGGER.info("remove: " + mc.getTitle());
 			}
 
-			target.add(homePage.getParentPlaceholder());
+			// target.add(homePage.getParentPlaceholder());
 		}
 		else
 		{
 			homePage.getParentPlaceholder().addOrReplace(
-					homePage.generateCardListView(allCards, true));
+					homePage.generateCardListView(homePage.getAllMagicCardsInBattlefield(), true));
 			target.add(homePage.getParentPlaceholder());
 		}
 	}
@@ -70,7 +87,7 @@ public class JavaScriptUtils
 			final PersistenceService persistenceService, final boolean added)
 	{
 		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage())
-				.getAllCardsInBattlefield().getModelObject();
+				.getAllMagicCardsInBattlefield();
 
 		final StringBuilder buil = new StringBuilder();
 		buil.append("var shouldMove = true; ");

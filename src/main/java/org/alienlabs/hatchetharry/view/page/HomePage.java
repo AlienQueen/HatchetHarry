@@ -111,8 +111,8 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.WebResponse;
@@ -124,6 +124,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
 
+import com.aplombee.QuickView;
 import com.google.common.io.Files;
 
 /**
@@ -193,8 +194,9 @@ public class HomePage extends TestReportPage
 
 	private AjaxLink<Void> createGameLink;
 	private AjaxLink<Void> joinGameLink;
-	private ListView<MagicCard> allCardsInBattlefield;
-	private ListView<MagicCard> allTooltips;
+	private QuickView<MagicCard> allCardsInBattlefield;
+	private List<MagicCard> allMagicCardsInBattlefield;
+	private QuickView<MagicCard> allTooltips;
 
 	public HomePage() throws IOException
 	{
@@ -1614,11 +1616,11 @@ public class HomePage extends TestReportPage
 			final UpdateCardPanelCometChannel event)
 	{
 		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuid());
-		final List<MagicCard> all = this.getAllCardsInBattlefield().getModelObject();
+		final List<MagicCard> all = this.getAllMagicCardsInBattlefield();
 		final int index = all.indexOf(mc);
 		all.remove(index);
 		all.add(index, mc);
-		this.getAllCardsInBattlefield().setModelObject(all);
+		this.getAllCardsInBattlefield().setDefaultModelObject(new ListDataProvider<MagicCard>(all));
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), null, false);
@@ -1691,7 +1693,7 @@ public class HomePage extends TestReportPage
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
-		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+		final List<MagicCard> allCards = homePage.getAllMagicCardsInBattlefield();
 
 		final MagicCard mc = event.getMc();
 		final int index = allCards.indexOf(mc);
@@ -1711,7 +1713,7 @@ public class HomePage extends TestReportPage
 	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
-		final List<MagicCard> allCards = homePage.getAllCardsInBattlefield().getModelObject();
+		final List<MagicCard> allCards = homePage.getAllMagicCardsInBattlefield();
 
 		final MagicCard mc = event.getMc();
 		final int index = allCards.indexOf(mc);
@@ -2037,16 +2039,22 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public ListView<MagicCard> generateCardListView(
-			final List<MagicCard> allMagicCardsInBattlefield, final boolean replace)
+	public QuickView<MagicCard> generateCardListView(
+			final List<MagicCard> _allMagicCardsInBattlefield, final boolean replace)
 	{
-		this.allCardsInBattlefield = new ListView<MagicCard>("magicCards",
-				allMagicCardsInBattlefield)
+		this.allMagicCardsInBattlefield = (null == _allMagicCardsInBattlefield)
+				? new ArrayList<MagicCard>()
+				: _allMagicCardsInBattlefield;
+
+		final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
+				this.allMagicCardsInBattlefield);
+
+		this.allCardsInBattlefield = new QuickView<MagicCard>("magicCards", data)
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<MagicCard> item)
+			protected void populate(final Item<MagicCard> item)
 			{
 				final CardPanel cp = new CardPanel("cardPanel", item.getModelObject()
 						.getSmallImageFilename(), item.getModelObject().getUuidObject());
@@ -2055,14 +2063,13 @@ public class HomePage extends TestReportPage
 			}
 		};
 		this.allCardsInBattlefield.setOutputMarkupId(true);
-		this.allCardsInBattlefield.setReuseItems(true);
 
-		this.allTooltips = new ListView<MagicCard>("tooltips", allMagicCardsInBattlefield)
+		this.allTooltips = new QuickView<MagicCard>("tooltips", data)
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<MagicCard> item)
+			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
 
@@ -2079,7 +2086,6 @@ public class HomePage extends TestReportPage
 		};
 
 		this.allTooltips.setOutputMarkupId(true);
-		this.allTooltips.setReuseItems(true);
 
 		if (replace)
 		{
@@ -2093,8 +2099,14 @@ public class HomePage extends TestReportPage
 		return this.allCardsInBattlefield;
 	}
 
-	public final ListView<MagicCard> getAllCardsInBattlefield()
+	public final QuickView<MagicCard> getAllCardsInBattlefield()
 	{
 		return this.allCardsInBattlefield;
 	}
+
+	public final List<MagicCard> getAllMagicCardsInBattlefield()
+	{
+		return this.allMagicCardsInBattlefield;
+	}
+
 }
