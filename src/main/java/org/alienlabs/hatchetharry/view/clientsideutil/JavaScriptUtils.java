@@ -40,6 +40,7 @@ public class JavaScriptUtils
 			final PersistenceService persistenceService, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
+		// TODO: process tooltips QuickView as well
 		final QuickView<MagicCard> list = homePage.getAllCardsInBattlefield();
 
 		if (null != mc)
