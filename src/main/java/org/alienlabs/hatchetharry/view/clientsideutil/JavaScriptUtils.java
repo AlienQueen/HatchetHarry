@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.view.clientsideutil;
 
-import java.util.List;
-
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
@@ -33,44 +31,57 @@ public class JavaScriptUtils
 			final boolean added)
 	{
 		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, mc, added);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, added);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, mc, added);
 	}
 
 	public static void updateCardsInBattlefield(final AjaxRequestTarget target,
 			final PersistenceService persistenceService, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
-		// TODO: process tooltips QuickView as well
-		final QuickView<MagicCard> list = homePage.getAllCardsInBattlefield();
+
+		final QuickView<MagicCard> magicCardList = homePage.getAllCardsInBattlefield();
+		final QuickView<MagicCard> tooltipList = homePage.getAllTooltips();
 
 		if (null != mc)
 		{
-
 			if (added)
 			{
 				homePage.getAllMagicCardsInBattlefield().add(mc);
 				// just enough to create and add a new item in the end
-				list.addNewItems(mc);
+				magicCardList.addNewItems(mc);
+
+				homePage.getAllTooltipsInBattlefield().add(mc);
+				// just enough to create and add a new item in the end
+				tooltipList.addNewItems(mc);
 			}
-			// allCards.add(mc);
 			else
 			{
-				// allCards.remove(mc);
-				for (int i = 0; i < list.size(); i++)
+				for (int i = 0; i < magicCardList.size(); i++)
 				{
 					final MagicCard targetCard = homePage.getAllCardsInBattlefield().getItem(i)
 							.getModelObject();
 					if (mc.equals(targetCard))
 					{
 						homePage.getAllMagicCardsInBattlefield().remove(mc);
-						list.remove(homePage.getAllCardsInBattlefield().getItem(i));
+						magicCardList.remove(homePage.getAllCardsInBattlefield().getItem(i));
+						JavaScriptUtils.LOGGER.info("remove card: " + mc.getTitle());
 						break;
 					}
 				}
-				JavaScriptUtils.LOGGER.info("remove: " + mc.getTitle());
-			}
 
-			// target.add(homePage.getParentPlaceholder());
+				for (int i = 0; i < tooltipList.size(); i++)
+				{
+					final MagicCard targetCard = homePage.getAllTooltips().getItem(i)
+							.getModelObject();
+					if (mc.equals(targetCard))
+					{
+						homePage.getAllTooltipsInBattlefield().remove(mc);
+						tooltipList.remove(homePage.getAllTooltips().getItem(i));
+						JavaScriptUtils.LOGGER.info("remove tooltip: " + mc.getTitle());
+						break;
+					}
+				}
+			}
 		}
 		else
 		{
@@ -85,34 +96,22 @@ public class JavaScriptUtils
 	 * activate tooltip again
 	 */
 	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
-			final PersistenceService persistenceService, final boolean added)
+			final PersistenceService persistenceService, final MagicCard mc, final boolean added)
 	{
-		final List<MagicCard> allCardsInBattlefield = ((HomePage)target.getPage())
-				.getAllMagicCardsInBattlefield();
-
-		final StringBuilder buil = new StringBuilder();
-		buil.append("var shouldMove = true; ");
-		buil.append("window.setTimeout(function() { ");
-
-		for (int i = 0; i < allCardsInBattlefield.size(); i++)
+		if ((added) && (null != mc))
 		{
-			final MagicCard aCard = allCardsInBattlefield.get(i);
+			final StringBuilder buil = new StringBuilder();
+			buil.append("var shouldMove = true; ");
+			buil.append("window.setTimeout(function() { ");
 
-			final String uuidValidForJs = aCard.getUuid().replace("-", "_");
-
-			if (aCard.isTapped())
-			{
-				buil.append("jQuery('#card" + uuidValidForJs + "').rotate(90); ");
-			}
-			// No else since cards are untapped by default
+			final String uuidValidForJs = mc.getUuid().replace("-", "_");
 
 			buil.append("jQuery('#card" + uuidValidForJs
 					+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
 					+ "').attr('style', 'display: block; position: absolute; left: "
-					+ (aCard.getX() + 127) + "px; top: " + (aCard.getY() + 56)
+					+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
 					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
 					+ " > span').attr('style', 'display: block;'); }); ");
-
 
 			// For mobile
 			buil.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
@@ -120,7 +119,7 @@ public class JavaScriptUtils
 			buil.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
 			buil.append("jQuery('#cardTooltip" + uuidValidForJs
 					+ "').attr('style', 'display: block; position: absolute; left: "
-					+ (aCard.getX() + 127) + "px; top: " + (aCard.getY() + 56)
+					+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
 					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
 					+ " > span').attr('style', 'display: block;'); }); ");
 
@@ -130,7 +129,7 @@ public class JavaScriptUtils
 			buil.append("var tapUrl" + uuidValidForJs + " = jQuery('#tapHandleImage"
 					+ uuidValidForJs + "').data('tapUrl'); ");
 			buil.append("Wicket.Ajax.get({'u': tapUrl" + uuidValidForJs + " + '&uuid="
-					+ aCard.getUuid() + "', 'e': 'click', 'c' : 'tapHandleImage" + uuidValidForJs
+					+ mc.getUuid() + "', 'e': 'click', 'c' : 'tapHandleImage" + uuidValidForJs
 					+ "'}); ");
 
 			buil.append("var dragUrl" + uuidValidForJs + " = jQuery('#handleImage" + uuidValidForJs
@@ -161,11 +160,11 @@ public class JavaScriptUtils
 					+ "jQuery('#' + ui.draggable.context.id).hide(); "
 					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });"
 					+ "}}); ");
+
+			buil.append("}, 175); ");
+
+			target.appendJavaScript(buil.toString());
 		}
-
-		buil.append("}, 175); ");
-
-		target.appendJavaScript(buil.toString());
 	}
 
 	public static void updateHand(final AjaxRequestTarget target)

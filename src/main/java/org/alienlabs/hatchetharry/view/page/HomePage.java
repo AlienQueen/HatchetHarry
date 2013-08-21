@@ -194,9 +194,12 @@ public class HomePage extends TestReportPage
 
 	private AjaxLink<Void> createGameLink;
 	private AjaxLink<Void> joinGameLink;
+
 	private QuickView<MagicCard> allCardsInBattlefield;
 	private List<MagicCard> allMagicCardsInBattlefield;
+
 	private QuickView<MagicCard> allTooltips;
+	private List<MagicCard> allTooltipsInBattlefield;
 
 	public HomePage() throws IOException
 	{
@@ -221,8 +224,9 @@ public class HomePage extends TestReportPage
 		this.add(this.graveyardParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.4.0 (release First Steps),");
-		final Label message2 = new Label("message2", "built on Monday, 19th of August 2013.");
+		final Label message1 = new Label("message1",
+				"version 0.4.0 (release She said \"I love you\"),");
+		final Label message2 = new Label("message2", "built on Wednesday, 21st of August 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1616,11 +1620,18 @@ public class HomePage extends TestReportPage
 			final UpdateCardPanelCometChannel event)
 	{
 		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuid());
-		final List<MagicCard> all = this.getAllMagicCardsInBattlefield();
-		final int index = all.indexOf(mc);
-		all.remove(index);
-		all.add(index, mc);
-		this.getAllCardsInBattlefield().setDefaultModelObject(new ListDataProvider<MagicCard>(all));
+		final List<MagicCard> allMagicCards = this.getAllMagicCardsInBattlefield();
+		int index = allMagicCards.indexOf(mc);
+		allMagicCards.remove(index);
+		allMagicCards.add(index, mc);
+		this.getAllCardsInBattlefield().setDefaultModelObject(
+				new ListDataProvider<MagicCard>(allMagicCards));
+
+		final List<MagicCard> _allTooltips = this.getAllTooltipsInBattlefield();
+		index = _allTooltips.indexOf(mc);
+		_allTooltips.remove(index);
+		_allTooltips.add(index, mc);
+		this.getAllTooltips().setDefaultModelObject(new ListDataProvider<MagicCard>(_allTooltips));
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), null, false);
@@ -2042,9 +2053,17 @@ public class HomePage extends TestReportPage
 	public QuickView<MagicCard> generateCardListView(
 			final List<MagicCard> _allMagicCardsInBattlefield, final boolean replace)
 	{
-		this.allMagicCardsInBattlefield = (null == _allMagicCardsInBattlefield)
-				? new ArrayList<MagicCard>()
-				: _allMagicCardsInBattlefield;
+		if (null == _allMagicCardsInBattlefield)
+		{
+			final List<MagicCard> newCards = new ArrayList<MagicCard>();
+			this.allMagicCardsInBattlefield = newCards;
+			this.allTooltipsInBattlefield = newCards;
+		}
+		else
+		{
+			this.allMagicCardsInBattlefield = _allMagicCardsInBattlefield;
+			this.allTooltipsInBattlefield = _allMagicCardsInBattlefield;
+		}
 
 		final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
 				this.allMagicCardsInBattlefield);
@@ -2107,6 +2126,16 @@ public class HomePage extends TestReportPage
 	public final List<MagicCard> getAllMagicCardsInBattlefield()
 	{
 		return this.allMagicCardsInBattlefield;
+	}
+
+	public final QuickView<MagicCard> getAllTooltips()
+	{
+		return this.allTooltips;
+	}
+
+	public final List<MagicCard> getAllTooltipsInBattlefield()
+	{
+		return this.allTooltipsInBattlefield;
 	}
 
 }
