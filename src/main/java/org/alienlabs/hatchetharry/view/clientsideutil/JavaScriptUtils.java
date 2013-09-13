@@ -143,8 +143,7 @@ public class JavaScriptUtils
 					+ " if (!shouldMove) { shouldMove = true; return; } "
 					+ " var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
 					+ "Wicket.Ajax.get({ 'u' : dragUrl" + uuidValidForJs
-					+ " + '&posX=' + (event.pageX - 8) + '&posY=' + (event.pageY - 36)}); "
-					+ "} }); ");
+					+ " + '&posX=' + (ui.offset.left) + '&posY=' + (ui.offset.top)}); " + "} }); ");
 
 			// The hand image is a drop target
 			buil.append("jQuery('#putToHand').droppable({ accept: '.magicCard', drop: function(event, ui) { "
