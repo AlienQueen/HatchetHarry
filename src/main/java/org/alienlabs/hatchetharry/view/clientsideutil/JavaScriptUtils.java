@@ -101,7 +101,6 @@ public class JavaScriptUtils
 		if ((added) && (null != mc))
 		{
 			final StringBuilder buil = new StringBuilder();
-			buil.append("var shouldMove = true; ");
 			buil.append("window.setTimeout(function() { ");
 
 			final String uuidValidForJs = mc.getUuid().replace("-", "_");
@@ -142,7 +141,7 @@ public class JavaScriptUtils
 					+ "', helper : 'original'"
 					+ ", stop: function(event, ui) { "
 					+ " if (!shouldMove) { shouldMove = true; return; } "
-					+ "var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
+					+ " var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle')); "
 					+ "Wicket.Ajax.get({ 'u' : dragUrl" + uuidValidForJs
 					+ " + '&posX=' + (event.pageX - 8) + '&posY=' + (event.pageY - 36)}); "
 					+ "} }); ");

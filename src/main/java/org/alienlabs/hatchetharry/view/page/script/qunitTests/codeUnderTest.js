@@ -106,3 +106,6 @@ jQuery(function() {
 jQuery(function() {
 	jQuery('[title]').tipsy({gravity: 's'});
 });
+
+// For cards drag + hand & graveyard drop
+var shouldMove = true; 
