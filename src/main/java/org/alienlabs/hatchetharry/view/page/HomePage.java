@@ -1789,7 +1789,13 @@ public class HomePage extends TestReportPage
 	public void playTopLibraryCard(final AjaxRequestTarget target,
 			final PlayTopLibraryCardCometChannel event)
 	{
-		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+		final MagicCard mc = event.getCard();
+
+		mc.setZone(CardZone.BATTLEFIELD);
+		mc.setX(300l);
+		mc.setY(300l);
+		this.persistenceService.updateCard(mc);
+
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
 	}

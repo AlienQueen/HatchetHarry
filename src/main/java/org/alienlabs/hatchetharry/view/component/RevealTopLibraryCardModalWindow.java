@@ -77,26 +77,13 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				game.setCurrentPlaceholderId(currentPlaceholderId);
 				RevealTopLibraryCardModalWindow.this.persistenceService.updateGame(game);
 
-				RevealTopLibraryCardModalWindow.this.card.setZone(CardZone.BATTLEFIELD);
-				RevealTopLibraryCardModalWindow.this.card.setX(300l + (currentPlaceholderId * 16));
-				RevealTopLibraryCardModalWindow.this.card.setY(300l + (currentPlaceholderId * 16));
-				RevealTopLibraryCardModalWindow.this.persistenceService
-						.updateCard(RevealTopLibraryCardModalWindow.this.card);
-
 				final Player p = RevealTopLibraryCardModalWindow.this.persistenceService
 						.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck()
 								.getPlayerId());
-				final Deck d = p.getDeck();
 				final Long gameId = game.getId();
-				final List<MagicCard> battlefield = d
-						.reorderMagicCards(RevealTopLibraryCardModalWindow.this.persistenceService
-								.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(),
-										d.getDeckId()));
-				RevealTopLibraryCardModalWindow.this.persistenceService
-						.updateAllMagicCards(battlefield);
 
 				final PlayTopLibraryCardCometChannel ptlccc = new PlayTopLibraryCardCometChannel(
-						gameId, battlefield.get(0).getUuidObject());
+						gameId, RevealTopLibraryCardModalWindow.this.card);
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PLAY_TOP_LIBRARY_CARD, gameId, p.getId(),
