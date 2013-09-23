@@ -83,12 +83,6 @@ public class JavaScriptUtils
 				}
 			}
 		}
-		else
-		{
-			homePage.getParentPlaceholder().addOrReplace(
-					homePage.generateCardListView(homePage.getAllMagicCardsInBattlefield(), true));
-			target.add(homePage.getParentPlaceholder());
-		}
 	}
 
 	/*
