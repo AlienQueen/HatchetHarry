@@ -322,7 +322,6 @@ public class TooltipPanel extends Panel
 						.setOutputMarkupId(true));
 
 				setCounterForm.add(setCounterSubmit, addCounterLink, removeCounterLink);
-				// setCounterSubmit.setDefaultFormProcessing(false);
 
 				setCounterForm.setOutputMarkupPlaceholderTag(false);
 				item.add(setCounterForm);

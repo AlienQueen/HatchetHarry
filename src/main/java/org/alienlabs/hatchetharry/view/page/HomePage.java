@@ -1620,21 +1620,22 @@ public class HomePage extends TestReportPage
 			final UpdateCardPanelCometChannel event)
 	{
 		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuid());
-		final List<MagicCard> allMagicCards = this.getAllMagicCardsInBattlefield();
-		int index = allMagicCards.indexOf(mc);
-		allMagicCards.remove(index);
-		allMagicCards.add(index, mc);
-		this.getAllCardsInBattlefield().setDefaultModelObject(
-				new ListDataProvider<MagicCard>(allMagicCards));
 
-		final List<MagicCard> _allTooltips = this.getAllTooltipsInBattlefield();
-		index = _allTooltips.indexOf(mc);
-		_allTooltips.remove(index);
-		_allTooltips.add(index, mc);
-		this.getAllTooltips().setDefaultModelObject(new ListDataProvider<MagicCard>(_allTooltips));
+		for (int i = 0; i < this.getAllTooltips().size(); i++)
+		{
+			final MagicCard targetCard = this.getAllTooltips().getItem(i).getModelObject();
 
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), null, false);
+			if (mc.equals(targetCard))
+			{
+				this.getAllTooltipsInBattlefield().remove(this.getAllTooltips().getItem(i));
+				this.getAllTooltips().remove(this.getAllTooltips().getItem(i));
+				this.getAllTooltipsInBattlefield().add(mc);
+				this.getAllTooltips().addNewItems(mc);
+				break;
+			}
+		}
+
+		target.appendJavaScript(JavaScriptUtils.HIDE_ALL_TOOLTIPS);
 
 		switch (event.getAction())
 		{

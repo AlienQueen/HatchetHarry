@@ -115,8 +115,11 @@ public class CreateGameModalWindow extends Panel
 		this.deckParent.add(this.decks);
 
 		this.game = this.player.getGame();
-		final Label gameId = new Label("gameId", "The id of this game is: " + this.game.getId()
-				+ ". You'll have to provide it to your opponent(s).");
+		final Label beforeGameId = new Label("beforeGameId", "The id of this game is: ");
+		final Label gameId = new Label("gameId", this.game.getId());
+		gameId.setOutputMarkupId(true).setMarkupId("gameId");
+		final Label afterGameId = new Label("afterGameId",
+				". You'll have to provide it to your opponent(s).");
 		HatchetHarrySession.get().setGameId(this.game.getId());
 
 
@@ -268,8 +271,8 @@ public class CreateGameModalWindow extends Panel
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("createSubmit" + _player.getId());
 
-		form.add(chooseDeck, this.deckParent, gameId, sideLabel, nameLabel, this.nameInput,
-				this.sideInput, submit);
+		form.add(chooseDeck, this.deckParent, beforeGameId, gameId, afterGameId, sideLabel,
+				nameLabel, this.nameInput, this.sideInput, submit);
 
 		this.add(form);
 	}

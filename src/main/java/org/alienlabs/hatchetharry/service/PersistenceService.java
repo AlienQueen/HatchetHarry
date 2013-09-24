@@ -909,17 +909,17 @@ public class PersistenceService implements Serializable
 	public void deleteCounter(final Counter counter, final MagicCard card)
 	{
 		card.getCounters().remove(counter);
+		counter.setCard(null);
 
-		final Session session = this.counterDao.getSession();
-		Query query = session.createSQLQuery("delete from Card_Counter where counterId = ?");
+		Query query = this.magicCardDao.getSession().createSQLQuery(
+				"delete from Card_Counter where counterId = ?");
 		query.setLong(0, counter.getId());
 		query.executeUpdate();
 
-		query = session.createSQLQuery("delete from Counter where counterId = ?");
+		query = this.counterDao.getSession().createSQLQuery(
+				"delete from Counter where counterId = ?");
 		query.setLong(0, counter.getId());
 		query.executeUpdate();
-
-		this.updateCard(card);
 	}
 
 }
