@@ -1627,7 +1627,8 @@ public class HomePage extends TestReportPage
 
 			if (mc.equals(targetCard))
 			{
-				this.getAllTooltipsInBattlefield().remove(this.getAllTooltips().getItem(i));
+				this.getAllTooltipsInBattlefield().remove(
+						this.getAllTooltips().getItem(i).getModelObject());
 				this.getAllTooltips().remove(this.getAllTooltips().getItem(i));
 				this.getAllTooltipsInBattlefield().add(mc);
 				this.getAllTooltips().addNewItems(mc);
