@@ -199,3 +199,7 @@ div.wicket-modal h3.w_captionText {
 	float:left;
 	padding-left: 250px;
 }
+
+.chat {
+	background-color: black;
+}
