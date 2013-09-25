@@ -71,12 +71,12 @@
 	  </li>
   </ul>
 	<br/>
-  <nav class="zone-images">
+  <span class="zone-images">
 	<img id="putToHand" src="image/hand.jpg" alt="Put back to hand" title="      Drag a card here to put it back to hand" style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
 	<img id="putToGraveyard" src="image/graveyard.jpg" alt="Put back to graveyard" title="Drag a card here to put it back to graveyard" style="border-color: white; border-width: 1px; border-style: solid;"/>
-  </nav>
+  </span>
   <!-- The mobile drop down menu -->
-  <nav class="dropdownmenu">
+  <span class="dropdownmenu">
 	  <div>
 	  		<img src="/image/logoh1.gif" width="32" height="32"/>
 		  	<img src="/image/browse.png" id="browse" height="32" width="32"/>
@@ -102,22 +102,25 @@
 	        <li class="myfont"><a wicket:id="countCardsLinkResponsive">* Count all cards&nbsp;&nbsp;</a></li>
 	      </ul>
     </div>
-  </nav>
+  </span>
   <!-- end menus -->
-    
+  <strong class="myfont shift-right">Welcome to HatchetHarry
+			<span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
+			<span wicket:id="message2" id="message2" class="myfont">message will be here</span>
+  </strong>  
 	<br/><br/><br/><br/><br/>
 	<br/><br/><br/><br/><br/>
 	<span wicket:id="balduParent" id="tour_6">
 		<span wicket:id="baldu"></span>
 	</span>
 	<br/><br/><br/><br/>
-	<h3><strong class="myfont">Welcome to HatchetHarry
-			<span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
-			<span wicket:id="message2" id="message2" class="myfont">message will be here</span>
-		</strong>
-	</h3>
 	<br/><br/><br/><br/>
-	<span id="tour_9">
+	<br/><br/><br/><br/>
+	<br/><br/><br/><br/>
+	<br/><br/><br/><br/>
+	<br/><br/><br/><br/>
+	<br/><br/><br/><br/>
+	<span id="tour_9" class="dock">
 		<div id="dock">
 					<a wicket:id="handLink" id="tour_10">
 				    	<img src="/image/hand.gif" alt="Hand" title="Hand"/>
@@ -136,10 +139,8 @@
 				    </a>
 	  	</div>
   	</span>
-  	<br/>
-	<br/>
-	<br/>
   	<br/><br/>
+	<br/><br/>
 	<span wicket:id="dataBoxParent" class="myfont">
 		<span wicket:id="dataBox"></span>
 	</span><br/>

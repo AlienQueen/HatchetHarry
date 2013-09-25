@@ -160,6 +160,7 @@ a, a:visited {
     font-family: "Trebuchet MS", "Lucida Grande", Arial, Helvetica, sans-serif;
 	margin: 0 auto;
 	padding: 0;
+	width: 2500px;
 }
 
 .myfont {
@@ -192,4 +193,9 @@ div.wicket-modal h3.w_captionText {
 
 .cardLabelFont {
 	text-decoration:none; padding: 10px;  font-size:12px;  font-weight:normal; font-family: 'Black Ops One', cursive; color: gray;
+}
+
+.shift-right {
+	float:left;
+	padding-left: 250px;
 }
