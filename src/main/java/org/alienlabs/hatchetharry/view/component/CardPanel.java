@@ -130,15 +130,18 @@ public class CardPanel extends Panel
 			if ("infrared".equals(this.owner.getSide()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
+				handleImage.add(new AttributeModifier("style", "border: 1px red dotted;"));
 			}
 			else if ("ultraviolet".equals(this.owner.getSide()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
+				handleImage.add(new AttributeModifier("style", "border: 1px purple dotted;"));
 			}
 		}
 		else
 		{
 			cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
+			handleImage.add(new AttributeModifier("style", "border: 1px yellow dotted;"));
 		}
 
 		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
