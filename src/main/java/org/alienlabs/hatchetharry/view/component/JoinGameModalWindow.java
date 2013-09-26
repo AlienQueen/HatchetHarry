@@ -84,11 +84,12 @@ public class JoinGameModalWindow extends Panel
 		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
 		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
 		this.sideInput = new DropDownChoice<String>("sideInput", new Model<String>(), sidesModel);
+		this.sideInput.setOutputMarkupId(true).setMarkupId("sideInput");
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
 		final Model<String> nameModel = new Model<String>("");
 		this.nameInput = new TextField<String>("name", nameModel);
-		this.nameInput.setOutputMarkupId(true);
+		this.nameInput.setOutputMarkupId(true).setMarkupId("name");
 
 		this.nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
 		{
@@ -104,6 +105,7 @@ public class JoinGameModalWindow extends Panel
 					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
 					JoinGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
 							new Model<Deck>(), _decksModel);
+					JoinGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					JoinGameModalWindow.this.deckParent
 							.addOrReplace(JoinGameModalWindow.this.decks);
@@ -128,6 +130,7 @@ public class JoinGameModalWindow extends Panel
 				"Please provide the game id given by your opponent: ");
 		final Model<Long> gameId = new Model<Long>(0l);
 		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
+		this.gameIdInput.setOutputMarkupId(true).setMarkupId("gameIdInput");
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
@@ -324,7 +327,7 @@ public class JoinGameModalWindow extends Panel
 			}
 		};
 		submit.setOutputMarkupId(true);
-		submit.setMarkupId("joinSubmit" + _player.getId());
+		submit.setMarkupId("joinSubmit");
 
 		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, this.nameInput, this.sideInput,
 				gameIdLabel, this.gameIdInput, submit);

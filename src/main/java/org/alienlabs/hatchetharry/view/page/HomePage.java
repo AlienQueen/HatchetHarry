@@ -226,7 +226,7 @@ public class HomePage extends TestReportPage
 		// Welcome message
 		final Label message1 = new Label("message1",
 				"version 0.4.0 (release She said \"I love you\"),");
-		final Label message2 = new Label("message2", "built on Wednesday, 25th of September 2013.");
+		final Label message2 = new Label("message2", "built on Thursday, 26th of September 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1253,7 +1253,7 @@ public class HomePage extends TestReportPage
 			}
 		};
 
-		this.createGameLink.setOutputMarkupId(true);
+		this.createGameLink.setOutputMarkupId(true).setMarkupId(id);
 		this.createGameWindow.setOutputMarkupId(true);
 
 		this.add(this.createGameLink);
@@ -1286,7 +1286,7 @@ public class HomePage extends TestReportPage
 			}
 		};
 
-		this.joinGameLink.setOutputMarkupId(true);
+		this.joinGameLink.setOutputMarkupId(true).setMarkupId(id);
 		window.setOutputMarkupId(true);
 
 		this.add(this.joinGameLink);

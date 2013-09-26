@@ -74,11 +74,12 @@ public class CreateGameModalWindow extends Panel
 		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
 		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
 		this.sideInput = new DropDownChoice<String>("sideInput", new Model<String>(), sidesModel);
+		this.sideInput.setOutputMarkupId(true).setMarkupId("sideInput");
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
 		final Model<String> nameModel = new Model<String>("");
 		this.nameInput = new TextField<String>("name", nameModel);
-		this.nameInput.setOutputMarkupId(true);
+		this.nameInput.setOutputMarkupId(true).setMarkupId("name");
 
 		this.nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
 		{
@@ -94,6 +95,7 @@ public class CreateGameModalWindow extends Panel
 					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
 					CreateGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
 							new Model<Deck>(), _decksModel);
+					CreateGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					CreateGameModalWindow.this.deckParent
 							.addOrReplace(CreateGameModalWindow.this.decks);
@@ -116,8 +118,10 @@ public class CreateGameModalWindow extends Panel
 
 		this.game = this.player.getGame();
 		final Label beforeGameId = new Label("beforeGameId", "The id of this game is: ");
+
 		final Label gameId = new Label("gameId", this.game.getId());
 		gameId.setOutputMarkupId(true).setMarkupId("gameId");
+
 		final Label afterGameId = new Label("afterGameId",
 				". You'll have to provide it to your opponent(s).");
 		HatchetHarrySession.get().setGameId(this.game.getId());
@@ -269,7 +273,7 @@ public class CreateGameModalWindow extends Panel
 			}
 		};
 		submit.setOutputMarkupId(true);
-		submit.setMarkupId("createSubmit" + _player.getId());
+		submit.setMarkupId("createSubmit");
 
 		form.add(chooseDeck, this.deckParent, beforeGameId, gameId, afterGameId, sideLabel,
 				nameLabel, this.nameInput, this.sideInput, submit);
