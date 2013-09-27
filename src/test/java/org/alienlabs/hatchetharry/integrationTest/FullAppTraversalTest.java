@@ -21,7 +21,7 @@ public class FullAppTraversalTest
 	private static final String PORT = "8088";
 	private static final String HOST = "http://hatchetharry.net";
 
-	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show();";
+	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show(); jQuery('.dropdownmenu:first').click();";
 
 	@BeforeClass
 	public static void setUpClass()
@@ -43,15 +43,15 @@ public class FullAppTraversalTest
 
 		// Create a game in Chrome
 		((JavascriptExecutor)FullAppTraversalTest.chromeDriver)
-		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTest.chromeDriver.findElement(By.id("createGameLinkResponsive")).click();
 		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.chromeDriver.findElement(By.id("sideInput")))
-		.selectByVisibleText("infrared");
+				.selectByVisibleText("infrared");
 		new Select(FullAppTraversalTest.chromeDriver.findElement(By.id("decks")))
-		.selectByVisibleText("Aura Bant");
+				.selectByVisibleText("Aura Bant");
 
 		final Long gameId = Long.parseLong(FullAppTraversalTest.chromeDriver.findElement(
 				By.id("gameId")).getText());
@@ -60,15 +60,15 @@ public class FullAppTraversalTest
 
 		// Join a game in Opera
 		((JavascriptExecutor)FullAppTraversalTest.operaDriver)
-		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTest.operaDriver.findElement(By.id("joinGameLinkResponsive")).click();
 		FullAppTraversalTest.operaDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTest.operaDriver.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("sideInput")))
-		.selectByVisibleText("ultraviolet");
+				.selectByVisibleText("ultraviolet");
 		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("decks")))
-		.selectByVisibleText("aggro-combo Red / Black");
+				.selectByVisibleText("aggro-combo Red / Black");
 		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).clear();
 		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).sendKeys(
 				gameId.toString());
