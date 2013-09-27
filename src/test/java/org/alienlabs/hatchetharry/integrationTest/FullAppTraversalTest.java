@@ -37,8 +37,10 @@ public class FullAppTraversalTest
 	}
 
 	@Test
-	public void testFullAppTraversal()
+	public void testFullAppTraversal() throws InterruptedException
 	{
+		Thread.sleep(5000);
+
 		// Create a game in Chrome
 		((JavascriptExecutor)FullAppTraversalTest.chromeDriver)
 		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
