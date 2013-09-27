@@ -77,7 +77,7 @@ public class FullAppTraversalTest
 		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("sideInput")))
 		.selectByVisibleText("ultraviolet");
 		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("decks")))
-		.selectByVisibleText("aggro-combo Red / Black");
+		.selectByVisibleText("Aura Bant");
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).clear();
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(
 				gameId.toString());
