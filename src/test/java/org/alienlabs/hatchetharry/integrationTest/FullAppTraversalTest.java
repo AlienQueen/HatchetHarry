@@ -7,15 +7,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FullAppTraversalTest
 {
-	private static WebDriver chromeDriver;
-	private static WebDriver firefoxDriver;
+	private static WebDriver chromeDriver1;
+	private static WebDriver chromeDriver2;
 
 	private static final String PORT = "8088";
 	private static final String HOST = "localhost";
@@ -26,64 +25,64 @@ public class FullAppTraversalTest
 	public static void setUpClass()
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
-		FullAppTraversalTest.chromeDriver = new ChromeDriver();
-		FullAppTraversalTest.chromeDriver.get(FullAppTraversalTest.HOST + ":"
+		FullAppTraversalTest.chromeDriver1 = new ChromeDriver();
+		FullAppTraversalTest.chromeDriver1.get(FullAppTraversalTest.HOST + ":"
 				+ FullAppTraversalTest.PORT + "/");
 
-		FullAppTraversalTest.firefoxDriver = new FirefoxDriver();
-		FullAppTraversalTest.firefoxDriver.get(FullAppTraversalTest.HOST + ":"
+		FullAppTraversalTest.chromeDriver2 = new ChromeDriver();
+		FullAppTraversalTest.chromeDriver2.get(FullAppTraversalTest.HOST + ":"
 				+ FullAppTraversalTest.PORT + "/");
 	}
 
 	@AfterClass
 	public static void tearDownClass()
 	{
-		FullAppTraversalTest.chromeDriver.quit();
-		FullAppTraversalTest.firefoxDriver.quit();
+		FullAppTraversalTest.chromeDriver1.quit();
+		FullAppTraversalTest.chromeDriver2.quit();
 	}
 
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
 		// Create a game in Chrome
-		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver, 60);
+		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver1, 60);
 
-		((JavascriptExecutor)FullAppTraversalTest.chromeDriver)
+		((JavascriptExecutor)FullAppTraversalTest.chromeDriver1)
 		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
-		FullAppTraversalTest.chromeDriver.findElement(By.id("createGameLinkResponsive")).click();
+		FullAppTraversalTest.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
 		Thread.sleep(5000);
-		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).clear();
-		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).sendKeys("Zala");
-		new Select(FullAppTraversalTest.chromeDriver.findElement(By.id("sideInput")))
+		FullAppTraversalTest.chromeDriver1.findElement(By.id("name")).clear();
+		FullAppTraversalTest.chromeDriver1.findElement(By.id("name")).sendKeys("Zala");
+		new Select(FullAppTraversalTest.chromeDriver1.findElement(By.id("sideInput")))
 		.selectByVisibleText("infrared");
-		new Select(FullAppTraversalTest.chromeDriver.findElement(By.id("decks")))
+		new Select(FullAppTraversalTest.chromeDriver1.findElement(By.id("decks")))
 		.selectByVisibleText("Aura Bant");
 
-		final Long gameId = Long.parseLong(FullAppTraversalTest.chromeDriver.findElement(
+		final Long gameId = Long.parseLong(FullAppTraversalTest.chromeDriver1.findElement(
 				By.id("gameId")).getText());
 
-		FullAppTraversalTest.chromeDriver.findElement(By.id("createSubmit")).click();
+		FullAppTraversalTest.chromeDriver1.findElement(By.id("createSubmit")).click();
 
 		// Join a game in Opera
-		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.firefoxDriver, 60);
+		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver2, 60);
 
-		((JavascriptExecutor)FullAppTraversalTest.firefoxDriver)
+		((JavascriptExecutor)FullAppTraversalTest.chromeDriver2)
 		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
-		FullAppTraversalTest.firefoxDriver.findElement(By.id("joinGameLinkResponsive")).click();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
 		Thread.sleep(5000);
-		FullAppTraversalTest.firefoxDriver.findElement(By.id("name")).clear();
-		FullAppTraversalTest.firefoxDriver.findElement(By.id("name")).sendKeys("Zala");
-		new Select(FullAppTraversalTest.firefoxDriver.findElement(By.id("sideInput")))
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).clear();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).sendKeys("Zala");
+		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("sideInput")))
 		.selectByVisibleText("ultraviolet");
-		new Select(FullAppTraversalTest.firefoxDriver.findElement(By.id("decks")))
+		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("decks")))
 		.selectByVisibleText("aggro-combo Red / Black");
-		FullAppTraversalTest.firefoxDriver.findElement(By.id("gameIdInput")).clear();
-		FullAppTraversalTest.firefoxDriver.findElement(By.id("gameIdInput")).sendKeys(
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).clear();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(
 				gameId.toString());
 
-		FullAppTraversalTest.firefoxDriver.findElement(By.id("joinSubmit")).click();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
