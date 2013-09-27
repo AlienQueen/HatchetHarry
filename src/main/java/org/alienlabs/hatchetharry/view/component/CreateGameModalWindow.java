@@ -98,7 +98,7 @@ public class CreateGameModalWindow extends Panel
 					CreateGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					CreateGameModalWindow.this.deckParent
-							.addOrReplace(CreateGameModalWindow.this.decks);
+					.addOrReplace(CreateGameModalWindow.this.decks);
 					target.add(CreateGameModalWindow.this.deckParent);
 				}
 			}
@@ -113,7 +113,7 @@ public class CreateGameModalWindow extends Panel
 		this.deckParent = new WebMarkupContainer("deckParent");
 		this.deckParent.setOutputMarkupId(true);
 		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
-		this.decks.setOutputMarkupId(true);
+		this.decks.setOutputMarkupId(true).setMarkupId("decks");
 		this.deckParent.add(this.decks);
 
 		this.game = this.player.getGame();
@@ -138,7 +138,7 @@ public class CreateGameModalWindow extends Panel
 						|| ("".equals(CreateGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == CreateGameModalWindow.this.decks.getModelObject())
 						|| (null == CreateGameModalWindow.this.sideInput
-								.getDefaultModelObjectAsString()))
+						.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
@@ -159,7 +159,7 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(
 						CreateGameModalWindow.this.game.getId(), CreateGameModalWindow.this.player
-								.getDeck().getDeckId());
+						.getDeck().getDeckId());
 
 				final Deck deck = new Deck();
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
@@ -178,7 +178,7 @@ public class CreateGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-									+ "Thumb.jpg", cc.getTitle(), "",
+							+ "Thumb.jpg", cc.getTitle(), "",
 							CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 					card.setGameId(g.getId());
 					card.setDeck(deck);
@@ -216,7 +216,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setDeck(deck);
 				CreateGameModalWindow.this.player.setGame(g);
 				CreateGameModalWindow.this.persistenceService
-						.updatePlayer(CreateGameModalWindow.this.player);
+				.updatePlayer(CreateGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
 
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
