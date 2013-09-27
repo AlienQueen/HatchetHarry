@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -35,6 +36,13 @@ public class FullAppTraversalTest
 				+ FullAppTraversalTest.PORT + "/");
 	}
 
+	@AfterClass
+	public static void tearDownClass()
+	{
+		FullAppTraversalTest.chromeDriver.quit();
+		FullAppTraversalTest.operaDriver.quit();
+	}
+
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
@@ -45,6 +53,7 @@ public class FullAppTraversalTest
 				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTest.chromeDriver.findElement(By.id("createGameLinkResponsive")).click();
+		Thread.sleep(5000);
 		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.chromeDriver.findElement(By.id("sideInput")))
@@ -64,6 +73,7 @@ public class FullAppTraversalTest
 				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTest.operaDriver.findElement(By.id("joinGameLinkResponsive")).click();
+		Thread.sleep(5000);
 		FullAppTraversalTest.operaDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTest.operaDriver.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("sideInput")))
