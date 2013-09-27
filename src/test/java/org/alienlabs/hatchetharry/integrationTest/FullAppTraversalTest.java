@@ -17,11 +17,8 @@ public class FullAppTraversalTest
 	private static WebDriver chromeDriver;
 	private static WebDriver operaDriver;
 
-	// private static final String HOST = "http://localhost"; // For development
-
-	// For production
 	private static final String PORT = "8088";
-	private static final String HOST = "http://hatchetharry.net";
+	private static final String HOST = "localhost";
 
 	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show(); jQuery('.dropdownmenu:first').click();";
 
