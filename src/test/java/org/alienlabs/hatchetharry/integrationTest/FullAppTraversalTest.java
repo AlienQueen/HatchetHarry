@@ -3,6 +3,7 @@ package org.alienlabs.hatchetharry.integrationTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -19,6 +20,8 @@ public class FullAppTraversalTest
 	// For production
 	private static final String PORT = "8088";
 	private static final String HOST = "http://hatchetharry.net";
+
+	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show();";
 
 	@BeforeClass
 	public static void setUpClass()
@@ -37,29 +40,37 @@ public class FullAppTraversalTest
 	public void testFullAppTraversal()
 	{
 		// Create a game in Chrome
-		FullAppTraversalTest.chromeDriver.findElement(By.id("createGameLink")).click();
+		((JavascriptExecutor)FullAppTraversalTest.chromeDriver)
+		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+
+		FullAppTraversalTest.chromeDriver.findElement(By.id("createGameLinkResponsive")).click();
 		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTest.chromeDriver.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.chromeDriver.findElement(By.id("sideInput")))
-				.selectByVisibleText("infrared");
+		.selectByVisibleText("infrared");
 		new Select(FullAppTraversalTest.chromeDriver.findElement(By.id("decks")))
-				.selectByVisibleText("Aura Bant");
-		FullAppTraversalTest.chromeDriver.findElement(By.id("createSubmit")).click();
+		.selectByVisibleText("Aura Bant");
 
-		// Join a game in Opera
 		final Long gameId = Long.parseLong(FullAppTraversalTest.chromeDriver.findElement(
 				By.id("gameId")).getText());
 
-		FullAppTraversalTest.operaDriver.findElement(By.id("joinGameLink")).click();
+		FullAppTraversalTest.chromeDriver.findElement(By.id("createSubmit")).click();
+
+		// Join a game in Opera
+		((JavascriptExecutor)FullAppTraversalTest.operaDriver)
+		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+
+		FullAppTraversalTest.operaDriver.findElement(By.id("joinGameLinkResponsive")).click();
 		FullAppTraversalTest.operaDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTest.operaDriver.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("sideInput")))
-				.selectByVisibleText("ultraviolet");
+		.selectByVisibleText("ultraviolet");
 		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("decks")))
-				.selectByVisibleText("aggro-combo Red / Black");
+		.selectByVisibleText("aggro-combo Red / Black");
 		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).clear();
 		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).sendKeys(
 				gameId.toString());
+
 		FullAppTraversalTest.operaDriver.findElement(By.id("joinSubmit")).click();
 	}
 
