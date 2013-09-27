@@ -39,7 +39,7 @@ public class FullAppTraversalTest
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
-		Thread.sleep(5000);
+		Thread.sleep(20000);
 
 		// Create a game in Chrome
 		((JavascriptExecutor)FullAppTraversalTest.chromeDriver)
