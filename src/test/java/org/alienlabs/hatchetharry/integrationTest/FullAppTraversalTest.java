@@ -6,7 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.opera.core.systems.OperaDriver;
 
@@ -39,9 +41,9 @@ public class FullAppTraversalTest
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
-		Thread.sleep(40000);
-
 		// Create a game in Chrome
+		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver, 60);
+
 		((JavascriptExecutor)FullAppTraversalTest.chromeDriver)
 				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
@@ -59,6 +61,8 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver.findElement(By.id("createSubmit")).click();
 
 		// Join a game in Opera
+		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.operaDriver, 60);
+
 		((JavascriptExecutor)FullAppTraversalTest.operaDriver)
 				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
@@ -74,6 +78,34 @@ public class FullAppTraversalTest
 				gameId.toString());
 
 		FullAppTraversalTest.operaDriver.findElement(By.id("joinSubmit")).click();
+	}
+
+	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
+	{
+		boolean jQcondition = false;
+		try
+		{
+			new WebDriverWait(driver, timeOutInSeconds)
+			{
+			}.until(new ExpectedCondition<Boolean>()
+			{
+
+				@Override
+				public Boolean apply(final WebDriver driverObject)
+				{
+					return (Boolean)((JavascriptExecutor)driverObject)
+							.executeScript("return jQuery.active == 0");
+				}
+			});
+			jQcondition = (Boolean)((JavascriptExecutor)driver)
+					.executeScript("return window.jQuery != undefined && jQuery.active === 0");
+			return jQcondition;
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		return jQcondition;
 	}
 
 }
