@@ -88,7 +88,7 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
 
 		// Assert no card present
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector("span[id^='cardHandle']")).isEmpty());
 		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
