@@ -9,7 +9,10 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -88,7 +91,7 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
 
 		// Assert no card present
-		Thread.sleep(20000);
+		Thread.sleep(30000);
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector("span[id^='cardHandle']")).isEmpty());
 		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
@@ -118,10 +121,34 @@ public class FullAppTraversalTest
 		Thread.sleep(5000);
 
 		// Verify card is tapped
-		FullAppTraversalTest.chromeDriver1.findElements(By.cssSelector("img[id^='card']")).get(0)
-				.getCssValue("transform").contains("rotate(90deg)");
-		FullAppTraversalTest.chromeDriver2.findElements(By.cssSelector("img[id^='card']")).get(0)
-				.getCssValue("transform").contains("rotate(90deg)");
+		final WebElement card1 = FullAppTraversalTest.chromeDriver1.findElements(
+				By.cssSelector("img[id^='card']")).get(0);
+		assertTrue(card1.getCssValue("transform").contains("rotate(90deg)"));
+		assertTrue(FullAppTraversalTest.chromeDriver2
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform")
+				.contains("rotate(90deg)"));
+
+		// Assert graveyard not visible
+		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(By.id("graveyard-page-wrap"))
+				.isEmpty());
+
+		// Drag card to graveyard
+		final Actions builder = new Actions(FullAppTraversalTest.chromeDriver1);
+
+		final Action dragAndDrop = builder
+				.clickAndHold()
+				.moveToElement(
+						FullAppTraversalTest.chromeDriver1.findElement(By
+								.cssSelector("img[id^='handleImage']")))
+				.release(FullAppTraversalTest.chromeDriver1.findElement(By.id("putToGraveyard")))
+				.build();
+
+		dragAndDrop.perform();
+
+		// Assert card in graveyard
+		assertFalse(FullAppTraversalTest.chromeDriver1.findElements(By.id("graveyard-page-wrap"))
+				.isEmpty());
+		assertFalse(FullAppTraversalTest.chromeDriver1.findElements(By.id("cross-link0")).isEmpty());
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
