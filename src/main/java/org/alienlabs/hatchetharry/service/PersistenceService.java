@@ -376,7 +376,10 @@ public class PersistenceService implements Serializable
 				.createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=? and da.deckArchiveId = d.Deck_DeckArchive");
 		query.addEntity(DeckArchive.class);
 		query.setString(0, name);
-		return (DeckArchive)query.list().get(0);
+
+		@SuppressWarnings("rawtypes")
+		final List results = query.list();
+		return (results.size() > 0 ? (DeckArchive)query.list().get(0) : null);
 	}
 
 	@Transactional(readOnly = true)
