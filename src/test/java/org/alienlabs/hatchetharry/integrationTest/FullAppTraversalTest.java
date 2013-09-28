@@ -93,7 +93,6 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
 
 		// Assert no card present
-		// 1 because the baldu is still in the DOM
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
 				.isEmpty());
 		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
@@ -118,7 +117,7 @@ public class FullAppTraversalTest
 		// Tap card
 		FullAppTraversalTest.chromeDriver1.findElement(By.cssSelector("img[id^='tapHandleImage']"))
 				.click();
-		Thread.sleep(6000);
+		Thread.sleep(10000);
 
 		// Verify card is tapped
 		final WebElement card1 = FullAppTraversalTest.chromeDriver1.findElements(
