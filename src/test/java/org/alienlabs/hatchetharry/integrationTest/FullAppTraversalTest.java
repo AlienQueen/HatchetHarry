@@ -65,8 +65,8 @@ public class FullAppTraversalTest
 		new Select(FullAppTraversalTest.chromeDriver1.findElement(By.id("decks")))
 				.selectByVisibleText("Aura Bant");
 
-		final Long gameId = Long.parseLong(FullAppTraversalTest.chromeDriver1.findElement(
-				By.id("gameId")).getText());
+		final String gameId = FullAppTraversalTest.chromeDriver1.findElement(By.id("gameId"))
+				.getText();
 
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("createSubmit")).click();
 
@@ -85,27 +85,28 @@ public class FullAppTraversalTest
 		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("decks")))
 				.selectByVisibleText("Aura Bant");
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).clear();
-		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(
-				gameId.toString());
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(gameId);
 
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
 
 		// Assert no card present
 		Thread.sleep(30000);
+		// 1 because the baldu is still in the DOM
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
-				By.cssSelector("span[id^='cardHandle']")).isEmpty());
+				By.cssSelector("span[id^='cardHandle']")).size() == 1);
 		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
-				By.cssSelector("span[id^='cardHandle']")).isEmpty());
+				By.cssSelector("span[id^='cardHandle']")).size() == 1);
 
 		// Play a card in Chrome1
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("playCardLink0")).click();
 
 		// Verify card
 		Thread.sleep(5000);
+		// 2 => the baldu + the new one
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
-				By.cssSelector("span[id^='cardHandle']")).size() == 1);
+				By.cssSelector("span[id^='cardHandle']")).size() == 2);
 		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
-				By.cssSelector("span[id^='cardHandle']")).size() == 1);
+				By.cssSelector("span[id^='cardHandle']")).size() == 2);
 
 		// Verify card is untapped
 		assertFalse(FullAppTraversalTest.chromeDriver1
@@ -118,7 +119,7 @@ public class FullAppTraversalTest
 		// Tap card
 		FullAppTraversalTest.chromeDriver1.findElement(By.cssSelector("img[id^='tapHandleImage']"))
 				.click();
-		Thread.sleep(5000);
+		Thread.sleep(7500);
 
 		// Verify card is tapped
 		final WebElement card1 = FullAppTraversalTest.chromeDriver1.findElements(
@@ -144,6 +145,7 @@ public class FullAppTraversalTest
 				.build();
 
 		dragAndDrop.perform();
+		Thread.sleep(5000);
 
 		// Assert card in graveyard
 		assertFalse(FullAppTraversalTest.chromeDriver1.findElements(By.id("graveyard-page-wrap"))
