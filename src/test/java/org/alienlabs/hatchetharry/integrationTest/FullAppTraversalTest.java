@@ -94,21 +94,20 @@ public class FullAppTraversalTest
 
 		// Assert no card present
 		// 1 because the baldu is still in the DOM
-		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
-				By.cssSelector("span[id^='cardHandle']")).size() == 1);
-		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
-				By.cssSelector("span[id^='cardHandle']")).size() == 1);
+		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+				.isEmpty());
+		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+				.isEmpty());
 
 		// Play a card in Chrome1
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("playCardLink0")).click();
 
 		// Verify card
-		// 2 => the baldu + the new one
 		Thread.sleep(6000);
-		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
-				By.cssSelector("span[id^='cardHandle']")).size() == 2);
-		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
-				By.cssSelector("span[id^='cardHandle']")).size() == 2);
+		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+				.size() == 1);
+		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+				.size() == 1);
 
 		// Verify card is untapped
 		assertTrue(FullAppTraversalTest.chromeDriver1
