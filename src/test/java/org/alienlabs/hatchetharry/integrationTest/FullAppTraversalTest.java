@@ -1,5 +1,8 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
+import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,12 +14,10 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.opera.core.systems.OperaDriver;
-
 public class FullAppTraversalTest
 {
 	private static WebDriver chromeDriver1;
-	private static WebDriver operaDriver;
+	private static WebDriver chromeDriver2;
 
 	private static final String PORT = "8088";
 	private static final String HOST = "localhost";
@@ -31,8 +32,8 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver1.get(FullAppTraversalTest.HOST + ":"
 				+ FullAppTraversalTest.PORT + "/");
 
-		FullAppTraversalTest.operaDriver = new OperaDriver();
-		FullAppTraversalTest.operaDriver.get(FullAppTraversalTest.HOST + ":"
+		FullAppTraversalTest.chromeDriver2 = new ChromeDriver();
+		FullAppTraversalTest.chromeDriver2.get(FullAppTraversalTest.HOST + ":"
 				+ FullAppTraversalTest.PORT + "/");
 	}
 
@@ -40,13 +41,13 @@ public class FullAppTraversalTest
 	public static void tearDownClass()
 	{
 		FullAppTraversalTest.chromeDriver1.quit();
-		FullAppTraversalTest.operaDriver.quit();
+		FullAppTraversalTest.chromeDriver2.quit();
 	}
 
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
-		// Create a game in Chrome
+		// Create a game in Chrome 1
 		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver1, 60);
 
 		((JavascriptExecutor)FullAppTraversalTest.chromeDriver1)
@@ -66,25 +67,61 @@ public class FullAppTraversalTest
 
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("createSubmit")).click();
 
-		// Join a game in Opera
-		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.operaDriver, 60);
+		// Join a game in Chrome 2
+		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver2, 60);
 
-		((JavascriptExecutor)FullAppTraversalTest.operaDriver)
+		((JavascriptExecutor)FullAppTraversalTest.chromeDriver2)
 				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
-		FullAppTraversalTest.operaDriver.findElement(By.id("joinGameLinkResponsive")).click();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
 		Thread.sleep(5000);
-		FullAppTraversalTest.operaDriver.findElement(By.id("name")).clear();
-		FullAppTraversalTest.operaDriver.findElement(By.id("name")).sendKeys("Zala");
-		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("sideInput")))
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).clear();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).sendKeys("Zala");
+		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("sideInput")))
 				.selectByVisibleText("ultraviolet");
-		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("decks")))
+		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("decks")))
 				.selectByVisibleText("Aura Bant");
-		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).clear();
-		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).sendKeys(
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).clear();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(
 				gameId.toString());
 
-		FullAppTraversalTest.operaDriver.findElement(By.id("joinSubmit")).click();
+		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
+
+		// Assert no card present
+		Thread.sleep(5000);
+		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
+				By.cssSelector("span[id^='cardHandle']")).isEmpty());
+		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
+				By.cssSelector("span[id^='cardHandle']")).isEmpty());
+
+		// Play a card in Chrome1
+		FullAppTraversalTest.chromeDriver1.findElement(By.id("playCardLink0")).click();
+
+		// Verify card
+		Thread.sleep(5000);
+		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
+				By.cssSelector("span[id^='cardHandle']")).size() == 1);
+		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
+				By.cssSelector("span[id^='cardHandle']")).size() == 1);
+
+		// Verify card is untapped
+		assertFalse(FullAppTraversalTest.chromeDriver1
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform")
+				.contains("rotate"));
+		assertFalse(FullAppTraversalTest.chromeDriver2
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform")
+				.contains("rotate"));
+
+		// Tap card
+		FullAppTraversalTest.chromeDriver1.findElement(By.cssSelector("img[id^='tapHandleImage']"))
+				.click();
+		Thread.sleep(5000);
+
+		// Verify card is tapped
+		FullAppTraversalTest.chromeDriver1.findElements(By.cssSelector("img[id^='card']")).get(0)
+				.getCssValue("transform").contains("rotate(90deg)");
+		FullAppTraversalTest.chromeDriver2.findElements(By.cssSelector("img[id^='card']")).get(0)
+				.getCssValue("transform").contains("rotate(90deg)");
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
