@@ -11,10 +11,12 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.opera.core.systems.OperaDriver;
+
 public class FullAppTraversalTest
 {
 	private static WebDriver chromeDriver1;
-	private static WebDriver chromeDriver2;
+	private static WebDriver operaDriver;
 
 	private static final String PORT = "8088";
 	private static final String HOST = "localhost";
@@ -29,8 +31,8 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver1.get(FullAppTraversalTest.HOST + ":"
 				+ FullAppTraversalTest.PORT + "/");
 
-		FullAppTraversalTest.chromeDriver2 = new ChromeDriver();
-		FullAppTraversalTest.chromeDriver2.get(FullAppTraversalTest.HOST + ":"
+		FullAppTraversalTest.operaDriver = new OperaDriver();
+		FullAppTraversalTest.operaDriver.get(FullAppTraversalTest.HOST + ":"
 				+ FullAppTraversalTest.PORT + "/");
 	}
 
@@ -38,7 +40,7 @@ public class FullAppTraversalTest
 	public static void tearDownClass()
 	{
 		FullAppTraversalTest.chromeDriver1.quit();
-		FullAppTraversalTest.chromeDriver2.quit();
+		FullAppTraversalTest.operaDriver.quit();
 	}
 
 	@Test
@@ -48,16 +50,16 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver1, 60);
 
 		((JavascriptExecutor)FullAppTraversalTest.chromeDriver1)
-		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
 		Thread.sleep(5000);
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("name")).clear();
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.chromeDriver1.findElement(By.id("sideInput")))
-		.selectByVisibleText("infrared");
+				.selectByVisibleText("infrared");
 		new Select(FullAppTraversalTest.chromeDriver1.findElement(By.id("decks")))
-		.selectByVisibleText("Aura Bant");
+				.selectByVisibleText("Aura Bant");
 
 		final Long gameId = Long.parseLong(FullAppTraversalTest.chromeDriver1.findElement(
 				By.id("gameId")).getText());
@@ -65,24 +67,24 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("createSubmit")).click();
 
 		// Join a game in Opera
-		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver2, 60);
+		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.operaDriver, 60);
 
-		((JavascriptExecutor)FullAppTraversalTest.chromeDriver2)
-		.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		((JavascriptExecutor)FullAppTraversalTest.operaDriver)
+				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
-		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
+		FullAppTraversalTest.operaDriver.findElement(By.id("joinGameLinkResponsive")).click();
 		Thread.sleep(5000);
-		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).clear();
-		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).sendKeys("Zala");
-		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("sideInput")))
-		.selectByVisibleText("ultraviolet");
-		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("decks")))
-		.selectByVisibleText("Aura Bant");
-		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).clear();
-		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(
+		FullAppTraversalTest.operaDriver.findElement(By.id("name")).clear();
+		FullAppTraversalTest.operaDriver.findElement(By.id("name")).sendKeys("Zala");
+		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("sideInput")))
+				.selectByVisibleText("ultraviolet");
+		new Select(FullAppTraversalTest.operaDriver.findElement(By.id("decks")))
+				.selectByVisibleText("Aura Bant");
+		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).clear();
+		FullAppTraversalTest.operaDriver.findElement(By.id("gameIdInput")).sendKeys(
 				gameId.toString());
 
-		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
+		FullAppTraversalTest.operaDriver.findElement(By.id("joinSubmit")).click();
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
@@ -93,7 +95,7 @@ public class FullAppTraversalTest
 			new WebDriverWait(driver, timeOutInSeconds)
 			{
 			}.until(new ExpectedCondition<Boolean>()
-					{
+			{
 
 				@Override
 				public Boolean apply(final WebDriver driverObject)
@@ -101,7 +103,7 @@ public class FullAppTraversalTest
 					return (Boolean)((JavascriptExecutor)driverObject)
 							.executeScript("return jQuery.active == 0");
 				}
-					});
+			});
 			jQcondition = (Boolean)((JavascriptExecutor)driver)
 					.executeScript("return window.jQuery != undefined && jQuery.active === 0");
 			return jQcondition;
