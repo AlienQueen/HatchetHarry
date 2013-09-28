@@ -50,7 +50,7 @@ public class FullAppTraversalTest
 	}
 
 	@Test
-	public void testFullAppTraversal()
+	public void testFullAppTraversal() throws InterruptedException
 	{
 		FullAppTraversalTest.chromeDriver1.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		FullAppTraversalTest.chromeDriver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -104,6 +104,7 @@ public class FullAppTraversalTest
 
 		// Verify card
 		// 2 => the baldu + the new one
+		Thread.sleep(6000);
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector("span[id^='cardHandle']")).size() == 2);
 		assertTrue(FullAppTraversalTest.chromeDriver2.findElements(
@@ -118,6 +119,7 @@ public class FullAppTraversalTest
 		// Tap card
 		FullAppTraversalTest.chromeDriver1.findElement(By.cssSelector("img[id^='tapHandleImage']"))
 				.click();
+		Thread.sleep(6000);
 
 		// Verify card is tapped
 		final WebElement card1 = FullAppTraversalTest.chromeDriver1.findElements(
