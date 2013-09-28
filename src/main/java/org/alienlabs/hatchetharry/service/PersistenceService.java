@@ -376,7 +376,7 @@ public class PersistenceService implements Serializable
 				.createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=? and da.deckArchiveId = d.Deck_DeckArchive");
 		query.addEntity(DeckArchive.class);
 		query.setString(0, name);
-		return (DeckArchive)query.uniqueResult();
+		return (DeckArchive)query.list().get(0);
 	}
 
 	@Transactional(readOnly = true)

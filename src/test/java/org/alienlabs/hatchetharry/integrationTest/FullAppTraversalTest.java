@@ -3,6 +3,8 @@ package org.alienlabs.hatchetharry.integrationTest;
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,8 +50,11 @@ public class FullAppTraversalTest
 	}
 
 	@Test
-	public void testFullAppTraversal() throws InterruptedException
+	public void testFullAppTraversal()
 	{
+		FullAppTraversalTest.chromeDriver1.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		FullAppTraversalTest.chromeDriver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
 		// Create a game in Chrome 1
 		FullAppTraversalTest.waitForJQueryProcessing(FullAppTraversalTest.chromeDriver1, 60);
 
@@ -57,7 +62,6 @@ public class FullAppTraversalTest
 				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
-		Thread.sleep(5000);
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("name")).clear();
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.chromeDriver1.findElement(By.id("sideInput")))
@@ -77,7 +81,6 @@ public class FullAppTraversalTest
 				.executeScript(FullAppTraversalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
-		Thread.sleep(5000);
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).clear();
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTest.chromeDriver2.findElement(By.id("sideInput")))
@@ -90,7 +93,6 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
 
 		// Assert no card present
-		Thread.sleep(30000);
 		// 1 because the baldu is still in the DOM
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector("span[id^='cardHandle']")).size() == 1);
@@ -101,7 +103,6 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("playCardLink0")).click();
 
 		// Verify card
-		Thread.sleep(5000);
 		// 2 => the baldu + the new one
 		assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector("span[id^='cardHandle']")).size() == 2);
@@ -109,17 +110,14 @@ public class FullAppTraversalTest
 				By.cssSelector("span[id^='cardHandle']")).size() == 2);
 
 		// Verify card is untapped
-		assertFalse(FullAppTraversalTest.chromeDriver1
-				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform")
-				.contains("rotate"));
-		assertFalse(FullAppTraversalTest.chromeDriver2
-				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform")
-				.contains("rotate"));
+		assertTrue(FullAppTraversalTest.chromeDriver1
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform") == null);
+		assertTrue(FullAppTraversalTest.chromeDriver2
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform") == null);
 
 		// Tap card
 		FullAppTraversalTest.chromeDriver1.findElement(By.cssSelector("img[id^='tapHandleImage']"))
 				.click();
-		Thread.sleep(7500);
 
 		// Verify card is tapped
 		final WebElement card1 = FullAppTraversalTest.chromeDriver1.findElements(
@@ -145,7 +143,6 @@ public class FullAppTraversalTest
 				.build();
 
 		dragAndDrop.perform();
-		Thread.sleep(5000);
 
 		// Assert card in graveyard
 		assertFalse(FullAppTraversalTest.chromeDriver1.findElements(By.id("graveyard-page-wrap"))
