@@ -13,7 +13,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
@@ -134,17 +133,13 @@ public class FullAppTraversalTest
 				.isEmpty());
 
 		// Drag card to graveyard
-		final Actions builder = new Actions(FullAppTraversalTest.chromeDriver1);
+		final WebElement draggable = FullAppTraversalTest.chromeDriver1.findElement(By
+				.cssSelector("img[id^='handleImage']"));
+		final WebElement to = FullAppTraversalTest.chromeDriver1.findElement(By
+				.id("putToGraveyard"));
+		new Actions(FullAppTraversalTest.chromeDriver1).dragAndDrop(draggable, to).build()
+				.perform();
 
-		final Action dragAndDrop = builder
-				.clickAndHold()
-				.moveToElement(
-						FullAppTraversalTest.chromeDriver1.findElement(By
-								.cssSelector("img[id^='handleImage']")))
-				.release(FullAppTraversalTest.chromeDriver1.findElement(By.id("putToGraveyard")))
-				.build();
-
-		dragAndDrop.perform();
 		Thread.sleep(10000);
 
 		// Assert card in graveyard
