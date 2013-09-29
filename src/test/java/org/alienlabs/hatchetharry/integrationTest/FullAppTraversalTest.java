@@ -145,6 +145,7 @@ public class FullAppTraversalTest
 				.build();
 
 		dragAndDrop.perform();
+		Thread.sleep(10000);
 
 		// Assert card in graveyard
 		assertFalse(FullAppTraversalTest.chromeDriver1.findElements(By.id("graveyard-page-wrap"))
