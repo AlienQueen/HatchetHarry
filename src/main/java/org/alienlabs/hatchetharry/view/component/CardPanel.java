@@ -74,6 +74,7 @@ public class CardPanel extends Panel
 		cardHandle.setMarkupId("cardHandle" + this.uuid.toString().replace("-", "_"));
 		cardHandle.add(new AttributeModifier("style", "position: absolute; top: " + myCard.getY()
 				+ "px; left: " + myCard.getX() + "px;  z-index: 0;"));
+		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
