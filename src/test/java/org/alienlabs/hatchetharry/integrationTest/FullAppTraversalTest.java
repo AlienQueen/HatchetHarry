@@ -102,8 +102,9 @@ public class FullAppTraversalTest
 				.isEmpty());
 
 		// Find first hand card name
-		final String cardName = FullAppTraversalTest.chromeDriver1.findElement(
-				By.cssSelector(".cross-link:nth-child(0)")).getAttribute("name");
+		final String cardName = FullAppTraversalTest.chromeDriver1
+				.findElements(By.cssSelector(".cross-link:nth-child(1) img")).get(0)
+				.getAttribute("name");
 		LOGGER.info("card name : " + cardName);
 
 		// Play a card in Chrome1
@@ -164,10 +165,12 @@ public class FullAppTraversalTest
 				By.cssSelector(".graveyard-cross-link")).size() == 1);
 
 		// Verify name of the card in the graveyard
-		assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1.findElement(
-				By.cssSelector(".graveyard-cross-link:nth-child(0)")).getAttribute("name")));
-		assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2.findElement(
-				By.cssSelector(".graveyard-cross-link:nth-child(0)")).getAttribute("name")));
+		assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1
+				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
+				.getAttribute("name")));
+		assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2
+				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
+				.getAttribute("name")));
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
