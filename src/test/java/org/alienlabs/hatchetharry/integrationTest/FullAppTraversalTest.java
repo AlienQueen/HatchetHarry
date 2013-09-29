@@ -168,9 +168,6 @@ public class FullAppTraversalTest
 		assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1
 				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
 				.getAttribute("name")));
-		assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2
-				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
-				.getAttribute("name")));
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
