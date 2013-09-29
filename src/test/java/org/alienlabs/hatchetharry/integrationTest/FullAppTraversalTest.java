@@ -109,10 +109,12 @@ public class FullAppTraversalTest
 				.size() == 1);
 
 		// Verify card is untapped
-		assertTrue(FullAppTraversalTest.chromeDriver1
-				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform") == null);
-		assertTrue(FullAppTraversalTest.chromeDriver2
-				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform") == null);
+		assertFalse(FullAppTraversalTest.chromeDriver1
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getAttribute("style")
+				.contains("transform"));
+		assertFalse(FullAppTraversalTest.chromeDriver2
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getAttribute("style")
+				.contains("transform"));
 
 		// Tap card
 		FullAppTraversalTest.chromeDriver1.findElement(By.cssSelector("img[id^='tapHandleImage']"))
@@ -122,9 +124,9 @@ public class FullAppTraversalTest
 		// Verify card is tapped
 		final WebElement card1 = FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector("img[id^='card']")).get(0);
-		assertTrue(card1.getCssValue("transform").contains("rotate(90deg)"));
+		assertTrue(card1.getAttribute("style").contains("rotate(90deg)"));
 		assertTrue(FullAppTraversalTest.chromeDriver2
-				.findElements(By.cssSelector("img[id^='card']")).get(0).getCssValue("transform")
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getAttribute("style")
 				.contains("rotate(90deg)"));
 
 		// Assert graveyard not visible
