@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
@@ -23,7 +25,7 @@ public class FullAppTraversalTest
 	private static WebDriver chromeDriver1;
 	private static WebDriver chromeDriver2;
 
-	private static final String PORT = "8088";
+	private static final String PORT = "8080";
 	private static final String HOST = "localhost";
 
 	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show(); jQuery('.dropdownmenu:first').click();";
@@ -92,7 +94,8 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(gameId);
 
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
-
+		Thread.sleep(10000);
+		
 		// Assert no card present
 		Assert.assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector(".ui-draggable")).isEmpty());
@@ -112,7 +115,7 @@ public class FullAppTraversalTest
 		Thread.sleep(6000);
 		Assert.assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector(".cross-link img")).size() == 6);
-
+		
 		// Verify card is present on the battlefield
 		Assert.assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
 				By.cssSelector(".ui-draggable")).size() == 1);
@@ -199,5 +202,5 @@ public class FullAppTraversalTest
 		}
 		return jQcondition;
 	}
-
+	
 }
