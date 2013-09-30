@@ -26,7 +26,7 @@ public class FullAppTraversalTests
 
 	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show(); jQuery('.dropdownmenu:first').click();";
 
-	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS = "window.scrollBy(0,50); jQuery('.w_content_container').scrollTop(100);";
+	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS = "window.scrollBy(0,100); jQuery('.w_content_container').scrollTop(100);";
 
 
 	@BeforeClass
@@ -52,10 +52,8 @@ public class FullAppTraversalTests
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
-		FullAppTraversalTests.chromeDriver1.manage().timeouts()
-				.implicitlyWait(30, TimeUnit.SECONDS);
-		FullAppTraversalTests.chromeDriver2.manage().timeouts()
-				.implicitlyWait(30, TimeUnit.SECONDS);
+		FullAppTraversalTests.chromeDriver1.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		FullAppTraversalTests.chromeDriver2.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		// Create a game in Chrome 1
 		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.chromeDriver1, 60);
