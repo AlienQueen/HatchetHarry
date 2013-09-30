@@ -92,7 +92,6 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(gameId);
 
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
-		Thread.sleep(10000);
 
 		// Assert that no card is present on battlefield
 		Assert.assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
@@ -107,7 +106,7 @@ public class FullAppTraversalTest
 				By.cssSelector(".cross-link img")).size() == 7);
 
 		// Find first hand card name of Chrome1
-		String cardName = FullAppTraversalTest.chromeDriver1
+		String battlefieldCardName = FullAppTraversalTest.chromeDriver1
 				.findElements(By.cssSelector(".cross-link:nth-child(1) img")).get(0)
 				.getAttribute("name");
 
@@ -126,10 +125,10 @@ public class FullAppTraversalTest
 				By.cssSelector(".ui-draggable")).size() == 1);
 
 		// Verify the name of the card on the battlefield
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver1
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver2
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
 
 		// Verify that the card is untapped
 		Assert.assertFalse(FullAppTraversalTest.chromeDriver1
@@ -172,7 +171,7 @@ public class FullAppTraversalTest
 				By.cssSelector(".graveyard-cross-link")).size() == 1);
 
 		// Verify name of the card in the graveyard
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver1
 				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
 				.getAttribute("name")));
 
@@ -184,10 +183,10 @@ public class FullAppTraversalTest
 		Thread.sleep(8000);
 
 		// Verify the name of the card on the battlefield
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver1
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver2
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
 
 		// Assert that the graveyard is empty
 		Assert.assertFalse(FullAppTraversalTest.chromeDriver1.findElements(
@@ -217,12 +216,12 @@ public class FullAppTraversalTest
 		Thread.sleep(8000);
 
 		// Get top card name
-		cardName = FullAppTraversalTest.chromeDriver1.findElement(By.id("topLibraryCard"))
-				.getAttribute("name");
+		battlefieldCardName = FullAppTraversalTest.chromeDriver1.findElement(
+				By.id("topLibraryCard")).getAttribute("name");
 
 		// Verify that the card name is the same in the second browser
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2.findElement(
-				By.id("topLibraryCard")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver2
+				.findElement(By.id("topLibraryCard")).getAttribute("name")));
 
 		// Click on the button "Do nothing"
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("doNothing")).click();
@@ -243,10 +242,10 @@ public class FullAppTraversalTest
 		Thread.sleep(8000);
 
 		// Assert that the card is the same
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1.findElement(
-				By.id("topLibraryCard")).getAttribute("name")));
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2.findElement(
-				By.id("topLibraryCard")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver1
+				.findElement(By.id("topLibraryCard")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver2
+				.findElement(By.id("topLibraryCard")).getAttribute("name")));
 
 		// Put to battlefield
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("putToBattlefield")).click();
@@ -260,10 +259,10 @@ public class FullAppTraversalTest
 				By.cssSelector(".ui-draggable")).size() == 1);
 
 		// Assert that the card on the battlefield is the same
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver1
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver2
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
 
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTest.chromeDriver1)
@@ -294,6 +293,10 @@ public class FullAppTraversalTest
 				.click();
 		Thread.sleep(8000);
 
+		// Get top card name
+		final String graveyardCardName = FullAppTraversalTest.chromeDriver1.findElement(
+				By.id("topLibraryCard")).getAttribute("name");
+
 		// Put to graveyard
 		FullAppTraversalTest.chromeDriver1.findElement(By.id("putToGraveyard")).click();
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("doNothing")).click();
@@ -306,7 +309,7 @@ public class FullAppTraversalTest
 				By.cssSelector(".graveyard-cross-link")).size() == 1);
 
 		// Verify name of the card in the graveyard
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1
+		Assert.assertTrue(graveyardCardName.equals(FullAppTraversalTest.chromeDriver1
 				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
 				.getAttribute("name")));
 
@@ -317,10 +320,10 @@ public class FullAppTraversalTest
 				By.cssSelector(".ui-draggable")).size() == 1);
 
 		// Verify the name of the card on the battlefield
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver1.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
-		Assert.assertTrue(cardName.equals(FullAppTraversalTest.chromeDriver2.findElement(
-				By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver1
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
+		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTest.chromeDriver2
+				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
