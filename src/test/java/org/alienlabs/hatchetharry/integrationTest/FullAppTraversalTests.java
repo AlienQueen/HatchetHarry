@@ -252,7 +252,8 @@ public class FullAppTraversalTests
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver2)
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToBattlefield")).click();
+		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToBattlefieldModalWindow"))
+				.click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
 		Thread.sleep(8000);
@@ -282,7 +283,7 @@ public class FullAppTraversalTests
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver2)
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToHand")).click();
+		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToHandFromModalWindow")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
 		Thread.sleep(8000);
@@ -314,7 +315,8 @@ public class FullAppTraversalTests
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver2)
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToGraveyard")).click();
+		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToGraveyardFromModalWindow"))
+				.click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
 		Thread.sleep(8000);

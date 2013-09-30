@@ -72,8 +72,8 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		};
 		doNothing.setOutputMarkupId(true).setMarkupId("doNothing");
 
-		final IndicatingAjaxButton putToBattlefield = new IndicatingAjaxButton("putToBattlefield",
-				form)
+		final IndicatingAjaxButton putToBattlefield = new IndicatingAjaxButton(
+				"putToBattlefieldFromModalWindow", form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -116,9 +116,10 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
-		putToBattlefield.setOutputMarkupId(true).setMarkupId("putToBattlefield");
+		putToBattlefield.setOutputMarkupId(true).setMarkupId("putToBattlefieldFromModalWindow");
 
-		final IndicatingAjaxButton putToHand = new IndicatingAjaxButton("putToHand", form)
+		final IndicatingAjaxButton putToHand = new IndicatingAjaxButton("putToHandFromModalWindow",
+				form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -167,9 +168,10 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
-		putToHand.setOutputMarkupId(true).setMarkupId("putToHand");
+		putToHand.setOutputMarkupId(true).setMarkupId("putToHandFromModalWindow");
 
-		final IndicatingAjaxButton putToGraveyard = new IndicatingAjaxButton("putToGraveyard", form)
+		final IndicatingAjaxButton putToGraveyard = new IndicatingAjaxButton(
+				"putToGraveyardFromModalWindow", form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -218,7 +220,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
-		putToGraveyard.setOutputMarkupId(true).setMarkupId("putToGraveyard");
+		putToGraveyard.setOutputMarkupId(true).setMarkupId("putToGraveyardFromModalWindow");
 
 		form.add(doNothing, putToBattlefield, putToHand, putToGraveyard);
 		this.add(form);
