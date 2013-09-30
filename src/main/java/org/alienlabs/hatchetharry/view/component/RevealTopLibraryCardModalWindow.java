@@ -48,7 +48,12 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
 				"cards/topLibraryCard.jpg?" + Math.random());
-		topLibraryCard.add(new AttributeModifier("name", _card.getTitle()));
+
+		if (null != this.card)
+		{
+			topLibraryCard.add(new AttributeModifier("name", _card.getTitle()));
+		}
+
 		topLibraryCard.setOutputMarkupId(true).setMarkupId("topLibraryCard");
 		this.add(topLibraryCard);
 
