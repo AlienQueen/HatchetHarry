@@ -92,6 +92,7 @@ public class FullAppTraversalTest
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("gameIdInput")).sendKeys(gameId);
 
 		FullAppTraversalTest.chromeDriver2.findElement(By.id("joinSubmit")).click();
+		Thread.sleep(10000);
 
 		// Assert that no card is present on battlefield
 		Assert.assertTrue(FullAppTraversalTest.chromeDriver1.findElements(
