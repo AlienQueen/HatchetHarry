@@ -16,6 +16,7 @@ import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -47,6 +48,8 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
 				"cards/topLibraryCard.jpg?" + Math.random());
+		topLibraryCard.add(new AttributeModifier("name", _card.getTitle()));
+		topLibraryCard.setOutputMarkupId(true).setMarkupId("topLibraryCard");
 		this.add(topLibraryCard);
 
 
@@ -62,6 +65,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
+		doNothing.setOutputMarkupId(true).setMarkupId("doNothing");
 
 		final IndicatingAjaxButton putToBattlefield = new IndicatingAjaxButton("putToBattlefield",
 				form)
@@ -107,6 +111,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
+		putToBattlefield.setOutputMarkupId(true).setMarkupId("putToBattlefield");
 
 		final IndicatingAjaxButton putToHand = new IndicatingAjaxButton("putToHand", form)
 		{
@@ -157,6 +162,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
+		putToHand.setOutputMarkupId(true).setMarkupId("putToHand");
 
 		final IndicatingAjaxButton putToGraveyard = new IndicatingAjaxButton("putToGraveyard", form)
 		{
@@ -207,6 +213,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
+		putToGraveyard.setOutputMarkupId(true).setMarkupId("putToGraveyard");
 
 		form.add(doNothing, putToBattlefield, putToHand, putToGraveyard);
 		this.add(form);
