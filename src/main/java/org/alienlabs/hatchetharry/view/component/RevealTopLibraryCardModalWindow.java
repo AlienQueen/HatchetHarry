@@ -51,7 +51,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 		if (null != this.card)
 		{
-			topLibraryCard.add(new AttributeModifier("name", _card.getTitle()));
+			topLibraryCard.add(new AttributeModifier("name", this.card.getTitle()));
 		}
 
 		topLibraryCard.setOutputMarkupId(true).setMarkupId("topLibraryCard");

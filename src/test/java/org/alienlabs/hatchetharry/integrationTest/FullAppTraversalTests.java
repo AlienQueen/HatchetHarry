@@ -15,8 +15,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FullAppTraversalTests
 {
@@ -28,7 +26,34 @@ public class FullAppTraversalTests
 
 	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show(); jQuery('.dropdownmenu:first').click();";
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FullAppTraversalTests.class);
+	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS = "function elementInViewport(el) {\n"
+			+ "  var top = el.offsetTop;\n"
+			+ "  var left = el.offsetLeft;\n"
+			+ "  var width = el.offsetWidth;\n"
+			+ "  var height = el.offsetHeight;\n"
+			+ "\n"
+			+ "  while(el.offsetParent) {\n"
+			+ "    el = el.offsetParent;\n"
+			+ "    top += el.offsetTop;\n"
+			+ "    left += el.offsetLeft;\n"
+			+ "  }\n"
+			+ "\n"
+			+ "  return (\n"
+			+ "    top > (window.pageYOffset + 50) &&\n"
+			+ "    left > (window.pageXOffset + 50) &&\n"
+			+ "    (top + height + 50) < (window.pageYOffset + window.innerHeight) &&\n"
+			+ "    (left + width + 50) < (window.pageXOffset + window.innerWidth)\n"
+			+ "  );\n"
+			+ "}\n"
+			+ "\n"
+			+ "var elementToLookFor = document.getElementById('putToGraveyard');\n"
+			+ "\n"
+			+ "for (var i = 0; i < 10000; i = i + 1) {\n"
+			+ "	if (elementInViewport(elementToLookFor)) {\n"
+			+ "		break;\n"
+			+ "	} else {\n"
+			+ "		window.scrollBy(0,1);\n}\n}";
+
 
 	@BeforeClass
 	public static void setUpClass()
@@ -53,8 +78,10 @@ public class FullAppTraversalTests
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
-		FullAppTraversalTests.chromeDriver1.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		FullAppTraversalTests.chromeDriver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		FullAppTraversalTests.chromeDriver1.manage().timeouts()
+				.implicitlyWait(30, TimeUnit.SECONDS);
+		FullAppTraversalTests.chromeDriver2.manage().timeouts()
+				.implicitlyWait(30, TimeUnit.SECONDS);
 
 		// Create a game in Chrome 1
 		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.chromeDriver1, 60);
@@ -139,8 +166,8 @@ public class FullAppTraversalTests
 				.contains("transform"));
 
 		// Tap card
-		FullAppTraversalTests.chromeDriver1.findElement(By.cssSelector("img[id^='tapHandleImage']"))
-				.click();
+		FullAppTraversalTests.chromeDriver1
+				.findElement(By.cssSelector("img[id^='tapHandleImage']")).click();
 		Thread.sleep(10000);
 
 		// Verify card is tapped
@@ -178,8 +205,8 @@ public class FullAppTraversalTests
 		// Play card from graveyard
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		FullAppTraversalTests.chromeDriver1
-				.findElement(By.id("playCardFromGraveyardLinkResponsive")).click();
+		FullAppTraversalTests.chromeDriver1.findElement(
+				By.id("playCardFromGraveyardLinkResponsive")).click();
 		Thread.sleep(8000);
 
 		// Verify the name of the card on the battlefield
@@ -211,8 +238,8 @@ public class FullAppTraversalTests
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("revealTopLibraryCardLinkResponsive"))
-				.click();
+		FullAppTraversalTests.chromeDriver1
+				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
 
 		// Get top card name
@@ -237,8 +264,8 @@ public class FullAppTraversalTests
 		// Reveal again
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("revealTopLibraryCardLinkResponsive"))
-				.click();
+		FullAppTraversalTests.chromeDriver1
+				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
 
 		// Assert that the card is the same
@@ -248,8 +275,14 @@ public class FullAppTraversalTests
 				.findElement(By.id("topLibraryCard")).getAttribute("name")));
 
 		// Put to battlefield
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver2)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToBattlefield")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
+
 		Thread.sleep(8000);
 
 		// Verify that the card is present on the battlefield
@@ -267,13 +300,19 @@ public class FullAppTraversalTests
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("revealTopLibraryCardLinkResponsive"))
-				.click();
+		FullAppTraversalTests.chromeDriver1
+				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
 
 		// Put to hand
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver2)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToHand")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
+
 		Thread.sleep(8000);
 
 		// Assert that the hand contains 8 cards
@@ -289,8 +328,8 @@ public class FullAppTraversalTests
 		// Reveal again
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("revealTopLibraryCardLinkResponsive"))
-				.click();
+		FullAppTraversalTests.chromeDriver1
+				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
 
 		// Get top card name
@@ -298,8 +337,14 @@ public class FullAppTraversalTests
 				By.id("topLibraryCard")).getAttribute("name");
 
 		// Put to graveyard
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver2)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToGraveyard")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
+
 		Thread.sleep(8000);
 
 		// Assert graveyard is visible and contains one card
