@@ -252,7 +252,7 @@ public class FullAppTraversalTests
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver2)
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
-		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToBattlefieldModalWindow"))
+		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToBattlefieldFromModalWindow"))
 				.click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
