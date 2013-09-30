@@ -26,33 +26,7 @@ public class FullAppTraversalTests
 
 	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#jMenu').hide(); jQuery('.dropdownmenu').show(); jQuery('.dropdownmenu:first').click();";
 
-	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS = "function elementInViewport(el) {\n"
-			+ "  var top = el.offsetTop;\n"
-			+ "  var left = el.offsetLeft;\n"
-			+ "  var width = el.offsetWidth;\n"
-			+ "  var height = el.offsetHeight;\n"
-			+ "\n"
-			+ "  while(el.offsetParent) {\n"
-			+ "    el = el.offsetParent;\n"
-			+ "    top += el.offsetTop;\n"
-			+ "    left += el.offsetLeft;\n"
-			+ "  }\n"
-			+ "\n"
-			+ "  return (\n"
-			+ "    top > (window.pageYOffset + 50) &&\n"
-			+ "    left > (window.pageXOffset + 50) &&\n"
-			+ "    (top + height + 50) < (window.pageYOffset + window.innerHeight) &&\n"
-			+ "    (left + width + 50) < (window.pageXOffset + window.innerWidth)\n"
-			+ "  );\n"
-			+ "}\n"
-			+ "\n"
-			+ "var elementToLookFor = document.getElementById('putToGraveyard');\n"
-			+ "\n"
-			+ "for (var i = 0; i < 10000; i = i + 1) {\n"
-			+ "	if (elementInViewport(elementToLookFor)) {\n"
-			+ "		break;\n"
-			+ "	} else {\n"
-			+ "		window.scrollBy(0,1);\n}\n}";
+	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS = "window.scrollBy(0,50);";
 
 
 	@BeforeClass
