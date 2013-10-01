@@ -87,5 +87,5 @@ jQuery(function() {
 	jQuery('[title]').tipsy({gravity: 's'});
 });
 
-// For cards drag + hand & graveyard drop
+// For cards drag + hand, graveyard & exile drop
 var shouldMove = true; 

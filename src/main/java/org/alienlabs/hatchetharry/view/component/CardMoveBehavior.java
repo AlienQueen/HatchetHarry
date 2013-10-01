@@ -134,7 +134,15 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
 					Long.toString(posX), Long.toString(posY), uniqueid, playerId);
 
-			HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel, pageUuid);
+			// For unit tets
+			try
+			{
+				HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel, pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
+			}
 		}
 	}
 

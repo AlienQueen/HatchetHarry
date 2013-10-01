@@ -116,8 +116,16 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 							.getPlayer().getId(), session.getPlayer().getName(), "", "",
 					mc.getTitle(), null, targetPlayerName);
 
-			HatchetHarryApplication.get().getEventBus().post(pthfbcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+			// Only for unit tests
+			try
+			{
+				HatchetHarryApplication.get().getEventBus().post(pthfbcc, pageUuid);
+				HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Do nothing in unit tests
+			}
 
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{

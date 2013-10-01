@@ -177,6 +177,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/hand.gif"));
 		this.mountResource("image/exile.jpg", new PackageResourceReference(HomePage.class,
 				"image/exile.jpg"));
+		this.mountResource("image/exile.png", new PackageResourceReference(HomePage.class,
+				"image/exile.png"));
 		this.mountResource("image/eMail.png", new PackageResourceReference(HomePage.class,
 				"image/eMail.png"));
 		this.mountResource("image/graveyard.gif", new PackageResourceReference(HomePage.class,

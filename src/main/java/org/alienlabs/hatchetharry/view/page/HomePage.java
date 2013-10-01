@@ -85,6 +85,7 @@ import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CountCardsModalWindow;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
+import org.alienlabs.hatchetharry.view.component.ExileComponent;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
 import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
@@ -167,6 +168,7 @@ public class HomePage extends TestReportPage
 
 	final WebMarkupContainer galleryParent;
 	final WebMarkupContainer graveyardParent;
+	final WebMarkupContainer exileParent;
 	WebMarkupContainer thumbsPlaceholder;
 	WebMarkupContainer graveyardThumbsPlaceholder;
 
@@ -223,6 +225,11 @@ public class HomePage extends TestReportPage
 		this.graveyardParent.setOutputMarkupId(true);
 		this.add(this.graveyardParent);
 
+		this.exileParent = new WebMarkupContainer("exileParent");
+		this.exileParent.setMarkupId("exileParent");
+		this.exileParent.setOutputMarkupId(true);
+		this.add(this.exileParent);
+
 		// Welcome message
 		final Label message1 = new Label("message1",
 				"version 0.5.0 (release She said \"I love you\"),");
@@ -276,6 +283,7 @@ public class HomePage extends TestReportPage
 		this.createCardPanelPlaceholders();
 
 		this.buildGraveyardMarkup();
+		this.buildExileMarkup();
 		this.buildDock();
 
 		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
@@ -502,6 +510,52 @@ public class HomePage extends TestReportPage
 		};
 
 		this.add(showGraveyardLink);
+
+		final AjaxLink<Void> showExileLink = new AjaxLink<Void>("exileLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Player _player = HomePage.this.persistenceService
+						.getPlayer(HomePage.this.session.getPlayer().getId());
+				final boolean isExileDisplayed = _player.isExileDisplayed();
+
+				if (isExileDisplayed)
+				{
+					HomePage.this.exileParent.addOrReplace(new WebMarkupContainer("exile"));
+					target.add(HomePage.this.exileParent);
+				}
+				else
+				{
+					JavaScriptUtils.updateExile(target);
+
+				}
+
+				_player.setExileDisplayed(!isExileDisplayed);
+				HomePage.this.persistenceService.updatePlayer(_player);
+			}
+
+			@Override
+			protected void onComponentTag(final ComponentTag tag)
+			{
+				super.onComponentTag(tag);
+
+				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+						|| tag.getName().equalsIgnoreCase("area"))
+				{
+					tag.put("href", "#");
+				}
+				else
+				{
+					this.disableLink(tag);
+				}
+
+			}
+		};
+
+		this.add(showExileLink);
 	}
 
 	private void buildEndTurnLink()
@@ -1129,6 +1183,18 @@ public class HomePage extends TestReportPage
 
 		graveyardToUpdate.setOutputMarkupId(true);
 		this.graveyardParent.add(graveyardToUpdate);
+	}
+
+	private void buildExileMarkup()
+	{
+		final Component exileToUpdate;
+		final boolean isExileDisplayed = this.persistenceService.getPlayer(
+				this.session.getPlayer().getId()).isExileDisplayed();
+		exileToUpdate = isExileDisplayed ? new ExileComponent("exile") : new WebMarkupContainer(
+				"exile");
+
+		exileToUpdate.setOutputMarkupId(true);
+		this.exileParent.add(exileToUpdate);
 	}
 
 	private List<MagicCard> createFirstCards()
@@ -2041,6 +2107,11 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getGraveyardParent()
 	{
 		return this.graveyardParent;
+	}
+
+	public WebMarkupContainer getExileParent()
+	{
+		return this.exileParent;
 	}
 
 	public WebMarkupContainer getGalleryParent()

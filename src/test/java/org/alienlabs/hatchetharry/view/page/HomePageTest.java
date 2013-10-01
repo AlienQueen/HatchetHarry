@@ -73,7 +73,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	{
 		// Assert menubar
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(
-				SpringContextLoaderBaseTest.pageDocument, "class", "fNiv", false);
+				SpringContextLoaderBaseTest.pageDocument, "class", "shift-bottom", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(3, tagTester.size());
 
@@ -81,7 +81,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		boolean containsText = false;
 		for (final TagTester tt : tagTester)
 		{
-			if (((null != tt.getMarkup()) && tt.getMarkup().contains("Import a deck")))
+			if (((null != tt.getMarkup()) && tt.getMarkup().contains("Game")))
 			{
 				containsText = true;
 				break;

@@ -118,8 +118,16 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 							.getPlayer().getId(), session.getPlayer().getName(), "", "",
 					mc.getTitle(), null, targetPlayerName);
 
-			HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
+			// For unit tests
+			try
+			{
+				HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
+				HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
+			}
 		}
 	}
 

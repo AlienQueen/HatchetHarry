@@ -13,14 +13,14 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 
-public class GraveyardComponent extends Panel
+public class ExileComponent extends Panel
 {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final WebMarkupContainer graveyardCardsPlaceholder;
+	private final WebMarkupContainer exileCardsPlaceholder;
 	private final ListView<MagicCard> allCards;
 	private final WebMarkupContainer thumbsPlaceholder;
 
@@ -31,30 +31,33 @@ public class GraveyardComponent extends Panel
 	 * @param ids
 	 *            gameId, playerId, deckId
 	 */
-	public GraveyardComponent(final String id, final Long... ids)
+	public ExileComponent(final String id, final Long... ids)
 	{
 		super(id);
 
 		this.setOutputMarkupId(true);
-		this.setMarkupId("graveyardGallery");
+		this.setMarkupId("exileGallery");
 
-		this.graveyardCardsPlaceholder = new WebMarkupContainer("graveyardCardsPlaceholder");
-		this.graveyardCardsPlaceholder.setOutputMarkupId(true);
+		this.exileCardsPlaceholder = new WebMarkupContainer("exileCardsPlaceholder");
+		this.exileCardsPlaceholder.setOutputMarkupId(true);
 
-		final List<MagicCard> allCardsInGraveyard = this.persistenceService
-				.getAllCardsInGraveyardForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession
-						.get().getPlayer().getGame().getId() : ids[0]), (ids.length == 0
+		final List<MagicCard> allCardsInExile = this.persistenceService
+				.getAllCardsInExileForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
+						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0
 						? HatchetHarrySession.get().getPlayer().getId()
 						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
 						.getDeck().getDeckId() : ids[2]));
 
-		this.allCards = new ListView<MagicCard>("graveyardCards", allCardsInGraveyard)
+		this.allCards = new ListView<MagicCard>("exileCards", allCardsInExile)
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)
 			{
+				// TODO remove next line
+				// HatchetHarrySession.get().addCardIdInHand(item.getIndex(),
+				// item.getIndex());
 				final MagicCard card = item.getModelObject();
 
 				final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
@@ -62,7 +65,7 @@ public class GraveyardComponent extends Panel
 				wrapper.setOutputMarkupId(true);
 
 				final ExternalImage handImagePlaceholder = new ExternalImage(
-						"graveyardImagePlaceholder", card.getBigImageFilename());
+						"exileImagePlaceholder", card.getBigImageFilename());
 				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
 				handImagePlaceholder.setOutputMarkupId(true);
 
@@ -71,11 +74,11 @@ public class GraveyardComponent extends Panel
 
 			}
 		};
-		this.graveyardCardsPlaceholder.add(this.allCards);
-		this.add(this.graveyardCardsPlaceholder);
+		this.exileCardsPlaceholder.add(this.allCards);
+		this.add(this.exileCardsPlaceholder);
 
 		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
-		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", allCardsInGraveyard)
+		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", allCardsInExile)
 		{
 			private static final long serialVersionUID = -787466183866875L;
 

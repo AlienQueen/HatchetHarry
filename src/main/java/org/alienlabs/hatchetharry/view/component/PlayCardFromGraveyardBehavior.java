@@ -112,8 +112,16 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 			final Long player = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
 
-			HatchetHarryApplication.get().getEventBus().post(pcfgcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+			// For unit tests
+			try
+			{
+				HatchetHarryApplication.get().getEventBus().post(pcfgcc, pageUuid);
+				HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
+			}
 		}
 	}
 

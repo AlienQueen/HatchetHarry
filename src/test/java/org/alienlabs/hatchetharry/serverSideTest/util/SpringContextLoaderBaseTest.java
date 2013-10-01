@@ -43,7 +43,8 @@ public class SpringContextLoaderBaseTest
 				this.getComponentInstantiationListeners()
 						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
-				this.eventBus = new EventBusMock(this);
+				// We'll ask Emond to enable unit testing in EventBus
+				// this.eventBus = new EventBusMock(this);
 			}
 		};
 

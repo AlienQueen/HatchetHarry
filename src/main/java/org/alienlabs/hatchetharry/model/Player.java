@@ -50,6 +50,8 @@ public class Player implements Serializable
 	private boolean isHandDisplayed = true;
 	@Column
 	private boolean isGraveyardDisplayed;
+	@Column
+	private boolean isExileDisplayed;
 
 	public Long getId()
 	{
@@ -190,6 +192,16 @@ public class Player implements Serializable
 	public void setGraveyardDisplayed(final boolean _isGraveyardDisplayed)
 	{
 		this.isGraveyardDisplayed = _isGraveyardDisplayed;
+	}
+
+	public boolean isExileDisplayed()
+	{
+		return this.isExileDisplayed;
+	}
+
+	public void setExileDisplayed(final boolean _isExileDisplayed)
+	{
+		this.isExileDisplayed = _isExileDisplayed;
 	}
 
 }

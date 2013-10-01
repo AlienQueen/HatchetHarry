@@ -18,8 +18,8 @@ import com.opera.core.systems.OperaDriver;
 public class VerifyClientSideTests
 {
 	private static final String QUNIT_FAILED_TESTS = "0";
-	private static final String QUNIT_PASSED_TESTS = "9";
-	private static final String QUNIT_TOTAL_TESTS = "9";
+	private static final String QUNIT_PASSED_TESTS = "6";
+	private static final String QUNIT_TOTAL_TESTS = "6";
 
 	private static final String MISTLETOE_FAILED_TESTS = "Errors/Failures: 0";
 	private static final String MISTLETOE_TOTAL_TESTS = "Total tests: 2";

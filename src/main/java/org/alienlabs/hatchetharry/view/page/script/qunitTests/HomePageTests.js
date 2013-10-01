@@ -27,30 +27,6 @@ jQuery(function() {
 										"the first of these images should have a source URL containing 'cards' and '.jpg', and it appears to be: "
 												+ attribute);
 							});
-					module("menubar");
-					test(
-							"a basic menubar visibility test",
-							function() {
-								var menubaritem1 = jQuery('ul.jMenu a.fNiv img:first');
-								ok(
-										("/image/logoh1.gif" === menubaritem1
-												.attr('src')),
-										"the first menubar option is the first image of a <a> class fNiv contained in a <ul> of class jMenu, it should exist and point to '/image/logoh1.gif', and it appears to be: "
-												+ menubaritem1.attr('src'));
-								menubaritem1 = jQuery('ul.jMenu li ul li a:first');
-								ok(
-										(menubaritem1.text().indexOf("About HatchetHarry") != -1),
-										"the very first menubar entry is the <a> contained in a <li>, a <ul>, a <li> in a <ul> of class jMenu"
-												+ ", it should exist and contain 'About HatchetHarry', and it appears to be: '"
-												+ menubaritem1.text() + "'");
-
-								var menubaritem2 = jQuery('ul.jMenu li.fNiv a:first');
-								ok(
-										(menubaritem2.text().indexOf("Game") == 0),
-										"the second menubar option is the first <a> contained in a <li> class fNiv in a <ul> class jMenu."
-												+ " It should exist and start with 'Game', and it appears to be: "
-												+ menubaritem2.text());
-							});
 					module("clock"); 
 					asyncTest( 
 							"test the clock",
