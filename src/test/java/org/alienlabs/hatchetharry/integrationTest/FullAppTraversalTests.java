@@ -28,6 +28,33 @@ public class FullAppTraversalTests
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS = "window.scrollBy(0,100); jQuery('.w_content_container').scrollTop(200);";
 
+	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU = "function elementInViewport(el) {\n"
+			+ "  var top = el.offsetTop;\n"
+			+ "  var left = el.offsetLeft;\n"
+			+ "  var width = el.offsetWidth;\n"
+			+ "  var height = el.offsetHeight;\n"
+			+ "\n"
+			+ "  while(el.offsetParent) {\n"
+			+ "    el = el.offsetParent;\n"
+			+ "    top += el.offsetTop;\n"
+			+ "    left += el.offsetLeft;\n"
+			+ "  }\n"
+			+ "\n"
+			+ "  return (\n"
+			+ "    top > (window.pageYOffset + 50) &&\n"
+			+ "    left > (window.pageXOffset + 50) &&\n"
+			+ "    (top + height + 50) < (window.pageYOffset + window.innerHeight) &&\n"
+			+ "    (left + width + 50) < (window.pageXOffset + window.innerWidth)\n"
+			+ "  );\n"
+			+ "}\n"
+			+ "\n"
+			+ "var elementToLookFor = document.getElementById('revealTopLibraryCardLinkResponsive');\n"
+			+ "\n"
+			+ "for (var i = 0; i < 10000; i = i + 1) {\n"
+			+ "	if (elementInViewport(elementToLookFor)) {\n"
+			+ "		break;\n"
+			+ "	} else {\n"
+			+ "		window.scrollBy(0,5);\n}\n}";
 
 	@BeforeClass
 	public static void setUpClass()
@@ -177,6 +204,10 @@ public class FullAppTraversalTests
 		// Play card from graveyard
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		Thread.sleep(1000);
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
+
 		FullAppTraversalTests.chromeDriver1.findElement(
 				By.id("playCardFromGraveyardLinkResponsive")).click();
 		Thread.sleep(8000);
@@ -210,6 +241,10 @@ public class FullAppTraversalTests
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		Thread.sleep(1000);
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
+
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
