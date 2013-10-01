@@ -197,7 +197,15 @@ div.wicket-modal h3.w_captionText {
 
 .shift-right {
 	float:left;
-	padding-left: 250px;
+	padding-left: 40%;
+}
+
+.zone-images {
+	float:left;
+	padding-left: 10px;
+	position: fixed;
+	left: 5px;
+	top: 90px;
 }
 
 .chat {

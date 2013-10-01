@@ -187,7 +187,7 @@ public class FullAppTraversalTests
 		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTests.chromeDriver2
 				.findElement(By.cssSelector(".ui-draggable")).getAttribute("name")));
 
-		// Assert that the graveyard is empty
+		// Assert that the graveyard is visible and empty
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
 				By.id("graveyard-page-wrap")).isEmpty());
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(

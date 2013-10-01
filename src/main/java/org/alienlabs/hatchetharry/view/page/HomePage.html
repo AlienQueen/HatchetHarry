@@ -18,62 +18,47 @@
   <!-- Menus -->
   
   <!-- The main (desktop) menu bar -->
-  <ul id="jMenu" class="navbar-fixed-top">
-	  <li><a><img src="/image/logoh1.gif" alt="HH" width="32" class="fNiv"/>&nbsp;&nbsp;&nbsp;&nbsp;</a><!-- Do not forget the "fNiv" class for the first level links !! -->
-	    
-			 	<ul class="categories">
-			 		<li class="arrow"></li>
-					<li>
-			          <div style="height:130px"><img src="/image/logoh2.gif" alt="HH" width="64" class="logoEntry"/></div>
-					</li>
-					<li class="myfont"><a wicket:id="aboutLink"><img src="/image/about.png" alt="About HatchetHarry" class="imageEntry"/>&nbsp;&nbsp;About HatchetHarry</a>
-					</li>
-			        <li class="myfont"><a wicket:id="teamInfoLink"><img src="/image/team info.png" alt="team info" class="imageEntry"/>&nbsp;&nbsp;HatchetHarry team info</a>
-					</li>
-			        <li class="myfont"><a>Preferences</a>
-					</li>
-				</ul>
-	  </li>
-	  <li class="fNiv"><a class="myfont">Game&nbsp;&nbsp;&nbsp;&nbsp;</a>
-		  
-			  	<ul class="categories">
-			  		<li class="myfont"><a wicket:id="createGameLink">
-						<img src="/image/create game.png" alt="create" class="imageEntry"/>&nbsp;&nbsp;Create a game
-				    	</a>
-					</li>
-					<li class="myfont"><a wicket:id="joinGameLink">
-						<img src="/image/join game.png" alt="join" class="imageEntry"/>&nbsp;&nbsp;Join a game
-						</a>
-					</li>
-					<li class="myfont"><a wicket:id="importDeckLink">
-				        <img src="/image/import deck.png" alt="import" class="imageEntry"/>&nbsp;&nbsp;Import a deck
-				    	</a>
-					</li>
-					<li class="myfont"><a wicket:id="resetDbLink">Reset database</a>
-					</li>
-					<li class="myfont"><a wicket:id="hideAllTooltipsLink">Hide all tooltips</a>
-					</li>
-				</ul>
-	  </li>
-	  <li class="fNiv"><a class="myfont">Zones&nbsp;&nbsp;&nbsp;&nbsp;</a>
-			 	<ul class="categories">
-			        <li class="myfont"><a wicket:id="playCardFromGraveyardLinkDesktop"><img src="/image/play from graveyard.png" alt="Play card from graveyard" class="imageEntry"/>&nbsp;&nbsp;Play card from graveyard</a>
-					</li>
-					<li class="myfont"><a wicket:id="revealTopLibraryCardLink">
-				        	<img src="/image/Library Folder.png" alt="Reveal top card of your library" class="imageEntry"/>&nbsp;&nbsp;Reveal top card of your library
-				    	</a>
-					</li>
-					<li class="myfont"><a wicket:id="countCardsLink">
-				        <img src="/image/count cards.png" alt="Count all cards" class="imageEntry"/>&nbsp;&nbsp;Count all cards
-				    	</a>
-					</li>
-				</ul>
-	  </li>
-  </ul>
-	<br/>
+  <span id='cssmenu'>
+	<ul>
+	   <li class='active myfont'><a class="shift-bottom"><img src="/image/logoh1.gif" alt="HH" width="20px;"/></a>
+	      <ul>
+	      	 <li><a><img src="/image/logoh2.gif" alt="HH" width="64px;"/></a></li><br/>
+	         <li><a wicket:id="aboutLink" class="myfont"><img src="/image/about.png" alt="About HatchetHarry"/>&nbsp;&nbsp;About HatchetHarry</a></li>
+	         <li><a wicket:id="teamInfoLink" class="myfont"><img src="/image/team info.png" alt="team info"/>&nbsp;&nbsp;HatchetHarry team info</a></li>
+	         <li class="last myfont"><a class="myfont">Preferences</a></li>
+	      </ul>
+	   </li>
+	   <li class='myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Game&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+	      <ul>
+	         <li><a wicket:id="createGameLink" class="myfont"><img src="/image/create game.png" alt="create"/>&nbsp;&nbsp;Create a game</a></li>
+	         <li><a wicket:id="joinGameLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join a game</a></li>
+	         <li><a wicket:id="importDeckLink" class="myfont"><img src="/image/import deck.png" alt="import"/>&nbsp;&nbsp;Import a deck</a></li>
+	         <li><a wicket:id="hideAllTooltipsLink" class="myfont">Hide all tooltips</a></li>
+	         <li class='last myfont'><a wicket:id="resetDbLink" class="myfont">Reset database</a></li>
+	      </ul>
+	   </li>
+	   <li class='last myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;&nbsp;&nbsp;Zones&nbsp;&nbsp;</span></a>
+	      <ul>
+	         <li><a wicket:id="playCardFromGraveyardLinkDesktop" class="myfont"><img src="/image/play from graveyard.png" alt="Play card from graveyard"/>&nbsp;&nbsp;Play card from graveyard</a></li>
+	         <li><a wicket:id="revealTopLibraryCardLink" class="myfont"><img src="/image/Library Folder.png" alt="Reveal top card of your library"/>&nbsp;&nbsp;Reveal top card of your library</a></li>
+	         <li class='last myfont'><a wicket:id="countCardsLink" class="myfont"><img src="/image/count cards.png" alt="Count all cards"/>&nbsp;&nbsp;Count all cards</a></li>
+	      </ul>
+	   </li>
+	</ul>
+  </span>
+  
+  <h3>
+	  <strong class="myfont shift-right">Welcome to HatchetHarry
+				<span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
+				<span wicket:id="message2" id="message2" class="myfont">message will be here</span>
+	  </strong>
+  </h3> 
+  
+	<br/><br/>
   <span class="zone-images">
 	<img id="putToHand" src="image/hand.jpg" alt="Put back to hand" title="      Drag a card here to put it back to hand" style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
-	<img id="putToGraveyard" src="image/graveyard.jpg" alt="Put back to graveyard" title="Drag a card here to put it back to graveyard" style="border-color: white; border-width: 1px; border-style: solid;"/>
+	<img id="putToGraveyard" src="image/graveyard.jpg" alt="Put back to graveyard" title="Drag a card here to put it back to graveyard" style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
+	<img id="putToExile" src="image/exile.jpg" alt="Put to exiled" title="Drag a card here to put it to exile" style="border-color: white; border-width: 1px; border-style: solid;"/>
   </span>
   <!-- The mobile drop down menu -->
   <span class="dropdownmenu">
@@ -83,33 +68,27 @@
 	  </div>
 	  <div class="categories">
 	      <ul>
-	        <li class="myfont"><a wicket:id="aboutLinkResponsive">* About HatychetHarry&nbsp;&nbsp;</a></li>
-	        <li class="myfont"><a wicket:id="teamInfoLinkResponsive">* HatchetHarry team info&nbsp;&nbsp;</a></li>
-	        <li class="myfont"><a target="_blank">* Preferences</a></li>
+	        <li><a wicket:id="aboutLinkResponsive" class="myfont">* About HatychetHarry&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="teamInfoLinkResponsive" class="myfont">* HatchetHarry team info&nbsp;&nbsp;</a></li>
+	        <li><a target="_blank" class="myfont">* Preferences</a></li>
 	      </ul>
 	      <br/><br/>
 	      <ul>
-	        <li class="myfont"><a wicket:id="createGameLinkResponsive">* Create a game&nbsp;&nbsp;</a></li>
-	        <li class="myfont"><a wicket:id="joinGameLinkResponsive">* Join a game&nbsp;&nbsp;</a></li>
-	        <li class="myfont"><a wicket:id="importDeckLinkResponsive">* Import a deck&nbsp;&nbsp;</a></li>
-    	    <li class="myfont"><a wicket:id="resetDbLinkResponsive">* Reset database&nbsp;&nbsp;</a></li>
-	        <li class="myfont"><a wicket:id="hideAllTooltipsLinkResponsive">* Hide all tooltips&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="createGameLinkResponsive" class="myfont">* Create a game&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="joinGameLinkResponsive" class="myfont">* Join a game&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="importDeckLinkResponsive" class="myfont">* Import a deck&nbsp;&nbsp;</a></li>
+    	    <li><a wicket:id="resetDbLinkResponsive" class="myfont">* Reset database&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="hideAllTooltipsLinkResponsive" class="myfont">* Hide all tooltips&nbsp;&nbsp;</a></li>
 	      </ul>
 	      <br/><br/>
 	      <ul>
-	        <li class="myfont"><a wicket:id="playCardFromGraveyardLinkResponsive">* Play card from graveyard&nbsp;&nbsp;</a></li>
-	        <li class="myfont"><a wicket:id="revealTopLibraryCardLinkResponsive">* Reveal top card of your library&nbsp;&nbsp;</a></li>
-	        <li class="myfont"><a wicket:id="countCardsLinkResponsive">* Count all cards&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="playCardFromGraveyardLinkResponsive" class="myfont">* Play card from graveyard&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="revealTopLibraryCardLinkResponsive" class="myfont">* Reveal top card of your library&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="countCardsLinkResponsive" class="myfont">* Count all cards&nbsp;&nbsp;</a></li>
 	      </ul>
     </div>
   </span>
-  <!-- end menus -->
-  <h3>
-	  <strong class="myfont shift-right">Welcome to HatchetHarry
-				<span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
-				<span wicket:id="message2" id="message2" class="myfont">message will be here</span>
-	  </strong>
-  </h3>  
+  <!-- end menus --> 
 	<br/><br/><br/><br/><br/>
 	<br/><br/><br/><br/><br/>
 	<span wicket:id="balduParent" id="tour_6">

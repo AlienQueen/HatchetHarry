@@ -1,101 +1,106 @@
-.imageEntry {
-	position:absolute;
-	margin-top:-1%;
-	margin-left:-25px;
+#cssmenu {
+  border: none;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Black Ops One', cursive;
+  color: gray;
+  font-size: 28px;
+  font-weight: bold;
+  width: 45%;
+  position: fixed;
+  z-index: 10;
+  left: 0px;
+  top: 0px;
+  margin-bottom: 0;
+}
+#cssmenu ul {
+  background: #333333;
+  height: 35px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#cssmenu li {
+  float: left;
+  padding: 0px;
+}
+#cssmenu li a {
+  background: #333333 url('/image/seperator.png') bottom right no-repeat;
+  display: block;
+  font-weight: normal;
+  line-height: 35px;
+  margin: 0px;
+  padding: 0px 25px;
+  text-align: center;
+  text-decoration: none;
+}
+#cssmenu > ul > li > a {
+  color: #cccccc;
+}
+#cssmenu ul ul a {
+  color: #cccccc;
+}
+#cssmenu li > a:hover,
+#cssmenu ul li:hover > a {
+  background: #454e52 url('/image/hover.png') bottom center no-repeat;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+#cssmenu li ul {
+  background: #333333;
+  display: none;
+  height: auto;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  position: absolute;
+  width: 600px;
+  z-index: 200;
+  /*top:1em;
+	/*left:0;*/
+
+}
+#cssmenu li:hover ul {
+  display: block;
+}
+#cssmenu li li {
+  background: url('/image/sub_sep.png') bottom left no-repeat;
+  display: block;
+  float: none;
+  margin: 0px;
+  padding: 0px;
+  width: 600px;
+}
+#cssmenu li:hover li a {
+  background: none;
+}
+#cssmenu li ul a {
+  display: block;
+  height: 35px;
+  font-size: 26px;
+  font-style: normal;
+  margin: 0px;
+  padding: 0px 10px 0px 15px;
+  text-align: left;
+}
+#cssmenu li ul a:hover,
+#cssmenu li ul li:hover > a {
+  background: #454e52 url('/image/hover_sub.png') center left no-repeat;
+  border: 0px;
+  color: #ffffff;
+  text-decoration: none;
+}
+#cssmenu p {
+  clear: left;
 }
 
-.logoEntry {
-	position:absolute;
-	margin-top:5%;
+.has-sub {
+	top: 0px;
+	position: relative;
 }
 
-.navbar-fixed-top {
-    left: 0;
-    margin-bottom: 0;
-    position: fixed;
-    right: 0;
-    z-index: 10;
-    width: 1%;
-    height: 1%;
+.shift-bottom {
+	top: 0px;
+	position: relative;
 }
-
-.zone-images {
-    left: 0;
-    margin-bottom: 0;
-    position: fixed;
-    right: 0;
-	top: 100px;
-    z-index: 0;
-}
-
-.jMenu {
-    display: table;
-    margin: 0;
-    padding: 0
-}
-
-/* First level */
-.jMenu li {
-    display: table-cell;
-    background-color: #322f32;
-    margin: 0;
-}
-
-.jMenu li a {
-    padding: 20%;
-    display: block;
-    background-color: transparent;
-    color: gray;
-    cursor: pointer;
-    font-size: 150%;
-}
-
-/* Lower levels */
-.jMenu li ul {
-    display: none;
-    position: absolute;
-	z-index:9999;
-    padding: 0;
-    margin: 0;
-}
-
-.jMenu li ul li {
-    background-color: #322f32;
-    display: block;
-    border-bottom: 1px solid #484548;
-    padding: 0;
-}
-
-.jMenu li ul li.arrow {
-    background-color: #322f32;
-    background-image: url('/image/arrow_down.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 6px;
-    padding: 0;
-    border-bottom: none;
-    padding-bottom: 10px
-}
-
-.jMenu li ul li a {
-    font-size: 150%;
-    text-transform: none;
-    padding: 10%;
-    display: block;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-}
-
-.jMenu li ul li a.isParent {
-    background-color: #3a3a3a;
-    background-image: url('/image/arrow_right.png');
-    background-repeat: no-repeat;
-    background-position: right center;
-}
-
-.jMenu li ul li a:hover {
-    background-color: #514c52;
-    border-top: 1px solid #322f32;
-    border-bottom: 1px solid #322f32;
-}
-

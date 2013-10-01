@@ -175,6 +175,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/library.gif"));
 		this.mountResource("image/hand.gif", new PackageResourceReference(HomePage.class,
 				"image/hand.gif"));
+		this.mountResource("image/exile.jpg", new PackageResourceReference(HomePage.class,
+				"image/exile.jpg"));
 		this.mountResource("image/eMail.png", new PackageResourceReference(HomePage.class,
 				"image/eMail.png"));
 		this.mountResource("image/graveyard.gif", new PackageResourceReference(HomePage.class,
@@ -183,6 +185,15 @@ public class HatchetHarryApplication extends WebApplication
 				"image/Safari.png"));
 		this.mountResource("image/Terminal.png", new PackageResourceReference(HomePage.class,
 				"image/Terminal.png"));
+
+		this.mountResource("image/hover.png", new PackageResourceReference(HomePage.class,
+				"image/hover.png"));
+		this.mountResource("image/sub_sep.gif", new PackageResourceReference(HomePage.class,
+				"image/sub_sep.gif"));
+		this.mountResource("image/hover_sub.png", new PackageResourceReference(HomePage.class,
+				"image/hover_sub.png"));
+		this.mountResource("image/seperator.gif", new PackageResourceReference(HomePage.class,
+				"image/seperator.gif"));
 
 		this.mountResource("image/graveyard.jpg", new PackageResourceReference(HomePage.class,
 				"image/graveyard.jpg"));

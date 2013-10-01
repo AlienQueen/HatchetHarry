@@ -3,26 +3,6 @@ jQuery(function(){
 	jQuery('#dock').jqDock();
 });
 
-// The menubar, a jQuery plugin
-jQuery(function(){
-	jQuery("#jMenu").jMenu({
-		  openClick : false,
-		  ulWidth : '250',
-		  effects : {
-			effectSpeedOpen : 150,
-			effectSpeedClose : 150,
-			effectTypeOpen : 'slide',
-			effectTypeClose : 'hide',
-			effectOpen : 'linear',
-			effectClose : 'linear'
-		  },
-		  TimeBeforeOpening : 100,
-		  TimeBeforeClosing : 3000,
-		  animatedText : false,
-		  paddingLeft: 1
-		});
-});
-
 // The toolbar, a jQuery plugin
 jQuery(function() {
 
@@ -76,7 +56,7 @@ jQuery(function() {
         var userAgent = jQuery("#qunit-userAgent").html();
         if (userAgent.indexOf("FbxQmlTV") != -1) {
             jQuery("#floatingbar").css("top", "-10px");
-            jQuery("#jMenu").css("top", "28px");
+            jQuery("#cssmenu").css("top", "28px");
             jQuery(".dropdownmenu").css("top", "28px");
         }
 
@@ -90,11 +70,11 @@ jQuery(function() {
 
 			if ((typeof(width) != "undefined") && (typeof(height) != "undefined") && (null != width) && (null != height) && (width<height)) {
 				// Portrait
-				jQuery("#jMenu").hide();
+				jQuery("#cssmenu").hide();
 				jQuery('.dropdownmenu').show();
 			} else {
 				// Landscape
-				jQuery("#jMenu").show();
+				jQuery("#cssmenu").show();
 				jQuery('.dropdownmenu').hide();
 				jQuery('.categories').hide();
 			}
