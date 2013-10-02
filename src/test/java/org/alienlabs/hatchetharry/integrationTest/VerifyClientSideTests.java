@@ -13,8 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.opera.core.systems.OperaDriver;
-
 public class VerifyClientSideTests
 {
 	private static final String QUNIT_FAILED_TESTS = "0";
@@ -26,8 +24,8 @@ public class VerifyClientSideTests
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyClientSideTests.class);
 
-	private static WebDriver chromeDriver;
-	private static WebDriver operaDriver;
+	private static WebDriver chromeDriver1;
+	private static WebDriver chromeDriver2;
 	private static final String PORT = "8088";
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "function elementInViewport(el) {\n"
@@ -62,12 +60,12 @@ public class VerifyClientSideTests
 	public static void setUpClass()
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
-		VerifyClientSideTests.chromeDriver = new ChromeDriver();
-		VerifyClientSideTests.chromeDriver.get("http://localhost:" + VerifyClientSideTests.PORT
+		VerifyClientSideTests.chromeDriver1 = new ChromeDriver();
+		VerifyClientSideTests.chromeDriver1.get("http://localhost:" + VerifyClientSideTests.PORT
 				+ "/");
 
-		VerifyClientSideTests.operaDriver = new OperaDriver();
-		VerifyClientSideTests.operaDriver.get("http://localhost:" + VerifyClientSideTests.PORT
+		VerifyClientSideTests.chromeDriver2 = new ChromeDriver();
+		VerifyClientSideTests.chromeDriver2.get("http://localhost:" + VerifyClientSideTests.PORT
 				+ "/");
 	}
 
@@ -83,22 +81,22 @@ public class VerifyClientSideTests
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testQunit()", e);
 		}
 
-		final String passed1 = VerifyClientSideTests.chromeDriver.findElement(By.id("passed"))
+		final String passed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("passed"))
 				.getText();
-		final String total1 = VerifyClientSideTests.chromeDriver.findElement(By.id("total"))
+		final String total1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("total"))
 				.getText();
-		final String failed1 = VerifyClientSideTests.chromeDriver.findElement(By.id("failed"))
+		final String failed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("failed"))
 				.getText();
 
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed1);
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, total1);
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, failed1);
 
-		final String passed2 = VerifyClientSideTests.operaDriver.findElement(By.id("passed"))
+		final String passed2 = VerifyClientSideTests.chromeDriver2.findElement(By.id("passed"))
 				.getText();
-		final String total2 = VerifyClientSideTests.operaDriver.findElement(By.id("total"))
+		final String total2 = VerifyClientSideTests.chromeDriver2.findElement(By.id("total"))
 				.getText();
-		final String failed2 = VerifyClientSideTests.operaDriver.findElement(By.id("failed"))
+		final String failed2 = VerifyClientSideTests.chromeDriver2.findElement(By.id("failed"))
 				.getText();
 
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed2);
@@ -118,9 +116,9 @@ public class VerifyClientSideTests
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
 		}
 
-		((JavascriptExecutor)VerifyClientSideTests.chromeDriver)
+		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
 				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
-		VerifyClientSideTests.chromeDriver.findElement(By.id("runMistletoe")).click();
+		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
 		try
 		{
@@ -131,12 +129,12 @@ public class VerifyClientSideTests
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
 		}
 
-		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver, 60);
+		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver1, 60);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("runsSummary")));
 
-		final String chromeTotal = VerifyClientSideTests.chromeDriver.findElement(
+		final String chromeTotal = VerifyClientSideTests.chromeDriver1.findElement(
 				By.id("runsSummary")).getText();
-		final String chromeFailed = VerifyClientSideTests.chromeDriver.findElement(
+		final String chromeFailed = VerifyClientSideTests.chromeDriver1.findElement(
 				By.id("errorsSummary")).getText();
 
 		Assert.assertEquals(VerifyClientSideTests.MISTLETOE_TOTAL_TESTS, chromeTotal);
@@ -146,8 +144,8 @@ public class VerifyClientSideTests
 	@AfterClass
 	public static void tearDownClass()
 	{
-		VerifyClientSideTests.chromeDriver.quit();
-		VerifyClientSideTests.operaDriver.quit();
+		VerifyClientSideTests.chromeDriver1.quit();
+		VerifyClientSideTests.chromeDriver2.quit();
 	}
 
 }
