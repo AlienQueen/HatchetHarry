@@ -55,10 +55,10 @@
 	classes to the respective LI element(s)
 */
 
-.contextMenu LI.edit A { background-image: url(/image/edit.png); }
-.contextMenu LI.cut A { background-image: url(/image/cut.png); }
-.contextMenu LI.copy A { background-image: url(/image/copy.png); }
+.contextMenu LI.graveyard A { background-image: url(/image/edit.png); }
+.contextMenu LI.hand A { background-image: url(/image/cut.png); }
+.contextMenu LI.move A { background-image: url(/image/copy.png); }
 .contextMenu LI.paste A { background-image: url(/image/paste.png); }
-.contextMenu LI.delete A { background-image: url(/image/delete.png); }
+.contextMenu LI.exile A { background-image: url(/image/delete.png); }
 .contextMenu LI.quit A { background-image: url(/image/quit.png); }
  
