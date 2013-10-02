@@ -96,6 +96,11 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>mistletoe-wicket</artifactId>
 			<version>0.3-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.mistletoe</groupId>
+			<artifactId>mistletoe-core</artifactId>
+			<version>0.3-SNAPSHOT</version>
+		</dependency>		
 		<!--<dependency> <groupId>pl.rabbitsoftware</groupId> <artifactId>enhancedwickettester</artifactId> 
 			<version>1.0.0</version> <scope>test</scope> </dependency> -->
 		<dependency>
