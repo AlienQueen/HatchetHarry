@@ -109,7 +109,7 @@ public class FullAppTraversalTests
 
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("name")).clear();
-		FullAppTraversalTests.chromeDriver2.findElement(By.id("name")).sendKeys("Zala");
+		FullAppTraversalTests.chromeDriver2.findElement(By.id("name")).sendKeys("Marie");
 		new Select(FullAppTraversalTests.chromeDriver2.findElement(By.id("sideInput")))
 				.selectByVisibleText("ultraviolet");
 		new Select(FullAppTraversalTests.chromeDriver2.findElement(By.id("decks")))

@@ -38,8 +38,9 @@ public class CardPanel extends Panel
 
 	final UUID uuid;
 
-	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
+	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
+	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 
 	Player owner;
 
@@ -83,15 +84,19 @@ public class CardPanel extends Panel
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
+		this.putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(this.uuid);
+		menutoggleButton.add(this.putToHandFromBattlefieldBehavior);
+
 		this.putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(
 				this.uuid);
 		menutoggleButton.add(this.putToGraveyardFromBattlefieldBehavior);
 
-		this.putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(this.uuid);
-		menutoggleButton.add(this.putToHandFromBattlefieldBehavior);
+		this.putToExileFromBattlefieldBehavior = new PutToExileFromBattlefieldBehavior(this.uuid);
+		menutoggleButton.add(this.putToExileFromBattlefieldBehavior);
 
 		final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this, this.uuid,
-				this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior);
+				this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior,
+				this.putToExileFromBattlefieldBehavior);
 		menutoggleButton.add(cardMoveBehavior);
 
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid);

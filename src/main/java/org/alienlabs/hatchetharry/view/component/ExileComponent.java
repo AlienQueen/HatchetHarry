@@ -55,9 +55,6 @@ public class ExileComponent extends Panel
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)
 			{
-				// TODO remove next line
-				// HatchetHarrySession.get().addCardIdInHand(item.getIndex(),
-				// item.getIndex());
 				final MagicCard card = item.getModelObject();
 
 				final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");

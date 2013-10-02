@@ -9,13 +9,16 @@ window.setTimeout(function() {
 					function(action, el, pos) {
 						var uuid = jQuery(el).attr('id').replace('card', '');
 						
-						if (action === 'edit') {
+						if (action === 'graveyard') {
 							jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
 							Wicket.Ajax.get({ 'u' : '${graveyardUrl}&uuid=' + uuid });
-						} else if (action === 'cut') {
+						} else if (action === 'hand') {
 							jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
 							Wicket.Ajax.get({ 'u' : '${handUrl}&uuid=' + uuid });
-						} else if (action === 'copy') {
+						} else if (action === 'exile') {
+							jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
+							Wicket.Ajax.get({ 'u' : '${exileUrl}&uuid=' + uuid });
+						} else if (action === 'move') {
                             var body = document.getElementById('body');
                             body.style.cursor='move';
                             jQuery("body").click(function(event) {

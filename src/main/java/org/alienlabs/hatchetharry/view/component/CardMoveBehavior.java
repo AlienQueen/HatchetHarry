@@ -38,8 +38,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private final UUID uuid;
 	private String uuidValidForJs;
 
-	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardBehavior;
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
+	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
+	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 
 	@SpringBean
 	private PersistenceService persistenceService;
@@ -47,13 +48,15 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
 			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
-			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior)
+			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
+			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior)
 	{
 		Injector.get().inject(this);
 		this.panel = cp;
 		this.uuid = _uuid;
-		this.putToGraveyardBehavior = _putToGraveyardBehavior;
+		this.putToGraveyardFromBattlefieldBehavior = _putToGraveyardBehavior;
 		this.putToHandFromBattlefieldBehavior = _putToHandFromBattlefieldBehavior;
+		this.putToExileFromBattlefieldBehavior = _putToExileFromBattlefieldBehavior;
 	}
 
 	@Override
@@ -156,7 +159,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
-		variables.put("graveyardUrl", this.putToGraveyardBehavior.getCallbackUrl());
+		variables.put("graveyardUrl", this.putToGraveyardFromBattlefieldBehavior.getCallbackUrl());
+		variables.put("exileUrl", this.putToExileFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
 
 		// TODO in reality, cardMove.js configures the context menu: move it in

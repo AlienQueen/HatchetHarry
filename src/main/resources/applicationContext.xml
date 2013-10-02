@@ -244,7 +244,6 @@
 		<property name="persistenceService" ref="persistenceService"/>
 	</bean>
 	<bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">
-		<property name="magicCardDao" ref="magicCardDao"/>
 		<property name="persistenceService" ref="persistenceService"/>
 		<property name="importDeckService" ref="importDeckService"/>
 		<property name="importDeck" value="true"/>

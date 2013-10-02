@@ -67,6 +67,7 @@ import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutToExileFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
@@ -529,7 +530,8 @@ public class HomePage extends TestReportPage
 				}
 				else
 				{
-					JavaScriptUtils.updateExile(target);
+					JavaScriptUtils.updateExile(target, _player.getGame().getId(), _player.getId(),
+							_player.getDeck().getDeckId());
 
 				}
 
@@ -1102,9 +1104,13 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/coda-sliderGraveyard.1.1.1.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/coda-sliderExile.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/gallery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/graveyard.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/gallery/exile.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/rotate/jQueryRotate.2.1.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -1564,6 +1570,18 @@ public class HomePage extends TestReportPage
 						+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
+			case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has put '"
+						+ event.getCardName()
+						+ "' to "
+						+ (event.getTargetPlayerName().equals(event.getPlayerName())
+								? "his (her)"
+								: event.getTargetPlayerName() + "'s")
+						+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+
 			case COMBAT_IN_PROGRESS_ACTION :
 				if (event.isCombatInProgress())
 				{
@@ -1766,6 +1784,20 @@ public class HomePage extends TestReportPage
 		}
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMagicCard(), false);
+	}
+
+	@Subscribe
+	public void exileCardFromBattlefield(final AjaxRequestTarget target,
+			final PutToExileFromBattlefieldCometChannel event)
+	{
+		if (event.isShouldUpdateExile())
+		{
+			JavaScriptUtils.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
+					event.getDeckId());
+		}
+
+		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+				event.getGameId(), event.getMc(), false);
 	}
 
 	@Subscribe

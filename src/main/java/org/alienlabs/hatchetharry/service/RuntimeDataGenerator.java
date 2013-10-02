@@ -11,7 +11,6 @@ import java.util.UUID;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Isolation;
@@ -50,19 +49,11 @@ public class RuntimeDataGenerator implements Serializable
 			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
-	private MagicCardDao magicCardDao;
-	@SpringBean
 	private PersistenceService persistenceService;
 	@SpringBean
 	private ImportDeckService importDeckService;
 
 	private boolean importDeck;
-
-	@Required
-	public void setMagicCardDao(final MagicCardDao _magicCardDao)
-	{
-		this.magicCardDao = _magicCardDao;
-	}
 
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)
