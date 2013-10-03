@@ -3,6 +3,7 @@ package org.alienlabs.hatchetharry.view.component;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.AttributeModifier;
@@ -117,6 +118,9 @@ public class HandComponent extends Panel
 
 		this.thumbsPlaceholder.addOrReplace(thumbs);
 		this.add(this.thumbsPlaceholder);
+
+		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND);
+		this.add(putToZonePanel);
 
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
 	}
