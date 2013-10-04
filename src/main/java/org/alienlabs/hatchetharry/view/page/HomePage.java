@@ -60,6 +60,8 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
+import org.alienlabs.hatchetharry.model.channel.CardZoneMoveCometChannel;
+import org.alienlabs.hatchetharry.model.channel.CardZoneMoveNotifier;
 import org.alienlabs.hatchetharry.model.channel.CountCardsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
@@ -1980,6 +1982,107 @@ public class HomePage extends TestReportPage
 				.getContentId(), event.getGameId()));
 
 		this.countCardsWindow.show(target);
+	}
+
+	@SuppressWarnings("incomplete-switch")
+	@Subscribe
+	public void cardZoneChange(final AjaxRequestTarget target, final CardZoneMoveCometChannel event)
+	{
+		final MagicCard mc = event.getCard();
+		final Deck d = this.persistenceService.getDeck(this.persistenceService
+				.getPlayer(event.getPlayerId()).getDeck().getDeckId());
+		final boolean isRequestingPlayerSameThanTargetedPlayer = event.getPlayerId().longValue() == HatchetHarrySession
+				.get().getPlayer().getId().longValue();
+
+		if (!event.getTargetZone().equals(CardZone.LIBRARY))
+		{
+			mc.setZone(event.getTargetZone());
+			this.persistenceService.updateCard(mc);
+		}
+		else
+		{
+			return;
+		}
+
+
+		boolean hasAlreadyDisplayedHand = false;
+		boolean hasAlreadyDisplayedGraveyard = false;
+		boolean hasAlreadyDisplayedExile = false;
+
+		// TODO: other cases
+		switch (event.getTargetZone())
+		{
+			case BATTLEFIELD :
+				JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
+						this.persistenceService, event.getGameId(), mc, true);
+				break;
+			case HAND :
+				if (isRequestingPlayerSameThanTargetedPlayer)
+				{
+					JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
+							d.getDeckId());
+					hasAlreadyDisplayedHand = true;
+				}
+				break;
+			case GRAVEYARD :
+				if (isRequestingPlayerSameThanTargetedPlayer)
+				{
+					JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
+							d.getDeckId());
+					hasAlreadyDisplayedGraveyard = true;
+				}
+				break;
+			case EXILE :
+				if (isRequestingPlayerSameThanTargetedPlayer)
+				{
+					JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
+							d.getDeckId());
+					hasAlreadyDisplayedExile = true;
+				}
+				break;
+		}
+
+		// TODO: other cases
+		switch (event.getSourceZone())
+		{
+			case HAND :
+				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedHand)
+				{
+					JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
+							d.getDeckId());
+				}
+				break;
+			case GRAVEYARD :
+				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedGraveyard)
+				{
+					JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
+							d.getDeckId());
+				}
+				break;
+			case EXILE :
+				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedExile)
+				{
+					JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
+							d.getDeckId());
+				}
+				break;
+		}
+	}
+
+	@Subscribe
+	public void cardZoneChangeNotify(final AjaxRequestTarget target, final CardZoneMoveNotifier event)
+	{
+		if (event.getTargetZone().equals(CardZone.LIBRARY))
+		{
+			return;
+		}
+		target.appendJavaScript("jQuery.gritter.add({ title : '"
+				+ event.getRequestingPlayer()
+				+ "', text : \"has moved "
+				+ (event.getOwnerPlayer().equals(event.getRequestingPlayer()) ? "his (her)" : event
+						.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle()
+				+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
+				+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
 	@Override

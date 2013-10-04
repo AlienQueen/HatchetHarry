@@ -52,6 +52,12 @@ public class Player implements Serializable
 	private boolean isGraveyardDisplayed;
 	@Column
 	private boolean isExileDisplayed;
+	@Column
+	private CardZone defaultTargetZoneForHand = CardZone.BATTLEFIELD;
+	@Column
+	private CardZone defaultTargetZoneForGraveyard = CardZone.BATTLEFIELD;
+	@Column
+	private CardZone defaultTargetZoneForExile = CardZone.BATTLEFIELD;
 
 	public Long getId()
 	{
@@ -202,6 +208,36 @@ public class Player implements Serializable
 	public void setExileDisplayed(final boolean _isExileDisplayed)
 	{
 		this.isExileDisplayed = _isExileDisplayed;
+	}
+
+	public CardZone getDefaultTargetZoneForHand()
+	{
+		return this.defaultTargetZoneForHand;
+	}
+
+	public void setDefaultTargetZoneForHand(final CardZone _defaultTargetZoneForHand)
+	{
+		this.defaultTargetZoneForHand = _defaultTargetZoneForHand;
+	}
+
+	public CardZone getDefaultTargetZoneForGraveyard()
+	{
+		return this.defaultTargetZoneForGraveyard;
+	}
+
+	public void setDefaultTargetZoneForGraveyard(final CardZone _defaultTargetZoneForGraveyard)
+	{
+		this.defaultTargetZoneForGraveyard = _defaultTargetZoneForGraveyard;
+	}
+
+	public CardZone getDefaultTargetZoneForExile()
+	{
+		return this.defaultTargetZoneForExile;
+	}
+
+	public void setDefaultTargetZoneForExile(final CardZone _defaultTargetZoneForExile)
+	{
+		this.defaultTargetZoneForExile = _defaultTargetZoneForExile;
 	}
 
 }

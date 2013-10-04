@@ -52,7 +52,6 @@ public class HandComponent extends Panel
 						? HatchetHarrySession.get().getPlayer().getId()
 						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
 						.getDeck().getDeckId() : ids[2]));
-
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)
 		{
 			private static final long serialVersionUID = 1L;
@@ -119,7 +118,9 @@ public class HandComponent extends Panel
 		this.thumbsPlaceholder.addOrReplace(thumbs);
 		this.add(this.thumbsPlaceholder);
 
-		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND);
+		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND,
+				this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
+						.getPlayer().getId() : ids[1])));
 		this.add(putToZonePanel);
 
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);

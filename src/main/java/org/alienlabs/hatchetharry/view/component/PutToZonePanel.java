@@ -2,28 +2,32 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Player;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 public class PutToZonePanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
 	private final CardZone sourceZone;
-	protected CardZone targetZone = CardZone.BATTLEFIELD;
 	protected final DropDownChoice<CardZone> targetZoneInput;
+	private final Player player;
 
-	public PutToZonePanel(final String id, final CardZone _sourceZone)
+	@SuppressWarnings("incomplete-switch")
+	public PutToZonePanel(final String id, final CardZone _sourceZone, final Player _player)
 	{
 		super(id);
 		this.sourceZone = _sourceZone;
+		this.player = _player;
 
 		final Form<String> form = new Form<String>("form");
 		form.add(new AttributeModifier("class", new Model<String>("put-to-zone-for-"
@@ -33,26 +37,37 @@ public class PutToZonePanel extends Panel
 				.values()));
 		allZones.remove(_sourceZone);
 
-		final Model<ArrayList<CardZone>> zonesModel = new Model<ArrayList<CardZone>>(allZones);
+		CardZone defaultZone = null;
 
-		final Label targetZoneLabel = new Label("targetZoneLabel", "Put card to: ");
-		this.targetZoneInput = new DropDownChoice<CardZone>("targetZoneInput", new Model<CardZone>(
-				this.targetZone), zonesModel);
-
-		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
+		// TODO add more source zone one day
+		switch (this.sourceZone)
 		{
-			private static final long serialVersionUID = 5612763286127668L;
+			case HAND :
+				defaultZone = this.player.getDefaultTargetZoneForHand();
+				break;
+			case GRAVEYARD :
+				defaultZone = this.player.getDefaultTargetZoneForGraveyard();
+				break;
+			case EXILE :
+				defaultZone = this.player.getDefaultTargetZoneForExile();
+				break;
+		}
 
-			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
-				PutToZonePanel.this.targetZone = PutToZonePanel.this.targetZoneInput
-						.getModelObject();
-			}
-		};
+		final IModel<List<? extends CardZone>> zonesModel = Model.ofList(allZones);
+		final Label targetZoneLabel = new Label("targetZoneLabel", "Put card to: ");
+		this.targetZoneInput = new DropDownChoice<CardZone>("targetZoneInput",
+				Model.of(defaultZone), zonesModel);
+		this.targetZoneInput.setOutputMarkupId(true).setMarkupId(
+				"putToZoneSelectFor" + this.sourceZone);
+
+		final WebMarkupContainer submit = new WebMarkupContainer("submit");
+		submit.setOutputMarkupId(true).setMarkupId("moveToZoneSubmit" + this.sourceZone);
 
 		form.add(targetZoneLabel, this.targetZoneInput, submit);
 		this.add(form);
+
+		final PutToZoneBehavior ptzb = new PutToZoneBehavior(this.sourceZone);
+		this.add(ptzb);
 	}
 
 }

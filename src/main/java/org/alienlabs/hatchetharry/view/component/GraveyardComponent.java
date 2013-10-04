@@ -112,7 +112,9 @@ public class GraveyardComponent extends Panel
 		this.add(this.thumbsPlaceholder);
 
 		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel",
-				CardZone.GRAVEYARD);
+				CardZone.GRAVEYARD, this.persistenceService.getPlayer((ids.length == 0
+						? HatchetHarrySession.get().getPlayer().getId()
+						: ids[1])));
 		this.add(putToZonePanel);
 	}
 
