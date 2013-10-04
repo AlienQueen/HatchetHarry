@@ -127,6 +127,12 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 				ownerPlayer.setExileDisplayed(true);
 				this.persistenceService.updatePlayer(ownerPlayer);
 				break;
+			case BATTLEFIELD :
+				break;
+			case LIBRARY :
+				break;
+			default :
+				throw new UnsupportedOperationException();
 		}
 
 		final CardZoneMoveCometChannel czmcc = new CardZoneMoveCometChannel(this.sourceZone,

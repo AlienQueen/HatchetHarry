@@ -2070,6 +2070,8 @@ public class HomePage extends TestReportPage
 							d.getDeckId());
 				}
 				break;
+			default :
+				throw new UnsupportedOperationException();
 		}
 	}
 
