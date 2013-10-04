@@ -6,7 +6,7 @@ jQuery(document).ready(function() {
 			return false;
 		}
 		
-		var img = jQuery(".active-thumbGraveyard img");
+		var img = jQuery(".active-thumb-Graveyard img");
 		if (img.length == 0) {
 			return false;
 		}
@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 		var withoutImg = withoutPlaceholder.split('_img')[0];
 		var uuid = withoutImg.replace(/_/g,"-");
 		
-		var a = jQuery(".active-thumbGraveyard");
+		var a = jQuery(".active-thumb-Graveyard");
 		var aId = a.attr('id');
 		var currentCard = aId.split("graveyard-cross-link")[1];
 		

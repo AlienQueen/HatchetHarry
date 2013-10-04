@@ -58,6 +58,34 @@ public class FullAppTraversalTests
 			+ "	} else {\n"
 			+ "		window.scrollBy(0,5);\n}\n}";
 
+	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD = "function elementInViewport(el) {\n"
+			+ "  var top = el.offsetTop;\n"
+			+ "  var left = el.offsetLeft;\n"
+			+ "  var width = el.offsetWidth;\n"
+			+ "  var height = el.offsetHeight;\n"
+			+ "\n"
+			+ "  while(el.offsetParent) {\n"
+			+ "    el = el.offsetParent;\n"
+			+ "    top += el.offsetTop;\n"
+			+ "    left += el.offsetLeft;\n"
+			+ "  }\n"
+			+ "\n"
+			+ "  return (\n"
+			+ "    top > (window.pageYOffset + 50) &&\n"
+			+ "    left > (window.pageXOffset + 50) &&\n"
+			+ "    (top + height + 50) < (window.pageYOffset + window.innerHeight) &&\n"
+			+ "    (left + width + 50) < (window.pageXOffset + window.innerWidth)\n"
+			+ "  );\n"
+			+ "}\n"
+			+ "\n"
+			+ "var elementToLookFor = jQuery(\"img[id^='tapHandleImage']\");\n"
+			+ "\n"
+			+ "for (var i = 0; i < 10000; i = i + 1) {\n"
+			+ "	if (elementInViewport(elementToLookFor)) {\n"
+			+ "		break;\n"
+			+ "	} else {\n"
+			+ "		window.scrollBy(1,5);\n}\n}";
+
 	@BeforeClass
 	public static void setUpClass()
 	{
@@ -172,6 +200,8 @@ public class FullAppTraversalTests
 				.contains("transform"));
 
 		// Tap card
+		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
+				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.cssSelector("img[id^='tapHandleImage']")).click();
 		Thread.sleep(10000);
