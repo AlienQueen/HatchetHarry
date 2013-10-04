@@ -84,14 +84,13 @@ public class FullAppTraversalTests
 			+ "	if (elementInViewport(elementToLookFor)) {\n"
 			+ "		break;\n"
 			+ "	} else {\n"
-			+ "		window.scrollBy(1,5);\n}\n}";
+			+ "		window.scrollBy(0,5);\n}\n}";
 
 	@BeforeClass
 	public static void setUpClass()
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		final ChromeOptions options = new ChromeOptions();
-		options.addArguments("--no-sandbox");
 		final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 
