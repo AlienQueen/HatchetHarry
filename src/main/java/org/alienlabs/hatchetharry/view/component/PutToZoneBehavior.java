@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import javax.help.UnsupportedOperationException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
@@ -106,6 +107,8 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 			case EXILE :
 				ownerPlayer.setDefaultTargetZoneForExile(this.targetZone);
 				break;
+			default :
+				throw new UnsupportedOperationException();
 		}
 		this.persistenceService.updatePlayer(ownerPlayer);
 

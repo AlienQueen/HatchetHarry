@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.help.UnsupportedOperationException;
+
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Player;
 import org.apache.wicket.AttributeModifier;
@@ -51,6 +53,8 @@ public class PutToZonePanel extends Panel
 			case EXILE :
 				defaultZone = this.player.getDefaultTargetZoneForExile();
 				break;
+			default :
+				throw new UnsupportedOperationException();
 		}
 
 		final IModel<List<? extends CardZone>> zonesModel = Model.ofList(allZones);

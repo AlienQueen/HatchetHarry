@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.help.UnsupportedOperationException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
@@ -2040,6 +2041,10 @@ public class HomePage extends TestReportPage
 					hasAlreadyDisplayedExile = true;
 				}
 				break;
+			case LIBRARY :
+				break;
+			default :
+				throw new UnsupportedOperationException();
 		}
 
 		// TODO: other cases
@@ -2070,7 +2075,8 @@ public class HomePage extends TestReportPage
 	}
 
 	@Subscribe
-	public void cardZoneChangeNotify(final AjaxRequestTarget target, final CardZoneMoveNotifier event)
+	public void cardZoneChangeNotify(final AjaxRequestTarget target,
+			final CardZoneMoveNotifier event)
 	{
 		if (event.getTargetZone().equals(CardZone.LIBRARY))
 		{
