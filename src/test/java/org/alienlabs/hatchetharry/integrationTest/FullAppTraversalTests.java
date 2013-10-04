@@ -11,7 +11,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -60,11 +62,16 @@ public class FullAppTraversalTests
 	public static void setUpClass()
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
-		FullAppTraversalTests.chromeDriver1 = new ChromeDriver();
+		final ChromeOptions options = new ChromeOptions();
+		options.addArguments("--no-sandbox");
+		final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+
+		FullAppTraversalTests.chromeDriver1 = new ChromeDriver(capabilities);
 		FullAppTraversalTests.chromeDriver1.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
 
-		FullAppTraversalTests.chromeDriver2 = new ChromeDriver();
+		FullAppTraversalTests.chromeDriver2 = new ChromeDriver(capabilities);
 		FullAppTraversalTests.chromeDriver2.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
 	}
