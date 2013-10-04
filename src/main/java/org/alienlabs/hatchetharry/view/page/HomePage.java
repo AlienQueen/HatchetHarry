@@ -48,7 +48,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.help.UnsupportedOperationException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
