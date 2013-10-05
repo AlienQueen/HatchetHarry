@@ -111,8 +111,6 @@ public class ExileComponent extends Panel
 		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.EXILE,
 				this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
 						.getPlayer().getId() : ids[1])));
-		putToZonePanel.add(new AttributeModifier("style",
-				"position:absolute; top: 74%; left:545px;"));
 		this.add(putToZonePanel);
 
 		this.thumbsPlaceholder.add(thumbs);
