@@ -115,6 +115,8 @@ public class GraveyardComponent extends Panel
 				CardZone.GRAVEYARD, this.persistenceService.getPlayer((ids.length == 0
 						? HatchetHarrySession.get().getPlayer().getId()
 						: ids[1])));
+		putToZonePanel.add(new AttributeModifier("style",
+				"position:absolute; top: 74%; left:280px;"));
 		this.add(putToZonePanel);
 	}
 

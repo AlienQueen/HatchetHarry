@@ -12,4 +12,4 @@ window.setTimeout(function() {
 			
 		Wicket.Ajax.get({'u': '${url}&card=' + uuid + '&targetZone=' + targetZone});
 	});
-}, 1500);
+}, 250);
