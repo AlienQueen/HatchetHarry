@@ -74,7 +74,7 @@ public class VerifyClientSideTests
 	{
 		try
 		{
-			Thread.sleep(15000);
+			Thread.sleep(7500);
 		}
 		catch (final InterruptedException e)
 		{
@@ -109,7 +109,7 @@ public class VerifyClientSideTests
 	{
 		try
 		{
-			Thread.sleep(30000);
+			Thread.sleep(10000);
 		}
 		catch (final InterruptedException e)
 		{
@@ -122,14 +122,14 @@ public class VerifyClientSideTests
 
 		try
 		{
-			Thread.sleep(30000);
+			Thread.sleep(10000);
 		}
 		catch (final InterruptedException e)
 		{
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
 		}
 
-		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver1, 60);
+		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver1, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("runsSummary")));
 
 		final String chromeTotal = VerifyClientSideTests.chromeDriver1.findElement(
