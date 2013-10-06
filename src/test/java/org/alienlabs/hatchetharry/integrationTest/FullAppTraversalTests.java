@@ -422,11 +422,6 @@ public class FullAppTraversalTests
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver2.findElements(
 				By.cssSelector(".cross-link img")).size() == 7);
 
-		// Find first hand card name of Chrome1
-		final String activeHandCardName = FullAppTraversalTests.chromeDriver1
-				.findElements(By.cssSelector(".cross-link:nth-child(1) img")).get(0)
-				.getAttribute("name");
-
 		// Put one card from hand to graveyard
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
 				.selectByVisibleText("Graveyard");
@@ -438,13 +433,6 @@ public class FullAppTraversalTests
 				By.id("graveyard-page-wrap")).isEmpty());
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
 				By.cssSelector(".graveyard-cross-link")).size() == 2);
-
-		// Get name of the current card in the hand
-		Assert.assertEquals(
-				activeHandCardName,
-				FullAppTraversalTests.chromeDriver1
-						.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img"))
-						.get(1).getAttribute("name"));
 
 		// Put current card from hand to exile
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
