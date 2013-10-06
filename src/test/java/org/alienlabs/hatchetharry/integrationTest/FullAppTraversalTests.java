@@ -443,8 +443,8 @@ public class FullAppTraversalTests
 		Assert.assertEquals(
 				activeHandCardName,
 				FullAppTraversalTests.chromeDriver1
-						.findElements(By.cssSelector(".cross-link:nth-child(1) img")).get(0)
-						.getAttribute("name"));
+						.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img"))
+						.get(1).getAttribute("name"));
 
 		// Put current card from hand to exile
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
@@ -493,6 +493,9 @@ public class FullAppTraversalTests
 		final String exileCardName = FullAppTraversalTests.chromeDriver1
 				.findElements(By.cssSelector(".exile-cross-link:nth-child(1) img")).get(0)
 				.getAttribute("name");
+
+		// Verify that axctive card in exile is same than card from hand
+		Assert.assertEquals(handCardName, exileCardName);
 
 		// Put card from exile to battlefield
 		new Select(
