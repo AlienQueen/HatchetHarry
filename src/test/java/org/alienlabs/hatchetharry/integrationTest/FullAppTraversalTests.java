@@ -123,6 +123,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
+		Thread.sleep(5000);
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("name")).clear();
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("sideInput")))
@@ -142,6 +143,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
+		Thread.sleep(5000);
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("name")).clear();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("name")).sendKeys("Marie");
 		new Select(FullAppTraversalTests.chromeDriver2.findElement(By.id("sideInput")))
