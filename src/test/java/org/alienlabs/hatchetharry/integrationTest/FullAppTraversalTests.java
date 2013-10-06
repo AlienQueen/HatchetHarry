@@ -418,7 +418,7 @@ public class FullAppTraversalTests
 
 		// Verify that the hands contains 7 cards
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".cross-link img")).size() == 7);
+				By.cssSelector(".cross-link img")).size() == 8);
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver2.findElements(
 				By.cssSelector(".cross-link img")).size() == 7);
 
