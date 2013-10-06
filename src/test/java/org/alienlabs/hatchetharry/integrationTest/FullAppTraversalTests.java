@@ -358,7 +358,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToHandFromModalWindow")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
-		Thread.sleep(400);
+		Thread.sleep(4000);
 
 		// Assert that the hand contains 8 cards
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
