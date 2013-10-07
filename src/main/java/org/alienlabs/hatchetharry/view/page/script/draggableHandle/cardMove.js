@@ -27,7 +27,10 @@ window.setTimeout(function() {
                                 Wicket.Ajax.get({ 'u' : url + '&uuid=' + uuid + '&posX=' + event.pageX + '&posY=' + event.pageY});
                                 jQuery("body").unbind('click');
                             });
-                        }
+                        } else if (action === 'destroy') {
+							jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
+							Wicket.Ajax.get({ 'u' : '${destroyUrl}&uuid=' + uuid });
+						}
 					}
 			);
 }, 175);

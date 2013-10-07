@@ -41,7 +41,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
-
+	private final DestroyTokenBehavior destroyTokenBehavior;
 	@SpringBean
 	private PersistenceService persistenceService;
 
@@ -49,7 +49,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
 			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
 			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
-			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior)
+			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,
+			final DestroyTokenBehavior _destroyTokenBehavior)
 	{
 		Injector.get().inject(this);
 		this.panel = cp;
@@ -57,6 +58,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.putToGraveyardFromBattlefieldBehavior = _putToGraveyardBehavior;
 		this.putToHandFromBattlefieldBehavior = _putToHandFromBattlefieldBehavior;
 		this.putToExileFromBattlefieldBehavior = _putToExileFromBattlefieldBehavior;
+		this.destroyTokenBehavior = _destroyTokenBehavior;
 	}
 
 	@Override
@@ -102,18 +104,12 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 				return;
 			}
 
-			final HomePage homePage = (HomePage)target.getPage();
-			final List<MagicCard> allCards = homePage.getAllMagicCardsInBattlefield();
-			final int index = allCards.indexOf(mc);
-			allCards.remove(mc);
-
 			gameId = mc.getGameId();
 			mc.setX(posX);
 			mc.setY(posY);
 			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + posX + ", posY: "
 					+ posY);
 			this.persistenceService.updateCard(mc);
-			allCards.add(index, mc);
 		}
 		catch (final IllegalArgumentException e)
 		{
@@ -159,9 +155,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("graveyardUrl", this.putToGraveyardFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("exileUrl", this.putToExileFromBattlefieldBehavior.getCallbackUrl());
-		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
+		variables.put("destroyUrl", this.destroyTokenBehavior.getCallbackUrl());
 
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior

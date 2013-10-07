@@ -125,8 +125,7 @@ public class TokenPanel extends Panel
 				tokenImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 			}
 
-			final TokenTooltipPanel tokenBubbleTip = new TokenTooltipPanel("tokenTooltip",
-					cardHandle, this.uuid, this.owner.getSide());
+			final TokenTooltipPanel tokenBubbleTip = new TokenTooltipPanel("tokenTooltip", myToken);
 			tokenBubbleTip.setOutputMarkupId(true);
 			tokenBubbleTip.setMarkupId("tokenTooltip" + this.uuid.toString().replace("-", "_"));
 			tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));
@@ -136,8 +135,7 @@ public class TokenPanel extends Panel
 		else
 		{
 			tokenImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
-			final TokenTooltipPanel tokenBubbleTip = new TokenTooltipPanel("tokenTooltip",
-					cardHandle, this.uuid, "yellow");
+			final TokenTooltipPanel tokenBubbleTip = new TokenTooltipPanel("tokenTooltip", myToken);
 			tokenBubbleTip.setOutputMarkupId(true);
 			tokenBubbleTip.setMarkupId("tokenTooltip" + this.uuid.toString().replace("-", "_"));
 			tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));

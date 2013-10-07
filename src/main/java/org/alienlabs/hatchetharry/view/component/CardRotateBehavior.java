@@ -66,14 +66,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			return;
 		}
 
-		final HomePage homePage = (HomePage)target.getPage();
-		final List<MagicCard> allCards = homePage.getAllMagicCardsInBattlefield();
-		final int index = allCards.indexOf(card);
-		allCards.remove(card);
-
 		card.setTapped(!card.isTapped());
 		this.persistenceService.updateCard(card);
-		allCards.add(index, card);
 
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());
 

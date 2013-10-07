@@ -99,6 +99,19 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void mergeCard(final MagicCard c)
+	{
+		this.deckDao.getSession().merge(c.getDeck());
+		this.magicCardDao.getSession().merge(c);
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void saveToken(final Token t)
+	{
+		this.tokenDao.getSession().merge(t);
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void saveOrUpdateCounter(final Counter c)
 	{
 		this.counterDao.getSession().saveOrUpdate(c);
@@ -117,6 +130,32 @@ public class PersistenceService implements Serializable
 	public void updateCard(final MagicCard c)
 	{
 		this.magicCardDao.getSession().update(c);
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void deleteCardAndToken(final MagicCard c)
+	{
+		final Token token = c.getToken();
+		final Player p = token.getPlayer();
+		token.setPlayer(null);
+		final Set<Counter> counters = c.getCounters();
+
+		final List<MagicCard> magicCardCards = c.getDeck().getCards();
+		magicCardCards.remove(c);
+		c.getDeck().setCards(magicCardCards);
+
+		final Deck d = c.getDeck();
+		p.setDeck(d);
+		token.setPlayer(p);
+
+		this.deckDao.getSession().merge(d);
+		this.magicCardDao.delete(c.getId().longValue());
+		this.tokenDao.getSession().merge(token);
+
+		for (final Counter counter : counters)
+		{
+			this.counterDao.delete(counter.getId());
+		}
 	}
 
 	@Transactional(readOnly = true)
@@ -906,12 +945,13 @@ public class PersistenceService implements Serializable
 		final Session session = this.gameDao.getSession();
 
 		session.createSQLQuery("delete from Player_Game").executeUpdate();
+		session.createSQLQuery("delete from MagicCard").executeUpdate();
+		session.createSQLQuery("delete from Token").executeUpdate();
 		session.createSQLQuery("delete from Player").executeUpdate();
 		session.createSQLQuery("delete from Game_Side").executeUpdate();
 		session.createSQLQuery("delete from Game").executeUpdate();
 		session.createSQLQuery("delete from Side").executeUpdate();
 		session.createSQLQuery("delete from Counter").executeUpdate();
-		session.createSQLQuery("delete from MagicCard").executeUpdate();
 		session.createSQLQuery("delete from Deck").executeUpdate();
 		session.createSQLQuery("delete from DeckArchive").executeUpdate();
 		session.createSQLQuery("delete from CollectibleCard").executeUpdate();

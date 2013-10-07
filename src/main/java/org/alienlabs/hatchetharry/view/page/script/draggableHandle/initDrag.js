@@ -4,5 +4,6 @@ jQuery(function() {
 		jQuery("#handleImage${uuidValidForJs}").data("handUrl","${handUrl}");
 		jQuery("#handleImage${uuidValidForJs}").data("graveyardUrl","${graveyardUrl}");
 		jQuery("#handleImage${uuidValidForJs}").data("exileUrl","${exileUrl}");
+		jQuery("#handleImage${uuidValidForJs}").data("destroyUrl","${destroyUrl}");
 	}, 150);
 });

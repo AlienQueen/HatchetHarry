@@ -20,7 +20,7 @@ public class JavaScriptUtils
 	public static final String DEACTIVATE_END_OF_TURN_LINKS = "jQuery('#acceptEndTurnLink').attr('style', 'cursor: wait; color: black;'); jQuery('#endTurnActionLink').attr('style', 'cursor: wait; color: black;'); ";
 	public static final String REACTIVATE_END_OF_TURN_LINKS = "jQuery('#acceptEndTurnLink').attr('style', 'cursor: pointer; color: white;'); jQuery('#endTurnActionLink').attr('style', 'cursor: pointer; color: white;'); ";
 	public static final String HIDE_MENUS = "if (jQuery('#cssmenu').is(':visible')) { jQuery('#cssmenu').hide(); jQuery('#cssmenu').show(); } else  { jQuery('.dropdownmenu').hide(); jQuery('.categories').hide(); jQuery('.dropdownmenu').show(); } ";
-	public static final String HIDE_ALL_TOOLTIPS = "jQuery('.tooltip').attr('style', 'display: none;'); ";
+	public static final String HIDE_ALL_TOOLTIPS = "jQuery('.tooltip').attr('style', 'display: none;'); jQuery('.cardTooltip').attr('style', 'display: none;'); ";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JavaScriptUtils.class);
 
@@ -60,28 +60,31 @@ public class JavaScriptUtils
 			{
 				for (int i = 0; i < magicCardList.size(); i++)
 				{
-					final MagicCard targetCard = homePage.getAllCardsInBattlefield().getItem(i)
-							.getModelObject();
+					final MagicCard targetCard = (MagicCard)magicCardList.get(i)
+							.getDefaultModelObject();
 					if (mc.equals(targetCard))
 					{
 						homePage.getAllMagicCardsInBattlefield().remove(mc);
 						magicCardList.remove(homePage.getAllCardsInBattlefield().getItem(i));
+
 						JavaScriptUtils.LOGGER.info("remove card: " + mc.getTitle());
 						break;
 					}
 				}
 
-				for (int i = 0; i < tooltipList.size(); i++)
+				for (int j = 0; j < tooltipList.size(); j++)
 				{
-					final MagicCard targetCard = homePage.getAllTooltips().getItem(i)
-							.getModelObject();
+					final MagicCard targetCard = (MagicCard)tooltipList.get(j)
+							.getDefaultModelObject();
 					if (mc.equals(targetCard))
 					{
 						homePage.getAllTooltipsInBattlefield().remove(mc);
-						tooltipList.remove(homePage.getAllTooltips().getItem(i));
+						tooltipList.remove(homePage.getAllTooltips().getItem(j));
+
 						JavaScriptUtils.LOGGER.info("remove tooltip: " + mc.getTitle());
 						break;
 					}
+
 				}
 			}
 		}
@@ -144,6 +147,9 @@ public class JavaScriptUtils
 			// The hand image is a drop target
 			buil.append("jQuery('#putToHand').droppable({ accept: '.magicCard', drop: function(event, ui) { "
 					+ "shouldMove = false; "
+					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
+					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });"
+					+ " return; } "
 					+ "jQuery('#' + ui.draggable.context.id).hide(); "
 					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') }); "
 					+ "}}); ");
@@ -151,6 +157,9 @@ public class JavaScriptUtils
 			// The graveyard image is a drop target
 			buil.append("jQuery('#putToGraveyard').droppable({ accept: '.magicCard', drop: function(event, ui) { "
 					+ "shouldMove = false; "
+					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
+					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });"
+					+ " return; } "
 					+ "jQuery('#' + ui.draggable.context.id).hide(); "
 					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });"
 					+ "}}); ");
@@ -158,6 +167,9 @@ public class JavaScriptUtils
 			// The exile image is a drop target
 			buil.append("jQuery('#putToExile').droppable({ accept: '.magicCard', drop: function(event, ui) { "
 					+ "shouldMove = false; "
+					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
+					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });"
+					+ " return; } "
 					+ "jQuery('#' + ui.draggable.context.id).hide(); "
 					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('exileUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });"
 					+ "}}); ");

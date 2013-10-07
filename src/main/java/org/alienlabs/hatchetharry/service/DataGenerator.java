@@ -160,7 +160,7 @@ public class DataGenerator implements InitializingBean
 			{
 				MagicCard card = new MagicCard("cards/Balduvian Horde_small.jpg",
 						"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-						"Balduvian Horde", "Isn't it a spoiler?", "");
+						"Balduvian Horde", "Isn't it a spoiler?", "", null);
 				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 				Deck fake = new Deck();
 				fake.setPlayerId(-1l);
@@ -172,7 +172,7 @@ public class DataGenerator implements InitializingBean
 
 				card = new MagicCard("cards/Balduvian Horde_small.jpg",
 						"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-						"Balduvian Horde", "Isn't it a spoiler?", "");
+						"Balduvian Horde", "Isn't it a spoiler?", "", null);
 				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 				fake = new Deck();
 				fake.setPlayerId(-1l);

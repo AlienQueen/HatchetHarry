@@ -82,7 +82,7 @@ public class RuntimeDataGenerator implements Serializable
 		{
 			final MagicCard baldu = new MagicCard("cards/Balduvian Horde_small.jpg",
 					"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-					"Balduvian Horde", "Isn't it a spoiler?", "");
+					"Balduvian Horde", "Isn't it a spoiler?", "", null);
 			baldu.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 			final Deck fake = new Deck();
 			fake.setDeckArchive(null);
@@ -140,7 +140,7 @@ public class RuntimeDataGenerator implements Serializable
 					card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES1[i] + "_small.jpg",
 							"cards/" + RuntimeDataGenerator.TITLES1[i] + ".jpg", "cards/"
 									+ RuntimeDataGenerator.TITLES1[i] + "Thumb.jpg",
-							RuntimeDataGenerator.TITLES1[i], "", "");
+							RuntimeDataGenerator.TITLES1[i], "", "", null);
 					card.setDeck(deck1);
 				}
 				else
@@ -148,7 +148,7 @@ public class RuntimeDataGenerator implements Serializable
 					card = new MagicCard("cards/" + RuntimeDataGenerator.TITLES2[i] + "_small.jpg",
 							"cards/" + RuntimeDataGenerator.TITLES2[i] + ".jpg", "cards/"
 									+ RuntimeDataGenerator.TITLES2[i] + "Thumb.jpg",
-							RuntimeDataGenerator.TITLES2[i], "", "");
+							RuntimeDataGenerator.TITLES2[i], "", "", null);
 					card.setDeck(deck2);
 				}
 

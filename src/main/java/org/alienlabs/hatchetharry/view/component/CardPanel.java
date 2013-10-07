@@ -41,8 +41,10 @@ public class CardPanel extends Panel
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
+	private final DestroyTokenBehavior destroyTokenBehavior;
 
 	Player owner;
+
 
 	public CardPanel(final String id, final String smallImage, final UUID _uuid)
 	{
@@ -94,9 +96,12 @@ public class CardPanel extends Panel
 		this.putToExileFromBattlefieldBehavior = new PutToExileFromBattlefieldBehavior(this.uuid);
 		menutoggleButton.add(this.putToExileFromBattlefieldBehavior);
 
+		this.destroyTokenBehavior = new DestroyTokenBehavior(this.uuid);
+		menutoggleButton.add(this.destroyTokenBehavior);
+
 		final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this, this.uuid,
 				this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior,
-				this.putToExileFromBattlefieldBehavior);
+				this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior);
 		menutoggleButton.add(cardMoveBehavior);
 
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid);
@@ -153,6 +158,19 @@ public class CardPanel extends Panel
 		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
 		contextMenu.setOutputMarkupId(true);
 		contextMenu.setMarkupId("contextMenu" + this.uuid.toString().replace("-", "_"));
+
+		final WebMarkupContainer card = new WebMarkupContainer("card");
+		final WebMarkupContainer token = new WebMarkupContainer("token");
+		contextMenu.add(card, token);
+
+		if (null == myCard.getToken())
+		{
+			token.setVisible(false);
+		}
+		else
+		{
+			card.setVisible(false);
+		}
 
 		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, contextMenu);
 		menutoggleButton.add(form);

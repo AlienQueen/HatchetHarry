@@ -6,16 +6,15 @@
         xml:lang="en"
         lang="en">
 <wicket:panel>
-			<span class="cardTooltip">
-				
-				<pre class="tip" id="status2"></pre><a wicket:id="closeTooltip" href="#"><img src="image/closeTooltip.png" style="position:relative; z-index: 5000; top: -480px; left: 360px;"></img></a>
-				</img><br/><br/>
-				Token : <span wicket:id="tokenType" class="myfont"></span><br/><br/>
-				Token : <span wicket:id="tokenType" class="tokenPower"></span><br/><br/>
-				Token : <span wicket:id="tokenType" class="tokenThoughness"></span><br/><br/>
-				Token : <span wicket:id="tokenType" class="tokenColors"></span><br/><br/>
-				Token : <span wicket:id="tokenType" class="tokenDescription"></span><br/><br/>
-			</span>
+			<span class="cardTooltip gray-background">	
+				<pre class="tip" id="status2"></pre><a wicket:id="closeTooltip" href="#"><img src="image/closeTooltip.png" style="position:relative; z-index: 5000; top: -20px; left: 190px;"></img></a>
+				<span class="myfont">Token :</span> <br/><br/>
+				<span class="myfont">Type: </span><span wicket:id="type" class="myfont"></span><br/><br/>
+				<span class="myfont">Power / thoughness: </span><span wicket:id="power" class="myfont"></span> / <span wicket:id="thoughness" class="myfont"></span>&nbsp;&nbsp;&nbsp;<br/><br/>
+				<span class="myfont">Colors: </span><span wicket:id="colors" class="myfont"></span><br/><br/>
+				<span class="myfont">Capabilities: </span><span wicket:id="capabilities" class="myfont"></span><br/><br/>
+				<span class="myfont">Creature types: </span><span wicket:id="creatureTypes" class="myfont"></span><br/><br/>
+				<span class="myfont">Description: </span><span wicket:id="description" class="myfont"></span><br/><br/>
 		</span>
 </wicket:panel>
 </html>

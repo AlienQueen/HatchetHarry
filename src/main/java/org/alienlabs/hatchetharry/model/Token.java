@@ -52,13 +52,17 @@ public class Token implements Serializable
 	@Column
 	private Long y = 64l; // y coordinate
 	@Column
-	private boolean tapped;
+	private boolean tapped = false;
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
 	private Set<Counter> counters = new HashSet<Counter>();
 	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Player_Token")
 	private Player player = new Player();
+	@Column
+	private String capabilities;
+	@Column
+	private String creatureTypes;
 
 	public Token()
 	{
@@ -267,5 +271,26 @@ public class Token implements Serializable
 			return false;
 		}
 		return true;
+	}
+
+	public String getCapabilities()
+	{
+		return this.capabilities;
+	}
+
+	public void setCapabilities(final String _capabilities)
+	{
+		this.capabilities = _capabilities;
+	}
+
+	public String getCreatureTypes()
+	{
+		return this.creatureTypes;
+	}
+
+	public void setCreatureTypes(final String _creatureTypes)
+
+	{
+		this.creatureTypes = _creatureTypes;
 	}
 }

@@ -33,10 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class TooltipPanel extends Panel
+public class MagicCardTooltipPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
-	static final Logger LOGGER = LoggerFactory.getLogger(TooltipPanel.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(MagicCardTooltipPanel.class);
 
 	final UUID uuid;
 	final String bigImage;
@@ -46,7 +46,7 @@ public class TooltipPanel extends Panel
 	@SpringBean
 	PersistenceService persistenceService;
 
-	public TooltipPanel(final String id, final UUID _uuid, final String _bigImage,
+	public MagicCardTooltipPanel(final String id, final UUID _uuid, final String _bigImage,
 			final String _ownerSide, final MagicCard _card)
 	{
 		super(id);
@@ -64,7 +64,7 @@ public class TooltipPanel extends Panel
 			{
 				target.appendJavaScript("jQuery('.tooltip').hide(); ");
 				JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
-						TooltipPanel.this.persistenceService,
+						MagicCardTooltipPanel.this.persistenceService,
 						HatchetHarrySession.get().getGameId(), null, false);
 			}
 		};
@@ -97,8 +97,8 @@ public class TooltipPanel extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				final MagicCard myCard = TooltipPanel.this.persistenceService
-						.getCardFromUuid(TooltipPanel.this.uuid);
+				final MagicCard myCard = MagicCardTooltipPanel.this.persistenceService
+						.getCardFromUuid(MagicCardTooltipPanel.this.uuid);
 
 				final String _counterName = _form.get("counterAddName")
 						.getDefaultModelObjectAsString();
@@ -106,25 +106,25 @@ public class TooltipPanel extends Panel
 				counter.setCounterName(_counterName);
 				counter.setNumberOfCounters(1l);
 				counter.setCard(myCard);
-				TooltipPanel.this.persistenceService.saveCounter(counter);
+				MagicCardTooltipPanel.this.persistenceService.saveCounter(counter);
 
 				final Set<Counter> counters = myCard.getCounters();
 				counters.add(counter);
-				TooltipPanel.this.persistenceService.updateCard(myCard);
+				MagicCardTooltipPanel.this.persistenceService.updateCard(myCard);
 
-				final Player targetPlayer = TooltipPanel.this.persistenceService.getPlayer(myCard
+				final Player targetPlayer = MagicCardTooltipPanel.this.persistenceService.getPlayer(myCard
 						.getDeck().getPlayerId());
-				final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+				final Game game = MagicCardTooltipPanel.this.persistenceService.getGame(targetPlayer
 						.getGame().getId());
-				final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+				final List<BigInteger> allPlayersInGame = MagicCardTooltipPanel.this.persistenceService
 						.giveAllPlayersFromGame(game.getId());
 
 				final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 						game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 						targetPlayer.getName(), myCard.getTitle(), _counterName,
 						counter.getNumberOfCounters(), 0l, NotifierAction.ADD_COUNTER,
-						TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
-						TooltipPanel.this.ownerSide);
+						MagicCardTooltipPanel.this.uuid, MagicCardTooltipPanel.this.bigImage,
+						MagicCardTooltipPanel.this.ownerSide);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -161,28 +161,28 @@ public class TooltipPanel extends Panel
 						counter.setNumberOfCounters(counter.getNumberOfCounters() + 1);
 						try
 						{
-							TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
+							MagicCardTooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
 						}
 						catch (final Exception ex)
 						{
-							TooltipPanel.LOGGER.error(
+							MagicCardTooltipPanel.LOGGER.error(
 									"error occured while trying to add a counter: ", ex);
 							return;
 						}
 
-						final Player targetPlayer = TooltipPanel.this.persistenceService
-								.getPlayer(TooltipPanel.this.card.getDeck().getPlayerId());
-						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+						final Player targetPlayer = MagicCardTooltipPanel.this.persistenceService
+								.getPlayer(MagicCardTooltipPanel.this.card.getDeck().getPlayerId());
+						final Game game = MagicCardTooltipPanel.this.persistenceService.getGame(targetPlayer
 								.getGame().getId());
-						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+						final List<BigInteger> allPlayersInGame = MagicCardTooltipPanel.this.persistenceService
 								.giveAllPlayersFromGame(game.getId());
 
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
+								targetPlayer.getName(), MagicCardTooltipPanel.this.card.getTitle(),
 								counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-								NotifierAction.ADD_COUNTER, TooltipPanel.this.uuid,
-								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
+								NotifierAction.ADD_COUNTER, MagicCardTooltipPanel.this.uuid,
+								MagicCardTooltipPanel.this.bigImage, MagicCardTooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
 						{
@@ -212,37 +212,37 @@ public class TooltipPanel extends Panel
 
 						if (counter.getNumberOfCounters().longValue() == 0)
 						{
-							TooltipPanel.this.persistenceService.deleteCounter(counter,
-									TooltipPanel.this.card);
+							MagicCardTooltipPanel.this.persistenceService.deleteCounter(counter,
+									MagicCardTooltipPanel.this.card);
 							action = NotifierAction.CLEAR_COUNTER;
 						}
 						else
 						{
 							try
 							{
-								TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
+								MagicCardTooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
 								action = NotifierAction.REMOVE_COUNTER;
 							}
 							catch (final Exception ex)
 							{
-								TooltipPanel.LOGGER.error(
+								MagicCardTooltipPanel.LOGGER.error(
 										"error occured while trying to remove a counter: ", ex);
 								return;
 							}
 						}
 
-						final Player targetPlayer = TooltipPanel.this.persistenceService
-								.getPlayer(TooltipPanel.this.card.getDeck().getPlayerId());
-						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+						final Player targetPlayer = MagicCardTooltipPanel.this.persistenceService
+								.getPlayer(MagicCardTooltipPanel.this.card.getDeck().getPlayerId());
+						final Game game = MagicCardTooltipPanel.this.persistenceService.getGame(targetPlayer
 								.getGame().getId());
-						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+						final List<BigInteger> allPlayersInGame = MagicCardTooltipPanel.this.persistenceService
 								.giveAllPlayersFromGame(game.getId());
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
+								targetPlayer.getName(), MagicCardTooltipPanel.this.card.getTitle(),
 								counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-								action, TooltipPanel.this.uuid, TooltipPanel.this.bigImage,
-								TooltipPanel.this.ownerSide);
+								action, MagicCardTooltipPanel.this.uuid, MagicCardTooltipPanel.this.bigImage,
+								MagicCardTooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
 						{
@@ -281,29 +281,29 @@ public class TooltipPanel extends Panel
 
 						if (targetNumberOfCounters.longValue() == 0)
 						{
-							TooltipPanel.this.persistenceService.deleteCounter(counter,
-									TooltipPanel.this.card);
+							MagicCardTooltipPanel.this.persistenceService.deleteCounter(counter,
+									MagicCardTooltipPanel.this.card);
 							action = NotifierAction.CLEAR_COUNTER;
 						}
 						else
 						{
 							counter.setNumberOfCounters(targetNumberOfCounters);
-							TooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
+							MagicCardTooltipPanel.this.persistenceService.saveOrUpdateCounter(counter);
 							action = NotifierAction.SET_COUNTER;
 						}
 
-						final Player targetPlayer = TooltipPanel.this.persistenceService
-								.getPlayer(TooltipPanel.this.card.getDeck().getPlayerId());
-						final Game game = TooltipPanel.this.persistenceService.getGame(targetPlayer
+						final Player targetPlayer = MagicCardTooltipPanel.this.persistenceService
+								.getPlayer(MagicCardTooltipPanel.this.card.getDeck().getPlayerId());
+						final Game game = MagicCardTooltipPanel.this.persistenceService.getGame(targetPlayer
 								.getGame().getId());
-						final List<BigInteger> allPlayersInGame = TooltipPanel.this.persistenceService
+						final List<BigInteger> allPlayersInGame = MagicCardTooltipPanel.this.persistenceService
 								.giveAllPlayersFromGame(game.getId());
 						final UpdateCardPanelCometChannel ucpcc = new UpdateCardPanelCometChannel(
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-								targetPlayer.getName(), TooltipPanel.this.card.getTitle(),
+								targetPlayer.getName(), MagicCardTooltipPanel.this.card.getTitle(),
 								counter.getCounterName(), targetNumberOfCounters,
-								originalNumberOfCounters, action, TooltipPanel.this.uuid,
-								TooltipPanel.this.bigImage, TooltipPanel.this.ownerSide);
+								originalNumberOfCounters, action, MagicCardTooltipPanel.this.uuid,
+								MagicCardTooltipPanel.this.bigImage, MagicCardTooltipPanel.this.ownerSide);
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
 						{

@@ -207,6 +207,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLink");
 		HomePageTest.testModalWindow("createGameWindow", "createGameLink");
 		HomePageTest.testModalWindow("joinGameWindow", "joinGameLink");
+		HomePageTest.testModalWindow("createTokenWindow", "createTokenLink");
 	}
 
 	@Test
@@ -220,6 +221,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLinkResponsive");
 		HomePageTest.testModalWindow("createGameWindow", "createGameLinkResponsive");
 		HomePageTest.testModalWindow("joinGameWindow", "joinGameLinkResponsive");
+		HomePageTest.testModalWindow("createTokenWindow", "createTokenLinkResponsive");
 	}
 
 	private static void testModalWindow(final String _window, final String linkToActivateWindow)
@@ -231,9 +233,9 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertInvisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
-		final AjaxLink<Void> aboutLink = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
+		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
-		Assert.assertNotNull(aboutLink);
+		Assert.assertNotNull(link);
 		SpringContextLoaderBaseTest.tester.clickLink(linkToActivateWindow, true);
 		SpringContextLoaderBaseTest.tester.assertVisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());

@@ -28,6 +28,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.wicket.model.Model;
@@ -41,7 +42,7 @@ import org.hibernate.annotations.Index;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MagicCard implements SlideshowImage, Serializable
 {
-	private static final long serialVersionUID = -5115712217304615521L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -81,6 +82,8 @@ public class MagicCard implements SlideshowImage, Serializable
 	private Set<Counter> counters = new HashSet<Counter>();
 	@Column
 	private String ownerSide;
+	@OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	private Token token;
 
 	public MagicCard()
 	{
@@ -88,7 +91,7 @@ public class MagicCard implements SlideshowImage, Serializable
 
 	public MagicCard(final String _smallImageFilename, final String _bigImageFilename,
 			final String _thumbnailFilename, final String _title, final String _description,
-			final String _ownerSide)
+			final String _ownerSide, final Token _token)
 	{
 		this.smallImageFilename = _smallImageFilename;
 		this.bigImageFilename = _bigImageFilename;
@@ -96,6 +99,8 @@ public class MagicCard implements SlideshowImage, Serializable
 		this.title = _title;
 		this.description = _description;
 		this.ownerSide = _ownerSide;
+		this.token = _token;
+
 	}
 
 	public Long getId()
@@ -215,56 +220,6 @@ public class MagicCard implements SlideshowImage, Serializable
 		this.thumbnailFilename = _thumbnailFilename;
 	}
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());
-		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final MagicCard other = (MagicCard)obj;
-		if (this.id == null)
-		{
-			if (other.id != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.id.equals(other.id))
-		{
-			return false;
-		}
-		if (this.uuid == null)
-		{
-			if (other.uuid != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.uuid.equals(other.uuid))
-		{
-			return false;
-		}
-		return true;
-	}
 
 	public Long getX()
 	{
@@ -334,6 +289,50 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setOwnerSide(final String _ownerSide)
 	{
 		this.ownerSide = _ownerSide;
+	}
+
+	public Token getToken()
+	{
+		return this.token;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (this.getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final MagicCard other = (MagicCard)obj;
+		if (this.uuid == null)
+		{
+			if (other.uuid != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.uuid.equals(other.uuid))
+		{
+			return false;
+		}
+		return true;
 	}
 
 }

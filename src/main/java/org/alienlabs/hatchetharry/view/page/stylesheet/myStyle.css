@@ -211,3 +211,7 @@ div.wicket-modal h3.w_captionText {
 .black {
 	background-color: black;
 }
+
+.gray-background {
+	background-color: #BBBBBB;
+}

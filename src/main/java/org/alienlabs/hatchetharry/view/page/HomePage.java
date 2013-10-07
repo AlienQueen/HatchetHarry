@@ -63,6 +63,7 @@ import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveNotifier;
 import org.alienlabs.hatchetharry.model.channel.CountCardsCometChannel;
+import org.alienlabs.hatchetharry.model.channel.DestroyTokenCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
@@ -72,6 +73,7 @@ import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToExileFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutTokenOnBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
@@ -87,6 +89,7 @@ import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.CountCardsModalWindow;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
+import org.alienlabs.hatchetharry.view.component.CreateTokenModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.ExileComponent;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
@@ -94,13 +97,14 @@ import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.ImportDeckModalWindow;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
+import org.alienlabs.hatchetharry.view.component.MagicCardTooltipPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
-import org.alienlabs.hatchetharry.view.component.TooltipPanel;
+import org.alienlabs.hatchetharry.view.component.TokenTooltipPanel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -158,6 +162,7 @@ public class HomePage extends TestReportPage
 	ModalWindow joinGameWindow;
 	ModalWindow importDeckWindow;
 	ModalWindow revealTopLibraryCardWindow;
+	ModalWindow createTokenWindow;
 	ModalWindow countCardsWindow;
 
 	Player player;
@@ -367,6 +372,10 @@ public class HomePage extends TestReportPage
 				this.revealTopLibraryCardWindow);
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLinkResponsive",
 				this.revealTopLibraryCardWindow);
+
+		this.createTokenWindow = new ModalWindow("createTokenWindow");
+		this.generateCreateTokenLink("createTokenLink", this.createTokenWindow);
+		this.generateCreateTokenLink("createTokenLinkResponsive", this.createTokenWindow);
 
 		this.countCardsWindow = new ModalWindow("countCardsWindow");
 		this.generateCountCardsLink("countCardsLink", this.countCardsWindow);
@@ -1404,6 +1413,7 @@ public class HomePage extends TestReportPage
 		window.setContent(new RevealTopLibraryCardModalWindow(window.getContentId(), window, null));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+
 		window.setOutputMarkupId(true);
 		this.add(window);
 
@@ -1463,6 +1473,33 @@ public class HomePage extends TestReportPage
 
 		revealTopLibraryCardLink.setOutputMarkupId(true).setMarkupId(id);
 		this.add(revealTopLibraryCardLink);
+	}
+
+	private void generateCreateTokenLink(final String id, final ModalWindow window)
+	{
+		window.setInitialWidth(500);
+		window.setInitialHeight(510);
+
+		window.setContent(new CreateTokenModalWindow(window.getContentId(), window));
+		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
+		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		window.setTitle("Create a token");
+		window.setOutputMarkupId(true);
+		this.add(window);
+
+		final AjaxLink<Void> createTokenLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				HomePage.this.createTokenWindow.show(target);
+			}
+		};
+
+		createTokenLink.setOutputMarkupId(true).setMarkupId(id);
+		this.add(createTokenLink);
 	}
 
 	private void generateCountCardsLink(final String id, final ModalWindow window)
@@ -1648,6 +1685,17 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+			case PUT_TOKEN_ON_BATTLEFIELD :
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has put a " + event.getCardName()
+						+ " token on the battlefield"
+						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case DESTROY_TOKEN :
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has destroyed a " + event.getCardName() + " token"
+						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
 			// $CASES-OMITTED$
 			// TODO: split this notifier action and the one of
 			// card counters
@@ -1804,16 +1852,10 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void moveCard(final AjaxRequestTarget target, final CardMoveCometChannel event)
 	{
-		final HomePage homePage = (HomePage)target.getPage();
-		final List<MagicCard> allCards = homePage.getAllMagicCardsInBattlefield();
-
 		final MagicCard mc = event.getMc();
-		final int index = allCards.indexOf(mc);
-		allCards.remove(mc);
 
 		mc.setX(Long.parseLong(event.getMouseX()));
 		mc.setY(Long.parseLong(event.getMouseY()));
-		allCards.add(index, mc);
 
 		target.appendJavaScript("var card = jQuery('#cardHandle"
 				+ event.getUniqueid().replace("-", "_") + "');"
@@ -1824,15 +1866,8 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
-		final HomePage homePage = (HomePage)target.getPage();
-		final List<MagicCard> allCards = homePage.getAllMagicCardsInBattlefield();
-
 		final MagicCard mc = event.getMc();
-		final int index = allCards.indexOf(mc);
-		allCards.remove(mc);
-
 		mc.setTapped(event.isTapped());
-		allCards.add(index, mc);
 
 		final StringBuilder buil = new StringBuilder();
 
@@ -1896,6 +1931,23 @@ public class HomePage extends TestReportPage
 		mc.setX(300l);
 		mc.setY(300l);
 		this.persistenceService.updateCard(mc);
+
+		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+				event.getGameId(), mc, true);
+	}
+
+	@Subscribe
+	public void putTokenOnBattlefield(final AjaxRequestTarget target,
+			final PutTokenOnBattlefieldCometChannel event)
+	{
+		final MagicCard mc = event.getMagicCard();
+
+		mc.setZone(CardZone.BATTLEFIELD);
+		mc.setX(300l);
+		mc.setY(300l);
+
+		this.getAllMagicCardsInBattlefield().add(mc);
+		this.getAllTooltipsInBattlefield().add(mc);
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
@@ -2090,6 +2142,13 @@ public class HomePage extends TestReportPage
 						.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle()
 				+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
 				+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+	}
+
+	@Subscribe
+	public void destroyToken(final AjaxRequestTarget target, final DestroyTokenCometChannel event)
+	{
+		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+				event.getGameId(), event.getCard(), false);
 	}
 
 	@Override
@@ -2312,15 +2371,31 @@ public class HomePage extends TestReportPage
 			{
 				final MagicCard mc = item.getModelObject();
 
-				final TooltipPanel cardBubbleTip = new TooltipPanel("cardTooltip",
-						mc.getUuidObject(), mc.getBigImageFilename(), mc.getOwnerSide(), mc);
-				cardBubbleTip.setOutputMarkupId(true);
-				cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-				cardBubbleTip.add(new AttributeModifier("style",
-						"display: none; position: absolute; left: " + mc.getX() + "px; top: "
-								+ mc.getY() + "px; z-index: 50;"));
+				if (null == mc.getToken())
+				{
+					final MagicCardTooltipPanel cardBubbleTip = new MagicCardTooltipPanel(
+							"cardTooltip", mc.getUuidObject(), mc.getBigImageFilename(),
+							mc.getOwnerSide(), mc);
+					cardBubbleTip.setOutputMarkupId(true);
+					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
+					cardBubbleTip.add(new AttributeModifier("style",
+							"display: none; position: absolute; left: " + mc.getX() + "px; top: "
+									+ mc.getY() + "px; z-index: 50;"));
 
-				item.add(cardBubbleTip);
+					item.add(cardBubbleTip);
+				}
+				else
+				{
+					final TokenTooltipPanel cardBubbleTip = new TokenTooltipPanel("cardTooltip",
+							mc.getToken());
+					cardBubbleTip.setOutputMarkupId(true);
+					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
+					cardBubbleTip.add(new AttributeModifier("style",
+							"display: none; position: absolute; left: " + mc.getX() + "px; top: "
+									+ mc.getY() + "px; z-index: 50;"));
+
+					item.add(cardBubbleTip);
+				}
 			}
 		};
 
