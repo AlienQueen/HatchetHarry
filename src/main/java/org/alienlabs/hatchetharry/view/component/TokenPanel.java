@@ -38,10 +38,6 @@ public class TokenPanel extends Panel
 	PersistenceService persistenceService;
 
 	final UUID uuid;
-
-	// private final PutToGraveyardFromBattlefieldBehavior
-	// putToGraveyardFromBattlefieldBehavior;
-
 	Player owner;
 
 	public TokenPanel(final String id, final UUID _uuid)
@@ -143,11 +139,7 @@ public class TokenPanel extends Panel
 			form.add(tokenBubbleTip);
 		}
 
-		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
-		contextMenu.setOutputMarkupId(true);
-		contextMenu.setMarkupId("contextMenu" + this.uuid.toString().replace("-", "_"));
-
-		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage, contextMenu);
+		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 		this.add(cardHandle);

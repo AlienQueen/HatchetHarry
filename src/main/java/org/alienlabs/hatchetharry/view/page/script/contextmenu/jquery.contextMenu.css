@@ -60,5 +60,6 @@
 .contextMenu LI.move A { background-image: url(/image/copy.png); }
 .contextMenu LI.paste A { background-image: url(/image/paste.png); }
 .contextMenu LI.exile A { background-image: url(/image/delete.png); }
+.contextMenu LI.destroy A { background-image: url(/image/delete.png); }
 .contextMenu LI.quit A { background-image: url(/image/quit.png); }
  

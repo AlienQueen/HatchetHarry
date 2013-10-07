@@ -60,31 +60,28 @@ public class JavaScriptUtils
 			{
 				for (int i = 0; i < magicCardList.size(); i++)
 				{
-					final MagicCard targetCard = (MagicCard)magicCardList.get(i)
-							.getDefaultModelObject();
+					final MagicCard targetCard = homePage.getAllCardsInBattlefield().getItem(i)
+							.getModelObject();
 					if (mc.equals(targetCard))
 					{
 						homePage.getAllMagicCardsInBattlefield().remove(mc);
 						magicCardList.remove(homePage.getAllCardsInBattlefield().getItem(i));
-
 						JavaScriptUtils.LOGGER.info("remove card: " + mc.getTitle());
 						break;
 					}
 				}
 
-				for (int j = 0; j < tooltipList.size(); j++)
+				for (int i = 0; i < tooltipList.size(); i++)
 				{
-					final MagicCard targetCard = (MagicCard)tooltipList.get(j)
-							.getDefaultModelObject();
+					final MagicCard targetCard = homePage.getAllTooltips().getItem(i)
+							.getModelObject();
 					if (mc.equals(targetCard))
 					{
 						homePage.getAllTooltipsInBattlefield().remove(mc);
-						tooltipList.remove(homePage.getAllTooltips().getItem(j));
-
+						tooltipList.remove(homePage.getAllTooltips().getItem(i));
 						JavaScriptUtils.LOGGER.info("remove tooltip: " + mc.getTitle());
 						break;
 					}
-
 				}
 			}
 		}
@@ -147,7 +144,7 @@ public class JavaScriptUtils
 			// The hand image is a drop target
 			buil.append("jQuery('#putToHand').droppable({ accept: '.magicCard', drop: function(event, ui) { "
 					+ "shouldMove = false; "
-					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
+					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().length != 0  && jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
 					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });"
 					+ " return; } "
 					+ "jQuery('#' + ui.draggable.context.id).hide(); "
@@ -157,7 +154,7 @@ public class JavaScriptUtils
 			// The graveyard image is a drop target
 			buil.append("jQuery('#putToGraveyard').droppable({ accept: '.magicCard', drop: function(event, ui) { "
 					+ "shouldMove = false; "
-					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
+					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().length != 0  && jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
 					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });"
 					+ " return; } "
 					+ "jQuery('#' + ui.draggable.context.id).hide(); "
@@ -167,7 +164,7 @@ public class JavaScriptUtils
 			// The exile image is a drop target
 			buil.append("jQuery('#putToExile').droppable({ accept: '.magicCard', drop: function(event, ui) { "
 					+ "shouldMove = false; "
-					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
+					+ "if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().length != 0  && jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') { "
 					+ "Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });"
 					+ " return; } "
 					+ "jQuery('#' + ui.draggable.context.id).hide(); "

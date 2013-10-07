@@ -90,8 +90,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			return;
 		}
 
-		card.setZone(CardZone.BATTLEFIELD);
-
 		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 
 		final Game game = this.persistenceService.getGame(gameId);
@@ -101,14 +99,16 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		this.persistenceService.updateGame(game);
 
-		card.setX(300l + (currentPlaceholderId * 16));
-		card.setY(300l + (currentPlaceholderId * 16));
-
-		this.persistenceService.updateCard(card);
-
 		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
 				.getId());
 		final Deck d = p.getDeck();
+
+		card.setZone(CardZone.BATTLEFIELD);
+		card.setX(300l + (currentPlaceholderId * 16));
+		card.setY(300l + (currentPlaceholderId * 16));
+		card.setDeck(d);
+		this.persistenceService.saveOrUpdateCardAndDeck(card);
+
 		final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 		this.persistenceService.updateAllMagicCards(hand);

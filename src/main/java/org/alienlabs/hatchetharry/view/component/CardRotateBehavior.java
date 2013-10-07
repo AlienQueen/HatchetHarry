@@ -67,6 +67,13 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		card.setTapped(!card.isTapped());
+
+		if (null != card.getToken())
+		{
+			card.getToken().setTapped(card.isTapped());
+			this.persistenceService.saveToken(card.getToken());
+		}
+
 		this.persistenceService.updateCard(card);
 
 		CardRotateBehavior.LOGGER.info("respond, gameId= " + HatchetHarrySession.get().getGameId());

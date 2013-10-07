@@ -240,7 +240,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Where is Daddy?),");
-		final Label message2 = new Label("message2", "built on Friday, 4th of October 2013.");
+		final Label message2 = new Label("message2", "built on Monday, 7th of October 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -732,16 +732,39 @@ public class HomePage extends TestReportPage
 				game.setAcceptEndOfTurnPending(false);
 				HomePage.this.persistenceService.updateGame(game);
 
+				final List<MagicCard> cardsToUntap = new ArrayList<MagicCard>();
+
+				final List<MagicCard> allCards = HomePage.this.getAllMagicCardsInBattlefield();
+				for (int i = 0; i < allCards.size(); i++)
+				{
+					final MagicCard mc = allCards.get(i);
+
+					if (mc.getDeck().getPlayerId().longValue() == HatchetHarrySession.get()
+							.getPlayer().getId().longValue())
+					{
+						mc.setTapped(false);
+
+						if (null != mc.getToken())
+						{
+							mc.getToken().setTapped(false);
+							HomePage.this.persistenceService.saveToken(mc.getToken());
+						}
+
+						cardsToUntap.add(mc);
+						HomePage.this.persistenceService.updateCard(mc);
+					}
+				}
+
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 
-					final UntapAllCometChannel uacc = new UntapAllCometChannel(
-							HomePage.this.session.getPlayer().getGame().getId(),
-							HomePage.this.session.getPlayer().getId(), HomePage.this.session
-									.getPlayer().getDeck().getDeckId());
+					final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
+							HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
+									.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession
+									.get().getPlayer().getName(), cardsToUntap);
 					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
 
 					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
@@ -1029,6 +1052,11 @@ public class HomePage extends TestReportPage
 									.error("exception thrown while posting in event bus", ex);
 						}
 					}
+				}
+				else
+				{
+					throw new RuntimeException(
+							"You've lost since you have no more card to draw. All your base are belong to us!");
 				}
 			}
 
@@ -1536,7 +1564,25 @@ public class HomePage extends TestReportPage
 					final CountCardsCometChannel cccc = new CountCardsCometChannel(gameId,
 							HomePage.this.session.getPlayer().getName());
 
-					HatchetHarryApplication.get().getEventBus().post(cccc, pageUuid);
+					// For unit tests: for Christ sake, Emond, do something for
+					// us!
+					try
+					{
+						HatchetHarryApplication.get().getEventBus().post(cccc, pageUuid);
+					}
+					catch (final NullPointerException e)
+					{
+						target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+						target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+
+						HomePage.this.countCardsWindow.setTitle(cccc.getRequestingPlayerName()
+								+ " asks the number of cards by zone for each player of game #"
+								+ cccc.getGameId() + ": ");
+						HomePage.this.countCardsWindow.setContent(new CountCardsModalWindow(
+								HomePage.this.countCardsWindow.getContentId(), cccc.getGameId()));
+
+						HomePage.this.countCardsWindow.show(target);
+					}
 				}
 			}
 		};
@@ -1711,19 +1757,13 @@ public class HomePage extends TestReportPage
 	{
 		target.appendJavaScript(JavaScriptUtils.DEACTIVATE_END_OF_TURN_LINKS);
 
-		final List<MagicCard> allCardsInBattlefieldOnMySide = this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(event.getGameId(), event.getPlayerId(),
-						event.getDeckId());
-
 		final StringBuilder buil = new StringBuilder();
 
-		for (final MagicCard mc : allCardsInBattlefieldOnMySide)
+		for (int i = 0; i < event.getCardsToUntap().size(); i++)
 		{
+			final MagicCard mc = event.getCardsToUntap().get(i);
 			buil.append("jQuery('#card" + mc.getUuid().replace("-", "_") + "').rotate(0); ");
-			mc.setTapped(false);
-			this.persistenceService.updateCard(mc);
 		}
-
 		target.appendJavaScript(buil.toString());
 	}
 
@@ -1871,9 +1911,6 @@ public class HomePage extends TestReportPage
 
 		final StringBuilder buil = new StringBuilder();
 
-		final String toId = this.session.getId();
-		buil.append("var toId = \"" + toId + "\"; ");
-
 		if (event.isTapped())
 		{
 			buil.append("window.setTimeout(function() { jQuery('#card"
@@ -1941,13 +1978,6 @@ public class HomePage extends TestReportPage
 			final PutTokenOnBattlefieldCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
-
-		mc.setZone(CardZone.BATTLEFIELD);
-		mc.setX(300l);
-		mc.setY(300l);
-
-		this.getAllMagicCardsInBattlefield().add(mc);
-		this.getAllTooltipsInBattlefield().add(mc);
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);

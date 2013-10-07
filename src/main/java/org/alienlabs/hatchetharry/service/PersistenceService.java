@@ -99,16 +99,17 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void mergeCard(final MagicCard c)
+	public MagicCard saveOrUpdateCardAndDeck(final MagicCard c)
 	{
 		this.deckDao.getSession().merge(c.getDeck());
 		this.magicCardDao.getSession().merge(c);
+		return c;
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void saveToken(final Token t)
 	{
-		this.tokenDao.getSession().merge(t);
+		this.tokenDao.getSession().save(t);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
@@ -726,31 +727,8 @@ public class PersistenceService implements Serializable
 		}
 		catch (final ObjectNotFoundException e)
 		{
-			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-					+ gameId + " => no result found", e);
-			return null;
-		}
-	}
-
-	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInHandsForAGame(final Long gameId)
-	{
-		final Session session = this.magicCardDao.getSession();
-
-		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc where mc.gameId = ? and mc.zone = ?");
-		query.addEntity(MagicCard.class);
-		query.setLong(0, gameId);
-		query.setString(1, CardZone.HAND.toString());
-
-		try
-		{
-			return query.list();
-		}
-		catch (final ObjectNotFoundException e)
-		{
-			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-					+ gameId + " => no result found", e);
+			PersistenceService.LOGGER.error("Error retrieving cards in hand for game: " + gameId
+					+ " => no result found", e);
 			return null;
 		}
 	}

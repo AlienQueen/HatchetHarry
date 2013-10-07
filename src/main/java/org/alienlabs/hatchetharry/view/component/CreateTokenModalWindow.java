@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Token;
@@ -101,22 +103,31 @@ public class CreateTokenModalWindow extends Panel
 						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
 						gameId);
 
+				final MagicCard card = new MagicCard("cards/token.jpg", "", "", "token", "",
+						player.getSide(), token);
+
+				final Deck dummyDeck = new Deck();
+				final DeckArchive dummyDeckArchive = new DeckArchive();
+				dummyDeckArchive.setDeckName(UUID.randomUUID().toString());
+				dummyDeck.setDeckArchive(dummyDeckArchive);
+
+				card.setGameId(gameId);
+				card.setDeck(dummyDeck);
+				card.setUuidObject(uuid);
+				card.setZone(CardZone.BATTLEFIELD);
+				card.getDeck().setPlayerId(player.getId());
+				card.setX(300l);
+				card.setY(300l);
+
 				token.setCapabilities(CreateTokenModalWindow.this.capabilitiesModel.getObject());
 				token.setCreatureTypes(CreateTokenModalWindow.this.creatureTypesModel.getObject());
 				token.setPlayer(player);
 
+				CreateTokenModalWindow.this.persistenceService.saveDeckArchive(dummyDeck
+						.getDeckArchive());
+				CreateTokenModalWindow.this.persistenceService.saveDeck(dummyDeck);
+				CreateTokenModalWindow.this.persistenceService.saveCard(card);
 				CreateTokenModalWindow.this.persistenceService.saveToken(token);
-
-				final MagicCard card = new MagicCard("cards/token.jpg", "", "", "token", "",
-						player.getSide(), token);
-
-				card.setGameId(gameId);
-				card.setDeck(player.getDeck());
-				card.setUuidObject(uuid);
-				card.setZone(CardZone.BATTLEFIELD);
-
-				card.getDeck().getCards().add(card);
-				CreateTokenModalWindow.this.persistenceService.mergeCard(card);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(
 						gameId, card);

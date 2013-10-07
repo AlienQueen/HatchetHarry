@@ -10,13 +10,18 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.CardRotateBehavior;
+import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
+import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
 import org.junit.Assert;
@@ -177,6 +182,147 @@ public class NonRegressionTest
 	}
 
 	@Test
+	public void whenCreatingAGamePlayingACardAndPlayingATokenTheNumberOfCardsInTheHandMustNotChange()
+	{
+		SpringContextLoaderBaseTest.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
+
+		// 60 cards in the deck?
+		final PersistenceService persistenceService = NonRegressionTest.context
+				.getBean(PersistenceService.class);
+		final Player p = persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId()).get(0);
+		Assert.assertEquals(60, p.getDeck().getCards().size());
+
+		// 6 cards in the hand?
+		String pageDocument = this.tester.getLastResponse().getDocument();
+
+		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
+				"nav-thumb", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(6, tagTester.size());
+
+		// Do they look OK?
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+		// Is there really one card on the battlefield?
+		this.tester.startPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
+		Assert.assertNotNull(tagTester);
+
+		// 2 because the Balduvian Horde is still there
+		Assert.assertEquals(2, tagTester.size());
+
+		// Play another card
+		this.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
+		this.tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
+				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
+		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
+				.getBehaviors().get(0);
+		this.tester.getRequest().setParameter("card",
+				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
+		this.tester.executeBehavior(pcfhb);
+
+		// 6 cards in the hand instead of 5!!!
+		this.tester.startPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "nav-thumb", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(6, tagTester.size());
+
+		// Do they look OK?
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+		// Is there really one card on the battlefield? (beware of
+		// wicket-quickview)
+		this.tester.startPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
+		Assert.assertNotNull(tagTester);
+
+		// 2 because the Balduvian Horde is still there
+		Assert.assertEquals(2, tagTester.size());
+
+		// Verify createTokenWindow
+		this.openModalWindow("createTokenWindow", "createTokenLink");
+
+		// open ModalWindow in order to play a token, fill fields and validate
+		this.tester.assertComponent("createTokenLink", AjaxLink.class);
+		this.tester.clickLink("createTokenLink", true);
+
+		final FormTester createTokenForm = this.tester
+				.newFormTester("createTokenWindow:content:form");
+		createTokenForm.setValue("type", "Creature");
+		createTokenForm.setValue("power", "7");
+		createTokenForm.setValue("thoughness", "7");
+		createTokenForm.setValue("colors", "Green");
+		createTokenForm.setValue("capabilities", "It kills you in three turns");
+		createTokenForm.setValue("creatureTypes", "Lurghoyf");
+		createTokenForm.setValue("description", "Help!!!");
+		createTokenForm.submit();
+
+		// Are there really 2 cards on the battlefield?
+		this.tester.startPage(HomePage.class);
+		this.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
+		Assert.assertNotNull(tagTester);
+
+		// 2 because: the Balduvian Horde is not there anymore but due to
+		// wicket-quickview, there's only one card in the generated HTML at a
+		// given moment. Plus, each card contains two nested spans of class
+		// "magicCard"
+		Assert.assertEquals(2, tagTester.size());
+
+		// Are there still 6 cards in the hand
+		pageDocument = this.tester.getLastResponse().getDocument();
+		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "nav-thumb", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(6, tagTester.size());
+
+		// Do they still look OK?
+		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+		// And now: does the "count cards" modal window display the right
+		// result: 5 cards in hand, 2 (but counting as only one because of
+		// wicket-quickview) on the battlefield ( + 1 token), 53 in the
+		// library, 0
+		// in
+		// exile & graveyard and 60 in total (beware, there's a token!)
+
+		// Verify CountCardsModalWindow
+		this.openModalWindow("countCardsWindow", "countCardsLink");
+
+		// open ModalWindow
+		this.tester.assertComponent("countCardsLink", AjaxLink.class);
+		this.tester.clickLink("countCardsLink", true);
+
+		this.verifyFieldsOfCountCardsModalWindow("playerName", "infrared");
+		this.verifyFieldsOfCountCardsModalWindow("hand", "6");
+		this.verifyFieldsOfCountCardsModalWindow("library", "53");
+		this.verifyFieldsOfCountCardsModalWindow("graveyard", "0");
+		this.verifyFieldsOfCountCardsModalWindow("exile", "0");
+		// 1 because of wicket-quickview
+		this.verifyFieldsOfCountCardsModalWindow("battlefield", "1");
+		this.verifyFieldsOfCountCardsModalWindow("total", "60"); // \O/
+
+	}
+
+	@Test
 	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
 	{
 		SpringContextLoaderBaseTest.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
@@ -202,4 +348,28 @@ public class NonRegressionTest
 		Assert.assertEquals(60, player.getDeck().getCards().size());
 	}
 
+	private void openModalWindow(final String _window, final String linkToActivateWindow)
+	{
+		// assert modal windows are in the page
+		this.tester.assertComponent(_window, ModalWindow.class);
+		final ModalWindow window = (ModalWindow)this.tester
+				.getComponentFromLastRenderedPage(_window);
+		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
+
+		final AjaxLink<Void> link = (AjaxLink<Void>)this.tester
+				.getComponentFromLastRenderedPage(linkToActivateWindow);
+		Assert.assertNotNull(link);
+		this.tester.clickLink(linkToActivateWindow, true);
+		this.tester.assertVisible(window.getPageRelativePath() + ":" + window.getContentId());
+	}
+
+	private void verifyFieldsOfCountCardsModalWindow(final String fieldId,
+			final String expectedFieldContent)
+	{
+		this.tester.assertComponent("countCardsWindow:content:players", ListView.class);
+		this.tester.assertComponent("countCardsWindow:content:players:0:" + fieldId, Label.class);
+		final Label actualLabel = (Label)this.tester
+				.getComponentFromLastRenderedPage("countCardsWindow:content:players:0:" + fieldId);
+		Assert.assertEquals(expectedFieldContent, actualLabel.getDefaultModelObjectAsString());
+	}
 }

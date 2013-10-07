@@ -5,6 +5,7 @@ import java.util.List;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -79,6 +80,13 @@ public class SpringContextLoaderBaseTest
 		createGameForm.setValue("deckParent:decks", "0");
 		createGameForm.submit();
 
+		// We should not have more cards that the number of cards in the deck
+		final PersistenceService persistenceService = _context.getBean(PersistenceService.class);
+		Player p = persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId())
+				.get(0);
+		Assert.assertEquals(60, p.getDeck().getCards().size());
+
+
 		// Retrieve PlayCardFromHandBehavior
 		_tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
 		_tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
@@ -89,7 +97,6 @@ public class SpringContextLoaderBaseTest
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final PersistenceService persistenceService = _context.getBean(PersistenceService.class);
 		final List<MagicCard> allCardsInBattlefield = persistenceService
 				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
@@ -98,6 +105,12 @@ public class SpringContextLoaderBaseTest
 		_tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		_tester.executeBehavior(pcfhb);
+
+
+		// We still should not have more cards that the number of cards in the
+		// deck
+		p = persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId()).get(0);
+		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 
 
