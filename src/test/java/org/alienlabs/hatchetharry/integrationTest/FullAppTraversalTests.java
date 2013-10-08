@@ -205,7 +205,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.cssSelector("img[id^='tapHandleImage']")).click();
-		Thread.sleep(808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808000);
+		Thread.sleep(8000);
 
 		// Verify card is tapped
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1
