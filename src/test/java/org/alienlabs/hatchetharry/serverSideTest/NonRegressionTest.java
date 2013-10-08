@@ -311,7 +311,6 @@ public class NonRegressionTest
 		this.tester.assertComponent("countCardsLink", AjaxLink.class);
 		this.tester.clickLink("countCardsLink", true);
 
-		this.verifyFieldsOfCountCardsModalWindow("playerName", "infrared");
 		this.verifyFieldsOfCountCardsModalWindow("hand", "6");
 		this.verifyFieldsOfCountCardsModalWindow("library", "53");
 		this.verifyFieldsOfCountCardsModalWindow("graveyard", "0");
