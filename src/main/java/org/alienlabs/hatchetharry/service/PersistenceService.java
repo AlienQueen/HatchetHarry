@@ -150,12 +150,23 @@ public class PersistenceService implements Serializable
 		token.setPlayer(p);
 
 		this.deckDao.getSession().merge(d);
-		this.magicCardDao.delete(c.getId().longValue());
-		this.tokenDao.getSession().merge(token);
+
+		Session session = this.tokenDao.getSession();
+		Query query = session.createSQLQuery("delete from Token where tokenId = ? ");
+		query.setLong(0, token.getId());
+		query.executeUpdate();
+
+		session = this.magicCardDao.getSession();
+		query = session.createSQLQuery("delete from MagicCard where magicCardId = ? ");
+		query.setLong(0, c.getId());
+		query.executeUpdate();
 
 		for (final Counter counter : counters)
 		{
-			this.counterDao.delete(counter.getId());
+			session = this.counterDao.getSession();
+			query = session.createSQLQuery("delete from Counter where counterId = ? ");
+			query.setLong(0, counter.getId());
+			query.executeUpdate();
 		}
 	}
 

@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.clientsideutil;
 
+import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.ExileComponent;
@@ -62,6 +63,14 @@ public class JavaScriptUtils
 				{
 					final MagicCard targetCard = homePage.getAllCardsInBattlefield().getItem(i)
 							.getModelObject();
+
+					for (final Counter count : mc.getCounters())
+					{
+						count.setNumberOfCounters(0l);
+						persistenceService.updateCounter(count);
+						JavaScriptUtils.LOGGER.info("clear");
+					}
+
 					if (mc.equals(targetCard))
 					{
 						homePage.getAllMagicCardsInBattlefield().remove(mc);
