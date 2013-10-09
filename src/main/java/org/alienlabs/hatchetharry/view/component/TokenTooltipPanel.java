@@ -59,6 +59,8 @@ public class TokenTooltipPanel extends Panel
 		this.add(new Label("creatureTypes", token.getCreatureTypes()).setOutputMarkupId(true));
 		this.add(new Label("description", token.getDescription()).setOutputMarkupId(true));
 
+		final CounterTooltip counterPanel = new CounterTooltip("counterPanel", null, token);
+		this.add(counterPanel);
 	}
 
 	@Required

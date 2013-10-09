@@ -134,6 +134,12 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void updateToken(final Token t)
+	{
+		this.tokenDao.getSession().update(t);
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void deleteCardAndToken(final MagicCard c)
 	{
 		final Token token = c.getToken();
@@ -176,6 +182,24 @@ public class PersistenceService implements Serializable
 		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
+	}
+
+	@Transactional(readOnly = true)
+	public Token getTokenFromUuid(final String uuid)
+	{
+		final Session session = this.tokenDao.getSession();
+		final Query query = session.createQuery("from Token t0_ where t0_.uuid= ? ");
+		query.setString(0, uuid);
+		query.setCacheable(true);
+		PersistenceService.LOGGER.debug("token UUID: ");
+
+		if (query.list().size() > 1)
+		{
+			return (Token)query.list().get(0);
+		}
+		final Token t = (Token)query.uniqueResult();
+
+		return t;
 	}
 
 	@Transactional(readOnly = true)
@@ -953,9 +977,17 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional
-	public void deleteCounter(final Counter counter, final MagicCard card)
+	public void deleteCounter(final Counter counter, final MagicCard card, final Token token)
 	{
-		card.getCounters().remove(counter);
+		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty()))
+		{
+			card.getCounters().remove(counter);
+		}
+		else
+		{
+			token.getCounters().remove(counter);
+		}
+
 		counter.setCard(null);
 
 		Query query = this.magicCardDao.getSession().createSQLQuery(

@@ -210,68 +210,6 @@ public class Token implements Serializable
 		this.player = _player;
 	}
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.gameId == null) ? 0 : this.gameId.hashCode());
-		result = (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());
-		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Token other = (Token)obj;
-		if (this.gameId == null)
-		{
-			if (other.gameId != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.gameId.equals(other.gameId))
-		{
-			return false;
-		}
-		if (this.id == null)
-		{
-			if (other.id != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.id.equals(other.id))
-		{
-			return false;
-		}
-		if (this.uuid == null)
-		{
-			if (other.uuid != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.uuid.equals(other.uuid))
-		{
-			return false;
-		}
-		return true;
-	}
 
 	public String getCapabilities()
 	{

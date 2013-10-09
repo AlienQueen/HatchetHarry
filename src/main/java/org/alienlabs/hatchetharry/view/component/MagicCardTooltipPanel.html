@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!doctype html>
 <html
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
@@ -11,27 +10,9 @@
 				<pre class="tip" id="status2"></pre><a wicket:id="closeTooltip" href="#"><img src="image/closeTooltip.png" style="position:relative; top: -470px; left: 360px;"></img></a>
 				<img wicket:id="bubbleTipImg1" width="339" height="480"  style="position:relative;">
 				</img><br/>
-				<span class="myfont">Add counter : </span>
-				<form wicket:id="form">
-					<input wicket:id="counterAddName" type="text" class="myfont"></input>&nbsp;&nbsp;
-					<button wicket:id="submit" type="submit" class="myfont">Submit</button>
-				</form> 
-					<br/><br/> 
-					<span wicket:id="counters" class="myfont">
-						<form wicket:id="setCounterForm">
-							<span wicket:id="counterName"></span> counter :  
-							<span wicket:id="numberOfCounters"></span>&nbsp;
-							<a wicket:id="addCounterLink" href="#">
-								<img wicket:id="counterPlus" title="add 1 counter"></img>&nbsp;
-							</a>
-							<a wicket:id="removeCounterLink" href="#">
-								<img wicket:id="counterMinus" title="remove 1 counter"></img>&nbsp;
-							</a>
-							<input  wicket:id="setCounterButton" href="#" type="text" class="myfont" size="3"></input>&nbsp;
-							<button wicket:id="setCounterSubmit" type="submit" class="myfont">Submit</button>
-						</form> 
-						<br/><br/>
-					</span>
+			
+				<span wicket:id="counterPanel"></span>
+				
 		</span>
 </wicket:panel>
 </html>

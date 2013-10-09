@@ -57,6 +57,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
@@ -80,6 +81,7 @@ import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
+import org.alienlabs.hatchetharry.model.channel.UpdateTokenPanelCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
@@ -240,7 +242,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Where is Daddy?),");
-		final Label message2 = new Label("message2", "built on Monday, 7th of October 2013.");
+		final Label message2 = new Label("message2", "built on Wednesday, 8th of October 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1798,7 +1800,7 @@ public class HomePage extends TestReportPage
 		{
 			final MagicCard targetCard = this.getAllTooltips().getItem(i).getModelObject();
 
-			if (mc.equals(targetCard))
+			if ((targetCard != null) && (mc != null) && (targetCard.getUuid().equals(mc.getUuid())))
 			{
 				this.getAllTooltipsInBattlefield().remove(
 						this.getAllTooltips().getItem(i).getModelObject());
@@ -1858,6 +1860,81 @@ public class HomePage extends TestReportPage
 			default :
 				throw new IllegalArgumentException(
 						"can not treat this case in HomePage#updateCardTooltip(): "
+								+ event.getAction());
+		}
+	}
+
+	@Subscribe
+	public void updateTokenTooltip(final AjaxRequestTarget target,
+			final UpdateTokenPanelCometChannel event)
+	{
+		final Token token = this.persistenceService.getTokenFromUuid(event.getUuid());
+
+		for (int i = 0; i < this.getAllTooltips().size(); i++)
+		{
+			final MagicCard targetCard = this.getAllTooltips().getItem(i).getModelObject();
+
+			if (((targetCard.getToken()) != null)
+					&& (token.getUuid().equals(targetCard.getToken().getUuid())))
+			{
+				this.getAllTooltipsInBattlefield().remove(targetCard);
+				this.getAllTooltips().remove(this.getAllTooltips().getItem(i));
+				this.getAllTooltipsInBattlefield().add(targetCard);
+				this.getAllTooltips().addNewItems(targetCard);
+				break;
+			}
+		}
+
+		target.appendJavaScript(JavaScriptUtils.HIDE_ALL_TOOLTIPS);
+
+		switch (event.getAction())
+		{
+			case ADD_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName() + "', text : \"has put "
+						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
+						+ " counter(s) on " + event.getTargetPlayerName() + "'s token: "
+						+ token.getCreatureTypes()
+						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case REMOVE_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName() + "', text : \"has put "
+						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
+						+ " counter(s) on " + event.getTargetPlayerName() + "'s token: "
+						+ token.getCreatureTypes()
+						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case CLEAR_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName() + "', text : \"has cleared the "
+						+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
+						+ "'s " + token.getCreatureTypes() + " token"
+						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			case SET_COUNTER :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getRequestingPlayerName()
+						+ "', text : \"has removed "
+						+ event.getOriginalNumberOfCounters()
+						+ " "
+						+ event.getCounterName()
+						+ " counter(s) on "
+						+ event.getTargetPlayerName()
+						+ "'s "
+						+ token.getCreatureTypes()
+						+ " token "
+						+ " and replaced them with "
+						+ event.getTargetNumberOfCounters()
+						+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+			// $CASES-OMITTED$
+			// TODO: split this card counters notifier action
+			// and the one of general messages
+			// $CASES-OMITTED$
+			default :
+				throw new IllegalArgumentException(
+						"can not treat this case in HomePage#updateTokenTooltip(): "
 								+ event.getAction());
 		}
 	}

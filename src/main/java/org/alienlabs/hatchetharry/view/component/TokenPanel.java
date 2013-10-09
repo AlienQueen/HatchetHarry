@@ -142,6 +142,7 @@ public class TokenPanel extends Panel
 		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
+
 		this.add(cardHandle);
 	}
 
