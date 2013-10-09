@@ -126,8 +126,8 @@ public class CreateTokenModalWindow extends Panel
 				CreateTokenModalWindow.this.persistenceService.saveDeckArchive(dummyDeck
 						.getDeckArchive());
 				CreateTokenModalWindow.this.persistenceService.saveDeck(dummyDeck);
-				CreateTokenModalWindow.this.persistenceService.saveCard(card);
 				CreateTokenModalWindow.this.persistenceService.saveToken(token);
+				CreateTokenModalWindow.this.persistenceService.saveCard(card);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(
 						gameId, card);

@@ -113,12 +113,6 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveOrUpdateCounter(final Counter c)
-	{
-		this.counterDao.getSession().saveOrUpdate(c);
-	}
-
-	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateAllMagicCards(final List<MagicCard> allMagicCards)
 	{
 		for (final MagicCard card : allMagicCards)
@@ -998,6 +992,16 @@ public class PersistenceService implements Serializable
 		query = this.counterDao.getSession().createSQLQuery(
 				"delete from Counter where counterId = ?");
 		query.setLong(0, counter.getId());
+		query.executeUpdate();
+	}
+
+	@Transactional
+	public void updateCounter(final Counter counter)
+	{
+		final Query query = this.counterDao.getSession().createSQLQuery(
+				"update Counter set numberOfCounters = ? where counterId = ?");
+		query.setLong(0, counter.getNumberOfCounters());
+		query.setLong(1, counter.getId());
 		query.executeUpdate();
 	}
 
