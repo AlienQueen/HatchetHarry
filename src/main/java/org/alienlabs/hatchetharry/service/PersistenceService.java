@@ -149,16 +149,25 @@ public class PersistenceService implements Serializable
 		p.setDeck(d);
 		token.setPlayer(p);
 
+		final Long magicCardId = c.getId();
+
 		this.deckDao.getSession().merge(d);
 
 		Session session = this.magicCardDao.getSession();
 		Query query = session.createSQLQuery("delete from MagicCard where magicCardId = ? ");
-		query.setLong(0, c.getId());
+		query.setLong(0, magicCardId);
 		query.executeUpdate();
 
 		session = this.tokenDao.getSession();
-		query = session.createSQLQuery("delete from Token where tokenId = ? ");
-		query.setLong(0, token.getId());
+		query = session
+				.createSQLQuery("delete t.* from Card_Counter cc, Token t, MagicCard mc where t.tokenId = mc.token_tokenId and cc.counterId = t.tokenId and mc.magicCardId = ?");
+		query.setLong(0, magicCardId);
+		query.executeUpdate();
+
+		session = this.magicCardDao.getSession();
+		query = session
+				.createSQLQuery("delete cc.* from Card_Counter cc, Counter c, MagicCard mc where c.card = mc.magicCardId and cc.counterId = c.counterId and mc.magicCardId = ?");
+		query.setLong(0, magicCardId);
 		query.executeUpdate();
 
 		for (final Counter counter : counters)
