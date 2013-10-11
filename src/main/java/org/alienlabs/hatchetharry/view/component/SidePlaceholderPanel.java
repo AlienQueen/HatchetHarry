@@ -58,7 +58,7 @@ public class SidePlaceholderPanel extends Panel
 		final Image cardImage = new Image("sidePlaceholderImage", new PackageResourceReference(
 				HomePage.class, image));
 		cardImage.setOutputMarkupId(true);
-		cardImage.setMarkupId("card" + this.uuid.toString());
+		cardImage.setMarkupId("side" + this.uuid.toString());
 
 		sidePlaceholder.add(handleImage, cardImage);
 		this.add(sidePlaceholder);
