@@ -123,7 +123,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
-		Thread.sleep(1500);
+		Thread.sleep(3000);
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("name")).clear();
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("sideInput")))
@@ -143,7 +143,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
-		Thread.sleep(1500);
+		Thread.sleep(3000);
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("name")).clear();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("name")).sendKeys("Marie");
 		new Select(FullAppTraversalTests.chromeDriver2.findElement(By.id("sideInput")))
@@ -179,7 +179,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("playCardLink0")).click();
 
 		// Verify that the hand contains only 6 cards, now
-		Thread.sleep(5000);
+		Thread.sleep(2500);
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
 				By.cssSelector(".cross-link img")).size() == 6);
 
@@ -213,7 +213,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.cssSelector("img[id^='tapHandleImage']")).click();
-		Thread.sleep(4000);
+		Thread.sleep(5000);
 
 		// Verify card is tapped
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1
@@ -256,7 +256,7 @@ public class FullAppTraversalTests
 
 		FullAppTraversalTests.chromeDriver1.findElement(
 				By.id("playCardFromGraveyardLinkResponsive")).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		// Verify the name of the card on the battlefield
 		Assert.assertEquals(battlefieldCardName,
@@ -294,7 +294,7 @@ public class FullAppTraversalTests
 
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		// Get top card name
 		battlefieldCardName = FullAppTraversalTests.chromeDriver1.findElement(
@@ -307,7 +307,7 @@ public class FullAppTraversalTests
 		// Click on the button "Do nothing"
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("doNothing")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
-		Thread.sleep(2000);
+		Thread.sleep(2500);
 
 		// Assert that no card is present on battlefield
 		Assert.assertEquals(2,
@@ -322,7 +322,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		// Assert that the card is the same
 		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTests.chromeDriver1
@@ -340,7 +340,7 @@ public class FullAppTraversalTests
 				.click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
-		Thread.sleep(2000);
+		Thread.sleep(2500);
 
 		// Verify that the card is present on the battlefield
 		Assert.assertEquals(3,
@@ -363,7 +363,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		// Put to hand
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
@@ -374,7 +374,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToHandFromModalWindow")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
-		Thread.sleep(2000);
+		Thread.sleep(2500);
 
 		// Assert that the hand contains 8 cards
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
@@ -393,7 +393,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		// Get top card name
 		final String graveyardCardName = FullAppTraversalTests.chromeDriver1.findElement(
@@ -409,7 +409,7 @@ public class FullAppTraversalTests
 				.click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		// Assert graveyard is visible and contains one card
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
@@ -448,7 +448,7 @@ public class FullAppTraversalTests
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
 				.selectByVisibleText("Graveyard");
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2500);
 
 		// Verify that there is one more card in the graveyard
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
@@ -460,7 +460,7 @@ public class FullAppTraversalTests
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
 				.selectByVisibleText("Exile");
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2500);
 
 		// Verify that there is one more card in the exile and that it is
 		// visible
@@ -474,7 +474,7 @@ public class FullAppTraversalTests
 				FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForExile")))
 				.selectByVisibleText("Graveyard");
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("moveToZoneSubmitExile")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2500);
 
 		// Verify that there is one more card in the graveyard
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
@@ -491,7 +491,7 @@ public class FullAppTraversalTests
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
 				.selectByVisibleText("Exile");
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2000);
 
 		// Verify that there is one more card in the exile
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
@@ -512,7 +512,7 @@ public class FullAppTraversalTests
 				FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForExile")))
 				.selectByVisibleText("Battlefield");
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("moveToZoneSubmitExile")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2000);
 
 		// Verify that there are two cards on the battlefield
 		Assert.assertEquals(4,
