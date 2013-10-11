@@ -16,6 +16,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
@@ -282,7 +283,13 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
 						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
-				session.setMySidePosY(500);
+				session.setMySidePosY(300);
+
+				final Side s = JoinGameModalWindow.this.player.getSide();
+				s.setUuid(UUID.randomUUID().toString());
+				s.setX(Long.valueOf(posX));
+				s.setY(300l);
+
 				JoinGameModalWindow.this.persistenceService.updateGame(game);
 
 				session.setGameCreated();
@@ -303,7 +310,8 @@ public class JoinGameModalWindow extends Panel
 				final List<BigInteger> allPlayersInGame = JoinGameModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
 
-				JoinGameModalWindow.this.player.setSideUuid(UUID.randomUUID().toString());
+				JoinGameModalWindow.this.persistenceService.updateSide(s);
+				JoinGameModalWindow.this.player.setSideUuid(s.getUuid());
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
 				final AddSideCometChannel ascc = new AddSideCometChannel(

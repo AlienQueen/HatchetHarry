@@ -259,9 +259,9 @@ public class CreateGameModalWindow extends Panel
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
 				final Side s = CreateGameModalWindow.this.player.getSide();
+				s.setUuid(UUID.randomUUID().toString());
 				s.setX(Long.valueOf(posX));
 				s.setY(500l);
-
 
 				final DataBox db = new DataBox("dataBox", g.getId());
 				CreateGameModalWindow.this.homePage.getDataBoxParent().addOrReplace(db);
@@ -276,7 +276,8 @@ public class CreateGameModalWindow extends Panel
 					JavaScriptUtils.updateGraveyard(target);
 				}
 
-				CreateGameModalWindow.this.player.setSideUuid(UUID.randomUUID().toString());
+				CreateGameModalWindow.this.player.setSideUuid(s.getUuid());
+				CreateGameModalWindow.this.persistenceService.updateSide(s);
 				CreateGameModalWindow.this.persistenceService
 						.updatePlayer(CreateGameModalWindow.this.player);
 

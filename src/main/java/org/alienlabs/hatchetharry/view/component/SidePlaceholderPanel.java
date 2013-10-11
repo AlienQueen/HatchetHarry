@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -33,14 +34,17 @@ public class SidePlaceholderPanel extends Panel
 		this.side = _side;
 		this.player = _player;
 
+		final Side mySide = this.player.getSide();
+
+
 		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid,
 				HatchetHarrySession.get().getGameId(), this.player));
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
 		sidePlaceholder.setMarkupId("sidePlaceholder" + this.uuid.toString().replace("-", "_"));
-		sidePlaceholder.add(new AttributeModifier("style",
-				"position: absolute; top: 300px; left: 300px;"));
+		sidePlaceholder.add(new AttributeModifier("style", "position: absolute; top: "
+				+ mySide.getY() + "px; left: " + mySide.getX() + "px;"));
 		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
 
 		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,

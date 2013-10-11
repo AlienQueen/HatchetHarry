@@ -156,14 +156,14 @@ public class FullAppTraversalTests
 
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("joinSubmit")).click();
 
-		// Assert that no card is present on battlefield, but the two sides have
-		// a "ui-draggable" class
+		// Assert that no card is present on battlefield
+		// The Balduvian Horde is hidden but still there
 		Thread.sleep(6000);
-		Assert.assertEquals(2,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(2,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
 		// Verify that the hands contains 7 cards
@@ -186,21 +186,22 @@ public class FullAppTraversalTests
 				By.cssSelector(".cross-link img")).size() == 6);
 
 		// Verify that card is present on the battlefield
-		// The two sides have class "ui-draggable"
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(2,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(2,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
 		// Verify the name of the card on the battlefield
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
+						.get(1).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
+						.get(1).getAttribute("name"));
 
 		// Verify that the card is untapped
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1
@@ -261,12 +262,14 @@ public class FullAppTraversalTests
 		Thread.sleep(6000);
 
 		// Verify the name of the card on the battlefield
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
+						.get(1).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
+						.get(1).getAttribute("name"));
 
 		// Assert that the graveyard is visible and empty
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
@@ -312,11 +315,11 @@ public class FullAppTraversalTests
 		Thread.sleep(6000);
 
 		// Assert that no card is present on battlefield
-		Assert.assertEquals(2,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(0,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(2,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(0,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
 		// Reveal again
@@ -344,20 +347,22 @@ public class FullAppTraversalTests
 
 		// Verify that the card is present on the battlefield
 		Thread.sleep(6000);
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
 		// Assert that the card on the battlefield is the same
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
+						.get(0).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
+						.get(0).getAttribute("name"));
 
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
@@ -382,11 +387,11 @@ public class FullAppTraversalTests
 				By.cssSelector(".cross-link img")).size() == 8);
 
 		// Verify that there is still one card on the battlefield
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
 		// Reveal again
@@ -423,20 +428,22 @@ public class FullAppTraversalTests
 				.getAttribute("name")));
 
 		// Verify that there is still one card on the battlefield
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(3,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(1,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
 		// Verify the name of the card on the battlefield
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
-		Assert.assertEquals(battlefieldCardName,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
-						.get(2).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
+						.get(0).getAttribute("name"));
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
+						.get(0).getAttribute("name"));
 
 		// Verify that the hands contains 7 cards
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
@@ -515,20 +522,22 @@ public class FullAppTraversalTests
 		Thread.sleep(6000);
 
 		// Verify that there are two cards on the battlefield
-		Assert.assertEquals(4,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(2,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(4,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
+		Assert.assertEquals(2,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
 		// Verify the name of the card on the battlefield
-		Assert.assertEquals(exileCardName,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".ui-draggable"))
-						.get(3).getAttribute("name"));
-		Assert.assertEquals(exileCardName,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".ui-draggable"))
-						.get(3).getAttribute("name"));
+		Assert.assertEquals(
+				exileCardName,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
+						.get(1).getAttribute("name"));
+		Assert.assertEquals(
+				exileCardName,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
+						.get(1).getAttribute("name"));
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
