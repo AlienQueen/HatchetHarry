@@ -535,11 +535,11 @@ public class FullAppTraversalTests
 		Assert.assertEquals(
 				exileCardName,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(5).getAttribute("name"));
+						.get(4).getAttribute("name"));
 		Assert.assertEquals(
 				exileCardName,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(5).getAttribute("name"));
+						.get(4).getAttribute("name"));
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
