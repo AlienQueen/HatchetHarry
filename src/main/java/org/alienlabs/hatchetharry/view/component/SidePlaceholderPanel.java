@@ -41,6 +41,7 @@ public class SidePlaceholderPanel extends Panel
 		sidePlaceholder.setMarkupId("sidePlaceholder" + this.uuid.toString().replace("-", "_"));
 		sidePlaceholder.add(new AttributeModifier("style",
 				"position: absolute; top: 300px; left: 300px;"));
+		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
 
 		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
 				HatchetHarrySession.get().getGameId(), this.player));
