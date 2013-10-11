@@ -15,6 +15,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
@@ -104,8 +105,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final Deck d = p.getDeck();
 
 		card.setZone(CardZone.BATTLEFIELD);
-		card.setX(300l + (currentPlaceholderId * 16));
-		card.setY(300l + (currentPlaceholderId * 16));
+
+		final Player owner = this.persistenceService.getPlayer(card.getDeck().getPlayerId());
+		final Side _side = owner.getSide();
+		card.setX(_side.getX());
+		card.setY(_side.getY());
 		card.setDeck(d);
 		this.persistenceService.saveOrUpdateCardAndDeck(card);
 

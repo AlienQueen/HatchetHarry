@@ -2,6 +2,8 @@ package org.alienlabs.hatchetharry.view.clientsideutil;
 
 import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.ExileComponent;
 import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
@@ -49,6 +51,13 @@ public class JavaScriptUtils
 		{
 			if (added)
 			{
+				final Player owner = persistenceService.getPlayer(mc.getDeck().getPlayerId());
+				final Side side = owner.getSide();
+				final Long x = side.getX();
+				final Long y = side.getY();
+				mc.setX(x);
+				mc.setY(y);
+
 				homePage.getAllMagicCardsInBattlefield().add(mc);
 				// just enough to create and add a new item in the end
 				magicCardList.addNewItems(mc);

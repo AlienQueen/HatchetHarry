@@ -24,7 +24,7 @@ public class TokenTooltipPanel extends Panel
 	{
 		super(id);
 		final String ownerSide = this.persistenceService.getPlayer(token.getPlayer().getId())
-				.getSide();
+				.getSide().getSideName();
 
 		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
 		{

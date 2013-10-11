@@ -58,6 +58,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
@@ -325,10 +326,11 @@ public class HomePage extends TestReportPage
 
 		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
 		if ((null != card)
-				&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer().getSide())))
+				&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer().getSide()
+						.getSideName())))
 		{
 			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-					.getUuidObject()));
+					.getUuidObject(), this.player));
 			this.session.getAllMagicCardsInBattleField().add(card);
 		}
 		else
@@ -626,8 +628,8 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(),
-							me.getSide(), null, null, null, "");
+							NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
+									.getSide().getSideName(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 
@@ -678,7 +680,7 @@ public class HomePage extends TestReportPage
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.END_OF_TURN_ACTION_ACTION, null, me.getId(),
-							me.getName(), me.getSide(), null, null, null, "");
+							me.getName(), me.getSide().getSideName(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
@@ -881,7 +883,9 @@ public class HomePage extends TestReportPage
 			final String _name) throws IOException
 	{
 		Player p = new Player();
-		p.setSide(_side);
+		final Side side = new Side();
+		p.setSide(side);
+		p.getSide().setSideName(_side);
 		p.setName(_name);
 		p.setJsessionid(_jsessionid);
 		p.setLifePoints(20l);
@@ -919,7 +923,7 @@ public class HomePage extends TestReportPage
 		if (mc.size() > 0)
 		{
 			this.playCardBehavior = new PlayCardFromHandBehavior(mc.get(0).getUuidObject(), 0,
-					this.session.getPlayer().getSide());
+					this.session.getPlayer().getSide().getSideName());
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
@@ -939,7 +943,7 @@ public class HomePage extends TestReportPage
 		_playCardFromGraveyardLink.setOutputMarkupId(true);
 
 		final PlayCardFromGraveyardBehavior _playCardFromGraveyardBehavior = new PlayCardFromGraveyardBehavior(
-				this.session.getPlayer().getSide());
+				this.session.getPlayer().getSide().getSideName());
 		_playCardFromGraveyardLink.add(_playCardFromGraveyardBehavior);
 
 		return _playCardFromGraveyardLink;
@@ -1052,8 +1056,8 @@ public class HomePage extends TestReportPage
 								playerToWhomToSend);
 
 						final NotifierCometChannel ncc = new NotifierCometChannel(
-								NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(),
-								me.getSide(), null, null, null, "");
+								NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
+										.getSide().getSideName(), null, null, null, "");
 
 						try
 						{
@@ -2486,8 +2490,10 @@ public class HomePage extends TestReportPage
 			@Override
 			protected void populate(final Item<MagicCard> item)
 			{
-				final CardPanel cp = new CardPanel("cardPanel", item.getModelObject()
-						.getSmallImageFilename(), item.getModelObject().getUuidObject());
+				final MagicCard mc = item.getModelObject();
+				final CardPanel cp = new CardPanel("cardPanel", mc.getSmallImageFilename(),
+						mc.getUuidObject(), HomePage.this.persistenceService.getPlayer(mc.getDeck()
+								.getPlayerId()));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 			}
@@ -2583,8 +2589,8 @@ public class HomePage extends TestReportPage
 				try
 				{
 					final UUID uuid = UUID.fromString(item.getModelObject().getSideUuid());
-					item.add(new SidePlaceholderPanel("side", item.getModelObject().getSide(),
-							HomePage.this, uuid));
+					item.add(new SidePlaceholderPanel("side", item.getModelObject().getSide()
+							.getSideName(), HomePage.this, uuid, item.getModelObject()));
 				}
 				catch (final Exception e)
 				{

@@ -3,6 +3,7 @@ package org.alienlabs.hatchetharry.model;
 import java.io.Serializable;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,12 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Index;
 
 @Entity
@@ -31,19 +31,18 @@ public class Player implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Index(name = "Player_index")
 	private Long playerId;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Game game = new Game();
-	@Column
-	private String side;
+	@OneToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "Player_Side")
+	private Side side = new Side();
 	@Column
 	private String name;
 	@Column
 	private String jsessionid;
 	@Column
 	private Long lifePoints;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.ALL })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "deck")
 	private Deck deck;
 	@Column
@@ -71,12 +70,12 @@ public class Player implements Serializable
 		this.playerId = _id;
 	}
 
-	public String getSide()
+	public Side getSide()
 	{
 		return this.side;
 	}
 
-	public void setSide(final String _side)
+	public void setSide(final Side _side)
 	{
 		this.side = _side;
 	}

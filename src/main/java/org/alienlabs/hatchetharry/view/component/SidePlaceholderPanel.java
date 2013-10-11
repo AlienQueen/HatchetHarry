@@ -3,6 +3,7 @@ package org.alienlabs.hatchetharry.view.component;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -19,8 +20,10 @@ public class SidePlaceholderPanel extends Panel
 	private final HomePage homePage;
 	private final String side;
 
+	private final Player player;
+
 	public SidePlaceholderPanel(final String id, final String _side, final HomePage hp,
-			final UUID _uuid)
+			final UUID _uuid, final Player _player)
 	{
 		super(id);
 		this.setOutputMarkupId(true);
@@ -28,9 +31,10 @@ public class SidePlaceholderPanel extends Panel
 		this.homePage = hp;
 		this.uuid = _uuid;
 		this.side = _side;
+		this.player = _player;
 
 		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid,
-				HatchetHarrySession.get().getGameId()));
+				HatchetHarrySession.get().getGameId(), this.player));
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
@@ -39,7 +43,7 @@ public class SidePlaceholderPanel extends Panel
 				"position: absolute; top: 300px; left: 300px;"));
 
 		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
-				HatchetHarrySession.get().getGameId()));
+				HatchetHarrySession.get().getGameId(), this.player));
 
 		final Image handleImage = new Image("handleImage", new PackageResourceReference(
 				"images/arrow.png"));

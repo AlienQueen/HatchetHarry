@@ -43,15 +43,16 @@ public class CardPanel extends Panel
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 	private final DestroyTokenBehavior destroyTokenBehavior;
 
-	Player owner;
+	private Player owner;
 
 
-	public CardPanel(final String id, final String smallImage, final UUID _uuid)
+	public CardPanel(final String id, final String smallImage, final UUID _uuid, final Player _owner)
 	{
 		super(id);
 		Injector.get().inject(this);
 
 		this.uuid = _uuid;
+		this.owner = _owner;
 
 		this.setOutputMarkupId(true);
 
@@ -75,8 +76,9 @@ public class CardPanel extends Panel
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
 		cardHandle.setOutputMarkupId(true);
 		cardHandle.setMarkupId("cardHandle" + this.uuid.toString().replace("-", "_"));
-		cardHandle.add(new AttributeModifier("style", "position: absolute; top: " + myCard.getY()
-				+ "px; left: " + myCard.getX() + "px;  z-index: 0;"));
+		cardHandle.add(new AttributeModifier("style", "position: absolute; top: "
+				+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
+				+ "px;  z-index: 1;"));
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");

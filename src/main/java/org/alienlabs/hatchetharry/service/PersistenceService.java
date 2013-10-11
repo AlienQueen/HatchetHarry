@@ -982,7 +982,6 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("delete from MagicCard").executeUpdate();
 		session.createSQLQuery("delete from Token").executeUpdate();
 		session.createSQLQuery("delete from Player").executeUpdate();
-		session.createSQLQuery("delete from Game_Side").executeUpdate();
 		session.createSQLQuery("delete from Game").executeUpdate();
 		session.createSQLQuery("delete from Side").executeUpdate();
 		session.createSQLQuery("delete from Counter").executeUpdate();

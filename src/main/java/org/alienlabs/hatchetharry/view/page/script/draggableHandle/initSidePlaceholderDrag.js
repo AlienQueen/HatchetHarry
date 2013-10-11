@@ -3,8 +3,8 @@ window.setTimeout(function() {
 			{
 				handle : '#handleImage${uuidValidForJs}',
 				helper : 'original',
-				stop : function() {
-						Wicket.Ajax.get({'u' : '${dragUrl}&posX=' + (jQuery('#handleImage${uuidValidForJs}').offset().left) + '&posY=' + (jQuery('#handleImage${uuidValidForJs}').offset().top) });
+				stop : function(event, ui) {
+						Wicket.Ajax.get({'u' : '${dragUrl}&posX=' + (ui.offset.left) + '&posY=' + (ui.offset.top) });
 				}
 			});
 }, 250);

@@ -103,8 +103,8 @@ public class CreateTokenModalWindow extends Panel
 						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
 						gameId);
 
-				final MagicCard card = new MagicCard("cards/token.jpg", "", "", "token", "",
-						player.getSide(), token);
+				final MagicCard card = new MagicCard("cards/token.jpg", "", "", "token", "", player
+						.getSide().getSideName(), token);
 
 				final Deck dummyDeck = new Deck();
 				final DeckArchive dummyDeckArchive = new DeckArchive();

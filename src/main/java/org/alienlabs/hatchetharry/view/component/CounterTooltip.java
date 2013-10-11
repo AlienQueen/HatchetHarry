@@ -130,7 +130,7 @@ public class CounterTooltip extends Panel
 							_counterName, counter.getNumberOfCounters(), 0l,
 							NotifierAction.ADD_COUNTER, UUID.fromString(CounterTooltip.this.token
 									.getUuid()), "", CounterTooltip.this.token.getPlayer()
-									.getSide());
+									.getSide().getSideName());
 				}
 				else
 				{
@@ -219,7 +219,7 @@ public class CounterTooltip extends Panel
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
 									NotifierAction.ADD_COUNTER,
 									UUID.fromString(CounterTooltip.this.token.getUuid()), "",
-									CounterTooltip.this.token.getPlayer().getSide());
+									CounterTooltip.this.token.getPlayer().getSide().getSideName());
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -296,7 +296,7 @@ public class CounterTooltip extends Panel
 										counter.getCounterName(), counter.getNumberOfCounters(),
 										0l, action, UUID.fromString(CounterTooltip.this.token
 												.getUuid()), "", CounterTooltip.this.token
-												.getPlayer().getSide());
+												.getPlayer().getSide().getSideName());
 							}
 						}
 						else
@@ -339,7 +339,8 @@ public class CounterTooltip extends Panel
 									targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
 									action, UUID.fromString(CounterTooltip.this.token.getUuid()),
-									"", CounterTooltip.this.token.getPlayer().getSide());
+									"", CounterTooltip.this.token.getPlayer().getSide()
+											.getSideName());
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -421,7 +422,7 @@ public class CounterTooltip extends Panel
 										counter.getCounterName(), counter.getNumberOfCounters(),
 										0l, action, UUID.fromString(CounterTooltip.this.token
 												.getUuid()), "", CounterTooltip.this.token
-												.getPlayer().getSide());
+												.getPlayer().getSide().getSideName());
 							}
 						}
 						else
@@ -469,7 +470,7 @@ public class CounterTooltip extends Panel
 									counter.getCounterName(), targetNumberOfCounters,
 									originalNumberOfCounters, action,
 									UUID.fromString(CounterTooltip.this.token.getUuid()), "",
-									CounterTooltip.this.token.getPlayer().getSide());
+									CounterTooltip.this.token.getPlayer().getSide().getSideName());
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)

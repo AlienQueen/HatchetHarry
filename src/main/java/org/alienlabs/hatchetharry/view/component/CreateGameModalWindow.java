@@ -12,6 +12,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
@@ -152,8 +153,8 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.player.setGame(g);
 
-				CreateGameModalWindow.this.player.setSide(CreateGameModalWindow.this.sideInput
-						.getDefaultModelObjectAsString());
+				CreateGameModalWindow.this.player.getSide().setSideName(
+						CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.player.setName(CreateGameModalWindow.this.nameInput
 						.getDefaultModelObjectAsString());
 
@@ -248,12 +249,19 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.homePage.getPlayCardBehavior().setSide(
 						CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 
-				session.getPlayer().setSide(
-						CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
+				session.getPlayer()
+						.getSide()
+						.setSideName(
+								CreateGameModalWindow.this.sideInput
+										.getDefaultModelObjectAsString());
 				session.getPlayer().setName(
 						CreateGameModalWindow.this.nameInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(500);
+				final Side s = CreateGameModalWindow.this.player.getSide();
+				s.setX(Long.valueOf(posX));
+				s.setY(500l);
+
 
 				final DataBox db = new DataBox("dataBox", g.getId());
 				CreateGameModalWindow.this.homePage.getDataBoxParent().addOrReplace(db);

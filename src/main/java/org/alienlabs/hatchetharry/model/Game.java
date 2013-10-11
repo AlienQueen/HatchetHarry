@@ -35,9 +35,6 @@ public class Game implements Serializable
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
 	private Set<Player> players = new HashSet<Player>();
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "Game_Side", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "sideId"))
-	private Set<Side> sides = new HashSet<Side>();
 	@Column
 	private Long currentPlaceholderId = 0L;
 	@Column
@@ -101,16 +98,6 @@ public class Game implements Serializable
 			return false;
 		}
 		return true;
-	}
-
-	public Set<Side> getSides()
-	{
-		return this.sides;
-	}
-
-	public void setSides(final Set<Side> _sides)
-	{
-		this.sides = _sides;
 	}
 
 	public Long getCurrentPlaceholderId()

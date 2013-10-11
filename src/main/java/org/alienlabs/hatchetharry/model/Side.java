@@ -31,7 +31,7 @@ public class Side implements Serializable
 	@Column
 	private String wicketId;
 	@Column
-	private String side;
+	private String sideName;
 	@Column
 	private String uuid;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -62,14 +62,14 @@ public class Side implements Serializable
 		this.wicketId = _wicketId;
 	}
 
-	public String getSide()
+	public String getSideName()
 	{
-		return this.side;
+		return this.sideName;
 	}
 
-	public void setSide(final String _side)
+	public void setSideName(final String _side)
 	{
-		this.side = _side;
+		this.sideName = _side;
 	}
 
 	public String getUuid()

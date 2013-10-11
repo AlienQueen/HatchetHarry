@@ -16,7 +16,6 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
@@ -169,18 +168,12 @@ public class JoinGameModalWindow extends Panel
 
 				final Game oldGame = session.getPlayer().getGame();
 
-				for (final Side s : oldGame.getSides())
-				{
-					s.setGame(null);
-					JoinGameModalWindow.this.persistenceService.updateSide(s);
-				}
 				for (final Player p : oldGame.getPlayers())
 				{
 					p.setGame(null);
 					JoinGameModalWindow.this.persistenceService.updatePlayer(p);
 				}
 
-				oldGame.getSides().clear();
 				oldGame.getPlayers().clear();
 				JoinGameModalWindow.this.persistenceService.deleteGame(oldGame);
 
@@ -251,8 +244,8 @@ public class JoinGameModalWindow extends Panel
 				target.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
 				HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
 
-				JoinGameModalWindow.this.player.setSide(JoinGameModalWindow.this.sideInput
-						.getDefaultModelObjectAsString());
+				JoinGameModalWindow.this.player.getSide().setSideName(
+						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				JoinGameModalWindow.this.player.setName(JoinGameModalWindow.this.nameInput
 						.getDefaultModelObjectAsString());
 				JoinGameModalWindow.this.player.setGame(game);
@@ -261,8 +254,6 @@ public class JoinGameModalWindow extends Panel
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
 
-				JoinGameModalWindow.this.persistenceService
-						.updatePlayer(JoinGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(JoinGameModalWindow.this.player);
 
 				final DataBox dataBox = new DataBox("dataBox",

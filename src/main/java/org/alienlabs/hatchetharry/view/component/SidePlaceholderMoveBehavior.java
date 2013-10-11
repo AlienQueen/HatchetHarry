@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.MoveSideCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -41,8 +43,11 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
+	private final Player player;
+
 	public SidePlaceholderMoveBehavior(final SidePlaceholderPanel _panel,
-			final WebMarkupContainer _parent, final UUID _uuid, final Long _gameId)
+			final WebMarkupContainer _parent, final UUID _uuid, final Long _gameId,
+			final Player _player)
 	{
 		super();
 		Injector.get().inject(this);
@@ -50,6 +55,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.panel = _panel;
 		this.parent = _parent;
 		this.uuid = _uuid;
+		this.player = _player;
 	}
 
 	@Override
@@ -77,6 +83,11 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		HatchetHarrySession.get().setMySidePlaceholder(this.panel);
+
+		final Side side = this.player.getSide();
+		side.setX(Long.valueOf(sideX));
+		side.setY(Long.valueOf(sideY));
+		this.persistenceService.updateSide(side);
 
 		final List<BigInteger> allPlayersInGame = SidePlaceholderMoveBehavior.this.persistenceService
 				.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
