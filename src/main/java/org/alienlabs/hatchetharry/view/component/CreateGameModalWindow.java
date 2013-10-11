@@ -285,7 +285,7 @@ public class CreateGameModalWindow extends Panel
 						CreateGameModalWindow.this.player);
 
 				final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						CreateGameModalWindow.this.player.getId().longValue());
+						CreateGameModalWindow.this.player.getId());
 
 				HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
 			}

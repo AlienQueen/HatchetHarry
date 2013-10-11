@@ -342,7 +342,7 @@ public class JoinGameModalWindow extends Panel
 								JoinGameModalWindow.this.player.getId());
 				for (int i = 0; i < giveAllPlayersFromGameExceptMeAsPlayers.size(); i++)
 				{
-					final Long p = JoinGameModalWindow.this.player.getId().longValue();
+					final Long p = JoinGameModalWindow.this.player.getId();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
 					final AddSidesFromOtherBrowsersCometChannel asfobcc = new AddSidesFromOtherBrowsersCometChannel(
 							JoinGameModalWindow.this.player,
