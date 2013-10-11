@@ -140,12 +140,12 @@ public class CardPanel extends Panel
 		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
 		if (null != this.owner)
 		{
-			if ("infrared".equals(this.owner.getSide()))
+			if ("infrared".equals(this.owner.getSide().getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
 				handleImage.add(new AttributeModifier("style", "border: 1px red dotted;"));
 			}
-			else if ("ultraviolet".equals(this.owner.getSide()))
+			else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 				handleImage.add(new AttributeModifier("style", "border: 1px purple dotted;"));

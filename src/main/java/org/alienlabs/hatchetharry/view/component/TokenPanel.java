@@ -112,11 +112,11 @@ public class TokenPanel extends Panel
 
 		if (null != this.owner)
 		{
-			if ("infrared".equals(this.owner.getSide()))
+			if ("infrared".equals(this.owner.getSide().getSideName()))
 			{
 				tokenImage.add(new AttributeModifier("style", "border: 1px solid red;"));
 			}
-			else if ("ultraviolet".equals(this.owner.getSide()))
+			else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
 			{
 				tokenImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 			}
