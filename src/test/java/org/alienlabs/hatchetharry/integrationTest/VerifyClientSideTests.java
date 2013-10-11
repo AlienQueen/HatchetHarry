@@ -74,7 +74,7 @@ public class VerifyClientSideTests
 	{
 		try
 		{
-			Thread.sleep(15000);
+			Thread.sleep(10000);
 		}
 		catch (final InterruptedException e)
 		{
@@ -105,29 +105,15 @@ public class VerifyClientSideTests
 	}
 
 	@Test
-	public void testMistletoe()
+	public void testMistletoe() throws InterruptedException
 	{
-		try
-		{
-			Thread.sleep(30000);
-		}
-		catch (final InterruptedException e)
-		{
-			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
-		}
+		Thread.sleep(1000);
 
 		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
 				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
-		try
-		{
-			Thread.sleep(30000);
-		}
-		catch (final InterruptedException e)
-		{
-			VerifyClientSideTests.LOGGER.error("error while sleeping in testMistletoe()", e);
-		}
+		Thread.sleep(15000);
 
 		final WebDriverWait wait = new WebDriverWait(VerifyClientSideTests.chromeDriver1, 60);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("runsSummary")));
