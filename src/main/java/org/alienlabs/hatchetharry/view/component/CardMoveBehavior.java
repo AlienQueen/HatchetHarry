@@ -42,6 +42,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 	private final DestroyTokenBehavior destroyTokenBehavior;
+
 	@SpringBean
 	private PersistenceService persistenceService;
 
@@ -53,6 +54,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			final DestroyTokenBehavior _destroyTokenBehavior)
 	{
 		Injector.get().inject(this);
+
 		this.panel = cp;
 		this.uuid = _uuid;
 		this.putToGraveyardFromBattlefieldBehavior = _putToGraveyardBehavior;

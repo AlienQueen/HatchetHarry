@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
@@ -11,6 +12,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -265,6 +267,18 @@ public class CreateGameModalWindow extends Panel
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}
+
+				CreateGameModalWindow.this.player.setSideUuid(UUID.randomUUID().toString());
+				CreateGameModalWindow.this.persistenceService
+						.updatePlayer(CreateGameModalWindow.this.player);
+
+				final AddSideCometChannel ascc = new AddSideCometChannel(
+						CreateGameModalWindow.this.player);
+
+				final String pageUuid = HatchetHarryApplication.getCometResources().get(
+						CreateGameModalWindow.this.player.getId().longValue());
+
+				HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
 			}
 
 			@Override

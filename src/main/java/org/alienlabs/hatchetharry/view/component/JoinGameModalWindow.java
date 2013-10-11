@@ -17,6 +17,8 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
+import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
+import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -304,7 +306,17 @@ public class JoinGameModalWindow extends Panel
 				final List<BigInteger> allPlayersInGameExceptMe = JoinGameModalWindow.this.persistenceService
 						.giveAllPlayersFromGameExceptMe(_gameId,
 								JoinGameModalWindow.this.player.getId());
+
 				final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(_gameId);
+
+				final List<BigInteger> allPlayersInGame = JoinGameModalWindow.this.persistenceService
+						.giveAllPlayersFromGame(_gameId);
+
+				JoinGameModalWindow.this.player.setSideUuid(UUID.randomUUID().toString());
+				JoinGameModalWindow.this.persistenceService
+						.updatePlayer(JoinGameModalWindow.this.player);
+				final AddSideCometChannel ascc = new AddSideCometChannel(
+						JoinGameModalWindow.this.player);
 
 				// post the DataBox update message to all players in the game,
 				// except me
@@ -316,6 +328,27 @@ public class JoinGameModalWindow extends Panel
 
 					HatchetHarryApplication.get().getEventBus().post(jgncc, pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
+				}
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long p = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
+					HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
+				}
+
+				// In order to display the opponents' sides
+				final List<Player> giveAllPlayersFromGameExceptMeAsPlayers = JoinGameModalWindow.this.persistenceService
+						.giveAllPlayersFromGameExceptMeAsPlayers(_gameId,
+								JoinGameModalWindow.this.player.getId());
+				for (int i = 0; i < giveAllPlayersFromGameExceptMeAsPlayers.size(); i++)
+				{
+					final Long p = JoinGameModalWindow.this.player.getId().longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
+					final AddSidesFromOtherBrowsersCometChannel asfobcc = new AddSidesFromOtherBrowsersCometChannel(
+							JoinGameModalWindow.this.player,
+							giveAllPlayersFromGameExceptMeAsPlayers);
+					HatchetHarryApplication.get().getEventBus().post(asfobcc, pageUuid);
 				}
 
 				session.resetCardsInGraveyard();

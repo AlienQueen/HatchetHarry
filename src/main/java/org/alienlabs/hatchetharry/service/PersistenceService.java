@@ -923,6 +923,22 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
+	public List<Player> giveAllPlayersFromGameExceptMeAsPlayers(final Long gameId, final Long me)
+	{
+		final Session session = this.gameDao.getSession();
+
+		final SQLQuery query = session
+				.createSQLQuery("select p.* from Player p, Player_Game pg where pg.gameId = ? and pg.playerId <> ? and pg.playerId = p.playerId");
+		query.setLong(0, gameId);
+		query.setLong(1, me);
+		query.addEntity(Player.class);
+
+		final List<Player> l = query.list();
+
+		return l;
+	}
+
+	@Transactional(readOnly = true)
 	public List<BigInteger> giveAllPlayersFromGame(final Long gameId)
 	{
 		final Session session = this.gameDao.getSession();
@@ -961,10 +977,10 @@ public class PersistenceService implements Serializable
 		final Session session = this.gameDao.getSession();
 
 		session.createSQLQuery("delete from Player_Game").executeUpdate();
-		session.createSQLQuery("delete from MagicCard").executeUpdate();
-		session.createSQLQuery("delete from Counter").executeUpdate();
-		session.createSQLQuery("delete from Token").executeUpdate();
 		session.createSQLQuery("delete from Card_Counter").executeUpdate();
+		session.createSQLQuery("delete from Counter").executeUpdate();
+		session.createSQLQuery("delete from MagicCard").executeUpdate();
+		session.createSQLQuery("delete from Token").executeUpdate();
 		session.createSQLQuery("delete from Player").executeUpdate();
 		session.createSQLQuery("delete from Game_Side").executeUpdate();
 		session.createSQLQuery("delete from Game").executeUpdate();

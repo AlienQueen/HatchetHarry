@@ -58,6 +58,8 @@ public class Player implements Serializable
 	private CardZone defaultTargetZoneForGraveyard = CardZone.BATTLEFIELD;
 	@Column
 	private CardZone defaultTargetZoneForExile = CardZone.BATTLEFIELD;
+	@Column
+	private String sideUuid;
 
 	public Long getId()
 	{
@@ -238,6 +240,16 @@ public class Player implements Serializable
 	public void setDefaultTargetZoneForExile(final CardZone _defaultTargetZoneForExile)
 	{
 		this.defaultTargetZoneForExile = _defaultTargetZoneForExile;
+	}
+
+	public String getSideUuid()
+	{
+		return this.sideUuid;
+	}
+
+	public void setSideUuid(final String _sideUuid)
+	{
+		this.sideUuid = _sideUuid;
 	}
 
 }

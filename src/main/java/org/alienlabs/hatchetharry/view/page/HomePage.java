@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -59,6 +60,8 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
+import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
+import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveCometChannel;
@@ -66,6 +69,7 @@ import org.alienlabs.hatchetharry.model.channel.CardZoneMoveNotifier;
 import org.alienlabs.hatchetharry.model.channel.CountCardsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.DestroyTokenCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
+import org.alienlabs.hatchetharry.model.channel.MoveSideCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
@@ -103,7 +107,6 @@ import org.alienlabs.hatchetharry.view.component.MagicCardTooltipPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow;
-import org.alienlabs.hatchetharry.view.component.SidePlaceholderMoveBehavior;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.TokenTooltipPanel;
@@ -213,6 +216,12 @@ public class HomePage extends TestReportPage
 	private QuickView<MagicCard> allTooltips;
 	private List<MagicCard> allTooltipsInBattlefield;
 
+	private final WebMarkupContainer sideParent;
+
+	private final QuickView<Player> allSidesInGame;
+
+	private final List<Player> allPlayerSidesInGame;
+
 	public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
@@ -221,6 +230,21 @@ public class HomePage extends TestReportPage
 		// Resources
 		this.addHeadResources();
 
+		// Side
+		this.sideParent = new WebMarkupContainer("sideParent");
+		this.sideParent.setOutputMarkupId(true);
+
+		this.allPlayerSidesInGame = this.persistenceService.getAllPlayersOfGame(HatchetHarrySession
+				.get().getGameId());
+		final ListDataProvider<Player> data = new ListDataProvider<Player>(
+				this.allPlayerSidesInGame);
+
+		this.allSidesInGame = this.populateSides(data);
+
+		this.sideParent.add(this.allSidesInGame);
+		this.add(this.sideParent);
+
+		// Hand
 		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
 		this.parentPlaceholder.setOutputMarkupId(true);
 		this.add(this.parentPlaceholder);
@@ -242,7 +266,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Where is Daddy?),");
-		final Label message2 = new Label("message2", "built on Wednesday, 9th of October 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 11th of October 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -2258,6 +2282,39 @@ public class HomePage extends TestReportPage
 				event.getGameId(), event.getCard(), false);
 	}
 
+	@Subscribe
+	public void addSide(final AjaxRequestTarget target, final AddSideCometChannel event)
+	{
+		HomePage.LOGGER.info("addSide");
+		this.allPlayerSidesInGame.add(event.getPlayer());
+		this.allSidesInGame.addNewItems(event.getPlayer());
+	}
+
+	@Subscribe
+	public void addSideFromOtherBrowsers(final AjaxRequestTarget target,
+			final AddSidesFromOtherBrowsersCometChannel event)
+	{
+		HomePage.LOGGER.info("addSideFromOtherBrowsers");
+
+		final List<Player> opponents = event.getOpponents();
+
+		for (int i = 0; i < opponents.size(); i++)
+		{
+			this.allPlayerSidesInGame.add(opponents.get(i));
+			this.allSidesInGame.addNewItems(opponents.get(i));
+		}
+
+	}
+
+	@Subscribe
+	public void moveSide(final AjaxRequestTarget target, final MoveSideCometChannel event)
+	{
+		target.appendJavaScript("jQuery('#sidePlaceholder"
+				+ event.getUuid().toString().replace("-", "_") + "').css({top: '"
+				+ event.getSideY() + "px', left: '" + event.getSideX()
+				+ "px', position:'absolute'}); ");
+	}
+
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
@@ -2287,38 +2344,6 @@ public class HomePage extends TestReportPage
 		for (final CardPanel cp : this.session.getAllCardPanelsInBattleField())
 		{
 			this.playCardParent.addOrReplace(cp);
-		}
-
-		final List<SidePlaceholderPanel> allSides = this.session.getMySidePlaceholder();
-		for (final SidePlaceholderPanel spp : allSides)
-		{
-			final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
-					.getRequest();
-			final HttpServletRequest request = servletWebRequest.getContainerRequest();
-			final String jsessionid = request.getRequestedSessionId();
-
-			if ("firstSidePlaceholder".equals(spp.getId()))
-			{
-				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
-						spp.getUuid(), jsessionid, HomePage.this, HomePage.this.getDataBoxParent(),
-						this.session.getGameId());
-				spp.removeAll();
-				spp.add(spmb);
-				spp.setOutputMarkupId(true);
-				this.firstSidePlaceholderParent.addOrReplace(spp);
-				this.addOrReplace(this.firstSidePlaceholderParent);
-				this.session.setFirstSideMoveCallbackUrl(spmb.getCallbackUrl().toString());
-			}
-			else if ("secondSidePlaceholder".equals(spp.getId()))
-			{
-				final SidePlaceholderMoveBehavior spmb = new SidePlaceholderMoveBehavior(spp,
-						spp.getUuid(), jsessionid, HomePage.this, HomePage.this.getDataBoxParent(),
-						this.session.getGameId());
-				spp.add(spmb);
-				spp.setOutputMarkupId(true);
-				this.secondSidePlaceholderParent.addOrReplace(spp);
-				this.session.setSecondSideMoveCallbackUrl(spmb.getCallbackUrl().toString());
-			}
 		}
 
 		this.add(new Behavior()
@@ -2540,4 +2565,40 @@ public class HomePage extends TestReportPage
 		return this.allTooltipsInBattlefield;
 	}
 
+	public WebMarkupContainer getSideParent()
+	{
+		return this.sideParent;
+	}
+
+	@SuppressWarnings("static-method")
+	private QuickView<Player> populateSides(final ListDataProvider<Player> data)
+	{
+		return new QuickView<Player>("sides", data)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populate(final Item<Player> item)
+			{
+				try
+				{
+					final UUID uuid = UUID.fromString(item.getModelObject().getSideUuid());
+					item.add(new SidePlaceholderPanel("side", item.getModelObject().getSide(),
+							HomePage.this, uuid));
+				}
+				catch (final Exception e)
+				{
+					// At first page load, no player is already available, so we
+					// don't use a SidePlaceholderPanel
+					item.add(new WebMarkupContainer("side"));
+				}
+			}
+
+		};
+	}
+
+	public List<Player> getAllPlayersInGame()
+	{
+		return this.allPlayerSidesInGame;
+	}
 }

@@ -1,20 +1,32 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.LinkedList;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.channel.MoveSideCometChannel;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.atmosphere.cpr.BroadcastFilter;
-import org.atmosphere.cpr.Meteor;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.template.PackageTextTemplate;
+import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -22,23 +34,22 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SidePlaceholderMoveBehavior.class);
 
-	private UUID uuid;
-	private String jsessionid;
+	private final SidePlaceholderPanel panel;
 	private final WebMarkupContainer parent;
-	private final HomePage homePage;
-	final WebMarkupContainer dataBoxParent;
-	final private Long gameId;
+	private final UUID uuid;
 
-	public SidePlaceholderMoveBehavior(final WebMarkupContainer _parent, final UUID _uuid,
-			final String _jsessionid, final HomePage hp, final WebMarkupContainer _dataBoxParent,
-			final Long _gameId)
+	@SpringBean
+	private PersistenceService persistenceService;
+
+	public SidePlaceholderMoveBehavior(final SidePlaceholderPanel _panel,
+			final WebMarkupContainer _parent, final UUID _uuid, final Long _gameId)
 	{
+		super();
+		Injector.get().inject(this);
+
+		this.panel = _panel;
 		this.parent = _parent;
 		this.uuid = _uuid;
-		this.jsessionid = _jsessionid;
-		this.homePage = hp;
-		this.dataBoxParent = _dataBoxParent;
-		this.gameId = _gameId;
 	}
 
 	@Override
@@ -47,86 +58,73 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		SidePlaceholderMoveBehavior.LOGGER.info("## respond");
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.parent.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-		this.jsessionid = request.getRequestedSessionId();
+
+		final String _sideX = request.getParameter("posX");
+		final String _sideY = request.getParameter("posY");
+		int sideX;
+		final int sideY;
 
 		try
 		{
-			this.uuid = UUID.fromString(request.getParameter("uuid"));
+			sideX = Math.round(Float.parseFloat(_sideX));
+			sideY = Math.round(Float.parseFloat(_sideY));
 		}
-		catch (final IllegalArgumentException e)
+		catch (final Exception e)
 		{
-			SidePlaceholderMoveBehavior.LOGGER.error("error parsing UUID: " + e.getMessage());
+			SidePlaceholderMoveBehavior.LOGGER.info("could not parse position " + _sideX + " or "
+					+ _sideY);
 			return;
 		}
-		final String _sideX = request.getParameter("posX");
-		final String _sideY = request.getParameter("posY");
-		final String stop = request.getParameter("stop");
 
-		final String _side = request.getParameter("side");
+		HatchetHarrySession.get().setMySidePlaceholder(this.panel);
 
-		if ("true".equals(stop))
+		final List<BigInteger> allPlayersInGame = SidePlaceholderMoveBehavior.this.persistenceService
+				.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+
+		final MoveSideCometChannel mscc = new MoveSideCometChannel(this.uuid,
+				Integer.toString(sideX), Integer.toString(sideY));
+
+		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
-			final SidePlaceholderPanel spp = new SidePlaceholderPanel("secondSidePlaceholder",
-					_side, this.homePage, this.uuid);
-			spp.add(new SidePlaceholderMoveBehavior(spp, this.uuid, this.jsessionid, this.homePage,
-					this.homePage.getDataBoxParent(), this.gameId));
-			spp.setOutputMarkupId(true);
-			SidePlaceholderMoveBehavior.LOGGER.info("### gameId: " + this.gameId);
-
-			final HatchetHarrySession session = HatchetHarrySession.get();
-			session.putMySidePlaceholderInSesion(_side);
-
-
-			this.homePage.getSecondSidePlaceholderParent().addOrReplace(spp);
-			target.add(this.homePage.getSecondSidePlaceholderParent());
-
-			SidePlaceholderMoveBehavior.LOGGER.info("### " + this.uuid);
-			final int posX = ("infrared".equals(_side)) ? 300 : 900;
-
-			target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery('#sidePlaceholder"
-					+ this.uuid
-					+ "'); "
-					+ "card.css('position', 'absolute'); "
-					+ "card.css('left', '" + posX + "px'); " + "card.css('top', '500px'); });");
-
-			spp.setPosX(posX);
-			spp.setPosY(500);
-			session.setMySidePlaceholder(spp);
-
-			if (!this.jsessionid.equals(request.getParameter("requestingId")))
-			{
-				final DataBox dataBox = new DataBox("dataBox", this.gameId);
-				dataBox.setOutputMarkupId(true);
-
-				final WebMarkupContainer _parent = this.homePage.getDataBoxParent();
-				_parent.addOrReplace(dataBox);
-				target.add(_parent);
-				SidePlaceholderMoveBehavior.LOGGER.info("# databox for game id=" + this.gameId);
-			}
+			final Long p = allPlayersInGame.get(i).longValue();
+			final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
+			HatchetHarryApplication.get().getEventBus().post(mscc, pageUuid);
 		}
-		else if ((_sideX != null)
-				&& (_sideY != null)
-				&& (!this.jsessionid.equals(request.getParameter("requestingId")) && (!"true"
-						.equals(stop))))
+		SidePlaceholderMoveBehavior.LOGGER.info("done");
+	}
+
+	@Override
+	public void renderHead(final Component component, final IHeaderResponse response)
+	{
+		super.renderHead(component, response);
+
+		StringBuilder js = new StringBuilder();
+
+		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		variables.put("dragUrl", this.getCallbackUrl());
+		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+
+		final TextTemplate template = new PackageTextTemplate(HomePage.class,
+				"script/draggableHandle/initSidePlaceholderDrag.js");
+		template.interpolate(variables);
+		js = js.append(template.asString());
+
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
+		try
 		{
-			target.appendJavaScript("jQuery(document).ready(function() { var card = jQuery(\"#sidePlaceholder"
-					+ this.uuid
-					+ "\"); "
-					+ "card.css(\"position\", \"absolute\"); "
-					+ "card.css(\"left\", \""
-					+ _sideX
-					+ "px\"); "
-					+ "card.css(\"top\", \""
-					+ _sideY + "px\"); });");
-			HatchetHarrySession.get().setMySidePosX(Integer.valueOf(_sideX));
-			HatchetHarrySession.get().setMySidePosY(Integer.valueOf(_sideY));
-
-			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
-			final String message = _side + "|||||" + this.jsessionid + "|||||" + this.uuid
-					+ "|||||" + _sideX + "|||||" + _sideY;
-			SidePlaceholderMoveBehavior.LOGGER.info("### message: " + message);
-			meteor.broadcast(message);
+			template.close();
 		}
+		catch (final IOException e)
+		{
+			SidePlaceholderMoveBehavior.LOGGER.error(
+					"unable to close template1 in SidePlaceholderMoveBehavior#renderHead()!", e);
+		}
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
 	}
 
 }
