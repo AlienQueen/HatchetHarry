@@ -135,6 +135,7 @@ public class FullAppTraversalTests
 				.getText();
 
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("createSubmit")).click();
+		Thread.sleep(6000);
 
 		// Join a game in Chrome 2
 		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.chromeDriver2, 15);
