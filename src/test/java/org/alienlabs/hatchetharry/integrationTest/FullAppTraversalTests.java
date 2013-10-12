@@ -87,7 +87,7 @@ public class FullAppTraversalTests
 			+ "		window.scrollBy(0,5);\n}\n}";
 
 	@BeforeClass
-	public static void setUpClass()
+	public static void setUpClass() throws InterruptedException
 	{
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		final ChromeOptions options = new ChromeOptions();
@@ -95,10 +95,16 @@ public class FullAppTraversalTests
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 
 		FullAppTraversalTests.chromeDriver1 = new ChromeDriver(capabilities);
+		FullAppTraversalTests.chromeDriver2 = new ChromeDriver(capabilities);
+
+		FullAppTraversalTests.chromeDriver1.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		FullAppTraversalTests.chromeDriver2.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+		Thread.sleep(15000);
+
 		FullAppTraversalTests.chromeDriver1.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
 
-		FullAppTraversalTests.chromeDriver2 = new ChromeDriver(capabilities);
 		FullAppTraversalTests.chromeDriver2.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
 	}
@@ -113,8 +119,6 @@ public class FullAppTraversalTests
 	@Test
 	public void testFullAppTraversal() throws InterruptedException
 	{
-		FullAppTraversalTests.chromeDriver1.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		FullAppTraversalTests.chromeDriver2.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		// Create a game in Chrome 1
 		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.chromeDriver1, 15);
