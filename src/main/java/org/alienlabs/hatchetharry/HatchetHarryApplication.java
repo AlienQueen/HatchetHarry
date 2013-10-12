@@ -111,7 +111,7 @@ public class HatchetHarryApplication extends WebApplication
 				}
 				catch (final Exception e)
 				{
-					e.printStackTrace();
+					HatchetHarryApplication.LOGGER.error(e.getMessage());
 				}
 			}
 		};
