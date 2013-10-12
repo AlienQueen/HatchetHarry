@@ -30,7 +30,7 @@ public class TeamInfoModalWindow extends Panel
 		final Label lead = new Label("lead", new Model<String>(
 				"Lead developer: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
 		final Label dev1 = new Label("dev1", new Model<String>(
-				"Developer: Sandaly Diawara (sandaly.diawara@gmail.com)"));
+				"Developer: Florian Benedetto (florian.benedetto@gmail.com)"));
 		final Label gfx = new Label("gfx", new Model<String>(
 				"GFX: Marie-Antoinette Navarro (mariea33@gmail.com)"));
 		final Label tester1 = new Label("tester1", new Model<String>(
