@@ -36,7 +36,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<wicket.version>6.11.0</wicket.version>
 		<quickview.version>6.9.1</quickview.version>
 		<wicketstuff.version>6.11.0</wicketstuff.version>
-		<wicket-atmosphere.version>0.11</wicket-atmosphere.version>
+		<wicket-atmosphere.version>0.14</wicket-atmosphere.version>
 		<atmosphere.version>1.0.13</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
@@ -703,7 +703,11 @@ You are free to modify any part of its source code (client-side or server-side),
 						<version>2.12.4</version>
 					</dependency>
 				</dependencies>
+				<inherited>true</inherited>
 				<configuration>
+					<forkMode>once</forkMode>
+					<reportFormat>xml</reportFormat>
+          			<classesDirectory>${project.build.directory}/generated-classes/emma/classes</classesDirectory>
 					<!-- Skip the normal tests, we'll run them in the integration-test phase -->
 					<skip>false</skip>
 					<!-- <parallel>classes</parallel> <threadCount>2</threadCount> <perCoreThreadCount>true</perCoreThreadCount> -->
@@ -791,10 +795,27 @@ You are free to modify any part of its source code (client-side or server-side),
 					<threshold>Low</threshold>
 				</configuration>
 			</plugin>
+			<plugin>      
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>emma-maven-plugin</artifactId>
+		        <version>1.0-alpha-3</version>
+		        <inherited>true</inherited>          
+		    </plugin>
 		</plugins>
 	</build>
 	<reporting>
 		<plugins>
+			<plugin>      
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>emma-maven-plugin</artifactId>
+		        <version>1.0-alpha-3</version>
+		    	<inherited>true</inherited>          
+		    </plugin>
+		    <plugin> 
+        		<groupId>org.codehaus.mojo</groupId> 
+        		<artifactId>surefire-report-maven-plugin</artifactId> 
+        		<inherited>true</inherited>
+      		</plugin> 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
