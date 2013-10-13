@@ -640,6 +640,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		          </instrumentation>
 		          <formats>
                     <format>xml</format>
+                    <format>html</format>
                 </formats>
 		        </configuration>
 		    <executions>
@@ -835,6 +836,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		    <configuration>
 		      <formats>
 		        <format>xml</format>
+		        <format>html</format>
 		      </formats>
 		     </configuration>
 		      </plugin>
