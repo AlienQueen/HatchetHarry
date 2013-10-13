@@ -820,8 +820,8 @@ You are free to modify any part of its source code (client-side or server-side),
 				<artifactId>findbugs-maven-plugin</artifactId>
 				<version>2.5.2</version>
 				<configuration>
-					<effort>Max</effort>
-					<threshold>Low</threshold>
+					<effort>Default</effort>
+					<threshold>Default</threshold>
 				</configuration>
 			</plugin>
 		</plugins>
