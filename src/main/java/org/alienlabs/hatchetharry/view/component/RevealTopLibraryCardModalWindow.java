@@ -91,6 +91,12 @@ public class RevealTopLibraryCardModalWindow extends Panel
 								.getPlayerId());
 				final Long gameId = game.getId();
 
+				RevealTopLibraryCardModalWindow.this.card.setZone(CardZone.BATTLEFIELD);
+				RevealTopLibraryCardModalWindow.this.card.setX(p.getSide().getX());
+				RevealTopLibraryCardModalWindow.this.card.setY(p.getSide().getY());
+				RevealTopLibraryCardModalWindow.this.persistenceService
+						.updateCard(RevealTopLibraryCardModalWindow.this.card);
+
 				final PlayTopLibraryCardCometChannel ptlccc = new PlayTopLibraryCardCometChannel(
 						gameId, RevealTopLibraryCardModalWindow.this.card, p.getSide());
 

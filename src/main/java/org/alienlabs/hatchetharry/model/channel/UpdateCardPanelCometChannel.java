@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import java.util.UUID;
+import org.alienlabs.hatchetharry.model.MagicCard;
 
 
 public class UpdateCardPanelCometChannel
@@ -14,14 +14,14 @@ public class UpdateCardPanelCometChannel
 	private final Long targetNumberOfCounters;
 	private final Long originalNumberOfCounters;
 	private final NotifierAction action;
-	private final UUID uuid;
+	private final MagicCard mc;
 	private final String bigImage;
 	private final String ownerSide;
 
 	public UpdateCardPanelCometChannel(final Long _gameId, final String _requestingPlayerName,
 			final String _targetPlayerName, final String _cardName, final String _counterName,
 			final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
-			final NotifierAction _action, final UUID _uuid, final String _bigImage,
+			final NotifierAction _action, final MagicCard _mc, final String _bigImage,
 			final String _ownerSide)
 	{
 		this.gameId = _gameId;
@@ -32,7 +32,7 @@ public class UpdateCardPanelCometChannel
 		this.targetNumberOfCounters = _targetNumberOfCounters;
 		this.originalNumberOfCounters = _originalNumberOfCounters;
 		this.action = _action;
-		this.uuid = _uuid;
+		this.mc = _mc;
 		this.bigImage = _bigImage;
 		this.ownerSide = _ownerSide;
 	}
@@ -72,9 +72,9 @@ public class UpdateCardPanelCometChannel
 		return this.action;
 	}
 
-	public UUID getUuid()
+	public MagicCard getMagicCard()
 	{
-		return this.uuid;
+		return this.mc;
 	}
 
 	public String getBigImage()

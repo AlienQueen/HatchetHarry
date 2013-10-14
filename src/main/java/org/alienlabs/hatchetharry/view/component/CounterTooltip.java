@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -128,9 +127,8 @@ public class CounterTooltip extends Panel
 							HatchetHarrySession.get().getPlayer().getName(),
 							targetPlayer.getName(), CounterTooltip.this.token.getCreatureTypes(),
 							_counterName, counter.getNumberOfCounters(), 0l,
-							NotifierAction.ADD_COUNTER, UUID.fromString(CounterTooltip.this.token
-									.getUuid()), "", CounterTooltip.this.token.getPlayer()
-									.getSide().getSideName());
+							NotifierAction.ADD_COUNTER, CounterTooltip.this.token, "",
+							CounterTooltip.this.token.getPlayer().getSide().getSideName());
 				}
 				else
 				{
@@ -138,7 +136,7 @@ public class CounterTooltip extends Panel
 							HatchetHarrySession.get().getPlayer().getName(),
 							targetPlayer.getName(), CounterTooltip.this.card.getTitle(),
 							_counterName, counter.getNumberOfCounters(), 0l,
-							NotifierAction.ADD_COUNTER, CounterTooltip.this.card.getUuidObject(),
+							NotifierAction.ADD_COUNTER, CounterTooltip.this.card,
 							CounterTooltip.this.card.getBigImageFilename(),
 							CounterTooltip.this.card.getOwnerSide());
 				}
@@ -203,8 +201,7 @@ public class CounterTooltip extends Panel
 											CounterTooltip.this.card.getDeck().getPlayerId())
 											.getName(), CounterTooltip.this.card.getTitle(),
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-									NotifierAction.ADD_COUNTER,
-									CounterTooltip.this.card.getUuidObject(),
+									NotifierAction.ADD_COUNTER, CounterTooltip.this.card,
 									CounterTooltip.this.card.getBigImageFilename(),
 									CounterTooltip.this.card.getOwnerSide());
 						}
@@ -217,8 +214,7 @@ public class CounterTooltip extends Panel
 											.getName(),
 									CounterTooltip.this.token.getCreatureTypes(),
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-									NotifierAction.ADD_COUNTER,
-									UUID.fromString(CounterTooltip.this.token.getUuid()), "",
+									NotifierAction.ADD_COUNTER, CounterTooltip.this.token, "",
 									CounterTooltip.this.token.getPlayer().getSide().getSideName());
 						}
 
@@ -275,7 +271,7 @@ public class CounterTooltip extends Panel
 												CounterTooltip.this.card.getDeck().getPlayerId())
 												.getName(), CounterTooltip.this.card.getTitle(),
 										counter.getCounterName(), counter.getNumberOfCounters(),
-										0l, action, CounterTooltip.this.card.getUuidObject(),
+										0l, action, CounterTooltip.this.card,
 										CounterTooltip.this.card.getBigImageFilename(),
 										CounterTooltip.this.card.getOwnerSide());
 							}
@@ -294,9 +290,9 @@ public class CounterTooltip extends Panel
 										targetPlayerName,
 										CounterTooltip.this.token.getCreatureTypes(),
 										counter.getCounterName(), counter.getNumberOfCounters(),
-										0l, action, UUID.fromString(CounterTooltip.this.token
-												.getUuid()), "", CounterTooltip.this.token
-												.getPlayer().getSide().getSideName());
+										0l, action, CounterTooltip.this.token, "",
+										CounterTooltip.this.token.getPlayer().getSide()
+												.getSideName());
 							}
 						}
 						else
@@ -316,7 +312,7 @@ public class CounterTooltip extends Panel
 											CounterTooltip.this.card.getDeck().getPlayerId())
 											.getName(), CounterTooltip.this.card.getTitle(),
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-									action, CounterTooltip.this.card.getUuidObject(),
+									action, CounterTooltip.this.card,
 									CounterTooltip.this.card.getBigImageFilename(),
 									CounterTooltip.this.card.getOwnerSide());
 						}
@@ -338,9 +334,8 @@ public class CounterTooltip extends Panel
 									game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 									targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-									action, UUID.fromString(CounterTooltip.this.token.getUuid()),
-									"", CounterTooltip.this.token.getPlayer().getSide()
-											.getSideName());
+									action, CounterTooltip.this.token, "",
+									CounterTooltip.this.token.getPlayer().getSide().getSideName());
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -401,7 +396,7 @@ public class CounterTooltip extends Panel
 												CounterTooltip.this.card.getDeck().getPlayerId())
 												.getName(), CounterTooltip.this.card.getTitle(),
 										counter.getCounterName(), counter.getNumberOfCounters(),
-										0l, action, CounterTooltip.this.card.getUuidObject(),
+										0l, action, CounterTooltip.this.card,
 										CounterTooltip.this.card.getBigImageFilename(),
 										CounterTooltip.this.card.getOwnerSide());
 							}
@@ -420,9 +415,9 @@ public class CounterTooltip extends Panel
 										targetPlayerName,
 										CounterTooltip.this.token.getCreatureTypes(),
 										counter.getCounterName(), counter.getNumberOfCounters(),
-										0l, action, UUID.fromString(CounterTooltip.this.token
-												.getUuid()), "", CounterTooltip.this.token
-												.getPlayer().getSide().getSideName());
+										0l, action, CounterTooltip.this.token, "",
+										CounterTooltip.this.token.getPlayer().getSide()
+												.getSideName());
 							}
 						}
 						else
@@ -442,8 +437,7 @@ public class CounterTooltip extends Panel
 											CounterTooltip.this.card.getDeck().getPlayerId())
 											.getName(), CounterTooltip.this.card.getTitle(),
 									counter.getCounterName(), targetNumberOfCounters,
-									originalNumberOfCounters, action,
-									CounterTooltip.this.card.getUuidObject(),
+									originalNumberOfCounters, action, CounterTooltip.this.card,
 									CounterTooltip.this.card.getBigImageFilename(),
 									CounterTooltip.this.card.getOwnerSide());
 						}
@@ -468,9 +462,9 @@ public class CounterTooltip extends Panel
 											.getName(),
 									CounterTooltip.this.token.getCreatureTypes(),
 									counter.getCounterName(), targetNumberOfCounters,
-									originalNumberOfCounters, action,
-									UUID.fromString(CounterTooltip.this.token.getUuid()), "",
-									CounterTooltip.this.token.getPlayer().getSide().getSideName());
+									originalNumberOfCounters, action, CounterTooltip.this.token,
+									"", CounterTooltip.this.token.getPlayer().getSide()
+											.getSideName());
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)

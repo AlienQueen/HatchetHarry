@@ -1822,7 +1822,7 @@ public class HomePage extends TestReportPage
 	public void updateCardTooltip(final AjaxRequestTarget target,
 			final UpdateCardPanelCometChannel event)
 	{
-		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuid());
+		final MagicCard mc = event.getMagicCard();
 
 		for (int i = 0; i < this.getAllTooltips().size(); i++)
 		{
@@ -1896,7 +1896,7 @@ public class HomePage extends TestReportPage
 	public void updateTokenTooltip(final AjaxRequestTarget target,
 			final UpdateTokenPanelCometChannel event)
 	{
-		final Token token = this.persistenceService.getTokenFromUuid(event.getUuid());
+		final Token token = event.getToken();
 
 		for (int i = 0; i < this.getAllTooltips().size(); i++)
 		{
@@ -2058,8 +2058,6 @@ public class HomePage extends TestReportPage
 			final PlayCardFromHandCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
-		mc.setX(event.getSide().getX());
-		mc.setY(event.getSide().getY());
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
@@ -2070,11 +2068,6 @@ public class HomePage extends TestReportPage
 			final PlayTopLibraryCardCometChannel event)
 	{
 		final MagicCard mc = event.getCard();
-
-		mc.setZone(CardZone.BATTLEFIELD);
-		mc.setX(event.getSide().getX());
-		mc.setY(event.getSide().getY());
-		this.persistenceService.updateCard(mc);
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
@@ -2127,8 +2120,6 @@ public class HomePage extends TestReportPage
 			final PlayCardFromGraveyardCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
-		mc.setX(event.getSide().getX());
-		mc.setY(event.getSide().getY());
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
 	}

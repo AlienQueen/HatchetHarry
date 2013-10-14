@@ -79,14 +79,14 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		game.setCurrentPlaceholderId(currentPlaceholderId);
 		this.persistenceService.updateGame(game);
 
-		card.setX(300l + (currentPlaceholderId * 16));
-		card.setY(300l + (currentPlaceholderId * 16));
+		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
+				.getId());
+		card.setX(p.getSide().getX());
+		card.setY(p.getSide().getY());
 		this.persistenceService.updateCard(card);
 
 		JavaScriptUtils.updateGraveyard(target);
 
-		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
-				.getId());
 		final Deck d = p.getDeck();
 		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));

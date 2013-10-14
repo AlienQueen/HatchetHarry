@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import java.util.UUID;
+import org.alienlabs.hatchetharry.model.Token;
 
 
 public class UpdateTokenPanelCometChannel
@@ -14,13 +14,13 @@ public class UpdateTokenPanelCometChannel
 	private final Long targetNumberOfCounters;
 	private final Long originalNumberOfCounters;
 	private final NotifierAction action;
-	private final UUID uuid;
+	private final Token token;
 	private final String ownerSide;
 
 	public UpdateTokenPanelCometChannel(final Long _gameId, final String _requestingPlayerName,
 			final String _targetPlayerName, final String _tokenName, final String _counterName,
 			final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
-			final NotifierAction _action, final UUID _uuid, final String _bigImage,
+			final NotifierAction _action, final Token _token, final String _bigImage,
 			final String _ownerSide)
 	{
 		this.gameId = _gameId;
@@ -31,7 +31,7 @@ public class UpdateTokenPanelCometChannel
 		this.targetNumberOfCounters = _targetNumberOfCounters;
 		this.originalNumberOfCounters = _originalNumberOfCounters;
 		this.action = _action;
-		this.uuid = _uuid;
+		this.token = _token;
 		this.ownerSide = _ownerSide;
 	}
 
@@ -70,9 +70,9 @@ public class UpdateTokenPanelCometChannel
 		return this.action;
 	}
 
-	public UUID getUuid()
+	public Token getToken()
 	{
-		return this.uuid;
+		return this.token;
 	}
 
 	public String getOwnerSide()
