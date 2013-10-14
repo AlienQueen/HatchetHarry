@@ -124,7 +124,7 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateCard(final MagicCard c)
 	{
-		this.magicCardDao.getSession().update(c);
+		this.magicCardDao.getSession().merge(c);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
