@@ -2,20 +2,26 @@ package org.alienlabs.hatchetharry.model.channel;
 
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Side;
+
 public class PlayCardFromGraveyardCometChannel
 {
 
 	UUID uuidToLookFor;
 	private final String playerName;
 	private final Long gameId;
+	private final Side side;
+	private final MagicCard mc;
 
 
-	public PlayCardFromGraveyardCometChannel(final UUID _uuidToLookFor, final String _playerName,
-			final Long _gameId)
+	public PlayCardFromGraveyardCometChannel(final MagicCard _mc, final String _playerName,
+			final Long _gameId, final Side _side)
 	{
-		this.uuidToLookFor = _uuidToLookFor;
+		this.mc = _mc;
 		this.playerName = _playerName;
 		this.gameId = _gameId;
+		this.side = _side;
 	}
 
 	public UUID getUuidToLookFor()
@@ -31,6 +37,16 @@ public class PlayCardFromGraveyardCometChannel
 	public Long getGameId()
 	{
 		return this.gameId;
+	}
+
+	public Side getSide()
+	{
+		return this.side;
+	}
+
+	public MagicCard getMagicCard()
+	{
+		return this.mc;
 	}
 
 }

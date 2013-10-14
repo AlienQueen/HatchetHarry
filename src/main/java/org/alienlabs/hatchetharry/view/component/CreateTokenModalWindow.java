@@ -94,7 +94,8 @@ public class CreateTokenModalWindow extends Panel
 			{
 				final UUID uuid = UUID.randomUUID();
 				final Long gameId = HatchetHarrySession.get().getGameId();
-				final Player player = HatchetHarrySession.get().getPlayer();
+				final Player player = CreateTokenModalWindow.this.persistenceService
+						.getPlayer(HatchetHarrySession.get().getPlayer().getId());
 
 				final Token token = new Token(CreateTokenModalWindow.this.typeModel.getObject(),
 						Long.parseLong(CreateTokenModalWindow.this.powerModel.getObject()),
@@ -130,7 +131,7 @@ public class CreateTokenModalWindow extends Panel
 				CreateTokenModalWindow.this.persistenceService.saveCard(card);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(
-						gameId, card);
+						gameId, card, player.getSide());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PUT_TOKEN_ON_BATTLEFIELD, gameId, player.getId(),

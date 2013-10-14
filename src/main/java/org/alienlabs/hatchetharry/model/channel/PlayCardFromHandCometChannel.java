@@ -1,26 +1,31 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import java.util.UUID;
+import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Side;
 
+/**
+ * @author nostromo
+ * 
+ */
 public class PlayCardFromHandCometChannel
 {
-
-	private final UUID uuidToLookFor;
 	private final String playerName;
 	private final Long gameId;
+	private final MagicCard mc;
+	private final Side side;
 
-
-	public PlayCardFromHandCometChannel(final UUID _uuidToLookFor, final String _playerName,
-			final Long _gameId)
+	public PlayCardFromHandCometChannel(final MagicCard _mc, final String _playerName,
+			final Long _gameId, final Side _side)
 	{
-		this.uuidToLookFor = _uuidToLookFor;
+		this.mc = _mc;
 		this.playerName = _playerName;
 		this.gameId = _gameId;
+		this.side = _side;
 	}
 
-	public UUID getUuidToLookFor()
+	public MagicCard getMagicCard()
 	{
-		return this.uuidToLookFor;
+		return this.mc;
 	}
 
 	public String getPlayerName()
@@ -31,6 +36,11 @@ public class PlayCardFromHandCometChannel
 	public Long getGameId()
 	{
 		return this.gameId;
+	}
+
+	public Side getSide()
+	{
+		return this.side;
 	}
 
 }

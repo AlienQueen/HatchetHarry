@@ -96,7 +96,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);
+				card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());
 
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()

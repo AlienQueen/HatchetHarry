@@ -92,7 +92,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				final Long gameId = game.getId();
 
 				final PlayTopLibraryCardCometChannel ptlccc = new PlayTopLibraryCardCometChannel(
-						gameId, RevealTopLibraryCardModalWindow.this.card);
+						gameId, RevealTopLibraryCardModalWindow.this.card, p.getSide());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PLAY_TOP_LIBRARY_CARD, gameId, p.getId(),

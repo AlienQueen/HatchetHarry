@@ -136,8 +136,8 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final CardZoneMoveCometChannel czmcc = new CardZoneMoveCometChannel(this.sourceZone,
-				this.targetZone, card, card.getDeck().getPlayerId(), card.getGameId(), card
-						.getDeck().getDeckId());
+				this.targetZone, card, card.getDeck().getPlayerId(), card.getGameId(),
+				card.getDeck(), ownerPlayer.getSide());
 
 		final CardZoneMoveNotifier czmn = new CardZoneMoveNotifier(this.sourceZone,
 				this.targetZone, card, HatchetHarrySession.get().getPlayer().getName(),

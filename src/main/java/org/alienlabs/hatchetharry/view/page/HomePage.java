@@ -267,7 +267,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Where is Daddy?),");
-		final Label message2 = new Label("message2", "built on Friday, 11th of October 2013.");
+		final Label message2 = new Label("message2", "built on Monday, 14th of October 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -2057,7 +2057,9 @@ public class HomePage extends TestReportPage
 	public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{
-		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+		final MagicCard mc = event.getMagicCard();
+		mc.setX(event.getSide().getX());
+		mc.setY(event.getSide().getY());
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
@@ -2070,8 +2072,8 @@ public class HomePage extends TestReportPage
 		final MagicCard mc = event.getCard();
 
 		mc.setZone(CardZone.BATTLEFIELD);
-		mc.setX(300l);
-		mc.setY(300l);
+		mc.setX(event.getSide().getX());
+		mc.setY(event.getSide().getY());
 		this.persistenceService.updateCard(mc);
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
@@ -2083,6 +2085,8 @@ public class HomePage extends TestReportPage
 			final PutTokenOnBattlefieldCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
+		mc.setX(event.getSide().getX());
+		mc.setY(event.getSide().getY());
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
@@ -2122,7 +2126,9 @@ public class HomePage extends TestReportPage
 	public void playCardFromGraveyard(final AjaxRequestTarget target,
 			final PlayCardFromGraveyardCometChannel event)
 	{
-		final MagicCard mc = this.persistenceService.getCardFromUuid(event.getUuidToLookFor());
+		final MagicCard mc = event.getMagicCard();
+		mc.setX(event.getSide().getX());
+		mc.setY(event.getSide().getY());
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
 	}
@@ -2176,8 +2182,7 @@ public class HomePage extends TestReportPage
 	public void cardZoneChange(final AjaxRequestTarget target, final CardZoneMoveCometChannel event)
 	{
 		final MagicCard mc = event.getCard();
-		final Deck d = this.persistenceService.getDeck(this.persistenceService
-				.getPlayer(event.getPlayerId()).getDeck().getDeckId());
+		final Deck d = event.getDeck();
 		final boolean isRequestingPlayerSameThanTargetedPlayer = event.getPlayerId().longValue() == HatchetHarrySession
 				.get().getPlayer().getId().longValue();
 
@@ -2200,6 +2205,8 @@ public class HomePage extends TestReportPage
 		switch (event.getTargetZone())
 		{
 			case BATTLEFIELD :
+				mc.setX(event.getSide().getX());
+				mc.setY(event.getSide().getY());
 				JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
 						this.persistenceService, event.getGameId(), mc, true);
 				break;

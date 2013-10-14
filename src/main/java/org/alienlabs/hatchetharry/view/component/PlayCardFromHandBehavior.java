@@ -122,8 +122,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		JavaScriptUtils.updateHand(target);
 
-		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(
-				this.uuidToLookFor, HatchetHarrySession.get().getPlayer().getName(), gameId);
+		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
+				HatchetHarrySession.get().getPlayer().getName(), gameId, _side);
 
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
