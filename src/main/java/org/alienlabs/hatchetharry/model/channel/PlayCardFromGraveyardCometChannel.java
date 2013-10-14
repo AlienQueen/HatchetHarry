@@ -1,14 +1,10 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import java.util.UUID;
-
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Side;
 
 public class PlayCardFromGraveyardCometChannel
 {
-
-	UUID uuidToLookFor;
 	private final String playerName;
 	private final Long gameId;
 	private final Side side;
@@ -22,11 +18,6 @@ public class PlayCardFromGraveyardCometChannel
 		this.playerName = _playerName;
 		this.gameId = _gameId;
 		this.side = _side;
-	}
-
-	public UUID getUuidToLookFor()
-	{
-		return this.uuidToLookFor;
 	}
 
 	public String getPlayerName()
