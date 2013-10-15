@@ -189,6 +189,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/Safari.png"));
 		this.mountResource("image/Terminal.png", new PackageResourceReference(HomePage.class,
 				"image/Terminal.png"));
+		this.mountResource("image/end.png", new PackageResourceReference(HomePage.class,
+				"image/end.png"));
 
 		this.mountResource("image/hover.png", new PackageResourceReference(HomePage.class,
 				"image/hover.png"));

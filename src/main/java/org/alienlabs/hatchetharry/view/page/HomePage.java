@@ -113,6 +113,7 @@ import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.TokenTooltipPanel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.atmosphere.JQueryWicketAtmosphereResourceReference;
@@ -225,6 +226,18 @@ public class HomePage extends TestReportPage
 
 	public HomePage() throws IOException
 	{
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
+		final HttpServletRequest request = servletWebRequest.getContainerRequest();
+
+		// http://hatchetharry.net/jtrac/app/item/HAHA-58/
+		final String endGame = request.getParameter("endGame");
+
+		if ("true".equals(endGame))
+		{
+			HatchetHarrySession.get().invalidate();
+			throw new RestartResponseException(HomePage.class);
+		}
+
 		this.setOutputMarkupId(true);
 		this.session = HatchetHarrySession.get();
 
@@ -357,8 +370,6 @@ public class HomePage extends TestReportPage
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
 
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 		request.getRequestedSessionId();
 
 		this.createGameWindow = new ModalWindow("createGameWindow");
@@ -409,8 +420,8 @@ public class HomePage extends TestReportPage
 		this.generateCountCardsLink("countCardsLink", this.countCardsWindow);
 		this.generateCountCardsLink("countCardsLinkResponsive", this.countCardsWindow);
 
-		this.generateResetDbLink("resetDbLink");
-		this.generateResetDbLink("resetDbLinkResponsive");
+		this.generateEndGameLink("endGameLink");
+		this.generateEndGameLink("endGameLinkResponsive");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLink");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLinkResponsive");
 	}
@@ -438,7 +449,7 @@ public class HomePage extends TestReportPage
 		});
 	}
 
-	private void generateResetDbLink(final String id)
+	private void generateEndGameLink(final String id)
 	{
 		this.add(new AjaxLink<Void>(id)
 		{
@@ -447,12 +458,9 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				HomePage.LOGGER.info("reset DB");
-				HomePage.this.persistenceService.resetDb();
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
-				target.appendJavaScript("alert('The database has been reset, please clear your cookies and refresh this page (F5)!');");
+				HomePage.LOGGER.info("end game");
+				target.appendJavaScript("var r = confirm('Are you sure that you want to end this game?'); if (r==true) { window.location = window.location + '?endGame=true'; }; ");
 			}
-
 		});
 	}
 
