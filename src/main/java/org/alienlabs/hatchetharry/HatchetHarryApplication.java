@@ -372,10 +372,17 @@ public class HatchetHarryApplication extends WebApplication
 	@Override
 	public void resourceUnregistered(final String uuid)
 	{
-		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
-		HatchetHarryApplication.LOGGER
-				.info("uuid removed: " + uuid + ", for playerId: " + playerId);
-		HatchetHarryApplication.cometResources.remove(playerId);
+		try
+		{
+			final Long playerId = HatchetHarrySession.get().getPlayer().getId();
+			HatchetHarryApplication.LOGGER.info("uuid removed: " + uuid + ", for playerId: "
+					+ playerId);
+			HatchetHarryApplication.cometResources.remove(playerId);
+		}
+		catch (final Exception e)
+		{
+			HatchetHarryApplication.LOGGER.error(e.getMessage());
+		}
 	}
 
 	static class FolderContentResource implements IResource

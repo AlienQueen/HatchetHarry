@@ -234,6 +234,8 @@ public class HomePage extends TestReportPage
 
 		if ("true".equals(endGame))
 		{
+			HatchetHarryApplication.getCometResources().remove(
+					HatchetHarrySession.get().getPlayer().getId());
 			HatchetHarrySession.get().invalidate();
 			throw new RestartResponseException(HomePage.class);
 		}
