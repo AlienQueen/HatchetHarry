@@ -23,7 +23,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class SpringContextLoaderBaseTest
 {
 	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml" });
+			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
 	public static transient ApplicationContext context;

@@ -36,7 +36,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class NonRegressionTest
 {
 	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml" });
+			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
 	private transient WicketTester tester;
 	private HatchetHarryApplication webApp;
 	static transient ApplicationContext context;

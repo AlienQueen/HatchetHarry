@@ -31,12 +31,7 @@
 						| (_| | (_| | || (_| | \__ \ (_) | |_| | | | (_|  __/
 						 \__,_|\__,_|\__\__,_| |___/\___/ \__,_|_|  \___\___|
 					 -->
-	<!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
-		<property name="url"><value>jdbc:mysql://localhost:3306/hh</value></property>
-		<property name="username"><value>less</value></property>
-		<property name="password"><value>more</value></property>
-	</bean>-->
+
         <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
               destroy-method="close">
             <property name="driverClass" value="com.mysql.jdbc.Driver" />

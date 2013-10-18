@@ -16,3 +16,5 @@ META-INF
 /agitar
 /jmeter.log
 /.agitator
+/mem.h2.db
+/mem.trace.db
