@@ -28,6 +28,7 @@ public class SpringContextLoaderBaseTest
 	protected static HatchetHarryApplication webApp;
 	public static transient ApplicationContext context;
 	protected static String pageDocument;
+	private static PersistenceService persistenceService;
 
 	@BeforeClass
 	public static void setUpBeforeClass()
@@ -50,6 +51,9 @@ public class SpringContextLoaderBaseTest
 		};
 
 		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp);
+
+		SpringContextLoaderBaseTest.persistenceService = SpringContextLoaderBaseTest.context
+				.getBean(PersistenceService.class);
 
 		// start and render the test page
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -80,10 +84,8 @@ public class SpringContextLoaderBaseTest
 		createGameForm.setValue("deckParent:decks", "0");
 		createGameForm.submit();
 
-		// We should not have more cards that the number of cards in the deck
-		final PersistenceService persistenceService = _context.getBean(PersistenceService.class);
-		Player p = persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId())
-				.get(0);
+		Player p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 
@@ -97,7 +99,7 @@ public class SpringContextLoaderBaseTest
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final List<MagicCard> allCardsInBattlefield = persistenceService
+		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
@@ -109,7 +111,8 @@ public class SpringContextLoaderBaseTest
 
 		// We still should not have more cards that the number of cards in the
 		// deck
-		p = persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId()).get(0);
+		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 
