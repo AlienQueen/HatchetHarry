@@ -283,8 +283,8 @@ public class HomePage extends TestReportPage
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.5.0 (release Where is Daddy?),");
-		final Label message2 = new Label("message2", "built on Monday, 14th of October 2013.");
+		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
+		final Label message2 = new Label("message2", "built on Tuesday, 19th of November 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
