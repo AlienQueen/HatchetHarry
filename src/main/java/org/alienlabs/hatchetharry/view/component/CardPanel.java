@@ -109,6 +109,10 @@ public class CardPanel extends Panel
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid);
 		menutoggleButton.add(cardRotateBehavior);
 
+		final ArrowDrawBehavior arrowDrawBehavior = new ArrowDrawBehavior("cardHandle"
+				+ this.uuid.toString().replace("-", "_"));
+		menutoggleButton.add(arrowDrawBehavior);
+
 		final String requestedSessionId = this.getHttpServletRequest().getRequestedSessionId();
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				requestedSessionId));
@@ -136,6 +140,7 @@ public class CardPanel extends Panel
 		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("card" + this.uuid.toString().replace("-", "_"));
+		cardImage.add(new AttributeModifier("class", "clickableCard"));
 
 		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
 		if (null != this.owner)

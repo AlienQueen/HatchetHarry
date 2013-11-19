@@ -288,7 +288,7 @@ public class JoinGameModalWindow extends Panel
 				final Side s = JoinGameModalWindow.this.player.getSide();
 				s.setUuid(UUID.randomUUID().toString());
 				s.setX(Long.valueOf(posX));
-				s.setY(300l);
+				s.setY(500l);
 
 				JoinGameModalWindow.this.persistenceService.updateGame(game);
 

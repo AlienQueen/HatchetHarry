@@ -33,11 +33,11 @@ You are free to modify any part of its source code (client-side or server-side),
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.9.0</wicket.version>
+		<wicket.version>6.12.0</wicket.version>
 		<quickview.version>6.9.1</quickview.version>
-		<wicketstuff.version>6.9.0</wicketstuff.version>
-		<wicket-atmosphere.version>0.11</wicket-atmosphere.version>
-		<atmosphere.version>1.0.13</atmosphere.version>
+		<wicketstuff.version>6.11.0</wicketstuff.version>
+		<wicket-atmosphere.version>0.16-SNAPSHOT</wicket-atmosphere.version>
+		<atmosphere.version>2.0.0</atmosphere.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
@@ -557,7 +557,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<dependency>
 		    <groupId>com.ninja-squad</groupId>
 		    <artifactId>DbSetup</artifactId>
-		    <version>1.1.0</version>
+		    <version>1.2.0</version>
 		    <scope>test</scope>
 		</dependency>
 	</dependencies>

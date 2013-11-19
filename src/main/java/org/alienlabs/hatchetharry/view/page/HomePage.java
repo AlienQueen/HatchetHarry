@@ -63,6 +63,7 @@ import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
+import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveCometChannel;
@@ -83,6 +84,7 @@ import org.alienlabs.hatchetharry.model.channel.PutTokenOnBattlefieldCometChanne
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.SwitchDrawModeCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
@@ -513,6 +515,54 @@ public class HomePage extends TestReportPage
 		};
 
 		this.add(showHandLink);
+
+		final AjaxLink<Void> drawModeLink = new AjaxLink<Void>("drawModeLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				HomePage.LOGGER
+						.info("###  draw mode is: " + HatchetHarrySession.get().isDrawMode());
+				HatchetHarrySession.get().setDrawMode(!HatchetHarrySession.get().isDrawMode());
+				HomePage.LOGGER.info("### switching draw mode to: "
+						+ HatchetHarrySession.get().isDrawMode());
+
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(HomePage.this.session.getGameId());
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					final SwitchDrawModeCometChannel sdmcc = new SwitchDrawModeCometChannel(
+							HatchetHarrySession.get().isDrawMode());
+
+					HatchetHarryApplication.get().getEventBus().post(sdmcc, pageUuid);
+				}
+			}
+
+			@Override
+			protected void onComponentTag(final ComponentTag tag)
+			{
+				super.onComponentTag(tag);
+
+				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+						|| tag.getName().equalsIgnoreCase("area"))
+				{
+					tag.put("href", "#");
+				}
+				else
+				{
+					this.disableLink(tag);
+				}
+
+			}
+		};
+
+		this.add(drawModeLink);
 
 		final AjaxLink<Void> showGraveyardLink = new AjaxLink<Void>("graveyardLink")
 		{
@@ -1195,6 +1245,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/notificon.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/jquery.jsPlumb-1.5.3-min.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/myStyle.css")));
@@ -2325,6 +2377,85 @@ public class HomePage extends TestReportPage
 				+ event.getUuid().toString().replace("-", "_") + "').css({top: '"
 				+ event.getSideY() + "px', left: '" + event.getSideX()
 				+ "px', position:'absolute'}); ");
+	}
+
+	@Subscribe
+	public void displayArrow(final AjaxRequestTarget target, final ArrowDrawCometChannel event)
+	{
+		target.appendJavaScript("var e0 = jsPlumb.addEndpoint("
+				+ event.getSource()
+				+ " ); "
+				+ "     	var e1 = jsPlumb.addEndpoint("
+				+ event.getTarget()
+				+ "); "
+				+ "	jQuery('._jsPlumb_endpoint_full').remove(); "
+				+ "	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
+				+ "					['Label', {location:0.7, id:'label', events:{ "
+				+ "							} }], ['Arrow', { "
+				+ "						cssClass:'l1arrow',  location:0.5, width:20,length:20 }]] }); ");
+	}
+
+	@Subscribe
+	public void switchDrawMode(final AjaxRequestTarget target,
+			final SwitchDrawModeCometChannel event)
+	{
+		HatchetHarrySession.get().setDrawMode(event.isDrawMode());
+		HomePage.LOGGER.info("##### switched draw mode to: "
+				+ HatchetHarrySession.get().isDrawMode());
+
+		if (event.isDrawMode())
+		{
+			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+
+			target.appendJavaScript("var cardAlreadySelected = false; "
+					+ "var plumbSource, plumbTarget; "
+					+ "jQuery('.clickableCard').unbind('click'); "
+					+ "jQuery('.clickableCard').click(function (event) { "
+					+ "if (cardAlreadySelected) { "
+					+ "	cardAlreadySelected = false; "
+					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
+					+ "} else { "
+					+ "	cardAlreadySelected = true; "
+					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+					+ "}});");
+		}
+		else
+		{
+			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode OFF', text : \"You are now in normal mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+
+			final StringBuilder buil = new StringBuilder();
+
+			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
+
+			for (final MagicCard mc : this.getAllMagicCardsInBattlefield())
+			{
+
+				final String uuidValidForJs = mc.getUuid().replace("-", "_");
+
+				buil.append("jQuery('#card" + uuidValidForJs
+						+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
+						+ "').attr('style', 'display: block; position: absolute; left: "
+						+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
+						+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+						+ " > span').attr('style', 'display: block;'); }); ");
+
+				// For mobile
+				buil.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
+						+ "').hammer(); ");
+				buil.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
+				buil.append("jQuery('#cardTooltip" + uuidValidForJs
+						+ "').attr('style', 'display: block; position: absolute; left: "
+						+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
+						+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+						+ " > span').attr('style', 'display: block;'); }); ");
+
+				buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide(); ");
+			}
+
+			target.appendJavaScript(buil.toString());
+		}
+
 	}
 
 	@Override

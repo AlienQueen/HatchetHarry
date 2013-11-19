@@ -328,6 +328,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/minusLife.png"));
 		this.mountResource("image/plusLife.png", new PackageResourceReference(HomePage.class,
 				"image/plusLife.png"));
+		this.mountResource("image/palette.png", new PackageResourceReference(HomePage.class,
+				"image/palette.png"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.hours(1));

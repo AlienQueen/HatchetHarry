@@ -88,4 +88,4 @@ jQuery(function() {
 });
 
 // For cards drag + hand, graveyard & exile drop
-var shouldMove = true; 
+var shouldMove = true;
