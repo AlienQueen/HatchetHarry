@@ -2413,6 +2413,7 @@ public class HomePage extends TestReportPage
 				+ event.getTarget()
 				+ "); "
 				+ "	jQuery('._jsPlumb_endpoint_full').remove(); "
+				+ " arrows.push({ 'source' : " + event.getSource() + ", 'target' : " + event.getTarget() + " }); "
 				+ "	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
 				+ "					['Label', {location:0.7, id:'label', events:{ "
 				+ "							} }], ['Arrow', { "
@@ -2439,7 +2440,6 @@ public class HomePage extends TestReportPage
 					+ "if (cardAlreadySelected) { "
 					+ "	cardAlreadySelected = false; "
 					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ " arrows.push({ 'source' : plumbSource, 'target' : plumbTarget }); "
 					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
 					+ "} else { "
 					+ "	cardAlreadySelected = true; "
