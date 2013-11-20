@@ -440,7 +440,7 @@ public class HomePage extends TestReportPage
 	private void generateHideAllTooltipsLink(final String id)
 	{
 		this.add(new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -450,13 +450,13 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
 			}
 
-		});
+				});
 	}
 
 	private void generateEndGameLink(final String id)
 	{
 		this.add(new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -465,13 +465,13 @@ public class HomePage extends TestReportPage
 				HomePage.LOGGER.info("end game");
 				target.appendJavaScript("var r = confirm('Are you sure that you want to end this game?'); if (r==true) { window.location = window.location + '?endGame=true'; }; ");
 			}
-		});
+				});
 	}
 
 	private void buildDock()
 	{
 		final AjaxLink<Void> showHandLink = new AjaxLink<Void>("handLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -512,150 +512,150 @@ public class HomePage extends TestReportPage
 				}
 
 			}
-		};
+				};
 
-		this.add(showHandLink);
+				this.add(showHandLink);
 
-		final AjaxLink<Void> drawModeLink = new AjaxLink<Void>("drawModeLink")
-		{
-			private static final long serialVersionUID = 1L;
+				final AjaxLink<Void> drawModeLink = new AjaxLink<Void>("drawModeLink")
+						{
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
-			{
-				HomePage.LOGGER
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						HomePage.LOGGER
 						.info("###  draw mode is: " + HatchetHarrySession.get().isDrawMode());
-				HatchetHarrySession.get().setDrawMode(!HatchetHarrySession.get().isDrawMode());
-				HomePage.LOGGER.info("### switching draw mode to: "
-						+ HatchetHarrySession.get().isDrawMode());
+						HatchetHarrySession.get().setDrawMode(!HatchetHarrySession.get().isDrawMode());
+						HomePage.LOGGER.info("### switching draw mode to: "
+								+ HatchetHarrySession.get().isDrawMode());
 
-				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(HomePage.this.session.getGameId());
+						final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+								.giveAllPlayersFromGame(HomePage.this.session.getGameId());
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-							playerToWhomToSend);
-					final SwitchDrawModeCometChannel sdmcc = new SwitchDrawModeCometChannel(
-							HatchetHarrySession.get().isDrawMode());
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources().get(
+									playerToWhomToSend);
+							final SwitchDrawModeCometChannel sdmcc = new SwitchDrawModeCometChannel(
+									HatchetHarrySession.get().isDrawMode());
 
-					HatchetHarryApplication.get().getEventBus().post(sdmcc, pageUuid);
-				}
-			}
+							HatchetHarryApplication.get().getEventBus().post(sdmcc, pageUuid);
+						}
+					}
 
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
-			{
-				super.onComponentTag(tag);
+					@Override
+					protected void onComponentTag(final ComponentTag tag)
+					{
+						super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-						|| tag.getName().equalsIgnoreCase("area"))
-				{
-					tag.put("href", "#");
-				}
-				else
-				{
-					this.disableLink(tag);
-				}
+						if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+								|| tag.getName().equalsIgnoreCase("area"))
+						{
+							tag.put("href", "#");
+						}
+						else
+						{
+							this.disableLink(tag);
+						}
 
-			}
-		};
+					}
+						};
 
-		this.add(drawModeLink);
+						this.add(drawModeLink);
 
-		final AjaxLink<Void> showGraveyardLink = new AjaxLink<Void>("graveyardLink")
-		{
-			private static final long serialVersionUID = 1L;
+						final AjaxLink<Void> showGraveyardLink = new AjaxLink<Void>("graveyardLink")
+								{
+							private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
-			{
-				final Player _player = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId());
-				final boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
+							@Override
+							public void onClick(final AjaxRequestTarget target)
+							{
+								final Player _player = HomePage.this.persistenceService
+										.getPlayer(HomePage.this.session.getPlayer().getId());
+								final boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
 
-				if (isGraveyardDisplayed)
-				{
-					HomePage.this.graveyardParent.addOrReplace(new WebMarkupContainer("graveyard"));
-					target.add(HomePage.this.graveyardParent);
-				}
-				else
-				{
-					JavaScriptUtils.updateGraveyard(target);
+								if (isGraveyardDisplayed)
+								{
+									HomePage.this.graveyardParent.addOrReplace(new WebMarkupContainer("graveyard"));
+									target.add(HomePage.this.graveyardParent);
+								}
+								else
+								{
+									JavaScriptUtils.updateGraveyard(target);
 
-				}
+								}
 
-				_player.setGraveyardDisplayed(!isGraveyardDisplayed);
-				HomePage.this.persistenceService.updatePlayer(_player);
-			}
+								_player.setGraveyardDisplayed(!isGraveyardDisplayed);
+								HomePage.this.persistenceService.updatePlayer(_player);
+							}
 
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
-			{
-				super.onComponentTag(tag);
+							@Override
+							protected void onComponentTag(final ComponentTag tag)
+							{
+								super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-						|| tag.getName().equalsIgnoreCase("area"))
-				{
-					tag.put("href", "#");
-				}
-				else
-				{
-					this.disableLink(tag);
-				}
+								if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+										|| tag.getName().equalsIgnoreCase("area"))
+								{
+									tag.put("href", "#");
+								}
+								else
+								{
+									this.disableLink(tag);
+								}
 
-			}
-		};
+							}
+								};
 
-		this.add(showGraveyardLink);
+								this.add(showGraveyardLink);
 
-		final AjaxLink<Void> showExileLink = new AjaxLink<Void>("exileLink")
-		{
-			private static final long serialVersionUID = 1L;
+								final AjaxLink<Void> showExileLink = new AjaxLink<Void>("exileLink")
+										{
+									private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
-			{
-				final Player _player = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId());
-				final boolean isExileDisplayed = _player.isExileDisplayed();
+									@Override
+									public void onClick(final AjaxRequestTarget target)
+									{
+										final Player _player = HomePage.this.persistenceService
+												.getPlayer(HomePage.this.session.getPlayer().getId());
+										final boolean isExileDisplayed = _player.isExileDisplayed();
 
-				if (isExileDisplayed)
-				{
-					HomePage.this.exileParent.addOrReplace(new WebMarkupContainer("exile"));
-					target.add(HomePage.this.exileParent);
-				}
-				else
-				{
-					JavaScriptUtils.updateExile(target, _player.getGame().getId(), _player.getId(),
-							_player.getDeck().getDeckId());
+										if (isExileDisplayed)
+										{
+											HomePage.this.exileParent.addOrReplace(new WebMarkupContainer("exile"));
+											target.add(HomePage.this.exileParent);
+										}
+										else
+										{
+											JavaScriptUtils.updateExile(target, _player.getGame().getId(), _player.getId(),
+													_player.getDeck().getDeckId());
 
-				}
+										}
 
-				_player.setExileDisplayed(!isExileDisplayed);
-				HomePage.this.persistenceService.updatePlayer(_player);
-			}
+										_player.setExileDisplayed(!isExileDisplayed);
+										HomePage.this.persistenceService.updatePlayer(_player);
+									}
 
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
-			{
-				super.onComponentTag(tag);
+									@Override
+									protected void onComponentTag(final ComponentTag tag)
+									{
+										super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-						|| tag.getName().equalsIgnoreCase("area"))
-				{
-					tag.put("href", "#");
-				}
-				else
-				{
-					this.disableLink(tag);
-				}
+										if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+												|| tag.getName().equalsIgnoreCase("area"))
+										{
+											tag.put("href", "#");
+										}
+										else
+										{
+											this.disableLink(tag);
+										}
 
-			}
-		};
+									}
+										};
 
-		this.add(showExileLink);
+										this.add(showExileLink);
 	}
 
 	private void buildEndTurnLink()
@@ -665,7 +665,7 @@ public class HomePage extends TestReportPage
 		this.endTurnPlaceholder.setOutputMarkupId(true);
 
 		this.endTurnLink = new AjaxLink<Void>("endTurnLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -689,7 +689,7 @@ public class HomePage extends TestReportPage
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
-									.getSide().getSideName(), null, null, null, "");
+							.getSide().getSideName(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 
@@ -700,12 +700,12 @@ public class HomePage extends TestReportPage
 				HomePage.this.session.setCombatInProgress(false);
 			}
 
-		};
-		this.endTurnLink.setMarkupId("endTurnLink");
-		this.endTurnLink.setOutputMarkupId(true);
+				};
+				this.endTurnLink.setMarkupId("endTurnLink");
+				this.endTurnLink.setOutputMarkupId(true);
 
-		this.endTurnPlaceholder.add(this.endTurnLink);
-		this.add(this.endTurnPlaceholder);
+				this.endTurnPlaceholder.add(this.endTurnLink);
+				this.add(this.endTurnPlaceholder);
 	}
 
 	private void buildEndTurnActionLink()
@@ -715,7 +715,7 @@ public class HomePage extends TestReportPage
 		this.endTurnActionPlaceholder.setOutputMarkupId(true);
 
 		this.endTurnActionLink = new AjaxLink<Void>("endTurnActionLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -747,12 +747,12 @@ public class HomePage extends TestReportPage
 
 			}
 
-		};
-		this.endTurnActionLink.setMarkupId("endTurnActionLink");
-		this.endTurnActionLink.setOutputMarkupId(true);
+				};
+				this.endTurnActionLink.setMarkupId("endTurnActionLink");
+				this.endTurnActionLink.setOutputMarkupId(true);
 
-		this.endTurnActionPlaceholder.add(this.endTurnActionLink);
-		this.add(this.endTurnActionPlaceholder);
+				this.endTurnActionPlaceholder.add(this.endTurnActionLink);
+				this.add(this.endTurnActionPlaceholder);
 	}
 
 	private void buildAcceptEndTurnLink()
@@ -762,7 +762,7 @@ public class HomePage extends TestReportPage
 		this.acceptEndTurnPlaceholder.setMarkupId("acceptEndTurnPlaceholder");
 
 		this.acceptEndTurnLink = new AjaxLink<Void>("acceptEndTurnLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -792,11 +792,11 @@ public class HomePage extends TestReportPage
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 			}
-		};
+				};
 
-		this.acceptEndTurnLink.setOutputMarkupId(true).setMarkupId("acceptEndTurnLink");
-		this.acceptEndTurnPlaceholder.add(this.acceptEndTurnLink);
-		this.add(this.acceptEndTurnPlaceholder);
+				this.acceptEndTurnLink.setOutputMarkupId(true).setMarkupId("acceptEndTurnLink");
+				this.acceptEndTurnPlaceholder.add(this.acceptEndTurnLink);
+				this.add(this.acceptEndTurnPlaceholder);
 	}
 
 	private void buildUntapAllLink()
@@ -806,7 +806,7 @@ public class HomePage extends TestReportPage
 		this.untapAllPlaceholder.setOutputMarkupId(true);
 
 		this.untapAllLink = new AjaxLink<Void>("untapAllLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -851,8 +851,8 @@ public class HomePage extends TestReportPage
 
 					final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
 							HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
-									.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession
-									.get().getPlayer().getName(), cardsToUntap);
+							.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession
+							.get().getPlayer().getName(), cardsToUntap);
 					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
 
 					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
@@ -860,12 +860,12 @@ public class HomePage extends TestReportPage
 				}
 			}
 
-		};
-		this.untapAllLink.setMarkupId("untapAllLink");
-		this.untapAllLink.setOutputMarkupId(true);
+				};
+				this.untapAllLink.setMarkupId("untapAllLink");
+				this.untapAllLink.setOutputMarkupId(true);
 
-		this.untapAllPlaceholder.add(this.untapAllLink);
-		this.add(this.untapAllPlaceholder);
+				this.untapAllPlaceholder.add(this.untapAllLink);
+				this.add(this.untapAllPlaceholder);
 	}
 
 	private void buildUntapAndDrawLink()
@@ -875,7 +875,7 @@ public class HomePage extends TestReportPage
 		this.untapAndDrawPlaceholder.setOutputMarkupId(true);
 
 		this.untapAndDrawLink = new AjaxLink<Void>("untapAndDrawLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -885,12 +885,12 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 250);");
 			}
 
-		};
-		this.untapAndDrawLink.setMarkupId("untapAndDrawLink");
-		this.untapAndDrawLink.setOutputMarkupId(true);
+				};
+				this.untapAndDrawLink.setMarkupId("untapAndDrawLink");
+				this.untapAndDrawLink.setOutputMarkupId(true);
 
-		this.untapAndDrawPlaceholder.add(this.untapAndDrawLink);
-		this.add(this.untapAndDrawPlaceholder);
+				this.untapAndDrawPlaceholder.add(this.untapAndDrawLink);
+				this.add(this.untapAndDrawPlaceholder);
 	}
 
 	private void buildDataBox(final long _gameId)
@@ -941,7 +941,7 @@ public class HomePage extends TestReportPage
 
 	private void createPlayerAndDeck(final String _jsessionid, final String _side,
 			final String _name) throws IOException
-	{
+			{
 		Player p = new Player();
 		final Side side = new Side();
 		p.setSide(side);
@@ -967,7 +967,7 @@ public class HomePage extends TestReportPage
 
 		this.session.setPlayer(p);
 		this.player = p;
-	}
+			}
 
 	private void generatePlayCardLink(final List<MagicCard> mc)
 	{
@@ -1016,7 +1016,7 @@ public class HomePage extends TestReportPage
 		combatPlaceholder.setOutputMarkupId(true);
 
 		final AjaxLink<Void> combatLink = new AjaxLink<Void>("combatLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1045,19 +1045,19 @@ public class HomePage extends TestReportPage
 				HomePage.this.session.setCombatInProgress(!HomePage.this.session
 						.isCombatInProgress());
 			}
-		};
-		combatLink.setMarkupId("combatLink");
-		combatLink.setOutputMarkupId(true);
+				};
+				combatLink.setMarkupId("combatLink");
+				combatLink.setOutputMarkupId(true);
 
-		combatPlaceholder.add(combatLink);
+				combatPlaceholder.add(combatLink);
 
-		this.add(combatPlaceholder);
+				this.add(combatPlaceholder);
 	}
 
 	private void generateDrawCardLink()
 	{
 		final AjaxLink<String> drawCardLink = new AjaxLink<String>("drawCardLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1117,7 +1117,7 @@ public class HomePage extends TestReportPage
 
 						final NotifierCometChannel ncc = new NotifierCometChannel(
 								NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
-										.getSide().getSideName(), null, null, null, "");
+								.getSide().getSideName(), null, null, null, "");
 
 						try
 						{
@@ -1127,7 +1127,7 @@ public class HomePage extends TestReportPage
 						{
 							// NPE in unit tests
 							HomePage.LOGGER
-									.error("exception thrown while posting in event bus", ex);
+							.error("exception thrown while posting in event bus", ex);
 						}
 
 						final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
@@ -1139,7 +1139,7 @@ public class HomePage extends TestReportPage
 						{
 							// NPE in unit tests
 							HomePage.LOGGER
-									.error("exception thrown while posting in event bus", ex);
+							.error("exception thrown while posting in event bus", ex);
 						}
 					}
 				}
@@ -1166,10 +1166,10 @@ public class HomePage extends TestReportPage
 				}
 
 			}
-		};
+				};
 
-		drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
-		this.add(drawCardLink);
+				drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
+				this.add(drawCardLink);
 
 
 	}
@@ -1311,20 +1311,20 @@ public class HomePage extends TestReportPage
 	private void buildGraveyardMarkup()
 	{
 		final Component graveyardToUpdate;
-		final boolean isGraveyardDisplayed = this.persistenceService.getPlayer(
+		final Boolean isGraveyardDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isGraveyardDisplayed();
 		graveyardToUpdate = isGraveyardDisplayed
 				? new GraveyardComponent("graveyard")
-				: new WebMarkupContainer("graveyard");
+		: new WebMarkupContainer("graveyard");
 
-		graveyardToUpdate.setOutputMarkupId(true);
-		this.graveyardParent.add(graveyardToUpdate);
+				graveyardToUpdate.setOutputMarkupId(true);
+				this.graveyardParent.add(graveyardToUpdate);
 	}
 
 	private void buildExileMarkup()
 	{
 		final Component exileToUpdate;
-		final boolean isExileDisplayed = this.persistenceService.getPlayer(
+		final Boolean isExileDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isExileDisplayed();
 		exileToUpdate = isExileDisplayed ? new ExileComponent("exile") : new WebMarkupContainer(
 				"exile");
@@ -1383,7 +1383,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> aboutLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 8140325977385015896L;
 
 			@Override
@@ -1393,12 +1393,12 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
-		};
+				};
 
-		aboutLink.setOutputMarkupId(true);
-		window.setOutputMarkupId(true);
-		this.add(aboutLink);
-		return window;
+				aboutLink.setOutputMarkupId(true);
+				window.setOutputMarkupId(true);
+				this.add(aboutLink);
+				return window;
 	}
 
 	private ModalWindow generateTeamInfoLink(final String id, final ModalWindow window)
@@ -1412,7 +1412,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> teamInfoLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 8140325977385015896L;
 
 			@Override
@@ -1422,12 +1422,12 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
-		};
+				};
 
-		teamInfoLink.setOutputMarkupId(true);
-		window.setOutputMarkupId(true);
-		this.add(teamInfoLink);
-		return window;
+				teamInfoLink.setOutputMarkupId(true);
+				window.setOutputMarkupId(true);
+				this.add(teamInfoLink);
+				return window;
 	}
 
 	private ModalWindow generateCreateGameModalWindow(final String id, final Player _player,
@@ -1443,7 +1443,7 @@ public class HomePage extends TestReportPage
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
 		this.createGameLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 4097315677385015896L;
 
 			@Override
@@ -1453,14 +1453,14 @@ public class HomePage extends TestReportPage
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
-		};
+				};
 
-		this.createGameLink.setOutputMarkupId(true).setMarkupId(id);
-		this.createGameWindow.setOutputMarkupId(true);
+				this.createGameLink.setOutputMarkupId(true).setMarkupId(id);
+				this.createGameWindow.setOutputMarkupId(true);
 
-		this.add(this.createGameLink);
+				this.add(this.createGameLink);
 
-		return window;
+				return window;
 	}
 
 	private ModalWindow generateJoinGameModalWindow(final String id, final Player _player,
@@ -1476,7 +1476,7 @@ public class HomePage extends TestReportPage
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
 		this.joinGameLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1486,14 +1486,14 @@ public class HomePage extends TestReportPage
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
-		};
+				};
 
-		this.joinGameLink.setOutputMarkupId(true).setMarkupId(id);
-		window.setOutputMarkupId(true);
+				this.joinGameLink.setOutputMarkupId(true).setMarkupId(id);
+				window.setOutputMarkupId(true);
 
-		this.add(this.joinGameLink);
+				this.add(this.joinGameLink);
 
-		return window;
+				return window;
 	}
 
 	private void generateImportDeckLink(final String id, final ModalWindow window)
@@ -1508,7 +1508,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> importDeckLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1518,11 +1518,11 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.importDeckWindow.show(target);
 			}
-		};
+				};
 
-		importDeckLink.setOutputMarkupId(true);
-		this.importDeckWindow.setOutputMarkupId(true);
-		this.add(importDeckLink);
+				importDeckLink.setOutputMarkupId(true);
+				this.importDeckWindow.setOutputMarkupId(true);
+				this.add(importDeckLink);
 	}
 
 	private void generateRevealTopLibraryCardLink(final String id, final ModalWindow window)
@@ -1538,7 +1538,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> revealTopLibraryCardLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1547,7 +1547,7 @@ public class HomePage extends TestReportPage
 				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
 								HomePage.this.session.getPlayer().getId(), HomePage.this.session
-										.getPlayer().getDeck().getDeckId());
+								.getPlayer().getDeck().getDeckId());
 				if ((null == allCardsInLibrary) || (allCardsInLibrary.isEmpty()))
 				{
 					return;
@@ -1557,7 +1557,7 @@ public class HomePage extends TestReportPage
 
 				final String cardPath = ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
-						"SharedResourceFolder");
+								"SharedResourceFolder");
 				final String cardPathAndName = cardPath.replace("/cards", "") + topCardName;
 				final File from = new File(cardPathAndName);
 				final File to = new File(cardPath + "topLibraryCard.jpg");
@@ -1589,10 +1589,10 @@ public class HomePage extends TestReportPage
 					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
 				}
 			}
-		};
+				};
 
-		revealTopLibraryCardLink.setOutputMarkupId(true).setMarkupId(id);
-		this.add(revealTopLibraryCardLink);
+				revealTopLibraryCardLink.setOutputMarkupId(true).setMarkupId(id);
+				this.add(revealTopLibraryCardLink);
 	}
 
 	private void generateCreateTokenLink(final String id, final ModalWindow window)
@@ -1608,7 +1608,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> createTokenLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1616,10 +1616,10 @@ public class HomePage extends TestReportPage
 			{
 				HomePage.this.createTokenWindow.show(target);
 			}
-		};
+				};
 
-		createTokenLink.setOutputMarkupId(true).setMarkupId(id);
-		this.add(createTokenLink);
+				createTokenLink.setOutputMarkupId(true).setMarkupId(id);
+				this.add(createTokenLink);
 	}
 
 	private void generateCountCardsLink(final String id, final ModalWindow window)
@@ -1634,7 +1634,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> countCardsLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1677,10 +1677,10 @@ public class HomePage extends TestReportPage
 					}
 				}
 			}
-		};
+				};
 
-		countCardsLink.setOutputMarkupId(true);
-		this.add(countCardsLink);
+				countCardsLink.setOutputMarkupId(true);
+				this.add(countCardsLink);
 	}
 
 	@Subscribe
@@ -1695,152 +1695,152 @@ public class HomePage extends TestReportPage
 	{
 		switch (event.getAction())
 		{
-			case DRAW_CARD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has drawn a card!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case DRAW_CARD_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has drawn a card!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 
-			case END_OF_TURN_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				HomePage.this.session.setPlayerEndingHerTurn(event.getPlayerName());
-				break;
+		case END_OF_TURN_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			HomePage.this.session.setPlayerEndingHerTurn(event.getPlayerName());
+			break;
 
-			case PLAY_CARD_FROM_HAND_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has played '" + event.getCardName()
-						+ "'!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case PLAY_CARD_FROM_HAND_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+					+ "', text : \"has played '" + event.getCardName()
+					+ "'!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 
-			case PLAY_CARD_FROM_GRAVEYARD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has played '"
-						+ event.getCardName()
-						+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case PLAY_CARD_FROM_GRAVEYARD_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has played '"
+					+ event.getCardName()
+					+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 
-			case PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put '"
-						+ event.getCardName()
-						+ "' to "
-						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
-						+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put '"
+					+ event.getCardName()
+					+ "' to "
+					+ (event.getTargetPlayerName().equals(event.getPlayerName())
+							? "his (her)"
+									: event.getTargetPlayerName() + "'s")
+									+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 
-			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put '"
-						+ event.getCardName()
-						+ "' to "
-						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
-						+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put '"
+					+ event.getCardName()
+					+ "' to "
+					+ (event.getTargetPlayerName().equals(event.getPlayerName())
+							? "his (her)"
+									: event.getTargetPlayerName() + "'s")
+									+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 
-			case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put '"
-						+ event.getCardName()
-						+ "' to "
-						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
-						+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put '"
+					+ event.getCardName()
+					+ "' to "
+					+ (event.getTargetPlayerName().equals(event.getPlayerName())
+							? "his (her)"
+									: event.getTargetPlayerName() + "'s")
+									+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 
-			case COMBAT_IN_PROGRESS_ACTION :
-				if (event.isCombatInProgress())
-				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '"
-							+ event.getPlayerName()
-							+ "', text : 'has finished combat', image : 'image/logoh2.gif', sticky : false, time : ''});");
-				}
-				else
-				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '"
-							+ event.getPlayerName()
-							+ "', text : 'is declaring combat!', image : 'image/logoh2.gif', sticky : false, time : ''});");
-				}
-				break;
+		case COMBAT_IN_PROGRESS_ACTION :
+			if (event.isCombatInProgress())
+			{
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'has finished combat', image : 'image/logoh2.gif', sticky : false, time : ''});");
+			}
+			else
+			{
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'is declaring combat!', image : 'image/logoh2.gif', sticky : false, time : ''});");
+			}
+			break;
 
-			case END_OF_TURN_ACTION_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has an action to play at the end of "
-						+ HomePage.this.session.getPlayerEndingHerTurn()
-						+ "'s turn!\" , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
-				break;
-			case ACCEPT_END_OF_TURN_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : 'accepts the end of turn.', image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case PLAY_TOP_LIBRARY_CARD :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has played the top card of "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "library, which is: "
-						+ event.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case PUT_TOP_LIBRARY_CARD_TO_HAND :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put the top card of "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
-						+ "library in "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
-						+ event.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put the top card of "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
-						+ "library in "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
-						+ event.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case PUT_TOKEN_ON_BATTLEFIELD :
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has put a " + event.getCardName()
-						+ " token on the battlefield"
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case DESTROY_TOKEN :
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has destroyed a " + event.getCardName() + " token"
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case END_OF_TURN_ACTION_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has an action to play at the end of "
+					+ HomePage.this.session.getPlayerEndingHerTurn()
+					+ "'s turn!\" , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
+			break;
+		case ACCEPT_END_OF_TURN_ACTION :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : 'accepts the end of turn.', image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case PLAY_TOP_LIBRARY_CARD :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has played the top card of "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+							? "his (her) "
+									: event.getTargetPlayerName() + "'s ") + "library, which is: "
+									+ event.getCardName()
+									+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case PUT_TOP_LIBRARY_CARD_TO_HAND :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put the top card of "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+							? "his (her) "
+									: event.getTargetPlayerName() + "'s ")
+									+ "library in "
+									+ (event.getPlayerName().equals(event.getTargetPlayerName())
+											? "his (her) "
+													: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
+													+ event.getCardName()
+													+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put the top card of "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+							? "his (her) "
+									: event.getTargetPlayerName() + "'s ")
+									+ "library in "
+									+ (event.getPlayerName().equals(event.getTargetPlayerName())
+											? "his (her) "
+													: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
+													+ event.getCardName()
+													+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case PUT_TOKEN_ON_BATTLEFIELD :
+			target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+					+ "', text : \"has put a " + event.getCardName()
+					+ " token on the battlefield"
+					+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case DESTROY_TOKEN :
+			target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+					+ "', text : \"has destroyed a " + event.getCardName() + " token"
+					+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 			// $CASES-OMITTED$
 			// TODO: split this notifier action and the one of
 			// card counters
 			// $CASES-OMITTED$
-			default :
-				throw new IllegalArgumentException(
-						"can not treat this case in HomePage#displayNotification()");
+		default :
+			throw new IllegalArgumentException(
+					"can not treat this case in HomePage#displayNotification()");
 		}
 	}
 
@@ -1905,52 +1905,52 @@ public class HomePage extends TestReportPage
 
 		switch (event.getAction())
 		{
-			case ADD_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName() + "', text : \"has put "
-						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
-						+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
-						+ event.getCardName()
-						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case REMOVE_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName() + "', text : \"has put "
-						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
-						+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
-						+ event.getCardName()
-						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case CLEAR_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName() + "', text : \"has cleared the "
-						+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
-						+ "'s card: " + event.getCardName()
-						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case SET_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName()
-						+ "', text : \"has removed "
-						+ event.getOriginalNumberOfCounters()
-						+ " "
-						+ event.getCounterName()
-						+ " counter(s) on "
-						+ event.getTargetPlayerName()
-						+ "'s card: "
-						+ event.getCardName()
-						+ " and replaced them with "
-						+ event.getTargetNumberOfCounters()
-						+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case ADD_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName() + "', text : \"has put "
+					+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
+					+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
+					+ event.getCardName()
+					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case REMOVE_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName() + "', text : \"has put "
+					+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
+					+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
+					+ event.getCardName()
+					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case CLEAR_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName() + "', text : \"has cleared the "
+					+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
+					+ "'s card: " + event.getCardName()
+					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case SET_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName()
+					+ "', text : \"has removed "
+					+ event.getOriginalNumberOfCounters()
+					+ " "
+					+ event.getCounterName()
+					+ " counter(s) on "
+					+ event.getTargetPlayerName()
+					+ "'s card: "
+					+ event.getCardName()
+					+ " and replaced them with "
+					+ event.getTargetNumberOfCounters()
+					+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 			// $CASES-OMITTED$
 			// TODO: split this card counters notifier action
 			// and the one of general messages
 			// $CASES-OMITTED$
-			default :
-				throw new IllegalArgumentException(
-						"can not treat this case in HomePage#updateCardTooltip(): "
-								+ event.getAction());
+		default :
+			throw new IllegalArgumentException(
+					"can not treat this case in HomePage#updateCardTooltip(): "
+							+ event.getAction());
 		}
 	}
 
@@ -1979,53 +1979,53 @@ public class HomePage extends TestReportPage
 
 		switch (event.getAction())
 		{
-			case ADD_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName() + "', text : \"has put "
-						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
-						+ " counter(s) on " + event.getTargetPlayerName() + "'s token: "
-						+ token.getCreatureTypes()
-						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case REMOVE_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName() + "', text : \"has put "
-						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
-						+ " counter(s) on " + event.getTargetPlayerName() + "'s token: "
-						+ token.getCreatureTypes()
-						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case CLEAR_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName() + "', text : \"has cleared the "
-						+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
-						+ "'s " + token.getCreatureTypes() + " token"
-						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
-			case SET_COUNTER :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getRequestingPlayerName()
-						+ "', text : \"has removed "
-						+ event.getOriginalNumberOfCounters()
-						+ " "
-						+ event.getCounterName()
-						+ " counter(s) on "
-						+ event.getTargetPlayerName()
-						+ "'s "
-						+ token.getCreatureTypes()
-						+ " token "
-						+ " and replaced them with "
-						+ event.getTargetNumberOfCounters()
-						+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
+		case ADD_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName() + "', text : \"has put "
+					+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
+					+ " counter(s) on " + event.getTargetPlayerName() + "'s token: "
+					+ token.getCreatureTypes()
+					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case REMOVE_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName() + "', text : \"has put "
+					+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
+					+ " counter(s) on " + event.getTargetPlayerName() + "'s token: "
+					+ token.getCreatureTypes()
+					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case CLEAR_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName() + "', text : \"has cleared the "
+					+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
+					+ "'s " + token.getCreatureTypes() + " token"
+					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
+		case SET_COUNTER :
+			target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getRequestingPlayerName()
+					+ "', text : \"has removed "
+					+ event.getOriginalNumberOfCounters()
+					+ " "
+					+ event.getCounterName()
+					+ " counter(s) on "
+					+ event.getTargetPlayerName()
+					+ "'s "
+					+ token.getCreatureTypes()
+					+ " token "
+					+ " and replaced them with "
+					+ event.getTargetNumberOfCounters()
+					+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			break;
 			// $CASES-OMITTED$
 			// TODO: split this card counters notifier action
 			// and the one of general messages
 			// $CASES-OMITTED$
-			default :
-				throw new IllegalArgumentException(
-						"can not treat this case in HomePage#updateTokenTooltip(): "
-								+ event.getAction());
+		default :
+			throw new IllegalArgumentException(
+					"can not treat this case in HomePage#updateTokenTooltip(): "
+							+ event.getAction());
 		}
 	}
 
@@ -2068,6 +2068,16 @@ public class HomePage extends TestReportPage
 				+ event.getUniqueid().replace("-", "_") + "');"
 				+ "card.css('position', 'absolute'); card.css('left', '" + event.getMouseX()
 				+ "px'); card.css('top', '" + event.getMouseY() + "px');");
+
+		target.appendJavaScript("if (drawMode === true) { "
+				+ "jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
+				+ "for arrow in arrows { "
+				+ "var e0 = jsPlumb.addEndpoint(arrow['source']); "
+				+ "var e1 = jsPlumb.addEndpoint(arrow['target']); "
+				+ "jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
+				+ "					['Label', {location:0.7, id:'label', events:{ "
+				+ "							} }], ['Arrow', { "
+				+ "						cssClass:'l1arrow',  location:0.5, width:20,length:20 }]] }); }};");
 	}
 
 	@Subscribe
@@ -2257,68 +2267,68 @@ public class HomePage extends TestReportPage
 		// TODO: other cases
 		switch (event.getTargetZone())
 		{
-			case BATTLEFIELD :
-				mc.setX(event.getSide().getX());
-				mc.setY(event.getSide().getY());
-				JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
-						this.persistenceService, event.getGameId(), mc, true);
-				break;
-			case HAND :
-				if (isRequestingPlayerSameThanTargetedPlayer)
-				{
-					JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
-					hasAlreadyDisplayedHand = true;
-				}
-				break;
-			case GRAVEYARD :
-				if (isRequestingPlayerSameThanTargetedPlayer)
-				{
-					JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
-					hasAlreadyDisplayedGraveyard = true;
-				}
-				break;
-			case EXILE :
-				if (isRequestingPlayerSameThanTargetedPlayer)
-				{
-					JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
-					hasAlreadyDisplayedExile = true;
-				}
-				break;
-			case LIBRARY :
-				break;
-			default :
-				throw new UnsupportedOperationException();
+		case BATTLEFIELD :
+			mc.setX(event.getSide().getX());
+			mc.setY(event.getSide().getY());
+			JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
+					this.persistenceService, event.getGameId(), mc, true);
+			break;
+		case HAND :
+			if (isRequestingPlayerSameThanTargetedPlayer)
+			{
+				JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
+						d.getDeckId());
+				hasAlreadyDisplayedHand = true;
+			}
+			break;
+		case GRAVEYARD :
+			if (isRequestingPlayerSameThanTargetedPlayer)
+			{
+				JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
+						d.getDeckId());
+				hasAlreadyDisplayedGraveyard = true;
+			}
+			break;
+		case EXILE :
+			if (isRequestingPlayerSameThanTargetedPlayer)
+			{
+				JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
+						d.getDeckId());
+				hasAlreadyDisplayedExile = true;
+			}
+			break;
+		case LIBRARY :
+			break;
+		default :
+			throw new UnsupportedOperationException();
 		}
 
 		// TODO: other cases
 		switch (event.getSourceZone())
 		{
-			case HAND :
-				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedHand)
-				{
-					JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
-				}
-				break;
-			case GRAVEYARD :
-				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedGraveyard)
-				{
-					JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
-				}
-				break;
-			case EXILE :
-				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedExile)
-				{
-					JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
-				}
-				break;
-			default :
-				throw new UnsupportedOperationException();
+		case HAND :
+			if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedHand)
+			{
+				JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
+						d.getDeckId());
+			}
+			break;
+		case GRAVEYARD :
+			if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedGraveyard)
+			{
+				JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
+						d.getDeckId());
+			}
+			break;
+		case EXILE :
+			if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedExile)
+			{
+				JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
+						d.getDeckId());
+			}
+			break;
+		default :
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -2335,8 +2345,8 @@ public class HomePage extends TestReportPage
 				+ "', text : \"has moved "
 				+ (event.getOwnerPlayer().equals(event.getRequestingPlayer()) ? "his (her)" : event
 						.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle()
-				+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
-				+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+						+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
+						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
 	@Subscribe
@@ -2406,6 +2416,7 @@ public class HomePage extends TestReportPage
 		if (event.isDrawMode())
 		{
 			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			target.appendJavaScript("var arrows = new Array(); var drawMode = true; ");
 
 			target.appendJavaScript("var cardAlreadySelected = false; "
 					+ "var plumbSource, plumbTarget; "
@@ -2414,6 +2425,7 @@ public class HomePage extends TestReportPage
 					+ "if (cardAlreadySelected) { "
 					+ "	cardAlreadySelected = false; "
 					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+					+ " arrows.push({ 'source' : plumbSource, 'target' : plumbTarget }); "
 					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
 					+ "} else { "
 					+ "	cardAlreadySelected = true; "
@@ -2425,6 +2437,7 @@ public class HomePage extends TestReportPage
 			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode OFF', text : \"You are now in normal mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 
 			final StringBuilder buil = new StringBuilder();
+			buil.append("var arrows = new Array(); var drawMode = false; ");
 
 			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
@@ -2475,7 +2488,7 @@ public class HomePage extends TestReportPage
 	private final void restoreBattlefieldState()
 	{
 		final Component galleryToUpdate;
-		final boolean isHandDisplayed = this.persistenceService.getPlayer(
+		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isHandDisplayed();
 		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
 				"gallery");
@@ -2606,7 +2619,7 @@ public class HomePage extends TestReportPage
 
 	public QuickView<MagicCard> generateCardListView(
 			final List<MagicCard> _allMagicCardsInBattlefield, final boolean replace)
-	{
+			{
 		if (null == _allMagicCardsInBattlefield)
 		{
 			final List<MagicCard> newCards = new ArrayList<MagicCard>();
@@ -2623,7 +2636,7 @@ public class HomePage extends TestReportPage
 				this.allMagicCardsInBattlefield);
 
 		this.allCardsInBattlefield = new QuickView<MagicCard>("magicCards", data)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -2636,59 +2649,59 @@ public class HomePage extends TestReportPage
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 			}
-		};
-		this.allCardsInBattlefield.setOutputMarkupId(true);
+				};
+				this.allCardsInBattlefield.setOutputMarkupId(true);
 
-		this.allTooltips = new QuickView<MagicCard>("tooltips", data)
-		{
-			private static final long serialVersionUID = 1L;
+				this.allTooltips = new QuickView<MagicCard>("tooltips", data)
+						{
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populate(final Item<MagicCard> item)
-			{
-				final MagicCard mc = item.getModelObject();
+					@Override
+					protected void populate(final Item<MagicCard> item)
+					{
+						final MagicCard mc = item.getModelObject();
 
-				if (null == mc.getToken())
-				{
-					final MagicCardTooltipPanel cardBubbleTip = new MagicCardTooltipPanel(
-							"cardTooltip", mc.getUuidObject(), mc.getBigImageFilename(),
-							mc.getOwnerSide(), mc);
-					cardBubbleTip.setOutputMarkupId(true);
-					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip.add(new AttributeModifier("style",
-							"display: none; position: absolute; left: " + mc.getX() + "px; top: "
-									+ mc.getY() + "px; z-index: 50;"));
+						if (null == mc.getToken())
+						{
+							final MagicCardTooltipPanel cardBubbleTip = new MagicCardTooltipPanel(
+									"cardTooltip", mc.getUuidObject(), mc.getBigImageFilename(),
+									mc.getOwnerSide(), mc);
+							cardBubbleTip.setOutputMarkupId(true);
+							cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
+							cardBubbleTip.add(new AttributeModifier("style",
+									"display: none; position: absolute; left: " + mc.getX() + "px; top: "
+											+ mc.getY() + "px; z-index: 50;"));
 
-					item.add(cardBubbleTip);
-				}
-				else
-				{
-					final TokenTooltipPanel cardBubbleTip = new TokenTooltipPanel("cardTooltip",
-							mc.getToken());
-					cardBubbleTip.setOutputMarkupId(true);
-					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip.add(new AttributeModifier("style",
-							"display: none; position: absolute; left: " + mc.getX() + "px; top: "
-									+ mc.getY() + "px; z-index: 50;"));
+							item.add(cardBubbleTip);
+						}
+						else
+						{
+							final TokenTooltipPanel cardBubbleTip = new TokenTooltipPanel("cardTooltip",
+									mc.getToken());
+							cardBubbleTip.setOutputMarkupId(true);
+							cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
+							cardBubbleTip.add(new AttributeModifier("style",
+									"display: none; position: absolute; left: " + mc.getX() + "px; top: "
+											+ mc.getY() + "px; z-index: 50;"));
 
-					item.add(cardBubbleTip);
-				}
+							item.add(cardBubbleTip);
+						}
+					}
+						};
+
+						this.allTooltips.setOutputMarkupId(true);
+
+						if (replace)
+						{
+							this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
+						}
+						else
+						{
+							this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
+						}
+
+						return this.allCardsInBattlefield;
 			}
-		};
-
-		this.allTooltips.setOutputMarkupId(true);
-
-		if (replace)
-		{
-			this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
-		}
-		else
-		{
-			this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
-		}
-
-		return this.allCardsInBattlefield;
-	}
 
 	public final QuickView<MagicCard> getAllCardsInBattlefield()
 	{
@@ -2719,7 +2732,7 @@ public class HomePage extends TestReportPage
 	private QuickView<Player> populateSides(final ListDataProvider<Player> data)
 	{
 		return new QuickView<Player>("sides", data)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -2739,7 +2752,7 @@ public class HomePage extends TestReportPage
 				}
 			}
 
-		};
+				};
 	}
 
 	public List<Player> getAllPlayersInGame()

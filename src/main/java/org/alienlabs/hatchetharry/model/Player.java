@@ -46,11 +46,11 @@ public class Player implements Serializable
 	@JoinColumn(name = "deck")
 	private Deck deck;
 	@Column
-	private boolean isHandDisplayed = true;
+	private Boolean isHandDisplayed = true;
 	@Column
-	private boolean isGraveyardDisplayed;
+	private Boolean isGraveyardDisplayed;
 	@Column
-	private boolean isExileDisplayed;
+	private Boolean isExileDisplayed;
 	@Column
 	private CardZone defaultTargetZoneForHand = CardZone.BATTLEFIELD;
 	@Column
@@ -181,7 +181,7 @@ public class Player implements Serializable
 		this.deck = _deck;
 	}
 
-	public boolean isHandDisplayed()
+	public Boolean isHandDisplayed()
 	{
 		return this.isHandDisplayed;
 	}
@@ -191,7 +191,7 @@ public class Player implements Serializable
 		this.isHandDisplayed = _isHandDisplayed;
 	}
 
-	public boolean isGraveyardDisplayed()
+	public Boolean isGraveyardDisplayed()
 	{
 		return this.isGraveyardDisplayed;
 	}
@@ -201,7 +201,7 @@ public class Player implements Serializable
 		this.isGraveyardDisplayed = _isGraveyardDisplayed;
 	}
 
-	public boolean isExileDisplayed()
+	public Boolean isExileDisplayed()
 	{
 		return this.isExileDisplayed;
 	}
