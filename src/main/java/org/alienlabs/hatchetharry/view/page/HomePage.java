@@ -573,9 +573,9 @@ public class HomePage extends TestReportPage
 			{
 				final Player _player = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId());
-				final boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
+				final Boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
 
-				if (isGraveyardDisplayed)
+				if ((isGraveyardDisplayed != null) && isGraveyardDisplayed)
 				{
 					HomePage.this.graveyardParent.addOrReplace(new WebMarkupContainer("graveyard"));
 					target.add(HomePage.this.graveyardParent);
@@ -586,7 +586,14 @@ public class HomePage extends TestReportPage
 
 				}
 
-				_player.setGraveyardDisplayed(!isGraveyardDisplayed);
+				if ((isGraveyardDisplayed != null) && (isGraveyardDisplayed.booleanValue() == true))
+				{
+					_player.setGraveyardDisplayed(false);
+				}
+				else
+				{
+					_player.setGraveyardDisplayed(true);
+				}
 				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
@@ -619,9 +626,9 @@ public class HomePage extends TestReportPage
 			{
 				final Player _player = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId());
-				final boolean isExileDisplayed = _player.isExileDisplayed();
+				final Boolean isExileDisplayed = _player.isExileDisplayed();
 
-				if (isExileDisplayed)
+				if ((isExileDisplayed != null) && isExileDisplayed)
 				{
 					HomePage.this.exileParent.addOrReplace(new WebMarkupContainer("exile"));
 					target.add(HomePage.this.exileParent);
@@ -633,7 +640,15 @@ public class HomePage extends TestReportPage
 
 				}
 
-				_player.setExileDisplayed(!isExileDisplayed);
+				if ((isExileDisplayed != null) && (isExileDisplayed.booleanValue() == true))
+				{
+					_player.setExileDisplayed(false);
+				}
+				else
+				{
+					_player.setExileDisplayed(true);
+				}
+
 				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
@@ -2416,7 +2431,7 @@ public class HomePage extends TestReportPage
 		if (event.isDrawMode())
 		{
 			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-			target.appendJavaScript("var arrows = new Array(); var drawMode = true; ");
+			target.appendJavaScript("arrows = new Array(); drawMode = true; ");
 
 			target.appendJavaScript("var cardAlreadySelected = false; "
 					+ "var plumbSource, plumbTarget; "

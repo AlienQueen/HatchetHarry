@@ -271,7 +271,8 @@ public class CreateGameModalWindow extends Panel
 				session.setGameCreated();
 				session.resetCardsInGraveyard();
 
-				if (CreateGameModalWindow.this.player.isGraveyardDisplayed())
+				if ((CreateGameModalWindow.this.player.isGraveyardDisplayed() != null)
+						&& CreateGameModalWindow.this.player.isGraveyardDisplayed())
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}

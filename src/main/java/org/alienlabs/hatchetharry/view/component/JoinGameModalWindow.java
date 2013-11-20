@@ -352,7 +352,8 @@ public class JoinGameModalWindow extends Panel
 
 				session.resetCardsInGraveyard();
 
-				if (JoinGameModalWindow.this.player.isGraveyardDisplayed())
+				if ((JoinGameModalWindow.this.player.isGraveyardDisplayed() != null)
+						&& JoinGameModalWindow.this.player.isGraveyardDisplayed())
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}
