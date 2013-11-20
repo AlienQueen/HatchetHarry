@@ -39,6 +39,8 @@ public class Game implements Serializable
 	private Long currentPlaceholderId = 0L;
 	@Column
 	private boolean isAcceptEndOfTurnPending;
+	@Column
+	private Boolean isDrawMode = false;
 
 
 	public Long getId()
@@ -118,6 +120,16 @@ public class Game implements Serializable
 	public void setAcceptEndOfTurnPending(final boolean _isAcceptEndOfTurnPending)
 	{
 		this.isAcceptEndOfTurnPending = _isAcceptEndOfTurnPending;
+	}
+
+	public Boolean isDrawMode()
+	{
+		return this.isDrawMode;
+	}
+
+	public void setDrawMode(final Boolean drawMode)
+	{
+		this.isDrawMode = drawMode;
 	}
 
 }
