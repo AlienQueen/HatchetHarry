@@ -176,6 +176,10 @@ You are free to modify any part of its source code (client-side or server-side),
 					<groupId>org.atmosphere</groupId>
 					<artifactId>atmosphere-compat-tomcat7</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.atmosphere</groupId>
+					<artifactId>atmosphere-compat-tomcat</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- <dependency>
