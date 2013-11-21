@@ -14,7 +14,6 @@ import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToExileFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
@@ -75,16 +74,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 		mc.setTapped(false);
 		this.persistenceService.updateCard(mc);
 
-
 		final Long gameId = session.getPlayer().getGame().getId();
-
-		final boolean isExiledDisplayed = this.persistenceService.getPlayer(
-				session.getPlayer().getId()).isExileDisplayed();
-		if (isExiledDisplayed)
-		{
-			JavaScriptUtils.updateHand(target);
-		}
-
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 		final Deck d = p.getDeck();
 		final List<MagicCard> exile = d.reorderMagicCards(this.persistenceService
@@ -114,7 +104,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 					(allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()));
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION, gameId, session
-							.getPlayer().getId(), session.getPlayer().getName(), "", "",
+					.getPlayer().getId(), session.getPlayer().getName(), "", "",
 					mc.getTitle(), null, targetPlayerName);
 
 			// Only for unit tests

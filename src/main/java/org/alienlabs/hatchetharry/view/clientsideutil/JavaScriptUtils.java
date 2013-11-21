@@ -203,6 +203,66 @@ public class JavaScriptUtils
 			buil.append("}, 175); ");
 
 			target.appendJavaScript(buil.toString());
+		} else if (null != mc)
+		{
+			final StringBuilder buil = new StringBuilder();
+			buil.append("window.setTimeout(function() { ");
+
+			final String uuidValidForJs = mc.getUuid().replace("-", "_");
+
+			buil.append("if (typeof drawMode === 'undefined' || drawMode === false) { ");
+			buil.append("jQuery('#card" + uuidValidForJs
+					+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: block; position: absolute; left: "
+					+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
+					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+					+ " > span').attr('style', 'display: block;'); }); ");
+
+			// For mobile
+			buil.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
+					+ "').hammer(); ");
+			buil.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
+			buil.append("jQuery('#cardTooltip" + uuidValidForJs
+					+ "').attr('style', 'display: block; position: absolute; left: "
+					+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
+					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+					+ " > span').attr('style', 'display: block;'); }); ");
+
+			buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide(); ");
+			buil.append(" } else { ");
+			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
+					+ "for (var index = 0; index < arrows.length; index++) { "
+					+ "var e0 = jsPlumb.addEndpoint(arrows[index]['source']); "
+					+ "var e1 = jsPlumb.addEndpoint(arrows[index]['target']); "
+					+ "console.log(arrows[index]['source']); "
+					+ "if ('cardHandle" + uuidValidForJs + "' === arrows[index]['source'].id) { "
+					+ "arrows.splice(index, 1); "
+					+ "index--; "
+					+ "continue; "
+					+ "} "
+					+ "if ('cardHandle" + uuidValidForJs + "' === arrows[index]['target'].id) { "
+					+ "arrows.splice(index, 1); "
+					+ "index--; "
+					+ "continue; "
+					+ "} "
+					+ "jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
+					+ "					['Label', {location:0.7, id:'label', events:{ } }], ['Arrow', { "
+					+ "						cssClass:'l1arrow',  location:0.5, width:20,length:20 }]]}); } ");
+
+			buil.append("var plumbSource, plumbTarget; "
+					+ "jQuery('.clickableCard').click(function (event) { "
+					+ "if (cardAlreadySelected) { "
+					+ "	cardAlreadySelected = false; "
+					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
+					+ "} else { "
+					+ "	cardAlreadySelected = true; "
+					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+					+ "}}); };");
+
+			buil.append("}, 175); ");
+
+			target.appendJavaScript(buil.toString());
 		}
 	}
 
