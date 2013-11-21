@@ -290,7 +290,7 @@ public class FullAppTraversalTests
 		new Actions(FullAppTraversalTests.chromeDriver1).dragAndDrop(draggable, to).build()
 				.perform();
 
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Assert that the hand contains 7 cards again
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
