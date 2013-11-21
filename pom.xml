@@ -779,11 +779,11 @@ You are free to modify any part of its source code (client-side or server-side),
 						<artifactId>atmosphere-compat-tomcat7</artifactId>
 						<version>${atmosphere.version}</version>
 					</dependency>
-					<dependency>
+					<!-- <dependency>
 						<groupId>org.atmosphere</groupId>
 						<artifactId>atmosphere-compat-tomcat</artifactId>
 						<version>${atmosphere.version}</version>
-					</dependency>
+					</dependency> -->
 				</dependencies>
 				<configuration>
 					<scanIntervalSeconds>2</scanIntervalSeconds>
