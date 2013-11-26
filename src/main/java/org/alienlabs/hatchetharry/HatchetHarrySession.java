@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
@@ -64,6 +65,7 @@ public class HatchetHarrySession extends WebSession
 				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
+		this.setLocale(Locale.ENGLISH);
 	}
 
 	public static HatchetHarrySession get()
