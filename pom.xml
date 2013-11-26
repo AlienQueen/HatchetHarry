@@ -37,11 +37,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<quickview.version>6.9.1</quickview.version>
 		<wicketstuff.version>6.12.0</wicketstuff.version>
 		<wicket-atmosphere.version>0.16-SNAPSHOT</wicket-atmosphere.version>
-<<<<<<< HEAD
 		<atmosphere.version>2.0.0</atmosphere.version>
-=======
-		<atmosphere.version>2.0.4</atmosphere.version>
->>>>>>> 8c19a24835c61bee2c0e36f783be0d334d52ba19
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
