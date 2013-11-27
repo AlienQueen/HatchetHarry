@@ -163,7 +163,7 @@ public class FullAppTraversalTests
 		// Assert that no card is present on battlefield
 		// The Balduvian Horde is hidden but still there
 		// And it contains TWO elements of class magicCard
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 		Assert.assertEquals(2,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
