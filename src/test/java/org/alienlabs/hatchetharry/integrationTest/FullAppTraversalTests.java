@@ -178,7 +178,7 @@ public class FullAppTraversalTests
 				By.cssSelector(".cross-link img")).size() == 7);
 
 		// Find first hand card name of Chrome1
-		String battlefieldCardName = FullAppTraversalTests.chromeDriver1
+		final String battlefieldCardName = FullAppTraversalTests.chromeDriver1
 				.findElements(By.cssSelector(".cross-link:nth-child(1) img")).get(0)
 				.getAttribute("name");
 
@@ -308,12 +308,12 @@ public class FullAppTraversalTests
 		Thread.sleep(8000);
 
 		// Get top card name
-		battlefieldCardName = FullAppTraversalTests.chromeDriver1.findElement(
+		final String topCardName = FullAppTraversalTests.chromeDriver1.findElement(
 				By.id("topLibraryCard")).getAttribute("name");
 
 		// Verify that the card name is the same in the second browser
-		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTests.chromeDriver2
-				.findElement(By.id("topLibraryCard")).getAttribute("name")));
+		Assert.assertTrue(topCardName.equals(FullAppTraversalTests.chromeDriver2.findElement(
+				By.id("topLibraryCard")).getAttribute("name")));
 
 		// Click on the button "Do nothing"
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("doNothing")).click();
