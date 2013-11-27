@@ -454,19 +454,21 @@ public class FullAppTraversalTests
 
 		// Verify the name of the card on the battlefield
 		Assert.assertEquals(
-				battlefieldCardName,
+				topCardName,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.get(4).getAttribute("name"));
 		Assert.assertEquals(
-				battlefieldCardName,
+				topCardName,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.get(4).getAttribute("name"));
 
-		// Verify that the hands contains 7 cards
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".cross-link img")).size() == 8);
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver2.findElements(
-				By.cssSelector(".cross-link img")).size() == 7);
+		// Verify that the hands contains x cards
+		Assert.assertEquals(8,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
+						.size());
+		Assert.assertEquals(7,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".cross-link img"))
+						.size());
 
 		// Put one card from hand to graveyard
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
@@ -477,8 +479,10 @@ public class FullAppTraversalTests
 		// Verify that there is one more card in the graveyard
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
 				By.id("graveyard-page-wrap")).isEmpty());
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".graveyard-cross-link")).size() == 2);
+		Assert.assertEquals(
+				2,
+				FullAppTraversalTests.chromeDriver1.findElements(
+						By.cssSelector(".graveyard-cross-link")).size());
 
 		// Put current card from hand to exile
 		new Select(FullAppTraversalTests.chromeDriver1.findElement(By.id("putToZoneSelectForHand")))
@@ -490,8 +494,10 @@ public class FullAppTraversalTests
 		// visible
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
 				By.id("exile-page-wrap")).isEmpty());
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".exile-cross-link")).size() == 1);
+		Assert.assertEquals(
+				1,
+				FullAppTraversalTests.chromeDriver1.findElements(
+						By.cssSelector(".exile-cross-link")).size());
 
 		// Put current card in exile to graveyard
 		new Select(
@@ -503,8 +509,10 @@ public class FullAppTraversalTests
 		// Verify that there is one more card in the graveyard
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
 				By.id("graveyard-page-wrap")).isEmpty());
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".graveyard-cross-link")).size() == 3);
+		Assert.assertEquals(
+				3,
+				FullAppTraversalTests.chromeDriver1.findElements(
+						By.cssSelector(".graveyard-cross-link")).size());
 
 		// Get name of the current card in the hand
 		final String handCardName = FullAppTraversalTests.chromeDriver1
@@ -520,8 +528,10 @@ public class FullAppTraversalTests
 		// Verify that there is one more card in the exile
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver1.findElements(
 				By.id("exile-page-wrap")).isEmpty());
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".exile-cross-link")).size() == 1);
+		Assert.assertEquals(
+				1,
+				FullAppTraversalTests.chromeDriver1.findElements(
+						By.cssSelector(".exile-cross-link")).size());
 
 		// Get name of the current card in the exile
 		final String exileCardName = FullAppTraversalTests.chromeDriver1

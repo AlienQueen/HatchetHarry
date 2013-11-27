@@ -130,7 +130,7 @@ public class JavaScriptUtils
 
 			buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide(); ");
 			buil.append(" } else { ");
-			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
+			buil.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
 					+ "for (var index = 0; index < arrows.length; index++) { "
 					+ "var e0 = jsPlumb.addEndpoint(arrows[index]['source']); "
 					+ "var e1 = jsPlumb.addEndpoint(arrows[index]['target']); "
@@ -212,7 +212,7 @@ public class JavaScriptUtils
 			final String uuidValidForJs = mc.getUuid().replace("-", "_");
 
 			buil.append("if (drawMode === true) { ");
-			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
+			buil.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
 					+ "for (var index = 0; index < arrows.length; index++) { "
 					+ "if ('cardHandle"
 					+ uuidValidForJs
