@@ -290,11 +290,11 @@ public class FullAppTraversalTests
 		new Actions(FullAppTraversalTests.chromeDriver1).dragAndDrop(draggable, to).build()
 				.perform();
 
-		Thread.sleep(3000);
+		Thread.sleep(15000);
 
 		// Assert that the hand contains 7 cards again
-		// Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-		// By.cssSelector(".cross-link img")).size() == 7);
+		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
+				By.cssSelector(".cross-link img")).size() == 7);
 
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
