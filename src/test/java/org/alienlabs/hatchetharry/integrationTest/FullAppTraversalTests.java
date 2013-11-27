@@ -346,10 +346,10 @@ public class FullAppTraversalTests
 		Thread.sleep(8000);
 
 		// Assert that the card is the same
-		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTests.chromeDriver1
-				.findElement(By.id("topLibraryCard")).getAttribute("name")));
-		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTests.chromeDriver2
-				.findElement(By.id("topLibraryCard")).getAttribute("name")));
+		Assert.assertTrue(topCardName.equals(FullAppTraversalTests.chromeDriver1.findElement(
+				By.id("topLibraryCard")).getAttribute("name")));
+		Assert.assertTrue(topCardName.equals(FullAppTraversalTests.chromeDriver2.findElement(
+				By.id("topLibraryCard")).getAttribute("name")));
 
 		// Put to battlefield
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
@@ -372,11 +372,11 @@ public class FullAppTraversalTests
 
 		// Assert that the card on the battlefield is the same
 		Assert.assertEquals(
-				battlefieldCardName,
+				topCardName,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.get(2).getAttribute("name"));
 		Assert.assertEquals(
-				battlefieldCardName,
+				topCardName,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.get(2).getAttribute("name"));
 
@@ -402,7 +402,7 @@ public class FullAppTraversalTests
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
 				By.cssSelector(".cross-link img")).size() == 8);
 
-		// Verify that there is still one card on the battlefield
+		// Verify that there is still two cards on the battlefield
 		Assert.assertEquals(4,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
