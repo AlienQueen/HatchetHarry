@@ -396,11 +396,12 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("putToHandFromModalWindow")).click();
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Assert that the hand contains 8 cards
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".cross-link img")).size() == 8);
+		Assert.assertEquals(8,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
+						.size());
 
 		// Verify that there is still two cards on the battlefield
 		Assert.assertEquals(6,
