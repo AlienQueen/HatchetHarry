@@ -398,8 +398,8 @@ public class FullAppTraversalTests
 
 		Thread.sleep(15000);
 
-		// Assert that the hand contains 8 cards
-		Assert.assertEquals(8,
+		// Assert that the hand contains 7 cards
+		Assert.assertEquals(7,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
 						.size());
 
