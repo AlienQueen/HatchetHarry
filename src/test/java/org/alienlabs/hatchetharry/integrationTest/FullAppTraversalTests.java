@@ -363,10 +363,10 @@ public class FullAppTraversalTests
 
 		// Verify that the card is present on the battlefield
 		Thread.sleep(8000);
-		Assert.assertEquals(4,
+		Assert.assertEquals(6,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(4,
+		Assert.assertEquals(6,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
@@ -374,11 +374,11 @@ public class FullAppTraversalTests
 		Assert.assertEquals(
 				topCardName,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+						.get(4).getAttribute("name"));
 		Assert.assertEquals(
 				topCardName,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+						.get(4).getAttribute("name"));
 
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
@@ -403,10 +403,10 @@ public class FullAppTraversalTests
 				By.cssSelector(".cross-link img")).size() == 8);
 
 		// Verify that there is still two cards on the battlefield
-		Assert.assertEquals(4,
+		Assert.assertEquals(6,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(4,
+		Assert.assertEquals(6,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
@@ -443,11 +443,11 @@ public class FullAppTraversalTests
 				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
 				.getAttribute("name")));
 
-		// Verify that there is still one card on the battlefield
-		Assert.assertEquals(4,
+		// Verify that there is still two cards on the battlefield
+		Assert.assertEquals(6,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(4,
+		Assert.assertEquals(6,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
@@ -455,11 +455,11 @@ public class FullAppTraversalTests
 		Assert.assertEquals(
 				battlefieldCardName,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+						.get(4).getAttribute("name"));
 		Assert.assertEquals(
 				battlefieldCardName,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+						.get(4).getAttribute("name"));
 
 		// Verify that the hands contains 7 cards
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
@@ -537,11 +537,11 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("moveToZoneSubmitExile")).click();
 		Thread.sleep(8000);
 
-		// Verify that there are two cards on the battlefield
-		Assert.assertEquals(6,
+		// Verify that there are three cards on the battlefield
+		Assert.assertEquals(8,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
-		Assert.assertEquals(6,
+		Assert.assertEquals(8,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
 
@@ -549,11 +549,11 @@ public class FullAppTraversalTests
 		Assert.assertEquals(
 				exileCardName,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(4).getAttribute("name"));
+						.get(6).getAttribute("name"));
 		Assert.assertEquals(
 				exileCardName,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(4).getAttribute("name"));
+						.get(6).getAttribute("name"));
 	}
 
 	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)

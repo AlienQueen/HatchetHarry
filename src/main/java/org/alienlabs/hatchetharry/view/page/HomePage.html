@@ -133,7 +133,21 @@
 		<span wicket:id="dataBox"></span>
 	</span><br/>
 	<span wicket:id="clockPanel" id="clock" class="myfont">Clock Panel</span><br/><br/>
-	<span wicket:id="chatPanel">Chat Panel</span>
+	
+	<table>
+		<tr>
+			<td>
+				<span wicket:id="chatPanel">Chat Panel</span>
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;
+			</td>
+			<td class="console">
+				<span class="myfont black">Action history: </span><br/>
+				<textarea id="console" cols="60" rows="10" readonly="readonly" class="myfont black"></textarea>
+			</td>
+		</tr>
+	</table>
 	
 	<div wicket:id="aboutWindow"></div>
 	<div wicket:id="teamInfoWindow"></div>
