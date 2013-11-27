@@ -284,7 +284,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Thursday, 21st of November 2013.");
+		final Label message2 = new Label("message2", "built on Wednesday, 27th of November 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1869,6 +1869,8 @@ public class HomePage extends TestReportPage
 		{
 			final MagicCard mc = event.getCardsToUntap().get(i);
 			buil.append("jQuery('#card" + mc.getUuid().replace("-", "_") + "').rotate(0); ");
+			mc.setTapped(false);
+			this.persistenceService.updateCard(mc);
 		}
 		target.appendJavaScript(buil.toString());
 	}
