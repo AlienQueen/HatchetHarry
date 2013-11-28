@@ -16,9 +16,13 @@ import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -133,6 +137,10 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
+		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+				ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null,
+				card.getTitle(), owner.getName(), null, null, null);
+
 		// post a message for all players in the game
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
@@ -145,6 +153,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			{
 				HatchetHarryApplication.get().getEventBus().post(pcfhcc, pageUuid);
 				HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), pageUuid);
 			}
 			catch (final NullPointerException e)
 			{

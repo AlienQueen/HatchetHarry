@@ -68,6 +68,7 @@ import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveNotifier;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CountCardsCometChannel;
 import org.alienlabs.hatchetharry.model.channel.DestroyTokenCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
@@ -89,6 +90,9 @@ import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateTokenPanelCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
@@ -857,6 +861,10 @@ public class HomePage extends TestReportPage
 					}
 				}
 
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.TAP_UNTAP, null, null, null, null, HatchetHarrySession.get()
+								.getPlayer().getName(), null, null, null);
+
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
@@ -871,6 +879,9 @@ public class HomePage extends TestReportPage
 
 					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
 					HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
+
+					HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 			}
 
@@ -2500,6 +2511,12 @@ public class HomePage extends TestReportPage
 			target.appendJavaScript(buil.toString());
 		}
 
+	}
+
+	@Subscribe
+	public void logToConsole(final AjaxRequestTarget target, final ConsoleLogCometChannel event)
+	{
+		event.getLogger().logToConsole(target);
 	}
 
 	@Override

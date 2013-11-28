@@ -276,10 +276,10 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveCounter(final Counter c)
+	public void saveOrUpdateCounter(final Counter c)
 	{
 		final Session session = this.counterDao.getSession();
-		session.save(c);
+		session.saveOrUpdate(c);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
