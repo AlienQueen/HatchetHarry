@@ -1006,29 +1006,20 @@ public class PersistenceService implements Serializable
 		return (cards == null) ? 0 : cards.size();
 	}
 
-	@Transactional
+	// The counter is deleted by cascade
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void deleteCounter(final Counter counter, final MagicCard card, final Token token)
 	{
 		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty()))
 		{
 			card.getCounters().remove(counter);
+			this.magicCardDao.getSession().update(this.magicCardDao.getSession().merge(card));
 		}
 		else
 		{
 			token.getCounters().remove(counter);
+			this.magicCardDao.getSession().update(this.tokenDao.getSession().merge(token));
 		}
-
-		counter.setCard(null);
-
-		Query query = this.magicCardDao.getSession().createSQLQuery(
-				"delete from Card_Counter where counterId = ?");
-		query.setLong(0, counter.getId());
-		query.executeUpdate();
-
-		query = this.counterDao.getSession().createSQLQuery(
-				"delete from Counter where counterId = ?");
-		query.setLong(0, counter.getId());
-		query.executeUpdate();
 	}
 
 	@Transactional
