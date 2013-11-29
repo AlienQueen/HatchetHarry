@@ -10,9 +10,13 @@ import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -96,6 +100,10 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
+		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+				ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.HAND, null, mc.getTitle(),
+				HatchetHarrySession.get().getPlayer().getName(), null, null, null, null);
+
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
@@ -131,6 +139,17 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			{
 				targetPlayer.setHandDisplayed(true);
 				this.persistenceService.updatePlayer(targetPlayer);
+			}
+
+			// For unit tests only, we'll ask a solution to Emond
+			try
+			{
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
 			}
 		}
 	}

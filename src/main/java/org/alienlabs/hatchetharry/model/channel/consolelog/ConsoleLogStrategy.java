@@ -11,8 +11,14 @@ public abstract class ConsoleLogStrategy
 
 	public abstract void logToConsole(AjaxRequestTarget target);
 
-	protected void logMessage(final AjaxRequestTarget target, final String message)
+	protected void logMessage(final AjaxRequestTarget target, final String message,
+			final Boolean clearConsole)
 	{
+		if ((null != clearConsole) && clearConsole)
+		{
+			target.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = ''; ");
+		}
+
 		target.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"&#013;&#010;\" + \""
 				+ new SimpleDateFormat("HH:mm:ss").format(this.date)
 				+ ": "

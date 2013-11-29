@@ -139,7 +139,7 @@ public class CounterTooltip extends Panel
 							ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 							CounterTooltip.this.token.getCreatureTypes(), HatchetHarrySession.get()
 									.getPlayer().getName(), _counterName,
-							counter.getNumberOfCounters(), targetPlayer.getName());
+							counter.getNumberOfCounters(), targetPlayer.getName(), null);
 				}
 				else
 				{
@@ -155,7 +155,7 @@ public class CounterTooltip extends Panel
 							ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 							CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
 									.getPlayer().getName(), _counterName,
-							counter.getNumberOfCounters(), targetPlayer.getName());
+							counter.getNumberOfCounters(), targetPlayer.getName(), null);
 
 				}
 
@@ -233,7 +233,7 @@ public class CounterTooltip extends Panel
 									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 									CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
 											.getPlayer().getName(), counter.getCounterName(),
-									counter.getNumberOfCounters(), targetPlayerName);
+									counter.getNumberOfCounters(), targetPlayerName, null);
 						}
 						else
 						{
@@ -253,7 +253,7 @@ public class CounterTooltip extends Panel
 									CounterTooltip.this.token.getCreatureTypes(),
 									HatchetHarrySession.get().getPlayer().getName(),
 									counter.getCounterName(), counter.getNumberOfCounters(),
-									targetPlayerName);
+									targetPlayerName, null);
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -322,7 +322,7 @@ public class CounterTooltip extends Panel
 										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 										CounterTooltip.this.card.getTitle(), HatchetHarrySession
 												.get().getPlayer().getName(),
-										counter.getCounterName(), 0l, targetPlayerName);
+										counter.getCounterName(), 0l, targetPlayerName, null);
 							}
 							else
 							{
@@ -347,7 +347,7 @@ public class CounterTooltip extends Panel
 										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 										CounterTooltip.this.token.getCreatureTypes(),
 										HatchetHarrySession.get().getPlayer().getName(),
-										counter.getCounterName(), 0l, targetPlayerName);
+										counter.getCounterName(), 0l, targetPlayerName, null);
 							}
 						}
 						else
@@ -363,7 +363,7 @@ public class CounterTooltip extends Panel
 										CounterTooltip.this.card.getTitle(), HatchetHarrySession
 												.get().getPlayer().getName(),
 										counter.getCounterName(), counter.getNumberOfCounters(),
-										targetPlayerName);
+										targetPlayerName, null);
 							}
 							else
 							{
@@ -376,7 +376,7 @@ public class CounterTooltip extends Panel
 										CounterTooltip.this.token.getCreatureTypes(),
 										HatchetHarrySession.get().getPlayer().getName(),
 										counter.getCounterName(), counter.getNumberOfCounters(),
-										targetPlayerName);
+										targetPlayerName, null);
 							}
 						}
 
@@ -399,7 +399,7 @@ public class CounterTooltip extends Panel
 									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 									CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
 											.getPlayer().getName(), counter.getCounterName(),
-									counter.getNumberOfCounters(), targetPlayerName);
+									counter.getNumberOfCounters(), targetPlayerName, null);
 						}
 						else if (action == NotifierAction.CLEAR_COUNTER)
 						{
@@ -433,7 +433,7 @@ public class CounterTooltip extends Panel
 									CounterTooltip.this.token.getCreatureTypes(),
 									HatchetHarrySession.get().getPlayer().getName(),
 									counter.getCounterName(), counter.getNumberOfCounters(),
-									targetPlayerName);
+									targetPlayerName, null);
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -511,7 +511,7 @@ public class CounterTooltip extends Panel
 										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 										CounterTooltip.this.card.getTitle(), HatchetHarrySession
 												.get().getPlayer().getName(),
-										counter.getCounterName(), 0l, targetPlayerName);
+										counter.getCounterName(), 0l, targetPlayerName, null);
 							}
 							else
 							{
@@ -536,7 +536,7 @@ public class CounterTooltip extends Panel
 										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 										CounterTooltip.this.token.getCreatureTypes(),
 										HatchetHarrySession.get().getPlayer().getName(),
-										counter.getCounterName(), 0l, targetPlayerName);
+										counter.getCounterName(), 0l, targetPlayerName, null);
 							}
 						}
 						else
@@ -566,7 +566,7 @@ public class CounterTooltip extends Panel
 									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 									CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
 											.getPlayer().getName(), counter.getCounterName(),
-									counter.getNumberOfCounters(), targetPlayerName);
+									counter.getNumberOfCounters(), targetPlayerName, null);
 						}
 						else if (action == NotifierAction.CLEAR_COUNTER)
 						{
@@ -602,7 +602,7 @@ public class CounterTooltip extends Panel
 									CounterTooltip.this.token.getCreatureTypes(),
 									HatchetHarrySession.get().getPlayer().getName(),
 									counter.getCounterName(), counter.getNumberOfCounters(),
-									targetPlayerName);
+									targetPlayerName, null);
 						}
 
 						for (int i = 0; i < allPlayersInGame.size(); i++)

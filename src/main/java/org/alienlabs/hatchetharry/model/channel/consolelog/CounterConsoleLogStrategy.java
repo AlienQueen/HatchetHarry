@@ -38,7 +38,7 @@ public class CounterConsoleLogStrategy extends ConsoleLogStrategy
 
 		message += "on " + this.targetPlayerName + "'s card or token: " + this.mc;
 
-		super.logMessage(target, message);
+		super.logMessage(target, message, null);
 	}
 
 }

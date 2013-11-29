@@ -24,7 +24,7 @@ public class ZoneMoveConsoleLogStrategy extends ConsoleLogStrategy
 	{
 		final String message = this.player + " has put " + this.mc + " from "
 				+ this.from.toString() + " to " + this.to.toString();
-		super.logMessage(target, message);
+		super.logMessage(target, message, null);
 	}
 
 }

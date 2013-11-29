@@ -357,6 +357,9 @@ public class JoinGameModalWindow extends Panel
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}
+
+				target.appendJavaScript("document.getElementById('userName').value = '"
+						+ JoinGameModalWindow.this.player.getName() + "'; ");
 			}
 		};
 		submit.setOutputMarkupId(true);

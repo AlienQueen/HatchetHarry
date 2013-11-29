@@ -6,7 +6,8 @@ public class AbstractConsoleLogStrategy
 {
 	public static ConsoleLogStrategy chooseStrategy(final ConsoleLogType type, final CardZone from,
 			final CardZone to, final Boolean cond, final String mc, final String player,
-			final String counterName, final Long numberOfCounters, final String targetPlayerName)
+			final String counterName, final Long numberOfCounters, final String targetPlayerName,
+			final Boolean clearConsole)
 	{
 		switch (type)
 		{
@@ -14,11 +15,14 @@ public class AbstractConsoleLogStrategy
 				return new ZoneMoveConsoleLogStrategy(from, to, mc, player);
 
 			case TAP_UNTAP :
-				return new TapUntapConsoleLogStrategy(cond, mc, player);
+				return new TapUntapConsoleLogStrategy(cond, mc, player, clearConsole);
 
 			case COUNTER_ADD_REMOVE :
 				return new CounterConsoleLogStrategy(mc, player, counterName, numberOfCounters,
 						targetPlayerName);
+
+			case DRAW_CARD :
+				return new DrawCardConsoleLogStrategy(player);
 
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");

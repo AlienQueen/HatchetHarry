@@ -288,7 +288,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Wednesday, 27th of November 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 29th of November 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -863,7 +863,7 @@ public class HomePage extends TestReportPage
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.TAP_UNTAP, null, null, null, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, null, null);
+								.getPlayer().getName(), null, null, null, true);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -1134,6 +1134,10 @@ public class HomePage extends TestReportPage
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
 
+					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+							ConsoleLogType.DRAW_CARD, null, null, null, null, HatchetHarrySession
+									.get().getPlayer().getName(), null, null, null, null);
+
 					for (int i = 0; i < allPlayersInGame.size(); i++)
 					{
 						final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
@@ -1147,6 +1151,18 @@ public class HomePage extends TestReportPage
 						try
 						{
 							HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+						}
+						catch (final NullPointerException ex)
+						{
+							// NPE in unit tests
+							HomePage.LOGGER
+									.error("exception thrown while posting in event bus", ex);
+						}
+
+						try
+						{
+							HatchetHarryApplication.get().getEventBus()
+									.post(new ConsoleLogCometChannel(logger), pageUuid);
 						}
 						catch (final NullPointerException ex)
 						{
@@ -1232,6 +1248,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/draggableHandle/jquery.ui.draggable.min-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.ui.droppable.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/jquery.ui.dialog-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/offset.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(

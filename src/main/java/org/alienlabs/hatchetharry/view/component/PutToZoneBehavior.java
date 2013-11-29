@@ -15,6 +15,10 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveCometChannel;
 import org.alienlabs.hatchetharry.model.channel.CardZoneMoveNotifier;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -146,6 +150,10 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 				.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 
+		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+				ConsoleLogType.ZONE_MOVE, this.sourceZone, this.targetZone, null, card.getTitle(),
+				HatchetHarrySession.get().getPlayer().getName(), null, null, null, null);
+
 		// post a message for all players in the game
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
@@ -162,6 +170,17 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 			catch (final NullPointerException e)
 			{
 				// For tests only, so do nothing
+			}
+
+			// For unit tests only, we'll ask a solution to Emond
+			try
+			{
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
 			}
 		}
 	}

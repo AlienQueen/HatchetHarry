@@ -7,12 +7,15 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 	private final Boolean cond;
 	private final String mc;
 	private final String player;
+	private final Boolean clearConsole;
 
-	public TapUntapConsoleLogStrategy(final Boolean _cond, final String _mc, final String _player)
+	public TapUntapConsoleLogStrategy(final Boolean _cond, final String _mc, final String _player,
+			final Boolean _clearConsole)
 	{
 		this.cond = _cond;
 		this.mc = _mc;
 		this.player = _player;
+		this.clearConsole = _clearConsole;
 	}
 
 	@Override
@@ -20,12 +23,17 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 	{
 		String message = "";
 
-		if (null == this.mc)
+		if ((null == this.mc) && (null != this.clearConsole) && (true == this.clearConsole))
 		{
 			message = this.player + " has untapped all his (her) permanents";
+			super.logMessage(target, message, true);
 		}
-
-		super.logMessage(target, message);
+		else if ((null != this.mc) && (null == this.clearConsole) && (null != this.cond))
+		{
+			message = this.player + " has " + (this.cond ? "tapped " : "untapped ") + " permanent "
+					+ this.mc;
+			super.logMessage(target, message, null);
+		}
 	}
 
 }

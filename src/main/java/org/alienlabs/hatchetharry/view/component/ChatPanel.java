@@ -81,7 +81,7 @@ public class ChatPanel extends Panel
 
 		final RequiredTextField<String> user = new RequiredTextField<String>("user",
 				new Model<String>(""));
-		user.setMarkupId("user" + _playerId);
+		user.setMarkupId("userName");
 		user.setOutputMarkupId(true);
 		form.add(user);
 		final RequiredTextField<String> message = new RequiredTextField<String>("message",

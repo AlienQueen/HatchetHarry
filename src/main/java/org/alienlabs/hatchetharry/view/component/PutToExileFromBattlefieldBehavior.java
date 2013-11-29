@@ -10,9 +10,13 @@ import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToExileFromBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -87,6 +91,11 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 		final List<BigInteger> allPlayersInGame = PutToExileFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
+		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+				ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.EXILE, null,
+				mc.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
+				null);
+
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
@@ -104,7 +113,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 					(allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()));
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION, gameId, session
-					.getPlayer().getId(), session.getPlayer().getName(), "", "",
+							.getPlayer().getId(), session.getPlayer().getName(), "", "",
 					mc.getTitle(), null, targetPlayerName);
 
 			// Only for unit tests
@@ -116,6 +125,16 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 			catch (final NullPointerException e)
 			{
 				// Do nothing in unit tests
+			}
+
+			try
+			{
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
 			}
 
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())

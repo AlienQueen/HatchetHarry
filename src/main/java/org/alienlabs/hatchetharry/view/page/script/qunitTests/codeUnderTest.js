@@ -89,3 +89,17 @@ jQuery(function() {
 
 // For cards drag + hand, graveyard & exile drop
 var shouldMove = true;
+
+
+// Visio-conference
+jQuery(function() {
+	jQuery("#conference").dialog({ autoOpen: false, position: { my: "center", at: "center" } });
+	
+	jQuery("[data-id='conferenceOpener']").click(function() {
+		jQuery("#conference").dialog("open");
+	});
+	
+	jQuery("[data-id='conferenceOpenerResponsive']").click(function() {
+		jQuery("#conference").dialog("open");
+	});
+});

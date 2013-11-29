@@ -10,9 +10,13 @@ import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -90,6 +94,11 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
+		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+				ConsoleLogType.ZONE_MOVE, CardZone.GRAVEYARD, CardZone.BATTLEFIELD, null,
+				mc.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
+				null);
+
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
@@ -113,6 +122,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 					session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
 					targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
 							.longValue()));
+
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
 					NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId, session
 							.getPlayer().getId(), session.getPlayer().getName(), "", "",
@@ -123,6 +133,17 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 			{
 				HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
 				HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
+			}
+
+			// For unit tests only, we'll ask a solution to Emond
+			try
+			{
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), _pageUuid);
 			}
 			catch (final NullPointerException e)
 			{

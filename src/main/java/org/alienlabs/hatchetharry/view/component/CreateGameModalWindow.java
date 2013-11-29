@@ -289,6 +289,9 @@ public class CreateGameModalWindow extends Panel
 						CreateGameModalWindow.this.player.getId());
 
 				HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
+
+				target.appendJavaScript("document.getElementById('userName').value = '"
+						+ CreateGameModalWindow.this.player.getName() + "'; ");
 			}
 
 			@Override

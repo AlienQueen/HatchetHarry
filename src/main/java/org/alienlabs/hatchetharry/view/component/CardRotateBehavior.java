@@ -12,6 +12,10 @@ import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -82,6 +86,11 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final List<BigInteger> allPlayersInGame = CardRotateBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 
+		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+				ConsoleLogType.TAP_UNTAP, null, null, Boolean.valueOf(card.isTapped()),
+				card.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
+				null);
+
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
@@ -94,6 +103,17 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			try
 			{
 				HatchetHarryApplication.get().getEventBus().post(crcc, pageUuid);
+			}
+			catch (final NullPointerException e)
+			{
+				// Nothing to do in unit tests
+			}
+
+			// For unit tests only, we'll ask a solution to Emond
+			try
+			{
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), pageUuid);
 			}
 			catch (final NullPointerException e)
 			{

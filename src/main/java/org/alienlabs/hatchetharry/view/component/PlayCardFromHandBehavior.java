@@ -139,7 +139,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null,
-				card.getTitle(), owner.getName(), null, null, null);
+				card.getTitle(), owner.getName(), null, null, null, null);
 
 		// post a message for all players in the game
 		for (int i = 0; i < allPlayersInGame.size(); i++)
