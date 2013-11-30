@@ -838,27 +838,22 @@ public class HomePage extends TestReportPage
 				game.setAcceptEndOfTurnPending(false);
 				HomePage.this.persistenceService.updateGame(game);
 
-				final List<MagicCard> cardsToUntap = new ArrayList<MagicCard>();
-
-				final List<MagicCard> allCards = HomePage.this.getAllMagicCardsInBattlefield();
+				final List<MagicCard> allCards = HomePage.this.persistenceService
+						.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, HatchetHarrySession
+								.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer()
+								.getDeck().getDeckId());
 				for (int i = 0; i < allCards.size(); i++)
 				{
 					final MagicCard mc = allCards.get(i);
+					mc.setTapped(false);
 
-					if (mc.getDeck().getPlayerId().longValue() == HatchetHarrySession.get()
-							.getPlayer().getId().longValue())
+					if (null != mc.getToken())
 					{
-						mc.setTapped(false);
-
-						if (null != mc.getToken())
-						{
-							mc.getToken().setTapped(false);
-							HomePage.this.persistenceService.saveToken(mc.getToken());
-						}
-
-						cardsToUntap.add(mc);
-						HomePage.this.persistenceService.updateCard(mc);
+						mc.getToken().setTapped(false);
+						HomePage.this.persistenceService.saveToken(mc.getToken());
 					}
+
+					HomePage.this.persistenceService.updateCard(mc);
 				}
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
@@ -874,7 +869,7 @@ public class HomePage extends TestReportPage
 					final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
 							HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
 									.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession
-									.get().getPlayer().getName(), cardsToUntap);
+									.get().getPlayer().getName(), allCards);
 					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
 
 					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
