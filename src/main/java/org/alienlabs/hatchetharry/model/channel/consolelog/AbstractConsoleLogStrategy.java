@@ -24,6 +24,9 @@ public class AbstractConsoleLogStrategy
 			case DRAW_CARD :
 				return new DrawCardConsoleLogStrategy(player);
 
+			case LIFE_POINTS :
+				return new LifePointsConsoleLogStrategy(player, numberOfCounters);
+
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");
 		}

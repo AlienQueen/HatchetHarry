@@ -4,8 +4,13 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -79,6 +84,11 @@ public class DataBox extends Panel
 								.giveAllPlayersFromGame(g);
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
 
+						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
+										HatchetHarrySession.get().getPlayer().getName(), null,
+										playerToUpdate.getLifePoints(), null, true);
+
 						// post the DataBox update message to all players in the
 						// game
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -88,6 +98,8 @@ public class DataBox extends Panel
 									.get(p);
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 							HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
+							HatchetHarryApplication.get().getEventBus()
+									.post(new ConsoleLogCometChannel(logger), pageUuid);
 						}
 					}
 				};
@@ -115,6 +127,11 @@ public class DataBox extends Panel
 								.giveAllPlayersFromGame(g);
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
 
+						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
+										HatchetHarrySession.get().getPlayer().getName(), null,
+										playerToUpdate.getLifePoints(), null, true);
+
 						// post the DataBox update message to all players in the
 						// game
 						for (int i = 0; i < allPlayersInGame.size(); i++)
@@ -124,6 +141,8 @@ public class DataBox extends Panel
 									.get(p);
 							PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 							HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
+							HatchetHarryApplication.get().getEventBus()
+									.post(new ConsoleLogCometChannel(logger), pageUuid);
 						}
 					}
 				};

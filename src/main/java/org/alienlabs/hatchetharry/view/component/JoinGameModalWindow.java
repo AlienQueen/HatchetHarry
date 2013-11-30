@@ -257,12 +257,6 @@ public class JoinGameModalWindow extends Panel
 
 				HatchetHarrySession.get().setPlayer(JoinGameModalWindow.this.player);
 
-				final DataBox dataBox = new DataBox("dataBox",
-						Long.valueOf(JoinGameModalWindow.this.gameIdInput
-								.getDefaultModelObjectAsString()));
-				dataBox.setOutputMarkupId(true);
-				JoinGameModalWindow.this.hp.getDataBoxParent().addOrReplace(dataBox);
-
 				if (JoinGameModalWindow.this.player.isHandDisplayed())
 				{
 					JavaScriptUtils.updateHand(target);
@@ -326,13 +320,13 @@ public class JoinGameModalWindow extends Panel
 					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
 
 					HatchetHarryApplication.get().getEventBus().post(jgncc, pageUuid);
-					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 				}
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
 					final Long p = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
+					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
 				}
 
