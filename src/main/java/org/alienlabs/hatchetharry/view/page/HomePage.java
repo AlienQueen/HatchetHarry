@@ -288,7 +288,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Friday, 29th of November 2013.");
+		final Label message2 = new Label("message2", "built on Saturday, 30th of November 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -858,7 +858,7 @@ public class HomePage extends TestReportPage
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.TAP_UNTAP, null, null, null, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, null, null, true);
+								.getPlayer().getName(), null, null, null, false);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{

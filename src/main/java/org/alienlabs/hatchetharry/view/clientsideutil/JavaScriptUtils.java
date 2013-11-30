@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.view.clientsideutil;
 
+import java.util.List;
+
 import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -34,7 +36,8 @@ public class JavaScriptUtils
 			final boolean added)
 	{
 		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, mc, added);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, mc, added);
+		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, mc, added,
+				gameId);
 	}
 
 	public static void updateCardsInBattlefield(final AjaxRequestTarget target,
@@ -101,53 +104,65 @@ public class JavaScriptUtils
 	 * activate tooltip again
 	 */
 	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
-			final PersistenceService persistenceService, final MagicCard mc, final boolean added)
+			final PersistenceService persistenceService, final MagicCard mc, final boolean added,
+			final Long gameId)
 	{
 		if ((added) && (null != mc))
 		{
 			final StringBuilder buil = new StringBuilder();
 			buil.append("window.setTimeout(function() { ");
+			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('.clickableCard').unbind('tap'); ");
 
-			final String uuidValidForJs = mc.getUuid().replace("-", "_");
+			final List<MagicCard> allCardsInBattlefield = persistenceService
+					.getAllCardsInBattleFieldForAGame(gameId);
+			String uuidValidForJs;
 
-			buil.append("if (typeof drawMode === 'undefined' || drawMode === false) { ");
-			buil.append("jQuery('#card" + uuidValidForJs
-					+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
-					+ "').attr('style', 'display: block; position: absolute; left: "
-					+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
-					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
-					+ " > span').attr('style', 'display: block;'); }); ");
+			for (final MagicCard card : allCardsInBattlefield)
+			{
 
-			// For mobile
-			buil.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
-					+ "').hammer(); ");
-			buil.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
-			buil.append("jQuery('#cardTooltip" + uuidValidForJs
-					+ "').attr('style', 'display: block; position: absolute; left: "
-					+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
-					+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
-					+ " > span').attr('style', 'display: block;'); }); ");
+				uuidValidForJs = card.getUuid().replace("-", "_");
+				buil.append("if (typeof drawMode == 'undefined' || drawMode == false) { ");
 
-			buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide(); ");
-			buil.append(" } else { ");
-			buil.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
-					+ "for (var index = 0; index < arrows.length; index++) { "
-					+ "var e0 = jsPlumb.addEndpoint(arrows[index]['source']); "
-					+ "var e1 = jsPlumb.addEndpoint(arrows[index]['target']); "
-					+ "jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
-					+ "					['Label', {location:0.7, id:'label', events:{ } }], ['Arrow', { "
-					+ "						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]]}); } ");
+				buil.append("jQuery('#card" + uuidValidForJs
+						+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
+						+ "').attr('style', 'display: block; position: absolute; left: " + (card)
+						+ "px; top: " + (card.getY() + 56)
+						+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+						+ " > span').attr('style', 'display: block;'); }); ");
 
-			buil.append("var plumbSource, plumbTarget; "
-					+ "jQuery('.clickableCard').click(function (event) { "
-					+ "if (cardAlreadySelected) { "
-					+ "	cardAlreadySelected = false; "
-					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
-					+ "} else { "
-					+ "	cardAlreadySelected = true; "
-					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ "}}); };");
+				// For mobile
+				buil.append("var hammertime" + uuidValidForJs + " = jQuery('#card" + uuidValidForJs
+						+ "').hammer(); ");
+				buil.append("hammertime" + uuidValidForJs + ".on('tap', function(ev) { ");
+				buil.append("jQuery('#cardTooltip" + uuidValidForJs
+						+ "').attr('style', 'display: block; position: absolute; left: "
+						+ (card.getX() + 127) + "px; top: " + (card.getY() + 56)
+						+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+						+ " > span').attr('style', 'display: block;'); }); ");
+
+				buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide(); ");
+				buil.append(" } else { ");
+				buil.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
+						+ "for (var index = 0; index < arrows.length; index++) { "
+						+ "var e0 = jsPlumb.addEndpoint(arrows[index]['source']); "
+						+ "var e1 = jsPlumb.addEndpoint(arrows[index]['target']); "
+						+ "jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
+						+ "					['Label', {location:0.7, id:'label', events:{ } }], ['Arrow', { "
+						+ "						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]]}); } ");
+
+				buil.append("var plumbSource, plumbTarget; "
+						+ "jQuery('.clickableCard').click(function (event) { "
+						+ "if (cardAlreadySelected) { "
+						+ "	cardAlreadySelected = false; "
+						+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+						+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
+						+ "} else { "
+						+ "	cardAlreadySelected = true; "
+						+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+						+ "}}); }; ");
+			}
+
+			uuidValidForJs = mc.getUuid().replace("-", "_");
 
 			buil.append("jQuery('#tapHandleImage" + uuidValidForJs + "').unbind('click'); ");
 			buil.append("var tapUrl" + uuidValidForJs + " = jQuery('#tapHandleImage"
@@ -211,8 +226,8 @@ public class JavaScriptUtils
 
 			final String uuidValidForJs = mc.getUuid().replace("-", "_");
 
-			buil.append("if (drawMode === true) { ");
-			buil.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
+			buil.append("if (drawMode == true) { ");
+			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('.clickableCard').unbind('tap'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
 					+ "for (var index = 0; index < arrows.length; index++) { "
 					+ "if ('cardHandle"
 					+ uuidValidForJs
