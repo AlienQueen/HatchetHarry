@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
-import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
@@ -86,7 +85,7 @@ public class DataBox extends Panel
 
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
 								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
-										HatchetHarrySession.get().getPlayer().getName(), null,
+										playerToUpdate.getName(), null,
 										playerToUpdate.getLifePoints(), null, true);
 
 						// post the DataBox update message to all players in the
@@ -129,7 +128,7 @@ public class DataBox extends Panel
 
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
 								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
-										HatchetHarrySession.get().getPlayer().getName(), null,
+										playerToUpdate.getName(), null,
 										playerToUpdate.getLifePoints(), null, true);
 
 						// post the DataBox update message to all players in the
