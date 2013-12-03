@@ -19,5 +19,4 @@ public enum CardZone {
 		return this.zoneName;
 	}
 
-
 }
