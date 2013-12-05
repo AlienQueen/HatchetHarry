@@ -444,11 +444,11 @@ public class FullAppTraversalTests
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 						.get(2).getAttribute("name"));
 
-		// Verify that the hands contains 7 cards
-		Assert.assertEquals(7,
+		// Verify that the hands contains 8 cards
+		Assert.assertEquals(8,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
 						.size());
-		Assert.assertEquals(7,
+		Assert.assertEquals(8,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".cross-link img"))
 						.size());
 
