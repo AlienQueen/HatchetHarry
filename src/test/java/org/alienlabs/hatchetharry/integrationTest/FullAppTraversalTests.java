@@ -448,7 +448,7 @@ public class FullAppTraversalTests
 		Assert.assertEquals(8,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
 						.size());
-		Assert.assertEquals(8,
+		Assert.assertEquals(7,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".cross-link img"))
 						.size());
 
