@@ -332,11 +332,11 @@ public class FullAppTraversalTests
 		Assert.assertEquals(
 				battlefieldCardName,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(1).getAttribute("name"));
+						.get(0).getAttribute("name"));
 		Assert.assertEquals(
 				battlefieldCardName,
 				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(1).getAttribute("name"));
+						.get(0).getAttribute("name"));
 
 		// Reveal again
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
