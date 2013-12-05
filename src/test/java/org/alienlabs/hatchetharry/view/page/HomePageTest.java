@@ -19,16 +19,20 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * Tests of basic scenarios of the HomePage using the WicketTester.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class HomePageTest extends SpringContextLoaderBaseTest
 {
 	@Test
-	public void testRenderBaldu()
+	// First test of the suite, otherwise baldu is a WebMarkupContainer
+	public void testFirstRenderBaldu()
 	{
 		// Test the baldu and its different children
 
