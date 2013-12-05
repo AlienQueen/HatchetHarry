@@ -253,8 +253,7 @@ public class NonRegressionTest
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
 		Assert.assertNotNull(tagTester);
 
-		// 2 because the Balduvian Horde is still there
-		Assert.assertEquals(2, tagTester.size());
+		Assert.assertEquals(1, tagTester.size());
 
 		// Play another card
 		this.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
@@ -290,8 +289,7 @@ public class NonRegressionTest
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
 		Assert.assertNotNull(tagTester);
 
-		// 2 because the Balduvian Horde is still there
-		Assert.assertEquals(2, tagTester.size());
+		Assert.assertEquals(1, tagTester.size());
 
 		// Verify createTokenWindow
 		this.openModalWindow("createTokenWindow", "createTokenLink");
@@ -319,11 +317,7 @@ public class NonRegressionTest
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
 		Assert.assertNotNull(tagTester);
 
-		// 2 because: the Balduvian Horde is not there anymore but due to
-		// wicket-quickview, there's only one card in the generated HTML at a
-		// given moment. Plus, each card contains two nested spans of class
-		// "magicCard"
-		Assert.assertEquals(2, tagTester.size());
+		Assert.assertEquals(1, tagTester.size());
 
 		// Are there still 6 cards in the hand
 		pageDocument = this.tester.getLastResponse().getDocument();
@@ -337,10 +331,8 @@ public class NonRegressionTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// And now: does the "count cards" modal window display the right
-		// result: 5 cards in hand, 2 (but counting as only one because of
-		// wicket-quickview) on the battlefield ( + 1 token), 53 in the
-		// library, 0
-		// in
+		// result: 5 cards in hand, 1 on the battlefield ( + 1 token),
+		// 53 in the library, 0 in
 		// exile & graveyard and 60 in total (beware, there's a token!)
 
 		// Verify CountCardsModalWindow

@@ -46,12 +46,15 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
+	private long posX;
+	private long posY;
+
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
 			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
 			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
 			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,
-			final DestroyTokenBehavior _destroyTokenBehavior)
+			final DestroyTokenBehavior _destroyTokenBehavior, final long _posX, final long _posY)
 	{
 		Injector.get().inject(this);
 
@@ -61,6 +64,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.putToHandFromBattlefieldBehavior = _putToHandFromBattlefieldBehavior;
 		this.putToExileFromBattlefieldBehavior = _putToExileFromBattlefieldBehavior;
 		this.destroyTokenBehavior = _destroyTokenBehavior;
+
+		this.posX = _posX;
+		this.posY = _posY;
 	}
 
 	@Override
@@ -75,9 +81,6 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String uniqueid = this.uuid.toString();
 		CardMoveBehavior.LOGGER.info("uuid: " + uniqueid);
 
-		final long posX;
-		final long posY;
-
 		try
 		{
 			final String roundedX = _mouseX.substring(0,
@@ -86,8 +89,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 					(_mouseY.contains(".")) ? _mouseY.indexOf(".") : _mouseY.length());
 			final long _x = Long.parseLong(roundedX);
 			final long _y = Long.parseLong(roundedY);
-			posX = _x <= -300 ? -300 : _x;
-			posY = _y <= -150 ? -150 : _y;
+			this.posX = _x <= -300 ? -300 : _x;
+			this.posY = _y <= -150 ? -150 : _y;
 		}
 		catch (final NumberFormatException e)
 		{
@@ -107,10 +110,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			}
 
 			gameId = mc.getGameId();
-			mc.setX(posX);
-			mc.setY(posY);
-			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + posX + ", posY: "
-					+ posY);
+			mc.setX(this.posX);
+			mc.setY(this.posY);
+			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + this.posX + ", posY: "
+					+ this.posY);
 			this.persistenceService.updateCard(mc);
 		}
 		catch (final IllegalArgumentException e)
@@ -133,7 +136,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
 					playerToWhomToSend);
 			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
-					Long.toString(posX), Long.toString(posY), uniqueid, playerId);
+					Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
 
 			// For unit tets
 			try
@@ -161,6 +164,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("graveyardUrl", this.putToGraveyardFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("exileUrl", this.putToExileFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("destroyUrl", this.destroyTokenBehavior.getCallbackUrl());
+		variables.put("posX", this.posX);
+		variables.put("posY", this.posY);
 
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior
@@ -173,6 +178,11 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 				"script/draggableHandle/initDrag.js");
 		template2.interpolate(variables);
 		js = js.append("\n" + template2.asString());
+
+		final TextTemplate template3 = new PackageTextTemplate(HomePage.class,
+				"script/draggableHandle/dragCard.js");
+		template3.interpolate(variables);
+		js = js.append("\n" + template3.asString());
 
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 		try
@@ -192,6 +202,15 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		{
 			CardMoveBehavior.LOGGER.error(
 					"unable to close template2 in CardMoveBehavior#renderHead()!", e);
+		}
+		try
+		{
+			template3.close();
+		}
+		catch (final IOException e)
+		{
+			CardMoveBehavior.LOGGER.error(
+					"unable to close template3 in CardMoveBehavior#renderHead()!", e);
 		}
 	}
 

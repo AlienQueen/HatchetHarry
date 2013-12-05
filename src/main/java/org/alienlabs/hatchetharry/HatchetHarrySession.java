@@ -45,6 +45,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
 	private static final String ALL_MAGIC_CARDS_IN_BATTLEFIELD = "ALL_MAGIC_CARDS_IN_BATTLEFIELD";
 	private static final String PLAYER_ENDING_HER_TURN = "PLAYER_ENDING_HER_TURN";
+	private static final String DRAW_MODE = "DRAW_MODE";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -65,6 +66,7 @@ public class HatchetHarrySession extends WebSession
 				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
+		this.setAttribute(HatchetHarrySession.DRAW_MODE, false);
 		this.setLocale(Locale.ENGLISH);
 	}
 
@@ -377,6 +379,16 @@ public class HatchetHarrySession extends WebSession
 	public void setPlayerEndingHerTurn(final String player)
 	{
 		this.setAttribute(HatchetHarrySession.PLAYER_ENDING_HER_TURN, player);
+	}
+
+	public Boolean isDrawMode()
+	{
+		return (Boolean)this.getAttribute(HatchetHarrySession.DRAW_MODE);
+	}
+
+	public void setDrawMode(final Boolean drawMode)
+	{
+		this.setAttribute(HatchetHarrySession.DRAW_MODE, drawMode);
 	}
 
 }

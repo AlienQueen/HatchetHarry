@@ -37,6 +37,9 @@ public class MagicCardTooltipPanel extends Panel
 		this.ownerSide = _ownerSide;
 		this.card = _card;
 
+		final CardTooltipBehavior ctb = new CardTooltipBehavior(this.uuid, this.card);
+		this.add(ctb);
+
 		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
 		{
 			private static final long serialVersionUID = 1L;

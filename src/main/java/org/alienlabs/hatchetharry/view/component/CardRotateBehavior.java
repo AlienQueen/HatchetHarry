@@ -43,10 +43,13 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public CardRotateBehavior(final CardPanel cp, final UUID _uuid)
+	private final boolean tapped;
+
+	public CardRotateBehavior(final CardPanel cp, final UUID _uuid, final boolean _tapped)
 	{
 		this.panel = cp;
 		this.uuid = _uuid;
+		this.tapped = _tapped;
 		Injector.get().inject(this);
 	}
 
@@ -130,6 +133,8 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+		variables.put("uuid", this.uuid.toString());
+		variables.put("tapped", this.tapped);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/rotate/cardRotate.js");

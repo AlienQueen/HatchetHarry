@@ -288,7 +288,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Saturday, 30th of November 2013.");
+		final Label message2 = new Label("message2", "built on Thursday, 5th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -317,6 +317,10 @@ public class HomePage extends TestReportPage
 
 		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
 
+		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
+		balduParent.setOutputMarkupId(true);
+		balduParent.setMarkupId("tour_6");
+
 		if (!this.session.isGameCreated())
 		{
 			this.createPlayer();
@@ -324,6 +328,15 @@ public class HomePage extends TestReportPage
 			this.buildHandCards();
 			this.buildHandMarkup();
 			this.buildDataBox(this.player.getGame().getId());
+			final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
+			if ((null != card)
+					&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer()
+							.getSide().getSideName())))
+			{
+				balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
+						.getUuidObject(), this.player));
+				this.session.getAllMagicCardsInBattleField().add(card);
+			}
 		}
 		else
 		{
@@ -332,7 +345,10 @@ public class HomePage extends TestReportPage
 			this.buildHandCards();
 			this.restoreBattlefieldState();
 			this.buildDataBox(this.player.getGame().getId());
+
+			balduParent.add(new WebMarkupContainer("baldu"));
 		}
+		this.add(balduParent);
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
 		this.createCardPanelPlaceholders();
@@ -340,25 +356,6 @@ public class HomePage extends TestReportPage
 		this.buildGraveyardMarkup();
 		this.buildExileMarkup();
 		this.buildDock();
-
-		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
-		balduParent.setOutputMarkupId(true);
-		balduParent.setMarkupId("tour_6");
-
-		final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
-		if ((null != card)
-				&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer().getSide()
-						.getSideName())))
-		{
-			balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-					.getUuidObject(), this.player));
-			this.session.getAllMagicCardsInBattleField().add(card);
-		}
-		else
-		{
-			balduParent.add(new WebMarkupContainer("baldu"));
-		}
-		this.add(balduParent);
 
 		// Links from the menubar
 		this.aboutWindow = new ModalWindow("aboutWindow");
@@ -2321,6 +2318,7 @@ public class HomePage extends TestReportPage
 			case BATTLEFIELD :
 				mc.setX(event.getSide().getX());
 				mc.setY(event.getSide().getY());
+				this.persistenceService.updateCard(mc);
 				JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
 						this.persistenceService, event.getGameId(), mc, true);
 				break;
@@ -2469,6 +2467,8 @@ public class HomePage extends TestReportPage
 	public void switchDrawMode(final AjaxRequestTarget target,
 			final SwitchDrawModeCometChannel event)
 	{
+		HatchetHarrySession.get().setDrawMode(event.isDrawMode());
+
 		if (event.isDrawMode())
 		{
 			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
