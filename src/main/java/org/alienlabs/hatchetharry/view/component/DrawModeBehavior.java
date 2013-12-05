@@ -45,7 +45,7 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("posX", this.mc.getX());
 		variables.put("posY", this.mc.getY());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
-		variables.put("drawMode", HatchetHarrySession.get().isDrawMode().booleanValue());
+		variables.put("drawMode", HatchetHarrySession.get().isDrawMode());
 
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/drawMode.js");
