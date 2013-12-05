@@ -14,6 +14,10 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -289,6 +293,12 @@ public class CreateGameModalWindow extends Panel
 						CreateGameModalWindow.this.player.getId());
 
 				HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
+
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.GAME, null, null, true, null, HatchetHarrySession.get()
+								.getPlayer().getName(), null, g.getId(), null, null);
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), pageUuid);
 
 				target.appendJavaScript("document.getElementById('userName').value = '"
 						+ CreateGameModalWindow.this.player.getName() + "'; ");

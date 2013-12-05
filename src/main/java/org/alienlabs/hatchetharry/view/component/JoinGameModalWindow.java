@@ -19,8 +19,12 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -308,8 +312,12 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player.setSideUuid(s.getUuid());
 				JoinGameModalWindow.this.persistenceService
 						.updatePlayer(JoinGameModalWindow.this.player);
+
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						JoinGameModalWindow.this.player);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.GAME, null, null, false, null, HatchetHarrySession.get()
+								.getPlayer().getName(), null, _gameId, null, null);
 
 				// post the DataBox update message to all players in the game,
 				// except me
@@ -328,6 +336,8 @@ public class JoinGameModalWindow extends Panel
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
 					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
+					HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 
 				// In order to display the opponents' sides

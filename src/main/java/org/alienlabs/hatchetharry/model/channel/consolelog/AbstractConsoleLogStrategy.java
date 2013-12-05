@@ -27,6 +27,9 @@ public class AbstractConsoleLogStrategy
 			case LIFE_POINTS :
 				return new LifePointsConsoleLogStrategy(player, numberOfCounters);
 
+			case GAME :
+				return new GameConsoleLogStrategy(player, numberOfCounters, cond);
+
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");
 		}
