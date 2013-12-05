@@ -28,6 +28,25 @@ import org.junit.Test;
 public class HomePageTest extends SpringContextLoaderBaseTest
 {
 	@Test
+	public void testRenderBaldu()
+	{
+		// Test the baldu and its different children
+
+		SpringContextLoaderBaseTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
+		final CardPanel baldu = (CardPanel)SpringContextLoaderBaseTest.tester
+				.getComponentFromLastRenderedPage("balduParent:baldu");
+		final ExternalImage tapHandleImage = (ExternalImage)baldu
+				.get("cardHandle:menutoggleButton:form:tapHandleImage");
+		Assert.assertNotNull(tapHandleImage);
+		final ExternalImage handleImage = (ExternalImage)baldu
+				.get("cardHandle:menutoggleButton:form:handleImage");
+		Assert.assertNotNull(handleImage);
+		final ExternalImage cardImage = (ExternalImage)baldu
+				.get("cardHandle:menutoggleButton:form:cardImage");
+		Assert.assertNotNull(cardImage);
+	}
+
+	@Test
 	public void testRenderHand()
 	{
 		// assert hand is present
@@ -239,24 +258,6 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.clickLink(linkToActivateWindow, true);
 		SpringContextLoaderBaseTest.tester.assertVisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
-	}
-
-	@Test
-	public void testRenderBaldu()
-	{
-		// Test the baldu and its different children
-		SpringContextLoaderBaseTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
-		final CardPanel baldu = (CardPanel)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("balduParent:baldu");
-		final ExternalImage tapHandleImage = (ExternalImage)baldu
-				.get("cardHandle:menutoggleButton:form:tapHandleImage");
-		Assert.assertNotNull(tapHandleImage);
-		final ExternalImage handleImage = (ExternalImage)baldu
-				.get("cardHandle:menutoggleButton:form:handleImage");
-		Assert.assertNotNull(handleImage);
-		final ExternalImage cardImage = (ExternalImage)baldu
-				.get("cardHandle:menutoggleButton:form:cardImage");
-		Assert.assertNotNull(cardImage);
 	}
 
 	@Test
