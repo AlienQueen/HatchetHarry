@@ -320,24 +320,6 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 		Thread.sleep(8000);
 
-		// Assert that 1 card is present on battlefield
-		Assert.assertEquals(2,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
-						.size());
-		Assert.assertEquals(2,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
-						.size());
-
-		// Verify the name of the card on the battlefield
-		Assert.assertEquals(
-				battlefieldCardName,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(0).getAttribute("name"));
-		Assert.assertEquals(
-				battlefieldCardName,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(0).getAttribute("name"));
-
 		// Reveal again
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
