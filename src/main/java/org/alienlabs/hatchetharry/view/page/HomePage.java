@@ -2735,9 +2735,9 @@ public class HomePage extends TestReportPage
 							mc.getOwnerSide(), mc);
 					cardBubbleTip.setOutputMarkupId(true);
 					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip.add(new AttributeModifier("style",
-							"display: none; position: absolute; left: " + mc.getX() + "px; top: "
-									+ mc.getY() + "px; z-index: 50;"));
+					cardBubbleTip
+							.add(new AttributeModifier("style",
+									"display: none; position: relative; left: 50%; top: 50%; z-index: 50;"));
 
 					item.add(cardBubbleTip);
 				}

@@ -105,14 +105,15 @@ public class JavaScriptUtils
 			final PersistenceService persistenceService, final MagicCard mc, final boolean added,
 			final Long gameId)
 	{
-		if (!added && (null != mc))
+		final Boolean drawMode = persistenceService.getGame(gameId).isDrawMode();
+
+		if (!added && (null != mc) && (drawMode != null) && drawMode.booleanValue())
 		{
 			final StringBuilder buil = new StringBuilder();
 			buil.append("window.setTimeout(function() { ");
 
 			final String uuidValidForJs = mc.getUuid().replace("-", "_");
 
-			buil.append("if (drawMode == true) { ");
 			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('.clickableCard').unbind('tap'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
 					+ "for (var index = 0; index < arrows.length; index++) { "
 					+ "if ('cardHandle"
@@ -144,7 +145,7 @@ public class JavaScriptUtils
 					+ "} else { "
 					+ "	cardAlreadySelected = true; "
 					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ "}}); }; ");
+					+ "}}); ");
 
 			buil.append("}, 175); ");
 

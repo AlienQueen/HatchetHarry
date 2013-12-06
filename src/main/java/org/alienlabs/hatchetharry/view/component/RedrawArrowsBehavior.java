@@ -51,29 +51,33 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 
 		final List<Arrow> allArrows = this.persistenceService.loadAllArrowsForAGame(this.gameId);
 		final StringBuilder content = new StringBuilder("arrow = new Array(); ");
-		content.append("drawMode = "
-				+ this.persistenceService.getGame(HatchetHarrySession.get().getGameId())
-						.isDrawMode() + "; ");
 
-		for (final Arrow arrow : allArrows)
+		final Boolean drawMode = this.persistenceService.getGame(
+				HatchetHarrySession.get().getGameId()).isDrawMode();
+		content.append("drawMode = " + drawMode.booleanValue() + "; ");
+		RedrawArrowsBehavior.LOGGER.info("drawMode: " + drawMode.booleanValue());
+
+		if (drawMode.booleanValue())
 		{
-			content.append("var e0 = jsPlumb.addEndpoint(");
-			content.append(arrow.getSource());
-			content.append(" ); ");
-			content.append("var e1 = jsPlumb.addEndpoint(");
-			content.append(arrow.getTarget());
-			content.append("); ");
-			content.append(" arrows.push({ 'source' : ");
-			content.append(arrow.getSource());
-			content.append(", 'target' : ");
-			content.append(arrow.getTarget());
-			content.append(" }); ");
-			content.append("	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ ");
-			content.append("					['Label', {location:0.7, id:'label', events:{ ");
-			content.append("							} }], ['Arrow', { ");
-			content.append("						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]] }); ");
+			for (final Arrow arrow : allArrows)
+			{
+				content.append("var e0 = jsPlumb.addEndpoint(");
+				content.append(arrow.getSource());
+				content.append(" ); ");
+				content.append("var e1 = jsPlumb.addEndpoint(");
+				content.append(arrow.getTarget());
+				content.append("); ");
+				content.append(" arrows.push({ 'source' : ");
+				content.append(arrow.getSource());
+				content.append(", 'target' : ");
+				content.append(arrow.getTarget());
+				content.append(" }); ");
+				content.append("	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ ");
+				content.append("					['Label', {location:0.7, id:'label', events:{ ");
+				content.append("							} }], ['Arrow', { ");
+				content.append("						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]] }); ");
+			}
 		}
-
 		variables.put("content", content.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
