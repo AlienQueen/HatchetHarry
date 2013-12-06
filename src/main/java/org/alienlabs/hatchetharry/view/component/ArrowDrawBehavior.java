@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -60,6 +61,12 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<BigInteger> allPlayersInGame = ArrowDrawBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
+
+		final Arrow arrow = new Arrow();
+		arrow.setGame(gameId);
+		arrow.setSource(arrowDrawSource);
+		arrow.setTarget(arrowDrawTarget);
+		ArrowDrawBehavior.this.persistenceService.saveOrUpdateArrow(arrow);
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{

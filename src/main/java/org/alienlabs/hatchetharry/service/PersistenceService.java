@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Counter;
@@ -17,6 +18,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.Token;
+import org.alienlabs.hatchetharry.persistence.dao.ArrowDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.CounterDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
@@ -61,6 +63,8 @@ public class PersistenceService implements Serializable
 	private CounterDao counterDao;
 	@SpringBean
 	private TokenDao tokenDao;
+	@SpringBean
+	private ArrowDao arrowDao;
 
 	public PersistenceService()
 	{
@@ -639,6 +643,12 @@ public class PersistenceService implements Serializable
 		this.tokenDao = _tokenDao;
 	}
 
+	@Required
+	public void setArrowDao(final ArrowDao _arrowDao)
+	{
+		this.arrowDao = _arrowDao;
+	}
+
 	@Transactional(readOnly = true)
 	public List<?> getCardsByDeckId(final long gameId)
 	{
@@ -1030,6 +1040,42 @@ public class PersistenceService implements Serializable
 		query.setLong(0, counter.getNumberOfCounters());
 		query.setLong(1, counter.getId());
 		query.executeUpdate();
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void saveOrUpdateArrow(final Arrow arrow)
+	{
+		this.arrowDao.getSession().saveOrUpdate(arrow);
+	}
+
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void deleteArrow(final Arrow arrow)
+	{
+		this.arrowDao.getSession().delete(arrow);
+	}
+
+	@Transactional(readOnly = true)
+	public List<Arrow> loadAllArrowsForAGame(final Long gameId)
+	{
+		final Session session = this.arrowDao.getSession();
+
+		final Query query = session.createQuery("from Arrow where gameId = ?");
+		query.setLong(0, gameId);
+
+		return query.list();
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void deleteAllArrowsForAGame(final Long gameId)
+	{
+		final List<Arrow> allArrows = this.loadAllArrowsForAGame(gameId);
+		final Session session = this.arrowDao.getSession();
+
+		for (final Arrow arrow : allArrows)
+		{
+			session.delete(arrow);
+		}
 	}
 
 }

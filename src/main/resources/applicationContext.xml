@@ -117,13 +117,14 @@
 				<value>org.alienlabs.hatchetharry.model.Side</value>
 				<value>org.alienlabs.hatchetharry.model.Counter</value>
 				<value>org.alienlabs.hatchetharry.model.Token</value>
+				<value>org.alienlabs.hatchetharry.model.Arrow</value>
             </list> 
         </property>
 
 		<property name="hibernateProperties">
 			<props>
 				<!--  create= provide database model at start-up by dropping tables, update= no start-up data model modification -->
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
 				<prop key="jdbc.driverClassName">com.mysql.jdbc.Driver</prop>
 				<prop key="jdbc.url">jdbc:mysql://localhost:3306/hh</prop>
@@ -199,6 +200,9 @@
 	<bean id="tokenDao" class="org.alienlabs.hatchetharry.persistence.dao.TokenDaoImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
+	<bean id="arrowDao" class="org.alienlabs.hatchetharry.persistence.dao.ArrowDaoImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
 	<!-- setup transactions -->
 
 <!--	<bean id="playerDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
@@ -233,6 +237,7 @@
 		<property name="sideDao" ref="sideDao"/>
 		<property name="counterDao" ref="counterDao"/>
 		<property name="tokenDao" ref="tokenDao"/>
+		<property name="arrowDao" ref="arrowDao"/>
 	</bean>
 	<!-- import a deck from http://www.magicsupremacy.fr -->
 	<bean id="importDeckService" class="org.alienlabs.hatchetharry.service.ImportDeckService">

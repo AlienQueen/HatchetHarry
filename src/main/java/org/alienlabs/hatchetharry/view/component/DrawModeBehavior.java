@@ -4,33 +4,38 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(DrawModeBehavior.class);
 
 	private final UUID uuid;
-
 	private final MagicCard mc;
+	@SpringBean
+	private PersistenceService persistenceService;
+	private final Player player;
 
-	public DrawModeBehavior(final UUID _uuid, final MagicCard _mc)
+	public DrawModeBehavior(final UUID _uuid, final MagicCard _mc, final Player _player)
 	{
 		this.uuid = _uuid;
 		this.mc = _mc;
+		this.player = _player;
 	}
 
 	@Override
@@ -45,7 +50,11 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("posX", this.mc.getX());
 		variables.put("posY", this.mc.getY());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
-		variables.put("drawMode", HatchetHarrySession.get().isDrawMode());
+
+		final Boolean fromDb = this.persistenceService.getGame(this.player.getGame().getId())
+				.isDrawMode();
+		final Boolean drawMode = fromDb != null ? fromDb : false;
+		variables.put("drawMode", drawMode);
 
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/drawMode.js");
@@ -67,6 +76,12 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
 	}
 
 }

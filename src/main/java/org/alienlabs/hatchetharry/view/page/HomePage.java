@@ -113,6 +113,7 @@ import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.MagicCardTooltipPanel;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
+import org.alienlabs.hatchetharry.view.component.RedrawArrowsBehavior;
 import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
@@ -396,6 +397,8 @@ public class HomePage extends TestReportPage
 		this.generateCardPanels();
 
 		this.generateDrawCardLink();
+		final RedrawArrowsBehavior rab = new RedrawArrowsBehavior(this.player.getGame().getId());
+		this.add(rab);
 
 		// Comet chat channel
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
@@ -528,6 +531,11 @@ public class HomePage extends TestReportPage
 						.getGameId());
 				g.setDrawMode(!g.isDrawMode());
 				HomePage.this.persistenceService.updateGame(g);
+
+				if (!g.isDrawMode())
+				{
+					HomePage.this.persistenceService.deleteAllArrowsForAGame(g.getId());
+				}
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(HomePage.this.session.getGameId());
@@ -2467,8 +2475,6 @@ public class HomePage extends TestReportPage
 	public void switchDrawMode(final AjaxRequestTarget target,
 			final SwitchDrawModeCometChannel event)
 	{
-		HatchetHarrySession.get().setDrawMode(event.isDrawMode());
-
 		if (event.isDrawMode())
 		{
 			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");

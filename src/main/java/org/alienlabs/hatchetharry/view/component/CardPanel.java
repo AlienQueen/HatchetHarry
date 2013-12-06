@@ -111,7 +111,8 @@ public class CardPanel extends Panel
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid,
 				myCard.isTapped());
 
-		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(this.uuid, myCard);
+		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(this.uuid, myCard,
+				this.owner);
 		menutoggleButton.add(cardRotateBehavior, drawModeBehavior);
 
 		final ArrowDrawBehavior arrowDrawBehavior = new ArrowDrawBehavior("cardHandle"
