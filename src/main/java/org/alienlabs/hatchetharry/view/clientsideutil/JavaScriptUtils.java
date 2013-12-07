@@ -1,5 +1,8 @@
 package org.alienlabs.hatchetharry.view.clientsideutil;
 
+import java.util.List;
+
+import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -97,10 +100,6 @@ public class JavaScriptUtils
 		}
 	}
 
-	/*
-	 * Three things to do: - card positions - card tapped / untapped state -
-	 * activate tooltip again
-	 */
 	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
 			final PersistenceService persistenceService, final MagicCard mc, final boolean added,
 			final Long gameId)
@@ -113,42 +112,48 @@ public class JavaScriptUtils
 			buil.append("window.setTimeout(function() { ");
 
 			final String uuidValidForJs = mc.getUuid().replace("-", "_");
+			final String cardToRemove = "cardHandle" + uuidValidForJs;
 
-			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('.clickableCard').unbind('tap'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
-					+ "for (var index = 0; index < arrows.length; index++) { "
-					+ "if ('cardHandle"
-					+ uuidValidForJs
-					+ "' === arrows[index]['source'].id) { "
-					+ "arrows.splice(index, 1); "
-					+ "index--; "
-					+ "continue; "
-					+ "} "
-					+ "if ('cardHandle"
-					+ uuidValidForJs
-					+ "' === arrows[index]['target'].id) { "
-					+ "arrows.splice(index, 1); "
-					+ "index--; "
-					+ "continue; "
-					+ "} "
-					+ "var e0 = jsPlumb.addEndpoint(arrows[index]['source'].id); "
-					+ "var e1 = jsPlumb.addEndpoint(arrows[index]['target'].id); "
-					+ "jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
-					+ "					['Label', {location:0.7, id:'label', events:{ } }], ['Arrow', { "
-					+ "						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]]}); } ");
+			buil.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
-			buil.append("var plumbSource, plumbTarget; "
-					+ "jQuery('.clickableCard').click(function (event) { "
-					+ "if (cardAlreadySelected) { "
-					+ "	cardAlreadySelected = false; "
-					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
-					+ "} else { "
-					+ "	cardAlreadySelected = true; "
-					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ "}}); ");
+			final List<Arrow> allArrows = persistenceService.loadAllArrowsForAGame(gameId);
+			for (final Arrow arrow : allArrows)
+			{
+				JavaScriptUtils.LOGGER.info("source: " + arrow.getSource() + ", target: "
+						+ arrow.getTarget() + ", uuidValidForJs: " + uuidValidForJs);
+
+				if (arrow.getSource().equals(cardToRemove)
+						|| arrow.getTarget().equals(cardToRemove))
+				{
+					buil.append("for (var index = 0; index < arrows.length; index++) { ");
+					buil.append("if (arrows[index]['source'].id === '" + cardToRemove
+							+ "' || arrows[index]['target'].id === '" + cardToRemove + "') { ");
+					buil.append("arrows.splice( jQuery.inArray(index, arrows), 1 ); ");
+					buil.append("index--; ");
+					buil.append("} } ");
+					persistenceService.deleteArrow(arrow);
+				}
+				else
+				{
+					buil.append("var e0 = jsPlumb.addEndpoint(");
+					buil.append(arrow.getSource());
+					buil.append(" ); ");
+					buil.append("var e1 = jsPlumb.addEndpoint(");
+					buil.append(arrow.getTarget());
+					buil.append("); ");
+					buil.append(" arrows.push({ 'source' : ");
+					buil.append(arrow.getSource());
+					buil.append(", 'target' : ");
+					buil.append(arrow.getTarget());
+					buil.append(" }); ");
+					buil.append("	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ ");
+					buil.append("					['Label', {location:0.7, id:'label', events:{ ");
+					buil.append("							} }], ['Arrow', { ");
+					buil.append("						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]] }); ");
+				}
+			}
 
 			buil.append("}, 175); ");
-
 			target.appendJavaScript(buil.toString());
 		}
 	}

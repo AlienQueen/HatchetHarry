@@ -59,6 +59,8 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 
 		if (drawMode.booleanValue())
 		{
+			content.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
+
 			for (final Arrow arrow : allArrows)
 			{
 				content.append("var e0 = jsPlumb.addEndpoint(");

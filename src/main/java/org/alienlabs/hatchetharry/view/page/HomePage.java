@@ -289,7 +289,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Thursday, 5th of December 2013.");
+		final Label message2 = new Label("message2", "built on Saturday, 7th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -2113,27 +2113,6 @@ public class HomePage extends TestReportPage
 				+ event.getUniqueid().replace("-", "_") + "');"
 				+ "card.css('position', 'absolute'); card.css('left', '" + event.getMouseX()
 				+ "px'); card.css('top', '" + event.getMouseY() + "px');");
-
-		target.appendJavaScript("if (drawMode === true) { "
-				+ "jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); "
-				+ "for (var index = 0; index < arrows.length; index++) { "
-				+ "var e0 = jsPlumb.addEndpoint(arrows[index]['source']); "
-				+ "var e1 = jsPlumb.addEndpoint(arrows[index]['target']); "
-				+ "jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ "
-				+ "					['Label', {location:0.7, id:'label', events:{ } }], ['Arrow', { "
-				+ "						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]]}); }};");
-
-		target.appendJavaScript("var plumbSource, plumbTarget; "
-				+ "jQuery('.clickableCard').unbind('click'); "
-				+ "jQuery('.clickableCard').click(function (event) { "
-				+ "if (cardAlreadySelected) { "
-				+ "	cardAlreadySelected = false; "
-				+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-				+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
-				+ "} else { "
-				+ "	cardAlreadySelected = true; "
-				+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-				+ "}});");
 	}
 
 	@Subscribe
@@ -2449,7 +2428,6 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void displayArrow(final AjaxRequestTarget target, final ArrowDrawCometChannel event)
 	{
-		System.out.println("### " + event.getSource() + " ### " + event.getTarget());
 		if (!event.getSource().equals(event.getTarget()))
 		{
 			target.appendJavaScript("jQuery('._jsPlumb_endpoint_full').remove(); "
@@ -2482,7 +2460,8 @@ public class HomePage extends TestReportPage
 
 			target.appendJavaScript("cardAlreadySelected = false; "
 					+ "var plumbSource, plumbTarget; "
-					+ "jQuery('.clickableCard').unbind('click'); "
+					+ "jQuery('.clickableCard').unbind('click');  "
+					+ "jQuery('.clickableCard').unbind('tap');  "
 					+ "jQuery('.clickableCard').click(function (event) { "
 					+ "if (cardAlreadySelected) { "
 					+ "	cardAlreadySelected = false; "

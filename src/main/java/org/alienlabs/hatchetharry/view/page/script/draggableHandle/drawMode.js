@@ -6,9 +6,7 @@ jQuery(function() {
 			arrows = new Array();
 			cardAlreadySelected = false;
 		}
-		if (!${drawMode}) {
-			jQuery('.clickableCard').unbind('click'); jQuery('.clickableCard').unbind('tap'); 
-		} else {
+		if (${drawMode}) {
 			for (var index = 0; index < arrows.length; index++) {
 				var e0 = jsPlumb.addEndpoint(arrows[index]['source']);
 				var e1 = jsPlumb.addEndpoint(arrows[index]['target']);
