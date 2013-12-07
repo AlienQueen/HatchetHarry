@@ -2503,12 +2503,10 @@ public class HomePage extends TestReportPage
 
 			final StringBuilder buil = new StringBuilder();
 			buil.append("arrows = new Array(); drawMode = false; ");
-
 			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
 			for (final MagicCard mc : this.getAllMagicCardsInBattlefield())
 			{
-
 				final String uuidValidForJs = mc.getUuid().replace("-", "_");
 
 				buil.append("jQuery('#card" + uuidValidForJs
