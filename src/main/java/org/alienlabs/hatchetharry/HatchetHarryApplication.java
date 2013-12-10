@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.alienlabs.hatchetharry.view.page.EndGamePage;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -118,6 +119,7 @@ public class HatchetHarryApplication extends WebApplication
 		scheduler.scheduleWithFixedDelay(beeper, 1, 2, TimeUnit.SECONDS);
 
 		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
+		this.mount(new MountedMapperWithoutPageComponentInfo("/endGame", EndGamePage.class));
 
 		this.mountResource("favicon.ico", new PackageResourceReference(HomePage.class,
 				"image/favicon.ico"));

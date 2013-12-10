@@ -120,7 +120,6 @@ import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.TokenTooltipPanel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.atmosphere.JQueryWicketAtmosphereResourceReference;
@@ -233,20 +232,6 @@ public class HomePage extends TestReportPage
 
 	public HomePage() throws IOException
 	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-
-		// http://hatchetharry.net/jtrac/app/item/HAHA-58/
-		final String endGame = request.getParameter("endGame");
-
-		if ("true".equals(endGame))
-		{
-			HatchetHarryApplication.getCometResources().remove(
-					HatchetHarrySession.get().getPlayer().getId());
-			HatchetHarrySession.get().invalidate();
-			throw new RestartResponseException(HomePage.class);
-		}
-
 		this.setOutputMarkupId(true);
 		this.session = HatchetHarrySession.get();
 
@@ -289,7 +274,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Saturday, 7th of December 2013.");
+		final Label message2 = new Label("message2", "built on Tuesday, 10th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -375,8 +360,6 @@ public class HomePage extends TestReportPage
 
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
-
-		request.getRequestedSessionId();
 
 		this.createGameWindow = new ModalWindow("createGameWindow");
 		this.add(this.createGameWindow = this.generateCreateGameModalWindow("createGameLink",
@@ -467,7 +450,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("end game");
-				target.appendJavaScript("var r = confirm('Are you sure that you want to end this game?'); if (r==true) { window.location = window.location + '?endGame=true'; }; ");
+				target.appendJavaScript("var r = confirm('Are you sure that you want to end this game?'); if (r==true) { window.location = window.location + 'endGame'; }; ");
 			}
 		});
 	}
@@ -2513,7 +2496,7 @@ public class HomePage extends TestReportPage
 						+ "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs
 						+ "').attr('style', 'display: block; position: absolute; left: "
 						+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
-						+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+						+ "px; z-index: 1;'); jQuery('#cardTooltip" + uuidValidForJs
 						+ " > span').attr('style', 'display: block;'); }); ");
 
 				// For mobile
@@ -2523,7 +2506,7 @@ public class HomePage extends TestReportPage
 				buil.append("jQuery('#cardTooltip" + uuidValidForJs
 						+ "').attr('style', 'display: block; position: absolute; left: "
 						+ (mc.getX() + 127) + "px; top: " + (mc.getY() + 56)
-						+ "px; z-index: 50;'); jQuery('#cardTooltip" + uuidValidForJs
+						+ "px; z-index: 1;'); jQuery('#cardTooltip" + uuidValidForJs
 						+ " > span').attr('style', 'display: block;'); }); ");
 
 				buil.append("jQuery('#cardTooltip" + uuidValidForJs + "').hide(); ");
@@ -2737,9 +2720,8 @@ public class HomePage extends TestReportPage
 							mc.getOwnerSide(), mc);
 					cardBubbleTip.setOutputMarkupId(true);
 					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip
-							.add(new AttributeModifier("style",
-									"display: none; position: relative; left: 50%; top: 50%; z-index: 50;"));
+					cardBubbleTip.add(new AttributeModifier("style",
+							"display: none; position: relative; left: 50%; top: 50%; z-index: 1;"));
 
 					item.add(cardBubbleTip);
 				}
@@ -2751,7 +2733,7 @@ public class HomePage extends TestReportPage
 					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
 					cardBubbleTip.add(new AttributeModifier("style",
 							"display: none; position: absolute; left: " + mc.getX() + "px; top: "
-									+ mc.getY() + "px; z-index: 50;"));
+									+ mc.getY() + "px; z-index: 1;"));
 
 					item.add(cardBubbleTip);
 				}

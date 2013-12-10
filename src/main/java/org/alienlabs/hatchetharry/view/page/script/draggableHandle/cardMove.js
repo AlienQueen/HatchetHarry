@@ -33,6 +33,4 @@ window.setTimeout(function() {
 						}
 					}
 			);
-			
-			jQuery('#cardHandle${uuidValidForJs}').attr('style', 'display: block; position: absolute; left: ${posX}px; top: ${posY}px; z-index: 50;');
 }, 175);
