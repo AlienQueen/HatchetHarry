@@ -296,8 +296,7 @@ public class CreateGameModalWindow extends Panel
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.GAME, null, null, true, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, g.getId(), null, null,
-						CreateGameModalWindow.this.player.getId());
+								.getPlayer().getName(), null, g.getId(), null, null, g.getId());
 				HatchetHarryApplication.get().getEventBus()
 						.post(new ConsoleLogCometChannel(logger), pageUuid);
 
