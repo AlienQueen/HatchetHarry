@@ -111,6 +111,7 @@ import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.ImportDeckModalWindow;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.MagicCardTooltipPanel;
+import org.alienlabs.hatchetharry.view.component.MessageRedisplayBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.RedrawArrowsBehavior;
@@ -273,8 +274,8 @@ public class HomePage extends TestReportPage
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.5.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Tuesday, 10th of December 2013.");
+		final Label message1 = new Label("message1", "version 0.6.0 (release Big Wraths),");
+		final Label message2 = new Label("message2", "built on Thursday, 12th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -415,6 +416,8 @@ public class HomePage extends TestReportPage
 		this.generateEndGameLink("endGameLinkResponsive");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLink");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLinkResponsive");
+
+		this.add(new MessageRedisplayBehavior(HatchetHarrySession.get().getGameId()));
 	}
 
 	// TODO: really necessary?
@@ -846,7 +849,7 @@ public class HomePage extends TestReportPage
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.TAP_UNTAP, null, null, null, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, null, null, false);
+								.getPlayer().getName(), null, null, null, false, gameId);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -1119,7 +1122,7 @@ public class HomePage extends TestReportPage
 
 					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 							ConsoleLogType.DRAW_CARD, null, null, null, null, HatchetHarrySession
-									.get().getPlayer().getName(), null, null, null, null);
+									.get().getPlayer().getName(), null, null, null, null, gameId);
 
 					for (int i = 0; i < allPlayersInGame.size(); i++)
 					{

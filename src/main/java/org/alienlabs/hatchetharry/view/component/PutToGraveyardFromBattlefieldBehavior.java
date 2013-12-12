@@ -97,7 +97,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.GRAVEYARD, null,
 				mc.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
-				null);
+				null, gameId);
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{

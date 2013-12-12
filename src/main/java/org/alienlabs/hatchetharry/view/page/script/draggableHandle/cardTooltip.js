@@ -2,7 +2,7 @@ jQuery(function() {
 	window.setTimeout(function() {
 		if (typeof drawMode == 'undefined' || !drawMode) {
 			jQuery('#card${uuidValidForJs}').click(function(e) { 
-				jQuery('#cardTooltip${uuidValidForJs}').attr('style', 'display: block; position: absolute; left: ${posX}px; top: ' + (${posY} + 56) + 'px; z-index: 1;');
+				jQuery('#cardTooltip${uuidValidForJs}').attr('style', 'display: block; position: absolute; left: ${posX}px; top: ' + (${posY} + 56) + 'px; z-index: 50;');
 				jQuery('#cardTooltip${uuidValidForJs} > span').attr('style', 'display: block;'); });
 
 			// For mobile

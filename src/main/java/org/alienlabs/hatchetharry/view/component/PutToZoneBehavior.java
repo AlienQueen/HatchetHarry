@@ -152,7 +152,8 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, this.sourceZone, this.targetZone, null, card.getTitle(),
-				HatchetHarrySession.get().getPlayer().getName(), null, null, null, null);
+				HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
+				HatchetHarrySession.get().getGameId());
 
 		// post a message for all players in the game
 		for (int i = 0; i < allPlayersInGame.size(); i++)

@@ -15,6 +15,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Message;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.Token;
@@ -25,6 +26,7 @@ import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
+import org.alienlabs.hatchetharry.persistence.dao.MessageDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
 import org.alienlabs.hatchetharry.persistence.dao.TokenDao;
@@ -65,6 +67,8 @@ public class PersistenceService implements Serializable
 	private TokenDao tokenDao;
 	@SpringBean
 	private ArrowDao arrowDao;
+	@SpringBean
+	private MessageDao messageDao;
 
 	public PersistenceService()
 	{
@@ -296,7 +300,15 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateGame(final Game g)
 	{
-		this.gameDao.getSession().update(g);
+		try
+		{
+			this.gameDao.getSession().update(g);
+		}
+		catch (final Exception e)
+		{
+			PersistenceService.LOGGER.error(
+					"possible duplicate key in PersistenceService#updateGame()! ", e);
+		}
 	}
 
 	@Transactional(readOnly = true)
@@ -647,6 +659,12 @@ public class PersistenceService implements Serializable
 	public void setArrowDao(final ArrowDao _arrowDao)
 	{
 		this.arrowDao = _arrowDao;
+	}
+
+	@Required
+	public void setMessageDao(final MessageDao _messageDao)
+	{
+		this.messageDao = _messageDao;
 	}
 
 	@Transactional(readOnly = true)
@@ -1075,6 +1093,38 @@ public class PersistenceService implements Serializable
 		for (final Arrow arrow : allArrows)
 		{
 			session.delete(arrow);
+		}
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void saveMessageWithoutDuplicate(final Message message)
+	{
+		if ((message.getGameId() != null) && (message.getMessage() != null))
+		{
+			this.messageDao.getSession().save(message);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	public List<Message> loadAllMessagesForAGame(final Long gameId)
+	{
+		final Session session = this.messageDao.getSession();
+
+		final Query query = session.createQuery("from Message where gameId = ?");
+		query.setLong(0, gameId);
+
+		return query.list();
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void deleteAllMessagesForAGame(final Long gameId)
+	{
+		final List<Message> allMessages = this.loadAllMessagesForAGame(gameId);
+		final Session session = this.messageDao.getSession();
+
+		for (final Message message : allMessages)
+		{
+			session.delete(message);
 		}
 	}
 

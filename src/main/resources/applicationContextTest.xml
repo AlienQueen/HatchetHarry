@@ -68,6 +68,7 @@
 				<value>org.alienlabs.hatchetharry.model.Counter</value>
 				<value>org.alienlabs.hatchetharry.model.Token</value>
 				<value>org.alienlabs.hatchetharry.model.Arrow</value>
+				<value>org.alienlabs.hatchetharry.model.Message</value>
             </list> 
         </property>
 

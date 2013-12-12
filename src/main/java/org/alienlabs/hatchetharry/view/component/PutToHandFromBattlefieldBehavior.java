@@ -102,7 +102,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.HAND, null, mc.getTitle(),
-				HatchetHarrySession.get().getPlayer().getName(), null, null, null, null);
+				HatchetHarrySession.get().getPlayer().getName(), null, null, null, null, gameId);
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{

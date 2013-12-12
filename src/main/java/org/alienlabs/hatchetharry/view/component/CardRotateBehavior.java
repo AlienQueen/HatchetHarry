@@ -92,7 +92,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.TAP_UNTAP, null, null, Boolean.valueOf(card.isTapped()),
 				card.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
-				null);
+				null, gameId);
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{

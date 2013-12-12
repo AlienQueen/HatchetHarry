@@ -317,7 +317,7 @@ public class JoinGameModalWindow extends Panel
 						JoinGameModalWindow.this.player);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.GAME, null, null, false, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, _gameId, null, null);
+								.getPlayer().getName(), null, _gameId, null, null, _gameId);
 
 				// post the DataBox update message to all players in the game,
 				// except me

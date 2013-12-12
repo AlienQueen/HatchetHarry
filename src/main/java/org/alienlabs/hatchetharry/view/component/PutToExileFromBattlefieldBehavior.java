@@ -94,7 +94,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.EXILE, null,
 				mc.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
-				null);
+				null, gameId);
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{

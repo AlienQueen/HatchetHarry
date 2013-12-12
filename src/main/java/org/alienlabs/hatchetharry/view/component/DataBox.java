@@ -86,7 +86,7 @@ public class DataBox extends Panel
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
 								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
 										playerToUpdate.getName(), null,
-										playerToUpdate.getLifePoints(), null, true);
+										playerToUpdate.getLifePoints(), null, true, g);
 
 						// post the DataBox update message to all players in the
 						// game
@@ -129,7 +129,7 @@ public class DataBox extends Panel
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
 								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
 										playerToUpdate.getName(), null,
-										playerToUpdate.getLifePoints(), null, true);
+										playerToUpdate.getLifePoints(), null, true, g);
 
 						// post the DataBox update message to all players in the
 						// game

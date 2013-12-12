@@ -5,14 +5,15 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 public class GameConsoleLogStrategy extends ConsoleLogStrategy
 {
 	private final String player;
-	private final Long gameId;
 	private final Boolean created;
+	private final Long gameId;
 
-	public GameConsoleLogStrategy(final String _player, final Long _gameId, final Boolean _created)
+	public GameConsoleLogStrategy(final String _player, final Boolean _created, final Long _gameId)
 	{
+		super();
 		this.player = _player;
-		this.gameId = _gameId;
 		this.created = _created;
+		this.gameId = _gameId;
 	}
 
 	@Override
@@ -23,7 +24,7 @@ public class GameConsoleLogStrategy extends ConsoleLogStrategy
 				: "joined ";
 
 		final String message = this.player + " has " + action + "game #" + this.gameId.longValue();
-		super.logMessage(target, message, null);
+		super.logMessage(target, message, null, this.gameId);
 	}
 
 }
