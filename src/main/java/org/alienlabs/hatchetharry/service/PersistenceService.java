@@ -300,15 +300,7 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateGame(final Game g)
 	{
-		try
-		{
-			this.gameDao.getSession().update(g);
-		}
-		catch (final Exception e)
-		{
-			PersistenceService.LOGGER.error(
-					"possible duplicate key in PersistenceService#updateGame()! ", e);
-		}
+		this.gameDao.getSession().update(g);
 	}
 
 	@Transactional(readOnly = true)
