@@ -215,3 +215,9 @@ div.wicket-modal h3.w_captionText {
 .console {
 	float: left;
 }
+
+
+.drawModeParent {
+	float: left;
+	padding-left: 300px;
+}

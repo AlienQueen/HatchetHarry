@@ -105,6 +105,7 @@ import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.CreateTokenModalWindow;
 import org.alienlabs.hatchetharry.view.component.DataBox;
 import org.alienlabs.hatchetharry.view.component.ExileComponent;
+import org.alienlabs.hatchetharry.view.component.ExternalImage;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
 import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
@@ -231,6 +232,8 @@ public class HomePage extends TestReportPage
 
 	private final List<Player> allPlayerSidesInGame;
 
+	private final WebMarkupContainer drawModeParent;
+
 	public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
@@ -275,7 +278,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.6.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Thursday, 12th of December 2013.");
+		final Label message2 = new Label("message2", "built on Friday, 13th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -418,6 +421,20 @@ public class HomePage extends TestReportPage
 		this.generateHideAllTooltipsLink("hideAllTooltipsLinkResponsive");
 
 		this.add(new MessageRedisplayBehavior(HatchetHarrySession.get().getGameId()));
+
+		this.drawModeParent = new WebMarkupContainer("drawModeParent");
+		this.drawModeParent.setOutputMarkupId(true);
+
+		if (this.persistenceService.getGame(HatchetHarrySession.get().getGameId()).isDrawMode())
+		{
+			this.drawModeParent.add(new ExternalImage("drawModeOn", "image/draw_mode_on.png"));
+		}
+		else
+		{
+			this.drawModeParent.add(new WebMarkupContainer("drawModeOn").setVisible(false));
+		}
+
+		this.add(this.drawModeParent);
 	}
 
 	// TODO: really necessary?
@@ -2482,6 +2499,11 @@ public class HomePage extends TestReportPage
 					+ "	cardAlreadySelected = true; "
 					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
 					+ "}});");
+
+			final ExternalImage img = new ExternalImage("drawModeOn", "image/draw_mode_on.png");
+			this.getDrawModeParent().addOrReplace(img);
+			target.add(this.getDrawModeParent());
+			target.appendJavaScript("jQuery('[title]').tipsy({gravity: 's'}); ");
 		}
 		else
 		{
@@ -2516,6 +2538,10 @@ public class HomePage extends TestReportPage
 			}
 
 			target.appendJavaScript(buil.toString());
+
+			final WebMarkupContainer img = new WebMarkupContainer("drawModeOn");
+			this.getDrawModeParent().addOrReplace(img.setVisible(false));
+			target.add(this.getDrawModeParent());
 		}
 
 	}
@@ -2813,4 +2839,10 @@ public class HomePage extends TestReportPage
 	{
 		return this.allPlayerSidesInGame;
 	}
+
+	public WebMarkupContainer getDrawModeParent()
+	{
+		return this.drawModeParent;
+	}
+
 }
