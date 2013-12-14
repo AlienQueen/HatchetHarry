@@ -5,7 +5,6 @@ jQuery(function() {
 		jQuery('#cardHandle${uuidValidForJs}').draggable({ handle : '#handleImage${uuidValidForJs}', helper : 'original'
 				, stop: function(event, ui) {
 					if (!shouldMove) { shouldMove = true; return; }
-					var card = jQuery('#' + event.target.id.replace('handleImage','cardHandle'));
 					Wicket.Ajax.get({ 'u' : dragUrl${uuidValidForJs} + '&posX=' + (ui.offset.left) + '&posY=' + (ui.offset.top)});
 				}}); 
 		
