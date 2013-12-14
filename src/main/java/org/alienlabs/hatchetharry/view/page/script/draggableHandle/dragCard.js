@@ -12,33 +12,39 @@ jQuery(function() {
 		// The hand image is a drop target
 		jQuery('#putToHand').droppable({ accept: '.magicCard', drop: function(event, ui) {
 				shouldMove = false;
+				jQuery('#' + ui.draggable.context.id).hide();
+
 				if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().length != 0  && jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') {
 					Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });
 					return; 
 				}
-				jQuery('#' + ui.draggable.context.id).hide();
+				
 				Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('handUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });
 				}});
 
 		// The graveyard image is a drop target
 		jQuery('#putToGraveyard').droppable({ accept: '.magicCard', drop: function(event, ui) {
 				shouldMove = false;
+				jQuery('#' + ui.draggable.context.id).hide();
+
 				if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().length != 0  && jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') {
 					Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });
 					return;
 				}
-				jQuery('#' + ui.draggable.context.id).hide();
+				
 				Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('graveyardUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });
 				}});
 
 		// The exile image is a drop target
 		jQuery('#putToExile').droppable({ accept: '.magicCard', drop: function(event, ui) {
 				shouldMove = false;
+				jQuery('#' + ui.draggable.context.id).hide();
+
 				if (jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().length != 0  && jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).next().next().next().children(':first').attr('class') === 'token') {
 					Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('destroyUrl') });
 					return;
 				}
-				jQuery('#' + ui.draggable.context.id).hide();
+				
 				Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('exileUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });
 				}});
 	}, 300);

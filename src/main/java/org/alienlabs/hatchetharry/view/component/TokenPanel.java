@@ -65,12 +65,18 @@ public class TokenPanel extends Panel
 		});
 
 		final Token myToken = this.persistenceService.getTokenFromUuid(this.uuid);
+		this.owner = this.persistenceService.getPlayer(myToken.getPlayer().getId());
 
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("tokenHandle");
 		cardHandle.setOutputMarkupId(true);
 		cardHandle.setMarkupId("tokenHandle" + this.uuid.toString().replace("-", "_"));
-		cardHandle.add(new AttributeModifier("style", "position: absolute; top: " + myToken.getY()
-				+ "px; left: " + myToken.getX() + "px;"));
+		cardHandle
+				.add(new AttributeModifier("style", "position: absolute; top: "
+						+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
+						+ "px;"));
+		myToken.setX(this.owner.getSide().getX());
+		myToken.setY(this.owner.getSide().getY());
+		this.persistenceService.updateToken(myToken);
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
@@ -107,8 +113,6 @@ public class TokenPanel extends Panel
 		final ExternalImage tokenImage = new ExternalImage("tokenImage", "image/backOfCard.jpg");
 		tokenImage.setOutputMarkupId(true);
 		tokenImage.setMarkupId("token" + this.uuid.toString().replace("-", "_"));
-
-		this.owner = this.persistenceService.getPlayer(myToken.getPlayer().getId());
 
 		if (null != this.owner)
 		{

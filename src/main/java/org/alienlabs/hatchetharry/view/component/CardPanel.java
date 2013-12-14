@@ -103,9 +103,8 @@ public class CardPanel extends Panel
 
 		final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this, this.uuid,
 				this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior,
-				this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior,
-				(myCard.getX() == -1) ? this.owner.getSide().getX() : myCard.getX(),
-				(myCard.getY() == -1) ? this.owner.getSide().getY() : myCard.getY());
+				this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior, this.owner
+						.getSide().getX().longValue(), this.owner.getSide().getY().longValue());
 		menutoggleButton.add(cardMoveBehavior);
 
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid,

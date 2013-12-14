@@ -17,7 +17,8 @@ window.setTimeout(function() {
 							Wicket.Ajax.get({ 'u' : '${handUrl}&uuid=' + uuid });
 						} else if (action === 'exile') {
 							jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
-							Wicket.Ajax.get({ 'u' : '${exileUrl}&uuid=' + uuid });
+							var url = jQuery('#handleImage' + uuid).data('exileUrl');
+							Wicket.Ajax.get({ 'u' : url + '&uuid=' + uuid });
 						} else if (action === 'move') {
                             var body = document.getElementById('body');
                             body.style.cursor='move';
