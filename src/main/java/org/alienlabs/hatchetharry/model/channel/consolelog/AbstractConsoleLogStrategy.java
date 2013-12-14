@@ -30,6 +30,9 @@ public class AbstractConsoleLogStrategy
 			case GAME :
 				return new GameConsoleLogStrategy(player, cond, gameId);
 
+			case TOKEN_CREATION_DESTRUCTION :
+				return new TokenConsoleLogStrategy(player, cond, counterName, gameId);
+
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");
 		}

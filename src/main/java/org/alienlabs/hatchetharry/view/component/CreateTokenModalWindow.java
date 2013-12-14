@@ -12,9 +12,13 @@ import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Token;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTokenOnBattlefieldCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -141,6 +145,11 @@ public class CreateTokenModalWindow extends Panel
 				final List<BigInteger> allPlayersInGame = CreateTokenModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, true, null,
+						HatchetHarrySession.get().getPlayer().getName(), token.getCreatureTypes(),
+						null, null, false, gameId);
+
 				// post a message for all players in the game
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -151,6 +160,8 @@ public class CreateTokenModalWindow extends Panel
 
 					HatchetHarryApplication.get().getEventBus().post(ptobcc, pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+					HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 
 				CreateTokenModalWindow.this.modal.close(target);

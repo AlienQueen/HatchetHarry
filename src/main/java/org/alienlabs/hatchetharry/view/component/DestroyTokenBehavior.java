@@ -9,9 +9,13 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.DestroyTokenCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -92,12 +96,17 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
 					NotifierAction.DESTROY_TOKEN, gameId, session.getPlayer().getId(), session
 							.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
+			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
+							.getPlayer().getName(), tokenName, null, null, false, gameId);
 
 			// For unit tests
 			try
 			{
 				HatchetHarryApplication.get().getEventBus().post(dtcc, _pageUuid);
 				HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), _pageUuid);
 			}
 			catch (final NullPointerException e)
 			{
