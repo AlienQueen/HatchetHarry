@@ -128,6 +128,7 @@ import org.apache.wicket.atmosphere.JQueryWicketAtmosphereResourceReference;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -178,6 +179,7 @@ public class HomePage extends TestReportPage
 	ModalWindow importDeckWindow;
 	ModalWindow revealTopLibraryCardWindow;
 	ModalWindow revealTopLibraryCardWindowResponsive;
+	private final List<ModalWindow> allOpenRevealTopLibraryCardWindows;
 	ModalWindow createTokenWindow;
 	ModalWindow countCardsWindow;
 
@@ -279,7 +281,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.6.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Friday, 13th of December 2013.");
+		final Label message2 = new Label("message2", "built on Sunday, 15th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -402,6 +404,7 @@ public class HomePage extends TestReportPage
 		this.generateImportDeckLink("importDeckLink", this.importDeckWindow);
 		this.generateImportDeckLink("importDeckLinkResponsive", this.importDeckWindow);
 
+		this.allOpenRevealTopLibraryCardWindows = new ArrayList<ModalWindow>();
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLink",
 				"revealTopLibraryCardWindow");
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLinkResponsive",
@@ -1573,8 +1576,22 @@ public class HomePage extends TestReportPage
 
 	private void generateRevealTopLibraryCardLink(final String id, final String idModalWindow)
 	{
-		ModalWindow window;
-		window = new ModalWindow(idModalWindow);
+		final ModalWindow window = new ModalWindow(idModalWindow);
+		window.setWindowClosedCallback(new WindowClosedCallback()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClose(final AjaxRequestTarget target)
+			{
+				if (HomePage.this.session.getTopCardIndex().longValue() > 0l)
+				{
+					HomePage.this.session.setTopCardIndex(HomePage.this.session.getTopCardIndex()
+							.longValue() - 1l);
+				}
+
+			}
+		});
 		window.setInitialWidth(500);
 		window.setInitialHeight(510);
 
@@ -2307,6 +2324,7 @@ public class HomePage extends TestReportPage
 				this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow,
 				event.getCard()));
 
+		this.allOpenRevealTopLibraryCardWindows.add(this.revealTopLibraryCardWindow);
 		this.revealTopLibraryCardWindow.show(target);
 	}
 
@@ -2865,6 +2883,11 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getDrawModeParent()
 	{
 		return this.drawModeParent;
+	}
+
+	public List<ModalWindow> getAllOpenRevealTopLibraryCardWindows()
+	{
+		return this.allOpenRevealTopLibraryCardWindows;
 	}
 
 }

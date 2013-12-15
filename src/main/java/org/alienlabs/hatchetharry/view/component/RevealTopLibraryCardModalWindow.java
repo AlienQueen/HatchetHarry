@@ -20,6 +20,7 @@ import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCome
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -73,6 +74,11 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				if (HatchetHarrySession.get().getTopCardIndex().longValue() > 0l)
+				{
+					HatchetHarrySession.get().setTopCardIndex(
+							HatchetHarrySession.get().getTopCardIndex().longValue() - 1l);
+				}
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
 		};
@@ -184,7 +190,11 @@ public class RevealTopLibraryCardModalWindow extends Panel
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 
-				RevealTopLibraryCardModalWindow.this.modal.close(target);
+				for (final ModalWindow mw : ((HomePage)target.getPage())
+						.getAllOpenRevealTopLibraryCardWindows())
+				{
+					mw.close(target);
+				}
 			}
 		};
 		putToBattlefield.setOutputMarkupId(true).setMarkupId("putToBattlefieldFromModalWindow");
@@ -236,7 +246,11 @@ public class RevealTopLibraryCardModalWindow extends Panel
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 
-				RevealTopLibraryCardModalWindow.this.modal.close(target);
+				for (final ModalWindow mw : ((HomePage)target.getPage())
+						.getAllOpenRevealTopLibraryCardWindows())
+				{
+					mw.close(target);
+				}
 			}
 		};
 		putToHand.setOutputMarkupId(true).setMarkupId("putToHandFromModalWindow");
@@ -288,7 +302,11 @@ public class RevealTopLibraryCardModalWindow extends Panel
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 
-				RevealTopLibraryCardModalWindow.this.modal.close(target);
+				for (final ModalWindow mw : ((HomePage)target.getPage())
+						.getAllOpenRevealTopLibraryCardWindows())
+				{
+					mw.close(target);
+				}
 			}
 		};
 		putToGraveyard.setOutputMarkupId(true).setMarkupId("putToGraveyardFromModalWindow");
