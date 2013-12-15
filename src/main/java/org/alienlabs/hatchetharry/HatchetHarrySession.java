@@ -45,6 +45,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD = "ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD";
 	private static final String ALL_MAGIC_CARDS_IN_BATTLEFIELD = "ALL_MAGIC_CARDS_IN_BATTLEFIELD";
 	private static final String PLAYER_ENDING_HER_TURN = "PLAYER_ENDING_HER_TURN";
+	private static final String TOP_CARD_INDEX = "TOP_CARD_INDEX";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -65,6 +66,7 @@ public class HatchetHarrySession extends WebSession
 				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
+		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, 0l);
 		this.setLocale(Locale.ENGLISH);
 	}
 
@@ -377,6 +379,16 @@ public class HatchetHarrySession extends WebSession
 	public void setPlayerEndingHerTurn(final String player)
 	{
 		this.setAttribute(HatchetHarrySession.PLAYER_ENDING_HER_TURN, player);
+	}
+
+	public Long getTopCardIndex()
+	{
+		return (Long)this.getAttribute(HatchetHarrySession.TOP_CARD_INDEX);
+	}
+
+	public void setTopCardIndex(final Long index)
+	{
+		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, index);
 	}
 
 }

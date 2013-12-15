@@ -177,6 +177,7 @@ public class HomePage extends TestReportPage
 	ModalWindow joinGameWindow;
 	ModalWindow importDeckWindow;
 	ModalWindow revealTopLibraryCardWindow;
+	ModalWindow revealTopLibraryCardWindowResponsive;
 	ModalWindow createTokenWindow;
 	ModalWindow countCardsWindow;
 
@@ -401,11 +402,10 @@ public class HomePage extends TestReportPage
 		this.generateImportDeckLink("importDeckLink", this.importDeckWindow);
 		this.generateImportDeckLink("importDeckLinkResponsive", this.importDeckWindow);
 
-		this.revealTopLibraryCardWindow = new ModalWindow("revealTopLibraryCardWindow");
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLink",
-				this.revealTopLibraryCardWindow);
+				"revealTopLibraryCardWindow");
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLinkResponsive",
-				this.revealTopLibraryCardWindow);
+				"revealTopLibraryCardWindowResponsive");
 
 		this.createTokenWindow = new ModalWindow("createTokenWindow");
 		this.generateCreateTokenLink("createTokenLink", this.createTokenWindow);
@@ -1490,7 +1490,7 @@ public class HomePage extends TestReportPage
 
 		this.createGameLink = new AjaxLink<Void>(id)
 		{
-			private static final long serialVersionUID = 4097315677385015896L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(final AjaxRequestTarget _target)
@@ -1571,17 +1571,35 @@ public class HomePage extends TestReportPage
 		this.add(importDeckLink);
 	}
 
-	private void generateRevealTopLibraryCardLink(final String id, final ModalWindow window)
+	private void generateRevealTopLibraryCardLink(final String id, final String idModalWindow)
 	{
+		ModalWindow window;
+		window = new ModalWindow(idModalWindow);
 		window.setInitialWidth(500);
 		window.setInitialHeight(510);
 
-		window.setContent(new RevealTopLibraryCardModalWindow(window.getContentId(), window, null));
+		final List<MagicCard> allCardsInLibrary = this.persistenceService
+				.getAllCardsInLibraryForDeckAndPlayer(this.session.getGameId(), this.session
+						.getPlayer().getId(), this.session.getPlayer().getDeck().getDeckId());
+		final MagicCard firstCard = allCardsInLibrary
+				.get(this.session.getTopCardIndex().intValue());
+		window.setContent(new RevealTopLibraryCardModalWindow(window.getContentId(), window,
+				firstCard));
+
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
-
 		window.setOutputMarkupId(true);
-		this.add(window);
+
+		if (id.equals("revealTopLibraryCardLink"))
+		{
+			this.revealTopLibraryCardWindow = window;
+			this.add(this.revealTopLibraryCardWindow);
+		}
+		else
+		{
+			this.revealTopLibraryCardWindowResponsive = window;
+			this.add(this.revealTopLibraryCardWindowResponsive);
+		}
 
 		final AjaxLink<Void> revealTopLibraryCardLink = new AjaxLink<Void>(id)
 		{
@@ -1590,16 +1608,18 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
-								HomePage.this.session.getPlayer().getId(), HomePage.this.session
-										.getPlayer().getDeck().getDeckId());
-				if ((null == allCardsInLibrary) || (allCardsInLibrary.isEmpty()))
+				if (allCardsInLibrary.isEmpty())
 				{
 					return;
 				}
-				final MagicCard firstCard = allCardsInLibrary.get(0);
-				final String topCardName = firstCard.getBigImageFilename();
+
+				final List<MagicCard> _allCardsInLibrary = HomePage.this.persistenceService
+						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
+								HomePage.this.session.getPlayer().getId(), HomePage.this.session
+										.getPlayer().getDeck().getDeckId());
+				final MagicCard _firstCard = _allCardsInLibrary.get(HomePage.this.session
+						.getTopCardIndex().intValue());
+				final String topCardName = _firstCard.getBigImageFilename();
 
 				final String cardPath = ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
@@ -1630,7 +1650,8 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 					final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
-							HomePage.this.session.getPlayer().getName(), firstCard);
+							HomePage.this.session.getPlayer().getName(), _firstCard,
+							HomePage.this.session.getTopCardIndex());
 
 					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
 				}
@@ -2279,7 +2300,8 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
-		this.revealTopLibraryCardWindow.setTitle("This is the top card of " + event.getPlayerName()
+		this.revealTopLibraryCardWindow.setTitle("This is the top card #"
+				+ (event.getIndex().longValue() + 1l) + " of " + event.getPlayerName()
 				+ "'s library: ");
 		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
 				this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow,

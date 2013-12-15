@@ -1,7 +1,10 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -15,6 +18,7 @@ import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,6 +30,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import com.google.common.io.Files;
 
 public class RevealTopLibraryCardModalWindow extends Panel
 {
@@ -71,6 +77,65 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			}
 		};
 		doNothing.setOutputMarkupId(true).setMarkupId("doNothing");
+
+		final IndicatingAjaxButton next = new IndicatingAjaxButton("next", form)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			{
+				final HatchetHarrySession session = HatchetHarrySession.get();
+				final List<MagicCard> allCardsInLibrary = RevealTopLibraryCardModalWindow.this.persistenceService
+						.getAllCardsInLibraryForDeckAndPlayer(session.getGameId(), session
+								.getPlayer().getId(), session.getPlayer().getDeck().getDeckId());
+
+				if ((null == allCardsInLibrary) || (allCardsInLibrary.isEmpty()))
+				{
+					return;
+				}
+
+				session.setTopCardIndex(session.getTopCardIndex() + 1);
+				final MagicCard firstCard = allCardsInLibrary.get(session.getTopCardIndex()
+						.intValue());
+				final String topCardName = firstCard.getBigImageFilename();
+
+				final String cardPath = ResourceBundle.getBundle(
+						HatchetHarryApplication.class.getCanonicalName()).getString(
+						"SharedResourceFolder");
+				final String cardPathAndName = cardPath.replace("/cards", "") + topCardName;
+				final File from = new File(cardPathAndName);
+				final File to = new File(cardPath + "topLibraryCard.jpg");
+
+				try
+				{
+					Files.copy(from, to);
+				}
+				catch (final IOException e)
+				{
+					RevealTopLibraryCardModalWindow.LOGGER.error("could not copy from: "
+							+ cardPathAndName + " to: " + cardPath + "topLibraryCard.jpg", e);
+				}
+
+				final Long gameId = RevealTopLibraryCardModalWindow.this.persistenceService
+						.getPlayer(session.getPlayer().getId()).getGame().getId();
+
+				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
+							session.getPlayer().getName(), firstCard, session.getTopCardIndex());
+
+					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
+				}
+			}
+		};
+		next.setOutputMarkupId(true).setMarkupId("next");
 
 		final IndicatingAjaxButton putToBattlefield = new IndicatingAjaxButton(
 				"putToBattlefieldFromModalWindow", form)
@@ -228,7 +293,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		};
 		putToGraveyard.setOutputMarkupId(true).setMarkupId("putToGraveyardFromModalWindow");
 
-		form.add(doNothing, putToBattlefield, putToHand, putToGraveyard);
+		form.add(doNothing, next, putToBattlefield, putToHand, putToGraveyard);
 		this.add(form);
 	}
 
@@ -237,4 +302,5 @@ public class RevealTopLibraryCardModalWindow extends Panel
 	{
 		this.persistenceService = _persistenceService;
 	}
+
 }
