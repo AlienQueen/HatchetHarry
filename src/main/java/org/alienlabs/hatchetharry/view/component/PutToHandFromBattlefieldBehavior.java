@@ -94,7 +94,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 		this.persistenceService.updateAllMagicCards(hand);
 		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 		this.persistenceService.updateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService

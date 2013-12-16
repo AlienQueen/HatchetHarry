@@ -850,7 +850,7 @@ public class HomePage extends TestReportPage
 				HomePage.this.persistenceService.updateGame(game);
 
 				final List<MagicCard> allCards = HomePage.this.persistenceService
-						.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, HatchetHarrySession
+						.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId, HatchetHarrySession
 								.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer()
 								.getDeck().getDeckId());
 				for (int i = 0; i < allCards.size(); i++)

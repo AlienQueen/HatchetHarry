@@ -121,7 +121,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 		this.persistenceService.updateAllMagicCards(hand);
 		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 		this.persistenceService.updateAllMagicCards(battlefield);
 
 		JavaScriptUtils.updateHand(target);

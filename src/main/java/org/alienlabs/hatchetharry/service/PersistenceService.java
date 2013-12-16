@@ -816,29 +816,52 @@ public class PersistenceService implements Serializable
 
 
 	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
+	public List<MagicCard> getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
+		final List<MagicCard> all = new ArrayList<MagicCard>();
 
-		final SQLQuery query = session
+		SQLQuery query = session
 				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId  and d.deckId = ? order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong(0, gameId);
 		query.setString(1, CardZone.BATTLEFIELD.toString());
 		query.setLong(2, playerId);
 		query.setLong(3, deckId);
+		List<Token> allTokens = new ArrayList<Token>();
 
 		try
 		{
-			return query.list();
+			all.addAll(query.list());
 		}
 		catch (final ObjectNotFoundException e)
 		{
 			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
 					+ gameId + " => no result found", e);
-			return null;
 		}
+
+		query = session
+				.createSQLQuery("select t.* from Token t where t.gameId = ? and t.Player_Token = ? ");
+		query.addEntity(Token.class);
+		query.setLong(0, gameId);
+		query.setLong(1, playerId);
+
+		try
+		{
+			allTokens = query.list();
+			for (final Token t : allTokens)
+			{
+				all.add(this.getCardFromUuid(UUID.fromString(t.getUuid())));
+			}
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+					+ gameId + " => no result found", e);
+		}
+
+		return all;
 	}
 
 	// TODO remove this
