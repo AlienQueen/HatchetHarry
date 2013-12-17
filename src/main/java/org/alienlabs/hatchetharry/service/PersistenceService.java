@@ -854,7 +854,6 @@ public class PersistenceService implements Serializable
 		query.setString(1, CardZone.BATTLEFIELD.toString());
 		query.setLong(2, playerId);
 		query.setLong(3, deckId);
-		List<Token> allTokens = new ArrayList<Token>();
 
 		try
 		{
@@ -874,7 +873,7 @@ public class PersistenceService implements Serializable
 
 		try
 		{
-			allTokens = query.list();
+			final List<Token> allTokens = query.list();
 			for (final Token t : allTokens)
 			{
 				all.add(this.getCardFromUuid(UUID.fromString(t.getUuid())));

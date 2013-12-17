@@ -114,36 +114,22 @@ public class TokenPanel extends Panel
 		tokenImage.setOutputMarkupId(true);
 		tokenImage.setMarkupId("token" + this.uuid.toString().replace("-", "_"));
 
-		if (null != this.owner)
+		if ("infrared".equals(this.owner.getSide().getSideName()))
 		{
-			if ("infrared".equals(this.owner.getSide().getSideName()))
-			{
-				tokenImage.add(new AttributeModifier("style", "border: 1px solid red;"));
-			}
-			else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
-			{
-				tokenImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
-			}
-
-			final TokenTooltipPanel tokenBubbleTip = new TokenTooltipPanel("tokenTooltip", myToken);
-			tokenBubbleTip.setOutputMarkupId(true);
-			tokenBubbleTip.setMarkupId("tokenTooltip" + this.uuid.toString().replace("-", "_"));
-			tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));
-
-			form.add(tokenBubbleTip);
+			tokenImage.add(new AttributeModifier("style", "border: 1px solid red;"));
 		}
-		else
+		else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
 		{
-			tokenImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
-			final TokenTooltipPanel tokenBubbleTip = new TokenTooltipPanel("tokenTooltip", myToken);
-			tokenBubbleTip.setOutputMarkupId(true);
-			tokenBubbleTip.setMarkupId("tokenTooltip" + this.uuid.toString().replace("-", "_"));
-			tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));
-
-			form.add(tokenBubbleTip);
+			tokenImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 		}
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage);
+		final TokenTooltipPanel tokenBubbleTip = new TokenTooltipPanel("tokenTooltip", myToken);
+		tokenBubbleTip.setOutputMarkupId(true);
+		tokenBubbleTip.setMarkupId("tokenTooltip" + this.uuid.toString().replace("-", "_"));
+		tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));
+
+		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage,
+				tokenBubbleTip);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 
