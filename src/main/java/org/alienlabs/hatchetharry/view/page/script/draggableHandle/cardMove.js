@@ -34,5 +34,25 @@ window.setTimeout(function() {
 						}
 					}
 			);
-                        jQuery('#cardHandle${uuidValidForJs}').attr('style', 'display: block; position: absolute; left: ${posX}px; top: ${posY}px; z-index: 1;');
+            jQuery('#cardHandle${uuidValidForJs}').attr('style', 'display: block; position: absolute; left: ${posX}px; top: ${posY}px; z-index: 1;');
+            
+			function getViewPortSize() {
+			    if (typeof window.innerWidth != 'undefined')
+			    {
+			    	window.viewportwidth = window.innerWidth,
+			    	window.viewportheight = window.innerHeight;
+			    }
+			}
+			
+			getViewPortSize();
+			var card = jQuery('#card${uuidValidForJs}');
+			if (viewportwidth > 1024) {
+				if (card.attr('src').indexOf('_small') != -1) {
+					card.attr('src', card.attr('src').replace('_small', '_medium')); 
+				}
+			} else {
+				if  (card.attr('src').indexOf('_medium') != -1) {	
+						card.attr('src', card.attr('src').replace('_medium', '_small')); 
+				}
+			}
 }, 300);
