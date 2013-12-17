@@ -120,6 +120,13 @@ jQuery(function() {
 	    }
 	}
 	
+	getViewPortSize();
+	if (viewportwidth <= 1024) {
+		jQuery('#putToHand').attr('src', 'image/hand_small.jpg');
+		jQuery('#putToGraveyard').attr('src', 'image/graveyard_small.jpg');
+		jQuery('#putToExile').attr('src', 'image/exile_small.jpg');
+	}
+	
 	jQuery(window).resize(function () {
 		getViewPortSize();
 		var allCards = jQuery('.magicCard.ui-draggable');
