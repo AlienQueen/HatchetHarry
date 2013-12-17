@@ -281,7 +281,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.6.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Sunday, 15th of December 2013.");
+		final Label message2 = new Label("message2", "built on Tuesday, 17th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -417,6 +417,9 @@ public class HomePage extends TestReportPage
 		this.countCardsWindow = new ModalWindow("countCardsWindow");
 		this.generateCountCardsLink("countCardsLink", this.countCardsWindow);
 		this.generateCountCardsLink("countCardsLinkResponsive", this.countCardsWindow);
+
+		this.generateInsertDivisionLink("insertDivisionLink");
+		this.generateInsertDivisionLink("insertDivisionLinkResponsive");
 
 		this.generateEndGameLink("endGameLink");
 		this.generateEndGameLink("endGameLinkResponsive");
@@ -1765,6 +1768,39 @@ public class HomePage extends TestReportPage
 
 		countCardsLink.setOutputMarkupId(true);
 		this.add(countCardsLink);
+	}
+
+	private void generateInsertDivisionLink(final String id)
+	{
+		final AjaxLink<Void> insertDivisionLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Long gameId = HomePage.this.session.getGameId();
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.INSERT_DIVISION, null, null, null, null,
+								HomePage.this.session.getPlayer().getName(), null, null, null,
+								null, gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
+				}
+			}
+		};
+
+		insertDivisionLink.setOutputMarkupId(true).setMarkupId(id);
+		this.add(insertDivisionLink);
 	}
 
 	@Subscribe
