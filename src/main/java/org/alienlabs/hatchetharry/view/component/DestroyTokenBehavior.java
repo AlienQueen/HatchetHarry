@@ -86,7 +86,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 
 		// TODO: reorder?
 		final List<MagicCard> battlefield = this.persistenceService
-				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
 		this.persistenceService.updateAllMagicCards(battlefield);
 
