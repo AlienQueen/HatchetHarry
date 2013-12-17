@@ -121,8 +121,12 @@ public class CreateTokenModalWindow extends Panel
 				card.setUuidObject(uuid);
 				card.setZone(CardZone.BATTLEFIELD);
 				card.getDeck().setPlayerId(player.getId());
-				card.setX(300l);
-				card.setY(300l);
+				card.setX(card.getX().longValue() == -1l
+						? player.getSide().getX().longValue()
+						: card.getX().longValue());
+				card.setY(card.getY().longValue() == -1l
+						? player.getSide().getY().longValue()
+						: card.getY().longValue());
 
 				token.setCapabilities(CreateTokenModalWindow.this.capabilitiesModel.getObject());
 				token.setCreatureTypes(CreateTokenModalWindow.this.creatureTypesModel.getObject());
