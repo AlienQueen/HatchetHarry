@@ -52,7 +52,8 @@ public class CreateTokenModalWindow extends Panel
 		super(id);
 		this.modal = _modal;
 
-		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard", "cards/token.jpg");
+		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
+				"cards/token_medium.jpg");
 
 		this.typeModel = Model.of("");
 		this.colorsModel = Model.of("");
@@ -108,8 +109,8 @@ public class CreateTokenModalWindow extends Panel
 						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
 						gameId);
 
-				final MagicCard card = new MagicCard("cards/token.jpg", "", "", "token", "", player
-						.getSide().getSideName(), token);
+				final MagicCard card = new MagicCard("cards/token_small.jpg", "", "", "token", "",
+						player.getSide().getSideName(), token);
 
 				final Deck dummyDeck = new Deck();
 				final DeckArchive dummyDeckArchive = new DeckArchive();
