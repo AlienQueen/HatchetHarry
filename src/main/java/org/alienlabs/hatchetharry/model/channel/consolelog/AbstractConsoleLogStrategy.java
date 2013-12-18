@@ -36,6 +36,9 @@ public class AbstractConsoleLogStrategy
 			case INSERT_DIVISION :
 				return new InsertDivisionConsoleLogStrategy(player, gameId);
 
+			case SHUFFLE_LIBRARY :
+				return new ShuffleLibraryConsoleLogStrategy(player, gameId);
+
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");
 		}

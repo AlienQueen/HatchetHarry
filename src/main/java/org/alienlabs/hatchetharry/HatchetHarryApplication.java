@@ -342,6 +342,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/palette.png"));
 		this.mountResource("image/division.png", new PackageResourceReference(HomePage.class,
 				"image/division.png"));
+		this.mountResource("image/shuffle.png", new PackageResourceReference(HomePage.class,
+				"image/shuffle.png"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.hours(1));

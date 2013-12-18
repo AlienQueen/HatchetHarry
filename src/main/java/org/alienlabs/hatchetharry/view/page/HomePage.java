@@ -281,7 +281,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.6.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Tuesday, 17th of December 2013.");
+		final Label message2 = new Label("message2", "built on Wednesday, 18th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -420,6 +420,9 @@ public class HomePage extends TestReportPage
 
 		this.generateInsertDivisionLink("insertDivisionLink");
 		this.generateInsertDivisionLink("insertDivisionLinkResponsive");
+
+		this.generateShuffleLibraryLink("shuffleLibraryLink");
+		this.generateShuffleLibraryLink("shuffleLibraryLinkResponsive");
 
 		this.generateEndGameLink("endGameLink");
 		this.generateEndGameLink("endGameLinkResponsive");
@@ -1803,6 +1806,59 @@ public class HomePage extends TestReportPage
 		this.add(insertDivisionLink);
 	}
 
+	private void generateShuffleLibraryLink(final String id)
+	{
+		final AjaxLink<Void> insertDivisionLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Long gameId = HomePage.this.session.getGameId();
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.SHUFFLE_LIBRARY, null, null, null, null,
+								HomePage.this.session.getPlayer().getName(), null, null, null,
+								null, gameId);
+
+				final Player me = HomePage.this.session.getPlayer();
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(), me
+								.getSide().getSideName(), null, null, null, "");
+
+				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
+						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
+								HomePage.this.session.getPlayer().getId(), HomePage.this.session
+										.getPlayer().getDeck().getDeckId());
+				Collections.shuffle(allCardsInLibrary);
+				Collections.shuffle(allCardsInLibrary);
+				Collections.shuffle(allCardsInLibrary);
+				for (int i = 0; i < allCardsInLibrary.size(); i++)
+				{
+					allCardsInLibrary.get(i).setZoneOrder(Long.valueOf(i));
+				}
+
+				HomePage.this.persistenceService.updateAllMagicCards(allCardsInLibrary);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+					HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+				}
+			}
+		};
+
+		insertDivisionLink.setOutputMarkupId(true).setMarkupId(id);
+		this.add(insertDivisionLink);
+	}
+
 	@Subscribe
 	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
@@ -1905,7 +1961,7 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : 'accepts the end of turn.', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PLAY_TOP_LIBRARY_CARD :
+			case PLAY_TOP_LIBRARY_CARD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
 						+ "', text : \"has played the top card of "
@@ -1915,7 +1971,7 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOP_LIBRARY_CARD_TO_HAND :
+			case PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
 						+ "', text : \"has put the top card of "
@@ -1929,7 +1985,7 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD :
+			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
 						+ "', text : \"has put the top card of "
@@ -1943,17 +1999,24 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOKEN_ON_BATTLEFIELD :
+			case PUT_TOKEN_ON_BATTLEFIELD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has put a " + event.getCardName()
 						+ " token on the battlefield"
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case DESTROY_TOKEN :
+			case DESTROY_TOKEN_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has destroyed a " + event.getCardName() + " token"
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
+
+			case SHUFFLE_LIBRARY_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'has shuffled his (her) library', image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+
 			// $CASES-OMITTED$
 			// TODO: split this notifier action and the one of
 			// card counters
@@ -2027,7 +2090,7 @@ public class HomePage extends TestReportPage
 
 		switch (event.getAction())
 		{
-			case ADD_COUNTER :
+			case ADD_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has put "
 						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
@@ -2035,7 +2098,7 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case REMOVE_COUNTER :
+			case REMOVE_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has put "
 						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
@@ -2043,14 +2106,14 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case CLEAR_COUNTER :
+			case CLEAR_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has cleared the "
 						+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
 						+ "'s card: " + event.getCardName()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case SET_COUNTER :
+			case SET_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName()
 						+ "', text : \"has removed "
@@ -2101,7 +2164,7 @@ public class HomePage extends TestReportPage
 
 		switch (event.getAction())
 		{
-			case ADD_COUNTER :
+			case ADD_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has put "
 						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
@@ -2109,7 +2172,7 @@ public class HomePage extends TestReportPage
 						+ token.getCreatureTypes()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case REMOVE_COUNTER :
+			case REMOVE_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has put "
 						+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
@@ -2117,14 +2180,14 @@ public class HomePage extends TestReportPage
 						+ token.getCreatureTypes()
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case CLEAR_COUNTER :
+			case CLEAR_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName() + "', text : \"has cleared the "
 						+ event.getCounterName() + " counter(s) on " + event.getTargetPlayerName()
 						+ "'s " + token.getCreatureTypes() + " token"
 						+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case SET_COUNTER :
+			case SET_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getRequestingPlayerName()
 						+ "', text : \"has removed "

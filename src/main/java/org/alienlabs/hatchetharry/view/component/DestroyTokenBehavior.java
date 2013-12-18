@@ -102,7 +102,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 
 			final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
-					NotifierAction.DESTROY_TOKEN, gameId, session.getPlayer().getId(), session
+					NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(), session
 							.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
 			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 					ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session

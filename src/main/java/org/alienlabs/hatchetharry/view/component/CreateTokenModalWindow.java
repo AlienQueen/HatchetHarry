@@ -139,7 +139,7 @@ public class CreateTokenModalWindow extends Panel
 						gameId, card, player.getSide());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.PUT_TOKEN_ON_BATTLEFIELD, gameId, player.getId(),
+						NotifierAction.PUT_TOKEN_ON_BATTLEFIELD_ACTION, gameId, player.getId(),
 						player.getName(), "", "",
 						CreateTokenModalWindow.this.creatureTypesModel.getObject(), null, null);
 

@@ -172,7 +172,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						gameId, RevealTopLibraryCardModalWindow.this.card, p.getSide());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.PLAY_TOP_LIBRARY_CARD, gameId, p.getId(),
+						NotifierAction.PLAY_TOP_LIBRARY_CARD_ACTION, gameId, p.getId(),
 						HatchetHarrySession.get().getPlayer().getName(), "", "",
 						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 
@@ -228,7 +228,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						gameId, p.getId(), d.getDeckId());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_HAND, gameId, p.getId(),
+						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION, gameId, p.getId(),
 						HatchetHarrySession.get().getPlayer().getName(), "", "",
 						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 
@@ -284,7 +284,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						gameId, p.getId(), d.getDeckId());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD, gameId, p.getId(),
+						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION, gameId, p.getId(),
 						HatchetHarrySession.get().getPlayer().getName(), "", "",
 						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 
