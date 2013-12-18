@@ -869,11 +869,8 @@ public class HomePage extends TestReportPage
 
 						if (null != mc.getToken())
 						{
-							if (null != mc.getToken())
-							{
-								mc.getToken().setTapped(false);
-								HomePage.this.persistenceService.updateToken(mc.getToken());
-							}
+							mc.getToken().setTapped(false);
+							HomePage.this.persistenceService.updateToken(mc.getToken());
 						}
 
 						HomePage.this.persistenceService.updateCard(mc);
