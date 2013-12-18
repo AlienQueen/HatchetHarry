@@ -862,15 +862,22 @@ public class HomePage extends TestReportPage
 				for (int i = 0; i < allCards.size(); i++)
 				{
 					final MagicCard mc = allCards.get(i);
-					mc.setTapped(false);
 
-					if (null != mc.getToken())
+					if (null != mc)
 					{
-						mc.getToken().setTapped(false);
-						HomePage.this.persistenceService.saveToken(mc.getToken());
-					}
+						mc.setTapped(false);
 
-					HomePage.this.persistenceService.updateCard(mc);
+						if (null != mc.getToken())
+						{
+							if (null != mc.getToken())
+							{
+								mc.getToken().setTapped(false);
+								HomePage.this.persistenceService.updateToken(mc.getToken());
+							}
+						}
+
+						HomePage.this.persistenceService.updateCard(mc);
+					}
 				}
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(

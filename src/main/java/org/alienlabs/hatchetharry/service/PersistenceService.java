@@ -857,7 +857,11 @@ public class PersistenceService implements Serializable
 
 		try
 		{
-			all.addAll(query.list());
+			final List<MagicCard> allMagicCards = query.list();
+			if (null != allMagicCards)
+			{
+				all.addAll(allMagicCards);
+			}
 		}
 		catch (final ObjectNotFoundException e)
 		{
@@ -874,9 +878,17 @@ public class PersistenceService implements Serializable
 		try
 		{
 			final List<Token> allTokens = query.list();
-			for (final Token t : allTokens)
+			if (null != allTokens)
 			{
-				all.add(this.getCardFromUuid(UUID.fromString(t.getUuid())));
+				for (final Token t : allTokens)
+				{
+					final MagicCard card = this.getCardFromUuid(UUID.fromString(t.getUuid()));
+
+					if (null != card)
+					{
+						all.add(card);
+					}
+				}
 			}
 		}
 		catch (final ObjectNotFoundException e)
