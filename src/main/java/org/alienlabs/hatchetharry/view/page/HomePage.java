@@ -1716,9 +1716,12 @@ public class HomePage extends TestReportPage
 
 				final Long gameId = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+				final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
+						HomePage.this.session.getPlayer().getName(), _firstCard,
+						HomePage.this.session.getTopCardIndex());
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
-						firstCard.getTitle(), HomePage.this.session.getPlayer().getName(), null,
+						_firstCard.getTitle(), HomePage.this.session.getPlayer().getName(), null,
 						HomePage.this.session.getTopCardIndex() + 1l, null, false,
 						HomePage.this.session.getGameId());
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
@@ -1729,9 +1732,6 @@ public class HomePage extends TestReportPage
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
-					final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
-							HomePage.this.session.getPlayer().getName(), _firstCard,
-							HomePage.this.session.getTopCardIndex());
 
 					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
 					HatchetHarryApplication.get().getEventBus()
