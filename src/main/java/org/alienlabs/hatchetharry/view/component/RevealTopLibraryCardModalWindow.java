@@ -13,12 +13,16 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.AttributeModifier;
@@ -125,19 +129,24 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 				final Long gameId = RevealTopLibraryCardModalWindow.this.persistenceService
 						.getPlayer(session.getPlayer().getId()).getGame().getId();
-
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
+				final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
+						session.getPlayer().getName(), firstCard, session.getTopCardIndex());
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
+						firstCard.getTitle(), session.getPlayer().getName(), null,
+						session.getTopCardIndex() + 1l, null, false, session.getGameId());
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
-					final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
-							session.getPlayer().getName(), firstCard, session.getTopCardIndex());
 
 					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
+					HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 			}
 		};

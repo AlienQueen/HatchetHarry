@@ -39,6 +39,15 @@ public class AbstractConsoleLogStrategy
 			case SHUFFLE_LIBRARY :
 				return new ShuffleLibraryConsoleLogStrategy(player, gameId);
 
+			case END_OF_TURN :
+				return new EndOfTurnConsoleLogStrategy(player, gameId);
+
+			case COMBAT :
+				return new CombatConsoleLogStrategy(player, gameId, cond);
+
+			case REVEAL_TOP_CARD_OF_LIBRARY :
+				return new RevealTopLibraryCardConsoleLogStrategy(player, gameId, mc,
+						numberOfCounters);
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");
 		}

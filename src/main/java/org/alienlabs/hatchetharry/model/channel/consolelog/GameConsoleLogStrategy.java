@@ -19,9 +19,20 @@ public class GameConsoleLogStrategy extends ConsoleLogStrategy
 	@Override
 	public void logToConsole(final AjaxRequestTarget target)
 	{
-		final String action = ((this.created != null) && (this.created.booleanValue() == true))
-				? "created "
-				: "joined ";
+		final String action;
+
+		if (this.created == null)
+		{
+			action = "put an end to ";
+		}
+		else if (this.created.booleanValue() == true)
+		{
+			action = "created ";
+		}
+		else
+		{
+			action = "joined ";
+		}
 
 		final String message = this.player + " has " + action + "game #" + this.gameId.longValue();
 		super.logMessage(target, message, null, this.gameId);

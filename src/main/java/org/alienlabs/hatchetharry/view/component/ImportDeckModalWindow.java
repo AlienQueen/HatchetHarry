@@ -4,6 +4,10 @@ import java.io.UnsupportedEncodingException;
 
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -14,6 +18,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.lang.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -30,20 +35,27 @@ public class ImportDeckModalWindow extends Panel
 	static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckModalWindow.class);
 
 	RequiredTextField<String> nameInput;
+	private final FileUploadField file;
 
 	public ImportDeckModalWindow(final String id)
 	{
 		super(id);
 		Injector.get().inject(this);
 
-		final Form<String> form = new Form<String>("form")
+		final Form<Void> form = new Form<Void>("form")
 		{
 			private static final long serialVersionUID = 1L;
 
+			/**
+			 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
+			 */
 			@Override
 			protected void onSubmit()
 			{
 				final FileUploadField textFile = (FileUploadField)this.get("deckFile");
+
+				ImportDeckModalWindow.LOGGER.info("trying to upload a deck");
+
 				final FileUpload fupload = textFile.getFileUpload();
 				if (fupload == null)
 				{
@@ -64,6 +76,9 @@ public class ImportDeckModalWindow extends Panel
 					return;
 				}
 
+				ImportDeckModalWindow.LOGGER.info("uploading deck: "
+						+ textFile.getFileUpload().getClientFileName());
+
 				try
 				{
 					ImportDeckModalWindow.this.importDeckService.importDeck(
@@ -75,16 +90,41 @@ public class ImportDeckModalWindow extends Panel
 					ImportDeckModalWindow.LOGGER.error("error parsing deck file", e);
 					return;
 				}
+
+				ImportDeckModalWindow.LOGGER.info("successfully added deck: "
+						+ fupload.getClientFileName());
 			}
 		};
+
+		form.add(new AjaxButton("submit")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			{
+			}
+
+			@Override
+			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
+			{
+				ImportDeckModalWindow.LOGGER.error("error uploading file!");
+			}
+
+		});
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name for the deck: ");
 		final Model<String> nameModel = new Model<String>("");
 		this.nameInput = new RequiredTextField<String>("name", nameModel);
 
-		form.add(new FeedbackPanel("feedback"), new FileUploadField("deckFile"), nameLabel,
-				this.nameInput);
+		final Component feedback = new FeedbackPanel("feedback")
+				.setOutputMarkupPlaceholderTag(true);
+		form.add(feedback);
+
+		form.add(this.file = new FileUploadField("deckFile"), nameLabel, this.nameInput);
 		form.setMarkupId("inputForm").setOutputMarkupId(true);
+		form.add(new UploadProgressBar("progress", form, this.file));
+		form.setMaxSize(Bytes.kilobytes(5));
 		this.add(form);
 	}
 
