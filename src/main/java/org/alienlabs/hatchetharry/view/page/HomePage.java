@@ -1994,7 +1994,8 @@ public class HomePage extends TestReportPage
 				break;
 
 			case COMBAT_IN_PROGRESS_ACTION :
-				if (event.isCombatInProgress())
+				if ((null != event.isCombatInProgress())
+						&& (event.isCombatInProgress().booleanValue() == false))
 				{
 					target.appendJavaScript("jQuery.gritter.add({ title : '"
 							+ event.getPlayerName()

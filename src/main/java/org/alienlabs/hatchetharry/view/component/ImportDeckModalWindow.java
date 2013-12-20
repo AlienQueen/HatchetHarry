@@ -4,7 +4,9 @@ import java.io.UnsupportedEncodingException;
 
 import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
@@ -93,6 +95,7 @@ public class ImportDeckModalWindow extends Panel
 
 				ImportDeckModalWindow.LOGGER.info("successfully added deck: "
 						+ fupload.getClientFileName());
+				throw new RestartResponseException(HomePage.class);
 			}
 		};
 
