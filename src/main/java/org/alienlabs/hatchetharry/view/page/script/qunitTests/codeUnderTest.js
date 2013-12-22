@@ -90,19 +90,6 @@ jQuery(function() {
 // For cards drag + hand, graveyard & exile drop
 var shouldMove = true;
 
-
-// Visio-conference
-jQuery(function() {
-	jQuery("#conference").dialog({ autoOpen: false, position: { my: "center", at: "center" } });
-//	jQuery("[data-id='conferenceOpener']").click(function() {
-//		jQuery("#conference").dialog("open");
-//	});
-//	
-//	jQuery("[data-id='conferenceOpenerResponsive']").click(function() {
-//		jQuery("#conference").dialog("open");
-//	});
-});
-
 // Hand, Graveyard & Exile
 jQuery(function() {
 	var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb-Hand'); $navthumb.eq(curclicked).parent().addClass('active-thumb-Hand'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb-Hand'); $navthumb.eq(curclicked).parent().addClass('active-thumb-Hand'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-slider').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); function updateHandLabel(){ var handCardName = jQuery('#handGallery .active-thumb-Hand .nav-thumb').attr('name'); if (handCardName == undefined) { handCardName = jQuery('#handGallery .active-thumb-Hand .nav-thumb').attr('name'); } jQuery('#cardLabel').text(handCardName); }; jQuery(function() { setTimeout(function() { updateHandLabel(); jQuery('#handGallery .cross-link .nav-thumb').click(updateHandLabel); }, 175); });
@@ -151,6 +138,11 @@ jQuery(function() {
 			}
 		}
 	});
+});
+
+//Visio-conference
+jQuery(function() {
+	jQuery("#conference").dialog({ autoOpen: false, position: { my: "center", at: "center" } });
 });
 
 // to avoid caching
