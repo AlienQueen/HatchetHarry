@@ -12,6 +12,7 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -39,7 +40,11 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 			HatchetHarrySession.get().setUsername(username);
 			final Label usernameLabel = new Label("username", "Logged in as " + username);
 			usernameLabel.setOutputMarkupId(true);
-			target.add(usernameLabel);
+
+			final WebMarkupContainer usernameParent = ((HomePage)target.getPage())
+					.getUsernameParent();
+			usernameParent.addOrReplace(usernameLabel);
+			target.add(usernameParent);
 		}
 	}
 

@@ -244,6 +244,8 @@ public class HomePage extends TestReportPage
 
 	private Label username;
 
+	private final WebMarkupContainer usernameParent;
+
 	public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
@@ -498,16 +500,19 @@ public class HomePage extends TestReportPage
 
 		if (this.session.isLoggedIn())
 		{
-			this.username = new Label("login", "Logged in as " + this.session.getUsername());
+			this.username = new Label("username", "Logged in as " + this.session.getUsername());
 			this.username.setOutputMarkupId(true);
-			this.add(this.username);
 		}
 		else
 		{
-			this.username = new Label("login", "Not logged in");
+			this.username = new Label("username", "Not logged in");
 			this.username.setOutputMarkupId(true);
-			this.add(this.username);
 		}
+
+		this.usernameParent = new WebMarkupContainer("usernameParent");
+		this.usernameParent.setOutputMarkupId(true);
+		this.usernameParent.add(this.username);
+		this.add(this.usernameParent);
 	}
 
 	// TODO: really necessary?
@@ -3144,6 +3149,11 @@ public class HomePage extends TestReportPage
 	public List<ModalWindow> getAllOpenRevealTopLibraryCardWindows()
 	{
 		return this.allOpenRevealTopLibraryCardWindows;
+	}
+
+	public WebMarkupContainer getUsernameParent()
+	{
+		return this.usernameParent;
 	}
 
 }
