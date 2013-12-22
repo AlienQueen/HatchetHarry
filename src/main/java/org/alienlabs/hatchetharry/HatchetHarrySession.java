@@ -46,6 +46,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String ALL_MAGIC_CARDS_IN_BATTLEFIELD = "ALL_MAGIC_CARDS_IN_BATTLEFIELD";
 	private static final String PLAYER_ENDING_HER_TURN = "PLAYER_ENDING_HER_TURN";
 	private static final String TOP_CARD_INDEX = "TOP_CARD_INDEX";
+	private static final String IS_LOGGED_IN = "IS_LOGGERD_IN";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -67,6 +68,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, 0l);
+		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, false);
 		this.setLocale(Locale.ENGLISH);
 	}
 
@@ -389,6 +391,16 @@ public class HatchetHarrySession extends WebSession
 	public void setTopCardIndex(final Long index)
 	{
 		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, index);
+	}
+
+	public boolean isLoggedIn()
+	{
+		return (Boolean)this.getAttribute(HatchetHarrySession.IS_LOGGED_IN);
+	}
+
+	public void setLoggedIn(final boolean loggedId)
+	{
+		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, loggedId);
 	}
 
 }

@@ -33,7 +33,8 @@
 	         <li><a wicket:id="createGameLink" class="myfont"><img src="/image/create game.png" alt="create"/>&nbsp;&nbsp;Create a game</a></li>
 	         <li><a wicket:id="joinGameLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join a game</a></li>
 	         <li><a wicket:id="importDeckLink" class="myfont"><img src="/image/import deck.png" alt="import"/>&nbsp;&nbsp;Import a deck</a></li>
-	         <li><a wicket:id="hideAllTooltipsLink" class="myfont">Hide all tooltips</a></li>
+	         <li><a wicket:id="hideAllTooltipsLink" class="myfont"><img src="/image/hide-all.png" alt="Hide all tooltips"/>&nbsp;&nbsp;Hide all tooltips</a></li>
+	         <li><a wicket:id="loginLink" class="myfont"><img src="/image/login.png" alt="Log in"/>&nbsp;&nbsp;Log in</a></li>
 	         <li><a wicket:id="conferenceOpener" class="myfont"><img src="/image/conference.png" alt="Visio-conference"/>&nbsp;&nbsp;Open visio-conference</a></li>
 	         <li class='last'><a wicket:id="endGameLink" class="myfont"><img src="/image/end.png" alt="End game"/>&nbsp;&nbsp;End game</a></li>
 	      </ul>
@@ -57,7 +58,9 @@
 	  </strong>
   </h3> 
   
-	<br/><br/>
+  <br/><br/><br/>
+  <h4><strong><span wicket:id="login" class="myfont login"></span></strong></h4> 
+  <br/><br/>
   <span class="zone-images">
 	<img id="putToHand" src="image/hand.jpg" alt="Put back to hand" title="      Drag a card here to put it back to hand" style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
 	<img id="putToGraveyard" src="image/graveyard.jpg" alt="Put back to graveyard" title="Drag a card here to put it back to graveyard" style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
@@ -80,9 +83,10 @@
 	        <li><a wicket:id="createGameLinkResponsive" class="myfont">* Create a game&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="joinGameLinkResponsive" class="myfont">* Join a game&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="importDeckLinkResponsive" class="myfont">* Import a deck&nbsp;&nbsp;</a></li>
-    	    <li><a wicket:id="endGameLinkResponsive" class="myfont">* End game&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="hideAllTooltipsLinkResponsive" class="myfont">* Hide all tooltips&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="loginLinkResponsive" class="myfont">* Log in&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="conferenceOpenerResponsive" data-id="conferenceOpenerResponsive" class="myfont">* Open visio-conference&nbsp;&nbsp;</a></li>
+    	    <li><a wicket:id="endGameLinkResponsive" class="myfont">* End game&nbsp;&nbsp;</a></li>
 	      </ul>
 	      <br/><br/>
 	      <ul>
@@ -303,13 +307,13 @@
 	
 	<div wicket:id="aboutWindow"></div>
 	<div wicket:id="teamInfoWindow"></div>
-
 	<div wicket:id="createGameWindow"></div>
 	<div wicket:id="joinGameWindow"></div>
 	<div wicket:id="importDeckWindow"></div>
 	<div wicket:id="createTokenWindow"></div>
 	<div wicket:id="revealTopLibraryCardWindow"></div>
 	<div wicket:id="countCardsWindow"></div>
+	<div wicket:id="loginWindow"></div>
 	
 	<span wicket:id="secondSidePlaceholderParent"><span wicket:id="secondSidePlaceholder"></span></span>
   	

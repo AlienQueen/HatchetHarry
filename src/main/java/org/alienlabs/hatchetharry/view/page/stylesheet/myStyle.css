@@ -226,6 +226,13 @@ div.wicket-modal h3.w_captionText {
 	background: url('/image/delete-20.png');
 }
 
-.ui-dialog-title{
+.ui-dialog-title {
 	font-family: 'Black Ops One', cursive;
+}
+
+
+.login {
+	float: left;
+	position: fixed;
+	left: 15px;
 }

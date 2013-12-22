@@ -138,6 +138,17 @@ You are free to modify any part of its source code (client-side or server-side),
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicket-facebook</artifactId>
+			<version>${wicketstuff.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>

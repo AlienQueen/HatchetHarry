@@ -111,6 +111,7 @@ import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.alienlabs.hatchetharry.view.component.ImportDeckModalWindow;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
+import org.alienlabs.hatchetharry.view.component.LoginModalWindow;
 import org.alienlabs.hatchetharry.view.component.MagicCardTooltipPanel;
 import org.alienlabs.hatchetharry.view.component.MessageRedisplayBehavior;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
@@ -183,6 +184,7 @@ public class HomePage extends TestReportPage
 	private final List<ModalWindow> allOpenRevealTopLibraryCardWindows;
 	ModalWindow createTokenWindow;
 	ModalWindow countCardsWindow;
+	ModalWindow loginWindow;
 
 	Player player;
 	Deck deck;
@@ -452,13 +454,13 @@ public class HomePage extends TestReportPage
 		this.countCardsWindow = new ModalWindow("countCardsWindow");
 		this.generateCountCardsLink("countCardsLink", this.countCardsWindow);
 		this.generateCountCardsLink("countCardsLinkResponsive", this.countCardsWindow);
-
 		this.generateInsertDivisionLink("insertDivisionLink");
 		this.generateInsertDivisionLink("insertDivisionLinkResponsive");
-
 		this.generateShuffleLibraryLink("shuffleLibraryLink");
 		this.generateShuffleLibraryLink("shuffleLibraryLinkResponsive");
-
+		this.loginWindow = new ModalWindow("loginWindow");
+		this.generateLoginLink("loginLink", this.loginWindow);
+		this.generateLoginLink("loginLinkResponsive", this.loginWindow);
 		this.generateEndGameLink("endGameLink");
 		this.generateEndGameLink("endGameLinkResponsive");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLink");
@@ -481,6 +483,15 @@ public class HomePage extends TestReportPage
 		}
 
 		this.add(this.drawModeParent);
+
+		if (this.session.isLoggedIn())
+		{
+			this.add(new Label("login", "Logged in as"));
+		}
+		else
+		{
+			this.add(new Label("login", "Not logged in"));
+		}
 	}
 
 	// TODO: really necessary?
@@ -1854,6 +1865,33 @@ public class HomePage extends TestReportPage
 
 		countCardsLink.setOutputMarkupId(true);
 		this.add(countCardsLink);
+	}
+
+	private void generateLoginLink(final String id, final ModalWindow window)
+	{
+		window.setInitialWidth(300);
+		window.setInitialHeight(200);
+		window.setTitle("HatchetHarry login");
+		window.setContent(new LoginModalWindow(window.getContentId(), this.session.getGameId()));
+		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
+		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		window.setOutputMarkupId(true);
+		this.add(window);
+
+		final AjaxLink<Void> loginLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				HomePage.this.loginWindow.show(target);
+			}
+		};
+
+		loginLink.setOutputMarkupId(true);
+		this.add(loginLink);
 	}
 
 	private void generateInsertDivisionLink(final String id)
