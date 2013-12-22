@@ -398,7 +398,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.chromeDriver1
 				.findElement(By.id("revealTopLibraryCardLinkResponsive")).click();
-		Thread.sleep(8000);
+		Thread.sleep(12000);
 
 		// Get top card name
 		final String graveyardCardName = FullAppTraversalTests.chromeDriver1.findElement(
