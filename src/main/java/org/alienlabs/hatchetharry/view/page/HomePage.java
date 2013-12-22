@@ -463,6 +463,8 @@ public class HomePage extends TestReportPage
 		this.generateEndGameLink("endGameLinkResponsive");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLink");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLinkResponsive");
+		this.generateOpenConferenceLink("conferenceOpener");
+		this.generateOpenConferenceLink("conferenceOpenerResponsive");
 
 		this.add(new MessageRedisplayBehavior(HatchetHarrySession.get().getGameId()));
 
@@ -499,6 +501,22 @@ public class HomePage extends TestReportPage
 			{
 				target.appendJavaScript(JavaScriptUtils.HIDE_ALL_TOOLTIPS);
 				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+			}
+
+		});
+	}
+
+	private void generateOpenConferenceLink(final String id)
+	{
+		this.add(new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.appendJavaScript("jQuery('#conference').dialog('open');");
 			}
 
 		});
@@ -1330,6 +1348,10 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/conference/SIPml-api.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/conference/webrtc4all.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/HomePageTests.js")));
@@ -1356,8 +1378,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery.jsPlumb-1.5.3-min.js")));
 
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/myStyle.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/jMenu.jquery.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -1387,7 +1407,11 @@ public class HomePage extends TestReportPage
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/tipsy.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/jquery-ui dialog.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/qunit-1.12.0.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/myStyle.css")));
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));

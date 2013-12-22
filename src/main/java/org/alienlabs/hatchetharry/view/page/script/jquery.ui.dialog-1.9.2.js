@@ -68,9 +68,9 @@ $.widget("ui.dialog", {
 		resizable: true,
 		show: null,
 		stack: true,
-		title: "",
-		width: 300,
-		zIndex: 1000
+		title: "HatchetHarry visio-conference",
+		width: 600,
+		zIndex: 10000
 	},
 
 	_create: function() {
