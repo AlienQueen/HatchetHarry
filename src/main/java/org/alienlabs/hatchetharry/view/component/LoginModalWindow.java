@@ -19,6 +19,7 @@ public class LoginModalWindow extends Panel
 	public LoginModalWindow(final String id, final Long gameId)
 	{
 		super(id);
+		
 		final LoginButton button = new LoginButton("loginButton", FacebookPermission.user_events);
 		button.setShowFaces(true);
 		this.add(button);

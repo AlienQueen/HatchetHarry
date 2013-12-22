@@ -98,46 +98,48 @@ jQuery(function() {
 });
 
 jQuery(function() {
-	function getViewPortSize() {
-	    if (typeof window.innerWidth != 'undefined')
-	    {
-	    	window.viewportwidth = window.innerWidth,
-	    	window.viewportheight = window.innerHeight;
-	    }
-	}
-	
-	getViewPortSize();
-	if (viewportwidth <= 1024) {
-		jQuery('#putToHand').attr('src', 'image/hand_small.jpg');
-		jQuery('#putToGraveyard').attr('src', 'image/graveyard_small.jpg');
-		jQuery('#putToExile').attr('src', 'image/exile_small.jpg');
-	}
-	
-	jQuery(window).resize(function () {
-		getViewPortSize();
-		var allCards = jQuery('.magicCard.ui-draggable');
-		
-		var allImages = allCards.find('.clickableCard');
-		var firstCard = jQuery(allImages[0]);
-
-		if (viewportwidth > 1024) {
-	
-			if (firstCard.attr('src').indexOf('_small') != -1) {
-				for (var i = 0; i < allImages.length; i++) {
-					var card = jQuery(allImages[i]);
-					card.attr('src', card.attr('src').replace('_small', '_medium')); 
-				}
-			}
-		} else {
-
-			if  (firstCard.attr('src').indexOf('_medium') != -1) {	
-				for (var i = 0; i < allImages.length; i++) {
-					var card = jQuery(allImages[i]);
-					card.attr('src', card.attr('src').replace('_medium', '_small')); 
-				}
-			}
+	window.setTimeout(function() {
+		function getViewPortSize() {
+		    if (typeof window.innerWidth != 'undefined')
+		    {
+		    	window.viewportwidth = window.innerWidth,
+		    	window.viewportheight = window.innerHeight;
+		    }
 		}
-	});
+		
+		getViewPortSize();
+		if (viewportwidth <= 1024) {
+			jQuery('#putToHand').attr('src', 'image/hand_small.jpg');
+			jQuery('#putToGraveyard').attr('src', 'image/graveyard_small.jpg');
+			jQuery('#putToExile').attr('src', 'image/exile_small.jpg');
+		}
+		
+		jQuery(window).resize(function () {
+			getViewPortSize();
+			var allCards = jQuery('.magicCard.ui-draggable');
+			
+			var allImages = allCards.find('.clickableCard');
+			var firstCard = jQuery(allImages[0]);
+	
+			if (viewportwidth > 1024) {
+		
+				if (firstCard.attr('src').indexOf('_small') != -1) {
+					for (var i = 0; i < allImages.length; i++) {
+						var card = jQuery(allImages[i]);
+						card.attr('src', card.attr('src').replace('_small', '_medium')); 
+					}
+				}
+			} else {
+	
+				if  (firstCard.attr('src').indexOf('_medium') != -1) {	
+					for (var i = 0; i < allImages.length; i++) {
+						var card = jQuery(allImages[i]);
+						card.attr('src', card.attr('src').replace('_medium', '_small')); 
+					}
+				}
+			}
+		});
+	}, 500);
 });
 
 //Visio-conference

@@ -55,4 +55,4 @@ window.setTimeout(function() {
 						card.attr('src', card.attr('src').replace('_medium', '_small')); 
 				}
 			}
-}, 300);
+}, 500);

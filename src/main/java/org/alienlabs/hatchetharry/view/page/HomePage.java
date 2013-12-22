@@ -283,7 +283,9 @@ public class HomePage extends TestReportPage
 		// Resources
 		this.addHeadResources();
 
-		this.add(new FacebookSdk("fb-root", "1398596203720626"));
+		final FacebookSdk fsdk = new FacebookSdk("fb-root", "1398596203720626");
+		fsdk.setFbAdmins("goupilpierre@wanadoo.fr");
+		this.add(fsdk);
 
 		// Side
 		this.sideParent = new WebMarkupContainer("sideParent");
@@ -320,8 +322,8 @@ public class HomePage extends TestReportPage
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.6.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Thursday, 19th of December 2013.");
+		final Label message1 = new Label("message1", "version 0.7.0 (release Big Wraths),");
+		final Label message2 = new Label("message2", "built on Sunday, 22nd of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1801,6 +1803,9 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
+				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+
 				HomePage.this.createTokenWindow.show(target);
 			}
 		};
@@ -1889,6 +1894,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.loginWindow.show(target);
 			}
 		};
