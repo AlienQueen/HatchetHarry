@@ -46,7 +46,8 @@ public class HatchetHarrySession extends WebSession
 	private static final String ALL_MAGIC_CARDS_IN_BATTLEFIELD = "ALL_MAGIC_CARDS_IN_BATTLEFIELD";
 	private static final String PLAYER_ENDING_HER_TURN = "PLAYER_ENDING_HER_TURN";
 	private static final String TOP_CARD_INDEX = "TOP_CARD_INDEX";
-	private static final String IS_LOGGED_IN = "IS_LOGGERD_IN";
+	private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
+	private static final String USERNAME = "USERNAME";
 
 	public HatchetHarrySession(final Request request)
 	{
@@ -398,9 +399,19 @@ public class HatchetHarrySession extends WebSession
 		return (Boolean)this.getAttribute(HatchetHarrySession.IS_LOGGED_IN);
 	}
 
-	public void setLoggedIn(final boolean loggedId)
+	public void setLoggedIn(final boolean loggedIn)
 	{
-		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, loggedId);
+		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, loggedIn);
+	}
+
+	public String getUsername()
+	{
+		return (String)this.getAttribute(HatchetHarrySession.USERNAME);
+	}
+
+	public void setUsername(final String username)
+	{
+		this.setAttribute(HatchetHarrySession.USERNAME, username);
 	}
 
 }
