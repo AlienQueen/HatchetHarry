@@ -147,6 +147,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.wicketstuff.facebook.FacebookSdk;
 
 import ch.qos.mistletoe.wicket.TestReportPage;
 
@@ -281,6 +282,8 @@ public class HomePage extends TestReportPage
 
 		// Resources
 		this.addHeadResources();
+
+		this.add(new FacebookSdk("fb-root", "1398596203720626"));
 
 		// Side
 		this.sideParent = new WebMarkupContainer("sideParent");
