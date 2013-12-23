@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -37,6 +38,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 		if (null != username)
 		{
 			final Label usernameLabel = new Label("username", "Logged in as " + username);
+			HatchetHarrySession.get().setUsername(username);
 			usernameLabel.setOutputMarkupId(true);
 
 			final WebMarkupContainer usernameParent = ((HomePage)target.getPage())
