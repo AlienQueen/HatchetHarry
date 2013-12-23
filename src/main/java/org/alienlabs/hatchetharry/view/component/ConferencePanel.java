@@ -38,6 +38,10 @@ public class ConferencePanel extends Panel
 			user = this.persistenceService.getUser(HatchetHarrySession.get().getUsername());
 		}
 
+		final Model<String> nicknameModel = Model.of(user.getUsername());
+		final RequiredTextField<String> nickname = new RequiredTextField<String>("nickname",
+				nicknameModel);
+
 		final Model<String> usernameModel = Model.of(user.getUsername());
 		final RequiredTextField<String> username = new RequiredTextField<String>("username",
 				usernameModel);
@@ -49,7 +53,7 @@ public class ConferencePanel extends Panel
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
 
-		this.add(username, identity, password);
+		this.add(nickname, username, identity, password);
 	}
 
 	@Required
