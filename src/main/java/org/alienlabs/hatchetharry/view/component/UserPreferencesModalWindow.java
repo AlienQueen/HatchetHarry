@@ -79,8 +79,6 @@ public class UserPreferencesModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				UserPreferencesModalWindow.LOGGER.info("submit");
-
 				if (!"test".equals(usernameModel.getObject()))
 				{
 					user.setIdentity(identityModel.getObject());

@@ -1194,7 +1194,7 @@ public class PersistenceService implements Serializable
 	{
 		final Session session = this.messageDao.getSession();
 
-		final Query query = session.createQuery("from User where username = ?");
+		final Query query = session.createQuery("from User where login = ?");
 		query.setString(0, username);
 
 		return (User)query.uniqueResult();

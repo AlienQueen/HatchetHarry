@@ -8,11 +8,14 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ConferencePanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
+	static final Logger LOGGER = LoggerFactory.getLogger(ConferencePanel.class);
 
 	@SpringBean
 	PersistenceService persistenceService;
@@ -24,7 +27,7 @@ public class ConferencePanel extends Panel
 		final User user;
 
 		if ((null == HatchetHarrySession.get().getUsername())
-				&& (null == this.persistenceService
+				|| (null == this.persistenceService
 						.getUser(HatchetHarrySession.get().getUsername())))
 		{
 			user = new User();
@@ -35,9 +38,20 @@ public class ConferencePanel extends Panel
 			user.setIsFacebook(true);
 			user.setUsername("");
 		}
-		else
+		else if (null != this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
 		{
 			user = this.persistenceService.getUser(HatchetHarrySession.get().getUsername());
+			ConferencePanel.LOGGER.info("#user: " + user);
+		}
+		else
+		{
+			user = new User();
+			user.setLogin("");
+			user.setPassword("");
+			user.setPlayer(null);
+			user.setIdentity("");
+			user.setIsFacebook(true);
+			user.setUsername("");
 		}
 
 		final Model<String> nicknameModel = Model.of(user.getUsername());

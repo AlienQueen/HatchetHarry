@@ -42,6 +42,11 @@ public class User implements Serializable
 	@Column
 	private Boolean isFacebook;
 
+	public User()
+	{
+
+	}
+
 	public Long getId()
 	{
 		return this.id;
