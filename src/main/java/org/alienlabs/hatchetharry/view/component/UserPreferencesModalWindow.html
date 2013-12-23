@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+	<wicket:panel>
+		<div align="center" clAss="myfont">
+		
+		<form wicket:id="form" action="" class="myfont">
+		
+			<table style="width: 100%" class="myfont">
+			<thead>Go to <a href="https://mdns.sipthor.net/register_sip_account.phtml">mdns.sipthor.net</a> and create e free sip2sip.INFO account. Then provide your information here.
+			<br/><br/><br/>All fields are mandatory.
+			</thead>
+				<tr>
+					<td>
+			    		<span class="myfont">Your HatchetHarry login: </span>
+			    	</td>
+			    	<td>
+			    		<span wicket:id="login" class="myfont"></span>
+			    	</td>
+			    </tr>
+			    <br/><br/>
+			    <tr>
+					<td>
+			    		<span class="myfont">Your sip2sip.info private identity: </span>
+			    	</td>
+			    	<td>
+			    		<input wicket:id="username" class="myfont" type="text" placeholder="your sip2sip.info username" value="" style="width: 90%; height: 100%"/>
+			    	</td>
+			    </tr>
+			    <br/><br/>
+			    <tr>
+					<td>
+			    		<span class="myfont">Your sip2sip.info public identity: </span>
+			    	</td>
+			    	<td>
+			    		<input wicket:id="identity" class="myfont" type="text" placeholder="sip:yoursipusername@sip2sip.info" value="" style="width: 90%; height: 100%"/>
+			    	</td>
+			    </tr>
+			    <br/><br/>
+			    <tr>
+					<td>
+			    		<span class="myfont">Your sip2sip.info password: </span>
+			    	</td>
+			    	<td>
+			    		<input wicket:id="password" class="myfont" type="password" placeholder="your sip2sip.info password" value="" style="width: 90%; height: 100%"/>
+			    	</td>
+			    </tr>
+			</table>
+			<br/><br/>
+			<button wicket:id="submit" type="submit" class="myfont">OK</button>
+			</form>
+		</div>		
+	</wicket:panel>
+</html>

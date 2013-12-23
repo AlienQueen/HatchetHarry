@@ -26,16 +26,16 @@
 	      	 <li><a><img src="/image/logoh2.gif" alt="HH" width="64px;"/></a></li><br/>
 	         <li><a wicket:id="aboutLink" class="myfont"><img src="/image/about.png" alt="About HatchetHarry"/>&nbsp;&nbsp;About HatchetHarry</a></li>
 	         <li><a wicket:id="teamInfoLink" class="myfont"><img src="/image/team info.png" alt="team info"/>&nbsp;&nbsp;HatchetHarry team info</a></li>
-	         <li class="last myfont"><a class="myfont">Preferences</a></li>
+	         <li><a wicket:id="preferencesLink" class="myfont"><img src="/image/preferences.png" alt="team info"/>&nbsp;&nbsp;User preferences</a></li>
 	      </ul>
 	   </li>
 	   <li class='myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Game&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
 	      <ul>
+	         <li><a wicket:id="loginLink" class="myfont"><img src="/image/login.png" alt="Log in"/>&nbsp;&nbsp;Log in</a></li>
 	         <li><a wicket:id="createGameLink" class="myfont"><img src="/image/create game.png" alt="create"/>&nbsp;&nbsp;Create a game</a></li>
 	         <li><a wicket:id="joinGameLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join a game</a></li>
 	         <li><a wicket:id="importDeckLink" class="myfont"><img src="/image/import deck.png" alt="import"/>&nbsp;&nbsp;Import a deck</a></li>
 	         <li><a wicket:id="hideAllTooltipsLink" class="myfont"><img src="/image/hide-all.png" alt="Hide all tooltips"/>&nbsp;&nbsp;Hide all tooltips</a></li>
-	         <li><a wicket:id="loginLink" class="myfont"><img src="/image/login.png" alt="Log in"/>&nbsp;&nbsp;Log in</a></li>
 	         <li><a wicket:id="conferenceOpener" class="myfont"><img src="/image/conference.png" alt="Visio-conference"/>&nbsp;&nbsp;Open visio-conference</a></li>
 	         <li class='last'><a wicket:id="endGameLink" class="myfont"><img src="/image/end.png" alt="End game"/>&nbsp;&nbsp;End game</a></li>
 	      </ul>
@@ -77,15 +77,15 @@
 	      <ul>
 	        <li><a wicket:id="aboutLinkResponsive" class="myfont">* About HatychetHarry&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="teamInfoLinkResponsive" class="myfont">* HatchetHarry team info&nbsp;&nbsp;</a></li>
-	        <li><a target="_blank" class="myfont">* Preferences</a></li>
+	        <li><a wicket:id="preferencesLinkResponsive" class="myfont">* User preferences</a></li>
 	      </ul>
 	      <br/><br/>
 	      <ul>
+	        <li><a wicket:id="loginLinkResponsive" class="myfont">* Log in&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="createGameLinkResponsive" class="myfont">* Create a game&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="joinGameLinkResponsive" class="myfont">* Join a game&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="importDeckLinkResponsive" class="myfont">* Import a deck&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="hideAllTooltipsLinkResponsive" class="myfont">* Hide all tooltips&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="loginLinkResponsive" class="myfont">* Log in&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="conferenceOpenerResponsive" data-id="conferenceOpenerResponsive" class="myfont">* Open visio-conference&nbsp;&nbsp;</a></li>
     	    <li><a wicket:id="endGameLinkResponsive" class="myfont">* End game&nbsp;&nbsp;</a></li>
 	      </ul>
@@ -117,145 +117,9 @@
 	<br/><br/><br/><br/>
 	
 	<!--  conference -->
-	<div id="conference" class="myfont">
-		<div class="myfont">
-                <label id="txtRegStatus" align="center" style="width: 100%;">
-                </label>
-                <h2>
-                    Registration</h2>
-                <br>
-                <table style="width: 100%" class="myfont">
-                    <tbody class="myfont">
-                    <label style="height: 25%">
-                        Go to <a href="https://mdns.sipthor.net/register_sip_account.phtml">mdns.sipthor.net</a> and create e free sip2sip account. Then provide your information here.</label>
-                    <br/><br/>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">
-                                Display Name:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="text" placeholder="your HH nickname" value="" id="txtDisplayName" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">
-                                Private Identity<sup>*</sup>:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="text" placeholder="your sip2sip username" value="" id="txtPrivateIdentity" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">
-                                Public Identity<sup>*</sup>:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="text" placeholder="sip:yoursipusername@sip2sip.info" value="" id="txtPublicIdentity" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">Password:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="password" placeholder="your SIP password" value="" id="txtPassword" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">Realm<sup>*</sup>:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="text" value=" sip2sip.info" id="txtRealm" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <p class="small"><sup>*</sup> <i>Mandatory Field</i></p>
-                        </td>
-                    </tr>
-                    <td colspan="3">
-                            <br/>
-                    </td>
-                    <tr>
-                        <td align="right" colspan="2">
-                            <input type="button" onclick="sipRegister();" value="LogIn" id="btnRegister" class="btn btn-success myfont"/>
-                            &nbsp;
-                            <input type="button" onclick="sipUnRegister();" disabled="" value="LogOut" id="btnUnRegister" class="btn btn-danger myfont"/>
-                        </td>
-                    </tr>
-                </tbody></table>
-            </div><br/><br/>
-            <div style="display:table-cell; vertical-align:middle" class="myfont" id="divCallCtrl">
-                <label id="txtCallStatus" align="center" style="width: 100%;"><i>Video enabled</i></label>
-                <br/><br/>
-                <h2>
-                    Call control
-                </h2>
-                <br>
-                <table style="width: 100%;">
-                    <tbody><tr>
-                        <td style="white-space:nowrap;">
-                            <input class="myfont" type="text" placeholder="Enter public identity to call" value="" id="txtPhoneNumber" style="width: 100%; height:100%">                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" colspan="1">
-                            <div style="margin: 0; vertical-align:middle" class="btn-toolbar">
-                                <div class="btn-group" id="divBtnCallGroup">
-                                     <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle myfont" disabled="" id="btnCall" value="Call &lt;span id=&quot;spanCaret&quot; class=&quot;caret&quot;&gt;">Call <span class="caret" id="spanCaret"></span></button>
-                                <ul style="visibility: visible;" class="dropdown-menu" id="ulCallOptions">
-        <li><button onclick='sipCall("call-audio");' href="#"class="myfont">Audio</button></li>
-        <li><button onclick='sipCall("call-audiovideo");' href="#"class="myfont">Video</button></li>
-        <li id="liScreenShare"></li>
-        <li class="divider"></li>
-    </ul></div>&nbsp;&nbsp;
-                                <div class="btn-group">
-                                    <input type="button" disabled="" onclick="sipHangUp();" value="HangUp" class="btn btn-primary myfont" style="margin: 0; vertical-align:middle; height: 100%;" id="btnHangUp">
-                                </div>
-                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tab-video" id="tdVideo">
-                            <div class="div-video" id="divVideo">
-                                <div style="border:1px solid #000; height:100%; width:100%" id="divVideoRemote">
-                                    <video width="100%" height="100%" style="opacity: 0; 
-                                        background-color: #000000; -webkit-transition-property: opacity; -webkit-transition-duration: 2s;" autoplay="autoplay" id="video_remote" class="video">
-                                    </video>
-                                </div>
-                                <div style="border:0px solid #000" id="divVideoLocal">
-                                    <video width="88px" height="72px" style="opacity: 0;
-                                        margin-top: -80px; margin-left: 5px; background-color: #000000; -webkit-transition-property: opacity;
-                                        -webkit-transition-duration: 2s;" muted="true" autoplay="autoplay" id="video_local" class="video">
-                                    </video>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                       <td align="center">
-                            <div style="opacity: 0; margin-top: 3px" class="call-options" id="divCallOptions">
-                                <input type="button" onclick="toggleFullScreen();" disabled="" value="FullScreen" id="btnFullScreen" style="" class="btn"> &nbsp;
-                                <input type="button" onclick="sipToggleHoldResume();" value="Hold" id="btnHoldResume" style="" class="btn"> &nbsp;
-                                <input type="button" onclick="sipTransfer();" value="Transfer" id="btnTransfer" style="" class="btn"> &nbsp;
-                                <input type="button" onclick="openKeyPad();" value="KeyPad" id="btnKeyPad" style="" class="btn">
-                            </div>
-                        </td>
-                    </tr>
-                </tbody></table>
-            </div>
-                <!-- Audios -->
-    <audio id="audio_remote" autoplay="autoplay" />
-    <audio id="ringtone" loop src="http://sipml5.org/sounds/ringtone.wav" />
-    <audio id="ringbacktone" loop src="http://sipml5.org/sounds/ringbacktone.wav" />
-    <audio id="dtmfTone" src="http://sipml5.org/sounds/dtmf.wav" />
-	</div>
+	<span wicket:id="conferenceParent">
+		<span wicket:id="conference"></span>
+	</span>
 	
 	<!-- dock -->
 	
@@ -315,6 +179,7 @@
 	<div wicket:id="revealTopLibraryCardWindow"></div>
 	<div wicket:id="countCardsWindow"></div>
 	<div wicket:id="loginWindow"></div>
+	<div wicket:id="preferencesWindow"></div>
 	
 	<span wicket:id="secondSidePlaceholderParent"><span wicket:id="secondSidePlaceholder"></span></span>
   	

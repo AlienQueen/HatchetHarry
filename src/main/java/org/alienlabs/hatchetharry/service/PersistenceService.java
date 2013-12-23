@@ -19,6 +19,7 @@ import org.alienlabs.hatchetharry.model.Message;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.Token;
+import org.alienlabs.hatchetharry.model.User;
 import org.alienlabs.hatchetharry.persistence.dao.ArrowDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
 import org.alienlabs.hatchetharry.persistence.dao.CounterDao;
@@ -30,6 +31,7 @@ import org.alienlabs.hatchetharry.persistence.dao.MessageDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
 import org.alienlabs.hatchetharry.persistence.dao.TokenDao;
+import org.alienlabs.hatchetharry.persistence.dao.UserDao;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
@@ -69,6 +71,8 @@ public class PersistenceService implements Serializable
 	private ArrowDao arrowDao;
 	@SpringBean
 	private MessageDao messageDao;
+	@SpringBean
+	private UserDao userDao;
 
 	public PersistenceService()
 	{
@@ -659,6 +663,12 @@ public class PersistenceService implements Serializable
 		this.messageDao = _messageDao;
 	}
 
+	@Required
+	public void setUserDao(final UserDao _userDao)
+	{
+		this.userDao = _userDao;
+	}
+
 	@Transactional(readOnly = true)
 	public List<?> getCardsByDeckId(final long gameId)
 	{
@@ -1177,6 +1187,23 @@ public class PersistenceService implements Serializable
 		{
 			session.delete(message);
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public User getUser(final String username)
+	{
+		final Session session = this.messageDao.getSession();
+
+		final Query query = session.createQuery("from User where username = ?");
+		query.setString(0, username);
+
+		return (User)query.uniqueResult();
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void saveOrUpdateUser(final User user)
+	{
+		this.userDao.getSession().saveOrUpdate(user);
 	}
 
 }

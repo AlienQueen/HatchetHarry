@@ -1,0 +1,115 @@
+package org.alienlabs.hatchetharry.model;
+
+import java.io.Serializable;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+@Entity
+@Table(name = "User")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+public class User implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@Column
+	private String login;
+	@Column
+	private String username;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.SAVE_UPDATE })
+	private Player player;
+	@Column
+	private String identity;
+	@Column
+	private String password; // TODO passwords in plain-text
+	@Column
+	private Boolean isFacebook;
+
+	public Long getId()
+	{
+		return this.id;
+	}
+
+	public void setId(final Long _id)
+	{
+		this.id = _id;
+	}
+
+	public String getLogin()
+	{
+		return this.login;
+	}
+
+	public void setLogin(final String _login)
+	{
+		this.login = _login;
+	}
+
+	public String getUsername()
+	{
+		return this.username;
+	}
+
+	public void setUsername(final String _username)
+	{
+		this.username = _username;
+	}
+
+	public Player getPlayer()
+	{
+		return this.player;
+	}
+
+	public void setPlayer(final Player _player)
+	{
+		this.player = _player;
+	}
+
+	public String getIdentity()
+	{
+		return this.identity;
+	}
+
+	public void setIdentity(final String _identity)
+	{
+		this.identity = _identity;
+	}
+
+	public String getPassword()
+	{
+		return this.password;
+	}
+
+	public void setPassword(final String _password)
+	{
+		this.password = _password;
+	}
+
+	public Boolean getIsFacebook()
+	{
+		return this.isFacebook;
+	}
+
+	public void setIsFacebook(final Boolean _isFacebook)
+	{
+		this.isFacebook = _isFacebook;
+	}
+
+}

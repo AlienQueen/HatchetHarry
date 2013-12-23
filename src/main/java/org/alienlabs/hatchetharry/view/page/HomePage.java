@@ -100,6 +100,7 @@ import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.CardPanel;
 import org.alienlabs.hatchetharry.view.component.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.ClockPanel;
+import org.alienlabs.hatchetharry.view.component.ConferencePanel;
 import org.alienlabs.hatchetharry.view.component.CountCardsModalWindow;
 import org.alienlabs.hatchetharry.view.component.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.CreateTokenModalWindow;
@@ -122,6 +123,7 @@ import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.TokenTooltipPanel;
+import org.alienlabs.hatchetharry.view.component.UserPreferencesModalWindow;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
@@ -187,6 +189,7 @@ public class HomePage extends TestReportPage
 	ModalWindow createTokenWindow;
 	ModalWindow countCardsWindow;
 	ModalWindow loginWindow;
+	ModalWindow preferencesWindow;
 
 	Player player;
 	Deck deck;
@@ -245,6 +248,8 @@ public class HomePage extends TestReportPage
 	private Label username;
 
 	private final WebMarkupContainer usernameParent;
+
+	private final WebMarkupContainer conferenceParent;
 
 	public HomePage() throws IOException
 	{
@@ -468,17 +473,28 @@ public class HomePage extends TestReportPage
 		this.generateInsertDivisionLink("insertDivisionLinkResponsive");
 		this.generateShuffleLibraryLink("shuffleLibraryLink");
 		this.generateShuffleLibraryLink("shuffleLibraryLinkResponsive");
-		this.loginWindow = new ModalWindow("loginWindow");
 
+		this.loginWindow = new ModalWindow("loginWindow");
 		this.generateLoginLink("loginLink", this.loginWindow);
 		this.generateLoginLink("loginLinkResponsive", this.loginWindow);
 		final FacebookLoginBehavior flb = new FacebookLoginBehavior();
 		this.add(flb);
 
+		this.preferencesWindow = new ModalWindow("preferencesWindow");
+		this.generatePreferencesLink("preferencesLink", this.preferencesWindow);
+		this.generatePreferencesLink("preferencesLinkResponsive", this.preferencesWindow);
+
 		this.generateEndGameLink("endGameLink");
 		this.generateEndGameLink("endGameLinkResponsive");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLink");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLinkResponsive");
+
+		this.conferenceParent = new WebMarkupContainer("conferenceParent");
+		this.conferenceParent.setOutputMarkupId(true);
+		final WebMarkupContainer conference = new WebMarkupContainer("conference");
+		conference.setOutputMarkupId(true);
+		this.conferenceParent.add(conference);
+		this.add(this.conferenceParent);
 		this.generateOpenConferenceLink("conferenceOpener");
 		this.generateOpenConferenceLink("conferenceOpenerResponsive");
 
@@ -548,7 +564,12 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
-				target.appendJavaScript("jQuery('#conference').dialog('open');");
+
+				final ConferencePanel cp = new ConferencePanel("conference");
+				HomePage.this.getConferenceParent().addOrReplace(cp);
+				target.add(HomePage.this.getConferenceParent());
+
+				target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: true, position: { my: 'center', at: 'center', of: window } });");
 			}
 
 		});
@@ -1364,6 +1385,8 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.ui.droppable.min-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/jquery.ui.position-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery.ui.dialog-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/offset.js")));
@@ -1381,8 +1404,9 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/conference/SIPml-api.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/conference/webrtc4all.js")));
+				// response.render(JavaScriptHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "script/conference/webrtc4all.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
@@ -1929,6 +1953,35 @@ public class HomePage extends TestReportPage
 
 		loginLink.setOutputMarkupId(true);
 		this.add(loginLink);
+	}
+
+	private void generatePreferencesLink(final String id, final ModalWindow window)
+	{
+		window.setInitialWidth(600);
+		window.setInitialHeight(280);
+		window.setTitle("User preferences");
+		window.setContent(new UserPreferencesModalWindow(window.getContentId(), this.session
+				.getGameId(), window));
+		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
+		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		window.setOutputMarkupId(true);
+		this.add(window);
+
+		final AjaxLink<Void> preferencesLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				HomePage.this.preferencesWindow.show(target);
+			}
+		};
+
+		preferencesLink.setOutputMarkupId(true);
+		this.add(preferencesLink);
 	}
 
 	private void generateInsertDivisionLink(final String id)
@@ -3154,6 +3207,11 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getUsernameParent()
 	{
 		return this.usernameParent;
+	}
+
+	public WebMarkupContainer getConferenceParent()
+	{
+		return this.conferenceParent;
 	}
 
 }
