@@ -23,7 +23,9 @@ public class ConferencePanel extends Panel
 
 		final User user;
 
-		if (null == this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
+		if ((null == HatchetHarrySession.get().getUsername())
+				&& (null == this.persistenceService
+						.getUser(HatchetHarrySession.get().getUsername())))
 		{
 			user = new User();
 			user.setLogin("");
