@@ -1,3 +1,5 @@
+// TODO this initializes FB login, not the visio-conference
+
 // to avoid caching
     //if (window.location.href.indexOf("svn=") == -1) {
     //    window.location.href += (window.location.href.indexOf("?") == -1 ? "?svn=13" : "&svn=13");

@@ -146,3 +146,8 @@ jQuery(function() {
 jQuery(function() {
 	jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });
 });
+
+// Remove the ugly blue arrow due to the conference
+jQuery(function() {
+	jQuery('#fvd-single-fennec-popup').hide();
+});
