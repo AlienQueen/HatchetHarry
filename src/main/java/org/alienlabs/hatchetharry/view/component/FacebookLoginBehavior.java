@@ -35,7 +35,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 		FacebookLoginBehavior.LOGGER.info("respond to: " + request.getQueryString());
 
 		final String username = request.getParameter("username");
-		if (null != username)
+		if ((null != username) && !"undefined".equals(username))
 		{
 			final Label usernameLabel = new Label("username", "Logged in as " + username);
 			HatchetHarrySession.get().setUsername(username);
