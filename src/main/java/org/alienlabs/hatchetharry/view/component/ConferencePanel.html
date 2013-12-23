@@ -59,7 +59,7 @@
                             <label style="height: 25%">Realm<sup>*</sup>:</label>
                         </td>
                         <td>
-                            <input class="myfont" type="text" value="ekiga.net" id="txtRealm" style="width: 100%; height: 100%"/>
+                            <input class="myfont" type="text" value="sip2sip.info" id="txtRealm" style="width: 100%; height: 100%"/>
                         </td>
                     </tr>
                     <tr>
@@ -100,8 +100,8 @@
                                 <div class="btn-group" id="divBtnCallGroup">
                                      <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle myfont" disabled="" id="btnCall" value="Call &lt;span id=&quot;spanCaret&quot; class=&quot;caret&quot;&gt;">Call <span class="caret" id="spanCaret"></span></button>
                                 <ul style="visibility: visible;" class="dropdown-menu" id="ulCallOptions">
-        <li><button onclick="var stack =  new SIPml.Stack({realm: document.getElementById('txtRealm').value, impi: document.getElementById('txtPrivateIdentity').value, impu: document.getElementById('txtPublicIdentity').value, password: document.getElementById('txtPassword').value, events_listener: { events: 'started', listener: function(e){ var callSession = stack.newSession('call-audiovideo', { audio_remote: document.getElementById('audio-remote'), video_local: document.getElementById('video-local'), video_remote: document.getElementById('video-remote')});callSession.call(document.getElementById('txtPhoneNumber').value); }}}); stack.start();" href="#"class="myfont">Audio</button></li>
-        <li><button onclick='sipCall("call-audiovideo");' href="#"class="myfont">Video</button></li>
+        <li><button onclick="sipCall('call-audio');" href="#"class="myfont">Audio</button></li>
+        <li><button onclick="sipCall('call-audiovideo');" href="#"class="myfont">Video</button></li>
         <li id="liScreenShare"></li>
         <li class="divider"></li>
     </ul></div>&nbsp;&nbsp;
@@ -141,15 +141,10 @@
                 </tbody></table>
             </div>
             <!-- Audios -->
-		    <audio id="audio_remote" autoplay="autoplay">
-				<audio id="ringtone" src="http://sipml5.org/sounds/ringtone.wav" loop="">
-					<audio id="ringbacktone" src="http://sipml5.org/sounds/ringbacktone.wav" loop="">
-						<audio id="dtmfTone" src="http://sipml5.org/sounds/dtmf.wav">
-						</audio>
-					</audio>
-				</audio>
-			</audio>
-			<embed id="WebRtc4npapi" width="1px" height="1px" type="application/w4a">
+		    <audio id="audio_remote" autoplay="autoplay" />
+		    <audio id="ringtone" loop src="http://sipml5.org/sounds/ringtone.wav" />
+		    <audio id="ringbacktone" loop src="http://sipml5.org/sounds/ringbacktone.wav" />
+		    <audio id="dtmfTone" src="http://sipml5.org/sounds/dtmf.wav" />
 	</div>
 </wicket:panel>
 
