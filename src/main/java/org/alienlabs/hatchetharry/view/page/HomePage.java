@@ -1960,8 +1960,6 @@ public class HomePage extends TestReportPage
 		window.setInitialWidth(600);
 		window.setInitialHeight(280);
 		window.setTitle("User preferences");
-		window.setContent(new UserPreferencesModalWindow(window.getContentId(), this.session
-				.getGameId(), window));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		window.setOutputMarkupId(true);
@@ -1974,6 +1972,8 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
+				window.setContent(new UserPreferencesModalWindow(window.getContentId(),
+						HomePage.this.session.getGameId(), window));
 				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.preferencesWindow.show(target);
