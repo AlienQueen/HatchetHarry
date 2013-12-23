@@ -563,7 +563,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 
 				final ConferencePanel cp = new ConferencePanel("conference");
 				HomePage.this.getConferenceParent().addOrReplace(cp);
@@ -1404,9 +1404,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/conference/SIPml-api.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "script/conference/webrtc4all.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/conference/webrtc4all.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(

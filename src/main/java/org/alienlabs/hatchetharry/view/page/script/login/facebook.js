@@ -931,6 +931,7 @@
     window.fbAsyncInit = function() {
   FB.init({
     appId      : '1398596203720626',
+    secret	   : '50c825ab811cc3a88ee79879c18188bd',
     status     : true, // check login status
     cookie     : true, // enable cookies to allow the server to access the session
     xfbml      : true  // parse XFBML
@@ -981,7 +982,6 @@
   var authenticateUserWithFacebook = function() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-    	console.log(response.username);
     	Wicket.Ajax.get({ 'u' : '${url}&username=' + response.username });
     });
   };
