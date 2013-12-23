@@ -100,7 +100,7 @@
                                 <div class="btn-group" id="divBtnCallGroup">
                                      <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle myfont" disabled="" id="btnCall" value="Call &lt;span id=&quot;spanCaret&quot; class=&quot;caret&quot;&gt;">Call <span class="caret" id="spanCaret"></span></button>
                                 <ul style="visibility: visible;" class="dropdown-menu" id="ulCallOptions">
-        <li><button onclick='sipCall("call-audio");' href="#"class="myfont">Audio</button></li>
+        <li><button onclick="SIPml.init(function(e){ var stack =  new SIPml.Stack({realm: document.getElementById('txtRealm').value, impi: document.getElementById('txtPrivateIdentity').value, impu: document.getElementById('txtPublicIdentity').value, password: document.getElementById('txtPassword').value, events_listener: { events: 'started', listener: function(e){ var callSession = stack.newSession('call-audiovideo', { audio_remote: document.getElementById('audio-remote'), video_local: document.getElementById('video-local'), video_remote: document.getElementById('video-remote')});callSession.call('alice'); }}}); stack.start(); });" href="#"class="myfont">Audio</button></li>
         <li><button onclick='sipCall("call-audiovideo");' href="#"class="myfont">Video</button></li>
         <li id="liScreenShare"></li>
         <li class="divider"></li>

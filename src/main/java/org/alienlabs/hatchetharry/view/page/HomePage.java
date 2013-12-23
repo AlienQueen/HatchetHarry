@@ -1475,7 +1475,12 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/google-analytics.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/conference/SIPml-api.js")));
+						HomePage.class, "script/conference/SIPml-api.js")));	
+
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/conference/simpleApi.js")));
+				//response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						//HomePage.class, "script/conference/SIPml-api.js")));
 				//response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						//HomePage.class, "script/conference/webrtc4all.js")));
 			}
