@@ -235,7 +235,7 @@ jQuery(function() {
     };
 
     // sends SIP REGISTER request to login
-    function sipRegister() {
+    var sipRegister = function() {
         // catch exception for IE (DOM not ready)
         try {
             btnRegister.disabled = true;
@@ -296,7 +296,7 @@ jQuery(function() {
     }
 
     // sends SIP REGISTER (expires=0) to logout
-    function sipUnRegister() {
+    var sipUnRegister = function() {
         if (oSipStack) {
             oSipStack.stop(); // shutdown all sessions
         }
