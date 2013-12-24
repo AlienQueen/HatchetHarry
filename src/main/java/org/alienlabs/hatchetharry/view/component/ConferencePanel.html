@@ -235,7 +235,7 @@ jQuery(function() {
     };
 
     // sends SIP REGISTER request to login
-    var sipRegister = function() {
+    var window.sipRegister = function() {
         // catch exception for IE (DOM not ready)
         try {
             btnRegister.disabled = true;
@@ -296,7 +296,7 @@ jQuery(function() {
     }
 
     // sends SIP REGISTER (expires=0) to logout
-    var sipUnRegister = function() {
+    var window.sipUnRegister = function() {
         if (oSipStack) {
             oSipStack.stop(); // shutdown all sessions
         }
@@ -1011,9 +1011,9 @@ jQuery(function() {
                     </td>
                     <tr>
                         <td align="right" colspan="2">
-                            <input type="button" onclick="sipRegister();" value="LogIn" id="btnRegister" class="btn btn-success myfont"/>
+                            <input type="button" onclick="window.sipRegister();" value="LogIn" id="btnRegister" class="btn btn-success myfont"/>
                             &nbsp;
-                            <input type="button" onclick="sipUnRegister();" disabled="" value="LogOut" id="btnUnRegister" class="btn btn-danger myfont"/>
+                            <input type="button" onclick="window.sipUnRegister();" disabled="" value="LogOut" id="btnUnRegister" class="btn btn-danger myfont"/>
                         </td>
                     </tr>
                 </tbody></table>
