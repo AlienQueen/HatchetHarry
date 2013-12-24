@@ -235,7 +235,7 @@ jQuery(function() {
     };
 
     // sends SIP REGISTER request to login
-    window.sipRegister = function() {
+    sipRegister = function() {
         // catch exception for IE (DOM not ready)
         try {
             btnRegister.disabled = true;
@@ -296,7 +296,7 @@ jQuery(function() {
     }
 
     // sends SIP REGISTER (expires=0) to logout
-    window.sipUnRegister = function() {
+    sipUnRegister = function() {
         if (oSipStack) {
             oSipStack.stop(); // shutdown all sessions
         }
@@ -942,11 +942,11 @@ jQuery(function() {
         }
     }
 jQuery(function() {
-	jQuery('#btnRegister').click(window.sipRegister);
-  	jQuery('#btnUnRegister').click(window.sipUnRegister);
-	jQuery('#sipAudio').click(function () { sipCall('call-audio')});
+	jQuery('#btnRegister').click(function() { sipRegister(); });
+  	jQuery('#btnUnRegister').click(function() { sipUnRegister(); });
+	jQuery('#sipAudio').click(function () { sipCall('call-audio'); });
 //	jQuery('#btnCall').click(function () {   });
-}
+};
 </script>
 </wicket:head>
 
