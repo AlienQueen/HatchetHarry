@@ -941,6 +941,12 @@ jQuery(function() {
                 }
         }
     }
+jQuery(function() {
+	jQuery('#btnRegister').click(window.sipRegister);
+  	jQuery('#btnUnRegister').click(window.sipUnRegister);
+	jQuery('#sipAudio').click(function () { sipCall('call-audio')});
+//	jQuery('#btnCall').click(function () {   });
+}
 </script>
 </wicket:head>
 
@@ -1011,9 +1017,9 @@ jQuery(function() {
                     </td>
                     <tr>
                         <td align="right" colspan="2">
-                            <input type="button" onclick="window.sipRegister();" value="LogIn" id="btnRegister" class="btn btn-success myfont"/>
+                            <input type="button" value="LogIn" id="btnRegister" class="btn btn-success myfont"/>
                             &nbsp;
-                            <input type="button" onclick="window.sipUnRegister();" disabled="" value="LogOut" id="btnUnRegister" class="btn btn-danger myfont"/>
+                            <input type="button" disabled="" value="LogOut" id="btnUnRegister" class="btn btn-danger myfont"/>
                         </td>
                     </tr>
                 </tbody></table>
@@ -1037,7 +1043,7 @@ jQuery(function() {
                                 <div class="btn-group" id="divBtnCallGroup">
                                      <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle myfont" disabled="" id="btnCall" value="Call &lt;span id=&quot;spanCaret&quot; class=&quot;caret&quot;&gt;">Call <span class="caret" id="spanCaret"></span></button>
                                 <ul style="visibility: visible;" class="dropdown-menu" id="ulCallOptions">
-        <li><button onclick="sipCall('call-audio');" href="#"class="myfont">Audio</button></li>
+        <li><button id="sipAudio" href="#"class="myfont">Audio</button></li>
         <li><button onclick="sipCall('call-audiovideo');" href="#"class="myfont">Video</button></li>
         <li id="liScreenShare"></li>
         <li class="divider"></li>
