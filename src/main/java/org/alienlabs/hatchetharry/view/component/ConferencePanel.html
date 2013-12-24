@@ -235,7 +235,7 @@ jQuery(function() {
     };
 
     // sends SIP REGISTER request to login
-    sipRegister = function() {
+    var sipRegister = function() {
         // catch exception for IE (DOM not ready)
         try {
             btnRegister.disabled = true;
