@@ -353,7 +353,7 @@ jQuery(function() {
 
         document.onkeyup = onKeyUp;
         document.body.onkeyup = onKeyUp;
-        divCallCtrl.onmousemove = onDivCallCtrlMouseMove;
+        //divCallCtrl.onmousemove = onDivCallCtrlMouseMove;
 
         // set debug level
         SIPml.setDebugLevel((window.localStorage && window.localStorage.getItem('org.doubango.expert.disable_debug') == "true") ? "error" : "info");
