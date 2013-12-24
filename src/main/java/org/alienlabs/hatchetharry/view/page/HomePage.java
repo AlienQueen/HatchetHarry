@@ -332,8 +332,8 @@ public class HomePage extends TestReportPage
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.7.0 (release Big Wraths),");
-		final Label message2 = new Label("message2", "built on Sunday, 22nd of December 2013.");
+		final Label message1 = new Label("message1", "version 0.7.0 (release Merry kiss my tralala),");
+		final Label message2 = new Label("message2", "built on Tuesday, 24th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1406,8 +1406,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/conference/SIPml-api.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/conference/webrtc4all.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/conference/initConference.js")));
+				//response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+				//		HomePage.class, "script/conference/initConference.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
