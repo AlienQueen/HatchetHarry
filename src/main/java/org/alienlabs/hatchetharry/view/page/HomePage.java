@@ -491,7 +491,7 @@ public class HomePage extends TestReportPage
 
 		this.conferenceParent = new WebMarkupContainer("conferenceParent");
 		this.conferenceParent.setOutputMarkupId(true);
-		final WebMarkupContainer conference = new WebMarkupContainer("conference");
+		final ConferencePanel conference = new ConferencePanel("conference");
 		conference.setOutputMarkupId(true);
 		this.conferenceParent.add(conference);
 		this.add(this.conferenceParent);
@@ -564,11 +564,6 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
-
-				final ConferencePanel cp = new ConferencePanel("conference");
-				HomePage.this.getConferenceParent().addOrReplace(cp);
-				target.add(HomePage.this.getConferenceParent());
-
 				target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: true, position: { my: 'center', at: 'center', of: window } });");
 			}
 
@@ -1402,12 +1397,10 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/dock/jquery.jqdock.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
-				//response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-				//		HomePage.class, "script/conference/SIPml-api.js")));
-				//response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-				//		HomePage.class, "script/conference/webrtc4all.js")));
-				//response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-				//		HomePage.class, "script/conference/initConference.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/conference/SIPml-api.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/conference/webrtc4all.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
