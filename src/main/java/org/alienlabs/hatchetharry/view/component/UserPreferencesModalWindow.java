@@ -41,7 +41,7 @@ public class UserPreferencesModalWindow extends Panel
 			user.setPassword("test");
 			user.setPlayer(HatchetHarrySession.get().getPlayer());
 			user.setIdentity("test");
-			user.setIsFacebook(true);
+			user.setFacebook(true);
 			user.setUsername("test");
 		}
 		else if (null == this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
@@ -51,7 +51,7 @@ public class UserPreferencesModalWindow extends Panel
 			user.setPassword("");
 			user.setPlayer(HatchetHarrySession.get().getPlayer());
 			user.setIdentity("");
-			user.setIsFacebook(true);
+			user.setFacebook(true);
 			user.setUsername("");
 		}
 		else
@@ -82,7 +82,7 @@ public class UserPreferencesModalWindow extends Panel
 				if (!"test".equals(usernameModel.getObject()))
 				{
 					user.setIdentity(identityModel.getObject());
-					user.setIsFacebook(true);
+					user.setFacebook(true);
 					user.setUsername(HatchetHarrySession.get().getUsername());
 					user.setPassword(passwordModel.getObject());
 					user.setLogin(usernameModel.getObject());

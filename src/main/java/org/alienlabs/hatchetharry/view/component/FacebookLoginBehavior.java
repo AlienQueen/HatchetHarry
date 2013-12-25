@@ -55,7 +55,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 
 			final User user = new User();
 			user.setUsername(username);
-			user.setIsFacebook(true);
+			user.setFacebook(true);
 			user.setPlayer(HatchetHarrySession.get().getPlayer());
 			this.persistenceService.saveOrUpdateUser(user);
 		}

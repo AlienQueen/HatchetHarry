@@ -35,7 +35,7 @@ public class ConferencePanel extends Panel
 			user.setPassword("");
 			user.setPlayer(null);
 			user.setIdentity("");
-			user.setIsFacebook(true);
+			user.setFacebook(true);
 			user.setUsername("");
 		}
 		else if (null != this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
@@ -50,7 +50,7 @@ public class ConferencePanel extends Panel
 			user.setPassword("");
 			user.setPlayer(null);
 			user.setIdentity("");
-			user.setIsFacebook(true);
+			user.setFacebook(true);
 			user.setUsername("");
 		}
 
