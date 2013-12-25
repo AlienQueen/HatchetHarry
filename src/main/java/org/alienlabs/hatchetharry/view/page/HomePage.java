@@ -249,6 +249,8 @@ public class HomePage extends TestReportPage
 
 	private final WebMarkupContainer usernameParent;
 
+	private final WebMarkupContainer conferenceParent;
+
 	public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
@@ -332,7 +334,7 @@ public class HomePage extends TestReportPage
 		// Welcome message
 		final Label message1 = new Label("message1",
 				"version 0.7.0 (release Merry kiss my tralala),");
-		final Label message2 = new Label("message2", "built on Tuesday, 24th of December 2013.");
+		final Label message2 = new Label("message2", "built on Wednesday, 25th of December 2013.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -488,9 +490,12 @@ public class HomePage extends TestReportPage
 		this.generateHideAllTooltipsLink("hideAllTooltipsLink");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLinkResponsive");
 
-		final ConferencePanel conference = new ConferencePanel("conference");
+		this.conferenceParent = new WebMarkupContainer("conferenceParent");
+		this.conferenceParent.setOutputMarkupId(true);
+		final WebMarkupContainer conference = new WebMarkupContainer("conference");
 		conference.setOutputMarkupId(true);
-		this.add(conference);
+		this.conferenceParent.add(conference);
+		this.add(this.conferenceParent);
 		this.generateOpenConferenceLink("conferenceOpener");
 		this.generateOpenConferenceLink("conferenceOpenerResponsive");
 
@@ -560,7 +565,12 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
-				target.appendJavaScript("jQuery('#conference').dialog('open');");
+
+				final ConferencePanel cp = new ConferencePanel("conference");
+				HomePage.this.getConferenceParent().addOrReplace(cp);
+				target.add(HomePage.this.getConferenceParent());
+
+				target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: true, position: { my: 'center', at: 'center', of: window } });");
 			}
 
 		});
@@ -3197,6 +3207,11 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getUsernameParent()
 	{
 		return this.usernameParent;
+	}
+
+	public WebMarkupContainer getConferenceParent()
+	{
+		return this.conferenceParent;
 	}
 
 }

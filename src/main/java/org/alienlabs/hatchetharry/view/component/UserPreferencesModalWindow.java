@@ -6,7 +6,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -59,10 +58,8 @@ public class UserPreferencesModalWindow extends Panel
 			user = this.persistenceService.getUser(HatchetHarrySession.get().getUsername());
 		}
 
-		final Label login = new Label("login", user.getLogin());
-
-		final Model<String> usernameModel = Model.of(user.getUsername());
-		final RequiredTextField<String> username = new RequiredTextField<String>("username",
+		final Model<String> usernameModel = Model.of(user.getLogin());
+		final RequiredTextField<String> username = new RequiredTextField<String>("login",
 				usernameModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
@@ -101,7 +98,7 @@ public class UserPreferencesModalWindow extends Panel
 			}
 		};
 
-		form.add(login, username, identity, password, submit);
+		form.add(username, identity, password, submit);
 		this.add(form);
 	}
 
