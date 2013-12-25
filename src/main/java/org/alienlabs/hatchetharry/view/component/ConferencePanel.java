@@ -64,7 +64,10 @@ public class ConferencePanel extends Panel
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
 		password.setResetPassword(false);
 
-		this.add(identity, password);
+		final Model<String> realmModel = Model.of(user.getRealm());
+		final RequiredTextField<String> realm = new RequiredTextField<String>("realm", realmModel);
+
+		this.add(identity, password, realm);
 	}
 
 	@Required

@@ -69,6 +69,9 @@ public class UserPreferencesModalWindow extends Panel
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
 
+		final Model<String> realmModel = Model.of(user.getRealm());
+		final PasswordTextField realm = new PasswordTextField("realm", realmModel);
+
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
 			private static final long serialVersionUID = 1L;
@@ -84,6 +87,7 @@ public class UserPreferencesModalWindow extends Panel
 					user.setPassword(passwordModel.getObject());
 					user.setLogin(usernameModel.getObject());
 					user.setPlayer(HatchetHarrySession.get().getPlayer());
+					user.setRealm(realmModel.getObject());
 
 					UserPreferencesModalWindow.this.persistenceService.saveOrUpdateUser(user);
 				}
@@ -98,7 +102,7 @@ public class UserPreferencesModalWindow extends Panel
 			}
 		};
 
-		form.add(username, identity, password, submit);
+		form.add(username, identity, password, realm, submit);
 		this.add(form);
 	}
 

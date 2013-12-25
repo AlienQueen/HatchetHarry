@@ -41,6 +41,8 @@ public class User implements Serializable
 	private String password; // TODO passwords in plain-text
 	@Column
 	private Boolean isFacebook = false;
+	@Column
+	private String realm;
 
 	public User()
 	{
@@ -114,6 +116,16 @@ public class User implements Serializable
 	public void setFacebook(final Boolean facebook)
 	{
 		this.isFacebook = facebook;
+	}
+
+	public String getRealm()
+	{
+		return this.realm;
+	}
+
+	public void setRealm(final String _realm)
+	{
+		this.realm = _realm;
 	}
 
 }
