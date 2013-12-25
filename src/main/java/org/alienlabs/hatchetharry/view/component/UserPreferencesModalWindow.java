@@ -33,7 +33,9 @@ public class UserPreferencesModalWindow extends Panel
 
 		final User user;
 
-		if (null == HatchetHarrySession.get().getUsername())
+		if ((null == HatchetHarrySession.get().getUsername())
+				|| (null == this.persistenceService
+						.getUser(HatchetHarrySession.get().getUsername())))
 		{
 			user = new User();
 			user.setLogin("test");
@@ -43,19 +45,7 @@ public class UserPreferencesModalWindow extends Panel
 			user.setIdentity("test");
 			user.setFacebook(true);
 			user.setUsername("test");
-			user.setRealm("");
-		}
-		else if (null == this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
-		{
-			user = new User();
-			user.setLogin(HatchetHarrySession.get().getUsername());
-			user.setPrivateIdentity("");
-			user.setPassword("");
-			user.setPlayer(HatchetHarrySession.get().getPlayer());
-			user.setIdentity("");
-			user.setFacebook(true);
-			user.setUsername("");
-			user.setRealm("");
+			user.setRealm("test");
 		}
 		else
 		{
@@ -68,10 +58,6 @@ public class UserPreferencesModalWindow extends Panel
 		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
 		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
 				"privateIdentity", privateIdentityModel);
-
-		final Model<String> usernameModel = Model.of(user.getLogin());
-		final RequiredTextField<String> username = new RequiredTextField<String>("login",
-				usernameModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
 		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
@@ -90,7 +76,7 @@ public class UserPreferencesModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				if (!"test".equals(usernameModel.getObject()))
+				if (!"test".equals(loginModel.getObject()))
 				{
 					user.setLogin(loginModel.getObject());
 					user.setPrivateIdentity(privateIdentityModel.getObject());
@@ -98,7 +84,6 @@ public class UserPreferencesModalWindow extends Panel
 					user.setFacebook(true);
 					user.setUsername(HatchetHarrySession.get().getUsername());
 					user.setPassword(passwordModel.getObject());
-					user.setLogin(usernameModel.getObject());
 					user.setPlayer(HatchetHarrySession.get().getPlayer());
 					user.setRealm(realmModel.getObject());
 
@@ -115,7 +100,7 @@ public class UserPreferencesModalWindow extends Panel
 			}
 		};
 
-		form.add(login, privateIdentity, username, identity, password, realm, submit);
+		form.add(login, privateIdentity, identity, password, realm, submit);
 		this.add(form);
 	}
 
