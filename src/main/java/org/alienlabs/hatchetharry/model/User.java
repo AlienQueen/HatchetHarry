@@ -107,14 +107,14 @@ public class User implements Serializable
 		this.password = _password;
 	}
 
-	public Boolean getIsFacebook()
+	public Boolean isFacebook()
 	{
 		return this.isFacebook;
 	}
 
-	public void setIsFacebook(final Boolean _isFacebook)
+	public void setFacebook(final Boolean facebook)
 	{
-		this.isFacebook = _isFacebook;
+		this.isFacebook = facebook;
 	}
 
 }
