@@ -1957,8 +1957,8 @@ public class HomePage extends TestReportPage
 
 	private void generatePreferencesLink(final String id, final ModalWindow window)
 	{
-		window.setInitialWidth(600);
-		window.setInitialHeight(280);
+		window.setInitialWidth(630);
+		window.setInitialHeight(300);
 		window.setTitle("User preferences");
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
