@@ -125,7 +125,9 @@ jQuery(function() {
 				if ((typeof firstCard != 'undefined') && (typeof firstCard.attr('src') != 'undefined') && (firstCard.attr('src').indexOf('_small') != -1)) {
 					for (var i = 0; i < allImages.length; i++) {
 						var card = jQuery(allImages[i]);
+						if ((typeof card != 'undefined') && (typeof card.attr('src') != 'undefined')) {
 						card.attr('src', card.attr('src').replace('_small', '_medium')); 
+						}
 					}
 				}
 			} else {
