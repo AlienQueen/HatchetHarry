@@ -21,28 +21,11 @@
                     <tr>
                         <td>
                             <label style="height: 25%">
-                                Display Name:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="text" placeholder="your HH nickname" value="" id="txtDisplayName" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">
-                                Private Identity<sup>*</sup>:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="text" placeholder="your sip2sip username" value="" id="txtPrivateIdentity" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">
                                 Public Identity<sup>*</sup>:</label>
                         </td>
                         <td>
-                            <input class="myfont" type="text" placeholder="sip:yoursipusername@sip2sip.info" value="" id="txtPublicIdentity" style="width: 100%; height: 100%"/>
+                            <input wicket:id="identity" class="myfont" type="text" placeholder="sip:yoursipusername@sip2sip.info" value="" id="txtPublicIdentity" style="width: 100%; height: 100%">
+                            </input>
                         </td>
                     </tr>
                     <tr>
@@ -50,15 +33,7 @@
                             <label style="height: 25%">Password:</label>
                         </td>
                         <td>
-                            <input class="myfont" type="password" placeholder="your SIP password" value="" id="txtPassword" style="width: 100%; height: 100%"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label style="height: 25%">Realm<sup>*</sup>:</label>
-                        </td>
-                        <td>
-                            <input class="myfont" type="text" value=" sip2sip.info" id="txtRealm" style="width: 100%; height: 100%"/>
+                            <input wicket:id="password" class="myfont" type="password" placeholder="your SIP password" value="" id="txtPassword" style="width: 100%; height: 100%"/>
                         </td>
                     </tr>
                     <tr>

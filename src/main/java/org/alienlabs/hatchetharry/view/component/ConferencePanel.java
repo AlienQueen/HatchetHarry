@@ -56,14 +56,6 @@ public class ConferencePanel extends Panel
 			user.setUsername("");
 		}
 
-		final Model<String> nicknameModel = Model.of(user.getUsername());
-		final RequiredTextField<String> nickname = new RequiredTextField<String>("nickname",
-				nicknameModel);
-
-		final Model<String> usernameModel = Model.of(user.getUsername());
-		final RequiredTextField<String> username = new RequiredTextField<String>("username",
-				usernameModel);
-
 		final Model<String> identityModel = Model.of(user.getIdentity());
 		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
 				identityModel);
@@ -71,7 +63,7 @@ public class ConferencePanel extends Panel
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
 
-		this.add(nickname, username, identity, password);
+		this.add(identity, password);
 	}
 
 	@Required
