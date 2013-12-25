@@ -70,7 +70,7 @@ public class UserPreferencesModalWindow extends Panel
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
 
 		final Model<String> realmModel = Model.of(user.getRealm());
-		final PasswordTextField realm = new PasswordTextField("realm", realmModel);
+		final RequiredTextField<String> realm = new RequiredTextField<String>("realm", realmModel);
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
