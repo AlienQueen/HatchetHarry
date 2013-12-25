@@ -564,7 +564,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
-				target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: true, position: { my: 'center', at: 'center', of: window } });");
+				target.appendJavaScript("jQuery('#conference').show();");
 			}
 
 		});
