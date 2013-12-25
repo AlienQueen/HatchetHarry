@@ -158,4 +158,3 @@ jQuery(function() {
 		jQuery('#fvd-single-fennec-popup').hide();
 	}, 500);
 });
-});
