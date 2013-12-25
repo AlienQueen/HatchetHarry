@@ -492,7 +492,7 @@ public class HomePage extends TestReportPage
 
 		this.conferenceParent = new WebMarkupContainer("conferenceParent");
 		this.conferenceParent.setOutputMarkupId(true);
-		final WebMarkupContainer conference = new WebMarkupContainer("conference");
+		final ConferencePanel conference = new ConferencePanel("conference");
 		conference.setOutputMarkupId(true);
 		this.conferenceParent.add(conference);
 		this.add(this.conferenceParent);
