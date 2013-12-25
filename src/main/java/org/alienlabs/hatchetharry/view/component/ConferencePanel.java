@@ -33,11 +33,13 @@ public class ConferencePanel extends Panel
 			ConferencePanel.LOGGER.info("#1");
 			user = new User();
 			user.setLogin("");
+			user.setPrivateIdentity("");
 			user.setPassword("");
 			user.setPlayer(null);
 			user.setIdentity("");
 			user.setFacebook(true);
 			user.setUsername("");
+			user.setRealm("");
 		}
 		else if (null != this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
 		{
@@ -49,12 +51,21 @@ public class ConferencePanel extends Panel
 			ConferencePanel.LOGGER.info("#3");
 			user = new User();
 			user.setLogin("");
+			user.setPrivateIdentity("");
 			user.setPassword("");
 			user.setPlayer(null);
 			user.setIdentity("");
 			user.setFacebook(true);
 			user.setUsername("");
+			user.setRealm("");
 		}
+
+		final Model<String> loginModel = Model.of(user.getLogin());
+		final RequiredTextField<String> login = new RequiredTextField<String>("login", loginModel);
+
+		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
+		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
+				"privateIdentity", privateIdentityModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
 		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
@@ -67,7 +78,7 @@ public class ConferencePanel extends Panel
 		final Model<String> realmModel = Model.of(user.getRealm());
 		final RequiredTextField<String> realm = new RequiredTextField<String>("realm", realmModel);
 
-		this.add(identity, password, realm);
+		this.add(login, privateIdentity, identity, password, realm);
 	}
 
 	@Required

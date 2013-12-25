@@ -37,26 +37,37 @@ public class UserPreferencesModalWindow extends Panel
 		{
 			user = new User();
 			user.setLogin("test");
+			user.setPrivateIdentity("test");
 			user.setPassword("test");
 			user.setPlayer(HatchetHarrySession.get().getPlayer());
 			user.setIdentity("test");
 			user.setFacebook(true);
 			user.setUsername("test");
+			user.setRealm("");
 		}
 		else if (null == this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
 		{
 			user = new User();
 			user.setLogin(HatchetHarrySession.get().getUsername());
+			user.setPrivateIdentity("");
 			user.setPassword("");
 			user.setPlayer(HatchetHarrySession.get().getPlayer());
 			user.setIdentity("");
 			user.setFacebook(true);
 			user.setUsername("");
+			user.setRealm("");
 		}
 		else
 		{
 			user = this.persistenceService.getUser(HatchetHarrySession.get().getUsername());
 		}
+
+		final Model<String> loginModel = Model.of(user.getLogin());
+		final RequiredTextField<String> login = new RequiredTextField<String>("login", loginModel);
+
+		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
+		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
+				"privateIdentity", privateIdentityModel);
 
 		final Model<String> usernameModel = Model.of(user.getLogin());
 		final RequiredTextField<String> username = new RequiredTextField<String>("login",
@@ -81,6 +92,8 @@ public class UserPreferencesModalWindow extends Panel
 			{
 				if (!"test".equals(usernameModel.getObject()))
 				{
+					user.setLogin(loginModel.getObject());
+					user.setPrivateIdentity(privateIdentityModel.getObject());
 					user.setIdentity(identityModel.getObject());
 					user.setFacebook(true);
 					user.setUsername(HatchetHarrySession.get().getUsername());
@@ -102,7 +115,7 @@ public class UserPreferencesModalWindow extends Panel
 			}
 		};
 
-		form.add(username, identity, password, realm, submit);
+		form.add(login, privateIdentity, username, identity, password, realm, submit);
 		this.add(form);
 	}
 

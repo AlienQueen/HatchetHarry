@@ -31,6 +31,8 @@ public class User implements Serializable
 	@Column
 	private String login;
 	@Column
+	private String privateIdentity;
+	@Column
 	private String username;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE })
@@ -126,6 +128,16 @@ public class User implements Serializable
 	public void setRealm(final String _realm)
 	{
 		this.realm = _realm;
+	}
+
+	public String getPrivateIdentity()
+	{
+		return this.privateIdentity;
+	}
+
+	public void setPrivateIdentity(final String _privateIdentity)
+	{
+		this.privateIdentity = _privateIdentity;
 	}
 
 }
