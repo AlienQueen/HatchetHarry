@@ -83,9 +83,9 @@ public class UserPreferencesModalWindow extends Panel
 				{
 					user.setIdentity(identityModel.getObject());
 					user.setIsFacebook(true);
-					user.setLogin(HatchetHarrySession.get().getUsername());
+					user.setUsername(HatchetHarrySession.get().getUsername());
 					user.setPassword(passwordModel.getObject());
-					user.setUsername(usernameModel.getObject());
+					user.setLogin(usernameModel.getObject());
 					user.setPlayer(HatchetHarrySession.get().getPlayer());
 
 					UserPreferencesModalWindow.this.persistenceService.saveOrUpdateUser(user);

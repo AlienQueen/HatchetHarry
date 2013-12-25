@@ -6,6 +6,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.User;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -15,15 +17,20 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(FacebookLoginBehavior.class);
+
+	@SpringBean
+	PersistenceService persistenceService;
 
 	@Override
 	protected void respond(final AjaxRequestTarget target)
@@ -45,6 +52,12 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 					.getUsernameParent();
 			usernameParent.addOrReplace(usernameLabel);
 			target.add(usernameParent);
+
+			final User user = new User();
+			user.setUsername(username);
+			user.setIsFacebook(true);
+			user.setPlayer(HatchetHarrySession.get().getPlayer());
+			this.persistenceService.saveOrUpdateUser(user);
 		}
 	}
 
@@ -70,6 +83,12 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 			FacebookLoginBehavior.LOGGER.error(
 					"unable to close template in FacebookLoginBehavior#renderHead()!", e);
 		}
+	}
+
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
+		this.persistenceService = _persistenceService;
 	}
 
 }
