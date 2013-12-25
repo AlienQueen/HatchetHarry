@@ -40,11 +40,10 @@ public class User implements Serializable
 	@Column
 	private String password; // TODO passwords in plain-text
 	@Column
-	private Boolean isFacebook;
+	private Boolean isFacebook = false;
 
 	public User()
 	{
-
 	}
 
 	public Long getId()

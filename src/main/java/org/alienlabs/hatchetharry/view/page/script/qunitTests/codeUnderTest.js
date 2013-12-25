@@ -121,17 +121,15 @@ jQuery(function() {
 			var allImages = allCards.find('.clickableCard');
 			var firstCard = jQuery(allImages[0]);
 	
-			if (viewportwidth > 1024) {
-		
-				if (firstCard.attr('src').indexOf('_small') != -1) {
+			if (viewportwidth > 1024) {		
+				if ((typeof firstCard != 'undefined') && (typeof firstCard.attr('src') != 'undefined') && (firstCard.attr('src').indexOf('_small') != -1)) {
 					for (var i = 0; i < allImages.length; i++) {
 						var card = jQuery(allImages[i]);
 						card.attr('src', card.attr('src').replace('_small', '_medium')); 
 					}
 				}
 			} else {
-	
-				if  (firstCard.attr('src').indexOf('_medium') != -1) {	
+				if  ((typeof firstCard != 'undefined') && (typeof firstCard.attr('src') != 'undefined') && (firstCard.attr('src').indexOf('_medium') != -1)) {	
 					for (var i = 0; i < allImages.length; i++) {
 						var card = jQuery(allImages[i]);
 						card.attr('src', card.attr('src').replace('_medium', '_small')); 
