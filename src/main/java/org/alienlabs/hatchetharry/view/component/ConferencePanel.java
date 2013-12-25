@@ -30,6 +30,7 @@ public class ConferencePanel extends Panel
 				|| (null == this.persistenceService
 						.getUser(HatchetHarrySession.get().getUsername())))
 		{
+			ConferencePanel.LOGGER.info("#1");
 			user = new User();
 			user.setLogin("");
 			user.setPassword("");
@@ -45,6 +46,7 @@ public class ConferencePanel extends Panel
 		}
 		else
 		{
+			ConferencePanel.LOGGER.info("#3");
 			user = new User();
 			user.setLogin("");
 			user.setPassword("");
