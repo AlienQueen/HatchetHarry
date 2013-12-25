@@ -23,6 +23,7 @@
         if(window.console) {
             window.console.info("location=" + window.location);
         }
+        divCallCtrl = document.getElementById('divCallCtrl');
         videoLocal = document.getElementById("video_local");
         videoRemote = document.getElementById("video_remote");
         audioRemote = document.getElementById("audio_remote");
