@@ -126,7 +126,7 @@ jQuery(function() {
 					for (var i = 0; i < allImages.length; i++) {
 						var card = jQuery(allImages[i]);
 						if ((typeof card != 'undefined') && (typeof card.attr('src') != 'undefined')) {
-						card.attr('src', card.attr('src').replace('_small', '_medium')); 
+							card.attr('src', card.attr('src').replace('_small', '_medium')); 
 						}
 					}
 				}
@@ -134,7 +134,9 @@ jQuery(function() {
 				if  ((typeof firstCard != 'undefined') && (typeof firstCard.attr('src') != 'undefined') && (firstCard.attr('src').indexOf('_medium') != -1)) {	
 					for (var i = 0; i < allImages.length; i++) {
 						var card = jQuery(allImages[i]);
-						card.attr('src', card.attr('src').replace('_medium', '_small')); 
+						if ((typeof card != 'undefined') && (typeof card.attr('src') != 'undefined')) {
+							card.attr('src', card.attr('src').replace('_medium', '_small'));
+						}
 					}
 				}
 			}
@@ -151,5 +153,8 @@ jQuery(function() {
 
 // Remove the ugly blue arrow due to the conference
 jQuery(function() {
-	jQuery('#fvd-single-fennec-popup').hide();
+	window.setTimeout(function() {
+		jQuery('#fvd-single-fennec-popup').hide();
+	}, 500);
+});
 });
