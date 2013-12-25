@@ -249,8 +249,6 @@ public class HomePage extends TestReportPage
 
 	private final WebMarkupContainer usernameParent;
 
-	private final WebMarkupContainer conferenceParent;
-
 	public HomePage() throws IOException
 	{
 		this.setOutputMarkupId(true);
@@ -332,7 +330,8 @@ public class HomePage extends TestReportPage
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.7.0 (release Merry kiss my tralala),");
+		final Label message1 = new Label("message1",
+				"version 0.7.0 (release Merry kiss my tralala),");
 		final Label message2 = new Label("message2", "built on Tuesday, 24th of December 2013.");
 		this.add(message1, message2);
 
@@ -489,12 +488,9 @@ public class HomePage extends TestReportPage
 		this.generateHideAllTooltipsLink("hideAllTooltipsLink");
 		this.generateHideAllTooltipsLink("hideAllTooltipsLinkResponsive");
 
-		this.conferenceParent = new WebMarkupContainer("conferenceParent");
-		this.conferenceParent.setOutputMarkupId(true);
 		final ConferencePanel conference = new ConferencePanel("conference");
 		conference.setOutputMarkupId(true);
-		this.conferenceParent.add(conference);
-		this.add(this.conferenceParent);
+		this.add(conference);
 		this.generateOpenConferenceLink("conferenceOpener");
 		this.generateOpenConferenceLink("conferenceOpenerResponsive");
 
@@ -564,7 +560,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
-				target.appendJavaScript("jQuery('#conference').show();");
+				target.appendJavaScript("jQuery('#conference').dialog('open');");
 			}
 
 		});
@@ -3201,11 +3197,6 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getUsernameParent()
 	{
 		return this.usernameParent;
-	}
-
-	public WebMarkupContainer getConferenceParent()
-	{
-		return this.conferenceParent;
 	}
 
 }

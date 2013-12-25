@@ -143,10 +143,11 @@ jQuery(function() {
 });
 
 //Visio-conference
-//jQuery(function() {
-	jQuery('#conference').dialog({ autoOpen: true, position: { my: 'center', at: 'center', of: window } });
-//	jQuery('#conference').attr('display', 'none');
-//});
+jQuery(function() {
+	window.setTimeout(function() {
+		jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });
+	}, 250);
+});
 
 // Remove the ugly blue arrow due to the conference
 jQuery(function() {
