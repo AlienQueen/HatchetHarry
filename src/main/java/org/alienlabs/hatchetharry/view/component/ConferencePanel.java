@@ -62,6 +62,7 @@ public class ConferencePanel extends Panel
 
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
+		password.setResetPassword(false);
 
 		this.add(identity, password);
 	}
