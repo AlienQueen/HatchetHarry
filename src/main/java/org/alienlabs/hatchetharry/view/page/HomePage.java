@@ -571,6 +571,7 @@ public class HomePage extends TestReportPage
 				target.add(HomePage.this.getConferenceParent());
 
 				target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: true, position: { my: 'center', at: 'center', of: window } });");
+				target.appendJavaScript("divCallCtrl = document.getElementById('divCallCtrl');");
 			}
 
 		});
