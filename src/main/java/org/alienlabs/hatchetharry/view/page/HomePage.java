@@ -570,8 +570,7 @@ public class HomePage extends TestReportPage
 				HomePage.this.getConferenceParent().addOrReplace(cp);
 				target.add(HomePage.this.getConferenceParent());
 
-				target.appendJavaScript("jQuery('#conference').attr('display', 'block');");
-				target.appendJavaScript("divCallCtrl = document.getElementById('divCallCtrl');");
+				target.appendJavaScript("jQuery('#conference').dialog('open');");
 			}
 
 		});

@@ -147,8 +147,7 @@ jQuery(function() {
 //Visio-conference
 jQuery(function() {
 	window.setTimeout(function() {
-		jQuery('#conference').dialog({ autoOpen: true, position: { my: 'center', at: 'center', of: window } });
-		jQuery('#conference').attr('display', 'none');
+		jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });
 	}, 250);
 });
 
