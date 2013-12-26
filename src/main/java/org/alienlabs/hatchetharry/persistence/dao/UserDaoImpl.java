@@ -52,9 +52,9 @@ public class UserDaoImpl implements UserDao
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public User load(final long id)
+	public User load(final String username)
 	{
-		return (User)this.getSession().get(User.class, Long.valueOf(id));
+		return (User)this.getSession().get(User.class, username);
 	}
 
 	/**
@@ -78,9 +78,9 @@ public class UserDaoImpl implements UserDao
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id)
+	public void delete(final String username)
 	{
-		this.getSession().delete(this.load(id));
+		this.getSession().delete(this.load(username));
 	}
 
 }

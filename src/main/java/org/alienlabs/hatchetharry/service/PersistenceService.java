@@ -1192,12 +1192,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public User getUser(final String username)
 	{
-		final Session session = this.messageDao.getSession();
-
-		final Query query = session.createQuery("from User where username = ?");
-		query.setString(0, username);
-
-		return (User)query.uniqueResult();
+		return this.userDao.load(username);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)

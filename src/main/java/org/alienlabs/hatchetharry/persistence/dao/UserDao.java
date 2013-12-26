@@ -16,7 +16,7 @@ public interface UserDao extends Serializable
 	 *            The id of the User to load.
 	 * @return User
 	 */
-	User load(long id);
+	User load(String username);
 
 	/**
 	 * Save the User to the DB
@@ -32,5 +32,5 @@ public interface UserDao extends Serializable
 	 * @param id
 	 *            The id of the User to delete.
 	 */
-	void delete(long id);
+	void delete(String username);
 }

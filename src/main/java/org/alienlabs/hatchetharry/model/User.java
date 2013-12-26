@@ -6,8 +6,6 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,14 +24,11 @@ public class User implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String username;
 	@Column
 	private String login;
 	@Column
 	private String privateIdentity;
-	@Column
-	private String username;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	private Player player;
@@ -50,14 +45,14 @@ public class User implements Serializable
 	{
 	}
 
-	public Long getId()
+	public String getUsername()
 	{
-		return this.id;
+		return this.username;
 	}
 
-	public void setId(final Long _id)
+	public void setUsername(final String _username)
 	{
-		this.id = _id;
+		this.username = _username;
 	}
 
 	public String getLogin()
@@ -68,16 +63,6 @@ public class User implements Serializable
 	public void setLogin(final String _login)
 	{
 		this.login = _login;
-	}
-
-	public String getUsername()
-	{
-		return this.username;
-	}
-
-	public void setUsername(final String _username)
-	{
-		this.username = _username;
 	}
 
 	public Player getPlayer()
