@@ -574,17 +574,26 @@ public class HomePage extends TestReportPage
 				// target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });");
 				target.appendJavaScript("jQuery('#conference').dialog('open');");
 
-				final User user = HomePage.this.persistenceService.getUser(HatchetHarrySession
-						.get().getUsername());
-				HomePage.LOGGER.info("###user: " + user);
+				if (null != HatchetHarrySession.get().getUsername())
+				{
+					final User user = HomePage.this.persistenceService.getUser(HatchetHarrySession
+							.get().getUsername());
+					HomePage.LOGGER.info("###user: " + user);
 
-				target.appendJavaScript("jQuery('#txtDisplayName').val('" + user.getLogin() + "');");
-				target.appendJavaScript("jQuery('#txtPrivateIdentity').val('"
-						+ user.getPrivateIdentity() + "');");
-				target.appendJavaScript("jQuery('#txtPublicIdentity').val('" + user.getIdentity()
-						+ "');");
-				target.appendJavaScript("jQuery('#txtPassword').val('" + user.getPassword() + "');");
-				target.appendJavaScript("jQuery('#txtRealm').val('" + user.getRealm() + "');");
+					if (null != user)
+					{
+						target.appendJavaScript("jQuery('#txtDisplayName').val('" + user.getLogin()
+								+ "');");
+						target.appendJavaScript("jQuery('#txtPrivateIdentity').val('"
+								+ user.getPrivateIdentity() + "');");
+						target.appendJavaScript("jQuery('#txtPublicIdentity').val('"
+								+ user.getIdentity() + "');");
+						target.appendJavaScript("jQuery('#txtPassword').val('" + user.getPassword()
+								+ "');");
+						target.appendJavaScript("jQuery('#txtRealm').val('" + user.getRealm()
+								+ "');");
+					}
+				}
 			}
 
 		});
