@@ -60,6 +60,7 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.Token;
+import org.alienlabs.hatchetharry.model.User;
 import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
@@ -566,12 +567,24 @@ public class HomePage extends TestReportPage
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 
-				final ConferencePanel cp = new ConferencePanel("conference");
-				HomePage.this.getConferenceParent().addOrReplace(cp);
-				target.add(HomePage.this.getConferenceParent());
+				// final ConferencePanel cp = new ConferencePanel("conference");
+				// HomePage.this.getConferenceParent().addOrReplace(cp);
+				// target.add(HomePage.this.getConferenceParent());
 
-				target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });");
+				// target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });");
 				target.appendJavaScript("jQuery('#conference').dialog('open');");
+
+				final User user = HomePage.this.persistenceService.getUser(HatchetHarrySession
+						.get().getUsername());
+				HomePage.LOGGER.info("###user: " + user);
+
+				target.appendJavaScript("jQuery('#txtDisplayName').val('" + user.getLogin() + "');");
+				target.appendJavaScript("jQuery('#txtPrivateIdentity').val('"
+						+ user.getPrivateIdentity() + "');");
+				target.appendJavaScript("jQuery('#txtPublicIdentity').val('" + user.getIdentity()
+						+ "');");
+				target.appendJavaScript("jQuery('#txtPassword').val('" + user.getPassword() + "');");
+				target.appendJavaScript("jQuery('#txtRealm').val('" + user.getRealm() + "');");
 			}
 
 		});
