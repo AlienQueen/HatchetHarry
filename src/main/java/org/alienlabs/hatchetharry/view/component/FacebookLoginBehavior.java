@@ -45,8 +45,9 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 		if ((null != username) && !"undefined".equals(username))
 		{
 			final Label usernameLabel = new Label("username", "Logged in as " + username);
-			HatchetHarrySession.get().setUsername(username);
 			usernameLabel.setOutputMarkupId(true);
+			HatchetHarrySession.get().setUsername(username);
+			HatchetHarrySession.get().setLoggedIn(true);
 
 			final WebMarkupContainer usernameParent = ((HomePage)target.getPage())
 					.getUsernameParent();

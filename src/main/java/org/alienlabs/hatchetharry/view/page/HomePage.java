@@ -566,18 +566,12 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
-
-				// final ConferencePanel cp = new ConferencePanel("conference");
-				// HomePage.this.getConferenceParent().addOrReplace(cp);
-				// target.add(HomePage.this.getConferenceParent());
-
-				// target.appendJavaScript("jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });");
 				target.appendJavaScript("jQuery('#conference').dialog('open');");
 
-				if (null != HatchetHarrySession.get().getUsername())
+				if (null != HomePage.this.session.getUsername())
 				{
-					final User user = HomePage.this.persistenceService.getUser(HatchetHarrySession
-							.get().getUsername());
+					final User user = HomePage.this.persistenceService
+							.getUser(HomePage.this.session.getUsername());
 					HomePage.LOGGER.info("###user: " + user);
 
 					if (null != user)
