@@ -3,7 +3,7 @@ package org.alienlabs.hatchetharry.model.channel.consolelog;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.alienlabs.hatchetharry.model.Message;
+import org.alienlabs.hatchetharry.model.ConsoleLogMessage;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
@@ -38,7 +38,7 @@ public abstract class ConsoleLogStrategy
 		}
 
 		final String newDate = new SimpleDateFormat("HH:mm:ss").format(this.date);
-		final Message msg = new Message();
+		final ConsoleLogMessage msg = new ConsoleLogMessage();
 		msg.setMessage(newDate + ": " + message);
 		msg.setGameId(gameId);
 

@@ -15,11 +15,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Message", uniqueConstraints = { @UniqueConstraint(columnNames = { "gameId",
+@Table(name = "ConsoleLogMessage", uniqueConstraints = { @UniqueConstraint(columnNames = { "gameId",
 		"message" }) })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Message implements Serializable
+public class ConsoleLogMessage implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

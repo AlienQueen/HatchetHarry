@@ -1,5 +1,5 @@
 /*
- * $Id: MessageDao.java 475 2005-12-08 23:44:08 -0800 (Thu, 08 Dec 2005) ivaynberg $
+ * $Id: ConsoleLogMessageDao.java 475 2005-12-08 23:44:08 -0800 (Thu, 08 Dec 2005) ivaynberg $
  * $Revision: 475 $
  * $Date: 2005-12-08 23:44:08 -0800 (Thu, 08 Dec 2005) $
  *
@@ -20,7 +20,7 @@ package org.alienlabs.hatchetharry.persistence.dao;
 
 import java.io.Serializable;
 
-import org.alienlabs.hatchetharry.model.Message;
+import org.alienlabs.hatchetharry.model.ConsoleLogMessage;
 import org.hibernate.Session;
 
 /**
@@ -29,32 +29,32 @@ import org.hibernate.Session;
  * 
  * @author igor
  */
-public interface MessageDao extends Serializable
+public interface ConsoleLogMessageDao extends Serializable
 {
 	Session getSession();
 
 	/**
-	 * Load a {@link Message} from the DB, given it's <tt>id</tt>.
+	 * Load a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt>.
 	 * 
 	 * @param id
-	 *            The id of the Message to load.
-	 * @return Message
+	 *            The id of the ConsoleLogMessage to load.
+	 * @return ConsoleLogMessage
 	 */
-	Message load(long id);
+	ConsoleLogMessage load(long id);
 
 	/**
-	 * Save the Message to the DB
+	 * Save the ConsoleLogMessage to the DB
 	 * 
-	 * @param Message
-	 * @return persistent instance of Message
+	 * @param ConsoleLogMessage
+	 * @return persistent instance of ConsoleLogMessage
 	 */
-	Long save(Message message);
+	Long save(ConsoleLogMessage consoleLogMessage);
 
 	/**
-	 * Delete a {@link Message} from the DB, given it's <tt>id</tt>.
+	 * Delete a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt>.
 	 * 
 	 * @param id
-	 *            The id of the Message to delete.
+	 *            The id of the ConsoleLogMessage to delete.
 	 */
 	void delete(long id);
 

@@ -500,6 +500,7 @@ public class HomePage extends TestReportPage
 		this.generateOpenConferenceLink("conferenceOpener");
 		this.generateOpenConferenceLink("conferenceOpenerResponsive");
 
+		// For console logs & chat messages
 		this.add(new MessageRedisplayBehavior(HatchetHarrySession.get().getGameId()));
 
 		this.drawModeParent = new WebMarkupContainer("drawModeParent");

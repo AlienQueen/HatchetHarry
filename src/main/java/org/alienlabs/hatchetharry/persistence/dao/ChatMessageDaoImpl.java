@@ -1,5 +1,5 @@
 /*
- * $Id: MessageDaoImpl.java 1056 2006-10-27 22:49:28Z ivaynberg $
+ * $Id: ChatMessageDaoImpl.java 1056 2006-10-27 22:49:28Z ivaynberg $
  * $Revision: 1056 $
  * $Date: 2006-10-27 15:49:28 -0700 (Fri, 27 Oct 2006) $
  *
@@ -18,7 +18,7 @@
  */
 package org.alienlabs.hatchetharry.persistence.dao;
 
-import org.alienlabs.hatchetharry.model.Message;
+import org.alienlabs.hatchetharry.model.ChatMessage;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,18 +27,18 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * implements {@link MessageDao}.
+ * implements {@link ChatMessageDao}.
  * 
  * @author igor
  */
-public class MessageDaoImpl implements MessageDao
+public class ChatMessageDaoImpl implements ChatMessageDao
 {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public MessageDaoImpl()
+	public ChatMessageDaoImpl()
 	{
 	}
 
@@ -67,37 +67,37 @@ public class MessageDaoImpl implements MessageDao
 	}
 
 	/**
-	 * Load a {@link Message} from the DB, given it's <tt>id</tt> .
+	 * Load a {@link ChatMessage} from the DB, given it's <tt>id</tt> .
 	 * 
 	 * @param id
-	 *            The id of the Message to load.
-	 * @return Message
+	 *            The id of the ChatMessage to load.
+	 * @return ChatMessage
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Message load(final long id)
+	public ChatMessage load(final long id)
 	{
-		return (Message)this.getSession().get(Message.class, Long.valueOf(id));
+		return (ChatMessage)this.getSession().get(ChatMessage.class, Long.valueOf(id));
 	}
 
 	/**
-	 * Save the Message to the DB
+	 * Save the ChatMessage to the DB
 	 * 
-	 * @param Message
-	 * @return persistent instance of Message
+	 * @param ChatMessage
+	 * @return persistent instance of ChatMessage
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Long save(final Message message)
+	public Long save(final ChatMessage chatMessage)
 	{
-		return (Long)this.getSession().save(message);
+		return (Long)this.getSession().save(chatMessage);
 	}
 
 	/**
-	 * Delete a {@link Message} from the DB, given it's <tt>id</tt>.
+	 * Delete a {@link ChatMessage} from the DB, given it's <tt>id</tt>.
 	 * 
 	 * @param id
-	 *            The id of the Message to delete.
+	 *            The id of the ChatMessage to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)

@@ -50,8 +50,7 @@ public class SidePlaceholderPanel extends Panel
 		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
 				HatchetHarrySession.get().getGameId(), this.player));
 
-		final Image handleImage = new Image("handleImage", new PackageResourceReference(
-				"images/arrow.png"));
+		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setOutputMarkupId(true);
 		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
 

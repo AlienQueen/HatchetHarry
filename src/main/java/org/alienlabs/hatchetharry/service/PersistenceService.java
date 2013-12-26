@@ -9,25 +9,27 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.ChatMessage;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
+import org.alienlabs.hatchetharry.model.ConsoleLogMessage;
 import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.model.Message;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.User;
 import org.alienlabs.hatchetharry.persistence.dao.ArrowDao;
+import org.alienlabs.hatchetharry.persistence.dao.ChatMessageDao;
 import org.alienlabs.hatchetharry.persistence.dao.CollectibleCardDao;
+import org.alienlabs.hatchetharry.persistence.dao.ConsoleLogMessageDao;
 import org.alienlabs.hatchetharry.persistence.dao.CounterDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckArchiveDao;
 import org.alienlabs.hatchetharry.persistence.dao.DeckDao;
 import org.alienlabs.hatchetharry.persistence.dao.GameDao;
 import org.alienlabs.hatchetharry.persistence.dao.MagicCardDao;
-import org.alienlabs.hatchetharry.persistence.dao.MessageDao;
 import org.alienlabs.hatchetharry.persistence.dao.PlayerDao;
 import org.alienlabs.hatchetharry.persistence.dao.SideDao;
 import org.alienlabs.hatchetharry.persistence.dao.TokenDao;
@@ -70,9 +72,11 @@ public class PersistenceService implements Serializable
 	@SpringBean
 	private ArrowDao arrowDao;
 	@SpringBean
-	private MessageDao messageDao;
+	private ConsoleLogMessageDao consoleLogMessageDao;
 	@SpringBean
 	private UserDao userDao;
+	@SpringBean
+	private ChatMessageDao chatMessageDao;
 
 	public PersistenceService()
 	{
@@ -658,15 +662,21 @@ public class PersistenceService implements Serializable
 	}
 
 	@Required
-	public void setMessageDao(final MessageDao _messageDao)
+	public void setConsoleLogMessageDao(final ConsoleLogMessageDao _consoleLogMessageDao)
 	{
-		this.messageDao = _messageDao;
+		this.consoleLogMessageDao = _consoleLogMessageDao;
 	}
 
 	@Required
 	public void setUserDao(final UserDao _userDao)
 	{
 		this.userDao = _userDao;
+	}
+
+	@Required
+	public void setChatMessageDao(final ChatMessageDao _chatMessageDao)
+	{
+		this.chatMessageDao = _chatMessageDao;
 	}
 
 	@Transactional(readOnly = true)
@@ -1158,20 +1168,20 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveMessageWithoutDuplicate(final Message message)
+	public void saveMessageWithoutDuplicate(final ConsoleLogMessage consoleLogMessage)
 	{
-		if ((message.getGameId() != null) && (message.getMessage() != null))
+		if ((consoleLogMessage.getGameId() != null) && (consoleLogMessage.getMessage() != null))
 		{
-			this.messageDao.getSession().save(message);
+			this.consoleLogMessageDao.getSession().save(consoleLogMessage);
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public List<Message> loadAllMessagesForAGame(final Long gameId)
+	public List<ConsoleLogMessage> loadAllConsoleLogMessagesForAGame(final Long gameId)
 	{
-		final Session session = this.messageDao.getSession();
+		final Session session = this.consoleLogMessageDao.getSession();
 
-		final Query query = session.createQuery("from Message where gameId = ?");
+		final Query query = session.createQuery("from ConsoleLogMessage where gameId = ?");
 		query.setLong(0, gameId);
 
 		return query.list();
@@ -1180,12 +1190,12 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void deleteAllMessagesForAGame(final Long gameId)
 	{
-		final List<Message> allMessages = this.loadAllMessagesForAGame(gameId);
-		final Session session = this.messageDao.getSession();
+		final List<ConsoleLogMessage> allMessages = this.loadAllConsoleLogMessagesForAGame(gameId);
+		final Session session = this.consoleLogMessageDao.getSession();
 
-		for (final Message message : allMessages)
+		for (final ConsoleLogMessage consoleLogMessage : allMessages)
 		{
-			session.delete(message);
+			session.delete(consoleLogMessage);
 		}
 	}
 
@@ -1199,6 +1209,24 @@ public class PersistenceService implements Serializable
 	public void saveOrUpdateUser(final User user)
 	{
 		this.userDao.getSession().saveOrUpdate(user);
+	}
+
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void saveChatMessage(final ChatMessage msg)
+	{
+		this.chatMessageDao.save(msg);
+	}
+
+	@Transactional(readOnly = true)
+	public List<ChatMessage> loadAllChatMessagesForAGame(final Long gameId)
+	{
+		final Session session = this.chatMessageDao.getSession();
+
+		final Query query = session.createQuery("from ChatMessage where gameId = ? order by id");
+		query.setLong(0, gameId);
+
+		return query.list();
 	}
 
 }

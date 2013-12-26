@@ -68,8 +68,9 @@
 				<value>org.alienlabs.hatchetharry.model.Counter</value>
 				<value>org.alienlabs.hatchetharry.model.Token</value>
 				<value>org.alienlabs.hatchetharry.model.Arrow</value>
-				<value>org.alienlabs.hatchetharry.model.Message</value>
+				<value>org.alienlabs.hatchetharry.model.ConsoleLogMessage</value>
 				<value>org.alienlabs.hatchetharry.model.User</value>
+				<value>org.alienlabs.hatchetharry.model.ChatMessage</value>
             </list> 
         </property>
 

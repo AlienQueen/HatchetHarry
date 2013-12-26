@@ -42,6 +42,7 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.ChatMessage;
 import org.alienlabs.hatchetharry.model.channel.ChatCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -102,10 +103,16 @@ public class ChatPanel extends Panel
 				final String _message = _form.get("message").getDefaultModelObjectAsString();
 				ChatPanel.LOGGER.info("user: " + _user + ", message: " + _message);
 
-				final String chatMessage = _user + " said: " + _message;
-
 				final Long gameId = ChatPanel.this.persistenceService
 						.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
+
+				final String chatMessage = _user + " said: " + _message;
+
+				final ChatMessage msg = new ChatMessage();
+				msg.setGameId(gameId);
+				msg.setMessage(chatMessage);
+				ChatPanel.this.persistenceService.saveChatMessage(msg);
+
 				final List<BigInteger> allPlayersInGame = ChatPanel.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 

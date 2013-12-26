@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import org.alienlabs.hatchetharry.model.Message;
+import org.alienlabs.hatchetharry.model.ChatMessage;
+import org.alienlabs.hatchetharry.model.ConsoleLogMessage;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -49,12 +50,21 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		final StringBuilder buil = new StringBuilder();
-		final List<Message> allMessages = this.persistenceService
-				.loadAllMessagesForAGame(this.gameId);
 
-		for (final Message msg : allMessages)
+		final List<ConsoleLogMessage> allConsoleLogMessages = this.persistenceService
+				.loadAllConsoleLogMessagesForAGame(this.gameId);
+		for (final ConsoleLogMessage msg : allConsoleLogMessages)
 		{
 			buil.append("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"&#013;&#010;\" + \"");
+			buil.append(msg.getMessage());
+			buil.append("\" + \"&#013;&#010;\"; ");
+		}
+
+		final List<ChatMessage> allChatMessages = this.persistenceService
+				.loadAllChatMessagesForAGame(this.gameId);
+		for (final ChatMessage msg : allChatMessages)
+		{
+			buil.append("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \"");
 			buil.append(msg.getMessage());
 			buil.append("\" + \"&#013;&#010;\"; ");
 		}
