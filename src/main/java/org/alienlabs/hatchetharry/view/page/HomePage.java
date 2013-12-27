@@ -61,7 +61,6 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.User;
-import org.alienlabs.hatchetharry.model.channel.AcceptEndTurnCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
 import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
 import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
@@ -208,14 +207,14 @@ public class HomePage extends TestReportPage
 	WebMarkupContainer graveyardThumbsPlaceholder;
 
 	private AjaxLink<Void> endTurnLink;
-	private AjaxLink<Void> endTurnActionLink;
-	private AjaxLink<Void> acceptEndTurnLink;
+	private AjaxLink<Void> inResponseLink;
+	private AjaxLink<Void> fineForMeLink;
 	private AjaxLink<Void> untapAllLink;
 	private AjaxLink<Void> untapAndDrawLink;
 
 	WebMarkupContainer endTurnPlaceholder;
-	WebMarkupContainer endTurnActionPlaceholder;
-	WebMarkupContainer acceptEndTurnPlaceholder;
+	WebMarkupContainer insResponsePlaceholder;
+	WebMarkupContainer fineForMePlaceholder;
 	WebMarkupContainer untapAllPlaceholder;
 	WebMarkupContainer untapAndDrawPlaceholder;
 
@@ -448,7 +447,7 @@ public class HomePage extends TestReportPage
 		this.add(new ChatPanel("chatPanel", this.player.getId()));
 
 		this.buildEndTurnLink();
-		this.buildEndTurnActionLink();
+		this.buildInResponseLink();
 		this.buildAcceptEndTurnLink();
 		this.buildUntapAllLink();
 		this.buildUntapAndDrawLink();
@@ -835,10 +834,6 @@ public class HomePage extends TestReportPage
 				final Long gameId = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
-				final Game game = HomePage.this.persistenceService.getGame(gameId);
-				game.setAcceptEndOfTurnPending(true);
-				HomePage.this.persistenceService.updateGame(game);
-
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.END_OF_TURN, null, null, null, null, HomePage.this.session
 								.getPlayer().getName(), null, null, null, false,
@@ -857,10 +852,6 @@ public class HomePage extends TestReportPage
 									.getSide().getSideName(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-
-					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(true);
-					HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
-
 					HatchetHarryApplication.get().getEventBus()
 							.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
@@ -876,13 +867,12 @@ public class HomePage extends TestReportPage
 		this.add(this.endTurnPlaceholder);
 	}
 
-	private void buildEndTurnActionLink()
+	private void buildInResponseLink()
 	{
-		this.endTurnActionPlaceholder = new WebMarkupContainer("endTurnActionPlaceholder");
-		this.endTurnActionPlaceholder.setMarkupId("endTurnActionPlaceholder");
-		this.endTurnActionPlaceholder.setOutputMarkupId(true);
+		this.insResponsePlaceholder = new WebMarkupContainer("inResponsePlaceholder");
+		this.insResponsePlaceholder.setOutputMarkupId(true);
 
-		this.endTurnActionLink = new AjaxLink<Void>("endTurnActionLink")
+		this.inResponseLink = new AjaxLink<Void>("inResponseLink")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -891,11 +881,6 @@ public class HomePage extends TestReportPage
 			{
 				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
 						.getGameId());
-
-				if (!game.isAcceptEndOfTurnPending())
-				{
-					return;
-				}
 
 				final Player me = HomePage.this.session.getPlayer();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
@@ -907,8 +892,8 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.END_OF_TURN_ACTION_ACTION, null, me.getId(),
-							me.getName(), me.getSide().getSideName(), null, null, null, "");
+							NotifierAction.IN_RESPONSE_ACTION, null, null,
+							me.getName(), null, null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
@@ -916,20 +901,19 @@ public class HomePage extends TestReportPage
 			}
 
 		};
-		this.endTurnActionLink.setMarkupId("endTurnActionLink");
-		this.endTurnActionLink.setOutputMarkupId(true);
+		this.inResponseLink.setMarkupId("inResponseLink");
+		this.inResponseLink.setOutputMarkupId(true);
 
-		this.endTurnActionPlaceholder.add(this.endTurnActionLink);
-		this.add(this.endTurnActionPlaceholder);
+		this.insResponsePlaceholder.add(this.inResponseLink);
+		this.add(this.insResponsePlaceholder);
 	}
 
 	private void buildAcceptEndTurnLink()
 	{
-		this.acceptEndTurnPlaceholder = new WebMarkupContainer("acceptEndTurnPlaceholder");
-		this.acceptEndTurnPlaceholder.setOutputMarkupId(true);
-		this.acceptEndTurnPlaceholder.setMarkupId("acceptEndTurnPlaceholder");
+		this.fineForMePlaceholder = new WebMarkupContainer("fineForMePlaceholder");
+		this.fineForMePlaceholder.setOutputMarkupId(true);
 
-		this.acceptEndTurnLink = new AjaxLink<Void>("acceptEndTurnLink")
+		this.fineForMeLink = new AjaxLink<Void>("fineForMeLink")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -938,11 +922,6 @@ public class HomePage extends TestReportPage
 			{
 				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
 						.getGameId());
-
-				if (!game.isAcceptEndOfTurnPending())
-				{
-					return;
-				}
 
 				final Player me = HomePage.this.session.getPlayer();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
@@ -954,7 +933,7 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.ACCEPT_END_OF_TURN_ACTION, null, null, me.getName(),
+							NotifierAction.FINE_FOR_ME_ACTION, null, null, me.getName(),
 							null, null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
@@ -962,9 +941,9 @@ public class HomePage extends TestReportPage
 			}
 		};
 
-		this.acceptEndTurnLink.setOutputMarkupId(true).setMarkupId("acceptEndTurnLink");
-		this.acceptEndTurnPlaceholder.add(this.acceptEndTurnLink);
-		this.add(this.acceptEndTurnPlaceholder);
+		this.fineForMeLink.setOutputMarkupId(true).setMarkupId("fineForMeLink");
+		this.fineForMePlaceholder.add(this.fineForMeLink);
+		this.add(this.fineForMePlaceholder);
 	}
 
 	private void buildUntapAllLink()
@@ -983,10 +962,6 @@ public class HomePage extends TestReportPage
 				final Long gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
-
-				final Game game = HomePage.this.persistenceService.getGame(gameId);
-				game.setAcceptEndOfTurnPending(false);
-				HomePage.this.persistenceService.updateGame(game);
 
 				final List<MagicCard> allCards = HomePage.this.persistenceService
 						.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId,
@@ -1025,9 +1000,6 @@ public class HomePage extends TestReportPage
 									.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession
 									.get().getPlayer().getName(), allCards);
 					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
-
-					final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
-					HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
 
 					HatchetHarryApplication.get().getEventBus()
 							.post(new ConsoleLogCometChannel(logger), pageUuid);
@@ -1282,10 +1254,6 @@ public class HomePage extends TestReportPage
 											d.getDeckId()));
 					HomePage.this.persistenceService.updateAllMagicCards(library);
 
-					final Game game = HomePage.this.persistenceService.getGame(gameId);
-					game.setAcceptEndOfTurnPending(false);
-					HomePage.this.persistenceService.updateGame(game);
-
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
 
@@ -1326,17 +1294,6 @@ public class HomePage extends TestReportPage
 									.error("exception thrown while posting in event bus", ex);
 						}
 
-						final AcceptEndTurnCometChannel aetcc = new AcceptEndTurnCometChannel(false);
-						try
-						{
-							HatchetHarryApplication.get().getEventBus().post(aetcc, pageUuid);
-						}
-						catch (final NullPointerException ex)
-						{
-							// NPE in unit tests
-							HomePage.LOGGER
-									.error("exception thrown while posting in event bus", ex);
-						}
 					}
 				}
 				else
@@ -2179,18 +2136,6 @@ public class HomePage extends TestReportPage
 				}
 				break;
 
-			case END_OF_TURN_ACTION_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has an action to play at the end of "
-						+ HomePage.this.session.getPlayerEndingHerTurn()
-						+ "'s turn!\" , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
-				break;
-			case ACCEPT_END_OF_TURN_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : 'accepts the end of turn.', image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
 			case PLAY_TOP_LIBRARY_CARD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
@@ -2252,6 +2197,18 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : 'has put an end to the game', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 				break;
+				
+			case IN_RESPONSE_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'has an action to play in response', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
+				break;
+				
+			case FINE_FOR_ME_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'said : \"Fine for me!\"', image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
 			// TODO: split this notifier action and the one of
 			// card counters
 			default :
@@ -2263,8 +2220,6 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
 	{
-		target.appendJavaScript(JavaScriptUtils.DEACTIVATE_END_OF_TURN_LINKS);
-
 		final StringBuilder buil = new StringBuilder();
 
 		for (int i = 0; i < event.getCardsToUntap().size(); i++)
@@ -2630,19 +2585,6 @@ public class HomePage extends TestReportPage
 	}
 
 	@Subscribe
-	public void acceptEndTurn(final AjaxRequestTarget target, final AcceptEndTurnCometChannel event)
-	{
-		if (event.isShouldActivateAcceptEndTurnLink())
-		{
-			target.appendJavaScript(JavaScriptUtils.REACTIVATE_END_OF_TURN_LINKS);
-		}
-		else
-		{
-			target.appendJavaScript(JavaScriptUtils.DEACTIVATE_END_OF_TURN_LINKS);
-		}
-	}
-
-	@Subscribe
 	public void revealTopLibraryCard(final AjaxRequestTarget target,
 			final RevealTopLibraryCardCometChannel event)
 	{
@@ -2675,7 +2617,6 @@ public class HomePage extends TestReportPage
 		this.countCardsWindow.show(target);
 	}
 
-	@SuppressWarnings("incomplete-switch")
 	@Subscribe
 	public void cardZoneChange(final AjaxRequestTarget target, final CardZoneMoveCometChannel event)
 	{

@@ -54,7 +54,6 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		this.sourceZone = _sourceZone;
 	}
 
-	@SuppressWarnings("incomplete-switch")
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
