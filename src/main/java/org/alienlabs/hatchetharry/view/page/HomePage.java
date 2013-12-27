@@ -85,6 +85,7 @@ import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometCha
 import org.alienlabs.hatchetharry.model.channel.PutTokenOnBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.RevealHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.SwitchDrawModeCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
@@ -202,6 +203,9 @@ public class HomePage extends TestReportPage
 	WebMarkupContainer playCardFromGraveyardLink;
 
 	final WebMarkupContainer galleryParent;
+	final WebMarkupContainer galleryRevealParent;
+	final Component galleryReveal;
+
 	final WebMarkupContainer graveyardParent;
 	final WebMarkupContainer exileParent;
 	WebMarkupContainer thumbsPlaceholder;
@@ -254,7 +258,6 @@ public class HomePage extends TestReportPage
 
 	public HomePage() throws IOException
 	{
-		this.setOutputMarkupId(true);
 		this.session = HatchetHarrySession.get();
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
@@ -321,6 +324,14 @@ public class HomePage extends TestReportPage
 		this.galleryParent.setMarkupId("galleryParent");
 		this.galleryParent.setOutputMarkupId(true);
 		this.add(this.galleryParent);
+
+		this.galleryRevealParent = new WebMarkupContainer("galleryRevealParent");
+		this.galleryRevealParent.setMarkupId("galleryRevealParent");
+		this.galleryRevealParent.setOutputMarkupId(true);
+		this.galleryReveal = new WebMarkupContainer("galleryReveal");
+		this.galleryReveal.setOutputMarkupId(true);
+		this.galleryRevealParent.add(this.galleryReveal);
+		this.add(this.galleryRevealParent);
 
 		this.graveyardParent = new WebMarkupContainer("graveyardParent");
 		this.graveyardParent.setMarkupId("graveyardParent");
@@ -500,6 +511,9 @@ public class HomePage extends TestReportPage
 		this.generateOpenConferenceLink("conferenceOpener");
 		this.generateOpenConferenceLink("conferenceOpenerResponsive");
 
+		this.generateRevealHandLink("revealHandLink");
+		this.generateRevealHandLink("revealHandLinkResponsive");
+
 		// For console logs & chat messages
 		this.add(new MessageRedisplayBehavior(HatchetHarrySession.get().getGameId()));
 
@@ -589,6 +603,53 @@ public class HomePage extends TestReportPage
 								+ "');");
 					}
 				}
+			}
+
+		});
+	}
+
+	private void generateRevealHandLink(final String id)
+	{
+		this.add(new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				final Long gameId = HomePage.this.session.getGameId();
+				final List<BigInteger> allPlayersInGameExceptMe = HomePage.this.persistenceService
+						.giveAllPlayersFromGameExceptMe(gameId, HomePage.this.session.getPlayer()
+								.getId());
+
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+						NotifierAction.REVEAL_HAND, null, null, HomePage.this.session.getPlayer()
+								.getName(), "", "", "", null, "");
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.REVEAL_HAND, null, null, null, null, HomePage.this.session
+								.getPlayer().getName(), null, null, null, false, gameId);
+				final RevealHandCometChannel rhcc = new RevealHandCometChannel(gameId,
+						HomePage.this.session.getPlayer().getId(), HomePage.this.session
+								.getPlayer().getDeck().getDeckId());
+
+				for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGameExceptMe.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+
+
+					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+					HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					HatchetHarryApplication.get().getEventBus().post(rhcc, pageUuid);
+				}
+
+				final String myPageUuid = HatchetHarryApplication.getCometResources().get(
+						HomePage.this.session.getPlayer().getId());
+				HatchetHarryApplication.get().getEventBus().post(ncc, myPageUuid);
+				HatchetHarryApplication.get().getEventBus()
+						.post(new ConsoleLogCometChannel(logger), myPageUuid);
 			}
 
 		});
@@ -2252,6 +2313,13 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : 'has put an end to the game', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 				break;
+
+			case REVEAL_HAND :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'has reveals his (her) hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
+				break;
+
 			// TODO: split this notifier action and the one of
 			// card counters
 			default :
@@ -2924,6 +2992,12 @@ public class HomePage extends TestReportPage
 		event.getLogger().logToConsole(target);
 	}
 
+	@Subscribe
+	public void revealHand(final AjaxRequestTarget target, final RevealHandCometChannel event)
+	{
+		JavaScriptUtils.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
+	}
+
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
@@ -3058,6 +3132,11 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getGalleryParent()
 	{
 		return this.galleryParent;
+	}
+
+	public WebMarkupContainer getGalleryRevealParent()
+	{
+		return this.galleryRevealParent;
 	}
 
 	public WebMarkupContainer getPlayCardParent()

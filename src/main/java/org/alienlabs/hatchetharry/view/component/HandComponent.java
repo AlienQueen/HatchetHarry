@@ -25,7 +25,6 @@ public class HandComponent extends Panel
 	private final WebMarkupContainer handCardsPlaceholder;
 	private final ListView<MagicCard> allCards;
 	private final WebMarkupContainer thumbsPlaceholder;
-
 	private final List<MagicCard> allCardsInHand;
 
 	/**
@@ -41,7 +40,17 @@ public class HandComponent extends Panel
 		Injector.get().inject(this);
 
 		this.setOutputMarkupId(true);
-		this.setMarkupId("handGallery");
+		final String markupId = "handGallery" + (ids.length != 0 ? ids[1].toString() : "");
+		this.setMarkupId(markupId);
+		// this.add(new AttributeModifier("style", "position: absolute;"));
+
+		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
+		handleImage.setMarkupId("handle" + markupId);
+		handleImage.setOutputMarkupId(true);
+		this.add(handleImage);
+
+		final ZoneMoveBehavior zmb = new ZoneMoveBehavior(this);
+		this.add(zmb);
 
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
 		this.handCardsPlaceholder.setOutputMarkupId(true);
