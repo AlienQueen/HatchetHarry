@@ -22,7 +22,6 @@ public class PutToZonePanel extends Panel
 	protected final DropDownChoice<CardZone> targetZoneInput;
 	private final Player player;
 
-	@SuppressWarnings("incomplete-switch")
 	public PutToZonePanel(final String id, final CardZone _sourceZone, final Player _player)
 	{
 		super(id);
