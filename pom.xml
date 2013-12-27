@@ -597,11 +597,23 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>de.agilecoders.wicket</groupId>
 			<artifactId>bootstrap</artifactId>
 			<version>0.7.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-request</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>de.agilecoders.wicket</groupId>
 			<artifactId>bootstrap-extensions</artifactId>
 			<version>0.7.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-request</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- For refreshing ListView with Ajax -->
 		<dependency>
