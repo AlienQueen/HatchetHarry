@@ -38,14 +38,14 @@ public class UserPreferencesModalWindow extends Panel
 						.getUser(HatchetHarrySession.get().getUsername())))
 		{
 			user = new User();
-			user.setLogin("test");
-			user.setPrivateIdentity("test");
-			user.setPassword("test");
+			user.setLogin("");
+			user.setPrivateIdentity("");
+			user.setPassword("");
 			user.setPlayer(HatchetHarrySession.get().getPlayer());
-			user.setIdentity("test");
+			user.setIdentity("");
 			user.setFacebook(true);
-			user.setUsername("test");
-			user.setRealm("test");
+			user.setUsername("");
+			user.setRealm("");
 		}
 		else
 		{

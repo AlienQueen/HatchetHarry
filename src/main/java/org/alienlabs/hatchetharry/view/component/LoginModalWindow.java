@@ -6,7 +6,6 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wicketstuff.facebook.FacebookPermission;
 import org.wicketstuff.facebook.plugins.LoginButton;
 
 public class LoginModalWindow extends Panel
@@ -19,7 +18,7 @@ public class LoginModalWindow extends Panel
 	{
 		super(id);
 
-		final LoginButton button = new LoginButton("loginButton", FacebookPermission.user_events);
+		final LoginButton button = new LoginButton("loginButton");
 		button.setShowFaces(true);
 
 		final AjaxLink<Void> close = new AjaxLink<Void>("close")
