@@ -23,7 +23,7 @@ var callAudio = function(id) {
 		pause('ringtone');
 		pause('ringbacktone');
 	});
-	var call = peer.call($('#txtPhoneNumber').val(), window.localStream);
+	var call = peer.call(id, window.localStream);
 		// Set your video displays
 	call.on('stream', function(stream){
 		jQuery('#their-video').prop('src', URL.createObjectURL(stream));
