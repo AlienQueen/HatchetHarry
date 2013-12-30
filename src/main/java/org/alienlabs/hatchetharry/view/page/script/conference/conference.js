@@ -24,11 +24,12 @@ var callAudio = function(id) {
 			window.localStream = stream;
       		});
       		// Get audio/video stream
-	      navigator.getUserMedia({audio: true, video: false}, function(stream){
-        	pause('ringtone');
-        	// Set your video displays
-        	$('#my-video').prop('src', URL.createObjectURL(stream));
-        	window.localStream = stream;
+                navigator.getUserMedia({audio: true, video: false}, function(stream){
+        		pause('ringtone');
+        		// Set your video displays
+        		$('#my-video').prop('src', URL.createObjectURL(stream));
+        		window.localStream = stream;
+		});
       });
 }
 
