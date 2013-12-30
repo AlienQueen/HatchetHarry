@@ -13,12 +13,6 @@ var fillUserId = function() {
 
 var callAudio = function(id) {
 	play('ringtone');
-	var call = peer.call($('#txtPhoneNumber').val(), window.localStream);
-		// Set your video displays
-	call.on('stream', function(stream){
-		jQuery('#their-video').prop('src', URL.createObjectURL(stream));
-	//	window.localStream = stream;
-	});
       	// Get audio/video stream
 	navigator.getUserMedia({audio: true, video: false}, function(stream){
         	// Set your video displays
@@ -28,6 +22,12 @@ var callAudio = function(id) {
 		console.log('error #1'); 
 		pause('ringtone');
 		pause('ringbacktone');
+	});
+	var call = peer.call($('#txtPhoneNumber').val(), window.localStream);
+		// Set your video displays
+	call.on('stream', function(stream){
+		jQuery('#their-video').prop('src', URL.createObjectURL(stream));
+	//	window.localStream = stream;
 	});
 }
 
