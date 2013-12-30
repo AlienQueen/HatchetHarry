@@ -1,4 +1,5 @@
 var userId;
+var navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 var peer = new Peer({key: '2nij1esj8tjwz5mi'});
 
 peer.on('open', function(id) {
@@ -11,31 +12,35 @@ var fillUserId = function() {
 }
 
 var callAudio = function(id) {
-	var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 	play('ringtone');
-	getUserMedia({video: false, audio: true}, function(stream) {
-		var call = peer.call(document.getElementById('txtPhoneNumber').value, stream);
-		  call.on('stream', function(remoteStream) {
-		    // Show stream in some video/canvas element.
-			pause('ringtone');
-		  });
-	}, function(err) {
-		  pause('ringtone');
-		  console.log('Failed to get local stream' ,err);
-	});
+	var call = peer.call($('#txtPhoneNumber').val(), window.localStream);
+		// Set your video displays
+	$('#my-video').prop('src', URL.createObjectURL(stream));
+	window.localStream = stream;
+	call.on('stream', function(stream){
+        	jQuery('#their-video').prop('src', URL.createObjectURL(stream));
+      	});
+      // Get audio/video stream
+      navigator.getUserMedia({audio: true, video: false}, function(stream){
+        pause('ringtone');
+        // Set your video displays
+        $('#my-video').prop('src', URL.createObjectURL(stream));
+        window.localStream = stream;
+      });
 }
 
-var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 peer.on('call', function(call) {
 	// Answer the call automatically (instead of prompting user) for demo purposes
 	play('ringbacktone');
       	call.answer(window.localStream);
 	call.on('stream', function(stream){
+		pause('ringbacktone');
         	jQuery('#their-video').prop('src', URL.createObjectURL(stream));
       	});
 });
 
 peer.on('error', function(err){
+    pause('ringtone');
     pause('ringbacktone');
     console.log('Failed to get local stream' ,err.message);
 });
