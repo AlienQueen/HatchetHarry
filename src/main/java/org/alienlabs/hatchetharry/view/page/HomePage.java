@@ -1438,16 +1438,10 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/dock/jquery.jqdock.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "script/conference/SIPml-api.js")));
-				// response.render(JavaScriptHeaderItem.forReference(new
-				// PackageResourceReference(
-				// HomePage.class, "script/conference/webrtc4all.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/conference/peer-0.3.7.js")));
+						HomePage.class, "script/conference/SIPml-api.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/conference/conference.js")));
+						HomePage.class, "script/conference/webrtc4all.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/qunitTests/codeUnderTest.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
