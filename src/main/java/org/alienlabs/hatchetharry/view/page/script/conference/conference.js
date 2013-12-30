@@ -1,4 +1,4 @@
-    // Compatibility shim
+// Compatibility shim
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     // PeerJS object
@@ -80,3 +80,4 @@
       $('#step1, #step2').hide();
       $('#step3').show();
     }
+
