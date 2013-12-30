@@ -29,8 +29,16 @@ var callAudio = function(id) {
         		// Set your video displays
         		$('#my-video').prop('src', URL.createObjectURL(stream));
         		window.localStream = stream;
+		}, function() { 
+		console.log('error #1'); 
+		pause('ringtone');
+		pause('ringbacktone');
 		});
-      });
+      }, function() { 
+		console.log('error #2'); 
+		pause('ringtone');
+		pause('ringbacktone');
+	});
 }
 
 peer.on('call', function(call) {
