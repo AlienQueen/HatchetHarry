@@ -1,65 +1,82 @@
-var userId;
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-var peer = new Peer({key: '2nij1esj8tjwz5mi'});
+    // Compatibility shim
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-peer.on('open', function(id) {
-  console.log('My peer ID is: ' + id);
-  userId = id;
-});
+    // PeerJS object
+    var peer = new Peer({ key: 'lwjd5qra8257b9', debug: 3, config: {'iceServers': [
+      { url: 'stun:stun.l.google.com:19302' } // Pass in optional STUN and TURN server for maximum network compatibility
+    ]}});
 
-var fillUserId = function() {
-	document.getElementById('userId').value = userId;
-}
+    peer.on('open', function(){
+      $('#my-id').text(peer.id);
+    });
 
-var callAudio = function(id) {
-	play('ringtone');
-      	// Get audio/video stream
-	navigator.getUserMedia({audio: true, video: true}, function(stream){
-        	// Set your video displays
-		$('#my-video').prop('src', URL.createObjectURL(stream));
-		window.localStream = stream;
-      	}, function() { 
-		console.log('error #1'); 
-		pause('ringtone');
-		pause('ringbacktone');
-	});
-	var call = peer.call(id, window.localStream);
-		// Set your video displays
-	call.on('stream', function(stream){
-		jQuery('#their-video').prop('src', URL.createObjectURL(stream));
-	//	window.localStream = stream;
-	});
-}
+    // Receiving a call
+    peer.on('call', function(call){
+      // Answer the call automatically (instead of prompting user) for demo purposes
+      call.answer(window.localStream);
+      step3(call);
+    });
+    peer.on('error', function(err){
+      alert(err.message);
+      // Return to step 2 if error occurs
+      step2();
+    });
 
-peer.on('call', function(call) {
-	// Answer the call automatically (instead of prompting user) for demo purposes
-	play('ringbacktone');
-      	call.answer(window.localStream);
-	call.on('stream', function(stream){
-		pause('ringbacktone');
-        	jQuery('#their-video').prop('src', URL.createObjectURL(stream));
-      	});
-});
+    // Click handlers setup
+    $(function(){
+      $('#make-call').click(function(){
+        // Initiate a call!
+        var call = peer.call($('#callto-id').val(), window.localStream);
 
-peer.on('error', function(err){
-    pause('ringtone');
-    pause('ringbacktone');
-    console.log('Failed to get local stream' ,err.message);
-});
+        step3(call);
+      });
 
-var hangup = function() {
-	pause('ringtone');
-	pause('ringbacktone');
-	peer.disconnect();
-	peer.destroy();
-}
+      $('#end-call').click(function(){
+        window.existingCall.close();
+        step2();
+      });
 
-function play(id) {
-	var a = document.getElementById(id);
-	a.play();
-}
+      // Retry if getUserMedia fails
+      $('#step1-retry').click(function(){
+        $('#step1-error').hide();
+        step1();
+      });
 
-function pause(id) {
-	var a = document.getElementById(id);
-	a.pause();
-}
+      // Get things started
+      step1();
+    });
+
+    function step1 () {
+      // Get audio/video stream
+      navigator.getUserMedia({audio: true, video: true}, function(stream){
+        // Set your video displays
+        $('#my-video').prop('src', URL.createObjectURL(stream));
+
+        window.localStream = stream;
+        step2();
+      }, function(){ $('#step1-error').show(); });
+    }
+
+    function step2 () {
+      $('#step1, #step3').hide();
+      $('#step2').show();
+    }
+
+    function step3 (call) {
+      // Hang up on an existing call if present
+      if (window.existingCall) {
+        window.existingCall.close();
+      }
+
+      // Wait for stream on the call, then set peer video display
+      call.on('stream', function(stream){
+        $('#their-video').prop('src', URL.createObjectURL(stream));
+      });
+
+      // UI stuff
+      window.existingCall = call;
+      $('#their-id').text(call.peer);
+      call.on('close', step2);
+      $('#step1, #step2').hide();
+      $('#step3').show();
+    }
