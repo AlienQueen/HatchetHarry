@@ -33,8 +33,7 @@ peer.on('call', function(call) {
 	call.on('stream', function(stream){
         	jQuery('#their-video').prop('src', URL.createObjectURL(stream));
       	});
-
-  };
+});
 
 peer.on('error', function(err){
     pause('ringbacktone');
