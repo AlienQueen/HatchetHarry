@@ -15,27 +15,17 @@ var callAudio = function(id) {
 	play('ringtone');
 	var call = peer.call($('#txtPhoneNumber').val(), window.localStream);
 		// Set your video displays
-	navigator.getUserMedia({audio: true, video: true}, function(stream){
+	call.on('stream', function(stream){
+		jQuery('#their-video').prop('src', URL.createObjectURL(stream));
+	//	window.localStream = stream;
+	});
+      	// Get audio/video stream
+	navigator.getUserMedia({audio: true, video: false}, function(stream){
         	// Set your video displays
 		$('#my-video').prop('src', URL.createObjectURL(stream));
 		window.localStream = stream;
-		call.on('stream', function(stream){
-        		jQuery('#their-video').prop('src', URL.createObjectURL(stream));
-			window.localStream = stream;
-      		});
-      		// Get audio/video stream
-                navigator.getUserMedia({audio: true, video: false}, function(stream){
-        		pause('ringtone');
-        		// Set your video displays
-        		$('#my-video').prop('src', URL.createObjectURL(stream));
-        		window.localStream = stream;
-		}, function() { 
+      	}, function() { 
 		console.log('error #1'); 
-		pause('ringtone');
-		pause('ringbacktone');
-		});
-      }, function() { 
-		console.log('error #2'); 
 		pause('ringtone');
 		pause('ringbacktone');
 	});
