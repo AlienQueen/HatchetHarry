@@ -1,5 +1,5 @@
 var userId;
-var navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 var peer = new Peer({key: '2nij1esj8tjwz5mi'});
 
 peer.on('open', function(id) {
