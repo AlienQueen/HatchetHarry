@@ -125,7 +125,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateAllMagicCards(battlefield);
 
 		JavaScriptUtils.updateHand(target);
-
+		target.appendJavaScript("jQuery('#playCardIndicator').hide(); ");
+		
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
 				HatchetHarrySession.get().getPlayer().getName(), gameId, _side);
 

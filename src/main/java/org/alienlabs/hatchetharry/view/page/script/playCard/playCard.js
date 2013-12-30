@@ -27,6 +27,7 @@ window.setTimeout(function() {
 			var aId = a.attr('id');
 			var currentCard = aId.split("cross-link")[1];
 			
+			jQuery('#playCardIndicator').show();
 			Wicket.Ajax.get({'u': '${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}'});
 		});
 }, 150);

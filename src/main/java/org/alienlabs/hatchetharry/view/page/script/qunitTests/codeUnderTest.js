@@ -147,7 +147,7 @@ jQuery(function() {
 //Visio-conference
 jQuery(function() {
 	window.setTimeout(function() {
-		jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window } });
+		jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window }, title: 'HatchetHarry video-conference' });
 	}, 250);
 });
 
@@ -156,4 +156,10 @@ jQuery(function() {
 	window.setTimeout(function() {
 		jQuery('#fvd-single-fennec-popup').hide();
 	}, 500);
+});
+
+jQuery(function() {
+	window.setTimeout(function() {
+		jQuery('#playCardIndicator').hide();
+	}, 250);
 });

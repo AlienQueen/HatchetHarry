@@ -174,6 +174,16 @@ public class JavaScriptUtils
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT);
 	}
 
+	public static void revealHand(final AjaxRequestTarget target, final Long gameId,
+			final Long playerId, final Long deckId)
+	{
+		((HomePage)target.getPage()).getGalleryRevealParent().addOrReplace(
+				new HandComponent("galleryReveal", gameId, playerId, deckId));
+		target.add(((HomePage)target.getPage()).getGalleryRevealParent());
+
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT);
+	}
+
 	public static void updateGraveyard(final AjaxRequestTarget target)
 	{
 		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
@@ -202,4 +212,5 @@ public class JavaScriptUtils
 
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_EXILE_COMPONENT_JAVASCRIPT);
 	}
+	
 }

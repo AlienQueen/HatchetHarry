@@ -352,14 +352,11 @@ public class HatchetHarryApplication extends WebApplication
 				"image/login.png"));
 		this.mountResource("image/preferences.png", new PackageResourceReference(HomePage.class,
 				"image/preferences.png"));
-
-		this.mountResource("sound/ringtone.wav", new PackageResourceReference(HomePage.class,
-				"sound/ringtone.wav"));
-		this.mountResource("sound/ringbacktone.wav", new PackageResourceReference(HomePage.class,
-				"sound/ringbacktone.wav"));
-		this.mountResource("sound/dtmf.wav", new PackageResourceReference(HomePage.class,
-				"sound/dtmf.wav"));
-
+		this.mountResource("image/reveal.png", new PackageResourceReference(HomePage.class,
+				"image/reveal.png"));
+		this.mountResource("image/indicator.gif", new PackageResourceReference(HomePage.class,
+				"image/indicator.gif"));
+		
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.hours(1));
 

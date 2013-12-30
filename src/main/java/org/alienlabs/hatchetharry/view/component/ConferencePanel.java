@@ -45,6 +45,18 @@ public class ConferencePanel extends Panel
 		{
 			user = this.persistenceService.getUser(HatchetHarrySession.get().getUsername());
 			ConferencePanel.LOGGER.info("#user: " + user);
+
+			if (null == user.getIdentity())
+			{
+				user.setLogin("");
+				user.setPrivateIdentity("");
+				user.setPassword("");
+				user.setPlayer(null);
+				user.setIdentity("");
+				user.setFacebook(true);
+				user.setUsername("");
+				user.setRealm("");
+			}
 		}
 		else
 		{

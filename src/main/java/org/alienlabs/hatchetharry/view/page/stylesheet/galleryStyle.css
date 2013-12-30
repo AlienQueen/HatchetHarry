@@ -10,7 +10,6 @@
 .floatRight									{ float: right; }
 .clear 										{ clear: both; }
 a											{ outline: none; }
-
 #page-wrap 									{ width: 262px; margin: 25px auto; position: absolute; top: 28%; left: 0%; min-height: 420px;
 											  background: url(/image/bg.png) top center; }
 .put-to-zone-for-Hand 						{ margin: 25px auto; }

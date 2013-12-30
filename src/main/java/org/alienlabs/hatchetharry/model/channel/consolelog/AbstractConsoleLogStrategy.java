@@ -48,6 +48,10 @@ public class AbstractConsoleLogStrategy
 			case REVEAL_TOP_CARD_OF_LIBRARY :
 				return new RevealTopLibraryCardConsoleLogStrategy(player, gameId, mc,
 						numberOfCounters);
+
+			case REVEAL_HAND :
+				return new RevealHandConsoleLogStrategy(gameId, player);
+
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");
 		}

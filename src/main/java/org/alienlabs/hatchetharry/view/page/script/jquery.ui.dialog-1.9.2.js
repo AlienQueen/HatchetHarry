@@ -68,7 +68,7 @@ $.widget("ui.dialog", {
 		resizable: true,
 		show: null,
 		stack: true,
-		title: "HatchetHarry video-conference",
+		title: '',
 		width: 600,
 		zIndex: 10000
 	},

@@ -44,6 +44,7 @@
 	      <ul>
 	         <li><a wicket:id="playCardFromGraveyardLinkDesktop" class="myfont"><img src="/image/play from graveyard.png" alt="Play card from graveyard"/>&nbsp;&nbsp;Play card from graveyard</a></li>
 	         <li><a wicket:id="revealTopLibraryCardLink" class="myfont"><img src="/image/Library Folder.png" alt="Reveal top card of your library"/>&nbsp;&nbsp;Reveal top card of your library</a></li>
+	         <li><a wicket:id="revealHandLink" class="myfont"><img src="/image/reveal.png" alt="Reveal your hand"/>&nbsp;&nbsp;Reveal your hand</a></li>
 	         <li><a wicket:id="createTokenLink" class="myfont"><img src="/image/addToken.png" alt="Put a token on battlefield"/>&nbsp;&nbsp;Put a token on battlefield</a></li>
 	         <li class='myfont'><a wicket:id="countCardsLink" class="myfont"><img src="/image/count cards.png" alt="Count all cards"/>&nbsp;&nbsp;Count all cards</a></li>
 	         <li class='myfont'><a wicket:id="insertDivisionLink" class="myfont"><img src="/image/division.png" alt="Insert division in history"/>&nbsp;&nbsp;Insert division in history</a></li>
@@ -93,6 +94,7 @@
 	      <ul>
 	        <li><a wicket:id="playCardFromGraveyardLinkResponsive" class="myfont">* Play card from graveyard&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="revealTopLibraryCardLinkResponsive" class="myfont">* Reveal top card of your library&nbsp;&nbsp;</a></li>
+	        <li><a wicket:id="revealHandLinkResponsive" class="myfont">* Reveal your hand&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="createTokenLinkResponsive" class="myfont">* Put a token on battlefield&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="countCardsLinkResponsive" class="myfont">* Count all cards&nbsp;&nbsp;</a></li>
 	        <li><a wicket:id="insertDivisionLinkResponsive" class="myfont">* Insert division in history&nbsp;&nbsp;</a></li>
@@ -188,6 +190,9 @@
 		<span id="nav"></span>
 		<span wicket:id="galleryParent" id="#">
 			<span wicket:id="gallery"></span>
+		</span>
+		<span wicket:id="galleryRevealParent" id="#">
+			<span wicket:id="galleryReveal"></span>
 		</span>
 		<span wicket:id="graveyardParent" id="#">
 			<span wicket:id="graveyard"></span>
@@ -289,6 +294,7 @@
 					
 					<li wicket:id="playCardPlaceholder">
 						<a wicket:id="playCardLink" style="cursor: pointer; color: white;" title="Play the card currently shown in your hand"><img src="image/playCard.png"> Play</img></a>
+						<img id="playCardIndicator" src="image/indicator.gif"></img>
 					</li>
 					
 					<li wicket:id="combatPlaceholder">
@@ -306,7 +312,6 @@
 					<li wicket:id="endTurnPlaceholder">
 						<a wicket:id="endTurnLink" style="cursor: pointer; color: white;" title="Put an end to your turn"><img src="image/contact.png"></img> End turn</a>
 					</li>
-					
 			</ul>
 	
 		</div> 
@@ -363,6 +368,5 @@
         <div><h2>You're done!</h2><br/><br/>Have fun!<br/><br/></div>
       </li> 
     </ul>
-	
 </body>
 </html>
