@@ -14,7 +14,7 @@ var fillUserId = function() {
 var callAudio = function(id) {
 	play('ringtone');
       	// Get audio/video stream
-	navigator.getUserMedia({audio: true, video: false}, function(stream){
+	navigator.getUserMedia({audio: true, video: true}, function(stream){
         	// Set your video displays
 		$('#my-video').prop('src', URL.createObjectURL(stream));
 		window.localStream = stream;
