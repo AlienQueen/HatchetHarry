@@ -188,7 +188,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("playCardLink0")).click();
 
 		// Verify that the hand contains only 6 cards, now
-		Thread.sleep(15000);
+		Thread.sleep(25000);
 		Assert.assertEquals(6,
 				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".movers-row"))
 						.size());
