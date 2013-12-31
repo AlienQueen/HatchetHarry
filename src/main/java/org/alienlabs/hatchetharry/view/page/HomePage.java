@@ -1655,7 +1655,7 @@ public class HomePage extends TestReportPage
 			final WebMarkupContainer sidePlaceholderParent, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(290);
+		window.setInitialHeight(350);
 		window.setTitle("Create a game");
 
 		window.setContent(new CreateGameModalWindow(window, window.getContentId(), _player,
@@ -1688,7 +1688,7 @@ public class HomePage extends TestReportPage
 			final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(290);
+		window.setInitialHeight(350);
 		window.setTitle("Join a game");
 
 		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,

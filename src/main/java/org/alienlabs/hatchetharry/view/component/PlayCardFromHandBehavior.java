@@ -126,7 +126,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		JavaScriptUtils.updateHand(target);
 		target.appendJavaScript("jQuery('#playCardIndicator').hide(); ");
-		
+
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
 				HatchetHarrySession.get().getPlayer().getName(), gameId, _side);
 
@@ -174,7 +174,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuid", this.uuidToLookFor.toString());
 		variables.put("uuidValidForJs", this.uuidToLookFor.toString().replace("-", "_"));
 		variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));
-		variables.put("clicked", this.currentCard);
 		variables.put("side", this.side);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,

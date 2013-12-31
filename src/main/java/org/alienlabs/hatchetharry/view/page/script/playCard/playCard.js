@@ -1,18 +1,6 @@
 
 window.setTimeout(function() {
-	 jQuery("#placeholder${uuidValidForJs}").hover(function(){
-		 jQuery("#linkOnCard").css("margin", "150px 0px 0px -120px");
-	 }, function() {
-		 jQuery("#linkOnCard").css("margin", "-1000px 0px 0px -1000px");
-	 });
-	
-	 jQuery("#linkOnCard").hover(function(){
-		 jQuery("#linkOnCard").css("margin", "150px 0px 0px -120px");
-	 }, function() {
-		 jQuery("#linkOnCard").css("margin", "150px 0px 0px -120px");
-	 });
-		
-		jQuery("#playCardLink${clicked}").click(function () {
+		jQuery("#playCardLink0").click(function () {
 			if (document.getElementById('content').nodeName === 'DIV') {
 				return false;
 			}
