@@ -47,7 +47,7 @@ window.setTimeout(function() {
 			getViewPortSize();
 			var card = jQuery('#card${uuidValidForJs}');
 			if (viewportwidth > 1024) {
-				if (typeof card != 'undefined' && typeof card.attr('src') != 'undefined' &&card.attr('src').indexOf('_small') != -1) {
+				if (typeof card != 'undefined' && typeof card.attr('src') != 'undefined' && card.attr('src').indexOf('_small') != -1) {
 					card.attr('src', card.attr('src').replace('_small', '_medium')); 
 				}
 			} else {
