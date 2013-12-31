@@ -186,9 +186,10 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1.findElement(By.id("playCardLink0")).click();
 
 		// Verify that the hand contains only 6 cards, now
-		Thread.sleep(8000);
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".cross-link img")).size() == 6);
+		Thread.sleep(15000);
+		Assert.assertEquals(6,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
+						.size());
 
 		// Verify that card is present on the battlefield
 		// Two HTML elements with class "magicCard" are created for each card
