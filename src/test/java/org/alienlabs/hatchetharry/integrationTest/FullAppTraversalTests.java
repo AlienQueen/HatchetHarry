@@ -172,10 +172,12 @@ public class FullAppTraversalTests
 						.size());
 
 		// Verify that the hands contains 7 cards
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-				By.cssSelector(".cross-link img")).size() == 7);
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver2.findElements(
-				By.cssSelector(".cross-link img")).size() == 7);
+		Assert.assertEquals(7,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".movers-row img"))
+						.size());
+		Assert.assertEquals(7,
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".movers-row img"))
+						.size());
 
 		// Find first hand card name of Chrome1
 		final String battlefieldCardName = FullAppTraversalTests.chromeDriver1
@@ -188,7 +190,7 @@ public class FullAppTraversalTests
 		// Verify that the hand contains only 6 cards, now
 		Thread.sleep(15000);
 		Assert.assertEquals(6,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".movers-row img"))
 						.size());
 
 		// Verify that card is present on the battlefield
@@ -294,8 +296,9 @@ public class FullAppTraversalTests
 		Thread.sleep(3000);
 
 		// Assert that the hand contains 7 cards again
-		// Assert.assertTrue(FullAppTraversalTests.chromeDriver1.findElements(
-		// By.cssSelector(".cross-link img")).size() == 7);
+		Assert.assertEquals(7,
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".movers-row img"))
+						.size());
 
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver1)
@@ -383,7 +386,7 @@ public class FullAppTraversalTests
 
 		// Assert that the hand contains 8 cards
 		Assert.assertEquals(8,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".movers-row img"))
 						.size());
 
 		// Verify that there is still two cards on the battlefield
@@ -447,10 +450,10 @@ public class FullAppTraversalTests
 
 		// Verify that the hands contains 8 cards
 		Assert.assertEquals(8,
-				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".cross-link img"))
+				FullAppTraversalTests.chromeDriver1.findElements(By.cssSelector(".movers-row img"))
 						.size());
 		Assert.assertEquals(7,
-				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".cross-link img"))
+				FullAppTraversalTests.chromeDriver2.findElements(By.cssSelector(".movers-row img"))
 						.size());
 
 		// Put one card from hand to graveyard
