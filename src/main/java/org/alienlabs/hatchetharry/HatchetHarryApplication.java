@@ -21,6 +21,7 @@ import org.apache.wicket.atmosphere.ResourceRegistrationListener;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.servlet.XForwardedRequestWrapperFactory;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -84,6 +85,9 @@ public class HatchetHarryApplication extends WebApplication
 				new String[] { "applicationContext.xml" });
 		this.getComponentInstantiationListeners().add(
 				new SpringComponentInjector(this, applicationContext));
+
+		this.getFilterFactoryManager().add(new XForwardedRequestWrapperFactory());
+
 		// this.getComponentPostOnBeforeRenderListeners().add(new
 		// WicketDebugListener());
 
@@ -115,7 +119,7 @@ public class HatchetHarryApplication extends WebApplication
 				}
 			}
 		};
-		scheduler.scheduleWithFixedDelay(beeper, 1, 2, TimeUnit.SECONDS);
+		scheduler.scheduleWithFixedDelay(beeper, 10, 2, TimeUnit.SECONDS);
 
 		this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
 
