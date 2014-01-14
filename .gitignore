@@ -18,3 +18,4 @@ META-INF
 /.agitator
 /mem.h2.db
 /mem.trace.db
+/pmd-eclipse.log
