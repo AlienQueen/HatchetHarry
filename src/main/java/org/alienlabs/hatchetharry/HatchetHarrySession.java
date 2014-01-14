@@ -52,6 +52,18 @@ public class HatchetHarrySession extends WebSession
 	public HatchetHarrySession(final Request request)
 	{
 		super(request);
+		this.reinitSession();
+		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, false);
+		this.setLocale(Locale.ENGLISH);
+	}
+
+	public static HatchetHarrySession get()
+	{
+		return (HatchetHarrySession)Session.get();
+	}
+
+	public void reinitSession()
+	{
 		this.setAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT, false);
 		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, false);
@@ -69,13 +81,6 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, 0l);
-		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, false);
-		this.setLocale(Locale.ENGLISH);
-	}
-
-	public static HatchetHarrySession get()
-	{
-		return (HatchetHarrySession)Session.get();
 	}
 
 	public String getCometUser()

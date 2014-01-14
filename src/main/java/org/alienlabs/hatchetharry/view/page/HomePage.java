@@ -290,7 +290,7 @@ public class HomePage extends TestReportPage
 				HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 			}
 
-			this.session.invalidate();
+			this.session.reinitSession();
 			throw new RestartResponseException(HomePage.class);
 		}
 
