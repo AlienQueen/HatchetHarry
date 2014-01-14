@@ -1610,7 +1610,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
@@ -1639,7 +1639,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
@@ -1670,7 +1670,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget _target)
 			{
-				_target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				_target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
@@ -1703,7 +1703,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget _target)
 			{
-				_target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				_target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
@@ -1735,7 +1735,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.importDeckWindow.show(target);
 			}
@@ -1876,7 +1876,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
 				HomePage.this.createTokenWindow.show(target);
@@ -1905,7 +1905,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 
 				final Long gameId = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
@@ -1929,7 +1929,8 @@ public class HomePage extends TestReportPage
 					}
 					catch (final NullPointerException e)
 					{
-						target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+						// FIXME: why the hell is this code here for???
+						target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 						target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
 						HomePage.this.countCardsWindow.setTitle(cccc.getRequestingPlayerName()
@@ -1978,7 +1979,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.loginWindow.show(target);
 			}
@@ -2007,7 +2008,7 @@ public class HomePage extends TestReportPage
 			{
 				window.setContent(new UserPreferencesModalWindow(window.getContentId(),
 						HomePage.this.session.getGameId(), window));
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.preferencesWindow.show(target);
 			}
@@ -2653,7 +2654,7 @@ public class HomePage extends TestReportPage
 	public void revealTopLibraryCard(final AjaxRequestTarget target,
 			final RevealTopLibraryCardCometChannel event)
 	{
-		target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
 		this.revealTopLibraryCardWindow.setTitle("This is the top card #"
@@ -2670,7 +2671,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void countCards(final AjaxRequestTarget target, final CountCardsCometChannel event)
 	{
-		target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
 		this.countCardsWindow.setTitle(event.getRequestingPlayerName()
