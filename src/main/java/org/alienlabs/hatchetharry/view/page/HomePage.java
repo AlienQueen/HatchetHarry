@@ -2683,7 +2683,6 @@ public class HomePage extends TestReportPage
 		this.countCardsWindow.show(target);
 	}
 
-	@SuppressWarnings("incomplete-switch")
 	@Subscribe
 	public void cardZoneChange(final AjaxRequestTarget target, final CardZoneMoveCometChannel event)
 	{
