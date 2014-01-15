@@ -50,7 +50,7 @@ public class AbstractConsoleLogStrategy
 						numberOfCounters);
 
 			case REVEAL_HAND :
-				return new RevealHandConsoleLogStrategy(gameId, player);
+				return new RevealHandConsoleLogStrategy(gameId, player, targetPlayerName);
 
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");

@@ -86,6 +86,7 @@ import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCome
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.StopRevealingHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.SwitchDrawModeCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
@@ -346,7 +347,7 @@ public class HomePage extends TestReportPage
 		// Welcome message
 		final Label message1 = new Label("message1",
 				"version 0.7.0 (release Merry kiss my tralala),");
-		final Label message2 = new Label("message2", "built on Wednesday, 25th of December 2013.");
+		final Label message2 = new Label("message2", "built on Thursday, 16th of January 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1522,8 +1523,9 @@ public class HomePage extends TestReportPage
 		final Component galleryToUpdate;
 		final boolean isHandDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isHandDisplayed();
-		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
-				"gallery");
+		galleryToUpdate = isHandDisplayed
+				? new HandComponent("gallery", false)
+				: new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.add(galleryToUpdate);
@@ -1929,7 +1931,7 @@ public class HomePage extends TestReportPage
 					}
 					catch (final NullPointerException e)
 					{
-						// FIXME: why the hell is this code here for???
+						// This code is here for a good reason: unit tests
 						target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 						target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
@@ -2270,9 +2272,20 @@ public class HomePage extends TestReportPage
 				break;
 
 			case REVEAL_HAND :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : 'reveals his (her) hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
+				if ("".equals(event.getTargetPlayerName()))
+				{
+					target.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getPlayerName()
+							+ "', text : 'reveals his (her) hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
+				}
+				else
+				{
+					target.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getTargetPlayerName()
+							+ "', text : ' stops looking at "
+							+ event.getPlayerName()
+							+ "&quot;s hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
+				}
 				break;
 
 			// TODO: split this notifier action and the one of
@@ -2770,6 +2783,7 @@ public class HomePage extends TestReportPage
 							d.getDeckId());
 				}
 				break;
+			// $CASES-OMITTED$
 			default :
 				throw new UnsupportedOperationException();
 		}
@@ -2937,6 +2951,12 @@ public class HomePage extends TestReportPage
 		JavaScriptUtils.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
 	}
 
+	@Subscribe
+	public void hideHand(final AjaxRequestTarget target, final StopRevealingHandCometChannel event)
+	{
+		JavaScriptUtils.hideHand(target);
+	}
+
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
@@ -2956,8 +2976,9 @@ public class HomePage extends TestReportPage
 		final Component galleryToUpdate;
 		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isHandDisplayed();
-		galleryToUpdate = isHandDisplayed ? new HandComponent("gallery") : new WebMarkupContainer(
-				"gallery");
+		galleryToUpdate = isHandDisplayed
+				? new HandComponent("gallery", false)
+				: new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.addOrReplace(galleryToUpdate);
