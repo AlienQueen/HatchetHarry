@@ -347,7 +347,7 @@ public class HomePage extends TestReportPage
 		// Welcome message
 		final Label message1 = new Label("message1",
 				"version 0.7.0 (release Merry kiss my tralala),");
-		final Label message2 = new Label("message2", "built on Thursday, 16th of January 2014.");
+		final Label message2 = new Label("message2", "built on Wednesday, 22nd of January 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1453,8 +1453,6 @@ public class HomePage extends TestReportPage
 						HomePage.class, "script/gallery/coda-sliderGraveyard.1.1.1.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/coda-sliderExile.1.1.1.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/gallery.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/graveyard.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(

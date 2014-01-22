@@ -93,6 +93,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		{
 			PutToZoneBehavior.LOGGER.error(
 					"wrong zone " + request.getParameter("targetZone") + "!", ex);
+			return;
 		}
 
 		final Player ownerPlayer = this.persistenceService.getPlayer(card.getDeck().getPlayerId());
@@ -109,6 +110,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 			case EXILE :
 				ownerPlayer.setDefaultTargetZoneForExile(this.targetZone);
 				break;
+			// $CASES-OMITTED$
 			default :
 				throw new UnsupportedOperationException();
 		}

@@ -220,6 +220,11 @@ public class HandComponent extends Panel
 				thumb.setOutputMarkupId(true);
 				thumb.add(new AttributeModifier("name", card.getTitle()));
 
+				if (isReveal)
+				{
+					thumb.add(new AttributeModifier("class", "nav-thumb" + ids[1].toString()));
+				}
+
 				crossLink.add(thumb);
 				crossLinkDiv.add(crossLink);
 				item.add(crossLinkDiv);

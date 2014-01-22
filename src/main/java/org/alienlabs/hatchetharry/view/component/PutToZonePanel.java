@@ -50,6 +50,7 @@ public class PutToZonePanel extends Panel
 			case EXILE :
 				defaultZone = this.player.getDefaultTargetZoneForExile();
 				break;
+			// $CASES-OMITTED$
 			default :
 				throw new UnsupportedOperationException();
 		}
