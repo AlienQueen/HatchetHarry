@@ -238,7 +238,7 @@ public class HandComponent extends Panel
 
 		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND,
 				this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
-						.getPlayer().getId() : ids[1])));
+						.getPlayer().getId() : ids[1])), isReveal);
 		page_wrap.add(putToZonePanel);
 
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);

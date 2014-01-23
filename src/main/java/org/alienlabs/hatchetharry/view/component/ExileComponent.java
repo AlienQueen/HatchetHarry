@@ -110,7 +110,7 @@ public class ExileComponent extends Panel
 
 		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.EXILE,
 				this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
-						.getPlayer().getId() : ids[1])));
+						.getPlayer().getId() : ids[1])), false);
 		this.add(putToZonePanel);
 
 		this.thumbsPlaceholder.add(thumbs);

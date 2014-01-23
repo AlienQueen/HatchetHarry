@@ -1454,10 +1454,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/coda-sliderExile.1.1.1.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/graveyard.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/exile.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/rotate/jQueryRotate.2.1.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
@@ -2699,8 +2695,10 @@ public class HomePage extends TestReportPage
 	{
 		final MagicCard mc = event.getCard();
 		final Deck d = event.getDeck();
-		final boolean isRequestingPlayerSameThanTargetedPlayer = event.getPlayerId().longValue() == HatchetHarrySession
+		final boolean isCurrentPlayerSameThanTargetedPlayer = event.getTargetPlayerId().longValue() == HatchetHarrySession
 				.get().getPlayer().getId().longValue();
+		final boolean isCurrentPlayerSameThanRequestingPlayer = event.getRequestingPlayerId()
+				.longValue() == HatchetHarrySession.get().getPlayer().getId().longValue();
 
 		if (!event.getTargetZone().equals(CardZone.LIBRARY))
 		{
@@ -2712,8 +2710,6 @@ public class HomePage extends TestReportPage
 			return;
 		}
 
-
-		boolean hasAlreadyDisplayedHand = false;
 		boolean hasAlreadyDisplayedGraveyard = false;
 		boolean hasAlreadyDisplayedExile = false;
 
@@ -2728,26 +2724,25 @@ public class HomePage extends TestReportPage
 						this.persistenceService, event.getGameId(), mc, true);
 				break;
 			case HAND :
-				if (isRequestingPlayerSameThanTargetedPlayer)
+				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
-					hasAlreadyDisplayedHand = true;
+					JavaScriptUtils.updateHand(target, event.getGameId(),
+							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			case GRAVEYARD :
-				if (isRequestingPlayerSameThanTargetedPlayer)
+				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
+					JavaScriptUtils.updateGraveyard(target, event.getGameId(),
+							event.getTargetPlayerId(), d.getDeckId());
 					hasAlreadyDisplayedGraveyard = true;
 				}
 				break;
 			case EXILE :
-				if (isRequestingPlayerSameThanTargetedPlayer)
+				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
+					JavaScriptUtils.updateExile(target, event.getGameId(),
+							event.getTargetPlayerId(), d.getDeckId());
 					hasAlreadyDisplayedExile = true;
 				}
 				break;
@@ -2761,24 +2756,29 @@ public class HomePage extends TestReportPage
 		switch (event.getSourceZone())
 		{
 			case HAND :
-				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedHand)
+				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
+					JavaScriptUtils.updateHand(target, event.getGameId(),
+							event.getTargetPlayerId(), d.getDeckId());
+				}
+				if (event.isReveal() && isCurrentPlayerSameThanRequestingPlayer)
+				{
+					JavaScriptUtils.revealHand(target, event.getGameId(),
+							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			case GRAVEYARD :
-				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedGraveyard)
+				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedGraveyard)
 				{
-					JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
+					JavaScriptUtils.updateGraveyard(target, event.getGameId(),
+							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			case EXILE :
-				if (isRequestingPlayerSameThanTargetedPlayer && !hasAlreadyDisplayedExile)
+				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedExile)
 				{
-					JavaScriptUtils.updateExile(target, event.getGameId(), event.getPlayerId(),
-							d.getDeckId());
+					JavaScriptUtils.updateExile(target, event.getGameId(),
+							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			// $CASES-OMITTED$

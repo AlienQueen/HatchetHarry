@@ -21,12 +21,15 @@ public class PutToZonePanel extends Panel
 	private final CardZone sourceZone;
 	protected final DropDownChoice<CardZone> targetZoneInput;
 	private final Player player;
+	private final boolean isReveal;
 
-	public PutToZonePanel(final String id, final CardZone _sourceZone, final Player _player)
+	public PutToZonePanel(final String id, final CardZone _sourceZone, final Player _player,
+			final boolean _isReveal)
 	{
 		super(id);
 		this.sourceZone = _sourceZone;
 		this.player = _player;
+		this.isReveal = _isReveal;
 
 		final Form<String> form = new Form<String>("form");
 		form.add(new AttributeModifier("class", new Model<String>("put-to-zone-for-"
@@ -60,15 +63,19 @@ public class PutToZonePanel extends Panel
 		this.targetZoneInput = new DropDownChoice<CardZone>("targetZoneInput",
 				Model.of(defaultZone), zonesModel);
 		this.targetZoneInput.setOutputMarkupId(true).setMarkupId(
-				"putToZoneSelectFor" + this.sourceZone);
+				"putToZoneSelectFor" + this.sourceZone
+						+ (this.isReveal ? this.player.getId().toString() : ""));
 
 		final WebMarkupContainer submit = new WebMarkupContainer("submit");
-		submit.setOutputMarkupId(true).setMarkupId("moveToZoneSubmit" + this.sourceZone);
+		submit.setOutputMarkupId(true).setMarkupId(
+				"moveToZoneSubmit" + this.sourceZone
+						+ (this.isReveal ? this.player.getId().toString() : ""));
 
 		form.add(targetZoneLabel, this.targetZoneInput, submit);
 		this.add(form);
 
-		final PutToZoneBehavior ptzb = new PutToZoneBehavior(this.sourceZone);
+		final PutToZoneBehavior ptzb = new PutToZoneBehavior(this.sourceZone, this.player,
+				this.isReveal);
 		this.add(ptzb);
 	}
 

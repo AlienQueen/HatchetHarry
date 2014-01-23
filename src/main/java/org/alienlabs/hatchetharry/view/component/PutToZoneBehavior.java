@@ -46,12 +46,18 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 	private final CardZone sourceZone;
 	private UUID uuidToLookFor;
 	private CardZone targetZone;
+	private final Player player;
+	private final boolean isReveal;
 
-	public PutToZoneBehavior(final CardZone _sourceZone)
+	public PutToZoneBehavior(final CardZone _sourceZone, final Player _player,
+			final boolean _isReveal)
 	{
 		super();
 		Injector.get().inject(this);
+
 		this.sourceZone = _sourceZone;
+		this.player = _player;
+		this.isReveal = _isReveal;
 	}
 
 	@Override
@@ -141,8 +147,9 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final CardZoneMoveCometChannel czmcc = new CardZoneMoveCometChannel(this.sourceZone,
-				this.targetZone, card, card.getDeck().getPlayerId(), card.getGameId(),
-				card.getDeck(), ownerPlayer.getSide());
+				this.targetZone, card, HatchetHarrySession.get().getPlayer().getId(), card
+						.getDeck().getPlayerId(), card.getGameId(), card.getDeck(),
+				ownerPlayer.getSide(), this.isReveal);
 
 		final CardZoneMoveNotifier czmn = new CardZoneMoveNotifier(this.sourceZone,
 				this.targetZone, card, HatchetHarrySession.get().getPlayer().getName(),
@@ -159,8 +166,8 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		// post a message for all players in the game
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
-			final Long player = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
+			final Long _player = allPlayersInGame.get(i).longValue();
+			final String pageUuid = HatchetHarryApplication.getCometResources().get(_player);
 			PutToZoneBehavior.LOGGER.info("pageUuid: " + pageUuid);
 
 			// For unit tests
@@ -195,6 +202,17 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("zone", this.sourceZone.toString());
+
+		if (this.isReveal)
+		{
+			variables.put("Player", this.player.getId().toString());
+			variables.put("reveal", "Reveal");
+		}
+		else
+		{
+			variables.put("Player", "");
+			variables.put("reveal", "");
+		}
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/playCard/putToZone.js");
