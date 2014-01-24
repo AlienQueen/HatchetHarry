@@ -7,7 +7,7 @@ window.setTimeout(function() {
 		var withoutImg = withoutPlaceholder.split('_img')[0];
 		var uuid = withoutImg.replace(/_/g,"-");
 		
-		var targetZone = jQuery("#putToZoneSelectFor${zone}${Player}[name='targetZoneInput'] option:selected").text();
+		var targetZone = jQuery("#putToZoneSelectFor${zone}${Player}[name='targetZoneLabel:targetZoneGroup:targetZoneInput'] option:selected").text();
 		console.log(targetZone);
 			
 		Wicket.Ajax.get({'u': '${url}&card=' + uuid + '&targetZone=' + targetZone});

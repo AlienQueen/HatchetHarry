@@ -71,7 +71,6 @@ public class HandComponent extends Panel
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setMarkupId("handle" + markupId);
 		handleImage.setOutputMarkupId(true);
-		handleImage.add(new AttributeModifier("style", "cursor: move;"));
 		parent.add(handleImage);
 
 		final ZoneMoveBehavior zmb = new ZoneMoveBehavior(this);
@@ -186,7 +185,6 @@ public class HandComponent extends Panel
 
 				wrapper.add(handImagePlaceholder);
 				item.add(wrapper);
-
 			}
 		};
 		this.allCards.setOutputMarkupId(true);
@@ -239,7 +237,10 @@ public class HandComponent extends Panel
 		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND,
 				this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
 						.getPlayer().getId() : ids[1])), isReveal);
-		page_wrap.add(putToZonePanel);
+		putToZonePanel.add(new AttributeModifier("style", isReveal
+				? "position: absolute; top:25%; left: 0px;"
+				: "position: absolute; top:21%; left: 13px;"));
+		parent.add(putToZonePanel);
 
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
 	}

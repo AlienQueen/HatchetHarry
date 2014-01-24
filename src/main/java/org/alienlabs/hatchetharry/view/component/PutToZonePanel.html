@@ -1,17 +1,15 @@
 <html xmlns:wicket>
 <wicket:panel>
 	
-	<form wicket:id="form" action="" class="myfont">
+	<form wicket:id="form" action="" class="myfont" style="position:relative; top:450px; left: 15px;">
 	
-				<span wicket:id="targetZoneLabel" class="myfont black">
-				</span>
-
-				<select wicket:id="targetZoneInput" class="myfont black"></select>&nbsp;
-
-				<a wicket:id="submit" style="cursor: pointer;"  class="myfont black">Send</a>
-				
+				<label wicket:id="targetZoneLabel" for="targetZoneInput" class="myfont black">Put card to: <br/>
+					<span wicket:id="targetZoneGroup">
+						<select wicket:id="targetZoneInput" class="myfont black" style="padding:3px;"></select>&nbsp;<br/><br/>
+					</span>
+				</label>
+				<a wicket:id="submit" style="cursor: pointer;"  class="myfont black">Send</a><br/>
 	</form>
-
 
 </wicket:panel>
 </html>

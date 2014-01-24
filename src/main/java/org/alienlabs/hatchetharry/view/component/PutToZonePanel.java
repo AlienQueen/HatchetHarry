@@ -8,9 +8,9 @@ import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Player;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -58,20 +58,24 @@ public class PutToZonePanel extends Panel
 				throw new UnsupportedOperationException();
 		}
 
+		final WebMarkupContainer submit = new WebMarkupContainer("submit");
+		submit.setOutputMarkupId(true).setMarkupId(
+				"moveToZoneSubmit" + this.sourceZone
+						+ (this.isReveal ? this.player.getId().toString() : ""));
+
 		final IModel<List<? extends CardZone>> zonesModel = Model.ofList(allZones);
-		final Label targetZoneLabel = new Label("targetZoneLabel", "Put card to: ");
 		this.targetZoneInput = new DropDownChoice<CardZone>("targetZoneInput",
 				Model.of(defaultZone), zonesModel);
 		this.targetZoneInput.setOutputMarkupId(true).setMarkupId(
 				"putToZoneSelectFor" + this.sourceZone
 						+ (this.isReveal ? this.player.getId().toString() : ""));
 
-		final WebMarkupContainer submit = new WebMarkupContainer("submit");
-		submit.setOutputMarkupId(true).setMarkupId(
-				"moveToZoneSubmit" + this.sourceZone
-						+ (this.isReveal ? this.player.getId().toString() : ""));
-
-		form.add(targetZoneLabel, this.targetZoneInput, submit);
+		final FormComponentLabel targetZoneLabel = new FormComponentLabel("targetZoneLabel",
+				this.targetZoneInput);
+		final WebMarkupContainer targetZoneGroup = new WebMarkupContainer("targetZoneGroup");
+		targetZoneLabel.add(targetZoneGroup);
+		targetZoneGroup.add(this.targetZoneInput);
+		form.add(targetZoneLabel, submit);
 		this.add(form);
 
 		final PutToZoneBehavior ptzb = new PutToZoneBehavior(this.sourceZone, this.player,
