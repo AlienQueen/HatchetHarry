@@ -88,7 +88,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		final List<MagicCard> battlefield = this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
-		this.persistenceService.updateAllMagicCards(battlefield);
+		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = DestroyTokenBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);

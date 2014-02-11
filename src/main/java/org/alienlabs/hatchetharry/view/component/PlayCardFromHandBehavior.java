@@ -119,10 +119,10 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		this.persistenceService.updateAllMagicCards(hand);
+		this.persistenceService.saveOrUpdateAllMagicCards(hand);
 		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		this.persistenceService.updateAllMagicCards(battlefield);
+		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		JavaScriptUtils.updateHand(target);
 		target.appendJavaScript("jQuery('#playCardIndicator').hide(); ");

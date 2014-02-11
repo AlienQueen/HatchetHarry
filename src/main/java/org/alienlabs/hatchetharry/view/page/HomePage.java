@@ -1308,12 +1308,12 @@ public class HomePage extends TestReportPage
 							.reorderMagicCards(HomePage.this.persistenceService
 									.getAllCardsInHandForAGameAndAPlayer(gameId, me.getId(),
 											d.getDeckId()));
-					HomePage.this.persistenceService.updateAllMagicCards(_hand);
+					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(_hand);
 					final List<MagicCard> library = d
 							.reorderMagicCards(HomePage.this.persistenceService
 									.getAllCardsInLibraryForDeckAndPlayer(gameId, me.getId(),
 											d.getDeckId()));
-					HomePage.this.persistenceService.updateAllMagicCards(library);
+					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(library);
 
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
@@ -1973,21 +1973,28 @@ public class HomePage extends TestReportPage
 					return;
 				}
 
-				final Long randomCardIndex = Math.round(Math.random() * allCardsInHand);
+				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
+						.random() * allCardsInHand)).intValue() : 0);
 				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
 						.getAllCardsInHandForAGameAndAPlayer(gameId, playerWhoDiscards.getId(),
 								playerWhoDiscardsDeckId);
 				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
-						.remove(randomCardIndex.intValue());
+						.remove(randomCardIndex);
 				chosenCard.setZone(CardZone.GRAVEYARD);
 				HomePage.this.persistenceService.updateCard(chosenCard);
 
 				playerWhoDiscards.setHandDisplayed(true);
 				playerWhoDiscards.setGraveyardDisplayed(true);
-				HomePage.this.persistenceService.updatePlayer(playerWhoDiscards);
 
+				if (allCardsInHandForAGameAndAPlayer.isEmpty())
+				{
+					playerWhoDiscards.getDeck().getCards().clear();
+				}
+
+				HomePage.this.persistenceService.updatePlayer(playerWhoDiscards);
 				HomePage.this.persistenceService
 						.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
+
 				JavaScriptUtils.updateHand(target);
 				JavaScriptUtils.updateGraveyard(target);
 
@@ -2162,7 +2169,7 @@ public class HomePage extends TestReportPage
 					allCardsInLibrary.get(i).setZoneOrder(Long.valueOf(i));
 				}
 
-				HomePage.this.persistenceService.updateAllMagicCards(allCardsInLibrary);
+				HomePage.this.persistenceService.saveOrUpdateAllMagicCards(allCardsInLibrary);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{

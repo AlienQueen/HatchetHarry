@@ -90,10 +90,10 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		final Deck d = p.getDeck();
 		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		this.persistenceService.updateAllMagicCards(graveyard);
+		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
 		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
-		this.persistenceService.updateAllMagicCards(battlefield);
+		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
 				card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());

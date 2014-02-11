@@ -231,7 +231,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						.reorderMagicCards(RevealTopLibraryCardModalWindow.this.persistenceService
 								.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
 										d.getDeckId()));
-				RevealTopLibraryCardModalWindow.this.persistenceService.updateAllMagicCards(hand);
+				RevealTopLibraryCardModalWindow.this.persistenceService.saveOrUpdateAllMagicCards(hand);
 
 				final PutTopLibraryCardToHandCometChannel ptlccc = new PutTopLibraryCardToHandCometChannel(
 						gameId, p.getId(), d.getDeckId());
@@ -287,7 +287,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						.reorderMagicCards(RevealTopLibraryCardModalWindow.this.persistenceService
 								.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(),
 										d.getDeckId()));
-				RevealTopLibraryCardModalWindow.this.persistenceService.updateAllMagicCards(hand);
+				RevealTopLibraryCardModalWindow.this.persistenceService.saveOrUpdateAllMagicCards(hand);
 
 				final PutTopLibraryCardToGraveyardCometChannel chan = new PutTopLibraryCardToGraveyardCometChannel(
 						gameId, p.getId(), d.getDeckId());

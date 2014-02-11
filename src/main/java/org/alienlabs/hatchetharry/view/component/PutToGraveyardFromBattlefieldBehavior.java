@@ -83,13 +83,13 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final List<MagicCard> graveyard = this.persistenceService
 				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
-		this.persistenceService.updateAllMagicCards(graveyard);
+		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
 
 		// TODO: reorder?
 		final List<MagicCard> battlefield = this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
-		this.persistenceService.updateAllMagicCards(battlefield);
+		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);

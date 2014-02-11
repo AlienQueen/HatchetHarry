@@ -129,11 +129,20 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateAllMagicCards(final List<MagicCard> allMagicCards)
+	public void saveOrUpdateAllMagicCards(final List<MagicCard> allMagicCards)
 	{
 		for (final MagicCard card : allMagicCards)
 		{
 			this.magicCardDao.getSession().saveOrUpdate(card);
+		}
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void updateAllMagicCards(final List<MagicCard> allMagicCards)
+	{
+		for (final MagicCard card : allMagicCards)
+		{
+			this.magicCardDao.getSession().update(card);
 		}
 	}
 

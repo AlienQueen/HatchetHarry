@@ -194,7 +194,7 @@ public class CreateGameModalWindow extends Panel
 					card.setZone(CardZone.LIBRARY);
 					allMagicCards.add(card);
 				}
-				CreateGameModalWindow.this.persistenceService.updateAllMagicCards(allMagicCards);
+				CreateGameModalWindow.this.persistenceService.saveOrUpdateAllMagicCards(allMagicCards);
 				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
 
 				CreateGameModalWindow.LOGGER.error("allMagicCard.size(): " + allMagicCards.size());
