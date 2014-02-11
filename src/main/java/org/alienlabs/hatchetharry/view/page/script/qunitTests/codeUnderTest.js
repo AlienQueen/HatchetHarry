@@ -136,6 +136,7 @@ jQuery(function() {
 jQuery(function() {
 	window.setTimeout(function() {
 		jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window }, title: 'HatchetHarry video-conference' });
+		jQuery('#importDeck').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window }, title: 'HatchetHarry deck import' });
 	}, 250);
 });
 

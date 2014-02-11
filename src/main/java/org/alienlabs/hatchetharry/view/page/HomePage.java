@@ -113,7 +113,7 @@ import org.alienlabs.hatchetharry.view.component.FacebookLoginBehavior;
 import org.alienlabs.hatchetharry.view.component.GameNotifierBehavior;
 import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
-import org.alienlabs.hatchetharry.view.component.ImportDeckModalWindow;
+import org.alienlabs.hatchetharry.view.component.ImportDeckDialog;
 import org.alienlabs.hatchetharry.view.component.JoinGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.LoginModalWindow;
 import org.alienlabs.hatchetharry.view.component.MagicCardTooltipPanel;
@@ -185,7 +185,7 @@ public class HomePage extends TestReportPage
 	ModalWindow aboutWindowResponsive;
 	ModalWindow createGameWindow;
 	ModalWindow joinGameWindow;
-	ModalWindow importDeckWindow;
+	ImportDeckDialog importDeckDialog;
 	ModalWindow revealTopLibraryCardWindow;
 	ModalWindow revealTopLibraryCardWindowResponsive;
 	private final List<ModalWindow> allOpenRevealTopLibraryCardWindows;
@@ -466,9 +466,13 @@ public class HomePage extends TestReportPage
 		this.buildUntapAndDrawLink();
 		this.buildCombatLink();
 
-		this.importDeckWindow = new ModalWindow("importDeckWindow");
-		this.generateImportDeckLink("importDeckLink", this.importDeckWindow);
-		this.generateImportDeckLink("importDeckLinkResponsive", this.importDeckWindow);
+		// this.importDeckWindow = new ModalWindow("importDeckWindow");
+		this.importDeckDialog = new ImportDeckDialog("importDeckDialog");
+		this.add(this.importDeckDialog);
+		this.generateImportDeckLink("importDeckLink");// ,
+														// this.importDeckWindow);
+		this.generateImportDeckLink("importDeckLinkResponsive");// ,
+																// this.importDeckWindow);
 
 		this.allOpenRevealTopLibraryCardWindows = new ArrayList<ModalWindow>();
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLink",
@@ -1715,16 +1719,17 @@ public class HomePage extends TestReportPage
 		return window;
 	}
 
-	private void generateImportDeckLink(final String id, final ModalWindow window)
+	private void generateImportDeckLink(final String id)// , final ModalWindow
+														// window)
 	{
-		window.setInitialWidth(475);
-		window.setInitialHeight(290);
-		window.setTitle("Import a deck");
-
-		window.setContent(new ImportDeckModalWindow(window.getContentId()));
-		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
-		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
-		this.add(window);
+		// window.setInitialWidth(475);
+		// window.setInitialHeight(290);
+		// window.setTitle("Import a deck");
+		//
+		// window.setContent(new ImportDeckDialog(window.getContentId()));
+		// window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
+		// window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		// this.add(window);
 
 		final AjaxLink<Void> importDeckLink = new AjaxLink<Void>(id)
 		{
@@ -1734,13 +1739,15 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				HomePage.this.importDeckWindow.show(target);
+				target.appendJavaScript("jQuery('#importDeck').dialog('open');");
+				// target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				// target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				// HomePage.this.importDeckWindow.show(target);
 			}
 		};
 
 		importDeckLink.setOutputMarkupId(true);
-		this.importDeckWindow.setOutputMarkupId(true);
+		this.importDeckDialog.setOutputMarkupId(true);
 		this.add(importDeckLink);
 	}
 

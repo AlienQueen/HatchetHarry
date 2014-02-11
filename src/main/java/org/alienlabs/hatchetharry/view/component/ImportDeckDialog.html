@@ -1,17 +1,17 @@
 <wicket:panel>
 
+	<div id="importDeck" class="myfont">
 		<div align="center">
 		
-			<form wicket:id="form" action="" class="myfont">
-				<span wicket:id="feedback"></span><br/><br/>
+			<form wicket:id="form"  enctype="multipart/form-data" class="myfont">
 				
 				Go to <a href="http://magicsupremacy.fr">magicsupremacy.fr</a> and download a .txt deck. Then, upload it here.<br/><br/>
 				
 				<span wicket:id="nameLabel"></span><input wicket:id="name" type="text" class="myfont"></input><br/><br/>				
 				<input wicket:id="deckFile" type="file" class="myfont"></input><br/><br/>				
-				<input type="submit" class="myfont"></input>
-				<div wicket:id="progress"></div>
+			   <button wicket:id="close" class="myfont">Close</button>
+			   
 			</form>
 		</div>
-		
+	</div>		
 </wicket:panel>
