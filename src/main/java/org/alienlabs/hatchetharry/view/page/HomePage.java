@@ -483,6 +483,8 @@ public class HomePage extends TestReportPage
 		this.countCardsWindow = new ModalWindow("countCardsWindow");
 		this.generateCountCardsLink("countCardsLink", this.countCardsWindow);
 		this.generateCountCardsLink("countCardsLinkResponsive", this.countCardsWindow);
+		this.generateDiscardAtRandomLink("discardAtRandomLink");
+		this.generateDiscardAtRandomLink("discardAtRandomLinkResponsive");
 		this.generateInsertDivisionLink("insertDivisionLink");
 		this.generateInsertDivisionLink("insertDivisionLinkResponsive");
 		this.generateShuffleLibraryLink("shuffleLibraryLink");
@@ -1945,6 +1947,84 @@ public class HomePage extends TestReportPage
 		this.add(countCardsLink);
 	}
 
+	private void generateDiscardAtRandomLink(final String id)
+	{
+		final AjaxLink<Void> generateDiscardAtRandomLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target)
+			{
+				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+
+				final Long gameId = HomePage.this.session.getGameId();
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+
+				final Player playerWhoDiscards = HatchetHarrySession.get().getPlayer();
+				final Long playerWhoDiscardsDeckId = playerWhoDiscards.getDeck().getDeckId();
+				final int allCardsInHand = HomePage.this.persistenceService
+						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.HAND, gameId,
+								playerWhoDiscardsDeckId);
+
+				if (allCardsInHand == 0)
+				{
+					return;
+				}
+
+				final Long randomCardIndex = Math.round(Math.random() * allCardsInHand);
+				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
+						.getAllCardsInHandForAGameAndAPlayer(gameId, playerWhoDiscards.getId(),
+								playerWhoDiscardsDeckId);
+				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
+						.remove(randomCardIndex.intValue());
+				chosenCard.setZone(CardZone.GRAVEYARD);
+				HomePage.this.persistenceService.updateCard(chosenCard);
+
+				playerWhoDiscards.setHandDisplayed(true);
+				playerWhoDiscards.setGraveyardDisplayed(true);
+				HomePage.this.persistenceService.updatePlayer(playerWhoDiscards);
+
+				HomePage.this.persistenceService
+						.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
+				JavaScriptUtils.updateHand(target);
+				JavaScriptUtils.updateGraveyard(target);
+
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+						NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
+						playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
+						null, chosenCard.getTitle(), null, "");
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
+						playerWhoDiscards.getName(), null, null, null, false, gameId);
+
+				for (int i = 0; i < allPlayersInGame.size(); i++)
+				{
+					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+					final String pageUuid = HatchetHarryApplication.getCometResources().get(
+							playerToWhomToSend);
+
+					// For unit tests: for Christ sake, Emond, do something for
+					// us!
+					try
+					{
+						HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+						HatchetHarryApplication.get().getEventBus()
+								.post(new ConsoleLogCometChannel(logger), pageUuid);
+					}
+					catch (final NullPointerException e)
+					{
+						// Nothing to do here: unit tests
+					}
+				}
+			}
+		};
+
+		generateDiscardAtRandomLink.setOutputMarkupId(true);
+		this.add(generateDiscardAtRandomLink);
+	}
+
 	private void generateLoginLink(final String id, final ModalWindow window)
 	{
 		window.setInitialWidth(300);
@@ -2280,6 +2360,13 @@ public class HomePage extends TestReportPage
 							+ event.getPlayerName()
 							+ "&quot;s hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
+				break;
+
+			case DISCARD_AT_RANDOM :
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : 'discards a card from his (her) hand at random, and it is : "
+						+ event.getCardName()
+						+ "', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			// TODO: split this notifier action and the one of
@@ -2944,15 +3031,15 @@ public class HomePage extends TestReportPage
 	}
 
 	@Subscribe
-	public void revealHand(final AjaxRequestTarget target, final RevealHandCometChannel event)
-	{
-		JavaScriptUtils.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
-	}
-
-	@Subscribe
 	public void hideHand(final AjaxRequestTarget target, final StopRevealingHandCometChannel event)
 	{
 		JavaScriptUtils.hideHand(target);
+	}
+
+	@Subscribe
+	public void revealHand(final AjaxRequestTarget target, final RevealHandCometChannel event)
+	{
+		JavaScriptUtils.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
 	}
 
 	@Override

@@ -172,6 +172,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/addToken.png"));
 		this.mountResource("image/draw_mode_on.png", new PackageResourceReference(HomePage.class,
 				"image/draw_mode_on.png"));
+		this.mountResource("image/discard.png", new PackageResourceReference(HomePage.class,
+				"image/discard.png"));
 
 		this.mountResource("image/logoh2.gif", new PackageResourceReference(HomePage.class,
 				"image/logoh2.gif"));

@@ -52,6 +52,9 @@ public class AbstractConsoleLogStrategy
 			case REVEAL_HAND :
 				return new RevealHandConsoleLogStrategy(gameId, player, targetPlayerName);
 
+			case DISCARD_AT_RANDOM :
+				return new DiscardAtRandomConsoleLogStrategy(gameId, player, mc);
+
 			default :
 				throw new UnsupportedOperationException("Not implementeted!");
 		}
