@@ -256,6 +256,11 @@ You are free to modify any part of its source code (client-side or server-side),
 			</exclusions>
 		</dependency>
 		<dependency>
+		    <groupId>com.opera</groupId>
+		    <artifactId>operadriver</artifactId>
+		    <version>1.5</version>
+		</dependency>
+		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-chrome-driver</artifactId>
 			<version>${selenium.version}</version>

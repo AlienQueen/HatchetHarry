@@ -11,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -116,8 +117,11 @@ public class FullAppTraversalTests
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException
 	{
-		FullAppTraversalTests.operaDriver1 = new OperaDriver();
-		FullAppTraversalTests.operaDriver2 = new OperaDriver();
+		final DesiredCapabilities capabilities = DesiredCapabilities.opera();
+		capabilities.setCapability("opera.port", -1);
+		capabilities.setCapability("opera.profile", "");
+		FullAppTraversalTests.operaDriver1 = new OperaDriver(capabilities);
+		FullAppTraversalTests.operaDriver2 = new OperaDriver(capabilities);
 
 		FullAppTraversalTests.operaDriver1.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
