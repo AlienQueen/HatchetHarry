@@ -65,10 +65,10 @@ public class VerifyClientSideTests
 
 		Thread.sleep(15000);
 
-		VerifyClientSideTests.operaDriver1.navigate().to(
-				"http://localhost:" + VerifyClientSideTests.PORT + "/");
-		VerifyClientSideTests.operaDriver2.navigate().to(
-				"http://localhost:" + VerifyClientSideTests.PORT + "/");
+		VerifyClientSideTests.operaDriver1.get("http://localhost:" + VerifyClientSideTests.PORT
+				+ "/");
+		VerifyClientSideTests.operaDriver2.get("http://localhost:" + VerifyClientSideTests.PORT
+				+ "/");
 
 		Thread.sleep(15000);
 	}

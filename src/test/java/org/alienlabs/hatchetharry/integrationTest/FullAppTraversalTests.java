@@ -119,15 +119,15 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.operaDriver1 = new OperaDriver();
 		FullAppTraversalTests.operaDriver2 = new OperaDriver();
 
-		FullAppTraversalTests.operaDriver1.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		FullAppTraversalTests.operaDriver1.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
 
-		FullAppTraversalTests.operaDriver1.navigate().to(
-				FullAppTraversalTests.HOST + ":" + FullAppTraversalTests.PORT + "/");
-		FullAppTraversalTests.operaDriver2.navigate().to(
-				FullAppTraversalTests.HOST + ":" + FullAppTraversalTests.PORT + "/");
+		FullAppTraversalTests.operaDriver1.get(FullAppTraversalTests.HOST + ":"
+				+ FullAppTraversalTests.PORT + "/");
+		FullAppTraversalTests.operaDriver2.get(FullAppTraversalTests.HOST + ":"
+				+ FullAppTraversalTests.PORT + "/");
 
 		Thread.sleep(15000);
 	}
