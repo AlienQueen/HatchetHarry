@@ -347,7 +347,7 @@ public class HomePage extends TestReportPage
 		// Welcome message
 		final Label message1 = new Label("message1",
 				"version 0.7.0 (release Merry kiss my tralala),");
-		final Label message2 = new Label("message2", "built on Wednesday, 22nd of January 2014.");
+		final Label message2 = new Label("message2", "built on Wednesday, 12th of February 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -466,13 +466,10 @@ public class HomePage extends TestReportPage
 		this.buildUntapAndDrawLink();
 		this.buildCombatLink();
 
-		// this.importDeckWindow = new ModalWindow("importDeckWindow");
 		this.importDeckDialog = new ImportDeckDialog("importDeckDialog");
 		this.add(this.importDeckDialog);
-		this.generateImportDeckLink("importDeckLink");// ,
-														// this.importDeckWindow);
-		this.generateImportDeckLink("importDeckLinkResponsive");// ,
-																// this.importDeckWindow);
+		this.generateImportDeckLink("importDeckLink");
+		this.generateImportDeckLink("importDeckLinkResponsive");
 
 		this.allOpenRevealTopLibraryCardWindows = new ArrayList<ModalWindow>();
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLink",
@@ -1719,18 +1716,8 @@ public class HomePage extends TestReportPage
 		return window;
 	}
 
-	private void generateImportDeckLink(final String id)// , final ModalWindow
-														// window)
+	private void generateImportDeckLink(final String id)
 	{
-		// window.setInitialWidth(475);
-		// window.setInitialHeight(290);
-		// window.setTitle("Import a deck");
-		//
-		// window.setContent(new ImportDeckDialog(window.getContentId()));
-		// window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
-		// window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
-		// this.add(window);
-
 		final AjaxLink<Void> importDeckLink = new AjaxLink<Void>(id)
 		{
 			private static final long serialVersionUID = 1L;
@@ -1740,9 +1727,6 @@ public class HomePage extends TestReportPage
 			{
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#importDeck').dialog('open');");
-				// target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
-				// target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-				// HomePage.this.importDeckWindow.show(target);
 			}
 		};
 

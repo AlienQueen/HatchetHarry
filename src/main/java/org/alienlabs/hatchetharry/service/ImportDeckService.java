@@ -22,7 +22,8 @@ public class ImportDeckService implements Serializable
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public void importDeck(final String fileContent, final String deckName, final boolean testDeck)
+	public boolean importDeck(final String fileContent, final String deckName,
+			final boolean testDeck)
 	{
 		DeckArchive deckArchive;
 
@@ -31,7 +32,7 @@ public class ImportDeckService implements Serializable
 			deckArchive = this.persistenceService.getDeckArchiveByName(deckName);
 			if (null != deckArchive)
 			{
-				return;
+				return false;
 			}
 		}
 		deckArchive = new DeckArchive();
@@ -45,6 +46,11 @@ public class ImportDeckService implements Serializable
 		final List<MagicCard> allMagicCards = deck.getCards();
 
 		deck = this.persistenceService.saveDeck(deck);
+
+		if (fileContent.split("\n").length < 3)
+		{
+			return false;
+		}
 
 		for (final String line : fileContent.split("\n"))
 		{
@@ -89,6 +95,7 @@ public class ImportDeckService implements Serializable
 			}
 		}
 		this.persistenceService.updateDeckArchive(deckArchive);
+		return true;
 	}
 
 	@Required
