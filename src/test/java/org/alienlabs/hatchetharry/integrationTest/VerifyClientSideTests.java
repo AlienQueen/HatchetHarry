@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -61,12 +60,8 @@ public class VerifyClientSideTests
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException
 	{
-		final DesiredCapabilities capabilities = DesiredCapabilities.opera();
-		capabilities.setCapability("opera.port", -1);
-		capabilities.setCapability("opera.profile", "");
-
-		VerifyClientSideTests.operaDriver1 = new OperaDriver(capabilities);
-		VerifyClientSideTests.operaDriver2 = new OperaDriver(capabilities);
+		VerifyClientSideTests.operaDriver1 = new OperaDriver();
+		VerifyClientSideTests.operaDriver2 = new OperaDriver();
 
 		Thread.sleep(15000);
 
