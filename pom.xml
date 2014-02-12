@@ -80,8 +80,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		<!-- <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
-			<version>${log4j.version}</version> </dependency> -->
 
 		<!-- JUNIT DEPENDENCY FOR TESTING -->
 		<dependency>
@@ -101,8 +99,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>mistletoe-core</artifactId>
 			<version>0.3-SNAPSHOT</version>
 		</dependency>		
-		<!--<dependency> <groupId>pl.rabbitsoftware</groupId> <artifactId>enhancedwickettester</artifactId> 
-			<version>1.0.0</version> <scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -124,8 +120,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- <dependency> <groupId>com.googlecode</groupId> <artifactId>wicket-slides</artifactId> 
-			<version>0.8.6-smoothgallery2.1dev</version> </dependency> -->
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>wicketstuff-annotation</artifactId>
@@ -174,30 +168,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>antlr</artifactId>
 			<version>2.7.6</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.atmosphere</groupId>
-			<artifactId>atmosphere-runtime</artifactId>
-			<version>${atmosphere.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.atmosphere</groupId>
-					<artifactId>atmosphere-ping</artifactId>
-				</exclusion>
-			<exclusion>
-					<groupId>org.atmosphere</groupId>
-					<artifactId>atmosphere-compat-tomcat7</artifactId>
-				</exclusion>
-			    <exclusion>
-					<groupId>org.atmosphere</groupId>
-					<artifactId>atmosphere-compat-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency> -->
- 	   <!--  <dependency>
-			<groupId>org.atmosphere</groupId>
-			<artifactId>atmosphere-compat-tomcat7</artifactId>
-			<version>${atmosphere.version}</version>
-		</dependency> -->
 		<dependency>
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-compat-jbossweb</artifactId>
@@ -219,11 +189,6 @@ You are free to modify any part of its source code (client-side or server-side),
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.atmosphere</groupId>
-			<artifactId>atmosphere-runtime</artifactId>
-			<version>${atmosphere.version}</version>
-		</dependency> -->
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-servlet_3.0_spec</artifactId>
@@ -294,17 +259,6 @@ You are free to modify any part of its source code (client-side or server-side),
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.webdriver</groupId>
-			<artifactId>webdriver-firefox</artifactId>
-			<version>0.9.7376</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.webdriver</groupId>
 			<artifactId>webdriver-ie</artifactId>
 			<version>0.9.7376</version>
 		</dependency>
@@ -346,9 +300,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>javassist</artifactId>
 			<version>3.15.0-GA</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-site-plugin</artifactId> 
-			<version>3.0</version> <exclusions> <exclusion> <groupId>commons-logging</groupId> 
-			<artifactId>commons-logging</artifactId> </exclusion> </exclusions> </dependency> -->
 		<dependency>
 			<groupId>org.apache.maven.skins</groupId>
 			<artifactId>maven-default-skin</artifactId>
@@ -412,10 +363,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<version>2.12</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- commented for Jenkins safety <dependency> <groupId>org.jvnet.hudson.plugins</groupId> 
-			<artifactId>sonar</artifactId> <version>1.6.1</version> <type>jar</type> 
-			<scope>compile</scope> <exclusions> <exclusion> <groupId>commons-logging</groupId> 
-			<artifactId>commons-logging</artifactId> </exclusion> </exclusions> </dependency> -->
 		<dependency>
 			<groupId>org.codehaus.sonar.plugins</groupId>
 			<artifactId>sonar-surefire-plugin</artifactId>
@@ -498,8 +445,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!--<dependency> <groupId>com.zenika</groupId> <artifactId>wicket-component-debug</artifactId> 
-			<version>0.1</version> </dependency> -->
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>emma-maven-plugin</artifactId>
@@ -559,17 +504,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>org.codehaus.redback.components.cache</groupId>
 			<artifactId>spring-cache-ehcache</artifactId>
 			<version>1.1</version>
-		</dependency>
-		<!-- <dependency>
-			<groupId>org.atmosphere</groupId>
-			<artifactId>atmosphere-compat-jetty</artifactId>
-			<version>0.9.0.RC3</version>
-			<type>jar</type>
-		</dependency> -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-firefox-driver</artifactId>
-			<version>${selenium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.webdriver</groupId>
@@ -780,9 +714,6 @@ You are free to modify any part of its source code (client-side or server-side),
 				<artifactId>selenium-maven-plugin</artifactId>
 				<version>2.3</version>
 				<executions>
-					<!-- <execution> <id>xvfb</id> <phase>pre-integration-test</phase> <goals> 
-						<goal>xvfb</goal> </goals> </execution> -->
-
 					<execution>
 						<id>selenium</id>
 						<phase>pre-integration-test</phase>
@@ -818,7 +749,6 @@ You are free to modify any part of its source code (client-side or server-side),
 				<configuration>
 					<!-- Skip the normal tests, we'll run them in the integration-test phase -->
 					<skip>false</skip>
-					<!-- <parallel>classes</parallel> <threadCount>2</threadCount> <perCoreThreadCount>true</perCoreThreadCount> -->
 				</configuration>
 				<executions>
 					<execution>
