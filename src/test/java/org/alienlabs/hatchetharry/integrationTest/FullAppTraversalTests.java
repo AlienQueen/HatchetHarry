@@ -116,15 +116,8 @@ public class FullAppTraversalTests
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException
 	{
-		// System.setProperty("webdriver.chrome.driver",
-		// "/home/nostromo/chromedriver");
-		// final ChromeOptions options = new ChromeOptions();
-		// final DesiredCapabilities capabilities =
-		// DesiredCapabilities.chrome();
-		// capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-
-		FullAppTraversalTests.operaDriver1 = new OperaDriver();// capabilities);
-		FullAppTraversalTests.operaDriver2 = new OperaDriver();// capabilities);
+		FullAppTraversalTests.operaDriver1 = new OperaDriver();
+		FullAppTraversalTests.operaDriver2 = new OperaDriver();
 
 		FullAppTraversalTests.operaDriver1.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -137,13 +130,6 @@ public class FullAppTraversalTests
 				FullAppTraversalTests.HOST + ":" + FullAppTraversalTests.PORT + "/");
 
 		Thread.sleep(15000);
-		// FullAppTraversalTests.operaDriver1.get(FullAppTraversalTests.HOST +
-		// ":"
-		// + FullAppTraversalTests.PORT + "/");
-		//
-		// FullAppTraversalTests.operaDriver2.get(FullAppTraversalTests.HOST +
-		// ":"
-		// + FullAppTraversalTests.PORT + "/");
 	}
 
 	@AfterClass
