@@ -111,7 +111,7 @@ public class VerifyClientSideTests
 	@Test
 	public void testMistletoe() throws InterruptedException
 	{
-		Thread.sleep(1000);
+		Thread.sleep(30000);
 
 		((JavascriptExecutor)VerifyClientSideTests.operaDriver1)
 				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);

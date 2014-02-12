@@ -144,7 +144,7 @@ public class FullAppTraversalTests
 	{
 
 		// Create a game in Chrome 1
-		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.operaDriver1, 15);
+		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.operaDriver1, 30);
 
 		((JavascriptExecutor)FullAppTraversalTests.operaDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
