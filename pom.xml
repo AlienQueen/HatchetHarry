@@ -38,7 +38,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<wicketstuff.version>6.12.0</wicketstuff.version>
 		<wicket-atmosphere.version>0.16</wicket-atmosphere.version>
 		<atmosphere.version>2.1.0</atmosphere.version>
-		<spring.version>3.0.7.RELEASE</spring.version>
+		<spring.version>4.0.1.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -449,11 +449,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-			<version>4.3.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>

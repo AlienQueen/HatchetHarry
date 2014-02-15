@@ -102,7 +102,7 @@
 						                                         |___/ 
 					-->  					
 	<!-- setup hibernate session factory -->
-   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate4.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource"> <ref bean="dataSource"/></property>
 
         <property name="annotatedClasses">
@@ -162,7 +162,7 @@
 						                                                 
 					 -->
 	<!-- setup transaction manager	-->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
        <property name="sessionFactory" ref="sessionFactory"/>
 	   <property name="dataSource" ref="dataSource"/>
     </bean>

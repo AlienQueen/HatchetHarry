@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Index;
 
+@SuppressWarnings("deprecation")
 @Entity
 @Table(name = "User")
 @Cacheable

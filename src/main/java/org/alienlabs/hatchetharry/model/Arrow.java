@@ -20,6 +20,7 @@ public class Arrow implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
+	@SuppressWarnings("deprecation")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
