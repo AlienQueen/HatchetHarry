@@ -13,10 +13,10 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
-@Table(name = "ChatMessage", uniqueConstraints = { @UniqueConstraint(columnNames = { "gameId",
-		"message" }) })
+@Table(name = "ChatMessage", uniqueConstraints = { @UniqueConstraint(columnNames = { "gameId" }) })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ChatMessage implements Serializable
@@ -27,6 +27,7 @@ public class ChatMessage implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(name = "gameId")
+	@Index(name = "chatMessageIndex")
 	private Long gameId;
 	@Column(name = "message")
 	private String message;

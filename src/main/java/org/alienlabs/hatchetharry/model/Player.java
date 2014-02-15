@@ -29,9 +29,9 @@ public class Player implements Serializable
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Index(name = "Player_index")
 	private Long playerId;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Index(name = "playerIndex")
 	private Game game = new Game();
 	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "Player_Side")
@@ -44,6 +44,7 @@ public class Player implements Serializable
 	private Long lifePoints;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "deck")
+	@Index(name = "playerIndex")
 	private Deck deck;
 	@Column
 	private Boolean isHandDisplayed = true;

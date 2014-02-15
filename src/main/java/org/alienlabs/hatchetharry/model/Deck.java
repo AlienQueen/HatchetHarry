@@ -44,12 +44,13 @@ public class Deck implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckId")
-	@Index(name = "Deck_index")
 	private Long deckId;
 	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Deck_DeckArchive")
+	@Index(name = "deckIndex")
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
+	@Index(name = "deckIndex")
 	private Long playerId;
 	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	private List<MagicCard> cards = new ArrayList<MagicCard>();

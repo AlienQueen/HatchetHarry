@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "Side")
@@ -33,9 +34,11 @@ public class Side implements Serializable
 	@Column
 	private String sideName;
 	@Column
+	@Index(name = "sideIndex")
 	private String uuid;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE })
+	@Index(name = "sideIndex")
 	private Game game;
 	@Column
 	private Long x = 64l; // x coordinate

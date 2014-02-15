@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "Token")
@@ -55,9 +56,11 @@ public class Token implements Serializable
 	private boolean tapped = false;
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
+	@Index(name = "tokenPlayerIndex")
 	private Set<Counter> counters = new HashSet<Counter>();
 	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Player_Token")
+	@Index(name = "tokenPlayerIndex")
 	private Player player = new Player();
 	@Column
 	private String capabilities;

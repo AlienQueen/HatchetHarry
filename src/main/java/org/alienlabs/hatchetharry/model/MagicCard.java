@@ -65,6 +65,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Index(name = "MagicCard_index")
 	private Long gameId;
 	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@Index(name = "MagicCard_index")
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
 	@Column

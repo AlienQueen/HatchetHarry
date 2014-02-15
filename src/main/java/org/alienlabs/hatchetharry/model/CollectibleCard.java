@@ -22,6 +22,7 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Cacheable
@@ -34,8 +35,10 @@ public class CollectibleCard implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column
+	@Index(name = "collectibleCardIndex")
 	private String title;
 	@Column
+	@Index(name = "collectibleCardIndex")
 	private Long deckArchiveId;
 
 	public Long getId()

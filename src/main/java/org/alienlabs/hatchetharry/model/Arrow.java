@@ -11,6 +11,7 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Cacheable
@@ -23,10 +24,13 @@ public class Arrow implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column
+	@Index(name = "arrowIndex")
 	private Long gameId;
 	@Column
+	@Index(name = "arrowIndex")
 	private String source;
 	@Column
+	@Index(name = "arrowIndex")
 	private String target;
 
 	public Long getId()

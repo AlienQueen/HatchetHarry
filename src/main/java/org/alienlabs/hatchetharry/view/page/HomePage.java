@@ -347,7 +347,7 @@ public class HomePage extends TestReportPage
 		// Welcome message
 		final Label message1 = new Label("message1",
 				"version 0.7.0 (release Merry kiss my tralala),");
-		final Label message2 = new Label("message2", "built on Wednesday, 12th of February 2014.");
+		final Label message2 = new Label("message2", "built on Satursday, 15th of February 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -956,6 +956,8 @@ public class HomePage extends TestReportPage
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
+					// TODO: the NotifierCometChannel should not be instantiated
+					// in the loop
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.IN_RESPONSE_ACTION, null, null, me.getName(), null,
 							null, null, null, "");
@@ -997,6 +999,8 @@ public class HomePage extends TestReportPage
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
+					// TODO: the NotifierCometChannel should not be instantiated
+					// in the loop
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.FINE_FOR_ME_ACTION, null, null, me.getName(), null,
 							null, null, null, "");
@@ -1060,6 +1064,8 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 
+					// TODO: the UntapAllCometChannel should not be instantiated
+					// in the loop
 					final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
 							HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
 									.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession

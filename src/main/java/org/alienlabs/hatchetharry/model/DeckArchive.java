@@ -21,6 +21,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "DeckArchive")
@@ -35,6 +36,7 @@ public class DeckArchive implements Serializable
 	@Column(name = "deckArchiveId")
 	private Long deckArchiveId;
 	@Column
+	@Index(name = "deckIndex")
 	private String deckName;
 
 	public Long getDeckArchiveId()
