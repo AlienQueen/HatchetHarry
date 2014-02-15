@@ -112,7 +112,7 @@
 				<value>org.alienlabs.hatchetharry.model.Deck</value>
 				<value>org.alienlabs.hatchetharry.model.DeckArchive</value>
 				<value>org.alienlabs.hatchetharry.model.Game</value>
-                <value>org.alienlabs.hatchetharry.model.MagicCard</value>
+                		<value>org.alienlabs.hatchetharry.model.MagicCard</value>
 				<value>org.alienlabs.hatchetharry.model.Player</value>
 				<value>org.alienlabs.hatchetharry.model.Side</value>
 				<value>org.alienlabs.hatchetharry.model.Counter</value>
@@ -142,10 +142,10 @@
 				<!-- We tell Hibernate that we use EhCache as a second-level cache -->
             	<prop key="hibernate.cache.use_second_level_cache">true</prop>
             	<prop key="hibernate.cache.use_query_cache">true</prop>
-            	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+            	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
             	<prop key="hibernate.cache.use_structured_entries">true</prop>     
     			<prop key="hibernate.cache.generate_statistics">true</prop>
-            	<prop key="hibernate.cache.provider_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+            	<!--<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>-->
 				<prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
 			</props>
 		</property>
