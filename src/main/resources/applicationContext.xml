@@ -145,7 +145,7 @@
             	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
             	<prop key="hibernate.cache.use_structured_entries">true</prop>     
     			<prop key="hibernate.cache.generate_statistics">true</prop>
-            	<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+            	<prop key="hibernate.cache.provider_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
 				<prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
 			</props>
 		</property>

@@ -311,9 +311,9 @@ You are free to modify any part of its source code (client-side or server-side),
 			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-			<version>2.4.7</version>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-ehcache</artifactId>
+		    <version>4.3.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.javassist</groupId>
