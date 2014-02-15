@@ -62,16 +62,17 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>4.3.1.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate.common</groupId>
+					<artifactId>hibernate-commons-annotations</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 		    <groupId>org.hibernate.javax.persistence</groupId>
 		    <artifactId>hibernate-jpa-2.1-api</artifactId>
 		    <version>1.0.0.Draft-16</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.common</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>4.0.4.Final</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.jboss.logging</groupId>
@@ -149,6 +150,10 @@ You are free to modify any part of its source code (client-side or server-side),
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -159,6 +164,10 @@ You are free to modify any part of its source code (client-side or server-side),
 				<exclusion>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -425,6 +434,24 @@ You are free to modify any part of its source code (client-side or server-side),
 					<groupId>org.slf4j</groupId>
 					<artifactId>log4j-over-slf4j</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>
+						hibernate-commons-annotations
+					</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-entitymanager</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-ehcache</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -450,11 +477,22 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.1.Final</version>
-		</dependency>
+			<version>4.1.4.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate.common</groupId>
+					<artifactId>hibernate-commons-annotations</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency> -->
+		<dependency>
+             <groupId>org.hibernate</groupId>
+              <artifactId>hibernate-validator</artifactId>
+              <version>4.3.0.Final</version>
+           </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -519,6 +557,24 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>org.codehaus.redback.components.cache</groupId>
 			<artifactId>spring-cache-ehcache</artifactId>
 			<version>1.1</version>
+			<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-context-support</artifactId>
+				</exclusion>
+				<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-beans</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.webdriver</groupId>

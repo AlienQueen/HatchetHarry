@@ -52,7 +52,7 @@
             <property name="unreturnedConnectionTimeout" value="3600" />
         </bean>
         
-        <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource"> <ref bean="dataSource"/></property>
 
         <property name="annotatedClasses">
@@ -92,12 +92,19 @@
 				<!-- We tell Hibernate that we use EhCache as a second-level cache -->
             	<prop key="hibernate.cache.use_second_level_cache">true</prop>
             	<prop key="hibernate.cache.use_query_cache">true</prop>
-            	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+            	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
             	<prop key="hibernate.cache.use_structured_entries">true</prop>     
     			<prop key="hibernate.cache.generate_statistics">true</prop>
-            	<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+            	<!-- <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>-->
 				<prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
 			</props>
 		</property>
 	</bean>
+	 
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
 </beans>
