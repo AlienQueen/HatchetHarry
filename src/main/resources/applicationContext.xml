@@ -112,7 +112,7 @@
 				<value>org.alienlabs.hatchetharry.model.Deck</value>
 				<value>org.alienlabs.hatchetharry.model.DeckArchive</value>
 				<value>org.alienlabs.hatchetharry.model.Game</value>
-                		<value>org.alienlabs.hatchetharry.model.MagicCard</value>
+                <value>org.alienlabs.hatchetharry.model.MagicCard</value>
 				<value>org.alienlabs.hatchetharry.model.Player</value>
 				<value>org.alienlabs.hatchetharry.model.Side</value>
 				<value>org.alienlabs.hatchetharry.model.Counter</value>
@@ -142,7 +142,7 @@
 				<!-- We tell Hibernate that we use EhCache as a second-level cache -->
             	<prop key="hibernate.cache.use_second_level_cache">true</prop>
             	<prop key="hibernate.cache.use_query_cache">true</prop>
-            	<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
+            	<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
             	<prop key="hibernate.cache.use_structured_entries">true</prop>     
     			<prop key="hibernate.cache.generate_statistics">true</prop>
             	<!--<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>-->
@@ -151,10 +151,6 @@
 		</property>
 	</bean>
 	
-	    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-	        <property name="sessionFactory" ref="sessionFactory" />
-	    </bean>
-
 		<tx:annotation-driven transaction-manager="transactionManager"/>
 		
 					<!-- 

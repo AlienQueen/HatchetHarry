@@ -19,11 +19,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
+@Table(name = "CollectibleCard", indexes = { @Index(columnList = "title"),
+		@Index(columnList = "deckArchiveId") })
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -31,15 +34,12 @@ public class CollectibleCard implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("deprecation")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column
-	@Index(name = "collectibleCardIndex")
 	private String title;
 	@Column
-	@Index(name = "collectibleCardIndex")
 	private Long deckArchiveId;
 
 	public Long getId()

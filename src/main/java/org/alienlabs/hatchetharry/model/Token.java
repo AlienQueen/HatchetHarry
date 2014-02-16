@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
@@ -20,11 +21,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "Token")
+@Table(name = "Token", indexes = { @Index(columnList = "uuid"), @Index(columnList = "Player_Token") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Token implements Serializable
@@ -57,11 +56,9 @@ public class Token implements Serializable
 	private boolean tapped = false;
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
-	@Index(name = "tokenPlayerIndex")
 	private Set<Counter> counters = new HashSet<Counter>();
 	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Player_Token")
-	@Index(name = "tokenPlayerIndex")
 	private Player player = new Player();
 	@Column
 	private String capabilities;

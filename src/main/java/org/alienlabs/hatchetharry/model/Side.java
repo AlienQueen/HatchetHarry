@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -16,11 +17,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "Side")
+@Table(name = "Side", indexes = { @Index(columnList = "uuid") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Side implements Serializable
@@ -34,12 +33,10 @@ public class Side implements Serializable
 	private String wicketId;
 	@Column
 	private String sideName;
-	@Column
-	@Index(name = "sideIndex")
+	@Column(name = "uuid")
 	private String uuid;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE })
-	@Index(name = "sideIndex")
 	private Game game;
 	@Column
 	private Long x = 64l; // x coordinate

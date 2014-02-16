@@ -17,15 +17,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "DeckArchive")
+@Table(name = "DeckArchive", indexes = { @Index(columnList = "deckName") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DeckArchive implements Serializable
@@ -37,7 +36,6 @@ public class DeckArchive implements Serializable
 	@Column(name = "deckArchiveId")
 	private Long deckArchiveId;
 	@Column
-	@Index(name = "deckIndex")
 	private String deckName;
 
 	public Long getDeckArchiveId()
@@ -64,6 +62,45 @@ public class DeckArchive implements Serializable
 	public String toString()
 	{
 		return this.deckName;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((this.deckName == null) ? 0 : this.deckName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (this.getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final DeckArchive other = (DeckArchive)obj;
+		if (this.deckName == null)
+		{
+			if (other.deckName != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.deckName.equals(other.deckName))
+		{
+			return false;
+		}
+		return true;
 	}
 
 }

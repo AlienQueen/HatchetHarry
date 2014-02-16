@@ -24,6 +24,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,11 +32,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "Deck")
+@Table(name = "Deck", indexes = { @Index(columnList = "Deck_DeckArchive"),
+		@Index(columnList = "playerId") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Deck implements Serializable
@@ -48,12 +48,11 @@ public class Deck implements Serializable
 	private Long deckId;
 	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Deck_DeckArchive")
-	@Index(name = "deckIndex")
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
-	@Index(name = "deckIndex")
 	private Long playerId;
-	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = { CascadeType.DETACH,
+			CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE })
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
 	/**
@@ -161,6 +160,57 @@ public class Deck implements Serializable
 	public void setCards(final List<MagicCard> _cards)
 	{
 		this.cards = _cards;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((this.deckArchive == null) ? 0 : this.deckArchive.hashCode());
+		result = (prime * result) + ((this.playerId == null) ? 0 : this.playerId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (this.getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Deck other = (Deck)obj;
+		if (this.deckArchive == null)
+		{
+			if (other.deckArchive != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.deckArchive.equals(other.deckArchive))
+		{
+			return false;
+		}
+		if (this.playerId == null)
+		{
+			if (other.playerId != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.playerId.equals(other.playerId))
+		{
+			return false;
+		}
+		return true;
 	}
 
 }

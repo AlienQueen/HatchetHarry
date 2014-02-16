@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -17,11 +18,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "Player")
+@Table(name = "Player", indexes = { @Index(columnList = "Player_Side"), @Index(columnList = "deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Player implements Serializable
@@ -32,7 +31,6 @@ public class Player implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long playerId;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Index(name = "playerIndex")
 	private Game game = new Game();
 	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "Player_Side")
@@ -45,7 +43,6 @@ public class Player implements Serializable
 	private Long lifePoints;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "deck")
-	@Index(name = "playerIndex")
 	private Deck deck;
 	@Column
 	private Boolean isHandDisplayed = true;
@@ -120,57 +117,6 @@ public class Player implements Serializable
 	public void setGame(final Game _game)
 	{
 		this.game = _game;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.jsessionid == null) ? 0 : this.jsessionid.hashCode());
-		result = (prime * result) + ((this.playerId == null) ? 0 : this.playerId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Player other = (Player)obj;
-		if (this.jsessionid == null)
-		{
-			if (other.jsessionid != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.jsessionid.equals(other.jsessionid))
-		{
-			return false;
-		}
-		if (this.playerId == null)
-		{
-			if (other.playerId != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.playerId.equals(other.playerId))
-		{
-			return false;
-		}
-		return true;
 	}
 
 	public Deck getDeck()
@@ -251,6 +197,45 @@ public class Player implements Serializable
 	public void setSideUuid(final String _sideUuid)
 	{
 		this.sideUuid = _sideUuid;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((this.jsessionid == null) ? 0 : this.jsessionid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (this.getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Player other = (Player)obj;
+		if (this.jsessionid == null)
+		{
+			if (other.jsessionid != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.jsessionid.equals(other.jsessionid))
+		{
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -25,6 +25,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -34,11 +35,10 @@ import javax.persistence.Table;
 import org.apache.wicket.model.Model;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "MagicCard")
+@Table(name = "MagicCard", indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"),
+		@Index(columnList = "card_deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MagicCard implements SlideshowImage, Serializable
@@ -60,13 +60,11 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private String description = "";
 	@Column
-	@Index(name = "MagicCard_index")
 	private String uuid;
 	@Column
-	@Index(name = "MagicCard_index")
 	private Long gameId;
-	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-	@Index(name = "MagicCard_index")
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH,
+			CascadeType.REMOVE }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
 	@Column
@@ -303,6 +301,9 @@ public class MagicCard implements SlideshowImage, Serializable
 	{
 		final int prime = 31;
 		int result = 1;
+		result = (prime * result) + ((this.deck == null) ? 0 : this.deck.hashCode());
+		result = (prime * result) + ((this.gameId == null) ? 0 : this.gameId.hashCode());
+		result = (prime * result) + ((this.ownerSide == null) ? 0 : this.ownerSide.hashCode());
 		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
 		return result;
 	}
@@ -323,6 +324,39 @@ public class MagicCard implements SlideshowImage, Serializable
 			return false;
 		}
 		final MagicCard other = (MagicCard)obj;
+		if (this.deck == null)
+		{
+			if (other.deck != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.deck.equals(other.deck))
+		{
+			return false;
+		}
+		if (this.gameId == null)
+		{
+			if (other.gameId != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.gameId.equals(other.gameId))
+		{
+			return false;
+		}
+		if (this.ownerSide == null)
+		{
+			if (other.ownerSide != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.ownerSide.equals(other.ownerSide))
+		{
+			return false;
+		}
 		if (this.uuid == null)
 		{
 			if (other.uuid != null)

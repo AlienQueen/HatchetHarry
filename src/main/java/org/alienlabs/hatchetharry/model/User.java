@@ -14,9 +14,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
 @Table(name = "User")
 @Cacheable
@@ -33,7 +31,6 @@ public class User implements Serializable
 	private String privateIdentity;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE })
-	@Index(name = "playerIndex")
 	private Player player;
 	@Column
 	private String identity;

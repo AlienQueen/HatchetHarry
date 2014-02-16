@@ -8,11 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
+@Table(name = "Arrow", indexes = { @Index(columnList = "gameId"), @Index(columnList = "source"),
+		@Index(columnList = "target") })
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -20,18 +23,14 @@ public class Arrow implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("deprecation")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column
-	@Index(name = "arrowIndex")
 	private Long gameId;
 	@Column
-	@Index(name = "arrowIndex")
 	private String source;
 	@Column
-	@Index(name = "arrowIndex")
 	private String target;
 
 	public Long getId()

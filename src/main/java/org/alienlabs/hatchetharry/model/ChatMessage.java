@@ -8,27 +8,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
 @Entity
-@Table(name = "ChatMessage", uniqueConstraints = { @UniqueConstraint(columnNames = { "gameId" }) })
+@Table(name = "ChatMessage", indexes = { @Index(columnList = "gameId") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ChatMessage implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("deprecation")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(name = "gameId")
-	@Index(name = "chatMessageIndex")
 	private Long gameId;
 	@Column(name = "message")
 	private String message;

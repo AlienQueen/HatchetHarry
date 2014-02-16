@@ -9,17 +9,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "Counter")
+@Table(name = "Counter", indexes = { @Index(columnList = "card"), @Index(columnList = "token") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Counter implements Serializable, Comparable<Counter>
@@ -36,12 +35,10 @@ public class Counter implements Serializable, Comparable<Counter>
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "card")
-	@Index(name = "counterIndex")
 	private MagicCard card;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "token")
-	@Index(name = "counterIndex")
 	private Token token;
 
 	public String getCounterName()
@@ -129,10 +126,7 @@ public class Counter implements Serializable, Comparable<Counter>
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.card == null) ? 0 : this.card.hashCode());
-		result = (prime * result) + ((this.counterId == null) ? 0 : this.counterId.hashCode());
 		result = (prime * result) + ((this.counterName == null) ? 0 : this.counterName.hashCode());
-		result = (prime * result)
-				+ ((this.numberOfCounters == null) ? 0 : this.numberOfCounters.hashCode());
 		result = (prime * result) + ((this.token == null) ? 0 : this.token.hashCode());
 		return result;
 	}
@@ -164,17 +158,6 @@ public class Counter implements Serializable, Comparable<Counter>
 		{
 			return false;
 		}
-		if (this.counterId == null)
-		{
-			if (other.counterId != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.counterId.equals(other.counterId))
-		{
-			return false;
-		}
 		if (this.counterName == null)
 		{
 			if (other.counterName != null)
@@ -183,17 +166,6 @@ public class Counter implements Serializable, Comparable<Counter>
 			}
 		}
 		else if (!this.counterName.equals(other.counterName))
-		{
-			return false;
-		}
-		if (this.numberOfCounters == null)
-		{
-			if (other.numberOfCounters != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.numberOfCounters.equals(other.numberOfCounters))
 		{
 			return false;
 		}

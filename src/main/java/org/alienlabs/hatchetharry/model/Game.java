@@ -18,7 +18,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
 @Entity
 @Table(name = "Game")
@@ -30,7 +29,6 @@ public class Game implements Serializable
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Index(name = "Game_index")
 	private Long gameId;
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
@@ -61,12 +59,32 @@ public class Game implements Serializable
 		this.players = _players;
 	}
 
+	public Long getCurrentPlaceholderId()
+	{
+		return this.currentPlaceholderId;
+	}
+
+	public void setCurrentPlaceholderId(final Long _currentPlaceholderId)
+	{
+		this.currentPlaceholderId = _currentPlaceholderId;
+	}
+
+	public Boolean isDrawMode()
+	{
+		return this.isDrawMode;
+	}
+
+	public void setDrawMode(final Boolean drawMode)
+	{
+		this.isDrawMode = drawMode;
+	}
+
 	@Override
 	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
-		result = (prime * result) + ((this.gameId == null) ? 0 : this.gameId.hashCode());
+		result = (prime * result) + ((this.players == null) ? 0 : this.players.hashCode());
 		return result;
 	}
 
@@ -86,38 +104,18 @@ public class Game implements Serializable
 			return false;
 		}
 		final Game other = (Game)obj;
-		if (this.gameId == null)
+		if (this.players == null)
 		{
-			if (other.gameId != null)
+			if (other.players != null)
 			{
 				return false;
 			}
 		}
-		else if (!this.gameId.equals(other.gameId))
+		else if (!this.players.equals(other.players))
 		{
 			return false;
 		}
 		return true;
-	}
-
-	public Long getCurrentPlaceholderId()
-	{
-		return this.currentPlaceholderId;
-	}
-
-	public void setCurrentPlaceholderId(final Long _currentPlaceholderId)
-	{
-		this.currentPlaceholderId = _currentPlaceholderId;
-	}
-
-	public Boolean isDrawMode()
-	{
-		return this.isDrawMode;
-	}
-
-	public void setDrawMode(final Boolean drawMode)
-	{
-		this.isDrawMode = drawMode;
 	}
 
 }
