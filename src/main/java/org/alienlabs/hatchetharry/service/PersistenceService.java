@@ -161,7 +161,6 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateCard(final MagicCard c)
 	{
-		this.deckDao.getSession().saveOrUpdate(c.getDeck());
 		this.magicCardDao.getSession().merge(c);
 	}
 
@@ -411,8 +410,14 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateDeck(final Deck d)
 	{
-		final Session session = this.deckDao.getSession();
-		session.update(d);
+		final Session deckSession = this.deckDao.getSession();
+		final Session cardSession = this.magicCardDao.getSession();
+
+		for (final MagicCard c : d.getCards())
+		{
+			cardSession.saveOrUpdate(c);
+		}
+		deckSession.update(d);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
@@ -425,6 +430,11 @@ public class PersistenceService implements Serializable
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public Deck saveDeck(final Deck d)
 	{
+		final Session cardSession = this.magicCardDao.getSession();
+		for (final MagicCard c : d.getCards())
+		{
+			cardSession.saveOrUpdate(c);
+		}
 		this.deckDao.getSession().save(d);
 		return d;
 	}

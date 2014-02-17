@@ -196,9 +196,9 @@ public class JoinGameModalWindow extends Panel
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = JoinGameModalWindow.this.persistenceService
 						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
-				JoinGameModalWindow.LOGGER.error("deck.getDeckArchive().getDeckArchiveId(): "
+				JoinGameModalWindow.LOGGER.info("deck.getDeckArchive().getDeckArchiveId(): "
 						+ deck.getDeckArchive().getDeckArchiveId());
-				JoinGameModalWindow.LOGGER.error("allCollectibleCardsInDeckArchive.size(): "
+				JoinGameModalWindow.LOGGER.info("allCollectibleCardsInDeckArchive.size(): "
 						+ allCollectibleCardsInDeckArchive.size());
 
 				final List<MagicCard> allMagicCard = new ArrayList<MagicCard>();
@@ -218,8 +218,7 @@ public class JoinGameModalWindow extends Panel
 				}
 				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCard)));
 
-				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
-				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
+				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
@@ -228,11 +227,11 @@ public class JoinGameModalWindow extends Panel
 				{
 					final MagicCard aCard = deck.getCards().get(i);
 					aCard.setZone(CardZone.HAND);
-					JoinGameModalWindow.this.persistenceService.updateCard(aCard);
 					firstCards.add(aCard);
 				}
 
-				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
+				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
+				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
@@ -242,7 +241,7 @@ public class JoinGameModalWindow extends Panel
 						.updatePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
 
-				JoinGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
+				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
 				// Remove Balduvian Horde
