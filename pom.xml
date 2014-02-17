@@ -858,7 +858,7 @@ You are free to modify any part of its source code (client-side or server-side),
 					<scanIntervalSeconds>2</scanIntervalSeconds>
 					<stopKey>foo</stopKey>
 					<stopPort>9999</stopPort>
-					<daemon>true</daemon>
+					<daemon>false</daemon>
 					<war>${project.build.directory}/${project.build.finalName}.war</war>
 					<webApp>
 						<contextPath>/</contextPath>
