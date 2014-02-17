@@ -187,7 +187,7 @@ public class FullAppTraversalTests
 		// Assert that no card is present on battlefield
 		// The Balduvian Horde is hidden but still there
 		// And it contains TWO elements of class magicCard
-		Thread.sleep(15000);
+		Thread.sleep(45000);
 		Assert.assertEquals(2,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
@@ -247,7 +247,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
 		FullAppTraversalTests.firefoxDriver1.findElement(
 				By.cssSelector("img[id^='tapHandleImage']")).click();
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Verify card is tapped
 		Assert.assertTrue(FullAppTraversalTests.firefoxDriver1
@@ -268,7 +268,7 @@ public class FullAppTraversalTests
 		new Actions(FullAppTraversalTests.firefoxDriver1).dragAndDrop(draggable, to).build()
 				.perform();
 
-		Thread.sleep(5000);
+		Thread.sleep(25000);
 
 		// Assert graveyard is visible and contains one card
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver1.findElements(
@@ -284,13 +284,13 @@ public class FullAppTraversalTests
 		// Play card from graveyard
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		Thread.sleep(1000);
+		Thread.sleep(10000);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 
 		FullAppTraversalTests.firefoxDriver1.findElement(
 				By.id("playCardFromGraveyardLinkResponsive")).click();
-		Thread.sleep(8000);
+		Thread.sleep(25000);
 
 		// Verify the name of the card on the battlefield
 		Assert.assertEquals(battlefieldCardName,
@@ -313,7 +313,7 @@ public class FullAppTraversalTests
 		new Actions(FullAppTraversalTests.firefoxDriver1).dragAndDrop(draggable, to).build()
 				.perform();
 
-		Thread.sleep(3000);
+		Thread.sleep(15000);
 
 		// Assert that the hand contains 7 cards again
 		Assert.assertEquals(7,
@@ -323,7 +323,7 @@ public class FullAppTraversalTests
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		Thread.sleep(500);
+		Thread.sleep(8000);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
 				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 
@@ -349,7 +349,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.firefoxDriver1.findElement(
 				By.id("revealTopLibraryCardLinkResponsive")).click();
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Assert that the card is the same
 		Assert.assertTrue(topCardName.equals(FullAppTraversalTests.firefoxDriver1.findElement(
@@ -368,7 +368,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("doNothing")).click();
 
 		// Verify that the card is present on the battlefield
-		Thread.sleep(8000);
+		Thread.sleep(25000);
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
@@ -435,7 +435,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("putToGraveyardFromModalWindow"))
 				.click();
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("doNothing")).click();
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Assert graveyard is visible and contains one card
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver1.findElements(
@@ -479,7 +479,7 @@ public class FullAppTraversalTests
 				FullAppTraversalTests.firefoxDriver1.findElement(By.id("putToZoneSelectForHand")))
 				.selectByVisibleText("Graveyard");
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Verify that there is one more card in the graveyard
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver1.findElements(
@@ -494,7 +494,7 @@ public class FullAppTraversalTests
 				FullAppTraversalTests.firefoxDriver1.findElement(By.id("putToZoneSelectForHand")))
 				.selectByVisibleText("Exile");
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Verify that there is one more card in the exile and that it is
 		// visible
@@ -509,7 +509,7 @@ public class FullAppTraversalTests
 		new Select(FullAppTraversalTests.firefoxDriver1.findElement(By
 				.id("putToZoneSelectForExile"))).selectByVisibleText("Graveyard");
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("moveToZoneSubmitExile")).click();
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Verify that there is one more card in the graveyard
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver1.findElements(
@@ -529,7 +529,7 @@ public class FullAppTraversalTests
 				FullAppTraversalTests.firefoxDriver1.findElement(By.id("putToZoneSelectForHand")))
 				.selectByVisibleText("Exile");
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(8000);
+		Thread.sleep(15000);
 
 		// Verify that there is one more card in the exile
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver1.findElements(
@@ -551,7 +551,7 @@ public class FullAppTraversalTests
 		new Select(FullAppTraversalTests.firefoxDriver1.findElement(By
 				.id("putToZoneSelectForExile"))).selectByVisibleText("Battlefield");
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("moveToZoneSubmitExile")).click();
-		Thread.sleep(8000);
+		Thread.sleep(30000);
 
 		// Verify that there are three cards on the battlefield
 		Assert.assertEquals(6,
