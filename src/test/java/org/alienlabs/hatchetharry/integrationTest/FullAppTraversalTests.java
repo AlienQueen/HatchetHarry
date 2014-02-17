@@ -119,8 +119,8 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.operaDriver1 = new OperaDriver();
 		FullAppTraversalTests.operaDriver2 = new OperaDriver();
 
-		FullAppTraversalTests.operaDriver1.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		FullAppTraversalTests.operaDriver1.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
 
