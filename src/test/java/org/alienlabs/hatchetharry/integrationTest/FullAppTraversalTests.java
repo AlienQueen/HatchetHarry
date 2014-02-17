@@ -216,12 +216,13 @@ public class FullAppTraversalTests
 		Assert.assertEquals(6,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".movers-row"))
 						.size());
-
+		Thread.sleep(15000);
 		// Verify that card is present on the battlefield
 		// Two HTML elements with class "magicCard" are created for each card
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
 						.size());
+
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
 						.size());
