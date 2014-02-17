@@ -431,9 +431,12 @@ public class PersistenceService implements Serializable
 	public Deck saveDeck(final Deck d)
 	{
 		final Session cardSession = this.magicCardDao.getSession();
-		for (final MagicCard c : d.getCards())
+		if (null != d.getCards())
 		{
-			cardSession.saveOrUpdate(c);
+			for (final MagicCard c : d.getCards())
+			{
+				cardSession.saveOrUpdate(c);
+			}
 		}
 		this.deckDao.getSession().save(d);
 		return d;
@@ -1119,6 +1122,10 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("delete from Deck").executeUpdate();
 		session.createSQLQuery("delete from DeckArchive").executeUpdate();
 		session.createSQLQuery("delete from CollectibleCard").executeUpdate();
+		session.createSQLQuery("delete from Arrow").executeUpdate();
+		session.createSQLQuery("delete from CardCollection").executeUpdate();
+		session.createSQLQuery("delete from ChatMessage").executeUpdate();
+		session.createSQLQuery("delete from ConsoleLogMessage").executeUpdate();
 	}
 
 	@Transactional(readOnly = true)
