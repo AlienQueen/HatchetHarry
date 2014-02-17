@@ -128,8 +128,10 @@ public class FullAppTraversalTests
 
 		FullAppTraversalTests.chromeDriver1.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
+		FullAppTraversalTests.chromeDriver1.getPageSource();
 		FullAppTraversalTests.chromeDriver2.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
+		FullAppTraversalTests.chromeDriver2.getPageSource();
 	}
 
 	@AfterClass
