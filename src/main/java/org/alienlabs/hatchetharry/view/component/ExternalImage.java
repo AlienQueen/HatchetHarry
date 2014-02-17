@@ -34,4 +34,10 @@ public class ExternalImage extends WebComponent
 		super.onBeforeRender();
 	}
 
+	@Override
+	protected void onInitialize()
+	{
+		super.onInitialize();
+	}
+
 }
