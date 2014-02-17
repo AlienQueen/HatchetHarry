@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
@@ -12,9 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -116,14 +113,11 @@ public class FullAppTraversalTests
 			+ "		window.scrollBy(0,5);\n}\n}";
 
 	@BeforeClass
-	public static void setUpClass() throws InterruptedException, MalformedURLException
+	public static void setUpClass() throws InterruptedException
 	{
-		FullAppTraversalTests.chromeDriver1 = new RemoteWebDriver(new URL(
-				FullAppTraversalTests.HOST + ":" + FullAppTraversalTests.PORT + "/"),
-				DesiredCapabilities.chrome());
-		FullAppTraversalTests.chromeDriver2 = new RemoteWebDriver(new URL(
-				FullAppTraversalTests.HOST + ":" + FullAppTraversalTests.PORT + "/"),
-				DesiredCapabilities.chrome());
+		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
+		FullAppTraversalTests.chromeDriver1 = new ChromeDriver();
+		FullAppTraversalTests.chromeDriver2 = new ChromeDriver();
 
 		FullAppTraversalTests.chromeDriver1.manage().timeouts()
 				.implicitlyWait(60, TimeUnit.SECONDS);
@@ -131,6 +125,11 @@ public class FullAppTraversalTests
 				.implicitlyWait(60, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
+
+		FullAppTraversalTests.chromeDriver1.get(FullAppTraversalTests.HOST + ":"
+				+ FullAppTraversalTests.PORT + "/");
+		FullAppTraversalTests.chromeDriver2.get(FullAppTraversalTests.HOST + ":"
+				+ FullAppTraversalTests.PORT + "/");
 	}
 
 	@AfterClass
