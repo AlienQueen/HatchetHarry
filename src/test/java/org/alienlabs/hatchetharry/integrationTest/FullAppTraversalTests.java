@@ -25,7 +25,7 @@ public class FullAppTraversalTests
 	private static WebDriver chromeDriver2;
 
 	private static final String PORT = "8088";
-	private static final String HOST = "localhost";
+	private static final String HOST = "http://localhost";
 
 	private static final String SHOW_AND_OPEN_MOBILE_MENUBAR = "jQuery('#cssmenu').hide(); jQuery('.categories').hide(); jQuery('.dropdownmenu').show(); jQuery('.dropdownmenu:first').click();";
 
