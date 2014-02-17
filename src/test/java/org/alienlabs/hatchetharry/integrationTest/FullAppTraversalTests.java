@@ -119,10 +119,10 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver1 = new ChromeDriver();
 		FullAppTraversalTests.chromeDriver2 = new ChromeDriver();
 
-		FullAppTraversalTests.chromeDriver1.manage().timeouts()
-				.implicitlyWait(60, TimeUnit.SECONDS);
-		FullAppTraversalTests.chromeDriver2.manage().timeouts()
-				.implicitlyWait(60, TimeUnit.SECONDS);
+	//	FullAppTraversalTests.chromeDriver1.manage().timeouts()
+	//			.implicitlyWait(60, TimeUnit.SECONDS);
+	//	FullAppTraversalTests.chromeDriver2.manage().timeouts()
+	//			.implicitlyWait(60, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
 
