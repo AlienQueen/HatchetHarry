@@ -1467,8 +1467,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/notificon.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery.jsPlumb-1.5.3-min.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -3230,6 +3228,12 @@ public class HomePage extends TestReportPage
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 			}
+
+			@Override
+			protected void onBeforeRender()
+			{
+				super.onBeforeRender();
+			}
 		};
 		this.allCardsInBattlefield.setOutputMarkupId(true);
 
@@ -3266,6 +3270,12 @@ public class HomePage extends TestReportPage
 
 					item.add(cardBubbleTip);
 				}
+			}
+
+			@Override
+			protected void onBeforeRender()
+			{
+				super.onBeforeRender();
 			}
 		};
 
@@ -3332,6 +3342,11 @@ public class HomePage extends TestReportPage
 				}
 			}
 
+			@Override
+			protected void onBeforeRender()
+			{
+				super.onBeforeRender();
+			}
 		};
 	}
 
