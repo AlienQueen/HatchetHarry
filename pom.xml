@@ -705,6 +705,7 @@ You are free to modify any part of its source code (client-side or server-side),
 				</excludes>
 			</testResource>
 		</testResources>
+		<pluginManagement>
 		<plugins>
 		   <plugin>
 			        <groupId>org.apache.tomcat.maven</groupId>
@@ -878,6 +879,7 @@ You are free to modify any part of its source code (client-side or server-side),
 				</configuration>
 			</plugin>
 		</plugins>
+		</pluginManagement>
 	</build>
 	<reporting>
 		<plugins>
