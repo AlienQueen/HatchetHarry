@@ -836,7 +836,7 @@ You are free to modify any part of its source code (client-side or server-side),
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.6.8.v20121106</version>
+				<version>8.1.14.v20131031</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.atmosphere</groupId>
