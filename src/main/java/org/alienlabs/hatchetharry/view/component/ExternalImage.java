@@ -28,4 +28,10 @@ public class ExternalImage extends WebComponent
 		this.checkComponentTag(tag, "img");
 	}
 
+	@Override
+	protected void onBeforeRender()
+	{
+		super.onBeforeRender();
+	}
+
 }
