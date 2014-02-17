@@ -194,14 +194,10 @@ public class CreateGameModalWindow extends Panel
 					card.setZone(CardZone.LIBRARY);
 					allMagicCards.add(card);
 				}
-				CreateGameModalWindow.this.persistenceService.saveOrUpdateAllMagicCards(allMagicCards);
-				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
 
 				CreateGameModalWindow.LOGGER.error("allMagicCard.size(): " + allMagicCards.size());
 				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCards)));
 
-				CreateGameModalWindow.LOGGER.error("deck.getCards().size(): "
-						+ deck.getCards().size());
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
@@ -212,11 +208,10 @@ public class CreateGameModalWindow extends Panel
 				{
 					final MagicCard aCard = deck.getCards().get(i);
 					aCard.setZone(CardZone.HAND);
-					aCard.setZoneOrder((long)i);
-					CreateGameModalWindow.this.persistenceService.updateCard(aCard);
 					firstCards.add(aCard);
 				}
 
+				CreateGameModalWindow.this.persistenceService.saveDeckOrUpdate(deck);
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
@@ -233,12 +228,6 @@ public class CreateGameModalWindow extends Panel
 				// Remove Balduvian Horde
 				target.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
 				HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
-
-
-				if (CreateGameModalWindow.this.player.isHandDisplayed())
-				{
-					JavaScriptUtils.updateHand(target);
-				}
 
 				final StringBuilder buil = new StringBuilder(
 						"jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
@@ -274,6 +263,11 @@ public class CreateGameModalWindow extends Panel
 
 				session.setGameCreated();
 				session.resetCardsInGraveyard();
+
+				if (CreateGameModalWindow.this.player.isHandDisplayed())
+				{
+					JavaScriptUtils.updateHand(target);
+				}
 
 				if ((CreateGameModalWindow.this.player.isGraveyardDisplayed() != null)
 						&& CreateGameModalWindow.this.player.isGraveyardDisplayed())

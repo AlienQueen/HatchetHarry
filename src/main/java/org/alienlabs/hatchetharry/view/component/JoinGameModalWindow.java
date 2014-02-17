@@ -201,7 +201,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.LOGGER.info("allCollectibleCardsInDeckArchive.size(): "
 						+ allCollectibleCardsInDeckArchive.size());
 
-				final List<MagicCard> allMagicCard = new ArrayList<MagicCard>();
+				final List<MagicCard> allMagicCards = new ArrayList<MagicCard>();
 
 				for (final CollectibleCard cc : allCollectibleCardsInDeckArchive)
 				{
@@ -214,9 +214,9 @@ public class JoinGameModalWindow extends Panel
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
 					card.setZone(CardZone.LIBRARY);
-					allMagicCard.add(card);
+					allMagicCards.add(card);
 				}
-				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCard)));
+				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCards)));
 
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());

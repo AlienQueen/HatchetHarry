@@ -346,8 +346,8 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1",
-				"version 0.7.0 (release Merry kiss my tralala),");
-		final Label message2 = new Label("message2", "built on Satursday, 15th of February 2014.");
+				"version 0.8.0 (release à 180 sur les trottoirs),");
+		final Label message2 = new Label("message2", "built on Monday, 17th of February 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1295,7 +1295,7 @@ public class HomePage extends TestReportPage
 					final Deck _deck = HomePage.this.persistenceService
 							.getDeck(HomePage.this.session.getPlayer().getDeck().getDeckId());
 					_deck.getCards().remove(card);
-					HomePage.this.persistenceService.saveDeck(_deck);
+					HomePage.this.persistenceService.saveOrUpdateDeck(_deck);
 
 					card.setZone(CardZone.HAND);
 					HomePage.this.persistenceService.updateCard(card);
