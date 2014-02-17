@@ -834,14 +834,18 @@ You are free to modify any part of its source code (client-side or server-side),
 				</executions>
 			</plugin>
 			      <plugin>
-		        <groupId>org.apache.tomcat.maven</groupId>
-		        <artifactId>tomcat7-maven-plugin</artifactId>
-		        <version>2.3-SNAPSHOT</version>
-		        <configuration>
-		          <path>/${project.build.finalName}</path>
-		        </configuration>
-		      </plugin>
-
+			        <groupId>org.apache.tomcat.maven</groupId>
+			        <artifactId>tomcat7-maven-plugin</artifactId>
+			        <version>2.3-SNAPSHOT</version>
+			        <configuration>
+			          <path>/${project.build.finalName}</path>
+			        </configuration>
+		      	</plugin>
+		        <plugin>
+		          <groupId>org.apache.tomcat.maven</groupId>
+		          <artifactId>tomcat6-maven-plugin</artifactId>
+		          <version>2.3-SNAPSHOT</version>
+		        </plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
