@@ -122,7 +122,8 @@ public class ChatPanel extends Panel
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 
-					final ChatCometChannel ccc = new ChatCometChannel(_user, gameId, chatMessage);
+					final ChatCometChannel ccc = new ChatCometChannel(HatchetHarrySession.get()
+							.getPlayer(), _user, gameId, chatMessage);
 
 					HatchetHarryApplication.get().getEventBus().post(ccc, pageUuid);
 				}
@@ -136,8 +137,10 @@ public class ChatPanel extends Panel
 	@Subscribe
 	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event)
 	{
-		target.appendJavaScript("document.getElementById('message').value=''; ");
-		target.appendJavaScript("var text = ['! ', '', '! ', '', '! ', '']; var index = 0; var showChatNotif = function() { if (index < 6) { window.setTimeout(function() { Notificon(text[index++], '/favicon.ico'); showChatNotif(); }, 500); } }; showChatNotif(); ");
+		if (HatchetHarrySession.get().getPlayer().equals(event.getPlayer()))
+		{
+			target.appendJavaScript("document.getElementById('message').value=''; ");
+		}
 
 		target.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
 				+ event.getMessage()
