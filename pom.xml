@@ -628,6 +628,11 @@ You are free to modify any part of its source code (client-side or server-side),
 		    <version>1.2.0</version>
 		    <scope>test</scope>
 		</dependency>
+		<dependency>
+	        <groupId>org.apache.tomcat</groupId>
+	        <artifactId>tomcat-catalina</artifactId>
+	        <version>7.0.42</version>
+        </dependency>
 	</dependencies>
 
 	<repositories>
@@ -705,18 +710,38 @@ You are free to modify any part of its source code (client-side or server-side),
 				</excludes>
 			</testResource>
 		</testResources>
-		<pluginManagement>
 		<plugins>
-		   <plugin>
-			        <groupId>org.apache.tomcat.maven</groupId>
-			        <artifactId>tomcat7-maven-plugin</artifactId>
-			        <version>2.2</version>
-			        <configuration>
-			          <url>http://localhost:8088/</url>
-			          <path>/${project.build.finalName}</path>
-			        </configuration>
-		      	</plugin>
-			<plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                        <execution>
+                                <id>start-tomcat</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                        <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                        <fork>true</fork>
+                                </configuration>
+                        </execution>
+                        <execution>
+                                <id>stop-tomcat</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                        <goal>shutdown</goal>
+                                </goals>
+                        </execution>
+                </executions>
+                <configuration>
+                        <server>tomcatServer</server>
+                        <mode>both</mode>
+                        <contextFile>src/main/resources/ROOT.xml</contextFile>
+                        <path>/</path>
+                </configuration>
+            </plugin>
+            <plugin>
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>cobertura-maven-plugin</artifactId>
 		        <version>2.4</version>
@@ -731,24 +756,24 @@ You are free to modify any part of its source code (client-side or server-side),
                     <format>html</format>
                 </formats>
 		        </configuration>
-		    <executions>
-		      <execution>
-		        <id>clean</id>
-		        <phase>pre-site</phase>
-		        <goals>
-		          <goal>clean</goal>
-		        </goals>
-		      </execution>
-		      <execution>
-		        <id>instrument</id>
-		        <phase>site</phase>
-		        <goals>
-		          <goal>instrument</goal>
-		          <goal>cobertura</goal>
-		        </goals>
-		      </execution>
-		    </executions>
-		      </plugin>
+		        <executions>
+		          <execution>
+		            <id>clean</id>
+		            <phase>pre-site</phase>
+		            <goals>
+		              <goal>clean</goal>
+		            </goals>
+		          </execution>
+		          <execution>
+		            <id>instrument</id>
+		            <phase>site</phase>
+		            <goals>
+		              <goal>instrument</goal>
+		              <goal>cobertura</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+	        </plugin>
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -875,7 +900,6 @@ You are free to modify any part of its source code (client-side or server-side),
 				</configuration>
 			</plugin>
 		</plugins>
-		</pluginManagement>
 	</build>
 	<reporting>
 		<plugins>
