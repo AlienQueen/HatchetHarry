@@ -52,7 +52,6 @@
 }
 
 #dock li.seperator {
-	background: url("img/dock-seperator.png") bottom left no-repeat;
 	width: 20px;
 	height: 158px;
 	position: relative;
