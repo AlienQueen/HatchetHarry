@@ -15,4 +15,4 @@ window.setTimeout(function() {
 
 		jQuery('#cardTooltip${uuidValidForJs}').hide(); 
 	}
-}, 500);
+}, 1000);
