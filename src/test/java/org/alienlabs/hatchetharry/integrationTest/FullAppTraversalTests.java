@@ -125,10 +125,10 @@ public class FullAppTraversalTests
 
 		FullAppTraversalTests.firefoxDriver1.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
-		FullAppTraversalTests.firefoxDriver1.getPageSource();
+//		FullAppTraversalTests.firefoxDriver1.getPageSource();
 		FullAppTraversalTests.firefoxDriver2.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
-		FullAppTraversalTests.firefoxDriver2.getPageSource();
+//		FullAppTraversalTests.firefoxDriver2.getPageSource();
 	}
 
 	@AfterClass
