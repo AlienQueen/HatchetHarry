@@ -119,7 +119,7 @@ public class FullAppTraversalTests
 	public static void setUpClass() throws InterruptedException
 	{
 		FullAppTraversalTests.firefoxDriver = new FirefoxDriver();
-		FullAppTraversalTests.htmlUnitDriver = new HtmlUnitDriver(BrowserVersion.FIREFOX_3_6);
+		FullAppTraversalTests.htmlUnitDriver = new HtmlUnitDriver(BrowserVersion.INTERNET_EXPLORER_10);
 		htmlUnitDriver.setJavascriptEnabled(true);
 
 		 FullAppTraversalTests.firefoxDriver.manage().timeouts()
