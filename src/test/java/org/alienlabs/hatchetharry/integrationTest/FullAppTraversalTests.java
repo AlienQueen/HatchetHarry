@@ -115,7 +115,7 @@ public class FullAppTraversalTests
 	public static void setUpClass() throws InterruptedException
 	{
 		FullAppTraversalTests.firefoxDriver1 = new FirefoxDriver();
-		System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		FullAppTraversalTests.chromeDriver2 = new ChromeDriver();
 
 		// FullAppTraversalTests.firefoxDriver1.manage().timeouts()
