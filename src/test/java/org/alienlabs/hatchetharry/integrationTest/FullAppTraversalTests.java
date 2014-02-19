@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -120,10 +122,10 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.htmlUnitDriver = new HtmlUnitDriver(BrowserVersion.FIREFOX_3_6);
 		htmlUnitDriver.setJavascriptEnabled(true);
 
-		// FullAppTraversalTests.firefoxDriver1.manage().timeouts()
-		// .implicitlyWait(60, TimeUnit.SECONDS);
-		// FullAppTraversalTests.firefoxDriver2.manage().timeouts()
-		// .implicitlyWait(60, TimeUnit.SECONDS);
+		 FullAppTraversalTests.firefoxDriver.manage().timeouts()
+		 .implicitlyWait(60, TimeUnit.SECONDS);
+		 FullAppTraversalTests.htmlUnitDriver.manage().timeouts()
+		 .implicitlyWait(60, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
 
