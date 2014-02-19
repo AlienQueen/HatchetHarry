@@ -149,7 +149,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		HomePageTest.testDockElement("Graveyard");
 
 		// Assert exiled
-		HomePageTest.testDockElement("Exiled");
+		HomePageTest.testDockElement("Exile");
 
 		// Assert battlefield
 		HomePageTest.testDockElement("Battlefield");
