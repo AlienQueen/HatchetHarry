@@ -15,8 +15,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-
 public class FullAppTraversalTests
 {
 	private static WebDriver firefoxDriver;
@@ -117,7 +115,7 @@ public class FullAppTraversalTests
 	public static void setUpClass() throws InterruptedException
 	{
 		FullAppTraversalTests.firefoxDriver = new FirefoxDriver();
-		FullAppTraversalTests.htmlUnitDriver = new HtmlUnitDriver(BrowserVersion.FIREFOX_17);
+		FullAppTraversalTests.htmlUnitDriver = new HtmlUnitDriver();
 		htmlUnitDriver.setJavascriptEnabled(true);
 
 		// FullAppTraversalTests.firefoxDriver1.manage().timeouts()
