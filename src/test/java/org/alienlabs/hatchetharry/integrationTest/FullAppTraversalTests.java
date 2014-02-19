@@ -176,7 +176,7 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("joinGameLinkResponsive")).click();
-		Thread.sleep(8000);
+		Thread.sleep(16000);
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("name")).sendKeys("Marie");
 		new Select(FullAppTraversalTests.htmlUnitDriver.findElement(By.id("sideInput")))
