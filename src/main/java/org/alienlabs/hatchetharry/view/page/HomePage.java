@@ -3085,6 +3085,8 @@ public class HomePage extends TestReportPage
 			{
 				super.renderHead(component, response);
 				HomePage.this.restoreStateOfAllCardsInBattlefield(response);
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "script/draggableHandle/cardTooltip.js")));
 			}
 
 		});

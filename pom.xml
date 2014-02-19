@@ -34,7 +34,7 @@ You are free to modify any part of its source code (client-side or server-side),
 	</licenses>
 	<properties>
 		<wicket.version>6.12.0</wicket.version>
-		<quickview.version>6.9.1</quickview.version>
+		<quickview.version>6.0-SNAPSHOT</quickview.version>
 		<wicketstuff.version>6.12.0</wicketstuff.version>
 		<wicket-atmosphere.version>0.16</wicket-atmosphere.version>
 		<atmosphere.version>2.1.0</atmosphere.version>
@@ -712,36 +712,6 @@ You are free to modify any part of its source code (client-side or server-side),
 		</testResources>
 		<plugins>
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                        <execution>
-                                <id>start-tomcat</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                        <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                        <fork>true</fork>
-                                </configuration>
-                        </execution>
-                        <execution>
-                                <id>stop-tomcat</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                        <goal>shutdown</goal>
-                                </goals>
-                        </execution>
-                </executions>
-                <configuration>
-                        <server>tomcatServer</server>
-                        <mode>both</mode>
-                        <contextFile>src/main/resources/ROOT.xml</contextFile>
-                        <path>/</path>
-                </configuration>
-            </plugin>
-            <plugin>
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>cobertura-maven-plugin</artifactId>
 		        <version>2.4</version>
@@ -870,8 +840,8 @@ You are free to modify any part of its source code (client-side or server-side),
 			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
+                		<artifactId>tomcat7-maven-plugin</artifactId>
+		                <version>2.2</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.atmosphere</groupId>
@@ -879,10 +849,10 @@ You are free to modify any part of its source code (client-side or server-side),
 						<version>2.0.1</version>
 					</dependency>
 					<dependency>
-		    			<groupId>org.atmosphere</groupId>
-		            	<artifactId>atmosphere-runtime-native</artifactId>
-            			<version>${atmosphere.version}</version> 
-            		</dependency>
+			    			<groupId>org.atmosphere</groupId>
+				            	<artifactId>atmosphere-runtime-native</artifactId>
+            					<version>${atmosphere.version}</version> 
+            				</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>

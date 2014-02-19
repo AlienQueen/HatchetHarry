@@ -41,7 +41,7 @@ public class CreateTokenModalWindow extends Panel
 
 	final ModalWindow modal;
 
-	final Model<String> typeModel, powerModel, thoughnessModel, colorsModel, capabilitiesModel,
+	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
 			creatureTypesModel, descriptionModel;
 
 	@SpringBean
@@ -61,7 +61,7 @@ public class CreateTokenModalWindow extends Panel
 		this.creatureTypesModel = Model.of("");
 		this.descriptionModel = Model.of("");
 		this.powerModel = Model.of("");
-		this.thoughnessModel = Model.of("");
+		this.toughnessModel = Model.of("");
 
 		final Form<String> form = new Form<String>("form");
 
@@ -71,9 +71,9 @@ public class CreateTokenModalWindow extends Panel
 		final Label powerLabel = new Label("powerLabel", "Power: ");
 		final TextField<String> power = new TextField<String>("power", this.powerModel);
 
-		final Label thoughnessLabel = new Label("thoughnessLabel", "Thoughness: ");
-		final TextField<String> thoughness = new TextField<String>("thoughness",
-				this.thoughnessModel);
+		final Label thoughnessLabel = new Label("toughnessLabel", "Toughness: ");
+		final TextField<String> thoughness = new TextField<String>("toughness",
+				this.toughnessModel);
 
 		final Label colorsLabel = new Label("colorsLabel", "Colors: ");
 		final TextField<String> colors = new TextField<String>("colors", this.colorsModel);
@@ -103,8 +103,8 @@ public class CreateTokenModalWindow extends Panel
 						.getPlayer(HatchetHarrySession.get().getPlayer().getId());
 
 				final Token token = new Token(CreateTokenModalWindow.this.typeModel.getObject(),
-						Long.parseLong(CreateTokenModalWindow.this.powerModel.getObject()),
-						Long.parseLong(CreateTokenModalWindow.this.thoughnessModel.getObject()),
+						CreateTokenModalWindow.this.powerModel.getObject(),
+						CreateTokenModalWindow.this.toughnessModel.getObject(),
 						CreateTokenModalWindow.this.colorsModel.getObject(),
 						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
 						gameId);

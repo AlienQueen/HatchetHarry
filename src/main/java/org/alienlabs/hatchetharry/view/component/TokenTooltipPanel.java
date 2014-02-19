@@ -26,6 +26,9 @@ public class TokenTooltipPanel extends Panel
 		final String ownerSide = this.persistenceService.getPlayer(token.getPlayer().getId())
 				.getSide().getSideName();
 
+		final TokenTooltipBehavior ttb = new TokenTooltipBehavior(token.getUuid());
+		this.add(ttb);
+		
 		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
 		{
 			private static final long serialVersionUID = 1L;
@@ -53,7 +56,7 @@ public class TokenTooltipPanel extends Panel
 
 		this.add(new Label("type", token.getType()).setOutputMarkupId(true));
 		this.add(new Label("power", token.getPower()).setOutputMarkupId(true));
-		this.add(new Label("thoughness", token.getThoughness()).setOutputMarkupId(true));
+		this.add(new Label("toughness", token.getToughness()).setOutputMarkupId(true));
 		this.add(new Label("colors", token.getColors()).setOutputMarkupId(true));
 		this.add(new Label("capabilities", token.getCapabilities()).setOutputMarkupId(true));
 		this.add(new Label("creatureTypes", token.getCreatureTypes()).setOutputMarkupId(true));

@@ -302,7 +302,7 @@ public class NonRegressionTest
 				.newFormTester("createTokenWindow:content:form");
 		createTokenForm.setValue("type", "Creature");
 		createTokenForm.setValue("power", "7");
-		createTokenForm.setValue("thoughness", "7");
+		createTokenForm.setValue("toughness", "7");
 		createTokenForm.setValue("colors", "Green");
 		createTokenForm.setValue("capabilities", "It kills you in three turns");
 		createTokenForm.setValue("creatureTypes", "Lurghoyf");

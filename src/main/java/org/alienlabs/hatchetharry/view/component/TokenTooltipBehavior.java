@@ -2,9 +2,7 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 
-import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -16,15 +14,15 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
+public class TokenTooltipBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CardTooltipBehavior.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TokenTooltipBehavior.class);
 
-	private final UUID uuid;
+	private final String uuid;
 
-	public CardTooltipBehavior(final UUID _uuid)
+	public TokenTooltipBehavior(final String _uuid)
 	{
 		this.uuid = _uuid;
 	}
@@ -38,7 +36,7 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+		variables.put("uuidValidForJs", this.uuid.replace("-", "_"));
 
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/cardTooltip.js");
@@ -52,7 +50,7 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final IOException e)
 		{
-			CardTooltipBehavior.LOGGER.error(
+			TokenTooltipBehavior.LOGGER.error(
 					"unable to close template1 in CardTooltipBehavior#renderHead()!", e);
 		}
 	}

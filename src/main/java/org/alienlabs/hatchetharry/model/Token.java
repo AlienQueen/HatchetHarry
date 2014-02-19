@@ -37,9 +37,9 @@ public class Token implements Serializable
 	@Column
 	private String type;
 	@Column
-	private Long power;
+	private String power;
 	@Column
-	private Long thoughness;
+	private String toughness;
 	@Column
 	private String colors;
 	@Column
@@ -69,12 +69,12 @@ public class Token implements Serializable
 	{
 	}
 
-	public Token(final String _type, final Long _power, final Long _thoughness,
+	public Token(final String _type, final String _power, final String _toughness,
 			final String _colors, final String _description, final String _uuid, final Long _gameId)
 	{
 		this.type = _type;
 		this.power = _power;
-		this.thoughness = _thoughness;
+		this.toughness = _toughness;
 		this.colors = _colors;
 		this.description = _description;
 		this.uuid = _uuid;
@@ -101,24 +101,24 @@ public class Token implements Serializable
 		this.type = _type;
 	}
 
-	public Long getPower()
+	public String getPower()
 	{
 		return this.power;
 	}
 
-	public void setPower(final Long _power)
+	public void setPower(final String _power)
 	{
 		this.power = _power;
 	}
 
-	public Long getThoughness()
+	public String getToughness()
 	{
-		return this.thoughness;
+		return this.toughness;
 	}
 
-	public void setThoughness(final Long _thoughness)
+	public void setToughness(final String _toughness)
 	{
-		this.thoughness = _thoughness;
+		this.toughness = _toughness;
 	}
 
 	public String getColors()
