@@ -104,7 +104,7 @@
           <param-name>org.atmosphere.cpr.AtmosphereInterceptor</param-name>
           <param-value>org.atmosphere.interceptor.NginxInterceptor</param-value>
      	</init-param>
-      	<load-on-startup>0</load-on-startup>  
+      	<load-on-startup>1</load-on-startup>  
 		<async-supported>true</async-supported>
     </servlet> 
 	
