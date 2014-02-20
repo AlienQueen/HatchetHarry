@@ -67,8 +67,7 @@ public class CounterTooltip extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				final String _counterName = _form.get("counterAddName")
-						.getDefaultModelObjectAsString();
+				final String _counterName = counterAddName.getDefaultModelObjectAsString();
 				final Counter counter = new Counter();
 				counter.setCounterName(_counterName);
 				counter.setNumberOfCounters(1l);
@@ -81,6 +80,7 @@ public class CounterTooltip extends Panel
 					counter.setCard(CounterTooltip.this.card);
 				}
 				CounterTooltip.this.persistenceService.saveOrUpdateCounter(counter);
+				counterAddName.setModel(Model.of(""));
 
 				final Set<Counter> counters;
 
@@ -248,8 +248,9 @@ public class CounterTooltip extends Panel
 									game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 									targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-									NotifierAction.ADD_COUNTER_ACTION, CounterTooltip.this.token, "",
-									CounterTooltip.this.token.getPlayer().getSide().getSideName());
+									NotifierAction.ADD_COUNTER_ACTION, CounterTooltip.this.token,
+									"", CounterTooltip.this.token.getPlayer().getSide()
+											.getSideName());
 
 							logger = AbstractConsoleLogStrategy.chooseStrategy(
 									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,

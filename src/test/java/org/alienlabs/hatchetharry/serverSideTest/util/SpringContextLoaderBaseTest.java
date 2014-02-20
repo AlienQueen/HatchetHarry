@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.serverSideTest.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
@@ -10,10 +11,13 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.atmosphere.util.SimpleBroadcaster;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -28,7 +32,7 @@ public class SpringContextLoaderBaseTest
 	protected static HatchetHarryApplication webApp;
 	public static transient ApplicationContext context;
 	protected static String pageDocument;
-	private static PersistenceService persistenceService;
+	protected static PersistenceService persistenceService;
 
 	@BeforeClass
 	public static void setUpBeforeClass()
@@ -47,6 +51,12 @@ public class SpringContextLoaderBaseTest
 								true));
 				// We'll ask Emond to enable unit testing in EventBus
 				// this.eventBus = new EventBusMock(this);
+			}
+
+			@Override
+			public EventBus getEventBus()
+			{
+				return new EventBusMock(this);
 			}
 		};
 
@@ -71,7 +81,7 @@ public class SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
 	}
 
-	public static void startAGameAndPlayACard(final WicketTester _tester,
+	public static Long startAGameAndPlayACard(final WicketTester _tester,
 			final ApplicationContext _context)
 	{
 		// Create game
@@ -108,13 +118,36 @@ public class SpringContextLoaderBaseTest
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		_tester.executeBehavior(pcfhb);
 
-
 		// We still should not have more cards that the number of cards in the
 		// deck
 		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
+
+		return gameId;
 	}
 
+}
+
+class EventBusMock extends EventBus
+{
+
+	private final List<Object> events = new ArrayList<Object>();
+
+	public EventBusMock(final WebApplication application)
+	{
+		super(application, new SimpleBroadcaster());
+	}
+
+	@Override
+	public void post(final Object event, final String resourceUuid)
+	{
+		this.events.add(event);
+	}
+
+	public List<Object> getEvents()
+	{
+		return this.events;
+	}
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
-import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -14,7 +13,6 @@ import org.junit.Test;
 
 public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 {
-
 	@Test
 	public void testCardMoveBehavior()
 	{
@@ -63,10 +61,8 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
-				.getBean(PersistenceService.class);
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final List<MagicCard> allCardsInBattlefield = persistenceService
+		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
