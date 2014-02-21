@@ -40,7 +40,7 @@ public class SpringContextLoaderBaseTest
 				.getBean(PersistenceService.class);
 
 		// start and render the test page
-		HomePage homePage =  SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 
 		// assert rendered page class
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);

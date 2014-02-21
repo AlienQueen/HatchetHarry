@@ -62,6 +62,8 @@ import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.util.SimpleBroadcaster;
 import org.junit.Assert;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -71,21 +73,22 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-public class EventBusMock extends EventBus {
+public class EventBusMock extends EventBus
+{
 	private final List<Object> events = new ArrayList<Object>();
 	static AtmosphereFramework f;
-	private Broadcaster broadcaster;
-	private WebApplication application;
+	private final Broadcaster broadcaster;
+	private final WebApplication application;
 	public Map<String, PageKey> trackedPages = Maps.newHashMap();
-	private Multimap<PageKey, EventSubscription> subscriptions = HashMultimap.create();
-	private List<ResourceRegistrationListener> registrationListeners = new CopyOnWriteArrayList<ResourceRegistrationListener>();
-	private AtmosphereResource resource;
+	private final Multimap<PageKey, EventSubscription> subscriptions = HashMultimap.create();
+	private final List<ResourceRegistrationListener> registrationListeners = new CopyOnWriteArrayList<ResourceRegistrationListener>();
+	private final AtmosphereResource resource;
+	private static final Logger LOGGER = LoggerFactory.getLogger(EventBusMock.class);
 
 	static
 	{
 		EventBusMock.f = new AtmosphereFramework()
 		{
-
 			@Override
 			public boolean isShareExecutorServices()
 			{
@@ -126,8 +129,7 @@ public class EventBusMock extends EventBus {
 		}
 		catch (final ServletException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			EventBusMock.LOGGER.error("error in static block", e);
 		}
 		Assert.assertNotNull(EventBusMock.f.getBroadcasterFactory());
 	}
@@ -141,7 +143,9 @@ public class EventBusMock extends EventBus {
 
 		this.application = application;
 
-		this.resource = AtmosphereResourceFactory.getDefault().create(f.getAtmosphereConfig(), Mockito.mock(Broadcaster.class), AtmosphereResponse.newInstance().request(AtmosphereRequest.newInstance()),
+		this.resource = AtmosphereResourceFactory.getDefault().create(
+				EventBusMock.f.getAtmosphereConfig(), Mockito.mock(Broadcaster.class),
+				AtmosphereResponse.newInstance().request(AtmosphereRequest.newInstance()),
 				Mockito.mock(AsyncSupport.class), Mockito.mock(AtmosphereHandler.class));
 	}
 
@@ -149,19 +153,21 @@ public class EventBusMock extends EventBus {
 	public void post(final Object event, final String resourceUuid)
 	{
 		this.events.add(event);
-
 		Assert.assertNotNull(this.resource);
-
 		this.post(event, this.resource);
 	}
 
 	@Override
-	public void post(Object event, AtmosphereResource resource)
+	public void post(final Object event, final AtmosphereResource _resource)
 	{
-		ThreadContext oldContext = ThreadContext.get(false);
+		final ThreadContext oldContext = ThreadContext.get(false);
 		try
 		{
-			postToSingleResource(event, resource);
+			this.postToSingleResource(event, _resource);
+		}
+		catch (final Exception e)
+		{
+			EventBusMock.LOGGER.error("error in post()", e);
 		}
 		finally
 		{
@@ -169,54 +175,59 @@ public class EventBusMock extends EventBus {
 		}
 	}
 
-	private void postToSingleResource(Object payload, AtmosphereResource resource)
+	private void postToSingleResource(final Object payload, final AtmosphereResource resource)
 	{
-		AtmosphereEvent event = new AtmosphereEvent(payload, resource);
+		final AtmosphereEvent event = new AtmosphereEvent(payload, resource);
 		ThreadContext.detach();
-		ThreadContext.setApplication(application);
+		ThreadContext.setApplication(this.application);
 		PageKey key;
 		Collection<EventSubscription> subscriptionsForPage;
 		synchronized (this)
 		{
-			key = trackedPages.get(resource.uuid());
+			key = this.trackedPages.get(resource.uuid());
 			subscriptionsForPage = Collections2.filter(
-					Collections.unmodifiableCollection(subscriptions.get(key)), new EventFilter(event));
+					Collections.unmodifiableCollection(this.subscriptions.get(key)),
+					new EventFilter(event));
 		}
 		if (key == null)
-			broadcaster.removeAtmosphereResource(resource);
+		{
+			this.broadcaster.removeAtmosphereResource(resource);
+		}
 		else if (!subscriptionsForPage.isEmpty())
-			post(resource, key, subscriptionsForPage, event);
+		{
+			this.post(resource, key, subscriptionsForPage, event);
+		}
 	}
 
-	private void post(AtmosphereResource resource, PageKey pageKey,
-			Collection<EventSubscription> subscriptionsForPage, AtmosphereEvent event)
+	private void post(final AtmosphereResource resource, final PageKey pageKey,
+			final Collection<EventSubscription> subscriptionsForPage, final AtmosphereEvent event)
 	{
-		String filterPath = WebApplication.get()
-				.getWicketFilter()
-				.getFilterConfig()
+		String filterPath = WebApplication.get().getWicketFilter().getFilterConfig()
 				.getInitParameter(WicketFilter.FILTER_MAPPING_PARAM);
 		filterPath = filterPath.substring(1, filterPath.length() - 1);
-		HttpServletRequest httpRequest = new HttpServletRequestWrapper(resource.getRequest())
+		final HttpServletRequest httpRequest = new HttpServletRequestWrapper(resource.getRequest())
 		{
 			@Override
 			public String getContextPath()
 			{
-				String ret = super.getContextPath();
+				final String ret = super.getContextPath();
 				return ret == null ? "" : ret;
 			}
 		};
-		AtmosphereWebRequest request = new AtmosphereWebRequest(
-				(ServletWebRequest)application.newWebRequest(httpRequest, filterPath), pageKey,
-				subscriptionsForPage, event);
-		Response response = new AtmosphereWebResponse(resource.getResponse());
-		if (application.createRequestCycle(request, response).processRequestAndDetach())
-			broadcaster.broadcast(response.toString(), resource);
+		final AtmosphereWebRequest request = new AtmosphereWebRequest(
+				(ServletWebRequest)this.application.newWebRequest(httpRequest, filterPath),
+				pageKey, subscriptionsForPage, event);
+		final Response response = new AtmosphereWebResponse(resource.getResponse());
+		if (this.application.createRequestCycle(request, response).processRequestAndDetach())
+		{
+			this.broadcaster.broadcast(response.toString(), resource);
+		}
 	}
 
 	@Override
-	public void addRegistrationListener(ResourceRegistrationListener listener)
+	public void addRegistrationListener(final ResourceRegistrationListener listener)
 	{
-		registrationListeners.add(listener);
+		this.registrationListeners.add(listener);
 	}
 
 	/**
@@ -225,22 +236,22 @@ public class EventBusMock extends EventBus {
 	 * @param listener
 	 */
 	@Override
-	public void removeRegistrationListener(ResourceRegistrationListener listener)
+	public void removeRegistrationListener(final ResourceRegistrationListener listener)
 	{
-		registrationListeners.add(listener);
+		this.registrationListeners.add(listener);
 	}
 
-	public void fireRegistration(String uuid, Page page)
+	public void fireRegistration(final String uuid, final Page page)
 	{
-		for (ResourceRegistrationListener curListener : registrationListeners)
+		for (final ResourceRegistrationListener curListener : this.registrationListeners)
 		{
 			curListener.resourceRegistered(uuid, page);
 		}
 	}
 
-	public void fireUnregistration(String uuid)
+	public void fireUnregistration(final String uuid)
 	{
-		for (ResourceRegistrationListener curListener : registrationListeners)
+		for (final ResourceRegistrationListener curListener : this.registrationListeners)
 		{
 			curListener.resourceUnregistered(uuid);
 		}
@@ -251,7 +262,8 @@ public class EventBusMock extends EventBus {
 		return this.events;
 	}
 
-	public AtmosphereResource getResource() {
+	public AtmosphereResource getResource()
+	{
 		return this.resource;
 	}
 
@@ -364,7 +376,7 @@ class AtmosphereEvent
 
 	private final AtmosphereResource resource;
 
-	AtmosphereEvent(Object payload, AtmosphereResource resource)
+	AtmosphereEvent(final Object payload, final AtmosphereResource resource)
 	{
 		this.payload = payload;
 		this.resource = resource;
@@ -375,7 +387,7 @@ class AtmosphereEvent
 	 */
 	public Object getPayload()
 	{
-		return payload;
+		return this.payload;
 	}
 
 	/**
@@ -383,198 +395,200 @@ class AtmosphereEvent
 	 */
 	public AtmosphereResource getResource()
 	{
-		return resource;
+		return this.resource;
 	}
 }
 
 class AtmosphereWebRequest extends ServletWebRequest
 {
-	private ServletWebRequest wrappedRequest;
+	private final ServletWebRequest wrappedRequest;
 
-	private PageKey pageKey;
+	private final PageKey pageKey;
 
-	private Collection<EventSubscription> subscriptions;
+	private final Collection<EventSubscription> subscriptions;
 
-	private AtmosphereEvent event;
+	private final AtmosphereEvent event;
 
-	AtmosphereWebRequest(ServletWebRequest wrappedRequest, PageKey pageKey,
-			Collection<EventSubscription> subscriptions, AtmosphereEvent event)
-			{
+	AtmosphereWebRequest(final ServletWebRequest wrappedRequest, final PageKey pageKey,
+			final Collection<EventSubscription> subscriptions, final AtmosphereEvent event)
+	{
 		super(wrappedRequest.getContainerRequest(), wrappedRequest.getFilterPrefix());
 		this.wrappedRequest = wrappedRequest;
 		this.pageKey = pageKey;
 		this.subscriptions = subscriptions;
 		this.event = event;
-			}
+	}
 
 	public PageKey getPageKey()
 	{
-		return pageKey;
+		return this.pageKey;
 	}
 
 	public Collection<EventSubscription> getSubscriptions()
 	{
-		return subscriptions;
+		return this.subscriptions;
 	}
 
 	public AtmosphereEvent getEvent()
 	{
-		return event;
+		return this.event;
 	}
 
 	@Override
 	public List<Cookie> getCookies()
 	{
-		return wrappedRequest.getCookies();
+		return this.wrappedRequest.getCookies();
 	}
 
 	@Override
-	public List<String> getHeaders(String name)
+	public List<String> getHeaders(final String name)
 	{
-		return wrappedRequest.getHeaders(name);
+		return this.wrappedRequest.getHeaders(name);
 	}
 
 	@Override
-	public String getHeader(String name)
+	public String getHeader(final String name)
 	{
-		return wrappedRequest.getHeader(name);
+		return this.wrappedRequest.getHeader(name);
 	}
 
 	@Override
-	public Time getDateHeader(String name)
+	public Time getDateHeader(final String name)
 	{
-		return wrappedRequest.getDateHeader(name);
+		return this.wrappedRequest.getDateHeader(name);
 	}
 
 	@Override
 	public Url getUrl()
 	{
-		return wrappedRequest.getUrl();
+		return this.wrappedRequest.getUrl();
 	}
 
 	@Override
 	public Url getClientUrl()
 	{
-		return wrappedRequest.getClientUrl();
+		return this.wrappedRequest.getClientUrl();
 	}
 
 	@Override
 	public Locale getLocale()
 	{
-		return wrappedRequest.getLocale();
+		return this.wrappedRequest.getLocale();
 	}
 
 	@Override
 	public Charset getCharset()
 	{
 		// called from the super constructor, when wrappedRequest is still null
-		if (wrappedRequest == null)
+		if (this.wrappedRequest == null)
+		{
 			return RequestUtils.getCharset(super.getContainerRequest());
-		return wrappedRequest.getCharset();
+		}
+		return this.wrappedRequest.getCharset();
 	}
 
 	@Override
-	public Cookie getCookie(String cookieName)
+	public Cookie getCookie(final String cookieName)
 	{
-		return wrappedRequest.getCookie(cookieName);
+		return this.wrappedRequest.getCookie(cookieName);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return wrappedRequest.hashCode();
+		return this.wrappedRequest.hashCode();
 	}
 
 	@Override
 	public Url getOriginalUrl()
 	{
-		return wrappedRequest.getOriginalUrl();
+		return this.wrappedRequest.getOriginalUrl();
 	}
 
 	@Override
 	public IRequestParameters getQueryParameters()
 	{
-		return wrappedRequest.getQueryParameters();
+		return this.wrappedRequest.getQueryParameters();
 	}
 
 	@Override
 	public IRequestParameters getRequestParameters()
 	{
-		return wrappedRequest.getRequestParameters();
+		return this.wrappedRequest.getRequestParameters();
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
-		return wrappedRequest.equals(obj);
+		return this.wrappedRequest.equals(obj);
 	}
 
 	@Override
 	public String getFilterPrefix()
 	{
-		return wrappedRequest.getFilterPrefix();
+		return this.wrappedRequest.getFilterPrefix();
 	}
 
 	@Override
 	public String toString()
 	{
-		return wrappedRequest.toString();
+		return this.wrappedRequest.toString();
 	}
 
 	@Override
 	public IRequestParameters getPostParameters()
 	{
-		return wrappedRequest.getPostParameters();
+		return this.wrappedRequest.getPostParameters();
 	}
 
 	@Override
-	public ServletWebRequest cloneWithUrl(Url url)
+	public ServletWebRequest cloneWithUrl(final Url url)
 	{
-		return wrappedRequest.cloneWithUrl(url);
+		return this.wrappedRequest.cloneWithUrl(url);
 	}
 
 	@Override
-	public MultipartServletWebRequest newMultipartWebRequest(Bytes maxSize, String upload)
-			throws FileUploadException
-			{
-		return wrappedRequest.newMultipartWebRequest(maxSize, upload);
-			}
+	public MultipartServletWebRequest newMultipartWebRequest(final Bytes maxSize,
+			final String upload) throws FileUploadException
+	{
+		return this.wrappedRequest.newMultipartWebRequest(maxSize, upload);
+	}
 
 	@Override
-	public MultipartServletWebRequest newMultipartWebRequest(Bytes maxSize, String upload,
-			FileItemFactory factory) throws FileUploadException
-			{
-		return wrappedRequest.newMultipartWebRequest(maxSize, upload, factory);
-			}
+	public MultipartServletWebRequest newMultipartWebRequest(final Bytes maxSize,
+			final String upload, final FileItemFactory factory) throws FileUploadException
+	{
+		return this.wrappedRequest.newMultipartWebRequest(maxSize, upload, factory);
+	}
 
 	@Override
 	public String getPrefixToContextPath()
 	{
-		return wrappedRequest.getPrefixToContextPath();
+		return this.wrappedRequest.getPrefixToContextPath();
 	}
 
 	@Override
 	public HttpServletRequest getContainerRequest()
 	{
-		return wrappedRequest.getContainerRequest();
+		return this.wrappedRequest.getContainerRequest();
 	}
 
 	@Override
 	public String getContextPath()
 	{
-		return wrappedRequest.getContextPath();
+		return this.wrappedRequest.getContextPath();
 	}
 
 	@Override
 	public String getFilterPath()
 	{
-		return wrappedRequest.getFilterPath();
+		return this.wrappedRequest.getFilterPath();
 	}
 
 	@Override
 	public boolean shouldPreserveClientUrl()
 	{
-		return wrappedRequest.shouldPreserveClientUrl();
+		return this.wrappedRequest.shouldPreserveClientUrl();
 	}
 
 	@Override
@@ -586,26 +600,26 @@ class AtmosphereWebRequest extends ServletWebRequest
 
 class EventFilter implements Predicate<EventSubscription>
 {
-	private AtmosphereEvent event;
+	private final AtmosphereEvent event;
 
 	/**
 	 * Construct.
 	 * 
 	 * @param event
 	 */
-	public EventFilter(AtmosphereEvent event)
+	public EventFilter(final AtmosphereEvent event)
 	{
 		this.event = event;
 	}
 
 	@Override
-	public boolean apply(@Nullable EventSubscription input)
+	public boolean apply(@Nullable final EventSubscription input)
 	{
-		return input.getFilter().apply(event);
+		return input.getFilter().apply(this.event);
 	}
 
 	@Override
-	public boolean equals(@Nullable Object other)
+	public boolean equals(@Nullable final Object other)
 	{
 		return super.equals(other);
 	}
@@ -613,7 +627,7 @@ class EventFilter implements Predicate<EventSubscription>
 
 class AtmosphereWebResponse extends WebResponse
 {
-	private AtmosphereResponse response;
+	private final AtmosphereResponse response;
 	private final AppendingStringBuffer out;
 	private boolean redirect;
 
@@ -622,95 +636,96 @@ class AtmosphereWebResponse extends WebResponse
 	 * 
 	 * @param response
 	 */
-	AtmosphereWebResponse(AtmosphereResponse response)
+	AtmosphereWebResponse(final AtmosphereResponse response)
 	{
 		this.response = response;
-		out = new AppendingStringBuffer(128);
+		this.out = new AppendingStringBuffer(128);
 	}
 
 	@Override
-	public void addCookie(Cookie cookie)
+	public void addCookie(final Cookie cookie)
 	{
-		response.addCookie(cookie);
+		this.response.addCookie(cookie);
 	}
 
 	@Override
-	public void clearCookie(Cookie cookie)
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void setHeader(String name, String value)
-	{
-		response.setHeader(name, value);
-	}
-
-	@Override
-	public void addHeader(String name, String value)
-	{
-		response.addHeader(name, value);
-	}
-
-	@Override
-	public void setDateHeader(String name, Time date)
-	{
-		response.setDateHeader(name, date.getMilliseconds());
-	}
-
-	@Override
-	public void setContentLength(long length)
-	{
-		response.setContentLength((int)length);
-	}
-
-	@Override
-	public void setContentType(String mimeType)
-	{
-		response.setContentType(mimeType);
-	}
-
-	@Override
-	public void setStatus(int sc)
-	{
-		response.setStatus(sc);
-	}
-
-	@Override
-	public void sendError(int sc, String msg)
+	public void clearCookie(final Cookie cookie)
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public String encodeRedirectURL(CharSequence url)
+	public void setHeader(final String name, final String value)
+	{
+		this.response.setHeader(name, value);
+	}
+
+	@Override
+	public void addHeader(final String name, final String value)
+	{
+		this.response.addHeader(name, value);
+	}
+
+	@Override
+	public void setDateHeader(final String name, final Time date)
+	{
+		this.response.setDateHeader(name, date.getMilliseconds());
+	}
+
+	@Override
+	public void setContentLength(final long length)
+	{
+		this.response.setContentLength((int)length);
+	}
+
+	@Override
+	public void setContentType(final String mimeType)
+	{
+		this.response.setContentType(mimeType);
+	}
+
+	@Override
+	public void setStatus(final int sc)
+	{
+		this.response.setStatus(sc);
+	}
+
+	@Override
+	public void sendError(final int sc, final String msg)
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String encodeRedirectURL(final CharSequence url)
 	{
 		// TODO temp fix for https://github.com/Atmosphere/atmosphere/issues/949
 		return url.toString();
 	}
 
 	@Override
-	public void sendRedirect(String url)
+	public void sendRedirect(final String url)
 	{
-		out.clear();
-		out.append("<ajax-response><redirect><![CDATA[" + url + "]]></redirect></ajax-response>");
-		redirect = true;
+		this.out.clear();
+		this.out.append("<ajax-response><redirect><![CDATA[" + url
+				+ "]]></redirect></ajax-response>");
+		this.redirect = true;
 	}
 
 	@Override
-	public void write(byte[] array)
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void write(byte[] array, int offset, int length)
+	public void write(final byte[] array)
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public String encodeURL(CharSequence url)
+	public void write(final byte[] array, final int offset, final int length)
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String encodeURL(final CharSequence url)
 	{
 		// TODO temp fix for https://github.com/Atmosphere/atmosphere/issues/949
 		return url.toString();
@@ -719,7 +734,7 @@ class AtmosphereWebResponse extends WebResponse
 	@Override
 	public Object getContainerResponse()
 	{
-		return response;
+		return this.response;
 	}
 
 	@Override
@@ -731,7 +746,7 @@ class AtmosphereWebResponse extends WebResponse
 	@Override
 	public void reset()
 	{
-		out.clear();
+		this.out.clear();
 	}
 
 	@Override
@@ -740,10 +755,12 @@ class AtmosphereWebResponse extends WebResponse
 	}
 
 	@Override
-	public void write(CharSequence sequence)
+	public void write(final CharSequence sequence)
 	{
-		if (!redirect)
-			out.append(sequence);
+		if (!this.redirect)
+		{
+			this.out.append(sequence);
+		}
 	}
 
 	/**
@@ -751,27 +768,27 @@ class AtmosphereWebResponse extends WebResponse
 	 */
 	public CharSequence getBuffer()
 	{
-		return out;
+		return this.out;
 	}
 
 	@Override
 	public String toString()
 	{
-		return out.toString();
+		return this.out.toString();
 	}
 }
 
 class EventSubscription
 {
-	private String componentPath;
+	private final String componentPath;
 
-	private Integer behaviorIndex;
+	private final Integer behaviorIndex;
 
-	private String methodName;
+	private final String methodName;
 
-	private Predicate<AtmosphereEvent> filter;
+	private final Predicate<AtmosphereEvent> filter;
 
-	private Predicate<AtmosphereEvent> contextAwareFilter;
+	private final Predicate<AtmosphereEvent> contextAwareFilter;
 
 	/**
 	 * Construct.
@@ -780,15 +797,16 @@ class EventSubscription
 	 * @param behavior
 	 * @param method
 	 */
-	public EventSubscription(Component component, Behavior behavior, Method method)
+	public EventSubscription(final Component component, final Behavior behavior, final Method method)
 	{
-		componentPath = component.getPageRelativePath();
-		behaviorIndex = behavior == null ? null : component.getBehaviorId(behavior);
-		Class<?> eventType = method.getParameterTypes()[1];
-		Subscribe subscribe = method.getAnnotation(Subscribe.class);
-		filter = Predicates.and(payloadOfType(eventType), createFilter(subscribe.filter()));
-		contextAwareFilter = createFilter(subscribe.contextAwareFilter());
-		methodName = method.getName();
+		this.componentPath = component.getPageRelativePath();
+		this.behaviorIndex = behavior == null ? null : component.getBehaviorId(behavior);
+		final Class<?> eventType = method.getParameterTypes()[1];
+		final Subscribe subscribe = method.getAnnotation(Subscribe.class);
+		this.filter = Predicates.and(EventSubscription.payloadOfType(eventType),
+				EventSubscription.createFilter(subscribe.filter()));
+		this.contextAwareFilter = EventSubscription.createFilter(subscribe.contextAwareFilter());
+		this.methodName = method.getName();
 	}
 
 	/**
@@ -800,61 +818,63 @@ class EventSubscription
 	 * @param filter
 	 * @param contextAwareFilter
 	 */
-	public EventSubscription(Component component, Behavior behavior, Method method,
-			Predicate<AtmosphereEvent> filter, Predicate<AtmosphereEvent> contextAwareFilter)
+	public EventSubscription(final Component component, final Behavior behavior,
+			final Method method, final Predicate<AtmosphereEvent> filter,
+			final Predicate<AtmosphereEvent> contextAwareFilter)
 	{
-		componentPath = component.getPageRelativePath();
-		behaviorIndex = behavior == null ? null : component.getBehaviorId(behavior);
+		this.componentPath = component.getPageRelativePath();
+		this.behaviorIndex = behavior == null ? null : component.getBehaviorId(behavior);
 		this.filter = filter == null ? new NoFilterPredicate() : filter;
-		this.contextAwareFilter = contextAwareFilter == null ? new NoFilterPredicate()
-		: contextAwareFilter;
-		methodName = method.getName();
+		this.contextAwareFilter = contextAwareFilter == null
+				? new NoFilterPredicate()
+				: contextAwareFilter;
+		this.methodName = method.getName();
 	}
 
 	private static Predicate<AtmosphereEvent> payloadOfType(final Class<?> type)
 	{
 		return new Predicate<AtmosphereEvent>()
-				{
+		{
 			@Override
-			public boolean apply(AtmosphereEvent input)
+			public boolean apply(final AtmosphereEvent input)
 			{
 				return type.isInstance(input.getPayload());
 			}
-				};
+		};
 	}
 
 	private static Predicate<AtmosphereEvent> createFilter(
-			Class<? extends Predicate<AtmosphereEvent>> filterClass)
-			{
+			final Class<? extends Predicate<AtmosphereEvent>> filterClass)
+	{
 		try
 		{
 			return filterClass.newInstance();
 		}
-		catch (InstantiationException e)
+		catch (final InstantiationException e)
 		{
 			throw new WicketRuntimeException(e);
 		}
-		catch (IllegalAccessException e)
+		catch (final IllegalAccessException e)
 		{
 			throw new WicketRuntimeException(e);
 		}
-			}
+	}
 
 	/**
 	 * @return The path of the subscribed component
 	 */
 	public String getComponentPath()
 	{
-		return componentPath;
+		return this.componentPath;
 	}
 
 	/**
-	 * @return The index of the subscribed behavior, or null if the subscription is for the
-	 *         component itself
+	 * @return The index of the subscribed behavior, or null if the subscription
+	 *         is for the component itself
 	 */
 	public Integer getBehaviorIndex()
 	{
-		return behaviorIndex;
+		return this.behaviorIndex;
 	}
 
 	/**
@@ -863,7 +883,7 @@ class EventSubscription
 	 */
 	public Predicate<AtmosphereEvent> getFilter()
 	{
-		return filter;
+		return this.filter;
 	}
 
 	/**
@@ -872,7 +892,7 @@ class EventSubscription
 	 */
 	public Predicate<AtmosphereEvent> getContextAwareFilter()
 	{
-		return contextAwareFilter;
+		return this.contextAwareFilter;
 	}
 
 	/**
@@ -880,24 +900,24 @@ class EventSubscription
 	 */
 	public String getMethodName()
 	{
-		return methodName;
+		return this.methodName;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hashCode(componentPath, behaviorIndex, methodName);
+		return Objects.hashCode(this.componentPath, this.behaviorIndex, this.methodName);
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (obj instanceof EventSubscription)
 		{
-			EventSubscription other = (EventSubscription)obj;
-			return Objects.equal(componentPath, other.getComponentPath()) &&
-					Objects.equal(behaviorIndex, other.getBehaviorIndex()) &&
-					Objects.equal(methodName, other.getMethodName());
+			final EventSubscription other = (EventSubscription)obj;
+			return Objects.equal(this.componentPath, other.getComponentPath())
+					&& Objects.equal(this.behaviorIndex, other.getBehaviorIndex())
+					&& Objects.equal(this.methodName, other.getMethodName());
 		}
 		return false;
 	}
@@ -907,20 +927,22 @@ class EventSubscription
 @Retention(RetentionPolicy.RUNTIME)
 @interface Subscribe {
 	/**
-	 * An optional filter on events to be received by the method. The filter cannot rely on any
-	 * context. For example, the {@link RequestCycle} may not be available. For events filtered by
-	 * this filter, Wicket-Atmosphere will not have to setup initiate the Wicket request cycle,
-	 * which is quite expensive.
+	 * An optional filter on events to be received by the method. The filter
+	 * cannot rely on any context. For example, the {@link RequestCycle} may not
+	 * be available. For events filtered by this filter, Wicket-Atmosphere will
+	 * not have to setup initiate the Wicket request cycle, which is quite
+	 * expensive.
 	 * 
 	 * @return The filter on events, defaults to no filter.
 	 */
 	Class<? extends Predicate<AtmosphereEvent>> filter() default NoFilterPredicate.class;
 
 	/**
-	 * An optional filter on events to be received by the method. This filter has access to the
-	 * Wicket context, such as the {@link Session} and the {@link RequestCycle}. If your filter does
-	 * not require this context, you should use {@link #filter()} to prevent unnecessary setup of
-	 * the request cycle.
+	 * An optional filter on events to be received by the method. This filter
+	 * has access to the Wicket context, such as the {@link Session} and the
+	 * {@link RequestCycle}. If your filter does not require this context, you
+	 * should use {@link #filter()} to prevent unnecessary setup of the request
+	 * cycle.
 	 * 
 	 * @return The filter on events, defaults to no filter.
 	 */
@@ -930,13 +952,13 @@ class EventSubscription
 class NoFilterPredicate implements Predicate<AtmosphereEvent>
 {
 	@Override
-	public boolean apply(@Nullable AtmosphereEvent input)
+	public boolean apply(@Nullable final AtmosphereEvent input)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean equals(@Nullable Object other)
+	public boolean equals(@Nullable final Object other)
 	{
 		return super.equals(other);
 	}

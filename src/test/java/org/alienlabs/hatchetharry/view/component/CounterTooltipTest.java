@@ -10,9 +10,11 @@ import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTes
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.atmosphere.PageKey;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.aplombee.QuickView;
@@ -38,6 +40,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattleFieldForAGame(this.gameId);
 	}
 
+	@Ignore("We need wicket-atmosphere to be testable for that one")
 	@Test
 	public void testAddCounter()
 	{
@@ -62,9 +65,12 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		tooltipList.addNewItems(firstCard);
 
 		// When
-		EventBusMock bus =  ((EventBusMock)SpringContextLoaderBaseTest.webApp.getEventBus());
+		final EventBusMock bus = ((EventBusMock)SpringContextLoaderBaseTest.webApp.getEventBus());
 		bus.fireRegistration(bus.getResource().uuid(), homePage);
-		bus.trackedPages.put(bus.getResource().uuid(), new PageKey(1, (bus.getResource().uuid())));
+		bus.trackedPages.put(
+				bus.getResource().uuid(),
+				new PageKey(1, (((ServletWebRequest)homePage.getRequest()).getContainerRequest()
+						.getRequestedSessionId())));
 		SpringContextLoaderBaseTest.webApp.resourceRegistered(bus.getResource().uuid(), homePage);
 
 		final FormTester addCounterForm = SpringContextLoaderBaseTest.tester
@@ -79,10 +85,10 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// SpringContextLoaderBaseTest.tester.debugComponentTrees();
 
 		// Then
-		//		SpringContextLoaderBaseTest.tester
-		//		.assertComponentOnAjaxResponse("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
+		// SpringContextLoaderBaseTest.tester
+		// .assertComponentOnAjaxResponse("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
 		SpringContextLoaderBaseTest.tester
-		.assertComponentOnAjaxResponse("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
+				.assertComponentOnAjaxResponse("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
 
 		this.allCardsInBattleField = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInBattleFieldForAGame(this.gameId);
@@ -99,7 +105,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 
 		@SuppressWarnings("rawtypes")
 		final TextField counterAddName = (TextField)SpringContextLoaderBaseTest.tester
-		.getComponentFromLastRenderedPage("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
+				.getComponentFromLastRenderedPage("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
 		Assert.assertEquals("", counterAddName.getDefaultModelObjectAsString());
 
 	}
