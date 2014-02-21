@@ -120,7 +120,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.firefoxDriver1.manage().timeouts()
 				.implicitlyWait(60, TimeUnit.SECONDS);
 
-		FullAppTraversalTests.operaDriver2 = new HtmlUnitDriver();
+		FullAppTraversalTests.operaDriver2 = new HtmlUnitDriver(true);
 		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
