@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.serverSideTest.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -29,7 +31,6 @@ import org.atmosphere.cpr.AtmosphereFramework;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResourceFactory;
 import org.atmosphere.cpr.Broadcaster;
-import org.atmosphere.cpr.BroadcasterConfig;
 import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.util.SimpleBroadcaster;
 import org.junit.AfterClass;
@@ -62,8 +63,8 @@ public class SpringContextLoaderBaseTest
 			{
 				SpringContextLoaderBaseTest.context = SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners()
-				.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
-						true));
+						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
+								true));
 				// We'll ask Emond to enable unit testing in EventBus
 				// this.eventBus = new EventBusMock(this);
 			}
@@ -149,49 +150,60 @@ class EventBusMock extends EventBus
 	private final List<Object> events = new ArrayList<Object>();
 	static AtmosphereFramework f;
 
-	static {
-		f = new AtmosphereFramework() {
+	static
+	{
+		EventBusMock.f = new AtmosphereFramework()
+		{
 
 			@Override
-			public boolean isShareExecutorServices() {
+			public boolean isShareExecutorServices()
+			{
 				return true;
 			}
-
 		};
-		f.setBroadcasterFactory(new MyBroadcasterFactory());
-		f.setAsyncSupport(Mockito.mock(AsyncSupport.class));
-		try {
-			f.init(new ServletConfig() {
+
+		EventBusMock.f.setBroadcasterFactory(new MyBroadcasterFactory());
+		EventBusMock.f.setAsyncSupport(Mockito.mock(AsyncSupport.class));
+		try
+		{
+			EventBusMock.f.init(new ServletConfig()
+			{
 				@Override
-				public String getServletName() {
+				public String getServletName()
+				{
 					return "void";
 				}
 
 				@Override
-				public ServletContext getServletContext() {
+				public ServletContext getServletContext()
+				{
 					return Mockito.mock(ServletContext.class);
 				}
 
 				@Override
-				public String getInitParameter(String name) {
+				public String getInitParameter(final String name)
+				{
 					return null;
 				}
 
 				@Override
-				public Enumeration<String> getInitParameterNames() {
+				public Enumeration<String> getInitParameterNames()
+				{
 					return null;
 				}
 			});
-		} catch (ServletException e) {
+		}
+		catch (final ServletException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Assert.assertNotNull(f.getBroadcasterFactory());
+		Assert.assertNotNull(EventBusMock.f.getBroadcasterFactory());
 	}
 
 	public EventBusMock(final WebApplication application)
 	{
-		super(application, f.getBroadcasterFactory().get());
+		super(application, EventBusMock.f.getBroadcasterFactory().get());
 	}
 
 	@Override
@@ -199,10 +211,11 @@ class EventBusMock extends EventBus
 	{
 		this.events.add(event);
 
-		AtmosphereResource resource = AtmosphereResourceFactory.getDefault().find(resourceUuid);
+		final AtmosphereResource resource = AtmosphereResourceFactory.getDefault().find(
+				resourceUuid);
 		if (resource != null)
 		{
-			post(event, resource);
+			this.post(event, resource);
 		}
 	}
 
@@ -213,75 +226,101 @@ class EventBusMock extends EventBus
 
 }
 
-final class MyBroadcasterFactory extends BroadcasterFactory {
+final class MyBroadcasterFactory extends BroadcasterFactory
+{
 
 	@Override
-	public Broadcaster get() {
+	public Broadcaster get()
+	{
 		return null;
 	}
 
 	@Override
-	public Broadcaster get(Object id) {
+	public Broadcaster get(final Object id)
+	{
 		return null;
 	}
 
 	@Override
-	public <T extends Broadcaster> T get(Class<T> c, Object id) {
+	public <T extends Broadcaster> T get(final Class<T> c, final Object id)
+	{
 		return null;
 	}
 
 	@Override
-	public void destroy() {
+	public void destroy()
+	{
 
 	}
 
 	@Override
-	public boolean add(Broadcaster b, Object id) {
+	public boolean add(final Broadcaster b, final Object id)
+	{
 		return false;
 	}
 
 	@Override
-	public boolean remove(Broadcaster b, Object id) {
+	public boolean remove(final Broadcaster b, final Object id)
+	{
 		return false;
 	}
 
 	@Override
-	public <T extends Broadcaster> T lookup(Class<T> c, Object id) {
+	public <T extends Broadcaster> T lookup(final Class<T> c, final Object id)
+	{
 		return null;
 	}
 
 	@Override
-	public <T extends Broadcaster> T lookup(Class<T> c, Object id, boolean createIfNull) {
+	public <T extends Broadcaster> T lookup(final Class<T> c, final Object id,
+			final boolean createIfNull)
+	{
 		return null;
 	}
 
 	@Override
-	public <T extends Broadcaster> T lookup(Object id) {
+	public <T extends Broadcaster> T lookup(final Object id)
+	{
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Broadcaster> T lookup(Object id, boolean createIfNull) {
-		T sb = (T) new SimpleBroadcaster();
-		sb.setBroadcasterConfig(new BroadcasterConfig(null, new AtmosphereConfig(EventBusMock.f), null));
+	public <T extends Broadcaster> T lookup(final Object id, final boolean createIfNull)
+	{
+		final T sb = (T)new SimpleBroadcaster();
+		final AtmosphereConfig conf = new AtmosphereConfig(EventBusMock.f);
+		Assert.assertNotNull(conf.framework());
+		Assert.assertTrue(conf.framework().isShareExecutorServices());
+		try
+		{
+			sb.initialize("/*", new URI("/"), conf);
+		}
+		catch (final URISyntaxException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return sb;
 	}
 
 	@Override
-	public void removeAllAtmosphereResource(AtmosphereResource r) {
+	public void removeAllAtmosphereResource(final AtmosphereResource r)
+	{
 
 	}
 
 	@Override
-	public boolean remove(Object id) {
+	public boolean remove(final Object id)
+	{
 		return false;
 	}
 
 	@Override
-	public Collection<Broadcaster> lookupAll() {
-		SimpleBroadcaster sb = new SimpleBroadcaster();
-		Collection<Broadcaster> all = new ArrayList<Broadcaster>();
+	public Collection<Broadcaster> lookupAll()
+	{
+		final SimpleBroadcaster sb = new SimpleBroadcaster();
+		final Collection<Broadcaster> all = new ArrayList<Broadcaster>();
 		all.add(sb);
 		return all;
 	}
