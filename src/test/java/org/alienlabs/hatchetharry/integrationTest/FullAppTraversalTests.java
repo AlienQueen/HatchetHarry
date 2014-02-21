@@ -11,12 +11,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.opera.core.systems.OperaDriver;
 
 public class FullAppTraversalTests
 {
@@ -118,12 +117,10 @@ public class FullAppTraversalTests
 	public static void setUpClass() throws InterruptedException
 	{
 		FullAppTraversalTests.firefoxDriver1 = new FirefoxDriver();
-
-		FullAppTraversalTests.operaDriver2 = new OperaDriver();
-
 		FullAppTraversalTests.firefoxDriver1.manage().timeouts()
 				.implicitlyWait(60, TimeUnit.SECONDS);
 
+		FullAppTraversalTests.operaDriver2 = new HtmlUnitDriver();
 		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
