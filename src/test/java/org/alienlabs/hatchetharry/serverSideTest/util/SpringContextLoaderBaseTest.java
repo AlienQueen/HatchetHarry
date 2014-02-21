@@ -1,7 +1,13 @@
 package org.alienlabs.hatchetharry.serverSideTest.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -17,10 +23,19 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.atmosphere.cpr.AsyncSupport;
+import org.atmosphere.cpr.AtmosphereConfig;
+import org.atmosphere.cpr.AtmosphereFramework;
+import org.atmosphere.cpr.AtmosphereResource;
+import org.atmosphere.cpr.AtmosphereResourceFactory;
+import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.BroadcasterConfig;
+import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.util.SimpleBroadcaster;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -47,8 +62,8 @@ public class SpringContextLoaderBaseTest
 			{
 				SpringContextLoaderBaseTest.context = SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners()
-						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
-								true));
+				.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
+						true));
 				// We'll ask Emond to enable unit testing in EventBus
 				// this.eventBus = new EventBusMock(this);
 			}
@@ -131,23 +146,144 @@ public class SpringContextLoaderBaseTest
 
 class EventBusMock extends EventBus
 {
-
 	private final List<Object> events = new ArrayList<Object>();
+	static AtmosphereFramework f;
+
+	static {
+		f = new AtmosphereFramework() {
+
+			@Override
+			public boolean isShareExecutorServices() {
+				return true;
+			}
+
+		};
+		f.setBroadcasterFactory(new MyBroadcasterFactory());
+		f.setAsyncSupport(Mockito.mock(AsyncSupport.class));
+		try {
+			f.init(new ServletConfig() {
+				@Override
+				public String getServletName() {
+					return "void";
+				}
+
+				@Override
+				public ServletContext getServletContext() {
+					return Mockito.mock(ServletContext.class);
+				}
+
+				@Override
+				public String getInitParameter(String name) {
+					return null;
+				}
+
+				@Override
+				public Enumeration<String> getInitParameterNames() {
+					return null;
+				}
+			});
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Assert.assertNotNull(f.getBroadcasterFactory());
+	}
 
 	public EventBusMock(final WebApplication application)
 	{
-		super(application, new SimpleBroadcaster());
+		super(application, f.getBroadcasterFactory().get());
 	}
 
 	@Override
 	public void post(final Object event, final String resourceUuid)
 	{
 		this.events.add(event);
+
+		AtmosphereResource resource = AtmosphereResourceFactory.getDefault().find(resourceUuid);
+		if (resource != null)
+		{
+			post(event, resource);
+		}
 	}
 
 	public List<Object> getEvents()
 	{
 		return this.events;
+	}
+
+}
+
+final class MyBroadcasterFactory extends BroadcasterFactory {
+
+	@Override
+	public Broadcaster get() {
+		return null;
+	}
+
+	@Override
+	public Broadcaster get(Object id) {
+		return null;
+	}
+
+	@Override
+	public <T extends Broadcaster> T get(Class<T> c, Object id) {
+		return null;
+	}
+
+	@Override
+	public void destroy() {
+
+	}
+
+	@Override
+	public boolean add(Broadcaster b, Object id) {
+		return false;
+	}
+
+	@Override
+	public boolean remove(Broadcaster b, Object id) {
+		return false;
+	}
+
+	@Override
+	public <T extends Broadcaster> T lookup(Class<T> c, Object id) {
+		return null;
+	}
+
+	@Override
+	public <T extends Broadcaster> T lookup(Class<T> c, Object id, boolean createIfNull) {
+		return null;
+	}
+
+	@Override
+	public <T extends Broadcaster> T lookup(Object id) {
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Broadcaster> T lookup(Object id, boolean createIfNull) {
+		T sb = (T) new SimpleBroadcaster();
+		sb.setBroadcasterConfig(new BroadcasterConfig(null, new AtmosphereConfig(EventBusMock.f), null));
+		return sb;
+	}
+
+	@Override
+	public void removeAllAtmosphereResource(AtmosphereResource r) {
+
+	}
+
+	@Override
+	public boolean remove(Object id) {
+		return false;
+	}
+
+	@Override
+	public Collection<Broadcaster> lookupAll() {
+		SimpleBroadcaster sb = new SimpleBroadcaster();
+		Collection<Broadcaster> all = new ArrayList<Broadcaster>();
+		all.add(sb);
+		return all;
 	}
 
 }

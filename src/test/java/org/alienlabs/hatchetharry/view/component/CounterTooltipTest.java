@@ -66,6 +66,9 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.executeAjaxEvent(
 				"parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:submit", "onclick");
 
+		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+				.getLastResponse().getDocument();
+		System.out.println(SpringContextLoaderBaseTest.pageDocument);
 		// Then
 		this.allCardsInBattleField = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInBattleFieldForAGame(this.gameId);
@@ -82,7 +85,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 
 		@SuppressWarnings("rawtypes")
 		final TextField counterAddName = (TextField)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
+		.getComponentFromLastRenderedPage("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
 		Assert.assertEquals("", counterAddName.getDefaultModelObjectAsString());
 	}
 }
