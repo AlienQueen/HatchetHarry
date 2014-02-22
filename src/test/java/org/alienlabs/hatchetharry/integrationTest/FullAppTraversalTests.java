@@ -158,9 +158,14 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.firefoxDriver, 30);
 		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.htmlUnitDriver, 30);
 
+		((JavascriptExecutor)FullAppTraversalTests.htmlUnitDriver)
+				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
+		Thread.sleep(8000);
+
+		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("createGameLinkResponsive")).click();
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("createGameLinkResponsive")).click();
 		Thread.sleep(8000);
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("name")).clear();
@@ -177,11 +182,6 @@ public class FullAppTraversalTests
 		Thread.sleep(8000);
 
 		// Join a game in Chrome 2
-		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.htmlUnitDriver, 15);
-
-		((JavascriptExecutor)FullAppTraversalTests.htmlUnitDriver)
-				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-
 		FullAppTraversalTests.firefoxDriver.findElement(By.id("joinGameLinkResponsive")).click();
 		Thread.sleep(8000);
 		FullAppTraversalTests.firefoxDriver.findElement(By.id("name")).clear();
