@@ -24,7 +24,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 public class FullAppTraversalTests
 {
 	private static WebDriver firefoxDriver;
-	private static WebDriver htmlUnitDriver;
+	private static HtmlUnitDriver htmlUnitDriver;
 
 	private static final String PORT = "8088";
 	private static final String HOST = "http://localhost";
@@ -121,6 +121,7 @@ public class FullAppTraversalTests
 	public static void setUpClass() throws InterruptedException
 	{
 		FullAppTraversalTests.htmlUnitDriver = new HtmlUnitDriver(BrowserVersion.FIREFOX_17);
+		FullAppTraversalTests.htmlUnitDriver.setJavascriptEnabled(true);
 		FullAppTraversalTests.htmlUnitDriver.manage().timeouts()
 				.implicitlyWait(15, TimeUnit.SECONDS);
 
