@@ -164,10 +164,9 @@ public class FullAppTraversalTests
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		Thread.sleep(8000);
-
-		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("createGameLinkResponsive")).click();
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("createGameLinkResponsive")).click();
 		Thread.sleep(8000);
+
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTests.htmlUnitDriver.findElement(By.id("name")).sendKeys("Zala");
 		new Select(FullAppTraversalTests.htmlUnitDriver.findElement(By.id("sideInput")))
