@@ -134,14 +134,14 @@ public class EventBusMock extends EventBus
 		Assert.assertNotNull(EventBusMock.f.getBroadcasterFactory());
 	}
 
-	public EventBusMock(final WebApplication application)
+	public EventBusMock(final WebApplication _application)
 	{
-		super(application, new MyBroadcasterFactory().get());
+		super(_application, new MyBroadcasterFactory().get());
 
 		this.broadcaster = new MyBroadcasterFactory().get();
 		Assert.assertNotNull(this.broadcaster);
 
-		this.application = application;
+		this.application = _application;
 
 		this.resource = AtmosphereResourceFactory.getDefault().create(
 				EventBusMock.f.getAtmosphereConfig(), Mockito.mock(Broadcaster.class),

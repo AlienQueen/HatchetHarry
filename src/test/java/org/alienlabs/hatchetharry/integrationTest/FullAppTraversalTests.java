@@ -118,12 +118,13 @@ public class FullAppTraversalTests
 	{
 		FullAppTraversalTests.firefoxDriver1 = new FirefoxDriver();
 		FullAppTraversalTests.firefoxDriver1.manage().timeouts()
-				.implicitlyWait(60, TimeUnit.SECONDS);
+				.implicitlyWait(120, TimeUnit.SECONDS);
 
 		FullAppTraversalTests.operaDriver2 = new HtmlUnitDriver(true);
-		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		FullAppTraversalTests.operaDriver2.manage().timeouts()
+				.implicitlyWait(120, TimeUnit.SECONDS);
 
-		Thread.sleep(15000);
+		Thread.sleep(45000);
 
 		FullAppTraversalTests.firefoxDriver1.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
@@ -132,6 +133,8 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.operaDriver2.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
 		FullAppTraversalTests.operaDriver2.getPageSource();
+
+		Thread.sleep(45000);
 	}
 
 	@AfterClass

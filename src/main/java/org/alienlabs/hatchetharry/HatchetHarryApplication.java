@@ -44,12 +44,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  */
 public class HatchetHarryApplication extends WebApplication
-implements
-Serializable,
-ResourceRegistrationListener
+		implements
+			Serializable,
+			ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
-	protected transient EventBus eventBus;
+	public transient EventBus eventBus;
 
 	// Map of playerId and Atmosphere UUID
 	protected static Map<Long, String> cometResources = new HashMap<Long, String>();
@@ -373,7 +373,7 @@ ResourceRegistrationListener
 				"cards",
 				new FolderContentResource(new File(ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
-								"SharedResourceFolder"))));
+						"SharedResourceFolder"))));
 		this.mountResource("cards", new SharedResourceReference("cards"));
 
 		this.getResourceSettings().setPackageResourceGuard(new HatchetHarryResourceGuard());
