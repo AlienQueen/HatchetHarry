@@ -11,13 +11,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.opera.core.systems.OperaDriver;
 
 public class FullAppTraversalTests
 {
@@ -120,13 +120,15 @@ public class FullAppTraversalTests
 	{
 		FullAppTraversalTests.firefoxDriver1 = new FirefoxDriver();
 		FullAppTraversalTests.firefoxDriver1.manage().timeouts()
-				.implicitlyWait(120, TimeUnit.SECONDS);
+				.implicitlyWait(15, TimeUnit.SECONDS);
 
-		FullAppTraversalTests.operaDriver2 = new HtmlUnitDriver(BrowserVersion.CHROME);
-		FullAppTraversalTests.operaDriver2.manage().timeouts()
-				.implicitlyWait(120, TimeUnit.SECONDS);
+		final DesiredCapabilities caps = new DesiredCapabilities();
+		caps.setCapability("opera.port", -1);
+		caps.setCapability("opera.profile", "");
+		FullAppTraversalTests.operaDriver2 = new OperaDriver(caps);
+		FullAppTraversalTests.operaDriver2.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
-		Thread.sleep(45000);
+		Thread.sleep(15000);
 
 		FullAppTraversalTests.firefoxDriver1.get(FullAppTraversalTests.HOST + ":"
 				+ FullAppTraversalTests.PORT + "/");
@@ -136,7 +138,7 @@ public class FullAppTraversalTests
 				+ FullAppTraversalTests.PORT + "/");
 		FullAppTraversalTests.operaDriver2.getPageSource();
 
-		Thread.sleep(45000);
+		Thread.sleep(15000);
 	}
 
 	@AfterClass
