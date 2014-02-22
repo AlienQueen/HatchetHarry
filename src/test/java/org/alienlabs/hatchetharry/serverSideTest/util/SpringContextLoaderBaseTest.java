@@ -10,9 +10,6 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.atmosphere.EventBusMock;
-import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
-import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
@@ -48,10 +45,10 @@ public class SpringContextLoaderBaseTest
 						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
 
-				this.eventBus = new EventBusMock(this);
-				this.eventBus.addRegistrationListener(this);
-				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
-				this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
+				// this.eventBus = new EventBusMock(this);
+				// this.eventBus.addRegistrationListener(this);
+				// this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
+				// this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 			}
 		};
 
