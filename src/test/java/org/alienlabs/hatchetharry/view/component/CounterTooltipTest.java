@@ -18,6 +18,7 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattleFieldForAGame(this.gameId);
 	}
 
-	// @Ignore("still waiting")
+	@Ignore("still waiting")
 	@Test
 	public void testAddCounter() throws SecurityException, NoSuchMethodException
 	{
@@ -86,8 +87,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 				AjaxRequestTarget.class, UpdateCardPanelCometChannel.class);
 		c.setAccessible(true);
 		bus.register(homePage, new EventSubscription(homePage,
-		// SpringContextLoaderBaseTest.tester
-		// .getComponentFromLastRenderedPage("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form"),
+		// SpringContextLoaderBaseTest.tester.getComponentFromLastRenderedPage("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form"),
 				null, c));
 
 		CounterTooltipTest.LOGGER.info("tracking page id: "
@@ -110,8 +110,8 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// SpringContextLoaderBaseTest.tester.debugComponentTrees();
 
 		// Then
-		// SpringContextLoaderBaseTest.tester
-		// .assertComponentOnAjaxResponse("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
+		SpringContextLoaderBaseTest.tester
+				.assertComponentOnAjaxResponse("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
 		SpringContextLoaderBaseTest.tester
 				.assertComponentOnAjaxResponse("parentPlaceholder:tooltips:1:cardTooltip:counterPanel:form:counterAddName");
 

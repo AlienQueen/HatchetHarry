@@ -122,7 +122,7 @@ public class FullAppTraversalTests
 	public static void setUpClass() throws InterruptedException, MalformedURLException
 	{
 		FullAppTraversalTests.chromeDriver = new RemoteWebDriver(new URL("http://localhost:9515"),
-				DesiredCapabilities.chrome()); // new ChromeDriver();
+				DesiredCapabilities.chrome());// new ChromeDriver();
 		FullAppTraversalTests.chromeDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
 		final ProfilesIni allProfiles = new ProfilesIni();

@@ -9,15 +9,8 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.IPageManagerProvider;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.atmosphere.EventBusMock;
-import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
-import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.mock.MockPageManager;
-import org.apache.wicket.page.IPageManager;
-import org.apache.wicket.page.IPageManagerContext;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
@@ -51,59 +44,60 @@ public class SpringContextLoaderBaseTest
 				this.getComponentInstantiationListeners()
 						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
-
-				this.eventBus = new EventBusMock(this);
-				this.eventBus.addRegistrationListener(this);
-				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
-				this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
-
-				this.setPageManagerProvider(new IPageManagerProvider()
-				{
-					IPageManager mpm = new MockPageManager()
-					{
-						@Override
-						public void destroy()
-						{
-						}
-
-						@Override
-						public void newSessionCreated()
-						{
-						}
-
-						@Override
-						public void sessionExpired(final String sessionId)
-						{
-						}
-					};
-
-					@Override
-					public IPageManager get(final IPageManagerContext _context)
-					{
-						return this.mpm;
-					}
-				});
-			}
-
-			@Override
-			protected IPageManagerContext getPageManagerContext()
-			{
-				return ((EventBusMock)this.eventBus).pageManagerContext;
 			}
 		};
-
-		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp)
-		{
-
-			IPageManagerProvider provider = super.newTestPageManagerProvider();
-
-			@Override
-			protected IPageManagerProvider newTestPageManagerProvider()
-			{
-				return this.provider;
-			}
-
-		};
+		// this.eventBus = new EventBusMock(this);
+		// this.eventBus.addRegistrationListener(this);
+		// this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
+		// this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
+		//
+		// this.setPageManagerProvider(new IPageManagerProvider()
+		// {
+		// IPageManager mpm = new MockPageManager()
+		// {
+		// @Override
+		// public void destroy()
+		// {
+		// }
+		//
+		// @Override
+		// public void newSessionCreated()
+		// {
+		// }
+		//
+		// @Override
+		// public void sessionExpired(final String sessionId)
+		// {
+		// }
+		// };
+		//
+		// @Override
+		// public IPageManager get(final IPageManagerContext _context)
+		// {
+		// return this.mpm;
+		// }
+		// });
+		// }
+		//
+		// @Override
+		// protected IPageManagerContext getPageManagerContext()
+		// {
+		// return ((EventBusMock)this.eventBus).pageManagerContext;
+		// }
+		// };
+		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp);
+		// {
+		//
+		// IPageManagerProvider provider =
+		// super.newTestPageManagerProvider();
+		//
+		// @Override
+		// protected IPageManagerProvider newTestPageManagerProvider()
+		// {
+		// return this.provider;
+		// }
+		//
+		// };
 
 		SpringContextLoaderBaseTest.persistenceService = SpringContextLoaderBaseTest.context
 				.getBean(PersistenceService.class);
@@ -116,7 +110,7 @@ public class SpringContextLoaderBaseTest
 
 		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
 				.getLastResponse().getDocument();
-	}
+	};
 
 	@AfterClass
 	public static void tearDownAfterClass()
