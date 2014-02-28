@@ -48,11 +48,6 @@ You are free to modify any part of its source code (client-side or server-side),
 		<hibernate.version>4.3.1.Final</hibernate.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.selenium</groupId>
-			<artifactId>selenium-server-standalone</artifactId>
-			<version>${selenium.version}</version>
-		</dependency>
 		<!-- WICKET DEPENDENCIES -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -275,11 +270,11 @@ You are free to modify any part of its source code (client-side or server-side),
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-iphone-driver</artifactId>
 			<version>${selenium.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.seleniumhq.webdriver</groupId>
 			<artifactId>webdriver-chrome</artifactId>
