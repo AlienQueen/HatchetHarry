@@ -44,7 +44,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<targetJdk>1.6</targetJdk>
 		<project.build.finalName>ROOT</project.build.finalName>
-		<selenium.version>2.39.0</selenium.version>
+		<selenium.version>2.40.0</selenium.version>
 		<hibernate.version>4.3.1.Final</hibernate.version>
 	</properties>
 	<dependencies>
