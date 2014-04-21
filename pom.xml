@@ -36,7 +36,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<wicket.version>6.12.0</wicket.version>
 		<quickview.version>6.0-SNAPSHOT</quickview.version>
 		<wicketstuff.version>6.12.0</wicketstuff.version>
-		<wicket-atmosphere.version>0.18-SNAPSHOT</wicket-atmosphere.version><!--0.18-SNAPSHOT</wicket-atmosphere.version>-->
+		<wicket-atmosphere.version>0.16</wicket-atmosphere.version><!--0.18-SNAPSHOT</wicket-atmosphere.version>-->
 		<atmosphere.version>2.1.0</atmosphere.version>
 		<spring.version>4.0.1.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
@@ -44,7 +44,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<targetJdk>1.6</targetJdk>
 		<project.build.finalName>ROOT</project.build.finalName>
-		<selenium.version>2.40.0</selenium.version>
+		<selenium.version>2.41.0</selenium.version>
 		<hibernate.version>4.3.1.Final</hibernate.version>
 	</properties>
 	<dependencies>
@@ -106,7 +106,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>4.11</version>
 		</dependency>
 
 		<!-- JETTY DEPENDENCIES FOR TESTING -->
@@ -740,8 +740,8 @@ You are free to modify any part of its source code (client-side or server-side),
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<optimize>true</optimize>
 					<debug>true</debug>
 				</configuration>

@@ -18,9 +18,7 @@ import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FullAppTraversalTests
 {
@@ -156,9 +154,6 @@ public class FullAppTraversalTests
 	public void testFullAppTraversal() throws InterruptedException
 	{
 		// Create a game in Chrome 1
-		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.firefoxDriver, 30);
-		FullAppTraversalTests.waitForJQueryProcessing(FullAppTraversalTests.chromeDriver, 30);
-
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver)
 				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
@@ -584,34 +579,6 @@ public class FullAppTraversalTests
 		Assert.assertEquals(exileCardName,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 						.get(4).getAttribute("name"));
-	}
-
-	public static boolean waitForJQueryProcessing(final WebDriver driver, final int timeOutInSeconds)
-	{
-		boolean jQcondition = false;
-		try
-		{
-			new WebDriverWait(driver, timeOutInSeconds)
-			{
-			}.until(new ExpectedCondition<Boolean>()
-			{
-
-				@Override
-				public Boolean apply(final WebDriver driverObject)
-				{
-					return (Boolean)((JavascriptExecutor)driverObject)
-							.executeScript("return jQuery.active == 0");
-				}
-			});
-			jQcondition = (Boolean)((JavascriptExecutor)driver)
-					.executeScript("return window.jQuery != undefined && jQuery.active === 0");
-			return jQcondition;
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-		return jQcondition;
 	}
 
 }
