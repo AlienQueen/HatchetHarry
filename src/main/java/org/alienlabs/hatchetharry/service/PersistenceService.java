@@ -490,16 +490,16 @@ public class PersistenceService implements Serializable
 		return query.list().size() > 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Player> getAllPlayersOfGame(final long l)
 	{
 		final Session session = this.playerDao.getSession();
 
-		final SQLQuery query = session
-				.createSQLQuery("select player0_.* from Player player0_ where player0_.game_gameId=?");
-		query.addEntity(Player.class);
+		final Query query = session
+				.createQuery("from Player player0_ where player0_.game = ? ");
 		query.setLong(0, l);
-		return query.list();
+		return (List<Player>)query.list();
 	}
 
 	// Isolation level chosen to be consistent with

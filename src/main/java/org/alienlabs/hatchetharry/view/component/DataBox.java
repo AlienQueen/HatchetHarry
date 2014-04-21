@@ -19,6 +19,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,15 +67,15 @@ public class DataBox extends Panel
 				playerLifePointsParent.add(playerLifePoints);
 				item.add(playerLifePointsParent);
 
-				final AjaxLink<Void> plus = new AjaxLink<Void>("playerPlusLink")
+				final AjaxLink<Player> plus = new AjaxLink<Player>("playerPlusLink", Model.of(player))
 				{
-					private static final long serialVersionUID = -2987998457733835993L;
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
 						final Player playerToUpdate = DataBox.this.persistenceService
-								.getPlayer(player.getId());
+								.getPlayer(this.getModelObject().getId());
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
@@ -109,15 +110,15 @@ public class DataBox extends Panel
 				plus.add(playerPlus);
 				item.add(plus);
 
-				final AjaxLink<Void> minus = new AjaxLink<Void>("playerMinusLink")
+				final AjaxLink<Player> minus = new AjaxLink<Player>("playerMinusLink", Model.of(player))
 				{
-					private static final long serialVersionUID = -2987999764313835993L;
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
 						final Player playerToUpdate = DataBox.this.persistenceService
-								.getPlayer(player.getId());
+								.getPlayer(this.getModelObject().getId());
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
