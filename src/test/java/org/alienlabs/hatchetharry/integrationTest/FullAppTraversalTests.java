@@ -20,6 +20,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import com.opera.core.systems.OperaSettings.Capability;
+
 public class FullAppTraversalTests
 {
 	private static WebDriver firefoxDriver;
@@ -119,8 +121,11 @@ public class FullAppTraversalTests
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException, MalformedURLException
 	{
-		FullAppTraversalTests.chromeDriver = new RemoteWebDriver(new URL("http://localhost:9515"),
-				DesiredCapabilities.chrome());// new ChromeDriver();
+		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
+		DesiredCapabilities cap = DesiredCapabilities.chrome();   
+		cap.setPlatform(org.openqa.selenium.Platform.LINUX);
+		
+		FullAppTraversalTests.chromeDriver = new RemoteWebDriver(new URL("http://localhost:9515"), cap);
 		FullAppTraversalTests.chromeDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
 		final ProfilesIni allProfiles = new ProfilesIni();
