@@ -140,7 +140,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
 				targetPlayer.setExileDisplayed(true);
-				this.persistenceService.updatePlayer(targetPlayer);
+				this.persistenceService.mergePlayer(targetPlayer);
 			}
 		}
 	}

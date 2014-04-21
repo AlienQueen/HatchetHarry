@@ -299,12 +299,19 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updatePlayer(final Player p)
+	public void mergePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
 		session.merge(p);
 	}
 
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void updatePlayer(final Player p)
+	{
+		final Session session = this.playerDao.getSession();
+		session.update(p);
+	}
+	
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateSide(final Side s)
 	{

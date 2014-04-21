@@ -176,7 +176,7 @@ public class JoinGameModalWindow extends Panel
 				for (final Player p : oldGame.getPlayers())
 				{
 					p.setGame(null);
-					JoinGameModalWindow.this.persistenceService.updatePlayer(p);
+					JoinGameModalWindow.this.persistenceService.mergePlayer(p);
 				}
 
 				oldGame.getPlayers().clear();
@@ -238,7 +238,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player.setDeck(deck);
 				JoinGameModalWindow.this.player.setGame(game);
 				JoinGameModalWindow.this.persistenceService
-						.updatePlayer(JoinGameModalWindow.this.player);
+						.mergePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
 
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
@@ -310,7 +310,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService.updateSide(s);
 				JoinGameModalWindow.this.player.setSideUuid(s.getUuid());
 				JoinGameModalWindow.this.persistenceService
-						.updatePlayer(JoinGameModalWindow.this.player);
+						.mergePlayer(JoinGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						JoinGameModalWindow.this.player);

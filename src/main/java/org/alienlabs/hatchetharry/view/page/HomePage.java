@@ -699,7 +699,7 @@ public class HomePage extends TestReportPage
 				}
 
 				_player.setHandDisplayed(!isHandDisplayed);
-				HomePage.this.persistenceService.updatePlayer(_player);
+				HomePage.this.persistenceService.mergePlayer(_player);
 			}
 
 			@Override
@@ -804,7 +804,7 @@ public class HomePage extends TestReportPage
 				{
 					_player.setGraveyardDisplayed(true);
 				}
-				HomePage.this.persistenceService.updatePlayer(_player);
+				HomePage.this.persistenceService.mergePlayer(_player);
 			}
 
 			@Override
@@ -859,7 +859,7 @@ public class HomePage extends TestReportPage
 					_player.setExileDisplayed(true);
 				}
 
-				HomePage.this.persistenceService.updatePlayer(_player);
+				HomePage.this.persistenceService.mergePlayer(_player);
 			}
 
 			@Override
@@ -1179,7 +1179,7 @@ public class HomePage extends TestReportPage
 		this.deck.setPlayerId(p.getId());
 
 		p.setDeck(this.deck);
-		this.persistenceService.updatePlayer(p);
+		this.persistenceService.mergePlayer(p);
 		this.session.setGameId(game.getId());
 
 		this.session.setPlayer(p);
@@ -1986,7 +1986,7 @@ public class HomePage extends TestReportPage
 					playerWhoDiscards.getDeck().getCards().clear();
 				}
 
-				HomePage.this.persistenceService.updatePlayer(playerWhoDiscards);
+				HomePage.this.persistenceService.mergePlayer(playerWhoDiscards);
 				HomePage.this.persistenceService
 						.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
 
@@ -2716,7 +2716,7 @@ public class HomePage extends TestReportPage
 		{
 			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
 			p.setHandDisplayed(true);
-			this.persistenceService.updatePlayer(p);
+			this.persistenceService.mergePlayer(p);
 			JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
 		}
@@ -2731,7 +2731,7 @@ public class HomePage extends TestReportPage
 		{
 			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
 			p.setGraveyardDisplayed(true);
-			this.persistenceService.updatePlayer(p);
+			this.persistenceService.mergePlayer(p);
 			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
 		}

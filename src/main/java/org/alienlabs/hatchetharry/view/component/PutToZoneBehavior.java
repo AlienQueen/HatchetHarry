@@ -120,7 +120,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 			default :
 				throw new UnsupportedOperationException();
 		}
-		this.persistenceService.updatePlayer(ownerPlayer);
+		this.persistenceService.mergePlayer(ownerPlayer);
 
 		final String ownerPlayerName = ownerPlayer.getName();
 
@@ -128,15 +128,15 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		{
 			case HAND :
 				ownerPlayer.setHandDisplayed(true);
-				this.persistenceService.updatePlayer(ownerPlayer);
+				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case GRAVEYARD :
 				ownerPlayer.setGraveyardDisplayed(true);
-				this.persistenceService.updatePlayer(ownerPlayer);
+				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case EXILE :
 				ownerPlayer.setExileDisplayed(true);
-				this.persistenceService.updatePlayer(ownerPlayer);
+				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case BATTLEFIELD :
 				break;

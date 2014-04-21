@@ -138,7 +138,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
 				targetPlayer.setHandDisplayed(true);
-				this.persistenceService.updatePlayer(targetPlayer);
+				this.persistenceService.mergePlayer(targetPlayer);
 			}
 
 			// For unit tests only, we'll ask a solution to Emond

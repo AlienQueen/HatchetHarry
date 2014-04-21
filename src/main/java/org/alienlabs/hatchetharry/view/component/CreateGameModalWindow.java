@@ -219,7 +219,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setDeck(deck);
 				CreateGameModalWindow.this.player.setGame(g);
 				CreateGameModalWindow.this.persistenceService
-						.updatePlayer(CreateGameModalWindow.this.player);
+						.mergePlayer(CreateGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
 
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
@@ -278,7 +278,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setSideUuid(s.getUuid());
 				CreateGameModalWindow.this.persistenceService.updateSide(s);
 				CreateGameModalWindow.this.persistenceService
-						.updatePlayer(CreateGameModalWindow.this.player);
+						.mergePlayer(CreateGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						CreateGameModalWindow.this.player);
