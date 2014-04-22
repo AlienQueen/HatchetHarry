@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
+import java.net.MalformedURLException;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -9,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +59,13 @@ public class VerifyClientSideTests
 			+ "		window.scrollBy(0,1);\n}\n}";
 
 	@BeforeClass
-	public static void setUpClass() throws InterruptedException
+	public static void setUpClass() throws InterruptedException, MalformedURLException
 	{
-		VerifyClientSideTests.chromeDriver1 = new ChromeDriver();
+		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
+		final DesiredCapabilities cap = DesiredCapabilities.chrome();
+		cap.setPlatform(org.openqa.selenium.Platform.LINUX);
+
+		VerifyClientSideTests.chromeDriver1 = new ChromeDriver(cap);
 		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
 
 		Thread.sleep(15000);
@@ -112,7 +119,7 @@ public class VerifyClientSideTests
 		Thread.sleep(30000);
 
 		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
-				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
+		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
 		Thread.sleep(15000);

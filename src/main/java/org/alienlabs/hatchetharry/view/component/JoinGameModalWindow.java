@@ -185,7 +185,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player.setGame(game);
 				session.setGameId(_id);
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
-
+				
 				JoinGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(_id,
 						JoinGameModalWindow.this.decks.getModelObject().getDeckId());
 
@@ -310,7 +310,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService.updateSide(s);
 				JoinGameModalWindow.this.player.setSideUuid(s.getUuid());
 				JoinGameModalWindow.this.persistenceService
-						.mergePlayer(JoinGameModalWindow.this.player);
+						.updatePlayer(JoinGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						JoinGameModalWindow.this.player);

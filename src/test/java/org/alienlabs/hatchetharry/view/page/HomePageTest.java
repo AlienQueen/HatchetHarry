@@ -256,6 +256,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertInvisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
+		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
@@ -323,6 +324,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 
 		// Draw a card
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
+		@SuppressWarnings("unchecked")
 		final AjaxLink<String> drawCardLink = (AjaxLink<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("drawCardLink");
 		SpringContextLoaderBaseTest.tester.executeAjaxEvent(drawCardLink, "onclick");

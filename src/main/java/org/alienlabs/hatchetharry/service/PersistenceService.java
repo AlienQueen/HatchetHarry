@@ -497,7 +497,6 @@ public class PersistenceService implements Serializable
 		return query.list().size() > 0;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Player> getAllPlayersOfGame(final long l)
 	{

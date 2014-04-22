@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 
+@SuppressWarnings("unchecked")
 public class HatchetHarrySession extends WebSession
 {
 	private static final long serialVersionUID = 4565051252275468687L;

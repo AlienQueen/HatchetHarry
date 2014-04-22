@@ -384,6 +384,7 @@ public class NonRegressionTest
 				.getComponentFromLastRenderedPage(_window);
 		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
 
+		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> link = (AjaxLink<Void>)this.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
