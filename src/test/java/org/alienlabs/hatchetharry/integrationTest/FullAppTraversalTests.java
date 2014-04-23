@@ -220,40 +220,42 @@ public class FullAppTraversalTests
 		// Verify that card is present on the battlefield
 		// Two HTML elements with class "magicCard" are created for each card
 		Assert.assertEquals(4,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.size());
+
+		Assert.assertEquals(4,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.size());
 
 		// Verify the name of the card on the battlefield
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(battlefieldCardName,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.get(2).getAttribute("name"));
 
 		// Verify that the card is untapped
+		Assert.assertFalse(FullAppTraversalTests.firefoxDriver
+				.findElements(By.cssSelector("img[id^='card']")).get(0).getAttribute("style")
+				.contains("transform"));
 		Assert.assertFalse(FullAppTraversalTests.chromeDriver
 				.findElements(By.cssSelector("img[id^='card']")).get(0).getAttribute("style")
 				.contains("transform"));
 
 		// Tap card
-		((JavascriptExecutor)FullAppTraversalTests.chromeDriver)
+		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
 		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
-		FullAppTraversalTests.chromeDriver.findElement(By.cssSelector("img[id^='tapHandleImage']"))
-				.click();
+		FullAppTraversalTests.firefoxDriver
+		.findElement(By.cssSelector("img[id^='tapHandleImage']")).click();
 		Thread.sleep(8000);
 
 		// Verify card is tapped
-		Assert.assertTrue(FullAppTraversalTests.chromeDriver
+		Assert.assertTrue(FullAppTraversalTests.firefoxDriver
 				.findElements(By.cssSelector("img[id^='card']")).get(0).getAttribute("style")
 				.contains("rotate(90deg)"));
-
-		// Untap card
-		((JavascriptExecutor)FullAppTraversalTests.chromeDriver)
-		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
-		FullAppTraversalTests.chromeDriver.findElement(By.cssSelector("img[id^='tapHandleImage']"))
-				.click();
-		Thread.sleep(8000);
-
-		// Verify card is untapped
-		Assert.assertFalse(FullAppTraversalTests.chromeDriver
+		Assert.assertTrue(FullAppTraversalTests.chromeDriver
 				.findElements(By.cssSelector("img[id^='card']")).get(0).getAttribute("style")
 				.contains("rotate(90deg)"));
 
@@ -293,6 +295,10 @@ public class FullAppTraversalTests
 		Thread.sleep(8000);
 
 		// Verify the name of the card on the battlefield
+		Assert.assertEquals(
+				battlefieldCardName,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(battlefieldCardName,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.get(2).getAttribute("name"));
@@ -367,10 +373,17 @@ public class FullAppTraversalTests
 		// Verify that the card is present on the battlefield
 		Thread.sleep(8000);
 		Assert.assertEquals(4,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.size());
+		Assert.assertEquals(4,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.size());
 
 		// Assert that the card on the battlefield is the same
+		Assert.assertEquals(
+				topCardName,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(topCardName,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.get(2).getAttribute("name"));
@@ -399,6 +412,9 @@ public class FullAppTraversalTests
 				.size());
 
 		// Verify that there is still two cards on the battlefield
+		Assert.assertEquals(4,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.size());
 		Assert.assertEquals(4,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.size());
@@ -438,10 +454,17 @@ public class FullAppTraversalTests
 
 		// Verify that there is still two cards on the battlefield
 		Assert.assertEquals(4,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.size());
+		Assert.assertEquals(4,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.size());
 
 		// Verify the name of the card on the battlefield
+		Assert.assertEquals(
+				topCardName,
+				FullAppTraversalTests.firefoxDriver.findElements(By.cssSelector(".magicCard"))
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(topCardName,
 				FullAppTraversalTests.chromeDriver.findElements(By.cssSelector(".magicCard"))
 				.get(2).getAttribute("name"));

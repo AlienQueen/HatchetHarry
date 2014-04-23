@@ -24,7 +24,7 @@ import org.hibernate.annotations.CascadeType;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Side implements Serializable
 {
-	private static final long serialVersionUID = -1703518536709468323L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -112,4 +112,68 @@ public class Side implements Serializable
 	{
 		this.y = _y;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((this.game == null) ? 0 : this.game.hashCode());
+		result = (prime * result) + ((this.sideId == null) ? 0 : this.sideId.hashCode());
+		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (this.getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Side other = (Side)obj;
+		if (this.game == null)
+		{
+			if (other.game != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.game.equals(other.game))
+		{
+			return false;
+		}
+		if (this.sideId == null)
+		{
+			if (other.sideId != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.sideId.equals(other.sideId))
+		{
+			return false;
+		}
+		if (this.uuid == null)
+		{
+			if (other.uuid != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.uuid.equals(other.uuid))
+		{
+			return false;
+		}
+		return true;
+	}
+
 }

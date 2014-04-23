@@ -204,7 +204,10 @@ public class Player implements Serializable
 	{
 		final int prime = 31;
 		int result = 1;
-		result = (prime * result) + ((this.jsessionid == null) ? 0 : this.jsessionid.hashCode());
+		result = (prime * result) + ((this.deck == null) ? 0 : this.deck.hashCode());
+		result = (prime * result) + ((this.name == null) ? 0 : this.name.hashCode());
+		result = (prime * result) + ((this.playerId == null) ? 0 : this.playerId.hashCode());
+		result = (prime * result) + ((this.side == null) ? 0 : this.side.hashCode());
 		return result;
 	}
 
@@ -224,14 +227,47 @@ public class Player implements Serializable
 			return false;
 		}
 		final Player other = (Player)obj;
-		if (this.jsessionid == null)
+		if (this.deck == null)
 		{
-			if (other.jsessionid != null)
+			if (other.deck != null)
 			{
 				return false;
 			}
 		}
-		else if (!this.jsessionid.equals(other.jsessionid))
+		else if (!this.deck.equals(other.deck))
+		{
+			return false;
+		}
+		if (this.name == null)
+		{
+			if (other.name != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.name.equals(other.name))
+		{
+			return false;
+		}
+		if (this.playerId == null)
+		{
+			if (other.playerId != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.playerId.equals(other.playerId))
+		{
+			return false;
+		}
+		if (this.side == null)
+		{
+			if (other.side != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.side.equals(other.side))
 		{
 			return false;
 		}
