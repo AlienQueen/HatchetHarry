@@ -40,19 +40,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Application object for HatchetHarry.
- * 
- * 
+ *
+ *
  */
 public class HatchetHarryApplication extends WebApplication
-		implements
-			Serializable,
-			ResourceRegistrationListener
+implements
+Serializable,
+ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
 	public transient EventBus eventBus;
 
 	// Map of playerId and Atmosphere UUID
-	protected static Map<Long, String> cometResources = new HashMap<Long, String>();
+	protected static final Map<Long, String> cometResources = new HashMap<Long, String>();
 
 	static final Logger LOGGER = LoggerFactory.getLogger(HatchetHarryApplication.class);
 
@@ -373,7 +373,7 @@ public class HatchetHarryApplication extends WebApplication
 				"cards",
 				new FolderContentResource(new File(ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
-						"SharedResourceFolder"))));
+								"SharedResourceFolder"))));
 		this.mountResource("cards", new SharedResourceReference("cards"));
 
 		this.getResourceSettings().setPackageResourceGuard(new HatchetHarryResourceGuard());
