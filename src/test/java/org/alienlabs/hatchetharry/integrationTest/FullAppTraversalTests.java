@@ -140,8 +140,8 @@ public class FullAppTraversalTests
 	@AfterClass
 	public static void tearDownClass()
 	{
-		FullAppTraversalTests.firefoxDriver.quit();
 		FullAppTraversalTests.chromeDriver.quit();
+		FullAppTraversalTests.firefoxDriver.quit();
 	}
 
 	@Test
@@ -149,8 +149,6 @@ public class FullAppTraversalTests
 	{
 		// Create a game in Chrome 1
 		((JavascriptExecutor)FullAppTraversalTests.chromeDriver)
-		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
 		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		Thread.sleep(2000);
@@ -170,9 +168,13 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.chromeDriver.findElement(By.id("createSubmit")).click();
 		Thread.sleep(2000);
 
-		// Join a game in Chrome 2
+		// Join a game in Firefox
+		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
+				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+
 		FullAppTraversalTests.firefoxDriver.findElement(By.id("joinGameLinkResponsive")).click();
 		Thread.sleep(2000);
+
 		FullAppTraversalTests.firefoxDriver.findElement(By.id("name")).clear();
 		FullAppTraversalTests.firefoxDriver.findElement(By.id("name")).sendKeys("Marie");
 		new Select(FullAppTraversalTests.firefoxDriver.findElement(By.id("sideInput")))
@@ -264,21 +266,21 @@ public class FullAppTraversalTests
 				By.id("graveyard-page-wrap")).isEmpty());
 
 		// Grow up zone images
-		((JavascriptExecutor)FullAppTraversalTests.chromeDriver)
+		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
 		.executeScript("$('#putToGraveyard').attr('src', 'image/graveyard.jpg');");
-		((JavascriptExecutor)FullAppTraversalTests.chromeDriver)
+		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
 		.executeScript("$('#putToHand').attr('src', 'image/hand.jpg');");
-		((JavascriptExecutor)FullAppTraversalTests.chromeDriver)
+		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver)
 		.executeScript("$('#putToExile').attr('src', 'image/exile.jpg');");
 
 		// Put card to graveyard
-		WebElement draggable = FullAppTraversalTests.chromeDriver.findElement(By
+		WebElement draggable = FullAppTraversalTests.firefoxDriver.findElement(By
 				.cssSelector("img[id^='handleImage']"));
-		WebElement to = FullAppTraversalTests.chromeDriver.findElement(By.id("putToGraveyard"));
-		new Actions(FullAppTraversalTests.chromeDriver).dragAndDrop(draggable, to).build()
+		WebElement to = FullAppTraversalTests.firefoxDriver.findElement(By.id("putToGraveyard"));
+		new Actions(FullAppTraversalTests.firefoxDriver).dragAndDrop(draggable, to).build()
 				.perform();
 
-		Thread.sleep(2000);
+		Thread.sleep(10000);
 
 		// Assert graveyard is visible and contains one card
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver.findElements(
@@ -318,13 +320,13 @@ public class FullAppTraversalTests
 				By.cssSelector(".graveyard-cross-link")).isEmpty());
 
 		// Put card to hand
-		draggable = FullAppTraversalTests.chromeDriver.findElement(By
+		draggable = FullAppTraversalTests.firefoxDriver.findElement(By
 				.cssSelector("img[id^='handleImage']"));
-		to = FullAppTraversalTests.chromeDriver.findElement(By.id("putToHand"));
-		new Actions(FullAppTraversalTests.chromeDriver).dragAndDrop(draggable, to).build()
+		to = FullAppTraversalTests.firefoxDriver.findElement(By.id("putToHand"));
+		new Actions(FullAppTraversalTests.firefoxDriver).dragAndDrop(draggable, to).build()
 		.perform();
 
-		Thread.sleep(2000);
+		Thread.sleep(4000);
 
 		// Assert that the hand contains 7 cards again
 		Assert.assertEquals(7,
