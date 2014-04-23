@@ -114,7 +114,7 @@ public class JoinGameModalWindow extends Panel
 					JoinGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					JoinGameModalWindow.this.deckParent
-							.addOrReplace(JoinGameModalWindow.this.decks);
+					.addOrReplace(JoinGameModalWindow.this.decks);
 					target.add(JoinGameModalWindow.this.deckParent);
 				}
 			}
@@ -149,7 +149,7 @@ public class JoinGameModalWindow extends Panel
 						|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == JoinGameModalWindow.this.decks.getModelObject())
 						|| (null == JoinGameModalWindow.this.sideInput
-								.getDefaultModelObjectAsString()))
+						.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
@@ -185,7 +185,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player.setGame(game);
 				session.setGameId(_id);
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
-				
+
 				JoinGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(_id,
 						JoinGameModalWindow.this.decks.getModelObject().getDeckId());
 
@@ -207,7 +207,7 @@ public class JoinGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-									+ "Thumb.jpg", cc.getTitle(), "",
+							+ "Thumb.jpg", cc.getTitle(), "",
 							JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
 							null);
 					card.setGameId(game.getId());
@@ -238,7 +238,7 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.player.setDeck(deck);
 				JoinGameModalWindow.this.player.setGame(game);
 				JoinGameModalWindow.this.persistenceService
-						.mergePlayer(JoinGameModalWindow.this.player);
+				.mergePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
 
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
@@ -310,13 +310,13 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService.updateSide(s);
 				JoinGameModalWindow.this.player.setSideUuid(s.getUuid());
 				JoinGameModalWindow.this.persistenceService
-						.updatePlayer(JoinGameModalWindow.this.player);
+				.updatePlayer(JoinGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						JoinGameModalWindow.this.player);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.GAME, null, null, false, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, _gameId, null, null, _gameId);
+						.getPlayer().getName(), null, _gameId, null, null, _gameId);
 
 				// post the DataBox update message to all players in the game,
 				// except me
@@ -336,7 +336,7 @@ public class JoinGameModalWindow extends Panel
 					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 
 				// In order to display the opponents' sides
