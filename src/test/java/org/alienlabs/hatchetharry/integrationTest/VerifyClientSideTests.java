@@ -1,7 +1,8 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
-import java.net.MalformedURLException;
-
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -17,6 +18,12 @@ import org.slf4j.LoggerFactory;
 
 public class VerifyClientSideTests
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyClientSideTests.class);
+
+	private static final String PORT = "8088";
+	private static final String HOST = "localhost";
+	private static final Server server = new Server();
+
 	private static final String QUNIT_FAILED_TESTS = "0";
 	private static final String QUNIT_PASSED_TESTS = "6";
 	private static final String QUNIT_TOTAL_TESTS = "6";
@@ -24,11 +31,8 @@ public class VerifyClientSideTests
 	private static final String MISTLETOE_FAILED_TESTS = "Errors/Failures: 0";
 	private static final String MISTLETOE_TOTAL_TESTS = "Total tests: 2";
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyClientSideTests.class);
-
 	private static WebDriver chromeDriver1;
 	private static WebDriver firefoxDriver2;
-	private static final String PORT = "8088";
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "function elementInViewport(el) {\n"
 			+ "  var top = el.offsetTop;\n"
@@ -59,8 +63,25 @@ public class VerifyClientSideTests
 			+ "		window.scrollBy(0,1);\n}\n}";
 
 	@BeforeClass
-	public static void setUpClass() throws InterruptedException, MalformedURLException
+	public static void setUpClass() throws Exception
 	{
+		VerifyClientSideTests.LOGGER
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
+
+		final ServerConnector http = new ServerConnector(VerifyClientSideTests.server);
+		http.setHost(VerifyClientSideTests.HOST);
+		http.setPort(Integer.parseInt(VerifyClientSideTests.PORT));
+		http.setIdleTimeout(30000);
+		VerifyClientSideTests.server.addConnector(http);
+		final WebAppContext webapp = new WebAppContext();
+		webapp.setContextPath("/");
+		webapp.setWar("src/main/webapp");
+		VerifyClientSideTests.server.setHandler(webapp);
+		VerifyClientSideTests.server.start();
+
+		VerifyClientSideTests.LOGGER
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
+
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		final DesiredCapabilities cap = DesiredCapabilities.chrome();
 		cap.setPlatform(org.openqa.selenium.Platform.LINUX);
@@ -68,14 +89,14 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.chromeDriver1 = new ChromeDriver(cap);
 		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
 
-		Thread.sleep(15000);
+		Thread.sleep(5000);
 
-		VerifyClientSideTests.chromeDriver1.get("http://localhost:" + VerifyClientSideTests.PORT
-				+ "/");
-		VerifyClientSideTests.firefoxDriver2.get("http://localhost:" + VerifyClientSideTests.PORT
-				+ "/");
+		VerifyClientSideTests.chromeDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
+				+ VerifyClientSideTests.PORT + "/");
+		VerifyClientSideTests.firefoxDriver2.get("http://" + VerifyClientSideTests.HOST + ":"
+				+ VerifyClientSideTests.PORT + "/");
 
-		Thread.sleep(15000);
+		Thread.sleep(5000);
 	}
 
 	@Test
@@ -97,11 +118,9 @@ public class VerifyClientSideTests
 		final String failed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("failed"))
 				.getText();
 
-		Assert.assertTrue(VerifyClientSideTests.QUNIT_PASSED_TESTS.equals(passed1)
-				|| "5".equals(passed1));
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed1);
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, total1);
-		Assert.assertTrue(VerifyClientSideTests.QUNIT_FAILED_TESTS.equals(failed1)
-				|| "1".equals(VerifyClientSideTests.QUNIT_FAILED_TESTS));
+		Assert.assertEquals(VerifyClientSideTests.QUNIT_FAILED_TESTS, failed1);
 	}
 
 	@Test
@@ -125,10 +144,15 @@ public class VerifyClientSideTests
 	}
 
 	@AfterClass
-	public static void tearDownClass()
+	public static void tearDownClass() throws Exception
 	{
 		VerifyClientSideTests.chromeDriver1.quit();
 		VerifyClientSideTests.firefoxDriver2.quit();
+
+		VerifyClientSideTests.LOGGER
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
+		VerifyClientSideTests.server.stop();
+		VerifyClientSideTests.server.join();
 	}
 
 }
