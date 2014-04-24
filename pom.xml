@@ -816,6 +816,10 @@ You are free to modify any part of its source code (client-side or server-side),
 							<skip>false</skip>
 							<excludes>
 								<exclude>**/serverSideTest/*.*</exclude>
+								<exclude>org/alienlabs/hatchetharry/*.*</exclude>
+								<exclude>org/alienlabs/hatchetharry/service/*.*</exclude>
+								<exclude>org/alienlabs/hatchetharry/view/page/*.*</exclude>
+								<exclude>org/alienlabs/hatchetharry/view/component/*.*</exclude>
 							</excludes>
 							<includes>
 								<include>**/integrationTest/*.java</include>
