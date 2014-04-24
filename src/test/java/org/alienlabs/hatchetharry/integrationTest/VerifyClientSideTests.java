@@ -66,7 +66,7 @@ public class VerifyClientSideTests
 	public static void setUpClass() throws Exception
 	{
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
 
 		final ServerConnector http = new ServerConnector(VerifyClientSideTests.server);
 		http.setHost(VerifyClientSideTests.HOST);
@@ -80,7 +80,7 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.server.start();
 
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		final DesiredCapabilities cap = DesiredCapabilities.chrome();
@@ -129,7 +129,7 @@ public class VerifyClientSideTests
 		Thread.sleep(30000);
 
 		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
-				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
+		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
 		Thread.sleep(15000);
@@ -150,9 +150,10 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.firefoxDriver2.quit();
 
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
 		VerifyClientSideTests.server.stop();
 		VerifyClientSideTests.server.join();
+		Thread.sleep(15000);
 	}
 
 }
