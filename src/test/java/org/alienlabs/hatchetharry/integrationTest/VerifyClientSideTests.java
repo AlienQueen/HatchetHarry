@@ -10,9 +10,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +29,7 @@ public class VerifyClientSideTests
 	private static final String MISTLETOE_FAILED_TESTS = "Errors/Failures: 0";
 	private static final String MISTLETOE_TOTAL_TESTS = "Total tests: 2";
 
-	private static WebDriver chromeDriver1;
+	private static WebDriver firefoxDriver1;
 	private static WebDriver firefoxDriver2;
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "function elementInViewport(el) {\n"
@@ -66,7 +64,7 @@ public class VerifyClientSideTests
 	public static void setUpClass() throws Exception
 	{
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
 
 		final ServerConnector http = new ServerConnector(VerifyClientSideTests.server);
 		http.setHost(VerifyClientSideTests.HOST);
@@ -80,18 +78,14 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.server.start();
 
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
-		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
-		final DesiredCapabilities cap = DesiredCapabilities.chrome();
-		cap.setPlatform(org.openqa.selenium.Platform.LINUX);
-
-		VerifyClientSideTests.chromeDriver1 = new ChromeDriver(cap);
+		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver();
 		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
 
 		Thread.sleep(5000);
 
-		VerifyClientSideTests.chromeDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
+		VerifyClientSideTests.firefoxDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
 				+ VerifyClientSideTests.PORT + "/");
 		VerifyClientSideTests.firefoxDriver2.get("http://" + VerifyClientSideTests.HOST + ":"
 				+ VerifyClientSideTests.PORT + "/");
@@ -111,11 +105,11 @@ public class VerifyClientSideTests
 			VerifyClientSideTests.LOGGER.error("error while sleeping in testQunit()", e);
 		}
 
-		final String passed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("passed"))
+		final String passed1 = VerifyClientSideTests.firefoxDriver1.findElement(By.id("passed"))
 				.getText();
-		final String total1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("total"))
+		final String total1 = VerifyClientSideTests.firefoxDriver1.findElement(By.id("total"))
 				.getText();
-		final String failed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("failed"))
+		final String failed1 = VerifyClientSideTests.firefoxDriver1.findElement(By.id("failed"))
 				.getText();
 
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed1);
@@ -128,15 +122,15 @@ public class VerifyClientSideTests
 	{
 		Thread.sleep(30000);
 
-		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
-		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
-		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
+		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
+				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
+		VerifyClientSideTests.firefoxDriver1.findElement(By.id("runMistletoe")).click();
 
 		Thread.sleep(15000);
 
-		final String chromeTotal = VerifyClientSideTests.chromeDriver1.findElement(
+		final String chromeTotal = VerifyClientSideTests.firefoxDriver1.findElement(
 				By.id("runsSummary")).getText();
-		final String chromeFailed = VerifyClientSideTests.chromeDriver1.findElement(
+		final String chromeFailed = VerifyClientSideTests.firefoxDriver1.findElement(
 				By.id("errorsSummary")).getText();
 
 		Assert.assertEquals(VerifyClientSideTests.MISTLETOE_TOTAL_TESTS, chromeTotal);
@@ -146,9 +140,9 @@ public class VerifyClientSideTests
 	@AfterClass
 	public static void tearDownClass() throws Exception
 	{
-		if (null != VerifyClientSideTests.chromeDriver1)
+		if (null != VerifyClientSideTests.firefoxDriver1)
 		{
-			VerifyClientSideTests.chromeDriver1.quit();
+			VerifyClientSideTests.firefoxDriver1.quit();
 		}
 		if (null != VerifyClientSideTests.firefoxDriver2)
 		{
@@ -156,7 +150,7 @@ public class VerifyClientSideTests
 		}
 
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
 		VerifyClientSideTests.server.stop();
 		VerifyClientSideTests.server.join();
 		Thread.sleep(30000);
