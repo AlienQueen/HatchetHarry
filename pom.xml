@@ -381,6 +381,12 @@ You are free to modify any part of its source code (client-side or server-side),
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>2.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.codehaus.sonar-plugins</groupId>
 			<artifactId>sonar-emma-plugin</artifactId>
 			<version>1.2.1</version>
