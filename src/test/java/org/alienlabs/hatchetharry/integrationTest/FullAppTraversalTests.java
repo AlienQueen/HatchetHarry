@@ -246,7 +246,7 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("playCardLink0")).click();
 
 		// Verify that the hand contains only 6 cards, now
-		Thread.sleep(8000);
+		Thread.sleep(12000);
 		Assert.assertEquals(6,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".movers-row"))
 						.size());
