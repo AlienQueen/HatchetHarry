@@ -52,7 +52,7 @@ public class VerifyClientSideTests
 			+ "  );\n"
 			+ "}\n"
 			+ "\n"
-			+ "var elementToLookFor = document.getElementById('${what}');\n"
+			+ "var elementToLookFor = document.getElementById('what');\n"
 			+ "\n"
 			+ "for (var i = 0; i < 10000; i = i + 1) {\n"
 			+ "	if (elementInViewport(elementToLookFor)) {\n"
@@ -64,7 +64,7 @@ public class VerifyClientSideTests
 	public static void setUpClass() throws Exception
 	{
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
 
 		final ServerConnector http = new ServerConnector(VerifyClientSideTests.server);
 		http.setHost(VerifyClientSideTests.HOST);
@@ -78,7 +78,7 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.server.start();
 
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
 		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver();
 		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
@@ -112,15 +112,15 @@ public class VerifyClientSideTests
 	public void testMistletoe() throws InterruptedException
 	{
 		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
-				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_ELEMENT
-						.replaceAll("${what}", "runMistletoe"));
+		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_ELEMENT
+				.replaceAll("what", "runMistletoe"));
 		VerifyClientSideTests.firefoxDriver1.findElement(By.id("runMistletoe")).click();
 
 		Thread.sleep(45000);
 
 		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
-				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_ELEMENT
-						.replaceAll("${what}", "runsSummary"));
+		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_ELEMENT
+				.replaceAll("what", "runsSummary"));
 
 		final String chromeTotal = VerifyClientSideTests.firefoxDriver1.findElement(
 				By.id("runsSummary")).getText();
@@ -144,7 +144,7 @@ public class VerifyClientSideTests
 		}
 
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
 		VerifyClientSideTests.server.stop();
 		VerifyClientSideTests.server.join();
 		Thread.sleep(30000);
