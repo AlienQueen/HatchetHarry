@@ -66,7 +66,7 @@ public class VerifyClientSideTests
 	public static void setUpClass() throws Exception
 	{
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
 
 		final ServerConnector http = new ServerConnector(VerifyClientSideTests.server);
 		http.setHost(VerifyClientSideTests.HOST);
@@ -80,7 +80,7 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.server.start();
 
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
 		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver();
 		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
@@ -114,13 +114,13 @@ public class VerifyClientSideTests
 	public void testMistletoe() throws InterruptedException
 	{
 		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
-		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
+				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.firefoxDriver1.findElement(By.id("runMistletoe")).click();
 
-		Thread.sleep(75000);
+		Thread.sleep(120000);
 
 		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
-		.executeScript(VerifyClientSideTests.SCROLL_DOWN);
+				.executeScript(VerifyClientSideTests.SCROLL_DOWN);
 
 		final String chromeTotal = VerifyClientSideTests.firefoxDriver1.findElement(
 				By.id("runsSummary")).getText();
@@ -144,7 +144,7 @@ public class VerifyClientSideTests
 		}
 
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
 		VerifyClientSideTests.server.stop();
 		VerifyClientSideTests.server.join();
 		Thread.sleep(30000);
