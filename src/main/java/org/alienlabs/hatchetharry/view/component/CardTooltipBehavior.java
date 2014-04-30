@@ -33,26 +33,24 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		StringBuilder js = new StringBuilder();
-
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
-		variables.put("url", this.getCallbackUrl());
+		final HashMap<String, String> variables = new HashMap<String, String>();
+		variables.put("url", this.getCallbackUrl().toString());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
-		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
+		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/cardTooltip.js");
-		template1.interpolate(variables);
-		js = js.append("\n" + template1.asString());
+		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "cardTooltipScript"
+				+ this.uuid.toString().replace("-", "_")));
 		try
 		{
-			template1.close();
+			template.close();
 		}
 		catch (final IOException e)
 		{
 			CardTooltipBehavior.LOGGER.error(
-					"unable to close template1 in CardTooltipBehavior#renderHead()!", e);
+					"unable to close template in CardTooltipBehavior#renderHead()!", e);
 		}
 	}
 
