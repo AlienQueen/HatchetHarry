@@ -95,10 +95,9 @@ public class NonRegressionTest
 
 
 		// Retrieve PlayCardFromHandBehavior
-		_tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		_tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
+		_tester.assertComponent("playCardLink", WebMarkupContainer.class);
 		final WebMarkupContainer playCardLink = (WebMarkupContainer)_tester
-				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
+				.getComponentFromLastRenderedPage("playCardLink");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 				.getBehaviors().get(0);
 
@@ -176,10 +175,9 @@ public class NonRegressionTest
 		this.tester.startPage(HomePage.class);
 		this.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		this.tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
+		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
 		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
-				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
+				.getComponentFromLastRenderedPage("playCardLink");
 
 		PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(
 				0);
@@ -256,10 +254,9 @@ public class NonRegressionTest
 		Assert.assertEquals(1, tagTester.size());
 
 		// Play another card
-		this.tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		this.tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
+		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
 		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
-				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
+				.getComponentFromLastRenderedPage("playCardLink");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 				.getBehaviors().get(0);
 		this.tester.getRequest().setParameter("card",

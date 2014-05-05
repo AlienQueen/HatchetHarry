@@ -270,9 +270,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	{
 		// Test the toolbar at the bottom of the screen
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		SpringContextLoaderBaseTest.tester.assertComponent("playCardPlaceholder",
-				WebMarkupContainer.class);
-		SpringContextLoaderBaseTest.tester.assertComponent("playCardPlaceholder:playCardLink",
+		SpringContextLoaderBaseTest.tester.assertComponent("playCardLink",
 				WebMarkupContainer.class);
 		SpringContextLoaderBaseTest.tester.assertComponent("endTurnPlaceholder",
 				WebMarkupContainer.class);

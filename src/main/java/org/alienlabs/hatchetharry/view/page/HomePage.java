@@ -1188,11 +1188,6 @@ public class HomePage extends TestReportPage
 
 	private void generatePlayCardLink(final List<MagicCard> mc)
 	{
-		final WebMarkupContainer playCardPlaceholder = new WebMarkupContainer("playCardPlaceholder");
-		playCardPlaceholder.setMarkupId("playCardPlaceholder0");
-		playCardPlaceholder.setOutputMarkupId(true);
-		HomePage.LOGGER.info("Generating link");
-
 		this.playCardLink = new WebMarkupContainer("playCardLink");
 		this.playCardLink.setMarkupId("playCardLink0");
 		this.playCardLink.setOutputMarkupId(true);
@@ -1204,8 +1199,7 @@ public class HomePage extends TestReportPage
 			this.playCardLink.add(this.playCardBehavior);
 		}
 
-		playCardPlaceholder.add(this.playCardLink);
-		this.add(playCardPlaceholder);
+		this.add(this.playCardLink);
 	}
 
 	private WebMarkupContainer generatePlayCardFromGraveyardLink(final String id)

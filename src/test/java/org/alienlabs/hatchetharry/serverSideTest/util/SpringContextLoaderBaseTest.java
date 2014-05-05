@@ -137,10 +137,9 @@ public class SpringContextLoaderBaseTest
 
 
 		// Retrieve PlayCardFromHandBehavior
-		_tester.assertComponent("playCardPlaceholder", WebMarkupContainer.class);
-		_tester.assertComponent("playCardPlaceholder:playCardLink", WebMarkupContainer.class);
+		_tester.assertComponent("playCardLink", WebMarkupContainer.class);
 		final WebMarkupContainer playCardLink = (WebMarkupContainer)_tester
-				.getComponentFromLastRenderedPage("playCardPlaceholder:playCardLink");
+				.getComponentFromLastRenderedPage("playCardLink");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 				.getBehaviors().get(0);
 
