@@ -18,4 +18,4 @@ window.setTimeout(function() {
 			jQuery('#playCardIndicator').show();
 			Wicket.Ajax.get({'u': '${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}'});
 		});
-}, 150);
+}, 1500);
