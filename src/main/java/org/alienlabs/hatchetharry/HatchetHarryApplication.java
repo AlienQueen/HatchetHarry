@@ -100,7 +100,7 @@ ResourceRegistrationListener
 
 		this.eventBus = new EventBus(this);
 		this.eventBus.addRegistrationListener(this);
-		this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
+		this.eventBus.getParameters().setTransport(AtmosphereTransport.SSE);
 		this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
