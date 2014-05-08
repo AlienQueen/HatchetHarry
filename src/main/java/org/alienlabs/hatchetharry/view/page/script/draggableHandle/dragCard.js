@@ -46,5 +46,5 @@ jQuery(function() {
 				
 				Wicket.Ajax.get({ 'u' : jQuery('#' + ui.draggable.context.id.replace('cardHandle','handleImage')).data('exileUrl') + '&uuid='+ ui.draggable.context.id.replace('cardHandle','') });
 				}});
-	}, 800);
+	}, 1500);
 });
