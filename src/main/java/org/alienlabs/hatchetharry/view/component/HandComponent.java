@@ -51,7 +51,7 @@ public class HandComponent extends Panel
 	private final List<MagicCard> allCardsInHand;
 
 	/**
-	 * 
+	 *
 	 * @param id
 	 *            wicket:id
 	 * @param ids
@@ -68,10 +68,13 @@ public class HandComponent extends Panel
 		parent.setOutputMarkupId(true);
 		this.add(parent);
 
+		final WebMarkupContainer content = new WebMarkupContainer("content");
+		content.setOutputMarkupId(true);
+
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setMarkupId("handle" + markupId);
 		handleImage.setOutputMarkupId(true);
-		parent.add(handleImage);
+		content.add(handleImage);
 
 		final ZoneMoveBehavior zmb = new ZoneMoveBehavior(this);
 		this.add(zmb);
@@ -82,7 +85,7 @@ public class HandComponent extends Panel
 
 		final WebMarkupContainer page_wrap = new WebMarkupContainer("page-wrap");
 		page_wrap.add(slider);
-		parent.add(page_wrap);
+		content.add(page_wrap);
 
 		if (isReveal)
 		{
@@ -120,7 +123,8 @@ public class HandComponent extends Panel
 				}
 
 			};
-			parent.add(closeHand);
+			content.add(closeHand);
+			content.setMarkupId("revealedContent");
 
 			this.add(new Behavior()
 			{
@@ -152,7 +156,8 @@ public class HandComponent extends Panel
 		}
 		else
 		{
-			parent.add(new WebMarkupContainer("closeHand").setVisible(false));
+			content.add(new WebMarkupContainer("closeHand").setVisible(false));
+			content.setMarkupId("content");
 		}
 
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
@@ -240,7 +245,8 @@ public class HandComponent extends Panel
 		putToZonePanel.add(new AttributeModifier("style", isReveal
 				? "position: absolute; top:25%; left: 0px;"
 				: "position: absolute; top:21%; left: 13px;"));
-		parent.add(putToZonePanel);
+		content.add(putToZonePanel);
+		parent.add(content);
 
 		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
 	}
