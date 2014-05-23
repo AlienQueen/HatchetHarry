@@ -33,19 +33,21 @@ You are free to modify any part of its source code (client-side or server-side),
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.12.0</wicket.version>
+		<wicket.version>6.15.0</wicket.version>
 		<quickview.version>6.0-SNAPSHOT</quickview.version>
-		<wicketstuff.version>6.12.0</wicketstuff.version>
-		<wicket-atmosphere.version>0.16-SNAPSHOT</wicket-atmosphere.version><!--0.18-SNAPSHOT</wicket-atmosphere.version>-->
-		<atmosphere.version>2.1.0</atmosphere.version>
+		<wicketstuff.version>6.15.0</wicketstuff.version>
+		<wicket-atmosphere.version>0.18-SNAPSHOT</wicket-atmosphere.version>
+		<atmosphere.version>2.1.4</atmosphere.version>
+		<atmosphere-compat.version>2.0.1</atmosphere-compat.version>
 		<spring.version>4.0.1.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<targetJdk>1.6</targetJdk>
+		<targetJdk>1.7</targetJdk>
 		<project.build.finalName>ROOT</project.build.finalName>
-		<selenium.version>2.40.0</selenium.version>
+		<selenium.version>2.41.0</selenium.version>
 		<hibernate.version>4.3.1.Final</hibernate.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 	<dependencies>
 		<!-- WICKET DEPENDENCIES -->
@@ -106,7 +108,7 @@ You are free to modify any part of its source code (client-side or server-side),
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>${junit.version}</version>
 		</dependency>
 
 		<!-- JETTY DEPENDENCIES FOR TESTING -->
@@ -313,6 +315,22 @@ You are free to modify any part of its source code (client-side or server-side),
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-support</artifactId>
+			<version>${selenium.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+    		<groupId>org.seleniumhq.selenium</groupId>
+    		<artifactId>selenium-api</artifactId>
+    		<version>${selenium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -740,8 +758,8 @@ You are free to modify any part of its source code (client-side or server-side),
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<optimize>true</optimize>
 					<debug>true</debug>
 				</configuration>
@@ -839,7 +857,7 @@ You are free to modify any part of its source code (client-side or server-side),
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
-					<targetJdk>1.6</targetJdk>
+					<targetJdk>1.7</targetJdk>
 					<minimumPriority>0</minimumPriority>
 					<rulesets>
 						<ruleset>/home/nostromo/rulesets/basic.xml</ruleset>
@@ -890,7 +908,7 @@ You are free to modify any part of its source code (client-side or server-side),
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
-					<targetJdk>1.6</targetJdk>
+					<targetJdk>1.7</targetJdk>
 					<minimumPriority>0</minimumPriority>
 					<rulesets>
 						<ruleset>/home/nostromo/rulesets/basic.xml</ruleset>
