@@ -20,11 +20,19 @@ import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.ResourceRegistrationListener;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
+import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
+import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
+import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.servlet.XForwardedRequestWrapperFactory;
+import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceStreamResource;
@@ -33,14 +41,6 @@ import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.time.Duration;
-import org.apache.wicket.core.request.mapper.MountedMapper;
-import org.apache.wicket.request.component.IRequestablePage;
-import org.apache.wicket.request.Url;
-import org.apache.wicket.request.mapper.info.PageComponentInfo;
-import org.apache.wicket.request.IRequestHandler;
-import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
-import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
-import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -52,9 +52,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class HatchetHarryApplication extends WebApplication
-implements
-Serializable,
-ResourceRegistrationListener
+		implements
+			Serializable,
+			ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
 	public transient EventBus eventBus;
@@ -129,8 +129,7 @@ ResourceRegistrationListener
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 5, 2, TimeUnit.SECONDS);
 
-		//this.mount(new MountedMapperWithoutPageComponentInfo("/", HomePage.class));
-		this.getRootRequestMapperAsCompound().add(new NoVersionMapper(getHomePage()));
+		this.getRootRequestMapperAsCompound().add(new NoVersionMapper(this.getHomePage()));
 
 		this.mountResource("favicon.ico", new PackageResourceReference(HomePage.class,
 				"image/favicon.ico"));
@@ -382,31 +381,41 @@ ResourceRegistrationListener
 				"cards",
 				new FolderContentResource(new File(ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
-								"SharedResourceFolder"))));
+						"SharedResourceFolder"))));
 		this.mountResource("cards", new SharedResourceReference("cards"));
 
 		this.getResourceSettings().setPackageResourceGuard(new HatchetHarryResourceGuard());
 	}
-	
-	private static class NoVersionMapper extends MountedMapper {
-		public NoVersionMapper(final Class<? extends IRequestablePage> pageClass) {
+
+	private static class NoVersionMapper extends MountedMapper
+	{
+		public NoVersionMapper(final Class<? extends IRequestablePage> pageClass)
+		{
 			this("/", pageClass);
 		}
-		
-		public NoVersionMapper(String mountPath, final Class<? extends IRequestablePage> pageClass) {
+
+		public NoVersionMapper(final String mountPath,
+				final Class<? extends IRequestablePage> pageClass)
+		{
 			super(mountPath, pageClass, new PageParametersEncoder());
 		}
 
 		@Override
-		protected void encodePageComponentInfo(Url url, PageComponentInfo info) {
-			//Does nothing
+		protected void encodePageComponentInfo(final Url url, final PageComponentInfo info)
+		{
+			// Does nothing
 		}
-		
+
 		@Override
-		public Url mapHandler(IRequestHandler requestHandler) {
-			if (requestHandler instanceof ListenerInterfaceRequestHandler || requestHandler instanceof BookmarkableListenerInterfaceRequestHandler) {
+		public Url mapHandler(final IRequestHandler requestHandler)
+		{
+			if ((requestHandler instanceof ListenerInterfaceRequestHandler)
+					|| (requestHandler instanceof BookmarkableListenerInterfaceRequestHandler))
+			{
 				return null;
-			} else {
+			}
+			else
+			{
 				return super.mapHandler(requestHandler);
 			}
 		}
