@@ -32,6 +32,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		final WebMarkupContainer button = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(button);
+		@SuppressWarnings("unchecked")
 		final List<Behavior> allCardBehaviors = (List<Behavior>)button.getBehaviors();
 		CardRotateBehavior crb = null;
 

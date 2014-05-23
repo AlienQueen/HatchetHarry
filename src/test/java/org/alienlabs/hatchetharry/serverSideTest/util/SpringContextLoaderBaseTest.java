@@ -10,6 +10,12 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.atmosphere.EventBus;
+import org.apache.wicket.atmosphere.EventBusMock;
+import org.apache.wicket.atmosphere.MapperContextMock;
+import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
+import org.apache.wicket.atmosphere.config.AtmosphereTransport;
+import org.apache.wicket.core.request.mapper.IMapperContext;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
@@ -25,7 +31,7 @@ public class SpringContextLoaderBaseTest
 	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
 	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
+	public static HatchetHarryApplication webApp;
 	public static transient ApplicationContext context;
 	protected static String pageDocument;
 	protected static PersistenceService persistenceService;
@@ -36,6 +42,7 @@ public class SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
+			private MapperContextMock mapperContext;
 
 			@Override
 			public void init()
@@ -44,12 +51,27 @@ public class SpringContextLoaderBaseTest
 				this.getComponentInstantiationListeners()
 						.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
+
+				this.mapperContext = new MapperContextMock();
+				this.eventBus = new EventBusMock(this, this.mapperContext);
+				this.eventBus.addRegistrationListener(this);
+				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
+				this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 			}
+
+			@Override
+			public EventBus getEventBus()
+			{
+				return this.eventBus;
+			}
+
+			@Override
+			protected IMapperContext newMapperContext()
+			{
+				return this.mapperContext;
+			}
+
 		};
-		// this.eventBus = new EventBusMock(this);
-		// this.eventBus.addRegistrationListener(this);
-		// this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
-		// this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 		//
 		// this.setPageManagerProvider(new IPageManagerProvider()
 		// {

@@ -5,6 +5,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.apache.wicket.Page;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.EventBusMock;
+import org.apache.wicket.atmosphere.MapperContextMock;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -33,7 +34,7 @@ public class HatchetHarryApplicationMock extends HatchetHarryApplication
 	@Override
 	public EventBus getEventBus()
 	{
-		return new EventBusMock(this);
+		return new EventBusMock(this, new MapperContextMock());
 	}
 
 	@Override

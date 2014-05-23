@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.model.channel.consolelog;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 
 public class EndOfTurnConsoleLogStrategy extends ConsoleLogStrategy
 {
@@ -19,6 +20,11 @@ public class EndOfTurnConsoleLogStrategy extends ConsoleLogStrategy
 	{
 		final String message = this.player + " has put an end to his (her) turn";
 		super.logMessage(target, message, null, this.gameId);
+
+		final WebMarkupContainer dummy = new WebMarkupContainer("dummy");
+		dummy.setOutputMarkupId(true);
+		dummy.setParent(target.getPage());
+		target.add(dummy);
 	}
 
 }

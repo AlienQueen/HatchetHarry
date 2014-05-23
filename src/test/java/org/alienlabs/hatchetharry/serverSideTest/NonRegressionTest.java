@@ -122,11 +122,11 @@ public class NonRegressionTest
 	}
 
 	@Test
-	/** 
+	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
 	 * Run: we play it again
 	 * Verify: the card should be untapped.
-	 * 
+	 *
 	 */
 	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped()
 	{
@@ -384,8 +384,9 @@ public class NonRegressionTest
 				.getComponentFromLastRenderedPage(_window);
 		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
 
+		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> link = (AjaxLink<Void>)this.tester
-				.getComponentFromLastRenderedPage(linkToActivateWindow);
+		.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
 		this.tester.clickLink(linkToActivateWindow, true);
 		this.tester.assertVisible(window.getPageRelativePath() + ":" + window.getContentId());
