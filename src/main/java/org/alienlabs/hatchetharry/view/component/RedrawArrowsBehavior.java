@@ -50,7 +50,7 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("arrowDrawUrl", this.getCallbackUrl());
 
 		final List<Arrow> allArrows = this.persistenceService.loadAllArrowsForAGame(this.gameId);
-		final StringBuilder content = new StringBuilder("arrow = new Array(); ");
+		final StringBuilder content = new StringBuilder("var redraw = function() { arrow = new Array(); ");
 
 		final Boolean drawMode = this.persistenceService.getGame(
 				HatchetHarrySession.get().getGameId()).isDrawMode();
@@ -80,6 +80,8 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 				content.append("						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]] }); ");
 			}
 		}
+		content.append("}; ");
+		content.append("window.setTimeout(redraw, 500); ");
 		variables.put("content", content.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
