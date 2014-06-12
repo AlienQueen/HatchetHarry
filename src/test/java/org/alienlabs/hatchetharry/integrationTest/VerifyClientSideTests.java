@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -83,8 +85,13 @@ public class VerifyClientSideTests
 				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
 		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver();
+		VerifyClientSideTests.firefoxDriver1.manage().timeouts()
+		.implicitlyWait(30, TimeUnit.SECONDS);
+		
 		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
-
+		VerifyClientSideTests.firefoxDriver2.manage().timeouts()
+		.implicitlyWait(30, TimeUnit.SECONDS);
+		
 		Thread.sleep(15000);
 
 		VerifyClientSideTests.firefoxDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
