@@ -68,7 +68,7 @@ public class VerifyClientSideTests
 	public static void setUpClass() throws Exception
 	{
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
 
 		final ServerConnector http = new ServerConnector(VerifyClientSideTests.server);
 		http.setHost(VerifyClientSideTests.HOST);
@@ -82,16 +82,16 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.server.start();
 
 		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
+		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
 		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver();
 		VerifyClientSideTests.firefoxDriver1.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
-		
+
 		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
 		VerifyClientSideTests.firefoxDriver2.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
-		
+
 		Thread.sleep(15000);
 
 		VerifyClientSideTests.firefoxDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
@@ -121,13 +121,13 @@ public class VerifyClientSideTests
 	public void testMistletoe() throws InterruptedException
 	{
 		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
-				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
+		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.firefoxDriver1.findElement(By.id("runMistletoe")).click();
 
 		Thread.sleep(120000);
 
 		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
-				.executeScript(VerifyClientSideTests.SCROLL_DOWN);
+		.executeScript(VerifyClientSideTests.SCROLL_DOWN);
 
 		final String chromeTotal = VerifyClientSideTests.firefoxDriver1.findElement(
 				By.id("runsSummary")).getText();
@@ -139,22 +139,26 @@ public class VerifyClientSideTests
 	}
 
 	@AfterClass
-	public static void tearDownClass() throws Exception
+	public static void tearDownClass()
 	{
-		if (null != VerifyClientSideTests.firefoxDriver1)
-		{
-			VerifyClientSideTests.firefoxDriver1.quit();
-		}
-		if (null != VerifyClientSideTests.firefoxDriver2)
-		{
-			VerifyClientSideTests.firefoxDriver2.quit();
-		}
+		try {
+			if (null != VerifyClientSideTests.firefoxDriver1)
+			{
+				VerifyClientSideTests.firefoxDriver1.quit();
+			}
+			if (null != VerifyClientSideTests.firefoxDriver2)
+			{
+				VerifyClientSideTests.firefoxDriver2.quit();
+			}
 
-		VerifyClientSideTests.LOGGER
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
-		VerifyClientSideTests.server.stop();
-		VerifyClientSideTests.server.join();
-		Thread.sleep(30000);
+			VerifyClientSideTests.LOGGER
+			.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
+			VerifyClientSideTests.server.stop();
+			VerifyClientSideTests.server.join();
+			Thread.sleep(30000);
+		} catch (Exception e) {
+			VerifyClientSideTests.LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ERROR STOPPING EMBEDDED JETTY SERVER");
+		}
 	}
 
 }
