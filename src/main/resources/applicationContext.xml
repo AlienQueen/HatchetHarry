@@ -34,8 +34,8 @@
 
         <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
               destroy-method="close">
-            <property name="driverClass" value="com.mysql.jdbc.Driver" />
-            <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/hh" />
+            <property name="driverClass" value="org.mariadb.jdbc.Driver" />
+            <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/hh" />
             <property name="user" value="less" />
             <property name="password" value="more" />
 
@@ -129,7 +129,7 @@
 				<!--  create-drop= provide database model at start-up by dropping tables, update= no start-up data model modification -->
 				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-				<prop key="jdbc.driverClassName">com.mysql.jdbc.Driver</prop>
+				<prop key="jdbc.driverClassName">org.mariadb.jdbc.Driver</prop>
 				<prop key="jdbc.url">jdbc:mysql://localhost:3306/hh</prop>
 				<prop key="jdbc.username">less</prop>
 				<prop key="jdbc.password">more</prop>

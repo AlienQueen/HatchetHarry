@@ -154,10 +154,15 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>mistletoe-core</artifactId>
 			<version>0.3-SNAPSHOT</version>
 		</dependency>		
-		<dependency>
+		<!--<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.31</version>
+		</dependency>-->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>1.1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
