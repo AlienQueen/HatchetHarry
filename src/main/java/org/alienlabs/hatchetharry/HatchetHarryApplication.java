@@ -52,9 +52,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class HatchetHarryApplication extends WebApplication
-		implements
-			Serializable,
-			ResourceRegistrationListener
+implements
+Serializable,
+ResourceRegistrationListener
 {
 	private static final long serialVersionUID = 1L;
 	public transient EventBus eventBus;
@@ -182,6 +182,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/draw_mode_on.png"));
 		this.mountResource("image/discard.png", new PackageResourceReference(HomePage.class,
 				"image/discard.png"));
+		this.mountResource("image/mulligan.png", new PackageResourceReference(HomePage.class,
+				"image/mulligan.png"));
 
 		this.mountResource("image/logoh2.gif", new PackageResourceReference(HomePage.class,
 				"image/logoh2.gif"));
@@ -381,7 +383,7 @@ public class HatchetHarryApplication extends WebApplication
 				"cards",
 				new FolderContentResource(new File(ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
-						"SharedResourceFolder"))));
+								"SharedResourceFolder"))));
 		this.mountResource("cards", new SharedResourceReference("cards"));
 
 		this.getResourceSettings().setPackageResourceGuard(new HatchetHarryResourceGuard());
