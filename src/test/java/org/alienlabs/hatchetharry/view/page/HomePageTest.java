@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.view.page;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -13,6 +15,7 @@ import org.alienlabs.hatchetharry.view.component.ExternalImage;
 import org.alienlabs.hatchetharry.view.component.HandComponent;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -120,9 +123,11 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
 
 		// assert DataBox content
-		SpringContextLoaderBaseTest.tester.assertLabel(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
-				"20 life points");
+				AjaxEditableLabel.class);
+		AjaxEditableLabel lifePoints = (AjaxEditableLabel)SpringContextLoaderBaseTest.tester.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
+		assertEquals("20", lifePoints.getDefaultModelObject().toString());
 	}
 
 	@Test
@@ -258,7 +263,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 
 		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage(linkToActivateWindow);
+		.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
 		SpringContextLoaderBaseTest.tester.clickLink(linkToActivateWindow, true);
 		SpringContextLoaderBaseTest.tester.assertVisible(window.getPageRelativePath() + ":"
@@ -324,7 +329,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
 		@SuppressWarnings("unchecked")
 		final AjaxLink<String> drawCardLink = (AjaxLink<String>)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("drawCardLink");
+		.getComponentFromLastRenderedPage("drawCardLink");
 		SpringContextLoaderBaseTest.tester.executeAjaxEvent(drawCardLink, "onclick");
 
 		// assert presence of a thumbnail
