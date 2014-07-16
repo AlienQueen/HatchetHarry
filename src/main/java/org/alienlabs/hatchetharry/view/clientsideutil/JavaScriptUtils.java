@@ -105,10 +105,10 @@ public class JavaScriptUtils
 			final Long gameId)
 	{
 		final Boolean drawMode = persistenceService.getGame(gameId).isDrawMode();
+		final StringBuilder buil = new StringBuilder();
 
 		if (!added && (null != mc) && (drawMode != null) && drawMode.booleanValue())
 		{
-			final StringBuilder buil = new StringBuilder();
 			buil.append("window.setTimeout(function() { ");
 
 			final String uuidValidForJs = mc.getUuid().replace("-", "_");
@@ -154,8 +154,31 @@ public class JavaScriptUtils
 			}
 
 			buil.append("}, 175); ");
-			target.appendJavaScript(buil.toString());
 		}
+
+		final List<MagicCard> allCards = persistenceService
+				.getAllCardsInBattleFieldForAGame(gameId);
+		buil.append("window.setTimeout(function() { ");
+
+		for (final MagicCard magicCard : allCards)
+		{
+			JavaScriptUtils.LOGGER.info("### " + magicCard.getCounters().size()
+					+ " counters, uuid = " + magicCard.getUuid().replace("-", "_"));
+			if (magicCard.getCounters().isEmpty())
+			{
+				buil.append("jQuery('#bullet" + magicCard.getUuid().replace("-", "_")
+						+ "').hide(); ");
+			}
+			else
+			{
+				buil.append("jQuery('#bullet" + magicCard.getUuid().replace("-", "_")
+						+ "').show(); ");
+			}
+		}
+
+		buil.append("}, 175); ");
+
+		target.appendJavaScript(buil.toString());
 	}
 
 	public static void updateHand(final AjaxRequestTarget target)

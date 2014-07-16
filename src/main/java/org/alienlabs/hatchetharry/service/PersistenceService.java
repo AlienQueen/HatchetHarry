@@ -311,7 +311,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.playerDao.getSession();
 		session.update(p);
 	}
-	
+
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void updateSide(final Side s)
 	{
@@ -502,10 +502,9 @@ public class PersistenceService implements Serializable
 	{
 		final Session session = this.playerDao.getSession();
 
-		final Query query = session
-				.createQuery("from Player player0_ where player0_.game = ? ");
+		final Query query = session.createQuery("from Player player0_ where player0_.game = ? ");
 		query.setLong(0, l);
-		return (List<Player>)query.list();
+		return query.list();
 	}
 
 	// Isolation level chosen to be consistent with
@@ -594,7 +593,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInLibraryForDeckAndPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-	{
+			{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -615,7 +614,7 @@ public class PersistenceService implements Serializable
 			PersistenceService.LOGGER.error("error!", e);
 		}
 		return list;
-	}
+			}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void saveCollectibleCard(final CollectibleCard cc)
@@ -837,7 +836,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-	{
+			{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -858,7 +857,7 @@ public class PersistenceService implements Serializable
 					+ " => no result found", e);
 			return null;
 		}
-	}
+			}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInBattleFieldForAGame(final Long gameId)
@@ -886,7 +885,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-	{
+			{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -907,12 +906,12 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-	}
+			}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-	{
+			{
 		final Session session = this.magicCardDao.getSession();
 		final List<MagicCard> all = new ArrayList<MagicCard>();
 
@@ -967,7 +966,7 @@ public class PersistenceService implements Serializable
 		}
 
 		return all;
-	}
+			}
 
 	// TODO remove this
 	@Transactional(readOnly = true)
@@ -995,7 +994,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInGraveyardForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-	{
+			{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -1016,12 +1015,12 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-	}
+			}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInExileForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
-	{
+			{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
@@ -1042,7 +1041,7 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-	}
+			}
 
 	@Transactional(readOnly = true)
 	public List<Side> getSidesFromGame(final Game game)
@@ -1165,12 +1164,13 @@ public class PersistenceService implements Serializable
 		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty()))
 		{
 			card.getCounters().remove(counter);
-			this.magicCardDao.getSession().update(this.magicCardDao.getSession().merge(card));
+			this.counterDao.getSession().delete(counter);
 		}
-		else
+		else if ((token != null) && (token.getCounters() != null)
+				&& (!token.getCounters().isEmpty()))
 		{
 			token.getCounters().remove(counter);
-			this.magicCardDao.getSession().update(this.tokenDao.getSession().merge(token));
+			this.counterDao.getSession().delete(token);
 		}
 	}
 

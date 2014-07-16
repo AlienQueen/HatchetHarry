@@ -104,9 +104,9 @@ public class CardPanel extends Panel
 		final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this, this.uuid,
 				this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior,
 				this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior, myCard.getX()
-						.longValue() == -1l ? this.owner.getSide().getX().longValue() : myCard
+				.longValue() == -1l ? this.owner.getSide().getX().longValue() : myCard
 						.getX().longValue(), myCard.getY().longValue() == -1l ? this.owner
-						.getSide().getY().longValue() : myCard.getY().longValue());
+								.getSide().getY().longValue() : myCard.getY().longValue());
 		menutoggleButton.add(cardMoveBehavior);
 
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid,
@@ -143,6 +143,10 @@ public class CardPanel extends Panel
 				"image/rightArrow.png");
 		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString().replace("-", "_"));
 		tapHandleImage.setOutputMarkupId(true);
+
+		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
+		bullet.setOutputMarkupId(true).setMarkupId(
+				"bullet" + this.uuid.toString().replace("-", "_"));
 
 		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
 		cardImage.setOutputMarkupId(true);
@@ -186,7 +190,8 @@ public class CardPanel extends Panel
 			card.setVisible(false);
 		}
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, cardImage, tapHandleImage, contextMenu);
+		form.add(jsessionid, mouseX, mouseY, handleImage, bullet, cardImage, tapHandleImage,
+				contextMenu);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 		this.add(cardHandle);

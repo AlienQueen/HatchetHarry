@@ -236,3 +236,11 @@ div.wicket-modal h3.w_captionText {
 	position: fixed;
 	left: 15px;
 }
+
+.bullet {
+	position: relative;
+	top: -48px;
+	left: 10px;
+	font-size: 300%;
+	color: orange; 
+}
