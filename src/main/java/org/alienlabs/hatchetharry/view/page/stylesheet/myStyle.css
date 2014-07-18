@@ -242,5 +242,6 @@ div.wicket-modal h3.w_captionText {
 	top: -48px;
 	left: 10px;
 	font-size: 300%;
-	color: orange; 
+	color: orange;
+	z-index: 1; 
 }
