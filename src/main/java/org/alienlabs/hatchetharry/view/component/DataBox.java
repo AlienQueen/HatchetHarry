@@ -62,27 +62,32 @@ public class DataBox extends Panel
 						"playerLifePointsParent");
 				playerLifePointsParent.setOutputMarkupId(true);
 				playerLifePointsParent.setMarkupId("playerLifePointsParent" + player.getId());
-				final Model<String> lifePoints = Model.of(Long.toString(player
-						.getLifePoints()));
-				final AjaxEditableLabel<String> playerLifePoints = new AjaxEditableLabel<String>("playerLifePoints", lifePoints)
+				final Model<String> lifePoints = Model.of(Long.toString(player.getLifePoints()));
+				final AjaxEditableLabel<String> playerLifePoints = new AjaxEditableLabel<String>(
+						"playerLifePoints", lifePoints)
 						{
+					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected void onSubmit(AjaxRequestTarget target)
+					protected void onSubmit(final AjaxRequestTarget target)
 					{
 						super.onSubmit(target);
-						DataBox.LOGGER.info(getDefaultModelObject().toString());
+						DataBox.LOGGER.info(this.getDefaultModelObject().toString());
 
-						player.setLifePoints(Long.parseLong(getDefaultModelObject().toString()));
+						player.setLifePoints(Long
+								.parseLong(this.getDefaultModelObject().toString()));
 						DataBox.this.persistenceService.updatePlayer(player);
 
 						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
 								.giveAllPlayersFromGame(_gameId);
-						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(_gameId);
+						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(
+								_gameId);
 
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null, player.getName(), null,
-										Long.parseLong(getDefaultModelObject().toString()), null, true, _gameId);
+								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
+										player.getName(), null,
+										Long.parseLong(this.getDefaultModelObject().toString()),
+										null, true, _gameId);
 
 						// post the DataBox update message to all players in the
 						// game
@@ -103,7 +108,8 @@ public class DataBox extends Panel
 						playerLifePointsParent.add(playerLifePoints);
 						item.add(playerLifePointsParent);
 
-						final AjaxLink<Player> plus = new AjaxLink<Player>("playerPlusLink", Model.of(player))
+						final AjaxLink<Player> plus = new AjaxLink<Player>("playerPlusLink",
+								Model.of(player))
 								{
 							private static final long serialVersionUID = 1L;
 
@@ -146,7 +152,8 @@ public class DataBox extends Panel
 								plus.add(playerPlus);
 								item.add(plus);
 
-								final AjaxLink<Player> minus = new AjaxLink<Player>("playerMinusLink", Model.of(player))
+								final AjaxLink<Player> minus = new AjaxLink<Player>("playerMinusLink",
+										Model.of(player))
 										{
 									private static final long serialVersionUID = 1L;
 

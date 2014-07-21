@@ -41,11 +41,9 @@ public class MulliganModalWindow extends Panel
 	PersistenceService persistenceService;
 	private final DropDownChoice<String> mulliganInput;
 
-	public MulliganModalWindow(final ModalWindow window, final String id, final Long gameId,
-			final Player me)
+	public MulliganModalWindow(final ModalWindow window, final String id)
 	{
 		super(id);
-
 		final Form<String> form = new Form<String>("form");
 
 		@SuppressWarnings("serial")
@@ -76,26 +74,28 @@ public class MulliganModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				MulliganModalWindow.LOGGER.info("gameId: " + gameId + ", playerId: " + me.getId()
+				MulliganModalWindow.LOGGER.info("gameId: " + MulliganModalWindow.this.getGameId()
+						+ ", playerId: " + MulliganModalWindow.this.getPlayer().getId()
 						+ " asks to draw "
 						+ MulliganModalWindow.this.mulliganInput.getDefaultModelObjectAsString()
 						+ " cards");
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.ASK_FOR_MULLIGAN, null, null, null, null, me.getName(),
-						null, null, null, false, Long
-						.parseLong(MulliganModalWindow.this.mulliganInput
+						ConsoleLogType.ASK_FOR_MULLIGAN, null, null, null, null,
+						MulliganModalWindow.this.getPlayer().getName(), null, null, null, false,
+						Long.parseLong(MulliganModalWindow.this.mulliganInput
 								.getDefaultModelObjectAsString()));
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.ASK_FOR_MULLIGAN,
 						Long.parseLong(MulliganModalWindow.this.mulliganInput
-								.getDefaultModelObjectAsString()), null, me.getName(), null, null,
-								null, null, "");
+								.getDefaultModelObjectAsString()), null, MulliganModalWindow.this
+								.getPlayer().getName(), null, null, null, null, "");
 
 				final List<BigInteger> allPlayersInGame = MulliganModalWindow.this.persistenceService
-						.giveAllPlayersFromGame(gameId);
+						.giveAllPlayersFromGame(MulliganModalWindow.this.getGameId());
 				final List<BigInteger> allPlayersInGameExceptMe = MulliganModalWindow.this.persistenceService
-						.giveAllPlayersFromGameExceptMe(gameId, me.getId());
+						.giveAllPlayersFromGameExceptMe(MulliganModalWindow.this.getGameId(),
+								MulliganModalWindow.this.getPlayer().getId());
 
 				MulliganModalWindow.LOGGER.info("players: " + allPlayersInGameExceptMe.size());
 
@@ -108,7 +108,8 @@ public class MulliganModalWindow extends Panel
 					HatchetHarryApplication
 					.get()
 					.getEventBus()
-					.post(new AskMulliganCometChannel(me.getName(),
+					.post(new AskMulliganCometChannel(MulliganModalWindow.this.getPlayer()
+									.getName(),
 							Long.parseLong(MulliganModalWindow.this.mulliganInput
 									.getDefaultModelObjectAsString())), pageUuid);
 				}
@@ -131,9 +132,10 @@ public class MulliganModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				MulliganModalWindow.this.drawCards(gameId, me, Long
-						.parseLong(MulliganModalWindow.this.mulliganInput
-								.getDefaultModelObjectAsString()), target);
+				MulliganModalWindow.this.drawCards(MulliganModalWindow.this.getGameId(),
+						MulliganModalWindow.this.getPlayer(), Long
+								.parseLong(MulliganModalWindow.this.mulliganInput
+										.getDefaultModelObjectAsString()), target);
 			}
 		};
 
@@ -144,9 +146,10 @@ public class MulliganModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				MulliganModalWindow.this.drawCards(gameId, me, Long
-						.parseLong(MulliganModalWindow.this.mulliganInput
-								.getDefaultModelObjectAsString()) - 1, target);
+				MulliganModalWindow.this.drawCards(MulliganModalWindow.this.getGameId(),
+						MulliganModalWindow.this.getPlayer(), Long
+								.parseLong(MulliganModalWindow.this.mulliganInput
+										.getDefaultModelObjectAsString()) - 1, target);
 			}
 		};
 
@@ -218,6 +221,16 @@ public class MulliganModalWindow extends Panel
 			HatchetHarryApplication.get().getEventBus()
 			.post(new ConsoleLogCometChannel(logger), pageUuid);
 		}
+	}
+
+	Long getGameId()
+	{
+		return HatchetHarrySession.get().getGameId();
+	}
+
+	Player getPlayer()
+	{
+		return HatchetHarrySession.get().getPlayer();
 	}
 
 }

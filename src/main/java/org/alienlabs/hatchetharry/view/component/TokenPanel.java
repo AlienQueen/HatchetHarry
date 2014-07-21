@@ -71,9 +71,9 @@ public class TokenPanel extends Panel
 		cardHandle.setOutputMarkupId(true);
 		cardHandle.setMarkupId("tokenHandle" + this.uuid.toString().replace("-", "_"));
 		cardHandle
-				.add(new AttributeModifier("style", "position: absolute; top: "
-						+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
-						+ "px;"));
+		.add(new AttributeModifier("style", "position: absolute; top: "
+				+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
+				+ "px;"));
 		myToken.setX(this.owner.getSide().getX());
 		myToken.setY(this.owner.getSide().getY());
 		this.persistenceService.updateToken(myToken);
@@ -104,6 +104,10 @@ public class TokenPanel extends Panel
 				"images/arrow.png"));
 		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
 		handleImage.setOutputMarkupId(true);
+
+		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
+		bullet.setOutputMarkupId(true).setMarkupId(
+				"bullet" + this.uuid.toString().replace("-", "_"));
 
 		final Image tapHandleImage = new Image("tapHandleImage", new PackageResourceReference(
 				"images/rightArrow.png"));

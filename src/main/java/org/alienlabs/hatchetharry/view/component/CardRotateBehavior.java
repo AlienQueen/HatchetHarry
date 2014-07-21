@@ -78,7 +78,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		if (null != card.getToken())
 		{
 			card.getToken().setTapped(card.isTapped());
-			this.persistenceService.saveToken(card.getToken());
+			this.persistenceService.updateToken(card.getToken());
 		}
 
 		this.persistenceService.updateCard(card);
@@ -116,7 +116,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			try
 			{
 				HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
+				.post(new ConsoleLogCometChannel(logger), pageUuid);
 			}
 			catch (final NullPointerException e)
 			{

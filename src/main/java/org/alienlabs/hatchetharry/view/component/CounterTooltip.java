@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -138,7 +139,7 @@ public class CounterTooltip extends Panel
 					logger = AbstractConsoleLogStrategy.chooseStrategy(
 							ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 							CounterTooltip.this.token.getCreatureTypes(), HatchetHarrySession.get()
-							.getPlayer().getName(), _counterName,
+									.getPlayer().getName(), _counterName,
 							counter.getNumberOfCounters(), targetPlayer.getName(), null,
 							game.getId());
 				}
@@ -155,7 +156,7 @@ public class CounterTooltip extends Panel
 					logger = AbstractConsoleLogStrategy.chooseStrategy(
 							ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 							CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
-							.getPlayer().getName(), _counterName,
+									.getPlayer().getName(), _counterName,
 							counter.getNumberOfCounters(), targetPlayer.getName(), null,
 							game.getId());
 
@@ -169,7 +170,7 @@ public class CounterTooltip extends Panel
 					CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(updateCometChannel, pageUuid);
 					HatchetHarryApplication.get().getEventBus()
-					.post(new ConsoleLogCometChannel(logger), pageUuid);
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 			}
 
@@ -191,7 +192,7 @@ public class CounterTooltip extends Panel
 		Collections.sort(allCounters);
 
 		final ListView<Counter> counters = new ListView<Counter>("counters", allCounters)
-				{
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -200,7 +201,7 @@ public class CounterTooltip extends Panel
 				final Counter counter = item.getModelObject();
 
 				final AjaxLink<Void> addCounterLink = new AjaxLink<Void>("addCounterLink")
-						{
+				{
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -234,7 +235,7 @@ public class CounterTooltip extends Panel
 							logger = AbstractConsoleLogStrategy.chooseStrategy(
 									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 									CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
-									.getPlayer().getName(), counter.getCounterName(),
+											.getPlayer().getName(), counter.getCounterName(),
 									counter.getNumberOfCounters(), targetPlayerName, null,
 									game.getId());
 						}
@@ -250,7 +251,7 @@ public class CounterTooltip extends Panel
 									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
 									NotifierAction.ADD_COUNTER_ACTION, CounterTooltip.this.token,
 									"", CounterTooltip.this.token.getPlayer().getSide()
-									.getSideName());
+											.getSideName());
 
 							logger = AbstractConsoleLogStrategy.chooseStrategy(
 									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
@@ -267,388 +268,408 @@ public class CounterTooltip extends Panel
 									.get(p);
 							CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
 							HatchetHarryApplication.get().getEventBus()
-							.post(counterTooltipCometChannel, pageUuid);
+									.post(counterTooltipCometChannel, pageUuid);
 							HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+									.post(new ConsoleLogCometChannel(logger), pageUuid);
 						}
 					}
-						};
-						addCounterLink.setOutputMarkupId(true);
+				};
+				addCounterLink.setOutputMarkupId(true);
 
-						final ExternalImage counterPlus = new ExternalImage("counterPlus",
-								"image/plusLife.png");
-						counterPlus.setOutputMarkupId(true);
-						addCounterLink.add(counterPlus);
+				final ExternalImage counterPlus = new ExternalImage("counterPlus",
+						"image/plusLife.png");
+				counterPlus.setOutputMarkupId(true);
+				addCounterLink.add(counterPlus);
 
-						final AjaxLink<Void> removeCounterLink = new AjaxLink<Void>("removeCounterLink")
-								{
-							private static final long serialVersionUID = 1L;
+				final AjaxLink<Void> removeCounterLink = new AjaxLink<Void>("removeCounterLink")
+				{
+					private static final long serialVersionUID = 1L;
 
-							@Override
-							public void onClick(final AjaxRequestTarget target)
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						counter.setNumberOfCounters(counter.getNumberOfCounters() - 1);
+						NotifierAction action = NotifierAction.REMOVE_COUNTER_ACTION;
+						String targetPlayerName = "";
+						Object msg = "";
+
+						final Game game = CounterTooltip.this.persistenceService
+								.getGame(HatchetHarrySession.get().getGameId());
+						final List<BigInteger> allPlayersInGame = CounterTooltip.this.persistenceService
+								.giveAllPlayersFromGame(game.getId());
+
+						ConsoleLogStrategy logger = null;
+
+						if (counter.getNumberOfCounters().longValue() == 0)
+						{
+
+							if (CounterTooltip.this.card != null)
 							{
-								counter.setNumberOfCounters(counter.getNumberOfCounters() - 1);
-								NotifierAction action = NotifierAction.REMOVE_COUNTER_ACTION;
-								String targetPlayerName = "";
-								Object msg = "";
+								targetPlayerName = CounterTooltip.this.persistenceService
+										.getPlayer(CounterTooltip.this.card.getDeck().getPlayerId())
+										.getName();
+								CounterTooltip.this.persistenceService.deleteCounter(counter,
+										CounterTooltip.this.card, null);
 
-								final Game game = CounterTooltip.this.persistenceService
-										.getGame(HatchetHarrySession.get().getGameId());
-								final List<BigInteger> allPlayersInGame = CounterTooltip.this.persistenceService
-										.giveAllPlayersFromGame(game.getId());
+								action = NotifierAction.CLEAR_COUNTER_ACTION;
 
-								ConsoleLogStrategy logger = null;
+								msg = new UpdateCardPanelCometChannel(game.getId(),
+										HatchetHarrySession.get().getPlayer().getName(),
+										CounterTooltip.this.persistenceService.getPlayer(
+												CounterTooltip.this.card.getDeck().getPlayerId())
+												.getName(), CounterTooltip.this.card.getTitle(),
+										counter.getCounterName(), counter.getNumberOfCounters(),
+										0l, action, CounterTooltip.this.card,
+										CounterTooltip.this.card.getBigImageFilename(),
+										CounterTooltip.this.card.getOwnerSide());
 
-								if (counter.getNumberOfCounters().longValue() == 0)
-								{
-
-									if (CounterTooltip.this.card != null)
-									{
-										targetPlayerName = CounterTooltip.this.persistenceService
-												.getPlayer(CounterTooltip.this.card.getDeck().getPlayerId())
-												.getName();
-										CounterTooltip.this.persistenceService.deleteCounter(counter,
-												CounterTooltip.this.card, null);
-
-										action = NotifierAction.CLEAR_COUNTER_ACTION;
-
-										msg = new UpdateCardPanelCometChannel(game.getId(),
-												HatchetHarrySession.get().getPlayer().getName(),
-												CounterTooltip.this.persistenceService.getPlayer(
-														CounterTooltip.this.card.getDeck().getPlayerId())
-														.getName(), CounterTooltip.this.card.getTitle(),
-														counter.getCounterName(), counter.getNumberOfCounters(),
-														0l, action, CounterTooltip.this.card,
-														CounterTooltip.this.card.getBigImageFilename(),
-														CounterTooltip.this.card.getOwnerSide());
-
-										logger = AbstractConsoleLogStrategy.chooseStrategy(
-												ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-												CounterTooltip.this.card.getTitle(), HatchetHarrySession
+								logger = AbstractConsoleLogStrategy.chooseStrategy(
+										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+										CounterTooltip.this.card.getTitle(), HatchetHarrySession
 												.get().getPlayer().getName(),
-												counter.getCounterName(), 0l, targetPlayerName, null,
-												game.getId());
-									}
-									else
-									{
-										targetPlayerName = CounterTooltip.this.persistenceService
-												.getPlayer(CounterTooltip.this.token.getPlayer().getId())
-												.getName();
-										CounterTooltip.this.persistenceService.deleteCounter(counter, null,
-												CounterTooltip.this.token);
+										counter.getCounterName(), 0l, targetPlayerName, null,
+										game.getId());
+							}
+							else
+							{
+								targetPlayerName = CounterTooltip.this.persistenceService
+										.getPlayer(CounterTooltip.this.token.getPlayer().getId())
+										.getName();
 
-										action = NotifierAction.CLEAR_COUNTER_ACTION;
+								CounterTooltip.this.token.getCounters().remove(counter);
+								CounterTooltip.this.persistenceService
+										.updateToken(CounterTooltip.this.token);
+								final MagicCard card = CounterTooltip.this.persistenceService
+										.getCardFromUuid(UUID.fromString(CounterTooltip.this.token
+												.getUuid()));
+								card.getCounters().remove(counter);
+								CounterTooltip.this.persistenceService.updateCard(card);
 
-										msg = new UpdateTokenPanelCometChannel(game.getId(),
-												HatchetHarrySession.get().getPlayer().getName(),
-												targetPlayerName,
-												CounterTooltip.this.token.getCreatureTypes(),
-												counter.getCounterName(), counter.getNumberOfCounters(),
-												0l, action, CounterTooltip.this.token, "",
-												CounterTooltip.this.token.getPlayer().getSide()
+								CounterTooltip.this.persistenceService.deleteCounter(counter, card,
+										CounterTooltip.this.token);
+
+								action = NotifierAction.CLEAR_COUNTER_ACTION;
+
+								msg = new UpdateTokenPanelCometChannel(game.getId(),
+										HatchetHarrySession.get().getPlayer().getName(),
+										targetPlayerName,
+										CounterTooltip.this.token.getCreatureTypes(),
+										counter.getCounterName(), counter.getNumberOfCounters(),
+										0l, action, CounterTooltip.this.token, "",
+										CounterTooltip.this.token.getPlayer().getSide()
 												.getSideName());
 
-										logger = AbstractConsoleLogStrategy.chooseStrategy(
-												ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-												CounterTooltip.this.token.getCreatureTypes(),
-												HatchetHarrySession.get().getPlayer().getName(),
-												counter.getCounterName(), 0l, targetPlayerName, null,
-												game.getId());
-									}
-								}
-								else
-								{
-									if (CounterTooltip.this.card != null)
-									{
-										targetPlayerName = CounterTooltip.this.persistenceService
-												.getPlayer(CounterTooltip.this.card.getDeck().getPlayerId())
-												.getName();
+								logger = AbstractConsoleLogStrategy.chooseStrategy(
+										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+										CounterTooltip.this.token.getCreatureTypes(),
+										HatchetHarrySession.get().getPlayer().getName(),
+										counter.getCounterName(), 0l, targetPlayerName, null,
+										game.getId());
+							}
+						}
+						else
+						{
+							if (CounterTooltip.this.card != null)
+							{
+								targetPlayerName = CounterTooltip.this.persistenceService
+										.getPlayer(CounterTooltip.this.card.getDeck().getPlayerId())
+										.getName();
 
-										logger = AbstractConsoleLogStrategy.chooseStrategy(
-												ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-												CounterTooltip.this.card.getTitle(), HatchetHarrySession
+								logger = AbstractConsoleLogStrategy.chooseStrategy(
+										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+										CounterTooltip.this.card.getTitle(), HatchetHarrySession
 												.get().getPlayer().getName(),
-												counter.getCounterName(), counter.getNumberOfCounters(),
-												targetPlayerName, null, game.getId());
-									}
-									else
-									{
-										CounterTooltip.this.persistenceService.updateCounter(counter);
-										action = NotifierAction.REMOVE_COUNTER_ACTION;
+										counter.getCounterName(), counter.getNumberOfCounters(),
+										targetPlayerName, null, game.getId());
+							}
+							else
+							{
+								CounterTooltip.this.persistenceService.updateCounter(counter);
+								action = NotifierAction.REMOVE_COUNTER_ACTION;
 
 
-										logger = AbstractConsoleLogStrategy.chooseStrategy(
-												ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-												CounterTooltip.this.token.getCreatureTypes(),
-												HatchetHarrySession.get().getPlayer().getName(),
-												counter.getCounterName(), counter.getNumberOfCounters(),
-												targetPlayerName, null, game.getId());
-									}
-								}
+								logger = AbstractConsoleLogStrategy.chooseStrategy(
+										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+										CounterTooltip.this.token.getCreatureTypes(),
+										HatchetHarrySession.get().getPlayer().getName(),
+										counter.getCounterName(), counter.getNumberOfCounters(),
+										targetPlayerName, null, game.getId());
+							}
+						}
 
 
-								final Object counterTooltipCometChannel;
+						final Object counterTooltipCometChannel;
 
-								if ((counter.getCard() != null) && (counter.getCard().getToken() == null))
-								{
-									counterTooltipCometChannel = new UpdateCardPanelCometChannel(
-											game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-											CounterTooltip.this.persistenceService.getPlayer(
-													CounterTooltip.this.card.getDeck().getPlayerId())
-													.getName(), CounterTooltip.this.card.getTitle(),
-													counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-													action, CounterTooltip.this.card,
-													CounterTooltip.this.card.getBigImageFilename(),
-													CounterTooltip.this.card.getOwnerSide());
+						if ((counter.getCard() != null) && (counter.getCard().getToken() == null))
+						{
+							counterTooltipCometChannel = new UpdateCardPanelCometChannel(
+									game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+									CounterTooltip.this.persistenceService.getPlayer(
+											CounterTooltip.this.card.getDeck().getPlayerId())
+											.getName(), CounterTooltip.this.card.getTitle(),
+									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
+									action, CounterTooltip.this.card,
+									CounterTooltip.this.card.getBigImageFilename(),
+									CounterTooltip.this.card.getOwnerSide());
 
-									logger = AbstractConsoleLogStrategy.chooseStrategy(
-											ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-											CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
+							logger = AbstractConsoleLogStrategy.chooseStrategy(
+									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+									CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
 											.getPlayer().getName(), counter.getCounterName(),
-											counter.getNumberOfCounters(), targetPlayerName, null,
-											game.getId());
-								}
-								else if (action == NotifierAction.CLEAR_COUNTER_ACTION)
-								{
-									for (int i = 0; i < allPlayersInGame.size(); i++)
-									{
-										final Long p = allPlayersInGame.get(i).longValue();
-										final String pageUuid = HatchetHarryApplication.getCometResources()
-												.get(p);
-										CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
-										HatchetHarryApplication.get().getEventBus().post(msg, pageUuid);
+									counter.getNumberOfCounters(), targetPlayerName, null,
+									game.getId());
+						}
+						else if (action == NotifierAction.CLEAR_COUNTER_ACTION)
+						{
+							for (int i = 0; i < allPlayersInGame.size(); i++)
+							{
+								final Long p = allPlayersInGame.get(i).longValue();
+								final String pageUuid = HatchetHarryApplication.getCometResources()
+										.get(p);
+								CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
+								HatchetHarryApplication.get().getEventBus().post(msg, pageUuid);
 
-										HatchetHarryApplication.get().getEventBus()
+								HatchetHarryApplication.get().getEventBus()
 										.post(new ConsoleLogCometChannel(logger), pageUuid);
-									}
-									return;
-								}
-								else
-								{
-									targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
-											CounterTooltip.this.token.getPlayer().getId()).getName();
+							}
+							return;
+						}
+						else
+						{
+							targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
+									CounterTooltip.this.token.getPlayer().getId()).getName();
 
-									counterTooltipCometChannel = new UpdateTokenPanelCometChannel(
-											game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-											targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
-											counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-											action, CounterTooltip.this.token, "",
-											CounterTooltip.this.token.getPlayer().getSide().getSideName());
+							counterTooltipCometChannel = new UpdateTokenPanelCometChannel(
+									game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+									targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
+									counter.getCounterName(), counter.getNumberOfCounters(), 0l,
+									action, CounterTooltip.this.token, "",
+									CounterTooltip.this.token.getPlayer().getSide().getSideName());
 
-									logger = AbstractConsoleLogStrategy.chooseStrategy(
-											ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-											CounterTooltip.this.token.getCreatureTypes(),
-											HatchetHarrySession.get().getPlayer().getName(),
-											counter.getCounterName(), counter.getNumberOfCounters(),
-											targetPlayerName, null, game.getId());
-								}
+							logger = AbstractConsoleLogStrategy.chooseStrategy(
+									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+									CounterTooltip.this.token.getCreatureTypes(),
+									HatchetHarrySession.get().getPlayer().getName(),
+									counter.getCounterName(), counter.getNumberOfCounters(),
+									targetPlayerName, null, game.getId());
+						}
 
-								for (int i = 0; i < allPlayersInGame.size(); i++)
-								{
-									final Long p = allPlayersInGame.get(i).longValue();
-									final String pageUuid = HatchetHarryApplication.getCometResources()
-											.get(p);
-									CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
-									HatchetHarryApplication.get().getEventBus()
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
+							HatchetHarryApplication.get().getEventBus()
 									.post(counterTooltipCometChannel, pageUuid);
 
-									HatchetHarryApplication.get().getEventBus()
+							HatchetHarryApplication.get().getEventBus()
 									.post(new ConsoleLogCometChannel(logger), pageUuid);
-								}
+						}
+					}
+				};
+				removeCounterLink.setOutputMarkupId(true);
+
+				final ExternalImage counterMinus = new ExternalImage("counterMinus",
+						"image/minusLife.png");
+				counterMinus.setOutputMarkupId(true);
+				removeCounterLink.add(counterMinus);
+
+				final Form<String> setCounterForm = new Form<String>("setCounterForm");
+				final TextField<Long> setCounterButton = new TextField<Long>("setCounterButton",
+						Model.of(counter.getNumberOfCounters()));
+				setCounterForm.add(setCounterButton);
+
+				final IndicatingAjaxButton setCounterSubmit = new IndicatingAjaxButton(
+						"setCounterSubmit", setCounterForm)
+				{
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+					{
+						NotifierAction action;
+						final Long originalNumberOfCounters = counter.getNumberOfCounters();
+						final Long targetNumberOfCounters = Long.parseLong((String)_form.get(
+								"setCounterButton").getDefaultModelObject());
+						String targetPlayerName = "";
+						Object msg = "";
+
+						final Game game = CounterTooltip.this.persistenceService
+								.getGame(HatchetHarrySession.get().getGameId());
+						final List<BigInteger> allPlayersInGame = CounterTooltip.this.persistenceService
+								.giveAllPlayersFromGame(game.getId());
+
+						ConsoleLogStrategy logger = null;
+
+						if (targetNumberOfCounters.longValue() == 0)
+						{
+							if (CounterTooltip.this.card != null)
+							{
+								CounterTooltip.this.persistenceService.deleteCounter(counter,
+										CounterTooltip.this.card, null);
+
+								action = NotifierAction.CLEAR_COUNTER_ACTION;
+
+								msg = new UpdateCardPanelCometChannel(game.getId(),
+										HatchetHarrySession.get().getPlayer().getName(),
+										CounterTooltip.this.persistenceService.getPlayer(
+												CounterTooltip.this.card.getDeck().getPlayerId())
+												.getName(), CounterTooltip.this.card.getTitle(),
+										counter.getCounterName(), counter.getNumberOfCounters(),
+										0l, action, CounterTooltip.this.card,
+										CounterTooltip.this.card.getBigImageFilename(),
+										CounterTooltip.this.card.getOwnerSide());
+
+								targetPlayerName = CounterTooltip.this.persistenceService
+										.getPlayer(CounterTooltip.this.card.getDeck().getPlayerId())
+										.getName();
+
+								logger = AbstractConsoleLogStrategy.chooseStrategy(
+										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+										CounterTooltip.this.card.getTitle(), HatchetHarrySession
+												.get().getPlayer().getName(),
+										counter.getCounterName(), 0l, targetPlayerName, null,
+										game.getId());
 							}
-								};
-								removeCounterLink.setOutputMarkupId(true);
+							else
+							{
+								targetPlayerName = CounterTooltip.this.persistenceService
+										.getPlayer(CounterTooltip.this.token.getPlayer().getId())
+										.getName();
 
-								final ExternalImage counterMinus = new ExternalImage("counterMinus",
-										"image/minusLife.png");
-								counterMinus.setOutputMarkupId(true);
-								removeCounterLink.add(counterMinus);
+												CounterTooltip.this.token.getCounters().remove(counter);
+								CounterTooltip.this.persistenceService
+										.updateToken(CounterTooltip.this.token);
+								final MagicCard card = CounterTooltip.this.persistenceService
+														.getCardFromUuid(UUID.fromString(CounterTooltip.this.token
+																.getUuid()));
+								card.getCounters().remove(counter);
+								CounterTooltip.this.persistenceService.updateCard(card);
 
-								final Form<String> setCounterForm = new Form<String>("setCounterForm");
-								final TextField<Long> setCounterButton = new TextField<Long>("setCounterButton",
-										Model.of(counter.getNumberOfCounters()));
-								setCounterForm.add(setCounterButton);
-
-								final IndicatingAjaxButton setCounterSubmit = new IndicatingAjaxButton(
-										"setCounterSubmit", setCounterForm)
-								{
-									private static final long serialVersionUID = 1L;
-
-									@Override
-									protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-									{
-										NotifierAction action;
-										final Long originalNumberOfCounters = counter.getNumberOfCounters();
-										final Long targetNumberOfCounters = Long.parseLong((String)_form.get(
-												"setCounterButton").getDefaultModelObject());
-										String targetPlayerName = "";
-										Object msg = "";
-
-										final Game game = CounterTooltip.this.persistenceService
-												.getGame(HatchetHarrySession.get().getGameId());
-										final List<BigInteger> allPlayersInGame = CounterTooltip.this.persistenceService
-												.giveAllPlayersFromGame(game.getId());
-
-										ConsoleLogStrategy logger = null;
-
-										if (targetNumberOfCounters.longValue() == 0)
-										{
-											if (CounterTooltip.this.card != null)
-											{
-												CounterTooltip.this.persistenceService.deleteCounter(counter,
-														CounterTooltip.this.card, null);
-
-												action = NotifierAction.CLEAR_COUNTER_ACTION;
-
-												msg = new UpdateCardPanelCometChannel(game.getId(),
-														HatchetHarrySession.get().getPlayer().getName(),
-														CounterTooltip.this.persistenceService.getPlayer(
-																CounterTooltip.this.card.getDeck().getPlayerId())
-																.getName(), CounterTooltip.this.card.getTitle(),
-																counter.getCounterName(), counter.getNumberOfCounters(),
-																0l, action, CounterTooltip.this.card,
-																CounterTooltip.this.card.getBigImageFilename(),
-																CounterTooltip.this.card.getOwnerSide());
-
-												targetPlayerName = CounterTooltip.this.persistenceService
-														.getPlayer(CounterTooltip.this.card.getDeck().getPlayerId())
-														.getName();
-
-												logger = AbstractConsoleLogStrategy.chooseStrategy(
-														ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-														CounterTooltip.this.card.getTitle(), HatchetHarrySession
-														.get().getPlayer().getName(),
-														counter.getCounterName(), 0l, targetPlayerName, null,
-														game.getId());
-											}
-											else
-											{
-												targetPlayerName = CounterTooltip.this.persistenceService
-														.getPlayer(CounterTooltip.this.token.getPlayer().getId())
-														.getName();
 												CounterTooltip.this.persistenceService.deleteCounter(counter, null,
-														CounterTooltip.this.token);
+										CounterTooltip.this.token);
 
-												action = NotifierAction.CLEAR_COUNTER_ACTION;
+								action = NotifierAction.CLEAR_COUNTER_ACTION;
 
-												msg = new UpdateTokenPanelCometChannel(game.getId(),
-														HatchetHarrySession.get().getPlayer().getName(),
-														targetPlayerName,
-														CounterTooltip.this.token.getCreatureTypes(),
-														counter.getCounterName(), counter.getNumberOfCounters(),
-														0l, action, CounterTooltip.this.token, "",
-														CounterTooltip.this.token.getPlayer().getSide()
-														.getSideName());
+								msg = new UpdateTokenPanelCometChannel(game.getId(),
+										HatchetHarrySession.get().getPlayer().getName(),
+										targetPlayerName,
+										CounterTooltip.this.token.getCreatureTypes(),
+										counter.getCounterName(), counter.getNumberOfCounters(),
+										0l, action, CounterTooltip.this.token, "",
+										CounterTooltip.this.token.getPlayer().getSide()
+												.getSideName());
 
-												logger = AbstractConsoleLogStrategy.chooseStrategy(
-														ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-														CounterTooltip.this.token.getCreatureTypes(),
-														HatchetHarrySession.get().getPlayer().getName(),
-														counter.getCounterName(), 0l, targetPlayerName, null,
-														game.getId());
-											}
-										}
-										else
-										{
-											action = NotifierAction.SET_COUNTER_ACTION;
-										}
+								logger = AbstractConsoleLogStrategy.chooseStrategy(
+										ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+										CounterTooltip.this.token.getCreatureTypes(),
+										HatchetHarrySession.get().getPlayer().getName(),
+										counter.getCounterName(), 0l, targetPlayerName, null,
+										game.getId());
+							}
+						}
+						else
+						{
+							action = NotifierAction.SET_COUNTER_ACTION;
+						}
 
-										counter.setNumberOfCounters(targetNumberOfCounters);
-										CounterTooltip.this.persistenceService.updateCounter(counter);
+						counter.setNumberOfCounters(targetNumberOfCounters);
+						CounterTooltip.this.persistenceService.updateCounter(counter);
 
-										final Object counterTooltipCometChannel;
+						final Object counterTooltipCometChannel;
 
-										if ((counter.getCard() != null) && (counter.getCard().getToken() == null))
-										{
-											targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
-													CounterTooltip.this.card.getDeck().getPlayerId()).getName();
+						if ((counter.getCard() != null) && (counter.getCard().getToken() == null))
+						{
+							targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
+									CounterTooltip.this.card.getDeck().getPlayerId()).getName();
 
-											counterTooltipCometChannel = new UpdateCardPanelCometChannel(
-													game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-													targetPlayerName, CounterTooltip.this.card.getTitle(),
-													counter.getCounterName(), targetNumberOfCounters,
-													originalNumberOfCounters, action, CounterTooltip.this.card,
-													CounterTooltip.this.card.getBigImageFilename(),
-													CounterTooltip.this.card.getOwnerSide());
+							counterTooltipCometChannel = new UpdateCardPanelCometChannel(
+									game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+									targetPlayerName, CounterTooltip.this.card.getTitle(),
+									counter.getCounterName(), targetNumberOfCounters,
+									originalNumberOfCounters, action, CounterTooltip.this.card,
+									CounterTooltip.this.card.getBigImageFilename(),
+									CounterTooltip.this.card.getOwnerSide());
 
-											logger = AbstractConsoleLogStrategy.chooseStrategy(
-													ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-													CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
-													.getPlayer().getName(), counter.getCounterName(),
-													counter.getNumberOfCounters(), targetPlayerName, null,
-													game.getId());
-										}
-										else if (action == NotifierAction.CLEAR_COUNTER_ACTION)
-										{
-											for (int i = 0; i < allPlayersInGame.size(); i++)
-											{
-												final Long p = allPlayersInGame.get(i).longValue();
-												final String pageUuid = HatchetHarryApplication.getCometResources()
-														.get(p);
-												CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
-												HatchetHarryApplication.get().getEventBus().post(msg, pageUuid);
+							logger = AbstractConsoleLogStrategy.chooseStrategy(
+									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+									CounterTooltip.this.card.getTitle(), HatchetHarrySession.get()
+											.getPlayer().getName(), counter.getCounterName(),
+									counter.getNumberOfCounters(), targetPlayerName, null,
+									game.getId());
+						}
+						else if (action == NotifierAction.CLEAR_COUNTER_ACTION)
+						{
+							for (int i = 0; i < allPlayersInGame.size(); i++)
+							{
+								final Long p = allPlayersInGame.get(i).longValue();
+								final String pageUuid = HatchetHarryApplication.getCometResources()
+										.get(p);
+								CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
+								HatchetHarryApplication.get().getEventBus().post(msg, pageUuid);
 
-												HatchetHarryApplication.get().getEventBus()
-												.post(new ConsoleLogCometChannel(logger), pageUuid);
-											}
-											return;
-										}
-										else
-										{
-											targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
-													CounterTooltip.this.token.getPlayer().getId()).getName();
+								HatchetHarryApplication.get().getEventBus()
+										.post(new ConsoleLogCometChannel(logger), pageUuid);
+							}
+							return;
+						}
+						else
+						{
+							targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
+									CounterTooltip.this.token.getPlayer().getId()).getName();
 
-											counterTooltipCometChannel = new UpdateTokenPanelCometChannel(
-													game.getId(), HatchetHarrySession.get().getPlayer().getName(),
-													targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
-													counter.getCounterName(), targetNumberOfCounters,
-													originalNumberOfCounters, action, CounterTooltip.this.token,
-													"", CounterTooltip.this.token.getPlayer().getSide()
-													.getSideName());
+							counterTooltipCometChannel = new UpdateTokenPanelCometChannel(
+									game.getId(), HatchetHarrySession.get().getPlayer().getName(),
+									targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
+									counter.getCounterName(), targetNumberOfCounters,
+									originalNumberOfCounters, action, CounterTooltip.this.token,
+									"", CounterTooltip.this.token.getPlayer().getSide()
+											.getSideName());
 
 
-											logger = AbstractConsoleLogStrategy.chooseStrategy(
-													ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
-													CounterTooltip.this.token.getCreatureTypes(),
-													HatchetHarrySession.get().getPlayer().getName(),
-													counter.getCounterName(), counter.getNumberOfCounters(),
-													targetPlayerName, null, game.getId());
-										}
+							logger = AbstractConsoleLogStrategy.chooseStrategy(
+									ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
+									CounterTooltip.this.token.getCreatureTypes(),
+									HatchetHarrySession.get().getPlayer().getName(),
+									counter.getCounterName(), counter.getNumberOfCounters(),
+									targetPlayerName, null, game.getId());
+						}
 
-										for (int i = 0; i < allPlayersInGame.size(); i++)
-										{
-											final Long p = allPlayersInGame.get(i).longValue();
-											final String pageUuid = HatchetHarryApplication.getCometResources()
-													.get(p);
-											CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long p = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources()
+									.get(p);
+							CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
 
-											HatchetHarryApplication.get().getEventBus()
-											.post(counterTooltipCometChannel, pageUuid);
+							HatchetHarryApplication.get().getEventBus()
+									.post(counterTooltipCometChannel, pageUuid);
 
-											HatchetHarryApplication.get().getEventBus()
-											.post(new ConsoleLogCometChannel(logger), pageUuid);
-										}
-									}
-								};
-
-								setCounterForm.add(new Label("counterName", counter.getCounterName())
-								.setOutputMarkupId(true));
-								setCounterForm.add(new Label("numberOfCounters", counter.getNumberOfCounters())
-								.setOutputMarkupId(true));
-
-								setCounterForm.add(setCounterSubmit, addCounterLink, removeCounterLink);
-
-								setCounterForm.setOutputMarkupPlaceholderTag(false);
-								item.add(setCounterForm);
-
-								if (counter.getNumberOfCounters() == 0)
-								{
-									item.setVisible(false);
-								}
-			}
+							HatchetHarryApplication.get().getEventBus()
+									.post(new ConsoleLogCometChannel(logger), pageUuid);
+						}
+					}
 				};
 
-				this.add(form, counters);
+				setCounterForm.add(new Label("counterName", counter.getCounterName())
+						.setOutputMarkupId(true));
+				setCounterForm.add(new Label("numberOfCounters", counter.getNumberOfCounters())
+						.setOutputMarkupId(true));
+
+				setCounterForm.add(setCounterSubmit, addCounterLink, removeCounterLink);
+
+				setCounterForm.setOutputMarkupPlaceholderTag(false);
+				item.add(setCounterForm);
+
+				if (counter.getNumberOfCounters() == 0)
+				{
+					item.setVisible(false);
+				}
+			}
+		};
+
+		this.add(form, counters);
 	}
 
 	@Required

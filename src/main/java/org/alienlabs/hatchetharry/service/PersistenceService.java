@@ -1164,13 +1164,15 @@ public class PersistenceService implements Serializable
 		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty()))
 		{
 			card.getCounters().remove(counter);
+			this.magicCardDao.getSession().update(card);
 			this.counterDao.getSession().delete(counter);
 		}
 		else if ((token != null) && (token.getCounters() != null)
 				&& (!token.getCounters().isEmpty()))
 		{
 			token.getCounters().remove(counter);
-			this.counterDao.getSession().delete(token);
+			this.counterDao.getSession().update(counter);
+			this.tokenDao.getSession().delete(token);
 		}
 	}
 

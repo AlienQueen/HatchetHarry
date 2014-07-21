@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.view.page;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -126,8 +124,10 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
 				AjaxEditableLabel.class);
-		AjaxEditableLabel lifePoints = (AjaxEditableLabel)SpringContextLoaderBaseTest.tester.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
-		assertEquals("20", lifePoints.getDefaultModelObject().toString());
+		@SuppressWarnings("unchecked")
+		final AjaxEditableLabel<String> lifePoints = (AjaxEditableLabel<String>)SpringContextLoaderBaseTest.tester
+		.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
+		Assert.assertEquals("20", lifePoints.getDefaultModelObject().toString());
 	}
 
 	@Test
@@ -275,8 +275,8 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	{
 		// Test the toolbar at the bottom of the screen
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		SpringContextLoaderBaseTest.tester.assertComponent("playCardLink",
-				WebMarkupContainer.class);
+		SpringContextLoaderBaseTest.tester
+		.assertComponent("playCardLink", WebMarkupContainer.class);
 		SpringContextLoaderBaseTest.tester.assertComponent("endTurnPlaceholder",
 				WebMarkupContainer.class);
 		SpringContextLoaderBaseTest.tester.assertComponent("endTurnPlaceholder:endTurnLink",
@@ -286,7 +286,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	/**
 	 * When drawing a card, it should appear at the left of the hand thumb list,
 	 * hence be visible in the hand component
-	 * 
+	 *
 	 */
 	@Test
 	@Ignore

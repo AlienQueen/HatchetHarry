@@ -159,12 +159,17 @@ public class JavaScriptUtils
 		final List<MagicCard> allCards = persistenceService
 				.getAllCardsInBattleFieldForAGame(gameId);
 		buil.append("window.setTimeout(function() { ");
+		JavaScriptUtils.LOGGER.info("###  allCards.size(): " + allCards.size());
 
 		for (final MagicCard magicCard : allCards)
 		{
-			JavaScriptUtils.LOGGER.info("### " + magicCard.getCounters().size()
-					+ " counters, uuid = " + magicCard.getUuid().replace("-", "_"));
-			if (magicCard.getCounters().isEmpty())
+			JavaScriptUtils.LOGGER.info("### "
+					+ (magicCard.getToken() != null
+							? magicCard.getToken().getCounters().size()
+							: magicCard.getCounters().size()) + " counters, uuid = "
+					+ magicCard.getUuid().replace("-", "_"));
+			if (((magicCard.getToken() != null) && magicCard.getToken().getCounters().isEmpty())
+					|| (((magicCard.getToken() == null) && magicCard.getCounters().isEmpty())))
 			{
 				buil.append("jQuery('#bullet" + magicCard.getUuid().replace("-", "_")
 						+ "').hide(); ");
