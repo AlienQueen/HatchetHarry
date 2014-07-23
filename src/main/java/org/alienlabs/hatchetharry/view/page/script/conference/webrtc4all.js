@@ -1,6 +1,6 @@
-// to avoid caching
+    // to avoid caching
     //if (window.location.href.indexOf("svn=") == -1) {
-    //    window.location.href += (window.location.href.indexOf("?") == -1 ? "?svn=13" : "&svn=13");
+    //    window.location.href += (window.location.href.indexOf("?") == -1 ? "?svn=224" : "&svn=224");
     //}
 
     var sTransferNumber;
@@ -9,10 +9,10 @@
     var videoRemote, videoLocal, audioRemote;
     var bFullScreen = false;
     var oNotifICall;
-    var oReadyStateTimer;
     var bDisableVideo = false;
     var viewVideoLocal, viewVideoRemote; // <video> (webrtc) or <div> (webrtc4all)
     var oConfigCall;
+    var oReadyStateTimer;
 
     C = 
     {
@@ -23,7 +23,6 @@
         if(window.console) {
             window.console.info("location=" + window.location);
         }
-        
         videoLocal = document.getElementById("video_local");
         videoRemote = document.getElementById("video_remote");
         audioRemote = document.getElementById("audio_remote");
@@ -41,14 +40,51 @@
         // Initialize call button
         uiBtnCallSetText("Call");
 
+        var getPVal = function (PName) {
+            var query = window.location.search.substring(1);
+            var vars = query.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) === PName) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+            return null;
+        }
+
+        var preInit = function() {
+            // set default webrtc type (before initialization)
+            var s_webrtc_type = getPVal("wt");
+            if (s_webrtc_type) {
+                if(window.console) {
+                    window.console.info("s_webrtc_type=" + s_webrtc_type);
+                }
+                SIPml.setWebRtcType(s_webrtc_type);
+            }
+
+            // initialize SIPML5
+            SIPml.init(postInit);
+        }
+
         oReadyStateTimer = setInterval(function () {
             if (document.readyState === "complete") {
                 clearInterval(oReadyStateTimer);
                 // initialize SIPML5
-                SIPml.init(postInit);
+                preInit();
             }
         },
         500);
+
+        /*if (document.readyState === "complete") {
+            preInit();
+        }
+        else {
+            document.onreadystatechange = function () {
+                 if (document.readyState === "complete") {
+                    preInit();
+                }
+            }
+       }*/
     };
 
     function postInit() {
@@ -264,7 +300,7 @@
                     bandwidth: (window.localStorage ? tsk_string_to_object(window.localStorage.getItem('org.doubango.expert.bandwidth')) : null), // could be redefined a session-level
                     video_size: (window.localStorage ? tsk_string_to_object(window.localStorage.getItem('org.doubango.expert.video_size')) : null), // could be redefined a session-level
                     sip_headers: [
-                            { name: 'User-Agent', value: 'IM-client/OMA1.0 sipML5-v1.2013.08.10B' },
+                            { name: 'User-Agent', value: 'IM-client/OMA1.0 sipML5-v1.2014.04.18' },
                             { name: 'Organization', value: 'Doubango Telecom' }
                     ]
                 }
