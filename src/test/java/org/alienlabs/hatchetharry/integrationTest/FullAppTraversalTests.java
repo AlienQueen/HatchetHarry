@@ -321,13 +321,13 @@ public class FullAppTraversalTests
 		new Actions(FullAppTraversalTests.chromeDriver1).dragAndDrop(draggable, to).build()
 		.perform();
 
-		Thread.sleep(10000);
+		Thread.sleep(30000);
 
 		// Assert graveyard is visible and contains one card
-		//Assert.assertFalse(FullAppTraversalTests.chromeDriver2.findElements(
-		//		By.id("graveyard-page-wrap")).isEmpty());
-		//Assert.assertTrue(FullAppTraversalTests.chromeDriver2.findElements(
-		//		By.cssSelector(".graveyard-cross-link")).size() == 1);
+		Assert.assertFalse(FullAppTraversalTests.chromeDriver2.findElements(
+				By.id("graveyard-page-wrap")).isEmpty());
+		Assert.assertTrue(FullAppTraversalTests.chromeDriver2.findElements(
+				By.cssSelector(".graveyard-cross-link")).size() == 1);
 
 		// Verify name of the card in the graveyard
 		Assert.assertTrue(battlefieldCardName.equals(FullAppTraversalTests.chromeDriver2
