@@ -33,11 +33,11 @@ You are free to modify any part of its source code (client-side or server-side),
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.16.0</wicket.version>
+		<wicket.version>6.15.0</wicket.version>
 		<quickview.version>6.0-SNAPSHOT</quickview.version>
 		<wicketstuff.version>6.15.0</wicketstuff.version>
-		<wicket-atmosphere.version>0.19</wicket-atmosphere.version><!--0.18-SNAPSHOT</wicket-atmosphere.version>-->
-		<atmosphere.version>2.2.0</atmosphere.version>
+		<wicket-atmosphere.version>0.18-SNAPSHOT</wicket-atmosphere.version><!--0.18-SNAPSHOT</wicket-atmosphere.version>-->
+		<atmosphere.version>2.1.7</atmosphere.version>
 		<atmosphere-compat.version>2.0.1</atmosphere-compat.version>
 		<spring.version>4.0.5.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
@@ -534,6 +534,12 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>emma-maven-plugin</artifactId>
 			<version>1.0-alpha-3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>
@@ -605,6 +611,10 @@ You are free to modify any part of its source code (client-side or server-side),
 				<exclusion>
 						<groupId>org.springframework</groupId>
 						<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
