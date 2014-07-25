@@ -32,7 +32,6 @@ public class VerifyClientSideTests
 	private static final String MISTLETOE_TOTAL_TESTS = "Total tests: 2";
 
 	private static WebDriver chromeDriver1;
-	private static WebDriver chromeDriver2;
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "function elementInViewport(el) {\n"
 			+ "  var top = el.offsetTop;\n"
@@ -50,7 +49,7 @@ public class VerifyClientSideTests
 			+ "    top > (window.pageYOffset + 50) &&\n"
 			+ "    left > (window.pageXOffset + 5) &&\n"
 			+ "    (top + height + 50) < (window.pageYOffset + window.innerHeight) &&\n"
-			+ "    (left + width + 50) < (window.pageXOffset + window.innerWidth)\n"
+			+ "    (left + width + 10) < (window.pageXOffset + window.innerWidth)\n"
 			+ "  );\n"
 			+ "}\n"
 			+ "\n"
@@ -89,17 +88,10 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.chromeDriver1.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
 
-		VerifyClientSideTests.chromeDriver2 = new ChromeDriver();
-		VerifyClientSideTests.chromeDriver2.manage().timeouts()
-		.implicitlyWait(30, TimeUnit.SECONDS);
-
 		Thread.sleep(15000);
 
 		VerifyClientSideTests.chromeDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
 				+ VerifyClientSideTests.PORT + "/");
-		VerifyClientSideTests.chromeDriver2.get("http://" + VerifyClientSideTests.HOST + ":"
-				+ VerifyClientSideTests.PORT + "/");
-
 		Thread.sleep(30000);
 	}
 
@@ -125,7 +117,7 @@ public class VerifyClientSideTests
 		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
-		Thread.sleep(120000);
+		Thread.sleep(60000);
 
 		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
 		.executeScript(VerifyClientSideTests.SCROLL_DOWN);
@@ -146,10 +138,6 @@ public class VerifyClientSideTests
 			if (null != VerifyClientSideTests.chromeDriver1)
 			{
 				VerifyClientSideTests.chromeDriver1.quit();
-			}
-			if (null != VerifyClientSideTests.chromeDriver2)
-			{
-				VerifyClientSideTests.chromeDriver2.quit();
 			}
 
 			VerifyClientSideTests.LOGGER
