@@ -14,6 +14,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
@@ -139,13 +141,15 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.LOGGER
 		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
-		FullAppTraversalTests.firefoxDriver1 = new FirefoxDriver();
+		ProfilesIni profile = new ProfilesIni();
+		FirefoxProfile ffprofile = profile.getProfile("default");
+		FullAppTraversalTests.firefoxDriver1 = new FirefoxDriver(ffprofile);
 		FullAppTraversalTests.firefoxDriver1.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
 
-		FullAppTraversalTests.firefoxDriver2 = new FirefoxDriver();
+		FullAppTraversalTests.firefoxDriver2 = new FirefoxDriver(ffprofile);
 		FullAppTraversalTests.firefoxDriver2.manage().timeouts()
-				.implicitlyWait(30, TimeUnit.SECONDS);
+		.implicitlyWait(30, TimeUnit.SECONDS);
 
 		Thread.sleep(5000);
 
@@ -181,7 +185,7 @@ public class FullAppTraversalTests
 	{
 		// Create a game in Chrome 1
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
-				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		Thread.sleep(8000);
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("createGameLinkResponsive")).click();
@@ -192,7 +196,7 @@ public class FullAppTraversalTests
 		new Select(FullAppTraversalTests.firefoxDriver1.findElement(By.id("sideInput")))
 		.getOptions().get(1).click();
 		new Select(FullAppTraversalTests.firefoxDriver1.findElement(By.id("decks"))).getOptions()
-				.get(1).click();
+		.get(1).click();
 
 		final String gameId = FullAppTraversalTests.firefoxDriver1.findElement(By.id("gameId"))
 				.getText();
@@ -210,9 +214,9 @@ public class FullAppTraversalTests
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("name")).clear();
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("name")).sendKeys("Marie");
 		new Select(FullAppTraversalTests.firefoxDriver2.findElement(By.id("sideInput")))
-				.getOptions().get(2).click();
+		.getOptions().get(2).click();
 		new Select(FullAppTraversalTests.firefoxDriver2.findElement(By.id("decks"))).getOptions()
-				.get(2).click();
+		.get(2).click();
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("gameIdInput")).clear();
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("gameIdInput")).sendKeys(gameId);
 
@@ -224,18 +228,18 @@ public class FullAppTraversalTests
 		Thread.sleep(8000);
 		Assert.assertEquals(2,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 		Assert.assertEquals(2,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 
 		// Verify that the hands contains 7 cards
 		Assert.assertEquals(7,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".movers-row"))
-						.size());
+				.size());
 		Assert.assertEquals(7,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".movers-row"))
-						.size());
+				.size());
 
 		// Find first hand card name of Chrome1
 		final String battlefieldCardName = FullAppTraversalTests.firefoxDriver2
@@ -249,25 +253,25 @@ public class FullAppTraversalTests
 		Thread.sleep(12000);
 		Assert.assertEquals(6,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".movers-row"))
-						.size());
+				.size());
 
 		// Verify that card is present on the battlefield
 		// Two HTML elements with class "magicCard" are created for each card
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 
 		// Verify the name of the card on the battlefield
 		Assert.assertEquals(battlefieldCardName,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(battlefieldCardName,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 
 		// Verify that the card is untapped
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver2
@@ -279,7 +283,7 @@ public class FullAppTraversalTests
 
 		// Tap card
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
 		FullAppTraversalTests.firefoxDriver2.findElement(
 				By.cssSelector("img[id^='tapHandleImage']")).click();
 		Thread.sleep(8000);
@@ -305,11 +309,11 @@ public class FullAppTraversalTests
 		.executeScript("$('#putToExile').attr('src', 'image/exile.jpg');");
 
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript("$('#putToGraveyard').attr('src', 'image/graveyard.jpg');");
+		.executeScript("$('#putToGraveyard').attr('src', 'image/graveyard.jpg');");
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript("$('#putToHand').attr('src', 'image/hand.jpg');");
+		.executeScript("$('#putToHand').attr('src', 'image/hand.jpg');");
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript("$('#putToExile').attr('src', 'image/exile.jpg');");
+		.executeScript("$('#putToExile').attr('src', 'image/exile.jpg');");
 
 		// Put card to graveyard
 		WebElement draggable = FullAppTraversalTests.firefoxDriver1.findElement(By
@@ -333,10 +337,10 @@ public class FullAppTraversalTests
 
 		// Play card from graveyard
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		Thread.sleep(8000);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 
 		FullAppTraversalTests.firefoxDriver2.findElement(
 				By.id("playCardFromGraveyardLinkResponsive")).click();
@@ -345,10 +349,10 @@ public class FullAppTraversalTests
 		// Verify the name of the card on the battlefield
 		Assert.assertEquals(battlefieldCardName,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(battlefieldCardName,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 
 		// Assert that the graveyard is visible and empty
 		Assert.assertFalse(FullAppTraversalTests.firefoxDriver2.findElements(
@@ -361,21 +365,21 @@ public class FullAppTraversalTests
 				.cssSelector("img[id^='handleImage']"));
 		to = FullAppTraversalTests.firefoxDriver2.findElement(By.id("putToHand"));
 		new Actions(FullAppTraversalTests.firefoxDriver2).dragAndDrop(draggable, to).build()
-				.perform();
+		.perform();
 
 		Thread.sleep(8000);
 
 		// Assert that the hand contains 7 cards again
 		Assert.assertEquals(7,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".movers-row"))
-						.size());
+				.size());
 
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		Thread.sleep(2000);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 
 		FullAppTraversalTests.firefoxDriver2.findElement(
 				By.id("revealTopLibraryCardLinkResponsive")).click();
@@ -396,7 +400,7 @@ public class FullAppTraversalTests
 
 		// Reveal again
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.firefoxDriver2.findElement(
 				By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
@@ -409,43 +413,43 @@ public class FullAppTraversalTests
 
 		// Put to battlefield
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("putToBattlefieldFromModalWindow"))
-				.click();
+		.click();
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("doNothing")).click();
 
 		// Verify that the card is present on the battlefield
 		Thread.sleep(8000);
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 
 		// Assert that the card on the battlefield is the same
 		Assert.assertEquals(topCardName,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(topCardName,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 
 		// Reveal top card of library
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.firefoxDriver2.findElement(
 				By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
 
 		// Put to hand
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("putToHandFromModalWindow")).click();
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("doNothing")).click();
@@ -455,19 +459,19 @@ public class FullAppTraversalTests
 		// Assert that the hand contains 8 cards
 		Assert.assertEquals(8,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".movers-row"))
-						.size());
+				.size());
 
 		// Verify that there is still two cards on the battlefield
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 
 		// Reveal again
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		.executeScript(FullAppTraversalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FullAppTraversalTests.firefoxDriver2.findElement(
 				By.id("revealTopLibraryCardLinkResponsive")).click();
 		Thread.sleep(8000);
@@ -478,12 +482,12 @@ public class FullAppTraversalTests
 
 		// Put to graveyard
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver1)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("putToGraveyardFromModalWindow"))
-				.click();
+		.click();
 		FullAppTraversalTests.firefoxDriver1.findElement(By.id("doNothing")).click();
 		Thread.sleep(8000);
 
@@ -501,33 +505,33 @@ public class FullAppTraversalTests
 		// Verify that there is still two cards on the battlefield
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 		Assert.assertEquals(4,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 
 		// Verify the name of the card on the battlefield
 		Assert.assertEquals(topCardName,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 		Assert.assertEquals(topCardName,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(2).getAttribute("name"));
+				.get(2).getAttribute("name"));
 
 		// Verify that the hands contains 8 cards
 		Assert.assertEquals(8,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".movers-row"))
-						.size());
+				.size());
 		Assert.assertEquals(7,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".movers-row"))
-						.size());
+				.size());
 
 		// Put one card from hand to graveyard
 		((JavascriptExecutor)FullAppTraversalTests.firefoxDriver2)
-				.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_PUT_TO_ZONE_SUMBIT_BUTTON_FOR_HAND);
+		.executeScript(FullAppTraversalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_PUT_TO_ZONE_SUMBIT_BUTTON_FOR_HAND);
 		new Select(
 				FullAppTraversalTests.firefoxDriver2.findElement(By.id("putToZoneSelectForHand")))
-				.getOptions().get(1).click();
+		.getOptions().get(1).click();
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
 		Thread.sleep(8000);
 
@@ -542,7 +546,7 @@ public class FullAppTraversalTests
 		// Put current card from hand to exile
 		new Select(
 				FullAppTraversalTests.firefoxDriver2.findElement(By.id("putToZoneSelectForHand")))
-				.getOptions().get(2).click();
+		.getOptions().get(2).click();
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
 		Thread.sleep(8000);
 
@@ -577,7 +581,7 @@ public class FullAppTraversalTests
 		// Put current card from hand to exile
 		new Select(
 				FullAppTraversalTests.firefoxDriver2.findElement(By.id("putToZoneSelectForHand")))
-				.getOptions().get(2).click();
+		.getOptions().get(2).click();
 		FullAppTraversalTests.firefoxDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
 		Thread.sleep(8000);
 
@@ -606,18 +610,18 @@ public class FullAppTraversalTests
 		// Verify that there are three cards on the battlefield
 		Assert.assertEquals(6,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 		Assert.assertEquals(6,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.size());
+				.size());
 
 		// Verify the name of the card on the battlefield
 		Assert.assertEquals(exileCardName,
 				FullAppTraversalTests.firefoxDriver2.findElements(By.cssSelector(".magicCard"))
-						.get(4).getAttribute("name"));
+				.get(4).getAttribute("name"));
 		Assert.assertEquals(exileCardName,
 				FullAppTraversalTests.firefoxDriver1.findElements(By.cssSelector(".magicCard"))
-						.get(4).getAttribute("name"));
+				.get(4).getAttribute("name"));
 	}
 
 }
