@@ -12,9 +12,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +31,8 @@ public class VerifyClientSideTests
 	private static final String MISTLETOE_FAILED_TESTS = "Errors/Failures: 0";
 	private static final String MISTLETOE_TOTAL_TESTS = "Total tests: 2";
 
-	private static WebDriver firefoxDriver1;
-	private static WebDriver firefoxDriver2;
+	private static WebDriver chromeDriver1;
+	private static WebDriver chromeDriver2;
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "function elementInViewport(el) {\n"
 			+ "  var top = el.offsetTop;\n"
@@ -86,21 +84,20 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.LOGGER
 		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
-		ProfilesIni profile = new ProfilesIni();
-		FirefoxProfile ffprofile = profile.getProfile("default");
-		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver(ffprofile);
-		VerifyClientSideTests.firefoxDriver1.manage().timeouts()
+		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
+		VerifyClientSideTests.chromeDriver1 = new ChromeDriver();
+		VerifyClientSideTests.chromeDriver1.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
 
-		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver(ffprofile);
-		VerifyClientSideTests.firefoxDriver2.manage().timeouts()
+		VerifyClientSideTests.chromeDriver2 = new ChromeDriver();
+		VerifyClientSideTests.chromeDriver2.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
 
-		VerifyClientSideTests.firefoxDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
+		VerifyClientSideTests.chromeDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
 				+ VerifyClientSideTests.PORT + "/");
-		VerifyClientSideTests.firefoxDriver2.get("http://" + VerifyClientSideTests.HOST + ":"
+		VerifyClientSideTests.chromeDriver2.get("http://" + VerifyClientSideTests.HOST + ":"
 				+ VerifyClientSideTests.PORT + "/");
 
 		Thread.sleep(30000);
@@ -109,11 +106,11 @@ public class VerifyClientSideTests
 	@Test
 	public void testQunit()
 	{
-		final String passed1 = VerifyClientSideTests.firefoxDriver1.findElement(By.id("passed"))
+		final String passed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("passed"))
 				.getText();
-		final String total1 = VerifyClientSideTests.firefoxDriver1.findElement(By.id("total"))
+		final String total1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("total"))
 				.getText();
-		final String failed1 = VerifyClientSideTests.firefoxDriver1.findElement(By.id("failed"))
+		final String failed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("failed"))
 				.getText();
 
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed1);
@@ -124,18 +121,18 @@ public class VerifyClientSideTests
 	@Test
 	public void testMistletoe() throws InterruptedException
 	{
-		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
+		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
 		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
-		VerifyClientSideTests.firefoxDriver1.findElement(By.id("runMistletoe")).click();
+		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
 		Thread.sleep(120000);
 
-		((JavascriptExecutor)VerifyClientSideTests.firefoxDriver1)
+		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
 		.executeScript(VerifyClientSideTests.SCROLL_DOWN);
 
-		final String chromeTotal = VerifyClientSideTests.firefoxDriver1.findElement(
+		final String chromeTotal = VerifyClientSideTests.chromeDriver1.findElement(
 				By.id("runsSummary")).getText();
-		final String chromeFailed = VerifyClientSideTests.firefoxDriver1.findElement(
+		final String chromeFailed = VerifyClientSideTests.chromeDriver1.findElement(
 				By.id("errorsSummary")).getText();
 
 		Assert.assertEquals(VerifyClientSideTests.MISTLETOE_TOTAL_TESTS, chromeTotal);
@@ -146,13 +143,13 @@ public class VerifyClientSideTests
 	public static void tearDownClass()
 	{
 		try {
-			if (null != VerifyClientSideTests.firefoxDriver1)
+			if (null != VerifyClientSideTests.chromeDriver1)
 			{
-				VerifyClientSideTests.firefoxDriver1.quit();
+				VerifyClientSideTests.chromeDriver1.quit();
 			}
-			if (null != VerifyClientSideTests.firefoxDriver2)
+			if (null != VerifyClientSideTests.chromeDriver2)
 			{
-				VerifyClientSideTests.firefoxDriver2.quit();
+				VerifyClientSideTests.chromeDriver2.quit();
 			}
 
 			VerifyClientSideTests.LOGGER
