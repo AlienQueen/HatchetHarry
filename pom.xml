@@ -257,7 +257,7 @@ You are free to modify any part of its source code (client-side or server-side),
 			<version>1.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.jvnet.hudson</groupId>
 			<artifactId>selenium-grid</artifactId>
 			<version>1.0.7-hudson-1</version>
@@ -281,7 +281,7 @@ You are free to modify any part of its source code (client-side or server-side),
 					<artifactId>selenium-remote-client</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency> -->
 		<dependency>
 		    <groupId>com.opera</groupId>
 		    <artifactId>operadriver</artifactId>
@@ -308,7 +308,7 @@ You are free to modify any part of its source code (client-side or server-side),
 			<artifactId>selenium-iphone-driver</artifactId>
 			<version>${selenium.version}</version>
 		</dependency> -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.seleniumhq.webdriver</groupId>
 			<artifactId>webdriver-chrome</artifactId>
 			<version>0.9.7376</version>
@@ -316,6 +316,10 @@ You are free to modify any part of its source code (client-side or server-side),
 				<exclusion>
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hamcrest-all</artifactId>
+					<groupId>org.hamcrest</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -350,7 +354,7 @@ You are free to modify any part of its source code (client-side or server-side),
 					<groupId>org.mortbay.jetty</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
@@ -377,144 +381,6 @@ You are free to modify any part of its source code (client-side or server-side),
 			<version>1.3.9-1</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.codehaus.sonar</groupId>
-			<artifactId>sonar-graph</artifactId>
-			<version>2.12</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.collections</groupId>
-					<artifactId>google-collections</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>sonar-maven-plugin</artifactId>
-			<version>2.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar-plugins</groupId>
-			<artifactId>sonar-emma-plugin</artifactId>
-			<version>1.2.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar-plugins</groupId>
-			<artifactId>sonar-useless-code-tracker-plugin</artifactId>
-			<version>0.4</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar-plugins</groupId>
-			<artifactId>sonarncss</artifactId>
-			<version>0.1</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar.plugins</groupId>
-			<artifactId>sonar-pmd-plugin</artifactId>
-			<version>2.11</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar.plugins</groupId>
-			<artifactId>sonar-findbugs-plugin</artifactId>
-			<version>2.12</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar.plugins</groupId>
-			<artifactId>sonar-surefire-plugin</artifactId>
-			<version>2.12</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar.plugins</groupId>
-			<artifactId>sonar-cpd-plugin</artifactId>
-			<version>2.12</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar-plugins.l10n</groupId>
-			<artifactId>sonar-l10n-fr-plugin</artifactId>
-			<version>1.2</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hibernate</groupId>
-					<artifactId>hibernate-annotations</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hibernate</groupId>
-					<artifactId>ejb3-persistence</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.google.collections</groupId>
-					<artifactId>google-collections</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>log4j-over-slf4j</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>hibernate-core</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>
-						hibernate-commons-annotations
-					</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>hibernate-entitymanager</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>hibernate-ehcache</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar-plugins.jmeter</groupId>
-			<artifactId>jmeter-report-client</artifactId>
-			<version>0.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar-plugins.jmeter</groupId>
-			<artifactId>jmeter-report-server</artifactId>
-			<version>0.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar-plugins.jmeter</groupId>
-			<artifactId>sonar-jmeter-plugin</artifactId>
-			<version>0.2</version>
-			<scope>compile</scope>
-		</dependency> -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -545,8 +411,18 @@ You are free to modify any part of its source code (client-side or server-side),
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>javancss-maven-plugin</artifactId>
 			<version>2.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>doxia-core</artifactId>
+					<groupId>doxia</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>doxia-sink-api</artifactId>
+					<groupId>doxia</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium.version}</version>
@@ -556,7 +432,7 @@ You are free to modify any part of its source code (client-side or server-side),
     				<artifactId>selenium-support</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
@@ -618,11 +494,11 @@ You are free to modify any part of its source code (client-side or server-side),
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.seleniumhq.webdriver</groupId>
 			<artifactId>webdriver-selenium</artifactId>
 			<version>0.9.7376</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
