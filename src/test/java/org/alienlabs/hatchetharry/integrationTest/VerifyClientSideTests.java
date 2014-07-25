@@ -13,6 +13,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,11 +86,13 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.LOGGER
 		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
-		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver();
+		ProfilesIni profile = new ProfilesIni();
+		FirefoxProfile ffprofile = profile.getProfile("default");
+		VerifyClientSideTests.firefoxDriver1 = new FirefoxDriver(ffprofile);
 		VerifyClientSideTests.firefoxDriver1.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
 
-		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver();
+		VerifyClientSideTests.firefoxDriver2 = new FirefoxDriver(ffprofile);
 		VerifyClientSideTests.firefoxDriver2.manage().timeouts()
 		.implicitlyWait(30, TimeUnit.SECONDS);
 
