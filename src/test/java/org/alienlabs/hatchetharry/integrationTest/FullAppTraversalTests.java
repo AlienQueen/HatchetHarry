@@ -324,8 +324,8 @@ public class FullAppTraversalTests
 		Thread.sleep(10000);
 
 		// Assert graveyard is visible and contains one card
-		Assert.assertFalse(FullAppTraversalTests.chromeDriver2.findElements(
-				By.id("graveyard-page-wrap")).isEmpty());
+		//Assert.assertFalse(FullAppTraversalTests.chromeDriver2.findElements(
+		//		By.id("graveyard-page-wrap")).isEmpty());
 		Assert.assertTrue(FullAppTraversalTests.chromeDriver2.findElements(
 				By.cssSelector(".graveyard-cross-link")).size() == 1);
 
