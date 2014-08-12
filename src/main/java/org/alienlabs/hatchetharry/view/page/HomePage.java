@@ -292,7 +292,7 @@ public class HomePage extends TestReportPage
 				final String pageUuid = HatchetHarryApplication.getCometResources().get(
 						playerToWhomToSend);
 				HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
+				.post(new ConsoleLogCometChannel(logger), pageUuid);
 				HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 			}
 
@@ -350,9 +350,8 @@ public class HomePage extends TestReportPage
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1",
-				"version 0.8.0 (release à 180 sur les trottoirs),");
-		final Label message2 = new Label("message2", "built on Tuesday, 15th of July 2014.");
+		final Label message1 = new Label("message1", "version 0.10.0 (release Test It All),");
+		final Label message2 = new Label("message2", "built on Tuesday, 12th of August 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -578,7 +577,7 @@ public class HomePage extends TestReportPage
 	private void generateHideAllTooltipsLink(final String id)
 	{
 		this.add(new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -588,13 +587,13 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
 			}
 
-		});
+				});
 	}
 
 	private void generateOpenConferenceLink(final String id)
 	{
 		this.add(new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -625,13 +624,13 @@ public class HomePage extends TestReportPage
 				}
 			}
 
-		});
+				});
 	}
 
 	private void generateRevealHandLink(final String id)
 	{
 		this.add(new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -644,13 +643,13 @@ public class HomePage extends TestReportPage
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.REVEAL_HAND, null, null, HomePage.this.session.getPlayer()
-								.getName(), "", "", "", null, "");
+						.getName(), "", "", "", null, "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_HAND, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, false, gameId);
+						.getPlayer().getName(), null, null, null, false, gameId);
 				final RevealHandCometChannel rhcc = new RevealHandCometChannel(gameId,
 						HomePage.this.session.getPlayer().getId(), HomePage.this.session
-								.getPlayer().getDeck().getDeckId());
+						.getPlayer().getDeck().getDeckId());
 
 				for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
 				{
@@ -661,7 +660,7 @@ public class HomePage extends TestReportPage
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(rhcc, pageUuid);
 				}
 
@@ -669,16 +668,16 @@ public class HomePage extends TestReportPage
 						HomePage.this.session.getPlayer().getId());
 				HatchetHarryApplication.get().getEventBus().post(ncc, myPageUuid);
 				HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), myPageUuid);
+				.post(new ConsoleLogCometChannel(logger), myPageUuid);
 			}
 
-		});
+				});
 	}
 
 	private void generateEndGameLink(final String id)
 	{
 		this.add(new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -687,13 +686,13 @@ public class HomePage extends TestReportPage
 				HomePage.LOGGER.info("end game");
 				target.appendJavaScript("var r = confirm('Are you sure that you want to end this game?'); if (r==true) { window.location = window.location + '?endGame=true'; }; ");
 			}
-		});
+				});
 	}
 
 	private void buildDock()
 	{
 		final AjaxLink<Void> showHandLink = new AjaxLink<Void>("handLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -734,169 +733,169 @@ public class HomePage extends TestReportPage
 				}
 
 			}
-		};
+				};
 
-		this.add(showHandLink);
+				this.add(showHandLink);
 
-		final AjaxLink<Void> drawModeLink = new AjaxLink<Void>("drawModeLink")
-		{
-			private static final long serialVersionUID = 1L;
+				final AjaxLink<Void> drawModeLink = new AjaxLink<Void>("drawModeLink")
+						{
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
-			{
-				final Game g = HomePage.this.persistenceService.getGame(HomePage.this.session
-						.getGameId());
-				g.setDrawMode(!g.isDrawMode());
-				HomePage.this.persistenceService.updateGame(g);
+					@Override
+					public void onClick(final AjaxRequestTarget target)
+					{
+						final Game g = HomePage.this.persistenceService.getGame(HomePage.this.session
+								.getGameId());
+						g.setDrawMode(!g.isDrawMode());
+						HomePage.this.persistenceService.updateGame(g);
 
-				if (!g.isDrawMode())
-				{
-					HomePage.this.persistenceService.deleteAllArrowsForAGame(g.getId());
-				}
+						if (!g.isDrawMode())
+						{
+							HomePage.this.persistenceService.deleteAllArrowsForAGame(g.getId());
+						}
 
-				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(HomePage.this.session.getGameId());
+						final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+								.giveAllPlayersFromGame(HomePage.this.session.getGameId());
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-							playerToWhomToSend);
-					final SwitchDrawModeCometChannel sdmcc = new SwitchDrawModeCometChannel(
-							g.isDrawMode());
+						for (int i = 0; i < allPlayersInGame.size(); i++)
+						{
+							final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
+							final String pageUuid = HatchetHarryApplication.getCometResources().get(
+									playerToWhomToSend);
+							final SwitchDrawModeCometChannel sdmcc = new SwitchDrawModeCometChannel(
+									g.isDrawMode());
 
-					HatchetHarryApplication.get().getEventBus().post(sdmcc, pageUuid);
-				}
-			}
+							HatchetHarryApplication.get().getEventBus().post(sdmcc, pageUuid);
+						}
+					}
 
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
-			{
-				super.onComponentTag(tag);
+					@Override
+					protected void onComponentTag(final ComponentTag tag)
+					{
+						super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-						|| tag.getName().equalsIgnoreCase("area"))
-				{
-					tag.put("href", "#");
-				}
-				else
-				{
-					this.disableLink(tag);
-				}
+						if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+								|| tag.getName().equalsIgnoreCase("area"))
+						{
+							tag.put("href", "#");
+						}
+						else
+						{
+							this.disableLink(tag);
+						}
 
-			}
-		};
+					}
+						};
 
-		this.add(drawModeLink);
+						this.add(drawModeLink);
 
-		final AjaxLink<Void> showGraveyardLink = new AjaxLink<Void>("graveyardLink")
-		{
-			private static final long serialVersionUID = 1L;
+						final AjaxLink<Void> showGraveyardLink = new AjaxLink<Void>("graveyardLink")
+								{
+							private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
-			{
-				final Player _player = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId());
-				final Boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
+							@Override
+							public void onClick(final AjaxRequestTarget target)
+							{
+								final Player _player = HomePage.this.persistenceService
+										.getPlayer(HomePage.this.session.getPlayer().getId());
+								final Boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
 
-				if ((isGraveyardDisplayed != null) && isGraveyardDisplayed)
-				{
-					HomePage.this.graveyardParent.addOrReplace(new WebMarkupContainer("graveyard"));
-					target.add(HomePage.this.graveyardParent);
-				}
-				else
-				{
-					JavaScriptUtils.updateGraveyard(target);
+								if ((isGraveyardDisplayed != null) && isGraveyardDisplayed)
+								{
+									HomePage.this.graveyardParent.addOrReplace(new WebMarkupContainer("graveyard"));
+									target.add(HomePage.this.graveyardParent);
+								}
+								else
+								{
+									JavaScriptUtils.updateGraveyard(target);
 
-				}
+								}
 
-				if ((isGraveyardDisplayed != null) && (isGraveyardDisplayed.booleanValue() == true))
-				{
-					_player.setGraveyardDisplayed(false);
-				}
-				else
-				{
-					_player.setGraveyardDisplayed(true);
-				}
-				HomePage.this.persistenceService.mergePlayer(_player);
-			}
+								if ((isGraveyardDisplayed != null) && (isGraveyardDisplayed.booleanValue() == true))
+								{
+									_player.setGraveyardDisplayed(false);
+								}
+								else
+								{
+									_player.setGraveyardDisplayed(true);
+								}
+								HomePage.this.persistenceService.mergePlayer(_player);
+							}
 
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
-			{
-				super.onComponentTag(tag);
+							@Override
+							protected void onComponentTag(final ComponentTag tag)
+							{
+								super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-						|| tag.getName().equalsIgnoreCase("area"))
-				{
-					tag.put("href", "#");
-				}
-				else
-				{
-					this.disableLink(tag);
-				}
+								if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+										|| tag.getName().equalsIgnoreCase("area"))
+								{
+									tag.put("href", "#");
+								}
+								else
+								{
+									this.disableLink(tag);
+								}
 
-			}
-		};
+							}
+								};
 
-		this.add(showGraveyardLink);
+								this.add(showGraveyardLink);
 
-		final AjaxLink<Void> showExileLink = new AjaxLink<Void>("exileLink")
-		{
-			private static final long serialVersionUID = 1L;
+								final AjaxLink<Void> showExileLink = new AjaxLink<Void>("exileLink")
+										{
+									private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
-			{
-				final Player _player = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId());
-				final Boolean isExileDisplayed = _player.isExileDisplayed();
+									@Override
+									public void onClick(final AjaxRequestTarget target)
+									{
+										final Player _player = HomePage.this.persistenceService
+												.getPlayer(HomePage.this.session.getPlayer().getId());
+										final Boolean isExileDisplayed = _player.isExileDisplayed();
 
-				if ((isExileDisplayed != null) && isExileDisplayed)
-				{
-					HomePage.this.exileParent.addOrReplace(new WebMarkupContainer("exile"));
-					target.add(HomePage.this.exileParent);
-				}
-				else
-				{
-					JavaScriptUtils.updateExile(target, _player.getGame().getId(), _player.getId(),
-							_player.getDeck().getDeckId());
+										if ((isExileDisplayed != null) && isExileDisplayed)
+										{
+											HomePage.this.exileParent.addOrReplace(new WebMarkupContainer("exile"));
+											target.add(HomePage.this.exileParent);
+										}
+										else
+										{
+											JavaScriptUtils.updateExile(target, _player.getGame().getId(), _player.getId(),
+													_player.getDeck().getDeckId());
 
-				}
+										}
 
-				if ((isExileDisplayed != null) && (isExileDisplayed.booleanValue() == true))
-				{
-					_player.setExileDisplayed(false);
-				}
-				else
-				{
-					_player.setExileDisplayed(true);
-				}
+										if ((isExileDisplayed != null) && (isExileDisplayed.booleanValue() == true))
+										{
+											_player.setExileDisplayed(false);
+										}
+										else
+										{
+											_player.setExileDisplayed(true);
+										}
 
-				HomePage.this.persistenceService.mergePlayer(_player);
-			}
+										HomePage.this.persistenceService.mergePlayer(_player);
+									}
 
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
-			{
-				super.onComponentTag(tag);
+									@Override
+									protected void onComponentTag(final ComponentTag tag)
+									{
+										super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-						|| tag.getName().equalsIgnoreCase("area"))
-				{
-					tag.put("href", "#");
-				}
-				else
-				{
-					this.disableLink(tag);
-				}
+										if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+												|| tag.getName().equalsIgnoreCase("area"))
+										{
+											tag.put("href", "#");
+										}
+										else
+										{
+											this.disableLink(tag);
+										}
 
-			}
-		};
+									}
+										};
 
-		this.add(showExileLink);
+										this.add(showExileLink);
 	}
 
 	private void buildEndTurnLink()
@@ -905,7 +904,7 @@ public class HomePage extends TestReportPage
 		this.endTurnPlaceholder.setOutputMarkupId(true);
 
 		this.endTurnLink = new IndicatingAjaxLink<Void>("endTurnLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -917,7 +916,7 @@ public class HomePage extends TestReportPage
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.END_OF_TURN, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, false,
+						.getPlayer().getName(), null, null, null, false,
 						HomePage.this.session.getGameId());
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
@@ -930,22 +929,22 @@ public class HomePage extends TestReportPage
 							playerToWhomToSend);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
-									.getSide().getSideName(), null, null, null, "");
+							.getSide().getSideName(), null, null, null, "");
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 
 				HomePage.this.session.setCombatInProgress(false);
 			}
 
-		};
-		this.endTurnLink.setMarkupId("endTurnLink");
-		this.endTurnLink.setOutputMarkupId(true);
+				};
+				this.endTurnLink.setMarkupId("endTurnLink");
+				this.endTurnLink.setOutputMarkupId(true);
 
-		this.endTurnPlaceholder.add(this.endTurnLink);
-		this.add(this.endTurnPlaceholder);
+				this.endTurnPlaceholder.add(this.endTurnLink);
+				this.add(this.endTurnPlaceholder);
 	}
 
 	private void buildInResponseLink()
@@ -954,7 +953,7 @@ public class HomePage extends TestReportPage
 		this.inResponsePlaceholder.setOutputMarkupId(true);
 
 		this.inResponseLink = new IndicatingAjaxLink<Void>("inResponseLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -983,12 +982,12 @@ public class HomePage extends TestReportPage
 
 			}
 
-		};
-		this.inResponseLink.setMarkupId("inResponseLink");
-		this.inResponseLink.setOutputMarkupId(true);
+				};
+				this.inResponseLink.setMarkupId("inResponseLink");
+				this.inResponseLink.setOutputMarkupId(true);
 
-		this.inResponsePlaceholder.add(this.inResponseLink);
-		this.add(this.inResponsePlaceholder);
+				this.inResponsePlaceholder.add(this.inResponseLink);
+				this.add(this.inResponsePlaceholder);
 	}
 
 	private void buildFineForMeLink()
@@ -997,7 +996,7 @@ public class HomePage extends TestReportPage
 		this.fineForMePlaceholder.setOutputMarkupId(true);
 
 		this.fineForMeLink = new IndicatingAjaxLink<Void>("fineForMeLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1024,11 +1023,11 @@ public class HomePage extends TestReportPage
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 			}
-		};
+				};
 
-		this.fineForMeLink.setOutputMarkupId(true).setMarkupId("fineForMeLink");
-		this.fineForMePlaceholder.add(this.fineForMeLink);
-		this.add(this.fineForMePlaceholder);
+				this.fineForMeLink.setOutputMarkupId(true).setMarkupId("fineForMeLink");
+				this.fineForMePlaceholder.add(this.fineForMeLink);
+				this.add(this.fineForMePlaceholder);
 	}
 
 	private void buildUntapAllLink()
@@ -1038,7 +1037,7 @@ public class HomePage extends TestReportPage
 		this.untapAllPlaceholder.setOutputMarkupId(true);
 
 		this.untapAllLink = new IndicatingAjaxLink<Void>("untapAllLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1051,7 +1050,7 @@ public class HomePage extends TestReportPage
 				final List<MagicCard> allCards = HomePage.this.persistenceService
 						.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId,
 								HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
-										.get().getPlayer().getDeck().getDeckId());
+								.get().getPlayer().getDeck().getDeckId());
 				for (int i = 0; i < allCards.size(); i++)
 				{
 					final MagicCard mc = allCards.get(i);
@@ -1072,7 +1071,7 @@ public class HomePage extends TestReportPage
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.TAP_UNTAP, null, null, null, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, null, null, false, gameId);
+						.getPlayer().getName(), null, null, null, false, gameId);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -1084,21 +1083,21 @@ public class HomePage extends TestReportPage
 					// in the loop
 					final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
 							HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession
-									.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession
-									.get().getPlayer().getName(), allCards);
+							.get().getPlayer().getDeck().getDeckId(), HatchetHarrySession
+							.get().getPlayer().getName(), allCards);
 					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
 
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 			}
 
-		};
-		this.untapAllLink.setMarkupId("untapAllLink");
-		this.untapAllLink.setOutputMarkupId(true);
+				};
+				this.untapAllLink.setMarkupId("untapAllLink");
+				this.untapAllLink.setOutputMarkupId(true);
 
-		this.untapAllPlaceholder.add(this.untapAllLink);
-		this.add(this.untapAllPlaceholder);
+				this.untapAllPlaceholder.add(this.untapAllLink);
+				this.add(this.untapAllPlaceholder);
 	}
 
 	private void buildUntapAndDrawLink()
@@ -1108,7 +1107,7 @@ public class HomePage extends TestReportPage
 		this.untapAndDrawPlaceholder.setOutputMarkupId(true);
 
 		this.untapAndDrawLink = new IndicatingAjaxLink<Void>("untapAndDrawLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1118,12 +1117,12 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 250);");
 			}
 
-		};
-		this.untapAndDrawLink.setMarkupId("untapAndDrawLink");
-		this.untapAndDrawLink.setOutputMarkupId(true);
+				};
+				this.untapAndDrawLink.setMarkupId("untapAndDrawLink");
+				this.untapAndDrawLink.setOutputMarkupId(true);
 
-		this.untapAndDrawPlaceholder.add(this.untapAndDrawLink);
-		this.add(this.untapAndDrawPlaceholder);
+				this.untapAndDrawPlaceholder.add(this.untapAndDrawLink);
+				this.add(this.untapAndDrawPlaceholder);
 	}
 
 	private void buildDataBox(final long _gameId)
@@ -1240,7 +1239,7 @@ public class HomePage extends TestReportPage
 		combatPlaceholder.setOutputMarkupId(true);
 
 		final AjaxLink<Void> combatLink = new IndicatingAjaxLink<Void>("combatLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1255,12 +1254,12 @@ public class HomePage extends TestReportPage
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null, HomePage.this.session
-								.getPlayer().getName(), "", "", "",
+						.getPlayer().getName(), "", "", "",
 						HomePage.this.session.isCombatInProgress(), "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.COMBAT, null, null, HomePage.this.session
-								.isCombatInProgress(), null, HomePage.this.session.getPlayer()
-								.getName(), null, null, null, false, gameId);
+						.isCombatInProgress(), null, HomePage.this.session.getPlayer()
+						.getName(), null, null, null, false, gameId);
 
 				for (int i = 0; i < allPlayersInGame.size(); i++)
 				{
@@ -1271,23 +1270,23 @@ public class HomePage extends TestReportPage
 
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 
 			}
-		};
-		combatLink.setMarkupId("combatLink");
-		combatLink.setOutputMarkupId(true);
+				};
+				combatLink.setMarkupId("combatLink");
+				combatLink.setOutputMarkupId(true);
 
-		combatPlaceholder.add(combatLink);
+				combatPlaceholder.add(combatLink);
 
-		this.add(combatPlaceholder);
+				this.add(combatPlaceholder);
 	}
 
 	private void generateDrawCardLink()
 	{
 		final AjaxLink<String> drawCardLink = new IndicatingAjaxLink<String>("drawCardLink")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1337,7 +1336,7 @@ public class HomePage extends TestReportPage
 
 					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 							ConsoleLogType.DRAW_CARD, null, null, null, null, HatchetHarrySession
-									.get().getPlayer().getName(), null, null, null, null, gameId);
+							.get().getPlayer().getName(), null, null, null, null, gameId);
 
 					for (int i = 0; i < allPlayersInGame.size(); i++)
 					{
@@ -1347,7 +1346,7 @@ public class HomePage extends TestReportPage
 
 						final NotifierCometChannel ncc = new NotifierCometChannel(
 								NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
-										.getSide().getSideName(), null, null, null, "");
+								.getSide().getSideName(), null, null, null, "");
 
 						try
 						{
@@ -1357,19 +1356,19 @@ public class HomePage extends TestReportPage
 						{
 							// NPE in unit tests
 							HomePage.LOGGER
-									.error("exception thrown while posting in event bus", ex);
+							.error("exception thrown while posting in event bus", ex);
 						}
 
 						try
 						{
 							HatchetHarryApplication.get().getEventBus()
-									.post(new ConsoleLogCometChannel(logger), pageUuid);
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
 						}
 						catch (final NullPointerException ex)
 						{
 							// NPE in unit tests
 							HomePage.LOGGER
-									.error("exception thrown while posting in event bus", ex);
+							.error("exception thrown while posting in event bus", ex);
 						}
 
 					}
@@ -1397,10 +1396,10 @@ public class HomePage extends TestReportPage
 				}
 
 			}
-		};
+				};
 
-		drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
-		this.add(drawCardLink);
+				drawCardLink.setOutputMarkupId(true).setMarkupId("drawCardLink");
+				this.add(drawCardLink);
 
 
 	}
@@ -1536,10 +1535,10 @@ public class HomePage extends TestReportPage
 				this.session.getPlayer().getId()).isHandDisplayed();
 		galleryToUpdate = isHandDisplayed
 				? new HandComponent("gallery", false)
-				: new WebMarkupContainer("gallery");
+		: new WebMarkupContainer("gallery");
 
-		galleryToUpdate.setOutputMarkupId(true);
-		this.galleryParent.add(galleryToUpdate);
+				galleryToUpdate.setOutputMarkupId(true);
+				this.galleryParent.add(galleryToUpdate);
 	}
 
 	private void buildGraveyardMarkup()
@@ -1549,10 +1548,10 @@ public class HomePage extends TestReportPage
 				this.session.getPlayer().getId()).isGraveyardDisplayed();
 		graveyardToUpdate = ((isGraveyardDisplayed != null) && isGraveyardDisplayed)
 				? new GraveyardComponent("graveyard")
-				: new WebMarkupContainer("graveyard");
+		: new WebMarkupContainer("graveyard");
 
-		graveyardToUpdate.setOutputMarkupId(true);
-		this.graveyardParent.add(graveyardToUpdate);
+				graveyardToUpdate.setOutputMarkupId(true);
+				this.graveyardParent.add(graveyardToUpdate);
 	}
 
 	private void buildExileMarkup()
@@ -1563,8 +1562,8 @@ public class HomePage extends TestReportPage
 		exileToUpdate = ((isExileDisplayed != null) && isExileDisplayed) ? new ExileComponent(
 				"exile") : new WebMarkupContainer("exile");
 
-		exileToUpdate.setOutputMarkupId(true);
-		this.exileParent.add(exileToUpdate);
+				exileToUpdate.setOutputMarkupId(true);
+				this.exileParent.add(exileToUpdate);
 	}
 
 	private List<MagicCard> createFirstCards()
@@ -1617,7 +1616,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> aboutLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 8140325977385015896L;
 
 			@Override
@@ -1627,12 +1626,12 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
-		};
+				};
 
-		aboutLink.setOutputMarkupId(true);
-		window.setOutputMarkupId(true);
-		this.add(aboutLink);
-		return window;
+				aboutLink.setOutputMarkupId(true);
+				window.setOutputMarkupId(true);
+				this.add(aboutLink);
+				return window;
 	}
 
 	private ModalWindow generateMulliganLink(final String id, final ModalWindow window)
@@ -1646,7 +1645,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> mulliganLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 8140325977385015896L;
 
 			@Override
@@ -1656,12 +1655,12 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
-		};
+				};
 
-		mulliganLink.setOutputMarkupId(true);
-		window.setOutputMarkupId(true);
-		this.add(mulliganLink);
-		return window;
+				mulliganLink.setOutputMarkupId(true);
+				window.setOutputMarkupId(true);
+				this.add(mulliganLink);
+				return window;
 	}
 
 	private ModalWindow generateTeamInfoLink(final String id, final ModalWindow window)
@@ -1675,7 +1674,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> teamInfoLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 8140325977385015896L;
 
 			@Override
@@ -1685,12 +1684,12 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
-		};
+				};
 
-		teamInfoLink.setOutputMarkupId(true);
-		window.setOutputMarkupId(true);
-		this.add(teamInfoLink);
-		return window;
+				teamInfoLink.setOutputMarkupId(true);
+				window.setOutputMarkupId(true);
+				this.add(teamInfoLink);
+				return window;
 	}
 
 	private ModalWindow generateCreateGameModalWindow(final String id, final Player _player,
@@ -1706,7 +1705,7 @@ public class HomePage extends TestReportPage
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
 		this.createGameLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1716,14 +1715,14 @@ public class HomePage extends TestReportPage
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
-		};
+				};
 
-		this.createGameLink.setOutputMarkupId(true).setMarkupId(id);
-		this.createGameWindow.setOutputMarkupId(true);
+				this.createGameLink.setOutputMarkupId(true).setMarkupId(id);
+				this.createGameWindow.setOutputMarkupId(true);
 
-		this.add(this.createGameLink);
+				this.add(this.createGameLink);
 
-		return window;
+				return window;
 	}
 
 	private ModalWindow generateJoinGameModalWindow(final String id, final Player _player,
@@ -1739,7 +1738,7 @@ public class HomePage extends TestReportPage
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
 		this.joinGameLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1749,20 +1748,20 @@ public class HomePage extends TestReportPage
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
-		};
+				};
 
-		this.joinGameLink.setOutputMarkupId(true).setMarkupId(id);
-		window.setOutputMarkupId(true);
+				this.joinGameLink.setOutputMarkupId(true).setMarkupId(id);
+				window.setOutputMarkupId(true);
 
-		this.add(this.joinGameLink);
+				this.add(this.joinGameLink);
 
-		return window;
+				return window;
 	}
 
 	private void generateImportDeckLink(final String id)
 	{
 		final AjaxLink<Void> importDeckLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1771,11 +1770,11 @@ public class HomePage extends TestReportPage
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#importDeck').dialog('open');");
 			}
-		};
+				};
 
-		importDeckLink.setOutputMarkupId(true);
-		this.importDeckDialog.setOutputMarkupId(true);
-		this.add(importDeckLink);
+				importDeckLink.setOutputMarkupId(true);
+				this.importDeckDialog.setOutputMarkupId(true);
+				this.add(importDeckLink);
 	}
 
 	private void generateRevealTopLibraryCardLink(final String id, final String idModalWindow)
@@ -1823,7 +1822,7 @@ public class HomePage extends TestReportPage
 		}
 
 		final AjaxLink<Void> revealTopLibraryCardLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1837,14 +1836,14 @@ public class HomePage extends TestReportPage
 				final List<MagicCard> _allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
 								HomePage.this.session.getPlayer().getId(), HomePage.this.session
-										.getPlayer().getDeck().getDeckId());
+								.getPlayer().getDeck().getDeckId());
 				final MagicCard _firstCard = _allCardsInLibrary.get(HomePage.this.session
 						.getTopCardIndex().intValue());
 				final String topCardName = _firstCard.getBigImageFilename();
 
 				final String cardPath = ResourceBundle.getBundle(
 						HatchetHarryApplication.class.getCanonicalName()).getString(
-						"SharedResourceFolder");
+								"SharedResourceFolder");
 				final String cardPathAndName = cardPath.replace("/cards", "") + topCardName;
 				final File from = new File(cardPathAndName);
 				final File to = new File(cardPath + "topLibraryCard.jpg");
@@ -1880,13 +1879,13 @@ public class HomePage extends TestReportPage
 
 					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 			}
-		};
+				};
 
-		revealTopLibraryCardLink.setOutputMarkupId(true).setMarkupId(id);
-		this.add(revealTopLibraryCardLink);
+				revealTopLibraryCardLink.setOutputMarkupId(true).setMarkupId(id);
+				this.add(revealTopLibraryCardLink);
 	}
 
 	private void generateCreateTokenLink(final String id, final ModalWindow window)
@@ -1902,7 +1901,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> createTokenLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1913,10 +1912,10 @@ public class HomePage extends TestReportPage
 
 				HomePage.this.createTokenWindow.show(target);
 			}
-		};
+				};
 
-		createTokenLink.setOutputMarkupId(true).setMarkupId(id);
-		this.add(createTokenLink);
+				createTokenLink.setOutputMarkupId(true).setMarkupId(id);
+				this.add(createTokenLink);
 	}
 
 	private void generateCountCardsLink(final String id, final ModalWindow window)
@@ -1931,7 +1930,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> countCardsLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -1975,16 +1974,16 @@ public class HomePage extends TestReportPage
 					}
 				}
 			}
-		};
+				};
 
-		countCardsLink.setOutputMarkupId(true);
-		this.add(countCardsLink);
+				countCardsLink.setOutputMarkupId(true);
+				this.add(countCardsLink);
 	}
 
 	private void generateDiscardAtRandomLink(final String id)
 	{
 		final AjaxLink<Void> generateDiscardAtRandomLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -2027,7 +2026,7 @@ public class HomePage extends TestReportPage
 
 				HomePage.this.persistenceService.mergePlayer(playerWhoDiscards);
 				HomePage.this.persistenceService
-						.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
+				.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
 
 				JavaScriptUtils.updateHand(target);
 				JavaScriptUtils.updateGraveyard(target);
@@ -2052,7 +2051,7 @@ public class HomePage extends TestReportPage
 					{
 						HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 						HatchetHarryApplication.get().getEventBus()
-								.post(new ConsoleLogCometChannel(logger), pageUuid);
+						.post(new ConsoleLogCometChannel(logger), pageUuid);
 					}
 					catch (final NullPointerException e)
 					{
@@ -2060,10 +2059,10 @@ public class HomePage extends TestReportPage
 					}
 				}
 			}
-		};
+				};
 
-		generateDiscardAtRandomLink.setOutputMarkupId(true);
-		this.add(generateDiscardAtRandomLink);
+				generateDiscardAtRandomLink.setOutputMarkupId(true);
+				this.add(generateDiscardAtRandomLink);
 	}
 
 	private void generateLoginLink(final String id, final ModalWindow window)
@@ -2090,7 +2089,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> loginLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -2100,10 +2099,10 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.loginWindow.show(target);
 			}
-		};
+				};
 
-		loginLink.setOutputMarkupId(true);
-		this.add(loginLink);
+				loginLink.setOutputMarkupId(true);
+				this.add(loginLink);
 	}
 
 	private void generatePreferencesLink(final String id, final ModalWindow window)
@@ -2117,7 +2116,7 @@ public class HomePage extends TestReportPage
 		this.add(window);
 
 		final AjaxLink<Void> preferencesLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -2129,16 +2128,16 @@ public class HomePage extends TestReportPage
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.preferencesWindow.show(target);
 			}
-		};
+				};
 
-		preferencesLink.setOutputMarkupId(true);
-		this.add(preferencesLink);
+				preferencesLink.setOutputMarkupId(true);
+				this.add(preferencesLink);
 	}
 
 	private void generateInsertDivisionLink(final String id)
 	{
 		final AjaxLink<Void> insertDivisionLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -2159,19 +2158,19 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 			}
-		};
+				};
 
-		insertDivisionLink.setOutputMarkupId(true).setMarkupId(id);
-		this.add(insertDivisionLink);
+				insertDivisionLink.setOutputMarkupId(true).setMarkupId(id);
+				this.add(insertDivisionLink);
 	}
 
 	private void generateShuffleLibraryLink(final String id)
 	{
 		final AjaxLink<Void> insertDivisionLink = new AjaxLink<Void>(id)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -2189,12 +2188,12 @@ public class HomePage extends TestReportPage
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, null, "");
+						.getSide().getSideName(), null, null, null, "");
 
 				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
 								HomePage.this.session.getPlayer().getId(), HomePage.this.session
-										.getPlayer().getDeck().getDeckId());
+								.getPlayer().getDeck().getDeckId());
 				Collections.shuffle(allCardsInLibrary);
 				Collections.shuffle(allCardsInLibrary);
 				Collections.shuffle(allCardsInLibrary);
@@ -2211,14 +2210,14 @@ public class HomePage extends TestReportPage
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
 							playerToWhomToSend);
 					HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 				}
 			}
-		};
+				};
 
-		insertDivisionLink.setOutputMarkupId(true).setMarkupId(id);
-		this.add(insertDivisionLink);
+				insertDivisionLink.setOutputMarkupId(true).setMarkupId(id);
+				this.add(insertDivisionLink);
 	}
 
 	@Subscribe
@@ -2268,8 +2267,8 @@ public class HomePage extends TestReportPage
 						+ "' to "
 						+ (event.getTargetPlayerName().equals(event.getPlayerName())
 								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
-						+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+										: event.getTargetPlayerName() + "'s")
+										+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION :
@@ -2280,8 +2279,8 @@ public class HomePage extends TestReportPage
 						+ "' to "
 						+ (event.getTargetPlayerName().equals(event.getPlayerName())
 								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
-						+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+										: event.getTargetPlayerName() + "'s")
+										+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION :
@@ -2292,8 +2291,8 @@ public class HomePage extends TestReportPage
 						+ "' to "
 						+ (event.getTargetPlayerName().equals(event.getPlayerName())
 								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
-						+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+										: event.getTargetPlayerName() + "'s")
+										+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			case COMBAT_IN_PROGRESS_ACTION :
@@ -2318,9 +2317,9 @@ public class HomePage extends TestReportPage
 						+ "', text : \"has played the top card of "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
 								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "library, which is: "
-						+ event.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+										: event.getTargetPlayerName() + "'s ") + "library, which is: "
+										+ event.getCardName()
+										+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 			case PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
@@ -2328,13 +2327,13 @@ public class HomePage extends TestReportPage
 						+ "', text : \"has put the top card of "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
 								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
-						+ "library in "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
-						+ event.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+										: event.getTargetPlayerName() + "'s ")
+										+ "library in "
+										+ (event.getPlayerName().equals(event.getTargetPlayerName())
+												? "his (her) "
+														: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
+														+ event.getCardName()
+														+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
@@ -2342,13 +2341,13 @@ public class HomePage extends TestReportPage
 						+ "', text : \"has put the top card of "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
 								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
-						+ "library in "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
-						+ event.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+										: event.getTargetPlayerName() + "'s ")
+										+ "library in "
+										+ (event.getPlayerName().equals(event.getTargetPlayerName())
+												? "his (her) "
+														: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
+														+ event.getCardName()
+														+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 			case PUT_TOKEN_ON_BATTLEFIELD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
@@ -2446,8 +2445,8 @@ public class HomePage extends TestReportPage
 						+ " to do mulligan.', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-				// TODO: split this notifier action and the one of
-				// card counters
+			// TODO: split this notifier action and the one of
+			// card counters
 			default :
 				throw new IllegalArgumentException(
 						"can not treat this case in HomePage#displayNotification()");
@@ -2553,10 +2552,10 @@ public class HomePage extends TestReportPage
 						+ event.getTargetNumberOfCounters()
 						+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-				// $CASES-OMITTED$
-				// TODO: split this card counters notifier action
-				// and the one of general messages
-				// $CASES-OMITTED$
+			// $CASES-OMITTED$
+			// TODO: split this card counters notifier action
+			// and the one of general messages
+			// $CASES-OMITTED$
 			default :
 				throw new IllegalArgumentException(
 						"can not treat this case in HomePage#updateCardTooltip(): "
@@ -2632,10 +2631,10 @@ public class HomePage extends TestReportPage
 						+ event.getTargetNumberOfCounters()
 						+ " counter(s)\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-				// $CASES-OMITTED$
-				// TODO: split this card counters notifier action
-				// and the one of general messages
-				// $CASES-OMITTED$
+			// $CASES-OMITTED$
+			// TODO: split this card counters notifier action
+			// and the one of general messages
+			// $CASES-OMITTED$
 			default :
 				throw new IllegalArgumentException(
 						"can not treat this case in HomePage#updateTokenTooltip(): "
@@ -2953,7 +2952,7 @@ public class HomePage extends TestReportPage
 							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
-				// $CASES-OMITTED$
+			// $CASES-OMITTED$
 			default :
 				throw new UnsupportedOperationException();
 		}
@@ -2972,8 +2971,8 @@ public class HomePage extends TestReportPage
 				+ "', text : \"has moved "
 				+ (event.getOwnerPlayer().equals(event.getRequestingPlayer()) ? "his (her)" : event
 						.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle()
-				+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
-				+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+						+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
+						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
 	@Subscribe
@@ -3133,9 +3132,9 @@ public class HomePage extends TestReportPage
 		HomePage.LOGGER.info("askMulligan");
 		this.askMulliganWindow.setTitle(event.getPlayer() + " asks for mulligan");
 		this.askMulliganWindow
-				.setContent(new AskMulliganModalWindow(this.askMulliganWindow,
-						this.askMulliganWindow.getContentId(), event.getPlayer(), event
-								.getNumberOfCards()));
+		.setContent(new AskMulliganModalWindow(this.askMulliganWindow,
+				this.askMulliganWindow.getContentId(), event.getPlayer(), event
+				.getNumberOfCards()));
 
 		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -3163,29 +3162,29 @@ public class HomePage extends TestReportPage
 				this.session.getPlayer().getId()).isHandDisplayed();
 		galleryToUpdate = isHandDisplayed
 				? new HandComponent("gallery", false)
-				: new WebMarkupContainer("gallery");
+		: new WebMarkupContainer("gallery");
 
-		galleryToUpdate.setOutputMarkupId(true);
-		this.galleryParent.addOrReplace(galleryToUpdate);
+				galleryToUpdate.setOutputMarkupId(true);
+				this.galleryParent.addOrReplace(galleryToUpdate);
 
-		// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
-		for (final CardPanel cp : this.session.getAllCardPanelsInBattleField())
-		{
-			this.playCardParent.addOrReplace(cp);
-		}
+				// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
+				for (final CardPanel cp : this.session.getAllCardPanelsInBattleField())
+				{
+					this.playCardParent.addOrReplace(cp);
+				}
 
-		this.add(new Behavior()
-		{
-			private static final long serialVersionUID = 1L;
+				this.add(new Behavior()
+				{
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			public void renderHead(final Component component, final IHeaderResponse response)
-			{
-				super.renderHead(component, response);
-				HomePage.this.restoreStateOfAllCardsInBattlefield(response);
-			}
+					@Override
+					public void renderHead(final Component component, final IHeaderResponse response)
+					{
+						super.renderHead(component, response);
+						HomePage.this.restoreStateOfAllCardsInBattlefield(response);
+					}
 
-		});
+				});
 	}
 
 	final void restoreStateOfAllCardsInBattlefield(final IHeaderResponse response)
@@ -3309,7 +3308,7 @@ public class HomePage extends TestReportPage
 
 	public QuickView<MagicCard> generateCardListView(
 			final List<MagicCard> _allMagicCardsInBattlefield, final boolean replace)
-	{
+			{
 		if (null == _allMagicCardsInBattlefield)
 		{
 			final List<MagicCard> newCards = new ArrayList<MagicCard>();
@@ -3326,7 +3325,7 @@ public class HomePage extends TestReportPage
 				this.allMagicCardsInBattlefield);
 
 		this.allCardsInBattlefield = new QuickView<MagicCard>("magicCards", data)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -3345,64 +3344,64 @@ public class HomePage extends TestReportPage
 			{
 				super.onBeforeRender();
 			}
-		};
-		this.allCardsInBattlefield.setOutputMarkupId(true);
+				};
+				this.allCardsInBattlefield.setOutputMarkupId(true);
 
-		this.allTooltips = new QuickView<MagicCard>("tooltips", data)
-		{
-			private static final long serialVersionUID = 1L;
+				this.allTooltips = new QuickView<MagicCard>("tooltips", data)
+						{
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populate(final Item<MagicCard> item)
-			{
-				final MagicCard mc = item.getModelObject();
+					@Override
+					protected void populate(final Item<MagicCard> item)
+					{
+						final MagicCard mc = item.getModelObject();
 
-				if (null == mc.getToken())
-				{
-					final MagicCardTooltipPanel cardBubbleTip = new MagicCardTooltipPanel(
-							"cardTooltip", mc.getUuidObject(), mc.getBigImageFilename(),
-							mc.getOwnerSide(), mc);
-					cardBubbleTip.setOutputMarkupId(true);
-					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip.add(new AttributeModifier("style",
-							"display: none; position: relative; left: 50%; top: 50%; z-index: 1;"));
+						if (null == mc.getToken())
+						{
+							final MagicCardTooltipPanel cardBubbleTip = new MagicCardTooltipPanel(
+									"cardTooltip", mc.getUuidObject(), mc.getBigImageFilename(),
+									mc.getOwnerSide(), mc);
+							cardBubbleTip.setOutputMarkupId(true);
+							cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
+							cardBubbleTip.add(new AttributeModifier("style",
+									"display: none; position: relative; left: 50%; top: 50%; z-index: 1;"));
 
-					item.add(cardBubbleTip);
-				}
-				else
-				{
-					final TokenTooltipPanel cardBubbleTip = new TokenTooltipPanel("cardTooltip",
-							mc.getToken());
-					cardBubbleTip.setOutputMarkupId(true);
-					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip.add(new AttributeModifier("style",
-							"display: none; position: absolute; left: " + mc.getX() + "px; top: "
-									+ mc.getY() + "px; z-index: 1;"));
+							item.add(cardBubbleTip);
+						}
+						else
+						{
+							final TokenTooltipPanel cardBubbleTip = new TokenTooltipPanel("cardTooltip",
+									mc.getToken());
+							cardBubbleTip.setOutputMarkupId(true);
+							cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
+							cardBubbleTip.add(new AttributeModifier("style",
+									"display: none; position: absolute; left: " + mc.getX() + "px; top: "
+											+ mc.getY() + "px; z-index: 1;"));
 
-					item.add(cardBubbleTip);
-				}
+							item.add(cardBubbleTip);
+						}
+					}
+
+					@Override
+					protected void onBeforeRender()
+					{
+						super.onBeforeRender();
+					}
+						};
+
+						this.allTooltips.setOutputMarkupId(true);
+
+						if (replace)
+						{
+							this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
+						}
+						else
+						{
+							this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
+						}
+
+						return this.allCardsInBattlefield;
 			}
-
-			@Override
-			protected void onBeforeRender()
-			{
-				super.onBeforeRender();
-			}
-		};
-
-		this.allTooltips.setOutputMarkupId(true);
-
-		if (replace)
-		{
-			this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
-		}
-		else
-		{
-			this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
-		}
-
-		return this.allCardsInBattlefield;
-	}
 
 	public final QuickView<MagicCard> getAllCardsInBattlefield()
 	{
@@ -3433,7 +3432,7 @@ public class HomePage extends TestReportPage
 	private QuickView<Player> populateSides(final ListDataProvider<Player> data)
 	{
 		return new QuickView<Player>("sides", data)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -3458,7 +3457,7 @@ public class HomePage extends TestReportPage
 			{
 				super.onBeforeRender();
 			}
-		};
+				};
 	}
 
 	public List<Player> getAllPlayersInGame()
