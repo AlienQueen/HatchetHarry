@@ -39,14 +39,14 @@ You are free to modify any part of its source code (client-side or server-side),
 		<wicket-atmosphere.version>0.18-SNAPSHOT</wicket-atmosphere.version>
 		<atmosphere.version>2.1.4</atmosphere.version>
 		<atmosphere-compat.version>2.0.1</atmosphere-compat.version>
-		<spring.version>4.0.1.RELEASE</spring.version>
+		<spring.version>4.0.4.RELEASE</spring.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<targetJdk>1.7</targetJdk>
 		<project.build.finalName>ROOT</project.build.finalName>
 		<selenium.version>2.41.0</selenium.version>
-		<hibernate.version>4.3.1.Final</hibernate.version>
+		<hibernate.version>4.3.5.Final</hibernate.version>
 		<junit.version>4.11</junit.version>
 	</properties>
 	<dependencies>
@@ -202,12 +202,17 @@ You are free to modify any part of its source code (client-side or server-side),
 		<dependency>
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-compat-jbossweb</artifactId>
-			<version>2.0.1</version>
+			<version>${atmosphere-compat.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-compat-tomcat</artifactId>
-			<version>2.0.1</version>
+			<version>${atmosphere-compat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.atmosphere</groupId>
+			<artifactId>atmosphere-compat-tomcat7</artifactId>
+			<version>${atmosphere-compat.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.atmosphere</groupId>

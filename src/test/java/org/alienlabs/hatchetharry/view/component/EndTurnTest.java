@@ -65,6 +65,7 @@ public class EndTurnTest
 		};
 
 		EndTurnTest.tester = new WicketTester(EndTurnTest.webApp);
+		((EventBusMock)EndTurnTest.webApp.getEventBus()).setTester(EndTurnTest.tester);
 	}
 
 	@Test
@@ -73,8 +74,8 @@ public class EndTurnTest
 
 		final EventBusMock bus = ((EventBusMock)EndTurnTest.webApp.getEventBus());
 		bus.registerPage(bus.getResource().uuid(), EndTurnTest.tester.startPage(HomePage.class));
-		EndTurnTest.tester.assertRenderedPage(HomePage.class);
 
+		EndTurnTest.tester.assertRenderedPage(HomePage.class);
 		EndTurnTest.pageDocument = EndTurnTest.tester.getLastResponse().getDocument();
 
 		EndTurnTest.tester.clickLink("endTurnPlaceholder:endTurnLink", true);
@@ -82,10 +83,9 @@ public class EndTurnTest
 		EndTurnTest.pageDocument = EndTurnTest.tester.getLastResponse().getDocument();
 		System.out.println("### " + HatchetHarryApplication.get().getEventBus());
 		System.out.println("### " + EndTurnTest.pageDocument);
-
 		System.out.println("###" + bus.getEvents().get(0));
 		Assert.assertFalse("<?xml version=\"1.0\" encoding=\"UTF-8\"?><ajax-response></ajax-response>"
 				.equals(EndTurnTest.pageDocument));
-		// Assert.assertNotEquals("", EndTurnTest.pageDocument);
+		Assert.assertNotEquals("", EndTurnTest.pageDocument);
 	}
 }
