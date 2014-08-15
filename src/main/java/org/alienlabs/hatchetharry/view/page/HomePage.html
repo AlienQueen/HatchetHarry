@@ -1,196 +1,240 @@
 <!doctype html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
-	
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-	<title>HatchetHarry - Ad augusta per angusta</title>
-	
-	<link href='http://fonts.googleapis.com/css?family=Black+Ops+One' rel='stylesheet' type='text/css'>
-	<link rel="shortcut icon" href="http://hatchetharry.net/favicon.ico" />
-    
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>HatchetHarry - Ad augusta per angusta</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Black+Ops+One' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="http://hatchetharry.net/favicon.ico"/>
+
 </head>
 <body id="body" class="myBody">
-  <div id="fb-root" wicket:id="fb-root"></div>
-  <span id="tour_1"></span>
-  <span id="tour_128"></span>
-  <span wicket:id="headResources"></span>
-  
-  <!-- Menus -->
-  
-  <!-- The main (desktop) menu bar -->
+<div id="fb-root" wicket:id="fb-root"></div>
+<span id="tour_1"></span>
+<span id="tour_128"></span>
+<span wicket:id="headResources"></span>
+
+<!-- Menus -->
+
+<!-- The main (desktop) menu bar -->
   <span id='cssmenu'>
 	<ul>
-	   <li class='active myfont'><a class="shift-bottom"><img src="/image/logoh1.gif" alt="HH" width="20px;"/></a>
-	      <ul>
-	      	 <li><a><img src="/image/logoh2.gif" alt="HH" width="64px;"/></a></li><br/>
-	         <li><a wicket:id="aboutLink" class="myfont"><img src="/image/about.png" alt="About HatchetHarry"/>&nbsp;&nbsp;About HatchetHarry</a></li>
-	         <li><a wicket:id="teamInfoLink" class="myfont"><img src="/image/team info.png" alt="team info"/>&nbsp;&nbsp;HatchetHarry team info</a></li>
-	         <li><a wicket:id="preferencesLink" class="myfont"><img src="/image/preferences.png" alt="team info"/>&nbsp;&nbsp;User preferences</a></li>
-	      </ul>
-	   </li>
-	   <li class='myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Game&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
-	      <ul>
-	         <li><a wicket:id="loginLink" class="myfont"><img src="/image/login.png" alt="Log in"/>&nbsp;&nbsp;Log in</a></li>
-	         <li><a wicket:id="createGameLink" class="myfont"><img src="/image/create game.png" alt="create"/>&nbsp;&nbsp;Create a game</a></li>
-	         <li><a wicket:id="joinGameLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join a game</a></li>
-			 <li><a wicket:id="mulliganLink" class="myfont"><img src="/image/mulligan.png" alt="join"/>&nbsp;&nbsp;Mulligan</a></li>
-	         <li><a wicket:id="importDeckLink" class="myfont"><img src="/image/import deck.png" alt="import"/>&nbsp;&nbsp;Import a deck</a></li>
-	         <li><a wicket:id="hideAllTooltipsLink" class="myfont"><img src="/image/hide-all.png" alt="Hide all tooltips"/>&nbsp;&nbsp;Hide all tooltips</a></li>
-	         <li><a wicket:id="conferenceOpener" class="myfont"><img src="/image/conference.png" alt="Video-conference"/>&nbsp;&nbsp;Open video-conference</a></li>
-	         <li class='last'><a wicket:id="endGameLink" class="myfont"><img src="/image/end.png" alt="End game"/>&nbsp;&nbsp;End game</a></li>
-	      </ul>
-	   </li>
-	   <li class='last myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;&nbsp;&nbsp;Zones&nbsp;&nbsp;</span></a>
-	      <ul>
-	         <li><a wicket:id="playCardFromGraveyardLinkDesktop" class="myfont"><img src="/image/play from graveyard.png" alt="Play card from graveyard"/>&nbsp;&nbsp;Play card from graveyard</a></li>
-	         <li><a wicket:id="revealTopLibraryCardLink" class="myfont"><img src="/image/Library Folder.png" alt="Reveal top card of your library"/>&nbsp;&nbsp;Reveal top card of your library</a></li>
-	         <li><a wicket:id="revealHandLink" class="myfont"><img src="/image/reveal.png" alt="Reveal your hand"/>&nbsp;&nbsp;Reveal your hand</a></li>
-	         <li><a wicket:id="createTokenLink" class="myfont"><img src="/image/addToken.png" alt="Put a token on battlefield"/>&nbsp;&nbsp;Put a token on battlefield</a></li>
-	         <li class='myfont'><a wicket:id="countCardsLink" class="myfont"><img src="/image/count cards.png" alt="Count all cards"/>&nbsp;&nbsp;Count all cards</a></li>
-             <li class='myfont'><a wicket:id="discardAtRandomLink" class="myfont"><img src="/image/discard.png" alt="Discard a card at random"/>&nbsp;&nbsp;Discard a card at random</a></li>
-	         <li class='myfont'><a wicket:id="insertDivisionLink" class="myfont"><img src="/image/division.png" alt="Insert division in history"/>&nbsp;&nbsp;Insert division in history</a></li>
-	         <li class='last myfont'><a wicket:id="shuffleLibraryLink" class="myfont"><img src="/image/shuffle.png" alt="Shuffle your library"/>&nbsp;&nbsp;Shuffle your library</a></li>
-	      </ul>
-	   </li>
-	</ul>
+        <li class='active myfont'><a class="shift-bottom"><img src="/image/logoh1.gif" alt="HH" width="20px;"/></a>
+            <ul>
+                <li><a><img src="/image/logoh2.gif" alt="HH" width="64px;"/></a></li>
+                <br/>
+                <li><a wicket:id="aboutLink" class="myfont"><img src="/image/about.png" alt="About HatchetHarry"/>&nbsp;&nbsp;About
+                    HatchetHarry</a></li>
+                <li><a wicket:id="teamInfoLink" class="myfont"><img src="/image/team info.png" alt="team info"/>&nbsp;&nbsp;HatchetHarry
+                    team info</a></li>
+                <li><a wicket:id="preferencesLink" class="myfont"><img src="/image/preferences.png" alt="team info"/>&nbsp;&nbsp;User
+                    preferences</a></li>
+            </ul>
+        </li>
+        <li class='myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Game&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+            <ul>
+                <li><a wicket:id="loginLink" class="myfont"><img src="/image/login.png" alt="Log in"/>&nbsp;&nbsp;Log in</a>
+                </li>
+                <li><a wicket:id="createGameLink" class="myfont"><img src="/image/create game.png" alt="create"/>&nbsp;&nbsp;Create
+                    a game</a></li>
+                <li><a wicket:id="joinGameLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join
+                    a game</a></li>
+                <li><a wicket:id="mulliganLink" class="myfont"><img src="/image/mulligan.png" alt="join"/>&nbsp;&nbsp;Mulligan</a>
+                </li>
+                <li><a wicket:id="importDeckLink" class="myfont"><img src="/image/import deck.png" alt="import"/>&nbsp;&nbsp;Import
+                    a deck</a></li>
+                <li><a wicket:id="hideAllTooltipsLink" class="myfont"><img src="/image/hide-all.png"
+                                                                           alt="Hide all tooltips"/>&nbsp;&nbsp;Hide all
+                    tooltips</a></li>
+                <li><a wicket:id="conferenceOpener" class="myfont"><img src="/image/conference.png"
+                                                                        alt="Video-conference"/>&nbsp;&nbsp;Open
+                    video-conference</a></li>
+                <li class='last'><a wicket:id="endGameLink" class="myfont"><img src="/image/end.png" alt="End game"/>&nbsp;&nbsp;End
+                    game</a></li>
+            </ul>
+        </li>
+        <li class='last myfont'><a class="shift-bottom"><span
+                class='has-sub'>&nbsp;&nbsp;&nbsp;&nbsp;Zones&nbsp;&nbsp;</span></a>
+            <ul>
+                <li><a wicket:id="playCardFromGraveyardLinkDesktop" class="myfont"><img
+                        src="/image/play from graveyard.png" alt="Play card from graveyard"/>&nbsp;&nbsp;Play card from
+                    graveyard</a></li>
+                <li><a wicket:id="revealTopLibraryCardLink" class="myfont"><img src="/image/Library Folder.png"
+                                                                                alt="Reveal top card of your library"/>&nbsp;&nbsp;Reveal
+                    top card of your library</a></li>
+                <li><a wicket:id="revealHandLink" class="myfont"><img src="/image/reveal.png" alt="Reveal your hand"/>&nbsp;&nbsp;Reveal
+                    your hand</a></li>
+                <li><a wicket:id="createTokenLink" class="myfont"><img src="/image/addToken.png"
+                                                                       alt="Put a token on battlefield"/>&nbsp;&nbsp;Put
+                    a token on battlefield</a></li>
+                <li class='myfont'><a wicket:id="countCardsLink" class="myfont"><img src="/image/count cards.png"
+                                                                                     alt="Count all cards"/>&nbsp;&nbsp;Count
+                    all cards</a></li>
+                <li class='myfont'><a wicket:id="discardAtRandomLink" class="myfont"><img src="/image/discard.png"
+                                                                                          alt="Discard a card at random"/>&nbsp;&nbsp;Discard
+                    a card at random</a></li>
+                <li class='myfont'><a wicket:id="insertDivisionLink" class="myfont"><img src="/image/division.png"
+                                                                                         alt="Insert division in history"/>&nbsp;&nbsp;Insert
+                    division in history</a></li>
+                <li class='last myfont'><a wicket:id="shuffleLibraryLink" class="myfont"><img src="/image/shuffle.png"
+                                                                                              alt="Shuffle your library"/>&nbsp;&nbsp;Shuffle
+                    your library</a></li>
+            </ul>
+        </li>
+    </ul>
   </span>
-  <h3>
-	  <strong class="myfont shift-right">Welcome to HatchetHarry
-				<span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
-				<span wicket:id="message2" id="message2" class="myfont">message will be here</span>
-	  </strong>
-  </h3> 
-  
-  <br/><br/><br/>
-  <h4><strong><span wicket:id="usernameParent"><span wicket:id="username" class="myfont login"></span></span></strong></h4> 
-  <br/><br/>
+
+<h3>
+    <strong class="myfont shift-right">Welcome to HatchetHarry
+        <span wicket:id="message1" id="message1" class="myfont">message will be here</span><br/>
+        <span wicket:id="message2" id="message2" class="myfont">message will be here</span>
+    </strong>
+</h3>
+
+<br/><br/><br/>
+<h4><strong><span wicket:id="usernameParent"><span wicket:id="username" class="myfont login"></span></span></strong>
+</h4>
+<br/><br/>
   <span class="zone-images">
-	<img id="putToHand" src="image/hand.jpg" alt="Put back to hand" title="      Drag a card here to put it back to hand" style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
-	<img id="putToGraveyard" src="image/graveyard.jpg" alt="Put back to graveyard" title="Drag a card here to put it back to graveyard" style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
-	<img id="putToExile" src="image/exile.jpg" alt="Put to exiled" title="Drag a card here to put it to exile" style="border-color: white; border-width: 1px; border-style: solid;"/>
+	<img id="putToHand" src="image/hand.jpg" alt="Put back to hand"
+         title="      Drag a card here to put it back to hand"
+         style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
+	<img id="putToGraveyard" src="image/graveyard.jpg" alt="Put back to graveyard"
+         title="Drag a card here to put it back to graveyard"
+         style="border-color: white; border-width: 1px; border-style: solid;"/>&nbsp;&nbsp;
+	<img id="putToExile" src="image/exile.jpg" alt="Put to exiled" title="Drag a card here to put it to exile"
+         style="border-color: white; border-width: 1px; border-style: solid;"/>
   </span>
-  <!-- The mobile drop down menu -->
+<!-- The mobile drop down menu -->
   <span class="dropdownmenu">
 	  <div>
-	  		<img src="/image/logoh1.gif" width="32" height="32"/>
-		  	<img src="/image/browse.png" id="browse" height="32" width="32"/>
-	  </div>
+          <img src="/image/logoh1.gif" width="32" height="32"/>
+          <img src="/image/browse.png" id="browse" height="32" width="32"/>
+      </div>
 	  <div class="categories">
-	      <ul>
-	        <li><a wicket:id="aboutLinkResponsive" class="myfont">* About HatychetHarry&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="teamInfoLinkResponsive" class="myfont">* HatchetHarry team info&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="preferencesLinkResponsive" class="myfont">* User preferences</a></li>
-	      </ul>
-	      <br/><br/>
-	      <ul>
-	        <li><a wicket:id="loginLinkResponsive" class="myfont">* Log in&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="createGameLinkResponsive" class="myfont">* Create a game&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="joinGameLinkResponsive" class="myfont">* Join a game&nbsp;&nbsp;</a></li>
-			<li><a wicket:id="mulliganLinkResponsive" class="myfont">* Mulligan&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="importDeckLinkResponsive" class="myfont">* Import a deck&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="hideAllTooltipsLinkResponsive" class="myfont">* Hide all tooltips&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="conferenceOpenerResponsive" data-id="conferenceOpenerResponsive" class="myfont">* Open video-conference&nbsp;&nbsp;</a></li>
-    	    <li><a wicket:id="endGameLinkResponsive" class="myfont">* End game&nbsp;&nbsp;</a></li>
-	      </ul>
-	      <br/><br/>
-	      <ul>
-	        <li><a wicket:id="playCardFromGraveyardLinkResponsive" class="myfont">* Play card from graveyard&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="revealTopLibraryCardLinkResponsive" class="myfont">* Reveal top card of your library&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="revealHandLinkResponsive" class="myfont">* Reveal your hand&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="createTokenLinkResponsive" class="myfont">* Put a token on battlefield&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="countCardsLinkResponsive" class="myfont">* Count all cards&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="discardAtRandomLinkResponsive" class="myfont">* Discard a card at random&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="insertDivisionLinkResponsive" class="myfont">* Insert division in history&nbsp;&nbsp;</a></li>
-	        <li><a wicket:id="shuffleLibraryLinkResponsive" class="myfont">* Shuffle your library&nbsp;&nbsp;</a></li>
-	      </ul>
-    </div>
+          <ul>
+              <li><a wicket:id="aboutLinkResponsive" class="myfont">* About HatychetHarry&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="teamInfoLinkResponsive" class="myfont">* HatchetHarry team info&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="preferencesLinkResponsive" class="myfont">* User preferences</a></li>
+          </ul>
+          <br/><br/>
+          <ul>
+              <li><a wicket:id="loginLinkResponsive" class="myfont">* Log in&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="createGameLinkResponsive" class="myfont">* Create a game&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="joinGameLinkResponsive" class="myfont">* Join a game&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="mulliganLinkResponsive" class="myfont">* Mulligan&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="importDeckLinkResponsive" class="myfont">* Import a deck&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="hideAllTooltipsLinkResponsive" class="myfont">* Hide all tooltips&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="conferenceOpenerResponsive" data-id="conferenceOpenerResponsive" class="myfont">* Open
+                  video-conference&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="endGameLinkResponsive" class="myfont">* End game&nbsp;&nbsp;</a></li>
+          </ul>
+          <br/><br/>
+          <ul>
+              <li><a wicket:id="playCardFromGraveyardLinkResponsive" class="myfont">* Play card from graveyard&nbsp;&nbsp;</a>
+              </li>
+              <li><a wicket:id="revealTopLibraryCardLinkResponsive" class="myfont">* Reveal top card of your library&nbsp;&nbsp;</a>
+              </li>
+              <li><a wicket:id="revealHandLinkResponsive" class="myfont">* Reveal your hand&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="createTokenLinkResponsive" class="myfont">* Put a token on battlefield&nbsp;&nbsp;</a>
+              </li>
+              <li><a wicket:id="countCardsLinkResponsive" class="myfont">* Count all cards&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="discardAtRandomLinkResponsive" class="myfont">* Discard a card at random&nbsp;&nbsp;</a>
+              </li>
+              <li><a wicket:id="insertDivisionLinkResponsive" class="myfont">* Insert division in
+                  history&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="shuffleLibraryLinkResponsive" class="myfont">* Shuffle your library&nbsp;&nbsp;</a></li>
+          </ul>
+      </div>
   </span>
-  <!-- end menus --> 
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
+<!-- end menus -->
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
 	<span wicket:id="balduParent" id="tour_6">
 		<span wicket:id="baldu"></span>
 	</span>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<br/><br/><br/><br/>
-	<!--  conference -->
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<!--  conference -->
 	<span wicket:id="conferenceParent">
 		<span wicket:id="conference"></span>
 	</span>
-	
-	<!-- dock -->
+
+<!-- dock -->
 	
 	<span id="tour_9" class="dock">
 		<div id="dock">
-					<a wicket:id="handLink" id="tour_10">
-				    	<img src="/image/hand.gif" alt="Hand" title="Hand"/>
-		    		</a>&nbsp;
-				    <a wicket:id="graveyardLink" id="tour_11">
-				    	<img src="/image/graveyard.gif" alt="Graveyard" title="Graveyard"/>
-				    </a>&nbsp;
-				    <a  wicket:id="exileLink" id="tour_12">
-				    	<img src="/image/exiled.gif" alt="Exile" title="Exile"/>
-				    </a>&nbsp;
-				    <a id="tour_13">
-				    	<img src="/image/battlefield.gif" alt="Battlefield" title="Battlefield"/>
-				    </a>&nbsp;
-				    <a id="tour_14">
-					    <img src="/image/library.gif" alt="Library" title="Library"/>
-				    </a>&nbsp;
-				    <a wicket:id="drawModeLink" >
-					    <img src="/image/palette.png" alt="Switch draw mode" title="Switch draw mode"/>
-				    </a>
-	  	</div>
+            <a wicket:id="handLink" id="tour_10">
+                <img src="/image/hand.gif" alt="Hand" title="Hand"/>
+            </a>&nbsp;
+            <a wicket:id="graveyardLink" id="tour_11">
+                <img src="/image/graveyard.gif" alt="Graveyard" title="Graveyard"/>
+            </a>&nbsp;
+            <a wicket:id="exileLink" id="tour_12">
+                <img src="/image/exiled.gif" alt="Exile" title="Exile"/>
+            </a>&nbsp;
+            <a id="tour_13">
+                <img src="/image/battlefield.gif" alt="Battlefield" title="Battlefield"/>
+            </a>&nbsp;
+            <a id="tour_14">
+                <img src="/image/library.gif" alt="Library" title="Library"/>
+            </a>&nbsp;
+            <a wicket:id="drawModeLink">
+                <img src="/image/palette.png" alt="Switch draw mode" title="Switch draw mode"/>
+            </a>
+        </div>
 	    <span wicket:id="drawModeParent" class="drawModeParent">
-			<img wicket:id ="drawModeOn" title="Draw mode is ON" width="48" height="48"/>
+			<img wicket:id="drawModeOn" title="Draw mode is ON" width="48" height="48"/>
 		</span>
   	</span>
-  	<br/><br/>
-	<br/><br/>
+<br/><br/>
+<br/><br/>
 	<span wicket:id="dataBoxParent" class="myfont">
 		<span wicket:id="dataBox"></span>
 	</span><br/>
-	<span wicket:id="clockPanel" id="clock" class="myfont">Clock Panel</span><br/><br/>
-	
-	<table>
-		<tr>
-			<td>
-				<span wicket:id="chatPanel">Chat Panel</span>
-			</td>
-			<td>
-				&nbsp;&nbsp;&nbsp;
-			</td>
-			<td class="console">
-				<span class="myfont black">Action history: </span><br/>
-				<textarea id="console" cols="60" rows="10" readonly="readonly" class="myfont black"></textarea>
-			</td>
-		</tr>
-	</table>
-	
-	<div wicket:id="aboutWindow"></div>
-	<div wicket:id="teamInfoWindow"></div>
-	<div wicket:id="createGameWindow"></div>
-	<div wicket:id="joinGameWindow"></div>
-	<div wicket:id="mulliganWindow"></div>
-	<div wicket:id="askMulliganWindow"></div>
-	<div wicket:id="importDeckDialog"></div>
-	<div wicket:id="createTokenWindow"></div>
-	<div wicket:id="revealTopLibraryCardWindow"></div>
-	<div wicket:id="countCardsWindow"></div>
-	<div wicket:id="loginWindow"></div>
-	<div wicket:id="preferencesWindow"></div>
-	
-	<span wicket:id="secondSidePlaceholderParent"><span wicket:id="secondSidePlaceholder"></span></span>
+<span wicket:id="clockPanel" id="clock" class="myfont">Clock Panel</span><br/><br/>
+
+<table>
+    <tr>
+        <td>
+            <span wicket:id="chatPanel">Chat Panel</span>
+        </td>
+        <td>
+            &nbsp;&nbsp;&nbsp;
+        </td>
+        <td class="console">
+            <span class="myfont black">Action history: </span><br/>
+            <textarea id="console" cols="60" rows="10" readonly="readonly" class="myfont black"></textarea>
+        </td>
+    </tr>
+</table>
+
+<div wicket:id="aboutWindow"></div>
+<div wicket:id="teamInfoWindow"></div>
+<div wicket:id="createGameWindow"></div>
+<div wicket:id="joinGameWindow"></div>
+<div wicket:id="mulliganWindow"></div>
+<div wicket:id="askMulliganWindow"></div>
+<div wicket:id="importDeckDialog"></div>
+<div wicket:id="createTokenWindow"></div>
+<div wicket:id="revealTopLibraryCardWindow"></div>
+<div wicket:id="revealTopLibraryCardWindowResponsive"></div>
+<div wicket:id="countCardsWindow"></div>
+<div wicket:id="loginWindow"></div>
+<div wicket:id="preferencesWindow"></div>
+
+<span wicket:id="secondSidePlaceholderParent"><span wicket:id="secondSidePlaceholder"></span></span>
   	
 	<span align="left">
 	  	<span id="header"></span>
@@ -208,31 +252,32 @@
 			<span wicket:id="exile"></span>
 		</span>
 	</span>
-	
-	<span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
-	<br/><br/>
-	<div wicket:id="parentPlaceholder">
-			<table>
-				<tr wicket:id="magicCards">
-					<td wicket:id="cardPanel"></td>
-				</tr>
-				<tr wicket:id="tooltips">
-					<td wicket:id="cardTooltip"></td>
-				</tr>
-			</table>
-	</div>
-		
-	
-	<span wicket:id="cardPlaceholder"></span>
-	<span wicket:id="sideParent"><span wicket:id="sides"><span wicket:id="side"></span></span></span>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
+
+<span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
+<br/><br/>
+
+<div wicket:id="parentPlaceholder">
+    <table>
+        <tr wicket:id="magicCards">
+            <td wicket:id="cardPanel"></td>
+        </tr>
+        <tr wicket:id="tooltips">
+            <td wicket:id="cardTooltip"></td>
+        </tr>
+    </table>
+</div>
+
+
+<span wicket:id="cardPlaceholder"></span>
+<span wicket:id="sideParent"><span wicket:id="sides"><span wicket:id="side"></span></span></span>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
 	
   	<span>
   		<h2 id="qunit-header">HH QUnit tests</h2>
@@ -244,139 +289,162 @@
 
 		<br/>
 		<div wicket:id="parent">
-  			<span wicket:id="feedback"></span>
-	    	<form wicket:id="runFormMistletoe">
-	      		<span class="myfont">Name of Mistletoe suite or test to run: </span> 
-	      		<input wicket:id="testClassName" type="text" size="70" class="myfont"></input>
-	      		<input wicket:id="runMistletoe" type="submit" value="Run" id="runMistletoe" class="myfont"></input>
-	    	</form>
-			  <div style="width:40em; min-width:40em;">
-			    <table wicket:id="summary">    
-			      <tr>
-			        <td wicket:id="runsSummary">Total tests: 1</td>
-			        <td wicket:id="errorsSummary">Errors/Failures: 12</td>
-			      </tr>
-			      <tr>
-			        <td wicket:id="summaryInColor" colspan="2" class="summaryBox"></td>
-			      </tr>
-			      <tr><td style="line-height: 5px;">&nbsp;</td></tr>
-			    </table>
-			  </div>
-			  
-			  <div wicket:id="node" class="testReport"></div>
-		</div>
+            <span wicket:id="feedback"></span>
+
+            <form wicket:id="runFormMistletoe">
+                <span class="myfont">Name of Mistletoe suite or test to run: </span>
+                <input wicket:id="testClassName" type="text" size="70" class="myfont"></input>
+                <input wicket:id="runMistletoe" type="submit" value="Run" id="runMistletoe" class="myfont"></input>
+            </form>
+            <div style="width:40em; min-width:40em;">
+                <table wicket:id="summary">
+                    <tr>
+                        <td wicket:id="runsSummary">Total tests: 1</td>
+                        <td wicket:id="errorsSummary">Errors/Failures: 12</td>
+                    </tr>
+                    <tr>
+                        <td wicket:id="summaryInColor" colspan="2" class="summaryBox"></td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 5px;">&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div wicket:id="node" class="testReport"></div>
+        </div>
     </span>
 
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
-	<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
 
-	<!-- The toolbar -->
-	<div id="content"> 
-	</div>
+<!-- The toolbar -->
+<div id="content">
+</div>
 
- 	<div>
-		<div id="floatingbar"> 
-	
-	         <ul class="gallery clearfix">
-					<li wicket:id="untapAndDrawPlaceholder">
-						<a wicket:id="untapAndDrawLink" id="twitterlink" style="cursor: pointer; color: white" title="      Untap your permanents & draw a card"><img src="image/tweet.png"></img> Untap & draw</a>
-					</li>
-					
-					<li id="untapAllPlaceholder" wicket:id="untapAllPlaceholder">
-						<a wicket:id="untapAllLink" style="cursor: pointer; color: white;" title="Untall all your permanents"><span><img src="image/googlebuzz.png"></img> Untap</span></a>
-					</li>
-					
-					<li rel="prettyPhoto[iframe]" id="tour_3">
-						<a wicket:id="drawCardLink" title="Draw a card" style="cursor: pointer; color: white;">
-							<img src="image/youtube.png"></img>
-							 Draw
-						</a>
-					</li>
-					
-					<li>
-						<a wicket:id="playCardLink" style="cursor: pointer; color: white;" title="Play the card currently shown in your hand">
-							Play
-							<img src="image/playCard.png"></img>
-						</a>
-						<img id="playCardIndicator" src="image/indicator.gif" style="position: relative; float: right;"></img>
-					</li>
-					
-					<li wicket:id="combatPlaceholder">
-						<a wicket:id="combatLink" id="combatlink" style="cursor: pointer; color: white;" title="Start and end combat phase"><img src="image/battle.png"></img> Combat</a>
-					</li>
-					
-					<li wicket:id="inResponsePlaceholder">
-						<a wicket:id="inResponseLink" style="cursor: pointer; color: white;" title="Play an action in response to another one"><img src="image/endOfTurnAction.png"></img> In response</a>
-					</li>
-					
-					<li wicket:id="fineForMePlaceholder">
-						<a wicket:id="fineForMeLink" style="cursor: pointer; color: white;" title="Fine for me"><img src="image/acceptEndOfTurn.png"></img> Fine</a>
-					</li>
-					
-					<li wicket:id="endTurnPlaceholder">
-						<a wicket:id="endTurnLink" style="cursor: pointer; color: white;" title="Put an end to your turn"><img src="image/contact.png"></img> End turn</a>
-					</li>
-			</ul>
-	
-		</div> 
-	</div>
-	
-	<!-- Tour Content -->
-    <ul id="tlyPageGuide" data-tourtitle="First time here? Wanna go for a ride?" class="myfont">
-      <li data-tourtarget="#untapAllPlaceholder" class="tlypageguide_top">
+<div>
+    <div id="floatingbar">
+
+        <ul class="gallery clearfix">
+            <li wicket:id="untapAndDrawPlaceholder">
+                <a wicket:id="untapAndDrawLink" id="twitterlink" style="cursor: pointer; color: white"
+                   title="      Untap your permanents & draw a card"><img src="image/tweet.png"></img> Untap & draw</a>
+            </li>
+
+            <li id="untapAllPlaceholder" wicket:id="untapAllPlaceholder">
+                <a wicket:id="untapAllLink" style="cursor: pointer; color: white;"
+                   title="Untall all your permanents"><span><img src="image/googlebuzz.png"></img> Untap</span></a>
+            </li>
+
+            <li rel="prettyPhoto[iframe]" id="tour_3">
+                <a wicket:id="drawCardLink" title="Draw a card" style="cursor: pointer; color: white;">
+                    <img src="image/youtube.png"></img>
+                    Draw
+                </a>
+            </li>
+
+            <li>
+                <a wicket:id="playCardLink" style="cursor: pointer; color: white;"
+                   title="Play the card currently shown in your hand">
+                    Play
+                    <img src="image/playCard.png"></img>
+                </a>
+                <img id="playCardIndicator" src="image/indicator.gif" style="position: relative; float: right;"></img>
+            </li>
+
+            <li wicket:id="combatPlaceholder">
+                <a wicket:id="combatLink" id="combatlink" style="cursor: pointer; color: white;"
+                   title="Start and end combat phase"><img src="image/battle.png"></img> Combat</a>
+            </li>
+
+            <li wicket:id="inResponsePlaceholder">
+                <a wicket:id="inResponseLink" style="cursor: pointer; color: white;"
+                   title="Play an action in response to another one"><img src="image/endOfTurnAction.png"></img> In
+                    response</a>
+            </li>
+
+            <li wicket:id="fineForMePlaceholder">
+                <a wicket:id="fineForMeLink" style="cursor: pointer; color: white;" title="Fine for me"><img
+                        src="image/acceptEndOfTurn.png"></img> Fine</a>
+            </li>
+
+            <li wicket:id="endTurnPlaceholder">
+                <a wicket:id="endTurnLink" style="cursor: pointer; color: white;" title="Put an end to your turn"><img
+                        src="image/contact.png"></img> End turn</a>
+            </li>
+        </ul>
+
+    </div>
+</div>
+
+<!-- Tour Content -->
+<ul id="tlyPageGuide" data-tourtitle="First time here? Wanna go for a ride?" class="myfont">
+    <li data-tourtarget="#untapAllPlaceholder" class="tlypageguide_top">
         <div>You can untap all your permanents at once using the toolbar button.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_3" class="tlypageguide_top">
-        <div>When you've joined a game, you'll be able to draw cards, thanks to the button in this toolbar.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#playCardPlaceholder0" class="tlypageguide_top">
+    </li>
+    <li data-tourtarget="#tour_3" class="tlypageguide_top">
+        <div>When you've joined a game, you'll be able to draw cards, thanks to the button in this toolbar.<br/><br/>
+        </div>
+    </li>
+    <li data-tourtarget="#playCardPlaceholder0" class="tlypageguide_top">
         <div>You can play cards and the opponent will see them on the battlefield.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#jMenu" class="tlypageguide_bottom">
-        <div>This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu entries.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_6" class="tlypageguide_right">
-        <div>This is a card. You can move it by drag and drop using the small, green handle on its left. If you do so, the opponent will see its move matched in her own browser. Additionaly, you can call a context menu by right-clicking on the card itself.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_6" class="tlypageguide_top">
-        <div>One more thing about this card: using the small green arrow on its right, you can tap and untap it.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#clock" class="tlypageguide_right">
-        <div>This is the reference clock. It displays the hour on the server, so it's the same hour for every player.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#page-wrap" class="tlypageguide_right">
+    </li>
+    <li data-tourtarget="#jMenu" class="tlypageguide_bottom">
+        <div>This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu
+            entries.<br/><br/></div>
+    </li>
+    <li data-tourtarget="#tour_6" class="tlypageguide_right">
+        <div>This is a card. You can move it by drag and drop using the small, green handle on its left. If you do so,
+            the opponent will see its move matched in her own browser. Additionaly, you can call a context menu by
+            right-clicking on the card itself.<br/><br/></div>
+    </li>
+    <li data-tourtarget="#tour_6" class="tlypageguide_top">
+        <div>One more thing about this card: using the small green arrow on its right, you can tap and untap
+            it.<br/><br/></div>
+    </li>
+    <li data-tourtarget="#clock" class="tlypageguide_right">
+        <div>This is the reference clock. It displays the hour on the server, so it's the same hour for every
+            player.<br/><br/></div>
+    </li>
+    <li data-tourtarget="#page-wrap" class="tlypageguide_right">
         <div>This is your hand. You can browse the cards in it and play one of them.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_9" class="tlypageguide_top">
+    </li>
+    <li data-tourtarget="#tour_9" class="tlypageguide_top">
         <div>This is the dock. You can show the different zones of Magic using its icons.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_10" class="tlypageguide_bottom">
+    </li>
+    <li data-tourtarget="#tour_10" class="tlypageguide_bottom">
         <div>Hide or display your hand using this button.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_11" class="tlypageguide_bottom">
-        <div>Browse through your graveyard using this button. Your opponent will be notified of this action.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_12" class="tlypageguide_bottom">
-        <div>Browse through the exiled cards using this button. Your opponent will be notified of this action.<br/><br/></div>
-      </li>                                    
-      <li data-tourtarget="#tour_13" class="tlypageguide_bottom">
-        <div>Hide every zone of the game except the battlefield using this button. Only the permanents remain, so that you can have a vista of the game. If you click here again, the previously displayed zones will be restored, at the same places.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#tour_14" class="tlypageguide_bottom">
-        <div>Browse through your library using this button. Your opponent will be notified of this action. Beware: you're supposed to play fair! Don't forget the rules of the game.<br/><br/></div>
-      </li>
-      <li data-tourtarget="#chat" class="tlypageguide_top">
-        <div>This is a chat. Its behavior is standard and you DON'T need to refresh your browser in order to receive new messages.<br/><br/></div>
-      </li> 
-      <li data-tourtarget="#tour_1" class="tlypageguide_right">
+    </li>
+    <li data-tourtarget="#tour_11" class="tlypageguide_bottom">
+        <div>Browse through your graveyard using this button. Your opponent will be notified of this action.<br/><br/>
+        </div>
+    </li>
+    <li data-tourtarget="#tour_12" class="tlypageguide_bottom">
+        <div>Browse through the exiled cards using this button. Your opponent will be notified of this action.<br/><br/>
+        </div>
+    </li>
+    <li data-tourtarget="#tour_13" class="tlypageguide_bottom">
+        <div>Hide every zone of the game except the battlefield using this button. Only the permanents remain, so that
+            you can have a vista of the game. If you click here again, the previously displayed zones will be restored,
+            at the same places.<br/><br/></div>
+    </li>
+    <li data-tourtarget="#tour_14" class="tlypageguide_bottom">
+        <div>Browse through your library using this button. Your opponent will be notified of this action. Beware:
+            you're supposed to play fair! Don't forget the rules of the game.<br/><br/></div>
+    </li>
+    <li data-tourtarget="#chat" class="tlypageguide_top">
+        <div>This is a chat. Its behavior is standard and you DON'T need to refresh your browser in order to receive new
+            messages.<br/><br/></div>
+    </li>
+    <li data-tourtarget="#tour_1" class="tlypageguide_right">
         <div><h2>You're done!</h2><br/><br/>Have fun!<br/><br/></div>
-      </li> 
-    </ul>
+    </li>
+</ul>
 </body>
 </html>

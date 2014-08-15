@@ -1,9 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -21,8 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
-{
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
+public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedrawArrowsBehavior.class);
 
@@ -30,20 +29,17 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 	private PersistenceService persistenceService;
 	private final Long gameId;
 
-	public RedrawArrowsBehavior(final Long _gameId)
-	{
+	public RedrawArrowsBehavior(final Long _gameId) {
 		this.gameId = _gameId;
 		Injector.get().inject(this);
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target)
-	{
+	protected void respond(final AjaxRequestTarget target) {
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
-	{
+	public void renderHead(final Component component, final IHeaderResponse response) {
 		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
@@ -53,16 +49,14 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		final StringBuilder content = new StringBuilder("var redraw = function() { arrow = new Array(); ");
 
 		final Boolean drawMode = this.persistenceService.getGame(
-				HatchetHarrySession.get().getGameId()).isDrawMode();
+																		HatchetHarrySession.get().getGameId()).isDrawMode();
 		content.append("drawMode = " + drawMode.booleanValue() + "; ");
 		RedrawArrowsBehavior.LOGGER.info("drawMode: " + drawMode.booleanValue());
 
-		if (drawMode.booleanValue())
-		{
+		if (drawMode.booleanValue()) {
 			content.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
-			for (final Arrow arrow : allArrows)
-			{
+			for (final Arrow arrow : allArrows) {
 				content.append("var e0 = jsPlumb.addEndpoint(");
 				content.append(arrow.getSource());
 				content.append(" ); ");
@@ -85,24 +79,20 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("content", content.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-				"script/arrowDraw/redrawArrows.js");
+																	 "script/arrowDraw/redrawArrows.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-		try
-		{
+		try {
 			template.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			RedrawArrowsBehavior.LOGGER.error(
-					"unable to close template in RedrawArrowsBehavior#renderHead()!", e);
+													 "unable to close template in RedrawArrowsBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 

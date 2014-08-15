@@ -2,14 +2,12 @@ package org.alienlabs.hatchetharry.model.channel.consolelog;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public class GameConsoleLogStrategy extends ConsoleLogStrategy
-{
+public class GameConsoleLogStrategy extends ConsoleLogStrategy {
 	private final String player;
 	private final Boolean created;
 	private final Long gameId;
 
-	public GameConsoleLogStrategy(final String _player, final Boolean _created, final Long _gameId)
-	{
+	public GameConsoleLogStrategy(final String _player, final Boolean _created, final Long _gameId) {
 		super();
 		this.player = _player;
 		this.created = _created;
@@ -17,20 +15,14 @@ public class GameConsoleLogStrategy extends ConsoleLogStrategy
 	}
 
 	@Override
-	public void logToConsole(final AjaxRequestTarget target)
-	{
+	public void logToConsole(final AjaxRequestTarget target) {
 		final String action;
 
-		if (this.created == null)
-		{
+		if (this.created == null) {
 			action = "put an end to ";
-		}
-		else if (this.created.booleanValue() == true)
-		{
+		} else if (this.created.booleanValue() == true) {
 			action = "created ";
-		}
-		else
-		{
+		} else {
 			action = "joined ";
 		}
 

@@ -11,34 +11,30 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
-{
+public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest {
 	@Test
-	public void testCardMoveBehavior()
-	{
+	public void testCardMoveBehavior() {
 		// Start a game and play a card
 		super.startAGameAndPlayACard(SpringContextLoaderBaseTest.tester,
-				SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT);
+											SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT);
 
 		// Retrieve the card and the CardMoveBehavior
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		SpringContextLoaderBaseTest.tester.assertComponent(
-				"parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton",
-				WebMarkupContainer.class);
-		final WebMarkupContainer button = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
+																  "parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton",
+																  WebMarkupContainer.class);
+		final WebMarkupContainer button = (WebMarkupContainer) SpringContextLoaderBaseTest.tester
+																	   .getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(button);
 		@SuppressWarnings("unchecked")
-		final List<Behavior> allCardBehaviors = (List<Behavior>)button.getBehaviors();
+		final List<Behavior> allCardBehaviors = (List<Behavior>) button.getBehaviors();
 		CardMoveBehavior cmb = null;
 
-		for (final Behavior b : allCardBehaviors)
-		{
-			if (b instanceof CardMoveBehavior)
-			{
-				cmb = (CardMoveBehavior)b;
+		for (final Behavior b : allCardBehaviors) {
+			if (b instanceof CardMoveBehavior) {
+				cmb = (CardMoveBehavior) b;
 				break;
 			}
 		}
@@ -47,13 +43,13 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 
 		// Move the card
 		SpringContextLoaderBaseTest.tester.assertComponent(
-				"parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
-		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
+																  "parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
+		final CardPanel card = (CardPanel) SpringContextLoaderBaseTest.tester
+												   .getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
 
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
-				card.getUuid().toString());
+																			card.getUuid().toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posX", "128.36");
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posY", "821.63");
 		SpringContextLoaderBaseTest.tester.executeBehavior(cmb);
@@ -64,7 +60,7 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+															  .getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		final MagicCard mc = allCardsInBattlefield.get(0);

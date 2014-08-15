@@ -32,29 +32,25 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * Non regression tests using the WicketTester.
  */
-public class NonRegressionTest
-{
+public class NonRegressionTest {
 	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
+																															   new String[]{"applicationContext.xml", "applicationContextTest.xml"});
 	private transient WicketTester tester;
 	private HatchetHarryApplication webApp;
 	static transient ApplicationContext context;
 	private PersistenceService persistenceService;
 
 	@Before
-	public void setUp()
-	{
-		this.webApp = new HatchetHarryApplication()
-		{
+	public void setUp() {
+		this.webApp = new HatchetHarryApplication() {
 			private static final long serialVersionUID = 1L;
 
 
 			@Override
-			public void init()
-			{
+			public void init() {
 				NonRegressionTest.context = NonRegressionTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, NonRegressionTest.context, true));
+																	 new SpringComponentInjector(this, NonRegressionTest.context, true));
 				// We'll ask Emond to enable unit testing in EventBus
 				// this.eventBus = new EventBusMock(this);
 			}
@@ -72,13 +68,11 @@ public class NonRegressionTest
 	}
 
 	@After
-	public void tearDown()
-	{
+	public void tearDown() {
 		NonRegressionTest.context.getBean(PersistenceService.class).resetDb();
 	}
 
-	public void startAGameAndPlayACard(final WicketTester _tester, final ApplicationContext _context)
-	{
+	public void startAGameAndPlayACard(final WicketTester _tester, final ApplicationContext _context) {
 		// Create game
 		_tester.assertComponent("createGameLink", AjaxLink.class);
 		_tester.clickLink("createGameLink", true);
@@ -90,67 +84,66 @@ public class NonRegressionTest
 		createGameForm.submit();
 
 		Player p = this.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId()).get(0);
+																	  HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 
 		// Retrieve PlayCardFromHandBehavior
 		_tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)_tester
-				.getComponentFromLastRenderedPage("playCardLink");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer) _tester
+																			 .getComponentFromLastRenderedPage("playCardLink");
+		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior) playCardLink
+																				  .getBehaviors().get(0);
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+															  .getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card
 		_tester.getRequest().setParameter("card",
-				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
+												 HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		_tester.executeBehavior(pcfhb);
 
 
 		// We still should not have more cards that the number of cards in the
 		// deck
 		p = this.persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId()).get(
-				0);
+																										  0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 
 	@Test
-	/** 
+	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
 	 * Run: we play it again
 	 * Verify: the card should be untapped.
-	 * 
+	 *
 	 */
-	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped()
-	{
+	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped() {
 		this.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 
 		// We should have one card on the battlefield, untapped
 		List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+														.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 		MagicCard card = this.persistenceService.getCardFromUuid(UUID
-				.fromString(allCardsInBattlefield.get(0).getUuid()));
+																		 .fromString(allCardsInBattlefield.get(0).getUuid()));
 		Assert.assertFalse(card.isTapped());
 
 		// Tap card
 		this.tester.startPage(HomePage.class);
 		this.tester.assertRenderedPage(HomePage.class);
 
-		final HomePage hp = (HomePage)this.tester.getLastRenderedPage();
-		final WebMarkupContainer cardButton = (WebMarkupContainer)hp
-				.get("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
+		final HomePage hp = (HomePage) this.tester.getLastRenderedPage();
+		final WebMarkupContainer cardButton = (WebMarkupContainer) hp
+																		   .get("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(cardButton);
 		final CardRotateBehavior rotateBehavior = cardButton.getBehaviors(CardRotateBehavior.class)
-				.get(0);
+														  .get(0);
 		Assert.assertNotNull(rotateBehavior);
 
 		this.tester.getRequest().setParameter("uuid", card.getUuid());
@@ -158,12 +151,12 @@ public class NonRegressionTest
 
 		// Assert card is tapped
 		card = this.persistenceService.getCardFromUuid(UUID.fromString(allCardsInBattlefield.get(0)
-				.getUuid()));
+																			   .getUuid()));
 		Assert.assertTrue(card.isTapped());
 
 		// Put the first card back to hand
 		final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior = cardButton
-				.getBehaviors(PutToHandFromBattlefieldBehavior.class).get(0);
+																						  .getBehaviors(PutToHandFromBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(putToHandFromBattlefieldBehavior);
 		this.tester.executeBehavior(putToHandFromBattlefieldBehavior);
 
@@ -176,12 +169,12 @@ public class NonRegressionTest
 		this.tester.assertRenderedPage(HomePage.class);
 
 		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
-				.getComponentFromLastRenderedPage("playCardLink");
+		final WebMarkupContainer playCardLink = (WebMarkupContainer) this.tester
+																			 .getComponentFromLastRenderedPage("playCardLink");
 
-		PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(
-				0);
-		pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(0);
+		PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior) playCardLink.getBehaviors().get(
+																										   0);
+		pcfhb = (PlayCardFromHandBehavior) playCardLink.getBehaviors().get(0);
 		Assert.assertNotNull(pcfhb);
 
 		this.tester.getRequest().setParameter("card", card.getUuid());
@@ -211,23 +204,21 @@ public class NonRegressionTest
 	}
 
 	@Test
-	public void whenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
-	{
+	public void whenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck() {
 		this.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		final Player p = this.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId()).get(0);
+																			HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 
 	@Test
-	public void whenCreatingAGamePlayingACardAndPlayingATokenTheNumberOfCardsInTheHandMustNotChange()
-	{
+	public void whenCreatingAGamePlayingACardAndPlayingATokenTheNumberOfCardsInTheHandMustNotChange() {
 		this.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		// 60 cards in the deck?
 		final Player p = this.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId()).get(0);
+																			HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 		// 6 cards in the hand?
@@ -235,7 +226,7 @@ public class NonRegressionTest
 
 		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
-				"nav-thumb", false);
+																		   "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(6, tagTester.size());
 
@@ -255,12 +246,12 @@ public class NonRegressionTest
 
 		// Play another card
 		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
-				.getComponentFromLastRenderedPage("playCardLink");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer) this.tester
+																			 .getComponentFromLastRenderedPage("playCardLink");
+		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior) playCardLink
+																				  .getBehaviors().get(0);
 		this.tester.getRequest().setParameter("card",
-				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
+													 HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		this.tester.executeBehavior(pcfhb);
 
 		// 6 cards in the hand instead of 5!!!
@@ -296,7 +287,7 @@ public class NonRegressionTest
 		this.tester.clickLink("createTokenLink", true);
 
 		final FormTester createTokenForm = this.tester
-				.newFormTester("createTokenWindow:content:form");
+												   .newFormTester("createTokenWindow:content:form");
 		createTokenForm.setValue("type", "Creature");
 		createTokenForm.setValue("power", "7");
 		createTokenForm.setValue("toughness", "7");
@@ -350,12 +341,11 @@ public class NonRegressionTest
 	}
 
 	@Test
-	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
-	{
+	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck() {
 		this.startAGameAndPlayACard(this.tester, NonRegressionTest.context);
 
 		final Player player = this.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId()).get(0);
+																				 HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, player.getDeck().getCards().size());
 
 		// Create game
@@ -373,29 +363,27 @@ public class NonRegressionTest
 		Assert.assertEquals(60, player.getDeck().getCards().size());
 	}
 
-	private void openModalWindow(final String _window, final String linkToActivateWindow)
-	{
+	private void openModalWindow(final String _window, final String linkToActivateWindow) {
 		// assert modal windows are in the page
 		this.tester.assertComponent(_window, ModalWindow.class);
-		final ModalWindow window = (ModalWindow)this.tester
-				.getComponentFromLastRenderedPage(_window);
+		final ModalWindow window = (ModalWindow) this.tester
+														 .getComponentFromLastRenderedPage(_window);
 		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
 
 		@SuppressWarnings("unchecked")
-		final AjaxLink<Void> link = (AjaxLink<Void>)this.tester
-				.getComponentFromLastRenderedPage(linkToActivateWindow);
+		final AjaxLink<Void> link = (AjaxLink<Void>) this.tester
+															 .getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
 		this.tester.clickLink(linkToActivateWindow, true);
 		this.tester.assertVisible(window.getPageRelativePath() + ":" + window.getContentId());
 	}
 
 	private void verifyFieldsOfCountCardsModalWindow(final String fieldId,
-			final String expectedFieldContent)
-	{
+													 final String expectedFieldContent) {
 		this.tester.assertComponent("countCardsWindow:content:players", ListView.class);
 		this.tester.assertComponent("countCardsWindow:content:players:0:" + fieldId, Label.class);
-		final Label actualLabel = (Label)this.tester
-				.getComponentFromLastRenderedPage("countCardsWindow:content:players:0:" + fieldId);
+		final Label actualLabel = (Label) this.tester
+												  .getComponentFromLastRenderedPage("countCardsWindow:content:players:0:" + fieldId);
 		Assert.assertEquals(expectedFieldContent, actualLabel.getDefaultModelObjectAsString());
 	}
 }

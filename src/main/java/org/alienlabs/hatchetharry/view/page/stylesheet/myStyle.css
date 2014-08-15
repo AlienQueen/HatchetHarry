@@ -1,171 +1,176 @@
-.yui-b{
-            
-                z-index: 100;
-            
-            }
-            
-			.bd{
-            
-                z-index: 100;
-            
-            }
-                        
-			.yuimenubaritem{
-            
-                z-index: 100;
-            
-            }
-                                    
-			.yuimenu{
-            
-                z-index: 100;
-            
-            }
-            
-            div.yui-b p {
-            
-                margin: 0 0 .5em 0;
-                color: #424242;
-            
-            }
-            
-            div.yui-b p strong {
-            
-                font-weight: bold;
-                color: #000;
-            
-            }
-            
-            div.yui-b p em {
+.yui-b {
 
-                color: #000;
-            
-            }            
-            
-            h1 {
+    z-index: 100;
 
-                font-weight: bold;
-                margin: 0 0 1em 0;
-                padding: .25em .5em;
-                background-color: #000000;
+}
 
-            }
+.bd {
 
-            #myMenu {
+    z-index: 100;
 
-                margin: 0 0 10px 0;
-            }
-            
-            em#logo {
-            
-            text-indent: -6em; 
-		    display: block; 
-		    background: url("/image/logo32_32.png") center center no-repeat; 
-	    	width: 2em; 
-		    overflow: hidden; 
-			}
+}
 
-		  .wrapper h1{
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:26px;
-  }
-  button{
-    padding:4px;
-    display:inline-block;
-    cursor:pointer;
-    font:12px/14px Arial, Helvetica, sans-serif;
-    color:#666;
-    border:1px solid #999;
-    background-color:#eee;
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    -moz-box-shadow:#999 2px 0px 3px;
-    -webkit-box-shadow:#999 2px 0px 3px;
-    margin-bottom:4px;
-  }
-  button:hover{
-    color:#aaa;
-    background-color:#000;
-  }
-  :focus {
+.yuimenubaritem {
+
+    z-index: 100;
+
+}
+
+.yuimenu {
+
+    z-index: 100;
+
+}
+
+div.yui-b p {
+
+    margin: 0 0 .5em 0;
+    color: #424242;
+
+}
+
+div.yui-b p strong {
+
+    font-weight: bold;
+    color: #000;
+
+}
+
+div.yui-b p em {
+
+    color: #000;
+
+}
+
+h1 {
+
+    font-weight: bold;
+    margin: 0 0 1em 0;
+    padding: .25em .5em;
+    background-color: #000000;
+
+}
+
+#myMenu {
+
+    margin: 0 0 10px 0;
+}
+
+em#logo {
+
+    text-indent: -6em;
+    display: block;
+    background: url("/image/logo32_32.png") center center no-repeat;
+    width: 2em;
+    overflow: hidden;
+}
+
+.wrapper h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 26px;
+}
+
+button {
+    padding: 4px;
+    display: inline-block;
+    cursor: pointer;
+    font: 12px/14px Arial, Helvetica, sans-serif;
+    color: #666;
+    border: 1px solid #999;
+    background-color: #eee;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-box-shadow: #999 2px 0px 3px;
+    -webkit-box-shadow: #999 2px 0px 3px;
+    margin-bottom: 4px;
+}
+
+button:hover {
+    color: #aaa;
+    background-color: #000;
+}
+
+:focus {
     outline: 0;
-  }
+}
 
-  span.btn{
-    padding:10px;
-    display:inline-block;
-    cursor:pointer;
-    font:12px/14px Arial, Helvetica, sans-serif;
-    color:#aaa;
-    background-color:#eee;
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    -moz-box-shadow:#999 2px 0px 3px;
-    -webkit-box-shadow:#999 2px 0px 3px;
-  }
-  span.btn:hover{
-    background-color:#000;
-  }
-  
-  .msgBox{
-    position:absolute;
-    width:250px;
-    height:60px;
-    background:black;
-    -moz-box-shadow:#999 2px 0px 3px;
-    -webkit-box-shadow:#999 2px 0px 3px;    
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    padding:10px;
-    padding-top:30px;
-    top:10px;
-    right:10px;
-    font:20px/24px Arial, Helvetica, sans-serif;
-  } 
+span.btn {
+    padding: 10px;
+    display: inline-block;
+    cursor: pointer;
+    font: 12px/14px Arial, Helvetica, sans-serif;
+    color: #aaa;
+    background-color: #eee;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-box-shadow: #999 2px 0px 3px;
+    -webkit-box-shadow: #999 2px 0px 3px;
+}
+
+span.btn:hover {
+    background-color: #000;
+}
+
+.msgBox {
+    position: absolute;
+    width: 250px;
+    height: 60px;
+    background: black;
+    -moz-box-shadow: #999 2px 0px 3px;
+    -webkit-box-shadow: #999 2px 0px 3px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 10px;
+    padding-top: 30px;
+    top: 10px;
+    right: 10px;
+    font: 20px/24px Arial, Helvetica, sans-serif;
+}
+
 #container {
-		width:600px;
-		background:#333;
-		padding:10px;
+    width: 600px;
+    background: #333;
+    padding: 10px;
 }
 
 .categories {
-	display:none;
-	padding:10px;
-	float:left;
-	width:95%;
-	background-color: black;
-	margin-top:20px;
-	-moz-border-radius: 8px; 
-	-webkit-border-radius: 8px;
-	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-	color: gray;
-	cursor: pointer;
+    display: none;
+    padding: 10px;
+    float: left;
+    width: 95%;
+    background-color: black;
+    margin-top: 20px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    color: gray;
+    cursor: pointer;
 }
 
 .dropdownmenu {
-	position: fixed;
-	cursor: pointer;
-	z-index: 200;
+    position: fixed;
+    cursor: pointer;
+    z-index: 200;
 }
 
 a, a:visited {
-	color: black;
+    color: black;
     text-decoration: none;
 }
 
 .myBody {
-	background: url("/image/fond4.jpg") repeat scroll 0 0 #000000;
+    background: url("/image/fond4.jpg") repeat scroll 0 0 #000000;
     min-height: 100%;
     font-family: "Trebuchet MS", "Lucida Grande", Arial, Helvetica, sans-serif;
-	margin: 0 auto;
-	padding: 0;
-	width: 2500px;
+    margin: 0 auto;
+    padding: 0;
+    width: 2500px;
 }
 
 .myfont {
-	font-family: 'Black Ops One', cursive;
-	color: gray;
+    font-family: 'Black Ops One', cursive;
+    color: gray;
 }
 
 /* for the light (white) version of the gritter notice */
@@ -173,75 +178,78 @@ a, a:visited {
 .gritter-light .gritter-bottom,
 .gritter-light .gritter-top,
 .gritter-close {
-	color: red;
+    color: red;
 }
 
 .gritter-green .gritter-item,
 .gritter-green .gritter-bottom,
 .gritter-green .gritter-top,
-.gritter-close{
+.gritter-close {
     color: green;
 }
 
 .gritter-light .gritter-title {
-	text-shadow: none;
+    text-shadow: none;
 }
 
 div.wicket-modal h3.w_captionText {
-	font-family: 'Black Ops One', cursive;
+    font-family: 'Black Ops One', cursive;
 }
 
 .cardLabelFont {
-	text-decoration:none; padding: 10px;  font-size:12px;  font-weight:normal; font-family: 'Black Ops One', cursive; color: gray;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: 'Black Ops One', cursive;
+    color: gray;
 }
 
 .shift-right {
-	float:left;
-	padding-left: 40%;
+    float: left;
+    padding-left: 40%;
 }
 
 .zone-images {
-	float:left;
-	padding-left: 10px;
-	position: fixed;
-	left: 5px;
-	top: 90px;
+    float: left;
+    padding-left: 10px;
+    position: fixed;
+    left: 5px;
+    top: 90px;
 }
 
 .black {
-	background-color: black;
+    background-color: black;
 }
 
 .console {
-	float: left;
+    float: left;
 }
 
-
 .drawModeParent {
-	float: left;
-	padding-left: 300px;
+    float: left;
+    padding-left: 300px;
 }
 
 .ui-dialog-titlebar-close {
-	background: url('/image/delete-20.png');
+    background: url('/image/delete-20.png');
 }
 
 .ui-dialog-title {
-	font-family: 'Black Ops One', cursive;
+    font-family: 'Black Ops One', cursive;
 }
 
-
 .login {
-	float: left;
-	position: fixed;
-	left: 15px;
+    float: left;
+    position: fixed;
+    left: 15px;
 }
 
 .bullet {
-	position: relative;
-	top: -48px;
-	left: 10px;
-	font-size: 300%;
-	color: orange;
-	z-index: 1; 
+    position: relative;
+    top: -48px;
+    left: 10px;
+    font-size: 300%;
+    color: orange;
+    z-index: 1;
 }

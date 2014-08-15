@@ -1,10 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
@@ -32,8 +27,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class MulliganModalWindow extends Panel
-{
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MulliganModalWindow extends Panel {
 	static final Logger LOGGER = LoggerFactory.getLogger(MulliganModalWindow.class);
 	private static final long serialVersionUID = 1L;
 
@@ -41,14 +40,12 @@ public class MulliganModalWindow extends Panel
 	PersistenceService persistenceService;
 	private final DropDownChoice<String> mulliganInput;
 
-	public MulliganModalWindow(final ModalWindow window, final String id)
-	{
+	public MulliganModalWindow(final ModalWindow window, final String id) {
 		super(id);
 		final Form<String> form = new Form<String>("form");
 
 		@SuppressWarnings("serial")
-		final ArrayList<String> mulligan = new ArrayList<String>()
-		{
+		final ArrayList<String> mulligan = new ArrayList<String>() {
 			{
 				this.add("1");
 				this.add("2");
@@ -62,104 +59,94 @@ public class MulliganModalWindow extends Panel
 
 		final Model<ArrayList<String>> mulliganModel = new Model<ArrayList<String>>(mulligan);
 		final Label mulliganLabel = new Label("mulliganLabel",
-				"Choose the number of cards you'd like to draw: ");
+													 "Choose the number of cards you'd like to draw: ");
 		this.mulliganInput = new DropDownChoice<String>("mulliganInput", new Model<String>(),
-				mulliganModel);
+															   mulliganModel);
 		this.mulliganInput.setOutputMarkupId(true);
 
-		final AjaxButton ask = new AjaxButton("ask", form)
-		{
+		final AjaxButton ask = new AjaxButton("ask", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
 				MulliganModalWindow.LOGGER.info("gameId: " + MulliganModalWindow.this.getGameId()
-						+ ", playerId: " + MulliganModalWindow.this.getPlayer().getId()
-						+ " asks to draw "
-						+ MulliganModalWindow.this.mulliganInput.getDefaultModelObjectAsString()
-						+ " cards");
+														+ ", playerId: " + MulliganModalWindow.this.getPlayer().getId()
+														+ " asks to draw "
+														+ MulliganModalWindow.this.mulliganInput.getDefaultModelObjectAsString()
+														+ " cards");
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.ASK_FOR_MULLIGAN, null, null, null, null,
-						MulliganModalWindow.this.getPlayer().getName(), null, null, null, false,
-						Long.parseLong(MulliganModalWindow.this.mulliganInput
-								.getDefaultModelObjectAsString()));
+																								   ConsoleLogType.ASK_FOR_MULLIGAN, null, null, null, null,
+																								   MulliganModalWindow.this.getPlayer().getName(), null, null, null, false,
+																								   Long.parseLong(MulliganModalWindow.this.mulliganInput
+																														  .getDefaultModelObjectAsString()));
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.ASK_FOR_MULLIGAN,
-						Long.parseLong(MulliganModalWindow.this.mulliganInput
-								.getDefaultModelObjectAsString()), null, MulliganModalWindow.this
-								.getPlayer().getName(), null, null, null, null, "");
+																				 NotifierAction.ASK_FOR_MULLIGAN,
+																				 Long.parseLong(MulliganModalWindow.this.mulliganInput
+																										.getDefaultModelObjectAsString()), null, MulliganModalWindow.this
+																																						 .getPlayer().getName(), null, null, null, null, "");
 
 				final List<BigInteger> allPlayersInGame = MulliganModalWindow.this.persistenceService
-						.giveAllPlayersFromGame(MulliganModalWindow.this.getGameId());
+																  .giveAllPlayersFromGame(MulliganModalWindow.this.getGameId());
 				final List<BigInteger> allPlayersInGameExceptMe = MulliganModalWindow.this.persistenceService
-						.giveAllPlayersFromGameExceptMe(MulliganModalWindow.this.getGameId(),
-								MulliganModalWindow.this.getPlayer().getId());
+																		  .giveAllPlayersFromGameExceptMe(MulliganModalWindow.this.getGameId(),
+																												 MulliganModalWindow.this.getPlayer().getId());
 
 				MulliganModalWindow.LOGGER.info("players: " + allPlayersInGameExceptMe.size());
 
-				for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
-				{
+				for (int i = 0; i < allPlayersInGameExceptMe.size(); i++) {
 					final Long playerToWhomToSend = allPlayersInGameExceptMe.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-							playerToWhomToSend);
+																								   playerToWhomToSend);
 					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 					HatchetHarryApplication
-					.get()
-					.getEventBus()
-					.post(new AskMulliganCometChannel(MulliganModalWindow.this.getPlayer()
-									.getName(),
-							Long.parseLong(MulliganModalWindow.this.mulliganInput
-									.getDefaultModelObjectAsString())), pageUuid);
+							.get()
+							.getEventBus()
+							.post(new AskMulliganCometChannel(MulliganModalWindow.this.getPlayer()
+																	  .getName(),
+																	 Long.parseLong(MulliganModalWindow.this.mulliganInput
+																							.getDefaultModelObjectAsString())), pageUuid);
 				}
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
+				for (int i = 0; i < allPlayersInGame.size(); i++) {
 					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-							playerToWhomToSend);
+																								   playerToWhomToSend);
 					HatchetHarryApplication.get().getEventBus()
-					.post(new ConsoleLogCometChannel(logger), pageUuid);
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
 				}
 			}
 		};
 
-		final AjaxButton draw = new AjaxButton("draw", form)
-		{
+		final AjaxButton draw = new AjaxButton("draw", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
 				MulliganModalWindow.this.drawCards(MulliganModalWindow.this.getGameId(),
-						MulliganModalWindow.this.getPlayer(), Long
-								.parseLong(MulliganModalWindow.this.mulliganInput
-										.getDefaultModelObjectAsString()), target);
+														  MulliganModalWindow.this.getPlayer(), Long
+																										.parseLong(MulliganModalWindow.this.mulliganInput
+																														   .getDefaultModelObjectAsString()), target);
 			}
 		};
 
-		final AjaxButton drawOneLess = new AjaxButton("drawOneLess", form)
-		{
+		final AjaxButton drawOneLess = new AjaxButton("drawOneLess", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
 				MulliganModalWindow.this.drawCards(MulliganModalWindow.this.getGameId(),
-						MulliganModalWindow.this.getPlayer(), Long
-								.parseLong(MulliganModalWindow.this.mulliganInput
-										.getDefaultModelObjectAsString()) - 1, target);
+														  MulliganModalWindow.this.getPlayer(), Long
+																										.parseLong(MulliganModalWindow.this.mulliganInput
+																														   .getDefaultModelObjectAsString()) - 1, target);
 			}
 		};
 
-		final AjaxButton quit = new AjaxButton("quit", form)
-		{
+		final AjaxButton quit = new AjaxButton("quit", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
 				window.close(target);
 			}
 		};
@@ -169,17 +156,14 @@ public class MulliganModalWindow extends Panel
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 
 	private void drawCards(final Long gameId, final Player me, final Long numberOfCards,
-			final AjaxRequestTarget target)
-	{
+						   final AjaxRequestTarget target) {
 		final List<MagicCard> hand = HatchetHarrySession.get().getFirstCardsInHand();
-		for (final MagicCard card : hand)
-		{
+		for (final MagicCard card : hand) {
 			card.setZone(CardZone.LIBRARY);
 		}
 
@@ -191,8 +175,7 @@ public class MulliganModalWindow extends Panel
 		Collections.shuffle(deck);
 		Collections.shuffle(deck);
 
-		for (int i = 0; i < numberOfCards; i++)
-		{
+		for (int i = 0; i < numberOfCards; i++) {
 			deck.get(i).setZone(CardZone.HAND);
 			newHand.add(deck.get(i));
 		}
@@ -202,34 +185,31 @@ public class MulliganModalWindow extends Panel
 		JavaScriptUtils.updateHand(target);
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-				ConsoleLogType.DONE_MULLIGAN, null, null, null, null, me.getName(), null, null,
-				null, false, numberOfCards);
+																						   ConsoleLogType.DONE_MULLIGAN, null, null, null, null, me.getName(), null, null,
+																						   null, false, numberOfCards);
 		final NotifierCometChannel ncc = new NotifierCometChannel(NotifierAction.DONE_MULLIGAN,
-				numberOfCards, null, me.getName(), null, null, null, null, "");
+																		 numberOfCards, null, me.getName(), null, null, null, null, "");
 
 		final List<BigInteger> allPlayersInGame = MulliganModalWindow.this.persistenceService
-				.giveAllPlayersFromGame(gameId);
+														  .giveAllPlayersFromGame(gameId);
 
 		MulliganModalWindow.LOGGER.info("players: " + allPlayersInGame.size());
 
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
+		for (int i = 0; i < allPlayersInGame.size(); i++) {
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-					playerToWhomToSend);
+																						   playerToWhomToSend);
 			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 			HatchetHarryApplication.get().getEventBus()
-			.post(new ConsoleLogCometChannel(logger), pageUuid);
+					.post(new ConsoleLogCometChannel(logger), pageUuid);
 		}
 	}
 
-	Long getGameId()
-	{
+	Long getGameId() {
 		return HatchetHarrySession.get().getGameId();
 	}
 
-	Player getPlayer()
-	{
+	Player getPlayer() {
 		return HatchetHarrySession.get().getPlayer();
 	}
 

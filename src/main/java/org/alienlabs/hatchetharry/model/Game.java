@@ -1,30 +1,18 @@
 package org.alienlabs.hatchetharry.model;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "Game")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Game implements Serializable
-{
+public class Game implements Serializable {
 	private static final long serialVersionUID = 5336828396327485268L;
 
 	@Id
@@ -39,49 +27,40 @@ public class Game implements Serializable
 	private Boolean isDrawMode = false;
 
 
-	public Long getId()
-	{
+	public Long getId() {
 		return this.gameId;
 	}
 
-	public void setId(final Long _id)
-	{
+	public void setId(final Long _id) {
 		this.gameId = _id;
 	}
 
-	public Set<Player> getPlayers()
-	{
+	public Set<Player> getPlayers() {
 		return this.players;
 	}
 
-	public void setPlayers(final Set<Player> _players)
-	{
+	public void setPlayers(final Set<Player> _players) {
 		this.players = _players;
 	}
 
-	public Long getCurrentPlaceholderId()
-	{
+	public Long getCurrentPlaceholderId() {
 		return this.currentPlaceholderId;
 	}
 
-	public void setCurrentPlaceholderId(final Long _currentPlaceholderId)
-	{
+	public void setCurrentPlaceholderId(final Long _currentPlaceholderId) {
 		this.currentPlaceholderId = _currentPlaceholderId;
 	}
 
-	public Boolean isDrawMode()
-	{
+	public Boolean isDrawMode() {
 		return this.isDrawMode;
 	}
 
-	public void setDrawMode(final Boolean drawMode)
-	{
+	public void setDrawMode(final Boolean drawMode) {
 		this.isDrawMode = drawMode;
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.players == null) ? 0 : this.players.hashCode());
@@ -89,30 +68,22 @@ public class Game implements Serializable
 	}
 
 	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if (obj == null)
-		{
+		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass())
-		{
+		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final Game other = (Game)obj;
-		if (this.players == null)
-		{
-			if (other.players != null)
-			{
+		final Game other = (Game) obj;
+		if (this.players == null) {
+			if (other.players != null) {
 				return false;
 			}
-		}
-		else if (!this.players.equals(other.players))
-		{
+		} else if (!this.players.equals(other.players)) {
 			return false;
 		}
 		return true;

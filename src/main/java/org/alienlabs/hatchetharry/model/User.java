@@ -19,8 +19,7 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "User")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User implements Serializable
-{
+public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -30,7 +29,7 @@ public class User implements Serializable
 	@Column
 	private String privateIdentity;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE })
+	@Cascade({CascadeType.SAVE_UPDATE})
 	private Player player;
 	@Column
 	private String identity;
@@ -41,87 +40,70 @@ public class User implements Serializable
 	@Column
 	private String realm;
 
-	public User()
-	{
+	public User() {
 	}
 
-	public String getUsername()
-	{
+	public String getUsername() {
 		return this.username;
 	}
 
-	public void setUsername(final String _username)
-	{
+	public void setUsername(final String _username) {
 		this.username = _username;
 	}
 
-	public String getLogin()
-	{
+	public String getLogin() {
 		return this.login;
 	}
 
-	public void setLogin(final String _login)
-	{
+	public void setLogin(final String _login) {
 		this.login = _login;
 	}
 
-	public Player getPlayer()
-	{
+	public Player getPlayer() {
 		return this.player;
 	}
 
-	public void setPlayer(final Player _player)
-	{
+	public void setPlayer(final Player _player) {
 		this.player = _player;
 	}
 
-	public String getIdentity()
-	{
+	public String getIdentity() {
 		return this.identity;
 	}
 
-	public void setIdentity(final String _identity)
-	{
+	public void setIdentity(final String _identity) {
 		this.identity = _identity;
 	}
 
-	public String getPassword()
-	{
+	public String getPassword() {
 		return this.password;
 	}
 
-	public void setPassword(final String _password)
-	{
+	public void setPassword(final String _password) {
 		this.password = _password;
 	}
 
-	public Boolean isFacebook()
-	{
+	public Boolean isFacebook() {
 		return this.isFacebook;
 	}
 
-	public void setFacebook(final Boolean facebook)
-	{
+	public void setFacebook(final Boolean facebook) {
 		this.isFacebook = facebook;
 	}
 
-	public String getRealm()
-	{
+	public String getRealm() {
 		return this.realm;
 	}
 
-	public void setRealm(final String _realm)
-	{
+	public void setRealm(final String _realm) {
 		this.realm = _realm;
 	}
 
-	public String getPrivateIdentity()
-	{
+	public String getPrivateIdentity() {
 		return this.privateIdentity;
 	}
 
-	public void setPrivateIdentity(final String _privateIdentity)
-	{
+	public void setPrivateIdentity(final String _privateIdentity) {
 		this.privateIdentity = _privateIdentity;
 	}
 

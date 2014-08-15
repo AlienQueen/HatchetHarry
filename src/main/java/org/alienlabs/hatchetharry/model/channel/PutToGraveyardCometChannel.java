@@ -3,8 +3,7 @@ package org.alienlabs.hatchetharry.model.channel;
 import org.alienlabs.hatchetharry.model.MagicCard;
 
 
-public class PutToGraveyardCometChannel
-{
+public class PutToGraveyardCometChannel {
 	private final Long gameId;
 	private final MagicCard mc;
 	private final String requestingPlayerName;
@@ -14,9 +13,8 @@ public class PutToGraveyardCometChannel
 	private final boolean shouldUpdateGraveyard;
 
 	public PutToGraveyardCometChannel(final Long _gameId, final MagicCard _mc,
-			final String _requestingPlayerName, final String _targetPlayerName,
-			final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateGraveyard)
-	{
+									  final String _requestingPlayerName, final String _targetPlayerName,
+									  final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateGraveyard) {
 		this.gameId = _gameId;
 		this.mc = _mc;
 		this.requestingPlayerName = _requestingPlayerName;
@@ -27,38 +25,31 @@ public class PutToGraveyardCometChannel
 
 	}
 
-	public Long getGameId()
-	{
+	public Long getGameId() {
 		return this.gameId;
 	}
 
-	public MagicCard getMagicCard()
-	{
+	public MagicCard getMagicCard() {
 		return this.mc;
 	}
 
-	public String getRequestingPlayerName()
-	{
+	public String getRequestingPlayerName() {
 		return this.requestingPlayerName;
 	}
 
-	public String getTargetPlayerName()
-	{
+	public String getTargetPlayerName() {
 		return this.targetPlayerName;
 	}
 
-	public Long getTargetPlayerId()
-	{
+	public Long getTargetPlayerId() {
 		return this.targetPlayerId;
 	}
 
-	public Long getDeckId()
-	{
+	public Long getDeckId() {
 		return this.deckId;
 	}
 
-	public boolean isShouldUpdateGraveyard()
-	{
+	public boolean isShouldUpdateGraveyard() {
 		return this.shouldUpdateGraveyard;
 	}
 

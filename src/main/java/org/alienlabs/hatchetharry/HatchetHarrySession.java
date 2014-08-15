@@ -15,8 +15,7 @@ import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 
 @SuppressWarnings("unchecked")
-public class HatchetHarrySession extends WebSession
-{
+public class HatchetHarrySession extends WebSession {
 	private static final long serialVersionUID = 4565051252275468687L;
 	private String cometUser; // TODO: do something, Gromit
 
@@ -50,373 +49,306 @@ public class HatchetHarrySession extends WebSession
 	private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
 	private static final String USERNAME = "USERNAME";
 
-	public HatchetHarrySession(final Request request)
-	{
+	public HatchetHarrySession(final Request request) {
 		super(request);
 		this.reinitSession();
 		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, false);
 		this.setLocale(Locale.ENGLISH);
 	}
 
-	public static HatchetHarrySession get()
-	{
-		return (HatchetHarrySession)Session.get();
+	public static HatchetHarrySession get() {
+		return (HatchetHarrySession) Session.get();
 	}
 
-	public void reinitSession()
-	{
+	public void reinitSession() {
 		this.setAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT, false);
 		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, false);
 		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
 		this.setAttribute(HatchetHarrySession.GAME_CREATED, false);
 		this.setAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD,
-				new ArrayList<CardPanel>());
+								 new ArrayList<CardPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, false);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD,
-				new ArrayList<MagicCard>());
+								 new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
-				new ArrayList<MagicCard>());
+								 new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, 0l);
 	}
 
-	public String getCometUser()
-	{
+	public String getCometUser() {
 		return this.cometUser;
 	}
 
-	public void setCometUser(final String _cometUser)
-	{
+	public void setCometUser(final String _cometUser) {
 		this.cometUser = _cometUser;
 		this.dirty();
 	}
 
-	public Long getGameId()
-	{
-		return (Long)this.getAttribute(HatchetHarrySession.MY_GAME);
+	public Long getGameId() {
+		return (Long) this.getAttribute(HatchetHarrySession.MY_GAME);
 	}
 
-	public void setGameId(final Long _gameId)
-	{
+	public void setGameId(final Long _gameId) {
 		this.setAttribute(HatchetHarrySession.MY_GAME, _gameId);
 	}
 
-	public boolean isHandCardsHaveBeenBuilt()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT);
+	public boolean isHandCardsHaveBeenBuilt() {
+		return (Boolean) this.getAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT);
 	}
 
-	public void setHandCardsHaveBeenBuilt(final Boolean handCardsHaveBeenBuilt)
-	{
+	public void setHandCardsHaveBeenBuilt(final Boolean handCardsHaveBeenBuilt) {
 		this.setAttribute(HatchetHarrySession.HAND_CARDS_HAVE_BEEN_BUILT, handCardsHaveBeenBuilt);
 	}
 
-	public final ArrayList<MagicCard> getFirstCardsInHand()
-	{
-		return (ArrayList<MagicCard>)this.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND);
+	public final ArrayList<MagicCard> getFirstCardsInHand() {
+		return (ArrayList<MagicCard>) this.getAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND);
 	}
 
-	public void setFirstCardsInHand(final ArrayList<MagicCard> cards)
-	{
+	public void setFirstCardsInHand(final ArrayList<MagicCard> cards) {
 		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, cards);
 	}
 
-	public ArrayList<MagicCard> getCardsInGraveyard()
-	{
-		return (ArrayList<MagicCard>)this.getAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD);
+	public ArrayList<MagicCard> getCardsInGraveyard() {
+		return (ArrayList<MagicCard>) this.getAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD);
 	}
 
-	public void addCardInGraveyard(final MagicCard card)
-	{
+	public void addCardInGraveyard(final MagicCard card) {
 		final List<MagicCard> cards = this.getCardsInGraveyard();
 		cards.add(card);
-		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, (ArrayList<MagicCard>)cards);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, (ArrayList<MagicCard>) cards);
 	}
 
-	public void removeCardFromGraveyard(final MagicCard card)
-	{
+	public void removeCardFromGraveyard(final MagicCard card) {
 		final List<MagicCard> cards = this.getCardsInGraveyard();
 		cards.remove(card);
-		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, (ArrayList<MagicCard>)cards);
+		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, (ArrayList<MagicCard>) cards);
 	}
 
-	public void resetCardsInGraveyard()
-	{
+	public void resetCardsInGraveyard() {
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 	}
 
-	public long getFirstCardIdInHand()
-	{
-		return ((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).get(0);
+	public long getFirstCardIdInHand() {
+		return ((List<Long>) this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).get(0);
 	}
 
-	public void addCardIdInHand(final int index, final long id)
-	{
-		if (this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND) == null)
-		{
+	public void addCardIdInHand(final int index, final long id) {
+		if (this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND) == null) {
 			this.setAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND, new ArrayList<Long>());
 		}
-		((List<Long>)this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
+		((List<Long>) this.getAttribute(HatchetHarrySession.ALL_CARDS_IN_HAND)).add(index, id);
 	}
 
-	public boolean setPlayerHasBeenCreated()
-	{
+	public boolean setPlayerHasBeenCreated() {
 		this.setAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED, true);
 		return true;
 	}
 
-	public boolean isPlayerCreated()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED);
+	public boolean isPlayerCreated() {
+		return (Boolean) this.getAttribute(HatchetHarrySession.PLAYER_HAS_BEEN_CREATED);
 	}
 
-	public final boolean isHandHasBeenCreated()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED);
+	public final boolean isHandHasBeenCreated() {
+		return (Boolean) this.getAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED);
 	}
 
-	public void setHandHasBeenCreated()
-	{
+	public void setHandHasBeenCreated() {
 		this.setAttribute(HatchetHarrySession.HAND_HAS_BEEN_CREATED, true);
 	}
 
-	public Player getPlayer()
-	{
-		return (Player)this.getAttribute(HatchetHarrySession.PLAYER);
+	public Player getPlayer() {
+		return (Player) this.getAttribute(HatchetHarrySession.PLAYER);
 	}
 
-	public void setPlayer(final Player _player)
-	{
+	public void setPlayer(final Player _player) {
 		this.setPlayerHasBeenCreated();
 		this.setAttribute(HatchetHarrySession.PLAYER, _player);
 	}
 
-	public int getIndexOfCurrentCard()
-	{
-		return (Integer)this.getAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD);
+	public int getIndexOfCurrentCard() {
+		return (Integer) this.getAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD);
 	}
 
-	public void setIndexOfCurrentCard(final int card)
-	{
+	public void setIndexOfCurrentCard(final int card) {
 		this.setAttribute(HatchetHarrySession.INDEX_OF_CURRENT_CARD, card);
 	}
 
-	public void setDataBox(final Component _dataBox)
-	{
+	public void setDataBox(final Component _dataBox) {
 		this.setAttribute(HatchetHarrySession.DATA_BOX, _dataBox);
 	}
 
-	public Component getDataBox()
-	{
-		return (Component)this.getAttribute(HatchetHarrySession.DATA_BOX);
+	public Component getDataBox() {
+		return (Component) this.getAttribute(HatchetHarrySession.DATA_BOX);
 	}
 
-	public void setDataBoxParent(final WebMarkupContainer _dataBoxParent)
-	{
+	public void setDataBoxParent(final WebMarkupContainer _dataBoxParent) {
 		this.setAttribute(HatchetHarrySession.DATA_BOX_PARENT, _dataBoxParent);
 	}
 
-	public WebMarkupContainer getDataBoxParent()
-	{
-		return (WebMarkupContainer)this.getAttribute(HatchetHarrySession.DATA_BOX_PARENT);
+	public WebMarkupContainer getDataBoxParent() {
+		return (WebMarkupContainer) this.getAttribute(HatchetHarrySession.DATA_BOX_PARENT);
 	}
 
-	public void setGameCreated()
-	{
+	public void setGameCreated() {
 		this.setAttribute(HatchetHarrySession.GAME_CREATED, true);
 	}
 
-	public boolean isGameCreated()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.GAME_CREATED);
+	public boolean isGameCreated() {
+		return (Boolean) this.getAttribute(HatchetHarrySession.GAME_CREATED);
 	}
 
-	public void addCardInToRemoveList(final CardPanel cp)
-	{
+	public void addCardInToRemoveList(final CardPanel cp) {
 		ArrayList<CardPanel> cards;
 
-		if (this.getAttribute(HatchetHarrySession.TO_REMOVE) == null)
-		{
+		if (this.getAttribute(HatchetHarrySession.TO_REMOVE) == null) {
 			cards = new ArrayList<CardPanel>();
-		}
-		else
-		{
-			cards = (ArrayList<CardPanel>)this.getAttribute(HatchetHarrySession.TO_REMOVE);
+		} else {
+			cards = (ArrayList<CardPanel>) this.getAttribute(HatchetHarrySession.TO_REMOVE);
 		}
 		cards.add(cp);
 		this.setAttribute(HatchetHarrySession.TO_REMOVE, cards);
 	}
 
-	public List<CardPanel> getAllCardsToRemove()
-	{
-		final List<CardPanel> cards = (ArrayList<CardPanel>)this
-				.getAttribute(HatchetHarrySession.TO_REMOVE);
+	public List<CardPanel> getAllCardsToRemove() {
+		final List<CardPanel> cards = (ArrayList<CardPanel>) this
+																	 .getAttribute(HatchetHarrySession.TO_REMOVE);
 		return cards;
 	}
 
 	// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
-	public ArrayList<CardPanel> getAllCardPanelsInBattleField()
-	{
-		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
-				.getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
+	public ArrayList<CardPanel> getAllCardPanelsInBattleField() {
+		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>) this
+																		  .getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
 		return cards;
 	}
 
-	public List<SidePlaceholderPanel> getMySidePlaceholder()
-	{
-		return (List<SidePlaceholderPanel>)this.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
+	public List<SidePlaceholderPanel> getMySidePlaceholder() {
+		return (List<SidePlaceholderPanel>) this.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
 	}
 
-	public void setMySidePlaceholder(final SidePlaceholderPanel _mySidePlaceholder)
-	{
-		final ArrayList<SidePlaceholderPanel> l = (ArrayList<SidePlaceholderPanel>)this
-				.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
+	public void setMySidePlaceholder(final SidePlaceholderPanel _mySidePlaceholder) {
+		final ArrayList<SidePlaceholderPanel> l = (ArrayList<SidePlaceholderPanel>) this
+																							.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
 		l.add(_mySidePlaceholder);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, l);
 	}
 
-	public boolean isMySidePlaceholderInSesion(final String side)
-	{
-		return ((List<String>)this.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER))
-				.contains(side);
+	public boolean isMySidePlaceholderInSesion(final String side) {
+		return ((List<String>) this.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER))
+					   .contains(side);
 	}
 
-	public void putMySidePlaceholderInSesion(final String side)
-	{
-		final ArrayList<String> l = (ArrayList<String>)this
-				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
+	public void putMySidePlaceholderInSesion(final String side) {
+		final ArrayList<String> l = (ArrayList<String>) this
+																.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
 		l.add(side);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, l);
 	}
 
-	public Integer getMySidePosX()
-	{
-		return (Integer)this.getAttribute(HatchetHarrySession.MY_SIDE_POS_X);
+	public Integer getMySidePosX() {
+		return (Integer) this.getAttribute(HatchetHarrySession.MY_SIDE_POS_X);
 	}
 
-	public void setMySidePosX(final int _mySidePosX)
-	{
+	public void setMySidePosX(final int _mySidePosX) {
 		this.setAttribute(HatchetHarrySession.MY_SIDE_POS_X, _mySidePosX);
 	}
 
-	public Integer getMySidePosY()
-	{
-		return (Integer)this.getAttribute(HatchetHarrySession.MY_SIDE_POS_Y);
+	public Integer getMySidePosY() {
+		return (Integer) this.getAttribute(HatchetHarrySession.MY_SIDE_POS_Y);
 	}
 
-	public void setMySidePosY(final int _mySidePosY)
-	{
+	public void setMySidePosY(final int _mySidePosY) {
 		this.setAttribute(HatchetHarrySession.MY_SIDE_POS_Y, _mySidePosY);
 	}
 
-	public String getSecondMySidePosY()
-	{
-		return (String)this.getAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL);
+	public String getSecondMySidePosY() {
+		return (String) this.getAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL);
 	}
 
-	public String getFirstSideMoveCallbackUrl()
-	{
-		return (String)this.getAttribute(HatchetHarrySession.FIST_SIDE_MOVE_CALLBACK_URL);
+	public String getFirstSideMoveCallbackUrl() {
+		return (String) this.getAttribute(HatchetHarrySession.FIST_SIDE_MOVE_CALLBACK_URL);
 	}
 
-	public final void setFirstSideMoveCallbackUrl(final String callbackUrl)
-	{
+	public final void setFirstSideMoveCallbackUrl(final String callbackUrl) {
 		this.setAttribute(HatchetHarrySession.FIST_SIDE_MOVE_CALLBACK_URL, callbackUrl);
 	}
 
-	public String getSecondSideMoveCallbackUrl()
-	{
-		return (String)this.getAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL);
+	public String getSecondSideMoveCallbackUrl() {
+		return (String) this.getAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL);
 	}
 
-	public void setSecondSideMoveCallbackUrl(final String callbackUrl)
-	{
+	public void setSecondSideMoveCallbackUrl(final String callbackUrl) {
 		this.setAttribute(HatchetHarrySession.SECOND_SIDE_MOVE_CALLBACK_URL, callbackUrl);
 	}
 
-	public boolean isCombatInProgress()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS);
+	public boolean isCombatInProgress() {
+		return (Boolean) this.getAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS);
 	}
 
-	public void setCombatInProgress(final boolean combatInProgress)
-	{
+	public void setCombatInProgress(final boolean combatInProgress) {
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, combatInProgress);
 	}
 
-	public String getCometUuid()
-	{
-		return (String)this.getAttribute(HatchetHarrySession.COMET_UUID);
+	public String getCometUuid() {
+		return (String) this.getAttribute(HatchetHarrySession.COMET_UUID);
 	}
 
-	public void setCometUuid(final String _cometUuid)
-	{
+	public void setCometUuid(final String _cometUuid) {
 		this.setAttribute(HatchetHarrySession.COMET_UUID, _cometUuid);
 	}
 
-	public ArrayList<MagicCard> getAllCardsWhichHaveBeenInBattlefield()
-	{
-		return (ArrayList<MagicCard>)this
-				.getAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD);
+	public ArrayList<MagicCard> getAllCardsWhichHaveBeenInBattlefield() {
+		return (ArrayList<MagicCard>) this
+											  .getAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD);
 	}
 
-	public void setAllCardsWhichHaveBeenInBattlefield(final ArrayList<MagicCard> list)
-	{
+	public void setAllCardsWhichHaveBeenInBattlefield(final ArrayList<MagicCard> list) {
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD, list);
 	}
 
-	public ArrayList<MagicCard> getAllMagicCardsInBattleField()
-	{
-		return (ArrayList<MagicCard>)this
-				.getAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD);
+	public ArrayList<MagicCard> getAllMagicCardsInBattleField() {
+		return (ArrayList<MagicCard>) this
+											  .getAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD);
 	}
 
-	public void setAllMagicCardsInBattleField(final ArrayList<MagicCard> list)
-	{
+	public void setAllMagicCardsInBattleField(final ArrayList<MagicCard> list) {
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD, list);
 	}
 
-	public String getPlayerEndingHerTurn()
-	{
-		return (String)this.getAttribute(HatchetHarrySession.PLAYER_ENDING_HER_TURN);
+	public String getPlayerEndingHerTurn() {
+		return (String) this.getAttribute(HatchetHarrySession.PLAYER_ENDING_HER_TURN);
 	}
 
-	public void setPlayerEndingHerTurn(final String player)
-	{
+	public void setPlayerEndingHerTurn(final String player) {
 		this.setAttribute(HatchetHarrySession.PLAYER_ENDING_HER_TURN, player);
 	}
 
-	public Long getTopCardIndex()
-	{
-		return (Long)this.getAttribute(HatchetHarrySession.TOP_CARD_INDEX);
+	public Long getTopCardIndex() {
+		return (Long) this.getAttribute(HatchetHarrySession.TOP_CARD_INDEX);
 	}
 
-	public void setTopCardIndex(final Long index)
-	{
+	public void setTopCardIndex(final Long index) {
 		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, index);
 	}
 
-	public boolean isLoggedIn()
-	{
-		return (Boolean)this.getAttribute(HatchetHarrySession.IS_LOGGED_IN);
+	public boolean isLoggedIn() {
+		return (Boolean) this.getAttribute(HatchetHarrySession.IS_LOGGED_IN);
 	}
 
-	public void setLoggedIn(final boolean loggedIn)
-	{
+	public void setLoggedIn(final boolean loggedIn) {
 		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, loggedIn);
 	}
 
-	public String getUsername()
-	{
-		return (String)this.getAttribute(HatchetHarrySession.USERNAME);
+	public String getUsername() {
+		return (String) this.getAttribute(HatchetHarrySession.USERNAME);
 	}
 
-	public void setUsername(final String username)
-	{
+	public void setUsername(final String username) {
 		this.setAttribute(HatchetHarrySession.USERNAME, username);
 	}
 

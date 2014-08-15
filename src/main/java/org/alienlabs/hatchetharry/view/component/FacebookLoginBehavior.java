@@ -1,10 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.io.IOException;
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.User;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -24,8 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
-{
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.HashMap;
+
+public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(FacebookLoginBehavior.class);
 
@@ -33,30 +31,27 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 	PersistenceService persistenceService;
 
 	@Override
-	protected void respond(final AjaxRequestTarget target)
-	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-				.getRequest();
+	protected void respond(final AjaxRequestTarget target) {
+		final ServletWebRequest servletWebRequest = (ServletWebRequest) target.getPage()
+																				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		FacebookLoginBehavior.LOGGER.info("respond to: " + request.getQueryString());
 
 		final String username = request.getParameter("username");
-		if ((null != username) && !"undefined".equals(username))
-		{
+		if ((null != username) && !"undefined".equals(username)) {
 			final Label usernameLabel = new Label("username", "Logged in as " + username);
 			usernameLabel.setOutputMarkupId(true);
 			HatchetHarrySession.get().setUsername(username);
 			HatchetHarrySession.get().setLoggedIn(true);
 
-			final WebMarkupContainer usernameParent = ((HomePage)target.getPage())
-					.getUsernameParent();
+			final WebMarkupContainer usernameParent = ((HomePage) target.getPage())
+															  .getUsernameParent();
 			usernameParent.addOrReplace(usernameLabel);
 			target.add(usernameParent);
 
 			final User inDb = this.persistenceService.getUser(username);
-			if (null == inDb)
-			{
+			if (null == inDb) {
 				final User user = new User();
 				user.setUsername(username);
 				user.setFacebook(true);
@@ -67,32 +62,27 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
-	{
+	public void renderHead(final Component component, final IHeaderResponse response) {
 		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-				"script/login/facebook.js");
+																	 "script/login/facebook.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), "facebook"));
-		try
-		{
+		try {
 			template.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			FacebookLoginBehavior.LOGGER.error(
-					"unable to close template in FacebookLoginBehavior#renderHead()!", e);
+													  "unable to close template in FacebookLoginBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 

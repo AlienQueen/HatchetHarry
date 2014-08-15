@@ -1,13 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
@@ -30,8 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
-{
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SidePlaceholderMoveBehavior.class);
@@ -46,9 +44,8 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	private final Player player;
 
 	public SidePlaceholderMoveBehavior(final SidePlaceholderPanel _panel,
-			final WebMarkupContainer _parent, final UUID _uuid, final Long _gameId,
-			final Player _player)
-	{
+									   final WebMarkupContainer _parent, final UUID _uuid, final Long _gameId,
+									   final Player _player) {
 		super();
 		Injector.get().inject(this);
 
@@ -59,10 +56,9 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target)
-	{
+	protected void respond(final AjaxRequestTarget target) {
 		SidePlaceholderMoveBehavior.LOGGER.info("## respond");
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.parent.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest) this.parent.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String _sideX = request.getParameter("posX");
@@ -70,15 +66,12 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		int sideX;
 		final int sideY;
 
-		try
-		{
+		try {
 			sideX = Math.round(Float.parseFloat(_sideX));
 			sideY = Math.round(Float.parseFloat(_sideY));
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			SidePlaceholderMoveBehavior.LOGGER.info("could not parse position " + _sideX + " or "
-					+ _sideY);
+															+ _sideY);
 			return;
 		}
 
@@ -90,13 +83,12 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateSide(side);
 
 		final List<BigInteger> allPlayersInGame = SidePlaceholderMoveBehavior.this.persistenceService
-				.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+														  .giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 
 		final MoveSideCometChannel mscc = new MoveSideCometChannel(this.uuid,
-				Integer.toString(sideX), Integer.toString(sideY));
+																		  Integer.toString(sideX), Integer.toString(sideY));
 
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
+		for (int i = 0; i < allPlayersInGame.size(); i++) {
 			final Long p = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
 			HatchetHarryApplication.get().getEventBus().post(mscc, pageUuid);
@@ -105,8 +97,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
-	{
+	public void renderHead(final Component component, final IHeaderResponse response) {
 		super.renderHead(component, response);
 
 		StringBuilder js = new StringBuilder();
@@ -116,25 +107,21 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/initSidePlaceholderDrag.js");
+																	 "script/draggableHandle/initSidePlaceholderDrag.js");
 		template.interpolate(variables);
 		js = js.append(template.asString());
 
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
-		try
-		{
+		try {
 			template.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			SidePlaceholderMoveBehavior.LOGGER.error(
-					"unable to close template1 in SidePlaceholderMoveBehavior#renderHead()!", e);
+															"unable to close template1 in SidePlaceholderMoveBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 

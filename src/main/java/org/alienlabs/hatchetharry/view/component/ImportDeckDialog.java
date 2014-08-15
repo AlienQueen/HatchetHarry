@@ -23,8 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ImportDeckDialog extends Panel
-{
+public class ImportDeckDialog extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -39,8 +38,7 @@ public class ImportDeckDialog extends Panel
 
 	private final WebMarkupContainer parent;
 
-	public ImportDeckDialog(final String id)
-	{
+	public ImportDeckDialog(final String id) {
 		super(id);
 		Injector.get().inject(this);
 
@@ -58,78 +56,64 @@ public class ImportDeckDialog extends Panel
 		form.add(this.file, nameLabel, this.nameInput);
 		this.add(form);
 
-		final IndicatingAjaxButton close = new IndicatingAjaxButton("close")
-		{
+		final IndicatingAjaxButton close = new IndicatingAjaxButton("close") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
 			}
 		};
 		close.setMarkupId("closeImportDeck").setOutputMarkupId(true);
 		form.add(close);
 
 		final Button upload = new Button("upload");
-		upload.add(new AjaxFormSubmitBehavior(form, "click")
-		{
+		upload.add(new AjaxFormSubmitBehavior(form, "click") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target)
-			{
+			protected void onSubmit(final AjaxRequestTarget target) {
 				ImportDeckDialog.LOGGER.info("trying to upload a deck");
 
 				if ((ImportDeckDialog.this.nameInput.getModelObject() == null)
-						|| "".equals(ImportDeckDialog.this.nameInput.getModelObject()))
-				{
+							|| "".equals(ImportDeckDialog.this.nameInput.getModelObject())) {
 					ImportDeckDialog.this.setMessage(target, "Please provide a deck name");
 					return;
 				}
 
 				final FileUpload fupload = ImportDeckDialog.this.file.getFileUpload();
-				if (fupload == null)
-				{
+				if (fupload == null) {
 					// No file was provided
 					ImportDeckDialog.this.setMessage(target, "Please provide a deck file");
 					return;
-				}
-				else if (fupload.getSize() == 0)
-				{
+				} else if (fupload.getSize() == 0) {
 					ImportDeckDialog.this.setMessage(target, "Please provide a non-empty deck");
 					return;
-				}
-				else if ((fupload.getClientFileName() == null)
-						|| (fupload.getClientFileName().trim().equals(""))
-						|| (!fupload.getClientFileName().endsWith(".txt")))
-				{
+				} else if ((fupload.getClientFileName() == null)
+								   || (fupload.getClientFileName().trim().equals(""))
+								   || (!fupload.getClientFileName().endsWith(".txt"))) {
 					ImportDeckDialog.this
 							.setMessage(target, "Please provide a deck in .txt format");
 					return;
 				}
 
 				ImportDeckDialog.LOGGER.info("uploading deck: "
-						+ ImportDeckDialog.this.file.getFileUpload().getClientFileName());
+													 + ImportDeckDialog.this.file.getFileUpload().getClientFileName());
 
-				try
-				{
+				try {
 					if (!ImportDeckDialog.this.importDeckService.importDeck(
-							new String(fupload.getBytes(), "UTF-8"),
-							ImportDeckDialog.this.nameInput.getModelObject(), false))
-					{
+																				   new String(fupload.getBytes(), "UTF-8"),
+																				   ImportDeckDialog.this.nameInput.getModelObject(), false)) {
 						ImportDeckDialog.this.setMessage(target, "Invalid deck format");
 						return;
 					}
-				}
-				catch (final UnsupportedEncodingException e)
-				{
+				} catch (final UnsupportedEncodingException e) {
 					ImportDeckDialog.this.setMessage(target,
-							"Please provide a deck encoded with UTF-8 charset");
+															"Please provide a deck encoded with UTF-8 charset");
 					return;
 				}
 
 				ImportDeckDialog.LOGGER.info("successfully added deck: "
-						+ fupload.getClientFileName());
+													 + fupload.getClientFileName());
 				ImportDeckDialog.this
 						.setMessage(target, "Your deck has been successfully uploaded");
 			}
@@ -145,21 +129,18 @@ public class ImportDeckDialog extends Panel
 		form.add(this.parent);
 	}
 
-	void setMessage(final AjaxRequestTarget target, final String message)
-	{
+	void setMessage(final AjaxRequestTarget target, final String message) {
 		this.parent.addOrReplace(new Label("message", Model.of(message)).setOutputMarkupId(true));
 		target.add(this.parent);
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 
 	@Required
-	public void setImportDeckService(final ImportDeckService _importDeckService)
-	{
+	public void setImportDeckService(final ImportDeckService _importDeckService) {
 		this.importDeckService = _importDeckService;
 	}
 

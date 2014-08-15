@@ -47,11 +47,13 @@ tl.pg = tl.pg || {};
 
 tl.pg.default_prefs = {
     'auto_show_first': true,
-    'loading_selector' : '#loading',
-    'track_events_cb': function() { return; },
+    'loading_selector': '#loading',
+    'track_events_cb': function () {
+        return;
+    },
     'handle_doc_switch': null,
     'custom_open_button': null,
-    'pg_caption' : 'page guide',
+    'pg_caption': 'page guide',
     'check_welcome_dismissed': function () {
         var key = 'tlypageguide_welcome_shown_' + tl.pg.hashUrl();
         // first, try to use localStorage
@@ -59,8 +61,8 @@ tl.pg.default_prefs = {
             if (localStorage.getItem(key)) {
                 return true;
             }
-        // cookie fallback for older browsers
-        } catch(e) {
+            // cookie fallback for older browsers
+        } catch (e) {
             if (document.cookie.indexOf(key) > -1) {
                 return true;
             }
@@ -71,7 +73,7 @@ tl.pg.default_prefs = {
         var key = 'tlypageguide_welcome_shown_' + tl.pg.hashUrl();
         try {
             localStorage.setItem(key, true);
-        } catch(e) {
+        } catch (e) {
             var exp = new Date();
             exp.setDate(exp.getDate() + 365);
             document.cookie = (key + '=true; expires=' + exp.toUTCString());
@@ -79,7 +81,7 @@ tl.pg.default_prefs = {
     }
 };
 
-tl.pg.init = function(preferences) {
+tl.pg.init = function (preferences) {
     preferences = jQuery.extend({}, tl.pg.default_prefs, preferences);
 
     /* page guide object, for pages that have one */
@@ -87,25 +89,25 @@ tl.pg.init = function(preferences) {
         return;
     }
 
-    var guide   = jQuery("#tlyPageGuide"),
+    var guide = jQuery("#tlyPageGuide"),
         wrapper = jQuery('<div>', { id: 'tlyPageGuideWrapper' }),
         message = jQuery('<div>', { id: 'tlyPageGuideMessages'}),
         $welcome = jQuery('#tlyPageGuideWelcome');
 
     message.append('<a href="#" class="tlypageguide_close" title="Close Guide">close</a>')
-      .append('<span></span>')
-      .append('<div></div>')
-      .append('<a href="#" class="tlypageguide_back" title="Previous">Previous</a>')
-      .append('<a href="#" class="tlypageguide_fwd" title="Next">Next</a>');
+        .append('<span></span>')
+        .append('<div></div>')
+        .append('<a href="#" class="tlypageguide_back" title="Previous">Previous</a>')
+        .append('<a href="#" class="tlypageguide_fwd" title="Next">Next</a>');
 
     if (preferences.custom_open_button == null) {
         jQuery('<div/>', {
             'title': 'Launch Page Guide',
             'class': 'tlypageguide_toggle'
         }).append(preferences.pg_caption)
-          .append('<div><span>' + guide.data('tourtitle') + '</span></div>')
-          .append('<a href="#" class="tlypageguide_close" title="close guide">close guide &raquo;</a>')
-          .appendTo(wrapper);
+            .append('<div><span>' + guide.data('tourtitle') + '</span></div>')
+            .append('<a href="#" class="tlypageguide_close" title="close guide">close guide &raquo;</a>')
+            .appendTo(wrapper);
     }
 
     if ($welcome.length > 0) {
@@ -121,7 +123,7 @@ tl.pg.init = function(preferences) {
     jQuery('body').append(wrapper);
 
     var pg = new tl.pg.PageGuide(jQuery('#tlyPageGuideWrapper'), preferences);
-    pg.ready(function() {
+    pg.ready(function () {
         pg.setup_handlers();
         pg.$base.children(".tlypageguide_toggle").animate({ "right": "-120px" }, 250);
     });
@@ -137,7 +139,8 @@ tl.pg.PageGuide = function (pg_elem, preferences) {
     this.preferences = preferences;
     this.$base = pg_elem;
     this.$all_items = jQuery('#tlyPageGuide > li', this.$base);
-    this.$items = jQuery([]); /* fill me with visible elements on pg expand */
+    this.$items = jQuery([]);
+    /* fill me with visible elements on pg expand */
     this.$message = jQuery('#tlyPageGuideMessages');
     this.$fwd = jQuery('a.tlypageguide_fwd', this.$base);
     this.$back = jQuery('a.tlypageguide_back', this.$base);
@@ -149,19 +152,19 @@ tl.pg.PageGuide = function (pg_elem, preferences) {
     this.is_open = false;
 };
 
-tl.pg.hashUrl = function() {
+tl.pg.hashUrl = function () {
     var str = window.location.href;
     var hash = 0, i, char;
     if (str.length == 0) return hash;
     for (i = 0; i < str.length; i++) {
         char = str.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
+        hash = ((hash << 5) - hash) + char;
         hash = hash & hash;
     }
     return hash.toString();
 }
 
-tl.pg.isScrolledIntoView = function(elem) {
+tl.pg.isScrolledIntoView = function (elem) {
     var dvtop = jQuery(window).scrollTop(),
         dvbtm = dvtop + jQuery(window).height(),
         eltop = jQuery(elem).offset().top,
@@ -170,9 +173,9 @@ tl.pg.isScrolledIntoView = function(elem) {
     return (elbtm >= dvtop) && (eltop <= dvbtm - 100);
 };
 
-tl.pg.PageGuide.prototype.ready = function(callback) {
+tl.pg.PageGuide.prototype.ready = function (callback) {
     var that = this,
-        interval = window.setInterval(function() {
+        interval = window.setInterval(function () {
             if (!jQuery(that.preferences.loading_selector).is(':visible')) {
                 callback();
                 clearInterval(interval);
@@ -208,12 +211,12 @@ tl.pg.PageGuide.prototype._on_expand = function () {
     var ie = "";
 
     /* add number tags and PG shading elements */
-    this.$items.each(function(i) {
+    this.$items.each(function (i) {
         var $p = jQuery(jQuery(this).data('tourtarget') + ":visible:first");
         $p.addClass("tlypageguide_shadow tlypageguide_shadow" + i);
 
         var node_text = '.tlypageguide_shadow' + i + ':after { height: ' +
-                            $p.outerHeight() + 'px; width: ' + $p.outerWidth(false) + 'px; }';
+            $p.outerHeight() + 'px; width: ' + $p.outerWidth(false) + 'px; }';
 
         if (!$w.createPopup) {
             // modern browsers
@@ -239,7 +242,7 @@ tl.pg.PageGuide.prototype._on_expand = function () {
     }
 };
 
-tl.pg.PageGuide.prototype.open = function() {
+tl.pg.PageGuide.prototype.open = function () {
     if (this.preferences.show_welcome) {
         this.preferences.dismiss_welcome();
         this.close_welcome();
@@ -249,7 +252,7 @@ tl.pg.PageGuide.prototype.open = function() {
     } else {
         this.is_open = true;
     }
-    
+
     this.track_event('PG.open');
 
     this._on_expand();
@@ -257,17 +260,17 @@ tl.pg.PageGuide.prototype.open = function() {
     jQuery('body').addClass('tlypageguide-open');
 };
 
-tl.pg.PageGuide.prototype.close = function() {
+tl.pg.PageGuide.prototype.close = function () {
     if (!this.is_open) {
         return;
     } else {
         this.is_open = false;
     }
-    
+
     this.track_event('PG.close');
 
     this.$items.toggleClass('expanded');
-    this.$message.animate({ height: "0" }, 500, function() {
+    this.$message.animate({ height: "0" }, 500, function () {
         jQuery(this).hide();
     });
     /* clear number tags and shading elements */
@@ -279,15 +282,13 @@ tl.pg.PageGuide.prototype.setup_handlers = function () {
     var that = this;
 
     /* interaction: open/close PG interface */
-    var interactor = (that.custom_open_button == null) ? 
-                    jQuery('.tlypageguide_toggle', this.$base) : 
-                    jQuery(that.custom_open_button);
-    interactor.on('click', function() {
+    var interactor = (that.custom_open_button == null) ?
+        jQuery('.tlypageguide_toggle', this.$base) :
+        jQuery(that.custom_open_button);
+    interactor.on('click', function () {
         if (this.is_open) {
             that.close();
-        } else if (that.preferences.show_welcome &&
-                  !that.preferences.check_welcome_dismissed() &&
-                  !jQuery('body').hasClass('tlyPageGuideWelcomeOpen')) {
+        } else if (that.preferences.show_welcome && !that.preferences.check_welcome_dismissed() && !jQuery('body').hasClass('tlyPageGuideWelcomeOpen')) {
             that.pop_welcome();
         } else {
             that.open();
@@ -296,13 +297,13 @@ tl.pg.PageGuide.prototype.setup_handlers = function () {
     });
 
     jQuery('.tlypageguide_close', this.$message.add(jQuery('.tlypageguide_toggle')))
-        .on('click', function() {
+        .on('click', function () {
             that.close();
             return false;
-    });
+        });
 
     /* interaction: item click */
-    this.$all_items.on('click', function() {
+    this.$all_items.on('click', function () {
         var new_index = jQuery(this).data('idx');
 
         that.track_event('PG.specific_elt');
@@ -310,7 +311,7 @@ tl.pg.PageGuide.prototype.setup_handlers = function () {
     });
 
     /* interaction: fwd/back click */
-    this.$fwd.on('click', function() {
+    this.$fwd.on('click', function () {
         var new_index = (that.cur_idx + 1) % that.$items.length;
 
         that.track_event('PG.fwd');
@@ -318,7 +319,7 @@ tl.pg.PageGuide.prototype.setup_handlers = function () {
         return false;
     });
 
-    this.$back.on('click', function() {
+    this.$back.on('click', function () {
         /*
          * If -n < x < 0, then the result of x % n will be x, which is
          * negative. To get a positive remainder, compute (x + n) % n.
@@ -348,7 +349,9 @@ tl.pg.PageGuide.prototype.setup_handlers = function () {
     }
 
     /* register resize callback */
-    jQuery(window).resize(function() { that.position_tour(); });
+    jQuery(window).resize(function () {
+        that.position_tour();
+    });
 };
 
 tl.pg.PageGuide.prototype.show_message = function (new_index, left) {
@@ -357,9 +360,9 @@ tl.pg.PageGuide.prototype.show_message = function (new_index, left) {
         new_item = this.$items[new_index];
 
     this.cur_idx = new_index;
-    if(this.handle_doc_switch){
+    if (this.handle_doc_switch) {
         this.handle_doc_switch(jQuery(new_item).data('tourtarget'),
-                               jQuery(old_item).data('tourtarget'));
+            jQuery(old_item).data('tourtarget'));
     }
 
     jQuery('div', this.$message).html(jQuery(new_item).children('div').html());
@@ -377,8 +380,8 @@ tl.pg.PageGuide.prototype.show_message = function (new_index, left) {
     if (height < defaultHeight) {
         height = defaultHeight;
     }
-    if (height > jQuery(window).height()/2) {
-        height = jQuery(window).height()/2;
+    if (height > jQuery(window).height() / 2) {
+        height = jQuery(window).height() / 2;
     }
     height = height + "px";
 
@@ -387,7 +390,7 @@ tl.pg.PageGuide.prototype.show_message = function (new_index, left) {
 };
 
 tl.pg.PageGuide.prototype.roll_number = function (num_wrapper, new_text, left) {
-    num_wrapper.animate({ 'text-indent': (left ? '' : '-') + '50px' }, 'fast', function() {
+    num_wrapper.animate({ 'text-indent': (left ? '' : '-') + '50px' }, 'fast', function () {
         num_wrapper.html(new_text);
         num_wrapper.css({ 'text-indent': (left ? '-' : '') + '50px' }, 'fast').animate({ 'text-indent': "0" }, 'fast');
     });
@@ -399,15 +402,15 @@ tl.pg.PageGuide.prototype.position_tour = function () {
         return jQuery(jQuery(this).data('tourtarget')).is(':visible');
     });
 
-    this.$items.each(function() {
-        var arrow   = jQuery(this),
-            target  = jQuery(arrow.data('tourtarget')).filter(':visible:first'),
+    this.$items.each(function () {
+        var arrow = jQuery(this),
+            target = jQuery(arrow.data('tourtarget')).filter(':visible:first'),
             position = arrow.data('position'),
             setLeft = target.offset().left,
-            setTop  = target.offset().top;
-        
+            setTop = target.offset().top;
+
         if (position == "fixed") {
-            setTop  -= jQuery(window).scrollTop();
+            setTop -= jQuery(window).scrollTop();
         }
 
         if (arrow.hasClass("tlypageguide_top")) {

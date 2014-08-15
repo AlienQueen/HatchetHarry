@@ -14,8 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ImportDeckService implements Serializable
-{
+public class ImportDeckService implements Serializable {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckService.class);
 
@@ -23,15 +22,12 @@ public class ImportDeckService implements Serializable
 	private PersistenceService persistenceService;
 
 	public boolean importDeck(final String fileContent, final String deckName,
-			final boolean testDeck)
-	{
+							  final boolean testDeck) {
 		DeckArchive deckArchive;
 
-		if (testDeck)
-		{
+		if (testDeck) {
 			deckArchive = this.persistenceService.getDeckArchiveByName(deckName);
-			if (null != deckArchive)
-			{
+			if (null != deckArchive) {
 				return false;
 			}
 		}
@@ -47,17 +43,14 @@ public class ImportDeckService implements Serializable
 
 		deck = this.persistenceService.saveDeck(deck);
 
-		if (fileContent.split("\n").length < 3)
-		{
+		if (fileContent.split("\n").length < 3) {
 			return false;
 		}
 
-		for (final String line : fileContent.split("\n"))
-		{
+		for (final String line : fileContent.split("\n")) {
 			ImportDeckService.LOGGER.info("line: " + line);
 
-			if ("".equals(line.trim()))
-			{
+			if ("".equals(line.trim())) {
 				break;
 			}
 
@@ -69,8 +62,7 @@ public class ImportDeckService implements Serializable
 
 			ImportDeckService.LOGGER.info(numberOfItems + " x " + cardName);
 
-			for (int i = 0; i < numberOfItems; i++)
-			{
+			for (int i = 0; i < numberOfItems; i++) {
 				final CollectibleCard cc = new CollectibleCard();
 				cc.setTitle(cardName);
 				cc.setDeckArchiveId(deckArchive.getDeckArchiveId());
@@ -80,8 +72,8 @@ public class ImportDeckService implements Serializable
 				this.persistenceService.saveCollectibleCard(cc);
 
 				final MagicCard card = new MagicCard("cards/" + cardName + "_small.jpg", "cards/"
-						+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "", "",
-						null);
+																								 + cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "", "",
+															null);
 				card.setGameId(1l);
 				card.setDeck(deck);
 				card.setZone(CardZone.LIBRARY);
@@ -99,8 +91,7 @@ public class ImportDeckService implements Serializable
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 

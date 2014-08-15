@@ -3,15 +3,13 @@ package org.alienlabs.hatchetharry.model.channel;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
 
-public class CardZoneMoveNotifier
-{
+public class CardZoneMoveNotifier {
 	private final CardZone sourceZone, targetZone;
 	private final MagicCard card;
 	private final String requestingPlayer, ownerPlayer;
 
 	public CardZoneMoveNotifier(final CardZone _sourceZone, final CardZone _targetZone,
-			final MagicCard _card, final String _requestingPlayer, final String _ownerPlayer)
-	{
+								final MagicCard _card, final String _requestingPlayer, final String _ownerPlayer) {
 		super();
 		this.sourceZone = _sourceZone;
 		this.targetZone = _targetZone;
@@ -20,28 +18,23 @@ public class CardZoneMoveNotifier
 		this.ownerPlayer = _ownerPlayer;
 	}
 
-	public CardZone getSourceZone()
-	{
+	public CardZone getSourceZone() {
 		return this.sourceZone;
 	}
 
-	public CardZone getTargetZone()
-	{
+	public CardZone getTargetZone() {
 		return this.targetZone;
 	}
 
-	public MagicCard getCard()
-	{
+	public MagicCard getCard() {
 		return this.card;
 	}
 
-	public String getRequestingPlayer()
-	{
+	public String getRequestingPlayer() {
 		return this.requestingPlayer;
 	}
 
-	public String getOwnerPlayer()
-	{
+	public String getOwnerPlayer() {
 		return this.ownerPlayer;
 	}
 

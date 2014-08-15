@@ -11,40 +11,36 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
-public class TeamInfoModalWindow extends Panel
-{
+public class TeamInfoModalWindow extends Panel {
 	private static final long serialVersionUID = -4905521543219537705L;
 
-	public TeamInfoModalWindow(final String id, final ModalWindow _modal)
-	{
+	public TeamInfoModalWindow(final String id, final ModalWindow _modal) {
 		super(id);
 
 
 		final Image img1 = new Image("img1", new PackageResourceReference(HomePage.class,
-				"image/logo.png"));
+																				 "image/logo.png"));
 
 		final Form<String> form = new Form<String>("form");
 
 		final Label founder = new Label("founder", new Model<String>(
-				"Founder: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
+																			"Founder: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
 		final Label lead = new Label("lead", new Model<String>(
-				"Lead developer: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
+																	  "Lead developer: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
 		final Label dev1 = new Label("dev1", new Model<String>(
-				"Developer: Florian Benedetto (florian.benedetto@gmail.com)"));
+																	  "Developer: Florian Benedetto (florian.benedetto@gmail.com)"));
 		final Label gfx = new Label("gfx", new Model<String>(
-				"GFX: Marie-Antoinette Navarro (mariea33@gmail.com)"));
+																	"GFX: Marie-Antoinette Navarro (mariea33@gmail.com)"));
 		final Label tester1 = new Label("tester1", new Model<String>(
-				"Tester: Jean Leherle (jean.ravnica@hotmail.fr)"));
+																			"Tester: Jean Leherle (jean.ravnica@hotmail.fr)"));
 		final Label tester2 = new Label("tester2", new Model<String>(
-				"Tester: Benoît Bouchery (benoit.bouchery@laposte.net)"));
+																			"Tester: Benoît Bouchery (benoit.bouchery@laposte.net)"));
 
-		final AjaxButton submit = new AjaxButton("submit", form)
-		{
+		final AjaxButton submit = new AjaxButton("submit", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
-			{
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
 				_modal.close(target);
 			}
 		};

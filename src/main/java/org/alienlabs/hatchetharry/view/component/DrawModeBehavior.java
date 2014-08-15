@@ -1,9 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -20,8 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
-{
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.UUID;
+
+public class DrawModeBehavior extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(DrawModeBehavior.class);
 
@@ -31,16 +30,14 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 	private PersistenceService persistenceService;
 	private final Player player;
 
-	public DrawModeBehavior(final UUID _uuid, final MagicCard _mc, final Player _player)
-	{
+	public DrawModeBehavior(final UUID _uuid, final MagicCard _mc, final Player _player) {
 		this.uuid = _uuid;
 		this.mc = _mc;
 		this.player = _player;
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
-	{
+	public void renderHead(final Component component, final IHeaderResponse response) {
 		super.renderHead(component, response);
 
 		StringBuilder js = new StringBuilder();
@@ -52,35 +49,30 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
 		final Boolean fromDb = this.persistenceService.getGame(this.player.getGame().getId())
-				.isDrawMode();
+									   .isDrawMode();
 		final Boolean drawMode = fromDb != null ? fromDb : false;
 		variables.put("drawMode", drawMode);
 
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/drawMode.js");
+																	  "script/draggableHandle/drawMode.js");
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
-		try
-		{
+		try {
 			template1.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			DrawModeBehavior.LOGGER.error(
-					"unable to close template1 in CardTooltipBehavior#renderHead()!", e);
+												 "unable to close template1 in CardTooltipBehavior#renderHead()!", e);
 		}
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target)
-	{
+	protected void respond(final AjaxRequestTarget target) {
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 

@@ -26,25 +26,23 @@ import org.hibernate.Session;
 /**
  * The implementation-independent DAO interface. Defines the operations required
  * to be supported by an implementation.
- * 
+ *
  * @author igor
  */
-public interface DeckArchiveDao extends Serializable
-{
+public interface DeckArchiveDao extends Serializable {
 	Session getSession();
 
 	/**
 	 * Load a {@link DeckArchive} from the DB, given it's <tt>id</tt>.
-	 * 
-	 * @param id
-	 *            The id of the DeckArchive to load.
+	 *
+	 * @param id The id of the DeckArchive to load.
 	 * @return DeckArchive
 	 */
 	DeckArchive load(long id);
 
 	/**
 	 * Save the DeckArchive to the DB
-	 * 
+	 *
 	 * @param DeckArchive
 	 * @return persistent instance of deckArchive
 	 */
@@ -52,9 +50,8 @@ public interface DeckArchiveDao extends Serializable
 
 	/**
 	 * Delete a {@link DeckArchive} from the DB, given it's <tt>id</tt>.
-	 * 
-	 * @param id
-	 *            The id of the DeckArchive to delete.
+	 *
+	 * @param id The id of the DeckArchive to delete.
 	 */
 	void delete(long id);
 }

@@ -1,10 +1,8 @@
 package org.alienlabs.hatchetharry.model.channel;
 
 
-public class StopRevealingHandCometChannel
-{
-	public StopRevealingHandCometChannel()
-	{
+public class StopRevealingHandCometChannel {
+	public StopRevealingHandCometChannel() {
 	}
 
 }

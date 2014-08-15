@@ -27,8 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
-{
+public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArrowDrawBehavior.class);
@@ -38,19 +37,17 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 
 	private final String markupId;
 
-	public ArrowDrawBehavior(final String _markupId)
-	{
+	public ArrowDrawBehavior(final String _markupId) {
 		this.markupId = _markupId;
 		Injector.get().inject(this);
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target)
-	{
+	protected void respond(final AjaxRequestTarget target) {
 		ArrowDrawBehavior.LOGGER.info("respond");
 
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-				.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest) target.getPage()
+																				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String arrowDrawSource = request.getParameter("source");
@@ -60,7 +57,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<BigInteger> allPlayersInGame = ArrowDrawBehavior.this.persistenceService
-				.giveAllPlayersFromGame(gameId);
+														  .giveAllPlayersFromGame(gameId);
 
 		final Arrow arrow = new Arrow();
 		arrow.setGame(gameId);
@@ -68,29 +65,24 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		arrow.setTarget(arrowDrawTarget);
 		ArrowDrawBehavior.this.persistenceService.saveOrUpdateArrow(arrow);
 
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
+		for (int i = 0; i < allPlayersInGame.size(); i++) {
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-					playerToWhomToSend);
+																						   playerToWhomToSend);
 			final ArrowDrawCometChannel cacc = new ArrowDrawCometChannel(arrowDrawSource,
-					arrowDrawTarget);
+																				arrowDrawTarget);
 
 			// For unit tests only, we'll ask a solution to Emond
-			try
-			{
+			try {
 				HatchetHarryApplication.get().getEventBus().post(cacc, pageUuid);
-			}
-			catch (final NullPointerException e)
-			{
+			} catch (final NullPointerException e) {
 				// Nothing to do in unit tests
 			}
 		}
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
-	{
+	public void renderHead(final Component component, final IHeaderResponse response) {
 		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
@@ -98,24 +90,20 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuidValidForJs", this.markupId);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-				"script/arrowDraw/arrowDraw.js");
+																	 "script/arrowDraw/arrowDraw.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-		try
-		{
+		try {
 			template.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			ArrowDrawBehavior.LOGGER.error(
-					"unable to close template in CardRotateBehavior#renderHead()!", e);
+												  "unable to close template in CardRotateBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 

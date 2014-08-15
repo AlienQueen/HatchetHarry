@@ -5,22 +5,20 @@ import java.io.Serializable;
 import org.alienlabs.hatchetharry.model.User;
 import org.hibernate.Session;
 
-public interface UserDao extends Serializable
-{
+public interface UserDao extends Serializable {
 	Session getSession();
 
 	/**
 	 * Load a {@link User} from the DB, given it's <tt>id</tt>.
-	 * 
-	 * @param id
-	 *            The id of the User to load.
+	 *
+	 * @param id The id of the User to load.
 	 * @return User
 	 */
 	User load(String username);
 
 	/**
 	 * Save the User to the DB
-	 * 
+	 *
 	 * @param User
 	 * @return persistent instance of User
 	 */
@@ -28,9 +26,8 @@ public interface UserDao extends Serializable
 
 	/**
 	 * Delete a {@link User} from the DB, given it's <tt>id</tt>.
-	 * 
-	 * @param id
-	 *            The id of the User to delete.
+	 *
+	 * @param id The id of the User to delete.
 	 */
 	void delete(String username);
 }

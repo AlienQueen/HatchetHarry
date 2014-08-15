@@ -1,9 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -28,8 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class TokenPanel extends Panel
-{
+import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
+
+public class TokenPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TokenPanel.class);
@@ -40,8 +38,7 @@ public class TokenPanel extends Panel
 	final UUID uuid;
 	Player owner;
 
-	public TokenPanel(final String id, final UUID _uuid)
-	{
+	public TokenPanel(final String id, final UUID _uuid) {
 		super(id);
 		Injector.get().inject(this);
 
@@ -49,18 +46,16 @@ public class TokenPanel extends Panel
 
 		this.setOutputMarkupId(true);
 
-		this.add(new Behavior()
-		{
+		this.add(new Behavior() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void renderHead(final Component component, final IHeaderResponse response)
-			{
+			public void renderHead(final Component component, final IHeaderResponse response) {
 				super.renderHead(component, response);
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
+																									  HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
+																							   HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
 			}
 		});
 
@@ -71,9 +66,9 @@ public class TokenPanel extends Panel
 		cardHandle.setOutputMarkupId(true);
 		cardHandle.setMarkupId("tokenHandle" + this.uuid.toString().replace("-", "_"));
 		cardHandle
-		.add(new AttributeModifier("style", "position: absolute; top: "
-				+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
-				+ "px;"));
+				.add(new AttributeModifier("style", "position: absolute; top: "
+															+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
+															+ "px;"));
 		myToken.setX(this.owner.getSide().getX());
 		myToken.setY(this.owner.getSide().getY());
 		this.persistenceService.updateToken(myToken);
@@ -86,12 +81,12 @@ public class TokenPanel extends Panel
 		form.setOutputMarkupId(true);
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-				this.getHttpServletRequest().getRequestedSessionId()));
+																										  this.getHttpServletRequest().getRequestedSessionId()));
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
 		TokenPanel.LOGGER.info("jsessionid: "
-				+ this.getHttpServletRequest().getRequestedSessionId());
+									   + this.getHttpServletRequest().getRequestedSessionId());
 		TokenPanel.LOGGER.info("uuid: " + this.uuid);
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
@@ -101,16 +96,16 @@ public class TokenPanel extends Panel
 		mouseY.setOutputMarkupId(true);
 
 		final Image handleImage = new Image("handleImage", new PackageResourceReference(
-				"images/arrow.png"));
+																							   "images/arrow.png"));
 		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
 		handleImage.setOutputMarkupId(true);
 
 		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
 		bullet.setOutputMarkupId(true).setMarkupId(
-				"bullet" + this.uuid.toString().replace("-", "_"));
+														  "bullet" + this.uuid.toString().replace("-", "_"));
 
 		final Image tapHandleImage = new Image("tapHandleImage", new PackageResourceReference(
-				"images/rightArrow.png"));
+																									 "images/rightArrow.png"));
 		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString().replace("-", "_"));
 		tapHandleImage.setOutputMarkupId(true);
 
@@ -118,12 +113,9 @@ public class TokenPanel extends Panel
 		tokenImage.setOutputMarkupId(true);
 		tokenImage.setMarkupId("token" + this.uuid.toString().replace("-", "_"));
 
-		if ("infrared".equals(this.owner.getSide().getSideName()))
-		{
+		if ("infrared".equals(this.owner.getSide().getSideName())) {
 			tokenImage.add(new AttributeModifier("style", "border: 1px solid red;"));
-		}
-		else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
-		{
+		} else if ("ultraviolet".equals(this.owner.getSide().getSideName())) {
 			tokenImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 		}
 
@@ -133,27 +125,24 @@ public class TokenPanel extends Panel
 		tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));
 
 		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage,
-				tokenBubbleTip);
+						tokenBubbleTip);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 
 		this.add(cardHandle);
 	}
 
-	public HttpServletRequest getHttpServletRequest()
-	{
+	public HttpServletRequest getHttpServletRequest() {
 		final Request servletWebRequest = this.getRequest();
-		return (HttpServletRequest)servletWebRequest.getContainerRequest();
+		return (HttpServletRequest) servletWebRequest.getContainerRequest();
 	}
 
-	public UUID getUuid()
-	{
+	public UUID getUuid() {
 		return this.uuid;
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 

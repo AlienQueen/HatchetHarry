@@ -25,13 +25,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-@Table(name = "CollectibleCard", indexes = { @Index(columnList = "title"),
-		@Index(columnList = "deckArchiveId") })
+@Table(name = "CollectibleCard", indexes = {@Index(columnList = "title"),
+												   @Index(columnList = "deckArchiveId")})
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CollectibleCard implements Serializable
-{
+public class CollectibleCard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -42,33 +41,27 @@ public class CollectibleCard implements Serializable
 	@Column
 	private Long deckArchiveId;
 
-	public Long getId()
-	{
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(final Long _id)
-	{
+	public void setId(final Long _id) {
 		this.id = _id;
 	}
 
-	public String getTitle()
-	{
+	public String getTitle() {
 		return this.title;
 	}
 
-	public void setTitle(final String _title)
-	{
+	public void setTitle(final String _title) {
 		this.title = _title;
 	}
 
-	public Long getDeckArchiveId()
-	{
+	public Long getDeckArchiveId() {
 		return this.deckArchiveId;
 	}
 
-	public void setDeckArchiveId(final Long _deckArchiveId)
-	{
+	public void setDeckArchiveId(final Long _deckArchiveId) {
 		this.deckArchiveId = _deckArchiveId;
 	}
 

@@ -3,8 +3,7 @@ package org.alienlabs.hatchetharry.model.channel.consolelog;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public class ZoneMoveConsoleLogStrategy extends ConsoleLogStrategy
-{
+public class ZoneMoveConsoleLogStrategy extends ConsoleLogStrategy {
 	private final CardZone from;
 	private final CardZone to;
 	private final String mc;
@@ -12,8 +11,7 @@ public class ZoneMoveConsoleLogStrategy extends ConsoleLogStrategy
 	private final Long gameId;
 
 	public ZoneMoveConsoleLogStrategy(final CardZone _from, final CardZone _to, final String _mc,
-			final String _player, final Long _gameId)
-	{
+									  final String _player, final Long _gameId) {
 		super();
 		this.from = _from;
 		this.to = _to;
@@ -23,10 +21,9 @@ public class ZoneMoveConsoleLogStrategy extends ConsoleLogStrategy
 	}
 
 	@Override
-	public void logToConsole(final AjaxRequestTarget target)
-	{
+	public void logToConsole(final AjaxRequestTarget target) {
 		final String message = this.player + " has put " + this.mc + " from "
-				+ this.from.toString() + " to " + this.to.toString();
+									   + this.from.toString() + " to " + this.to.toString();
 		super.logMessage(target, message, null, this.gameId);
 	}
 

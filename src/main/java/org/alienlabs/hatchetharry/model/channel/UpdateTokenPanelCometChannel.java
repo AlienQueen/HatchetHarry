@@ -3,8 +3,7 @@ package org.alienlabs.hatchetharry.model.channel;
 import org.alienlabs.hatchetharry.model.Token;
 
 
-public class UpdateTokenPanelCometChannel
-{
+public class UpdateTokenPanelCometChannel {
 
 	private final Long gameId;
 	private final String requestingPlayerName;
@@ -18,11 +17,10 @@ public class UpdateTokenPanelCometChannel
 	private final String ownerSide;
 
 	public UpdateTokenPanelCometChannel(final Long _gameId, final String _requestingPlayerName,
-			final String _targetPlayerName, final String _tokenName, final String _counterName,
-			final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
-			final NotifierAction _action, final Token _token, final String _bigImage,
-			final String _ownerSide)
-	{
+										final String _targetPlayerName, final String _tokenName, final String _counterName,
+										final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
+										final NotifierAction _action, final Token _token, final String _bigImage,
+										final String _ownerSide) {
 		this.gameId = _gameId;
 		this.requestingPlayerName = _requestingPlayerName;
 		this.targetPlayerName = _targetPlayerName;
@@ -35,53 +33,43 @@ public class UpdateTokenPanelCometChannel
 		this.ownerSide = _ownerSide;
 	}
 
-	public Long getGameId()
-	{
+	public Long getGameId() {
 		return this.gameId;
 	}
 
-	public String getRequestingPlayerName()
-	{
+	public String getRequestingPlayerName() {
 		return this.requestingPlayerName;
 	}
 
-	public String getTargetPlayerName()
-	{
+	public String getTargetPlayerName() {
 		return this.targetPlayerName;
 	}
 
-	public String getCardName()
-	{
+	public String getCardName() {
 		return this.tokenName;
 	}
 
-	public String getCounterName()
-	{
+	public String getCounterName() {
 		return this.counterName;
 	}
 
-	public Long getTargetNumberOfCounters()
-	{
+	public Long getTargetNumberOfCounters() {
 		return this.targetNumberOfCounters;
 	}
 
-	public NotifierAction getAction()
-	{
+	public NotifierAction getAction() {
 		return this.action;
 	}
 
-	public Token getToken()
-	{
+	public Token getToken() {
 		return this.token;
 	}
 
-	public String getOwnerSide()
-	{
+	public String getOwnerSide() {
 		return this.ownerSide;
 	}
 
-	public Long getOriginalNumberOfCounters()
-	{
+	public Long getOriginalNumberOfCounters() {
 		return this.originalNumberOfCounters;
 	}
 

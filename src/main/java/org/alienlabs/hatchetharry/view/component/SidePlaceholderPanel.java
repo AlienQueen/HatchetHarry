@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.util.UUID;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
@@ -12,8 +10,9 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
-public class SidePlaceholderPanel extends Panel
-{
+import java.util.UUID;
+
+public class SidePlaceholderPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private final UUID uuid;
@@ -24,8 +23,7 @@ public class SidePlaceholderPanel extends Panel
 	private final Player player;
 
 	public SidePlaceholderPanel(final String id, final String _side, final HomePage hp,
-			final UUID _uuid, final Player _player)
-	{
+								final UUID _uuid, final Player _player) {
 		super(id);
 		this.setOutputMarkupId(true);
 
@@ -38,28 +36,28 @@ public class SidePlaceholderPanel extends Panel
 
 
 		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid,
-				HatchetHarrySession.get().getGameId(), this.player));
+														HatchetHarrySession.get().getGameId(), this.player));
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
 		sidePlaceholder.setMarkupId("sidePlaceholder" + this.uuid.toString().replace("-", "_"));
 		sidePlaceholder.add(new AttributeModifier("style", "position: absolute; top: "
-				+ mySide.getY() + "px; left: " + mySide.getX() + "px;"));
+																   + mySide.getY() + "px; left: " + mySide.getX() + "px;"));
 		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
 
 		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
-				HatchetHarrySession.get().getGameId(), this.player));
+														HatchetHarrySession.get().getGameId(), this.player));
 
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setOutputMarkupId(true);
 		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
 
 		final String image = ("infrared".equals(this.side))
-				? "image/logobouclierrouge.png"
-				: "image/logobouclierviolet.png";
+									 ? "image/logobouclierrouge.png"
+									 : "image/logobouclierviolet.png";
 
 		final Image cardImage = new Image("sidePlaceholderImage", new PackageResourceReference(
-				HomePage.class, image));
+																									  HomePage.class, image));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("side" + this.uuid.toString());
 
@@ -67,13 +65,11 @@ public class SidePlaceholderPanel extends Panel
 		this.add(sidePlaceholder);
 	}
 
-	public UUID getUuid()
-	{
+	public UUID getUuid() {
 		return this.uuid;
 	}
 
-	public String getSide()
-	{
+	public String getSide() {
 		return this.side;
 	}
 

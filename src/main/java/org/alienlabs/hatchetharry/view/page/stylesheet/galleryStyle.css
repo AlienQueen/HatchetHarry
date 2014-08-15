@@ -1,57 +1,199 @@
 /*
 	Featured Content Slider
 	by: Chris Coyier
-*/			  				  
+*/
 /*
 	UTILITY STYLES
-*/				  				  
-					  				  
-.floatLeft 									{ float: left; margin-right: 10px;}
-.floatRight									{ float: right; }
-.clear 										{ clear: both; }
-a											{ outline: none; }
-#page-wrap 									{ width: 262px; margin: 25px auto; position: absolute; top: 28%; left: 0%; min-height: 420px;
-											  background: url(/image/bg.png) top center; }
-.put-to-zone-for-Hand 						{ margin: 25px auto; }
-#graveyard-page-wrap 						{ width: 262px; margin: 25px auto; position: absolute; top: 28%; left: 261px; min-height: 420px;
-											  background: url(/image/tombe1.png) top center; }
-.put-to-zone-for-Graveyard					{ margin: 25px auto; }									  
-#exile-page-wrap 							{ width: 262px; margin: 25px auto; position: absolute; top: 28%; left: 522px; min-height: 420px;
-											  background: url(/image/exile.png) top center; }									  
-.put-to-zone-for-Exile 						{ margin: 25px auto; }
+*/
+
+.floatLeft {
+    float: left;
+    margin-right: 10px;
+}
+
+.floatRight {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+a {
+    outline: none;
+}
+
+#page-wrap {
+    width: 262px;
+    margin: 25px auto;
+    position: absolute;
+    top: 28%;
+    left: 0%;
+    min-height: 420px;
+    background: url(/image/bg.png) top center;
+}
+
+.put-to-zone-for-Hand {
+    margin: 25px auto;
+}
+
+#graveyard-page-wrap {
+    width: 262px;
+    margin: 25px auto;
+    position: absolute;
+    top: 28%;
+    left: 261px;
+    min-height: 420px;
+    background: url(/image/tombe1.png) top center;
+}
+
+.put-to-zone-for-Graveyard {
+    margin: 25px auto;
+}
+
+#exile-page-wrap {
+    width: 262px;
+    margin: 25px auto;
+    position: absolute;
+    top: 28%;
+    left: 522px;
+    min-height: 420px;
+    background: url(/image/exile.png) top center;
+}
+
+.put-to-zone-for-Exile {
+    margin: 25px auto;
+}
+
 /*
 	TYPOGRAPHY
 */
-ul											{ list-style: square inside; }
+ul {
+    list-style: square inside;
+}
+
 /*a, a:visited								{ color: #729dff; text-decoration: none; }*/
-a:hover, a:active							{ color: white; }
-blockquote									{ padding: 0 20px; margin-left: 20px; border-left: 20px solid #ccc; font-size: 14px; 
-									  		  font-family: Georgia, serif; font-style: italic; margin-top: 10px;}
+a:hover, a:active {
+    color: white;
+}
+
+blockquote {
+    padding: 0 20px;
+    margin-left: 20px;
+    border-left: 20px solid #ccc;
+    font-size: 14px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    margin-top: 10px;
+}
 
 /*
 	SLIDER
 */
-.slider-wrap								{ width: 419px; position: absolute; top: 30px; left: 20px; }
-.stripViewer .panelContainer 
-.panel ul									{ text-align: left; margin: 0 15px 0 30px; }
-.stripViewer								{ position: relative; overflow: hidden; width: 419px; height: 320px; }
-.stripViewer .panelContainer				{ position: relative; left: -1px; top: 0; }
-.stripViewer .panelContainer .panel			{ float: left; height: 360px; position: relative; width: 440px; }
-.stripNavL, .stripNavR, .stripNav			{ display: none; }
-.stripNavLGraveyard, .stripNavRGraveyard, .stripNavGraveyard			{ display: none; }
-.stripNavLExile, .stripNavRExile, .stripNavExile			{ display: none; }
-.nav-thumb 									{ border: 1px solid black; margin-right: 5px; }
-#movers-row									{ margin: 30px 0 0 0; }
-#movers-row div								{ width: 7%; float: left; }
-#movers-row div a.cross-link 				{ float: right; }
-.photo-meta-data							{ background: url(/image/transpBlack.png); padding: 5px; height: 65px; 
-											  margin-top: -40px; width: 214px; z-index:555; color: black; }
-.photo-meta-data span 						{ font-size: 13px; }
-.cross-link									{ display: block; width: 23px; margin-top: 0px; 
-											  position: relative; padding-top: 0px; z-index: 2; }
-.active-thumb-Hand							{ background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat; }
-.active-thumb-Graveyard						{ background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat; }
-.active-thumb-Exile							{ background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat; }
+.slider-wrap {
+    width: 419px;
+    position: absolute;
+    top: 30px;
+    left: 20px;
+}
 
-.wrapper-image								{ position:relative; }
-.play-card-link								{ z-index: 555; position: absolute; cursor: pointer; }
+.stripViewer .panelContainer
+.panel ul {
+    text-align: left;
+    margin: 0 15px 0 30px;
+}
+
+.stripViewer {
+    position: relative;
+    overflow: hidden;
+    width: 419px;
+    height: 320px;
+}
+
+.stripViewer .panelContainer {
+    position: relative;
+    left: -1px;
+    top: 0;
+}
+
+.stripViewer .panelContainer .panel {
+    float: left;
+    height: 360px;
+    position: relative;
+    width: 440px;
+}
+
+.stripNavL, .stripNavR, .stripNav {
+    display: none;
+}
+
+.stripNavLGraveyard, .stripNavRGraveyard, .stripNavGraveyard {
+    display: none;
+}
+
+.stripNavLExile, .stripNavRExile, .stripNavExile {
+    display: none;
+}
+
+.nav-thumb {
+    border: 1px solid black;
+    margin-right: 5px;
+}
+
+#movers-row {
+    margin: 30px 0 0 0;
+}
+
+#movers-row div {
+    width: 7%;
+    float: left;
+}
+
+#movers-row div a.cross-link {
+    float: right;
+}
+
+.photo-meta-data {
+    background: url(/image/transpBlack.png);
+    padding: 5px;
+    height: 65px;
+    margin-top: -40px;
+    width: 214px;
+    z-index: 555;
+    color: black;
+}
+
+.photo-meta-data span {
+    font-size: 13px;
+}
+
+.cross-link {
+    display: block;
+    width: 23px;
+    margin-top: 0px;
+    position: relative;
+    padding-top: 0px;
+    z-index: 2;
+}
+
+.active-thumb-Hand {
+    background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat;
+}
+
+.active-thumb-Graveyard {
+    background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat;
+}
+
+.active-thumb-Exile {
+    background: transparent url(/image/icon-uparrowsmallwhite.png) top center no-repeat;
+}
+
+.wrapper-image {
+    position: relative;
+}
+
+.play-card-link {
+    z-index: 555;
+    position: absolute;
+    cursor: pointer;
+}

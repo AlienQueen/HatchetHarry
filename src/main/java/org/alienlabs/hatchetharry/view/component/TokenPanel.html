@@ -1,104 +1,114 @@
 <wicket:head>
 
-<style type="text/css">
-	
-		.magicCard {
-			z-index:1000;
-		}
-		p, h4, li
-		{
-			font-family: Arial, Tahoma, Verdana;
-		}
-		pre.tip
-		{
-			margin: 0px;
-			padding: 5px;
-			font-size: 0.9em;	
-		}
-		pre.code
-		{
-			margin: 0px;
-			padding: 20px;
-			border: solid 1px #000000;
-			font-size: 1.0em;
-		}
-		em 
-		{
-			font-size: 0.9em;
-			color: #000000;
-		}
-</style>
+    <style type="text/css">
 
-<style type="text/css">
+        .magicCard {
+            z-index: 1000;
+        }
 
-    /*
-        Position and hide the Menu instance to prevent a flash of unstyled 
-        content when the page is loading.
-    */    
+        p, h4, li {
+            font-family: Arial, Tahoma, Verdana;
+        }
 
-    div.yuimenu {
-    
-        position: absolute;
-        visibility: hidden;
-    
-    }
+        pre.tip {
+            margin: 0px;
+            padding: 5px;
+            font-size: 0.9em;
+        }
 
+        pre.code {
+            margin: 0px;
+            padding: 20px;
+            border: solid 1px #000000;
+            font-size: 1.0em;
+        }
 
-    /*
-        Set the "zoom" property to "normal" since it is set to "1" by the 
-        ".example-container .bd" rule in yui.css and this causes a Menu
-        instance's width to expand to 100% of the browser viewport.
-    */
-    div.yuimenu .bd {
-    
-        zoom: normal;
-    
-    }
-    
-    #myDiv {
-				width: 150px;
-				border: solid 1px #2AA7DE;
-				background: #6CC8EF;
-				text-align: center;
-				padding: 4em .5em;
-				margin: 1em;
-				float: left;
-			}
-			
-			#options {
-				clear: left;
-			}
-			
-			#options INPUT {
-				font-family: Verdana, Arial, Helvetica, sans-serif;
-				font-size: 11px;
-				width: 150px;
-			}
-			.drag-handle-image { width: 30px; height: 30px; cursor: move; }
-			.tap-handle-image{ cursor: ne-resize; width: 30px; height: 30px;}			 
-			
-</style>
+        em {
+            font-size: 0.9em;
+            color: #000000;
+        }
+    </style>
+
+    <style type="text/css">
+
+        /*
+            Position and hide the Menu instance to prevent a flash of unstyled
+            content when the page is loading.
+        */
+
+        div.yuimenu {
+
+            position: absolute;
+            visibility: hidden;
+
+        }
+
+        /*
+            Set the "zoom" property to "normal" since it is set to "1" by the
+            ".example-container .bd" rule in yui.css and this causes a Menu
+            instance's width to expand to 100% of the browser viewport.
+        */
+        div.yuimenu .bd {
+
+            zoom: normal;
+
+        }
+
+        #myDiv {
+            width: 150px;
+            border: solid 1px #2AA7DE;
+            background: #6CC8EF;
+            text-align: center;
+            padding: 4em .5em;
+            margin: 1em;
+            float: left;
+        }
+
+        #options {
+            clear: left;
+        }
+
+        #options INPUT {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            width: 150px;
+        }
+
+        .drag-handle-image {
+            width: 30px;
+            height: 30px;
+            cursor: move;
+        }
+
+        .tap-handle-image {
+            cursor: ne-resize;
+            width: 30px;
+            height: 30px;
+        }
+
+    </style>
 </wicket:head>
 <wicket:panel>
-	<br/>
-	
-	<h2 id="status2"/>
-	<br/><br/>
+    <br/>
+
+    <h2 id="status2"/>
+    <br/><br/>
 		<span wicket:id="token">
 			<span id="special" class="magicCard">
 				<div wicket:id="menutoggleButton" id="menutoggleButton" class="tour_5">
-					<form wicket:id="form">
-						<input wicket:id="jsessionid" id="jsessionid" type="text" style="display: none;"></input>
-						<input wicket:id="mouseX" id="mouseX" type="text" style="display: none;"></input>
-						<input wicket:id="mouseY" id="mouseY" type="text" style="display: none;"></input>
-						<img wicket:id="handleImage" id="handle" class="drag-handle-image"></img>
-						<span wicket:id="bullet" class="bullet">&bull;</span><img wicket:id="cardImage" id="card"></img>
-						<img wicket:id="tokenImage" id="token"></img>
-						<img wicket:id="tapHandleImage" id="tapHandleImage" class="tap-handle-image"></img>
-						<div wicket:id="tokenTooltip" id="tokenTooltip" class="tooltip"></div>
-					</form>
-				</div>
+                    <form wicket:id="form">
+                        <input wicket:id="jsessionid" id="jsessionid" type="text" style="display: none;"></input>
+                        <input wicket:id="mouseX" id="mouseX" type="text" style="display: none;"></input>
+                        <input wicket:id="mouseY" id="mouseY" type="text" style="display: none;"></input>
+                        <img wicket:id="handleImage" id="handle" class="drag-handle-image"></img>
+                        <span wicket:id="bullet" class="bullet">&bull;</span><img wicket:id="cardImage" id="card"></img>
+                        <img wicket:id="tokenImage" id="token"></img>
+                        <img wicket:id="tapHandleImage" id="tapHandleImage" class="tap-handle-image"></img>
+
+                        <div wicket:id="tokenTooltip" id="tokenTooltip" class="tooltip"></div>
+                    </form>
+                </div>
 			</span>
 		</span>
-		
+
 </wicket:panel>

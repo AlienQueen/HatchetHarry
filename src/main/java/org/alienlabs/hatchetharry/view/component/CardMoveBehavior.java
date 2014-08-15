@@ -28,8 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
-{
+public class CardMoveBehavior extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
@@ -51,11 +50,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
-			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
-			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
-			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,
-			final DestroyTokenBehavior _destroyTokenBehavior, final long _posX, final long _posY)
-	{
+							final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
+							final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
+							final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,
+							final DestroyTokenBehavior _destroyTokenBehavior, final long _posX, final long _posY) {
 		Injector.get().inject(this);
 
 		this.panel = cp;
@@ -70,10 +68,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target)
-	{
+	protected void respond(final AjaxRequestTarget target) {
 		CardMoveBehavior.LOGGER.info("respond");
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest) this.panel.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String _mouseX = request.getParameter("posX");
@@ -81,19 +78,16 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final String uniqueid = this.uuid.toString();
 		CardMoveBehavior.LOGGER.info("uuid: " + uniqueid);
 
-		try
-		{
+		try {
 			final String roundedX = _mouseX.substring(0,
-					(_mouseX.contains(".")) ? _mouseX.indexOf(".") : _mouseX.length());
+															 (_mouseX.contains(".")) ? _mouseX.indexOf(".") : _mouseX.length());
 			final String roundedY = _mouseY.substring(0,
-					(_mouseY.contains(".")) ? _mouseY.indexOf(".") : _mouseY.length());
+															 (_mouseY.contains(".")) ? _mouseY.indexOf(".") : _mouseY.length());
 			final long _x = Long.parseLong(roundedX);
 			final long _y = Long.parseLong(roundedY);
 			this.posX = _x <= -300 ? -300 : _x;
 			this.posY = _y <= -150 ? -150 : _y;
-		}
-		catch (final NumberFormatException e)
-		{
+		} catch (final NumberFormatException e) {
 			CardMoveBehavior.LOGGER.error("error parsing coordinates of moved card", e);
 			return;
 		}
@@ -101,11 +95,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final MagicCard mc;
 		final Long gameId;
 
-		try
-		{
+		try {
 			mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
-			if (null == mc)
-			{
+			if (null == mc) {
 				return;
 			}
 
@@ -113,11 +105,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			mc.setX(this.posX);
 			mc.setY(this.posY);
 			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + this.posX + ", posY: "
-					+ this.posY);
+												 + this.posY);
 			this.persistenceService.updateCard(mc);
-		}
-		catch (final IllegalArgumentException e)
-		{
+		} catch (final IllegalArgumentException e) {
 			CardMoveBehavior.LOGGER.error("error parsing UUID of moved card", e);
 			return;
 		}
@@ -125,34 +115,29 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 
 		CardMoveBehavior.LOGGER.info("playerId in respond(): "
-				+ HatchetHarrySession.get().getPlayer().getId());
+											 + HatchetHarrySession.get().getPlayer().getId());
 
 		final List<BigInteger> allPlayersInGame = CardMoveBehavior.this.persistenceService
-				.giveAllPlayersFromGame(gameId);
+														  .giveAllPlayersFromGame(gameId);
 
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
+		for (int i = 0; i < allPlayersInGame.size(); i++) {
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-					playerToWhomToSend);
+																						   playerToWhomToSend);
 			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
-					Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
+																							  Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
 
 			// For unit tets
-			try
-			{
+			try {
 				HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel, pageUuid);
-			}
-			catch (final NullPointerException e)
-			{
+			} catch (final NullPointerException e) {
 				// Nothing to do in unit tests
 			}
 		}
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
-	{
+	public void renderHead(final Component component, final IHeaderResponse response) {
 		super.renderHead(component, response);
 
 		StringBuilder js = new StringBuilder();
@@ -170,63 +155,51 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/cardMove.js");
+																	  "script/draggableHandle/cardMove.js");
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
 		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/initDrag.js");
+																	  "script/draggableHandle/initDrag.js");
 		template2.interpolate(variables);
 		js = js.append("\n" + template2.asString());
 
 		final TextTemplate template3 = new PackageTextTemplate(HomePage.class,
-				"script/draggableHandle/dragCard.js");
+																	  "script/draggableHandle/dragCard.js");
 		template3.interpolate(variables);
 		js = js.append("\n" + template3.asString());
 
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
-		try
-		{
+		try {
 			template1.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			CardMoveBehavior.LOGGER.error(
-					"unable to close template1 in CardMoveBehavior#renderHead()!", e);
+												 "unable to close template1 in CardMoveBehavior#renderHead()!", e);
 		}
-		try
-		{
+		try {
 			template2.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			CardMoveBehavior.LOGGER.error(
-					"unable to close template2 in CardMoveBehavior#renderHead()!", e);
+												 "unable to close template2 in CardMoveBehavior#renderHead()!", e);
 		}
-		try
-		{
+		try {
 			template3.close();
-		}
-		catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			CardMoveBehavior.LOGGER.error(
-					"unable to close template3 in CardMoveBehavior#renderHead()!", e);
+												 "unable to close template3 in CardMoveBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
+	public void setPersistenceService(final PersistenceService _persistenceService) {
 		this.persistenceService = _persistenceService;
 	}
 
-	public UUID getUuid()
-	{
+	public UUID getUuid() {
 		return this.uuid;
 	}
 
-	public String getUuidValidForJs()
-	{
+	public String getUuidValidForJs() {
 		return this.uuidValidForJs;
 	}
 

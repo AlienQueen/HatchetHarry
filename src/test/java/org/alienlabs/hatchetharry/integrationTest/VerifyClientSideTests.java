@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.integrationTest;
 
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -16,8 +14,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VerifyClientSideTests
-{
+import java.util.concurrent.TimeUnit;
+
+public class VerifyClientSideTests {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerifyClientSideTests.class);
 
 	private static final String PORT = "8088";
@@ -34,40 +33,39 @@ public class VerifyClientSideTests
 	private static WebDriver chromeDriver1;
 
 	private static final String JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON = "function elementInViewport(el) {\n"
-			+ "  var top = el.offsetTop;\n"
-			+ "  var left = el.offsetLeft;\n"
-			+ "  var width = el.offsetWidth;\n"
-			+ "  var height = el.offsetHeight;\n"
-			+ "\n"
-			+ "  while(el.offsetParent) {\n"
-			+ "    el = el.offsetParent;\n"
-			+ "    top += el.offsetTop;\n"
-			+ "    left += el.offsetLeft;\n"
-			+ "  }\n"
-			+ "\n"
-			+ "  return (\n"
-			+ "    top > (window.pageYOffset + 50) &&\n"
-			+ "    left > (window.pageXOffset + 5) &&\n"
-			+ "    (top + height + 50) < (window.pageYOffset + window.innerHeight) &&\n"
-			+ "    (left + width + 10) < (window.pageXOffset + window.innerWidth)\n"
-			+ "  );\n"
-			+ "}\n"
-			+ "\n"
-			+ "var elementToLookFor = document.getElementById('runMistletoe');\n"
-			+ "\n"
-			+ "for (var i = 0; i < 10000; i = i + 1) {\n"
-			+ "	if (elementInViewport(elementToLookFor)) {\n"
-			+ "		break;\n"
-			+ "	} else {\n"
-			+ "		window.scrollBy(0,1);\n}\n}";
+																						   + "  var top = el.offsetTop;\n"
+																						   + "  var left = el.offsetLeft;\n"
+																						   + "  var width = el.offsetWidth;\n"
+																						   + "  var height = el.offsetHeight;\n"
+																						   + "\n"
+																						   + "  while(el.offsetParent) {\n"
+																						   + "    el = el.offsetParent;\n"
+																						   + "    top += el.offsetTop;\n"
+																						   + "    left += el.offsetLeft;\n"
+																						   + "  }\n"
+																						   + "\n"
+																						   + "  return (\n"
+																						   + "    top > (window.pageYOffset + 50) &&\n"
+																						   + "    left > (window.pageXOffset + 5) &&\n"
+																						   + "    (top + height + 50) < (window.pageYOffset + window.innerHeight) &&\n"
+																						   + "    (left + width + 10) < (window.pageXOffset + window.innerWidth)\n"
+																						   + "  );\n"
+																						   + "}\n"
+																						   + "\n"
+																						   + "var elementToLookFor = document.getElementById('runMistletoe');\n"
+																						   + "\n"
+																						   + "for (var i = 0; i < 10000; i = i + 1) {\n"
+																						   + "	if (elementInViewport(elementToLookFor)) {\n"
+																						   + "		break;\n"
+																						   + "	} else {\n"
+																						   + "		window.scrollBy(0,1);\n}\n}";
 
 	private static final String SCROLL_DOWN = "window.scrollBy(0,50);";
 
 	@BeforeClass
-	public static void setUpClass() throws Exception
-	{
+	public static void setUpClass() throws Exception {
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STARTING EMBEDDED JETTY SERVER");
 
 		final ServerConnector http = new ServerConnector(VerifyClientSideTests.server);
 		http.setHost(VerifyClientSideTests.HOST);
@@ -81,29 +79,28 @@ public class VerifyClientSideTests
 		VerifyClientSideTests.server.start();
 
 		VerifyClientSideTests.LOGGER
-		.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUCCESSFULLY STARTED EMBEDDED JETTY SERVER");
 
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		VerifyClientSideTests.chromeDriver1 = new ChromeDriver();
 		VerifyClientSideTests.chromeDriver1.manage().timeouts()
-		.implicitlyWait(30, TimeUnit.SECONDS);
+				.implicitlyWait(30, TimeUnit.SECONDS);
 
 		Thread.sleep(15000);
 
 		VerifyClientSideTests.chromeDriver1.get("http://" + VerifyClientSideTests.HOST + ":"
-				+ VerifyClientSideTests.PORT + "/");
+														+ VerifyClientSideTests.PORT + "/");
 		Thread.sleep(30000);
 	}
 
 	@Test
-	public void testQunit()
-	{
+	public void testQunit() {
 		final String passed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("passed"))
-				.getText();
+									   .getText();
 		final String total1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("total"))
-				.getText();
+									  .getText();
 		final String failed1 = VerifyClientSideTests.chromeDriver1.findElement(By.id("failed"))
-				.getText();
+									   .getText();
 
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_PASSED_TESTS, passed1);
 		Assert.assertEquals(VerifyClientSideTests.QUNIT_TOTAL_TESTS, total1);
@@ -111,37 +108,34 @@ public class VerifyClientSideTests
 	}
 
 	@Test
-	public void testMistletoe() throws InterruptedException
-	{
-		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
-		.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
+	public void testMistletoe() throws InterruptedException {
+		((JavascriptExecutor) VerifyClientSideTests.chromeDriver1)
+				.executeScript(VerifyClientSideTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		VerifyClientSideTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
 		Thread.sleep(60000);
 
-		((JavascriptExecutor)VerifyClientSideTests.chromeDriver1)
-		.executeScript(VerifyClientSideTests.SCROLL_DOWN);
+		((JavascriptExecutor) VerifyClientSideTests.chromeDriver1)
+				.executeScript(VerifyClientSideTests.SCROLL_DOWN);
 
 		final String chromeTotal = VerifyClientSideTests.chromeDriver1.findElement(
-				By.id("runsSummary")).getText();
+																						  By.id("runsSummary")).getText();
 		final String chromeFailed = VerifyClientSideTests.chromeDriver1.findElement(
-				By.id("errorsSummary")).getText();
+																						   By.id("errorsSummary")).getText();
 
 		Assert.assertEquals(VerifyClientSideTests.MISTLETOE_TOTAL_TESTS, chromeTotal);
 		Assert.assertEquals(VerifyClientSideTests.MISTLETOE_FAILED_TESTS, chromeFailed);
 	}
 
 	@AfterClass
-	public static void tearDownClass()
-	{
+	public static void tearDownClass() {
 		try {
-			if (null != VerifyClientSideTests.chromeDriver1)
-			{
+			if (null != VerifyClientSideTests.chromeDriver1) {
 				VerifyClientSideTests.chromeDriver1.quit();
 			}
 
 			VerifyClientSideTests.LOGGER
-			.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
+					.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STOPPING EMBEDDED JETTY SERVER");
 			VerifyClientSideTests.server.stop();
 			VerifyClientSideTests.server.join();
 			Thread.sleep(30000);

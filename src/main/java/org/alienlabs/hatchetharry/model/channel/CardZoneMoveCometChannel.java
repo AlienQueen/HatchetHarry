@@ -5,8 +5,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Side;
 
-public class CardZoneMoveCometChannel
-{
+public class CardZoneMoveCometChannel {
 	private final CardZone sourceZone, targetZone;
 	private final MagicCard card;
 	private final Long requestingPlayerId, gameId;
@@ -16,9 +15,8 @@ public class CardZoneMoveCometChannel
 	private final boolean isReveal;
 
 	public CardZoneMoveCometChannel(final CardZone _sourceZone, final CardZone _targetZone,
-			final MagicCard _card, final Long _requestingPlayerId, final Long _targetPlayerId,
-			final Long _gameId, final Deck _deck, final Side _side, final boolean _isReveal)
-	{
+									final MagicCard _card, final Long _requestingPlayerId, final Long _targetPlayerId,
+									final Long _gameId, final Deck _deck, final Side _side, final boolean _isReveal) {
 		this.sourceZone = _sourceZone;
 		this.targetZone = _targetZone;
 		this.card = _card;
@@ -30,48 +28,39 @@ public class CardZoneMoveCometChannel
 		this.isReveal = _isReveal;
 	}
 
-	public CardZone getSourceZone()
-	{
+	public CardZone getSourceZone() {
 		return this.sourceZone;
 	}
 
-	public CardZone getTargetZone()
-	{
+	public CardZone getTargetZone() {
 		return this.targetZone;
 	}
 
-	public MagicCard getCard()
-	{
+	public MagicCard getCard() {
 		return this.card;
 	}
 
-	public Long getGameId()
-	{
+	public Long getGameId() {
 		return this.gameId;
 	}
 
-	public Deck getDeck()
-	{
+	public Deck getDeck() {
 		return this.deck;
 	}
 
-	public Side getSide()
-	{
+	public Side getSide() {
 		return this.side;
 	}
 
-	public Long getRequestingPlayerId()
-	{
+	public Long getRequestingPlayerId() {
 		return this.requestingPlayerId;
 	}
 
-	public Long getTargetPlayerId()
-	{
+	public Long getTargetPlayerId() {
 		return this.targetPlayerId;
 	}
 
-	public boolean isReveal()
-	{
+	public boolean isReveal() {
 		return this.isReveal;
 	}
 

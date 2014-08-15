@@ -1,5 +1,5 @@
-jQuery(function() { 
-	window.setTimeout(function() {
-		${content}
-	}, 150);
+jQuery(function () {
+    window.setTimeout(function () {
+        ${content}
+    }, 150);
 });

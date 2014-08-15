@@ -2,8 +2,7 @@ package org.alienlabs.hatchetharry.model.channel.consolelog;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
-{
+public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy {
 	private final Boolean cond;
 	private final String mc;
 	private final String player;
@@ -11,8 +10,7 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 	private final Long gameId;
 
 	public TapUntapConsoleLogStrategy(final Boolean _cond, final String _mc, final String _player,
-			final Boolean _clearConsole, final Long _gameId)
-	{
+									  final Boolean _clearConsole, final Long _gameId) {
 		super();
 		this.cond = _cond;
 		this.mc = _mc;
@@ -22,19 +20,15 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 	}
 
 	@Override
-	public void logToConsole(final AjaxRequestTarget target)
-	{
+	public void logToConsole(final AjaxRequestTarget target) {
 		String message = "";
 
-		if ((null == this.mc) && (null != this.clearConsole) && (false == this.clearConsole))
-		{
+		if ((null == this.mc) && (null != this.clearConsole) && (false == this.clearConsole)) {
 			message = this.player + " has untapped all his (her) permanents";
 			super.logMessage(target, message, false, this.gameId);
-		}
-		else if ((null != this.mc) && (null == this.clearConsole) && (null != this.cond))
-		{
+		} else if ((null != this.mc) && (null == this.clearConsole) && (null != this.cond)) {
 			message = this.player + " has " + (this.cond ? "tapped " : "untapped ") + " permanent "
-					+ this.mc;
+							  + this.mc;
 			super.logMessage(target, message, null, this.gameId);
 		}
 	}

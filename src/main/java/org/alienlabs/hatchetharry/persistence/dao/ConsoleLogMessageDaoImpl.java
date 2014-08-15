@@ -28,81 +28,71 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link ConsoleLogMessageDao}.
- * 
+ *
  * @author igor
  */
-public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao
-{
+public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public ConsoleLogMessageDaoImpl()
-	{
+	public ConsoleLogMessageDaoImpl() {
 	}
 
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 * 
-	 * @param _factory
-	 *            hibernate session factory
+	 *
+	 * @param _factory hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory)
-	{
+	public void setSessionFactory(final SessionFactory _factory) {
 		this.factory = _factory;
 	}
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 * 
+	 *
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession()
-	{
+	public Session getSession() {
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt> .
-	 * 
-	 * @param id
-	 *            The id of the ConsoleLogMessage to load.
+	 *
+	 * @param id The id of the ConsoleLogMessage to load.
 	 * @return ConsoleLogMessage
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public ConsoleLogMessage load(final long id)
-	{
-		return (ConsoleLogMessage)this.getSession().get(ConsoleLogMessage.class, Long.valueOf(id));
+	public ConsoleLogMessage load(final long id) {
+		return (ConsoleLogMessage) this.getSession().get(ConsoleLogMessage.class, Long.valueOf(id));
 	}
 
 	/**
 	 * Save the ConsoleLogMessage to the DB
-	 * 
+	 *
 	 * @param ConsoleLogMessage
 	 * @return persistent instance of ConsoleLogMessage
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Long save(final ConsoleLogMessage consoleLogMessage)
-	{
-		return (Long)this.getSession().save(consoleLogMessage);
+	public Long save(final ConsoleLogMessage consoleLogMessage) {
+		return (Long) this.getSession().save(consoleLogMessage);
 	}
 
 	/**
 	 * Delete a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt>.
-	 * 
-	 * @param id
-	 *            The id of the ConsoleLogMessage to delete.
+	 *
+	 * @param id The id of the ConsoleLogMessage to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id)
-	{
+	public void delete(final long id) {
 		this.getSession().delete(this.load(id));
 	}
 

@@ -14,19 +14,17 @@ import org.junit.Test;
  * Test of the ImportDeckService (it only uses the WicketTester in order to load
  * the Spring context).
  */
-public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
-{
+public class ImportDeckServiceTest extends SpringContextLoaderBaseTest {
 	@Test
-	public void testImportDeck() throws FileNotFoundException, IOException
-	{
+	public void testImportDeck() throws FileNotFoundException, IOException {
 		// Init
 		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
-				.getBean(PersistenceService.class);
+															  .getBean(PersistenceService.class);
 		final ImportDeckService importDeckService = SpringContextLoaderBaseTest.context
-				.getBean(ImportDeckService.class);
+															.getBean(ImportDeckService.class);
 
 		final boolean auraBantAlreadyExists = (null != persistenceService
-				.getDeckArchiveByName("Aura Bant"));
+															   .getDeckArchiveByName("Aura Bant"));
 
 		final int initialNumberOfDeckArchives = persistenceService.countDeckArchives();
 		final int initialNumberOfDecks = persistenceService.countDecks();
@@ -34,12 +32,11 @@ public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 		final int initialNumberOfMagicCards = persistenceService.countMagicCards();
 
 		final File deck = new File(ResourceBundle.getBundle(
-				RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
+																   RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 		final byte[] content = new byte[475];
 
 		final FileInputStream fis = new FileInputStream(deck);
-		if (fis.read(content) == -1)
-		{
+		if (fis.read(content) == -1) {
 			fis.close();
 			Assert.fail("Aura Bant.txt seems to be empty");
 		}
@@ -56,15 +53,12 @@ public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 		final int finalNumberOfCollectibleCards = persistenceService.countCollectibleCards();
 		final int finalNumberOfMagicCards = persistenceService.countMagicCards();
 
-		if (auraBantAlreadyExists)
-		{
+		if (auraBantAlreadyExists) {
 			Assert.assertEquals(initialNumberOfDeckArchives, finalNumberOfDeckArchives);
 			Assert.assertEquals(initialNumberOfDecks, finalNumberOfDecks);
 			Assert.assertEquals(initialNumberOfCollectibleCards, finalNumberOfCollectibleCards);
 			Assert.assertEquals(initialNumberOfMagicCards, finalNumberOfMagicCards);
-		}
-		else
-		{
+		} else {
 			Assert.assertEquals(initialNumberOfDeckArchives + 1, finalNumberOfDeckArchives);
 			Assert.assertEquals(initialNumberOfDecks + 1, finalNumberOfDecks);
 			Assert.assertEquals(initialNumberOfCollectibleCards + 60, finalNumberOfCollectibleCards);

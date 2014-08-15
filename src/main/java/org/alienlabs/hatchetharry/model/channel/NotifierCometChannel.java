@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-public class NotifierCometChannel
-{
+public class NotifierCometChannel {
 
 	private final NotifierAction action;
 	private final Long gameId;
@@ -14,10 +13,9 @@ public class NotifierCometChannel
 	private final String targetPlayerName;
 
 	public NotifierCometChannel(final NotifierAction _action, final Long _gameId,
-			final Long _playerId, final String _playerName, final String _side,
-			final String _jsessionid, final String _cardName, final Boolean _combatInProgress,
-			final String _targetPlayerName)
-	{
+								final Long _playerId, final String _playerName, final String _side,
+								final String _jsessionid, final String _cardName, final Boolean _combatInProgress,
+								final String _targetPlayerName) {
 		this.action = _action;
 		this.gameId = _gameId;
 		this.playerId = _playerId;
@@ -29,48 +27,39 @@ public class NotifierCometChannel
 		this.targetPlayerName = _targetPlayerName;
 	}
 
-	public NotifierAction getAction()
-	{
+	public NotifierAction getAction() {
 		return this.action;
 	}
 
-	public Long getGameId()
-	{
+	public Long getGameId() {
 		return this.gameId;
 	}
 
-	public Long getPlayerId()
-	{
+	public Long getPlayerId() {
 		return this.playerId;
 	}
 
-	public String getPlayerName()
-	{
+	public String getPlayerName() {
 		return this.playerName;
 	}
 
-	public String getSide()
-	{
+	public String getSide() {
 		return this.side;
 	}
 
-	public String getJsessionid()
-	{
+	public String getJsessionid() {
 		return this.jsessionid;
 	}
 
-	public String getCardName()
-	{
+	public String getCardName() {
 		return this.cardName;
 	}
 
-	public Boolean isCombatInProgress()
-	{
+	public Boolean isCombatInProgress() {
 		return this.combatInProgress;
 	}
 
-	public String getTargetPlayerName()
-	{
+	public String getTargetPlayerName() {
 		return this.targetPlayerName;
 	}
 

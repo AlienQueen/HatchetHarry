@@ -1,3 +1,3 @@
-window.setTimeout(function() {
-			${content}
+window.setTimeout(function () {
+    ${content}
 }, 175);
