@@ -35,7 +35,7 @@ public class SpringContextLoaderBaseTest
 	protected static AtmosphereTester waTester;
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws IOException
+	public static void setUpBeforeClassWithMocks() throws IOException
 	{
 		// Init the EventBus
 		SpringContextLoaderBaseTest.webApp = new HatchetHarryApplication()
@@ -48,11 +48,6 @@ public class SpringContextLoaderBaseTest
 				this.getComponentInstantiationListeners()
 				.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
-
-				// this.eventBus = new EventBus(this);
-				// this.eventBus.addRegistrationListener(this);
-				// this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
-				// this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 			}
 		};
 		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp);
