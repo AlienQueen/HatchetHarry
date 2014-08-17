@@ -455,7 +455,7 @@ public class PersistenceService implements Serializable {
 
 	// Isolation level chosen to be consistent with
 	// RuntimeDataGenerator#generateData()
-	@Transactional(isolation = Isolation.REPEATABLE_READ)
+	@Transactional(readOnly = true)
 	public DeckArchive getDeckArchiveByName(final String name) {
 		final Session session = this.deckDao.getSession();
 

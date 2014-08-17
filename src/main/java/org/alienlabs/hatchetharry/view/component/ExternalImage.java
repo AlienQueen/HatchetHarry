@@ -12,10 +12,12 @@ import org.apache.wicket.model.Model;
  */
 public class ExternalImage extends WebComponent {
 	private static final long serialVersionUID = 1L;
+	private final String imageUrl;
 
 	public ExternalImage(final String id, final String imageUrl) {
 		super(id);
-		this.add(AttributeModifier.replace("src", new Model<String>(imageUrl)));
+		this.imageUrl = imageUrl;
+		this.add(AttributeModifier.replace("src", new Model<String>(this.imageUrl)));
 		this.setVisible(!((imageUrl == null) || imageUrl.equals("")));
 	}
 
@@ -35,4 +37,7 @@ public class ExternalImage extends WebComponent {
 		super.onInitialize();
 	}
 
+	public String getImageUrl() {
+		return this.imageUrl;
+	}
 }

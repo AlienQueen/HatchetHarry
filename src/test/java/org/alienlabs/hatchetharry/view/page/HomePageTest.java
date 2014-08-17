@@ -306,8 +306,6 @@ public class HomePageTest extends SpringContextLoaderBaseTest {
 
 		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
 														   .getLastResponse().getDocument();
-		System.out.println(SpringContextLoaderBaseTest.pageDocument);
-
 		// Draw a card
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
 		@SuppressWarnings("unchecked")
@@ -322,7 +320,6 @@ public class HomePageTest extends SpringContextLoaderBaseTest {
 																  HandComponent.class);
 		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
 														   .getLastResponse().getDocument();
-		System.out.println(SpringContextLoaderBaseTest.pageDocument);
 		tagTester = TagTester.createTagsByAttribute(SpringContextLoaderBaseTest.pageDocument,
 														   "class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);

@@ -40,16 +40,17 @@
             <property name="password" value="more" />
 
             <!-- these are C3P0 properties -->
-            <property name="acquireIncrement" value="5" />
+            <property name="acquireIncrement" value="10" />
 			<property name="initialPoolSize" value="20" />
             <property name="minPoolSize" value="20" />
-            <property name="maxPoolSize" value="300" />
-            <property name="maxIdleTime" value="3600" />
-            <property name="maxIdleTimeExcessConnections" value="300" />
-			<property name="idleConnectionTestPeriod" value="500" />
-			<property name="maxStatements" value="50" />
-            <property name="numHelperThreads" value="6" />
-            <property name="unreturnedConnectionTimeout" value="3600" />
+            <property name="maxPoolSize" value="500" />
+            <property name="maxIdleTime" value="120" />
+            <property name="maxIdleTimeExcessConnections" value="120" />
+			<property name="idleConnectionTestPeriod" value="3000" />
+			<property name="maxStatements" value="200" />
+            <property name="numHelperThreads" value="20" />
+            <property name="unreturnedConnectionTimeout" value="120" />
+            <property name="maxConnectionAge" value="20"/>
         </bean>
         
         <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -76,8 +77,8 @@
 
 		<property name="hibernateProperties">
 			<props>
-				<!--  create-drop= provide database model at start-up by dropping tables, update= no start-up data model modification -->
-				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+				<!--  create= provide database model at start-up by dropping tables, update= no start-up data model modification -->
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="jdbc.driverClassName">org.mariadb.jdbc.Driver</prop>
 				<prop key="jdbc.url">jdbc:mysql://localhost:3306/hhTest?generateSimpleParameterMetadata=true</prop>

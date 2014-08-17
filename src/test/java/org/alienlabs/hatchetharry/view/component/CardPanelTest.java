@@ -44,7 +44,6 @@ public class CardPanelTest extends SpringContextLoaderBaseTest {
 
 		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
 														   .getLastResponse().getDocument();
-		System.out.println("### " + SpringContextLoaderBaseTest.pageDocument);
 		// SpringContextLoaderBaseTest.tester
 		// .assertComponentOnAjaxResponse("graveyardParent:graveyard:graveyardCardsPlaceholder:graveyardCards:0:wrapper:graveyardImagePlaceholder");
 
