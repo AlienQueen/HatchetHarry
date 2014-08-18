@@ -133,6 +133,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.atmosphere.JQueryWicketAtmosphereResourceReference;
 import org.apache.wicket.atmosphere.Subscribe;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxLink;
@@ -1408,11 +1409,12 @@ public class HomePage extends TestReportPage
 			{
 				super.renderHead(component, response);
 
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+//                response.render(JavaScriptHeaderItem.forReference(JQueryWicketAtmosphereResourceReference.get()));
+                response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery.atmosphere.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery/jquery.wicketatmosphere.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+                response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.ui.core.min-1.9.2.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.ui.widget.min-1.9.2.js")));

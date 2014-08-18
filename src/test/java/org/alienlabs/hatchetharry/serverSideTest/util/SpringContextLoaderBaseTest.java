@@ -11,6 +11,9 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.atmosphere.EventBus;
+import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
+import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.atmosphere.tester.AtmosphereTester;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -43,11 +46,17 @@ public class SpringContextLoaderBaseTest
 			@Override
 			public void init()
 			{
-				super.init();
 				SpringContextLoaderBaseTest.context = SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners()
 				.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
+
+                this.getMarkupSettings().setStripWicketTags(false);
+
+                this.eventBus = new EventBus(this);
+                this.eventBus.addRegistrationListener(this);
+                this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
+                this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 			}
 		};
 		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp);
@@ -102,7 +111,7 @@ public class SpringContextLoaderBaseTest
 		_tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		_tester.executeBehavior(pcfhb);
-		// _tester.assertRenderedPage(HomePage.class);
+
 		// We still should not have more cards that the number of cards in the
 		// deck
 		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(

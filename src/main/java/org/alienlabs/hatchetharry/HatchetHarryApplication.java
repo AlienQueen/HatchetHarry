@@ -3,6 +3,7 @@ package org.alienlabs.hatchetharry;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -121,7 +122,7 @@ implements
 			{
 				try
 				{
-					// HatchetHarryApplication.this.eventBus.post(new Date());
+					HatchetHarryApplication.this.eventBus.post(new Date());
 				}
 				catch (final Exception e)
 				{

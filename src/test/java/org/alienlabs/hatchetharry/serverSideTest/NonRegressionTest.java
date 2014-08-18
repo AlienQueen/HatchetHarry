@@ -227,9 +227,9 @@ public class NonRegressionTest
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 		// 6 cards in the hand?
-		String pageDocument = NonRegressionTest.tester.getLastResponse().getDocument();
-
 		NonRegressionTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+        String pageDocument = NonRegressionTest.tester.getLastResponse().getDocument()
+                .replace("<![CDATA[", "");
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"nav-thumb", false);
 		Assert.assertNotNull(tagTester);
@@ -243,7 +243,8 @@ public class NonRegressionTest
 		final HomePage hp = NonRegressionTest.tester.startPage(new HomePage(NonRegressionTest
 				.pageParameters()));
 		NonRegressionTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = NonRegressionTest.tester.getLastResponse().getDocument();
+        pageDocument = NonRegressionTest.tester.getLastResponse().getDocument()
+                .replace("<![CDATA[", "");
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
 		Assert.assertNotNull(tagTester);
@@ -263,7 +264,8 @@ public class NonRegressionTest
 		// 6 cards in the hand instead of 5!!!
 		NonRegressionTest.tester.startPage(hp);
 		NonRegressionTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = NonRegressionTest.tester.getLastResponse().getDocument();
+        pageDocument = NonRegressionTest.tester.getLastResponse().getDocument()
+                .replace("<![CDATA[", "");
 
 		NonRegressionTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "nav-thumb", false);
