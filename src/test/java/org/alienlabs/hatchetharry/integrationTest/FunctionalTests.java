@@ -149,7 +149,7 @@ public class FunctionalTests
 		+ "		break;\n"
 		+ "	} else {\n"
 		+ "		window.scrollBy(0,1);\n}\n}";
-    private static final String SCROLL_DOWN = "window.scrollBy(0,50);";
+	private static final String SCROLL_DOWN = "window.scrollBy(0,50);";
 	private static final String CLICK_PLAY_CARD_LINK = "$('#playCardLink0').click();";
 
 	private static WebDriver chromeDriver1;
@@ -349,7 +349,7 @@ public class FunctionalTests
 		WebElement to = FunctionalTests.chromeDriver1.findElement(By.id("putToGraveyard"));
 		new Actions(FunctionalTests.chromeDriver1).dragAndDrop(draggable, to).build().perform();
 
-		Thread.sleep(2000);
+		Thread.sleep(7500);
 
 		// Assert graveyard is visible and contains one card
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
@@ -371,7 +371,7 @@ public class FunctionalTests
 
 		FunctionalTests.chromeDriver2.findElement(By.id("playCardFromGraveyardLinkResponsive"))
 			.click();
-		Thread.sleep(2000);
+		Thread.sleep(7500);
 
 		// Verify the name of the card on the battlefield
 		assertEquals(battlefieldCardName,
@@ -393,7 +393,7 @@ public class FunctionalTests
 		to = FunctionalTests.chromeDriver2.findElement(By.id("putToHand"));
 		new Actions(FunctionalTests.chromeDriver2).dragAndDrop(draggable, to).build().perform();
 
-		Thread.sleep(2000);
+		Thread.sleep(7500);
 
 		// Assert that the hand contains 7 cards again
 		assertEquals(7, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".movers-row"))
@@ -408,7 +408,7 @@ public class FunctionalTests
 
 		FunctionalTests.chromeDriver2.findElement(By.id("revealTopLibraryCardLinkResponsive"))
 			.click();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 
 		// Get top card name
 		final String topCardName = FunctionalTests.chromeDriver2.findElement(
@@ -428,7 +428,7 @@ public class FunctionalTests
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		FunctionalTests.chromeDriver2.findElement(By.id("revealTopLibraryCardLinkResponsive"))
 			.click();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 
 		// Assert that the card is the same
 		assertTrue(topCardName.equals(FunctionalTests.chromeDriver2.findElement(
@@ -446,7 +446,7 @@ public class FunctionalTests
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
 
 		// Verify that the card is present on the battlefield
-		Thread.sleep(2000);
+		Thread.sleep(7500);
 		assertEquals(1, FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".clickableCard")).size());
 		assertEquals(1, FunctionalTests.chromeDriver1
@@ -478,7 +478,7 @@ public class FunctionalTests
 		FunctionalTests.chromeDriver2.findElement(By.id("putToHandFromModalWindow")).click();
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
 
-		Thread.sleep(2000);
+		Thread.sleep(7500);
 
 		// Assert that the hand contains 8 cards
 		assertEquals(8, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".movers-row"))
@@ -509,7 +509,7 @@ public class FunctionalTests
 
 		FunctionalTests.chromeDriver2.findElement(By.id("putToGraveyardFromModalWindow")).click();
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
-		Thread.sleep(2000);
+		Thread.sleep(7500);
 
 		// Assert graveyard is visible and contains one card
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
@@ -550,7 +550,7 @@ public class FunctionalTests
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForHand")))
 			.getOptions().get(1).click();
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(2000);
+		Thread.sleep(4000);
 
 		// Verify that there is one more card in the graveyard
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
@@ -563,7 +563,7 @@ public class FunctionalTests
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForHand")))
 			.getOptions().get(2).click();
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(2000);
+		Thread.sleep(4000);
 
 		// Verify that there is one more card in the exile and that it is
 		// visible
@@ -575,7 +575,7 @@ public class FunctionalTests
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForExile")))
 			.getOptions().get(1).click();
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitExile")).click();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 
 		// Verify that there is one more card in the graveyard
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
@@ -593,7 +593,7 @@ public class FunctionalTests
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForHand")))
 			.getOptions().get(2).click();
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 
 		// Verify that there is one more card in the exile
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("exile-page-wrap")).isEmpty());
@@ -612,7 +612,7 @@ public class FunctionalTests
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForExile")))
 			.getOptions().get(0).click();
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitExile")).click();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 
 		// Verify that there are 2 cards on the battlefield
 		assertEquals(2,
@@ -651,7 +651,7 @@ public class FunctionalTests
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		FunctionalTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
-		Thread.sleep(60000);
+        Thread.sleep(15000);
 
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 			.executeScript(FunctionalTests.SCROLL_DOWN);
