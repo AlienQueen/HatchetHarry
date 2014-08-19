@@ -275,7 +275,7 @@ public class FunctionalTests
 
 		// Find first hand card name of Chrome1
 		final String battlefieldCardName = FunctionalTests.chromeDriver2
-			.findElements(By.cssSelector(".cross-link:nth-child(1) img")).get(0)
+			.findElements(By.cssSelector("active-thumb-Hand img")).get(0)
 			.getAttribute("name");
 
 		// Play a card in chrome
