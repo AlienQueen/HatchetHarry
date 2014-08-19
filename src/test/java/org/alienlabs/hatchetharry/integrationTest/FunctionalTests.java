@@ -27,7 +27,7 @@ public class FunctionalTests
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FunctionalTests.class);
 
-	private static final String PORT = "8080";
+	private static final String PORT = "8088";
 	private static final String HOST = "localhost";
 	private static final Server server = new Server();
 
