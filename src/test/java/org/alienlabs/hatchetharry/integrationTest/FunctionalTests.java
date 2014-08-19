@@ -212,7 +212,7 @@ public class FunctionalTests
 		}
 		catch (Exception e)
 		{
-            FunctionalTests.LOGGER.error("Error in stopping EMBEDDED JETTY SERVER, e");
+			FunctionalTests.LOGGER.error("Error in stopping EMBEDDED JETTY SERVER, e");
 		}
 	}
 
@@ -274,9 +274,8 @@ public class FunctionalTests
 			.size());
 
 		// Find first hand card name of Chrome1
-		final String battlefieldCardName = FunctionalTests.chromeDriver2
-			.findElements(By.cssSelector("active-thumb-Hand img")).get(0)
-			.getAttribute("name");
+        final String battlefieldCardName = FunctionalTests.chromeDriver2
+			.findElements(By.cssSelector(".active-thumb-Hand img")).get(0).getAttribute("name");
 
 		// Play a card in chrome
 		Thread.sleep(2500);
