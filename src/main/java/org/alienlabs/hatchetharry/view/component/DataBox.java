@@ -64,6 +64,9 @@ public class DataBox extends Panel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
+                    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+                            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
+                            justification="There's no other way round")
 					protected void onSubmit(final AjaxRequestTarget target) {
 						super.onSubmit(target);
 						DataBox.LOGGER.info(this.getDefaultModelObject().toString());

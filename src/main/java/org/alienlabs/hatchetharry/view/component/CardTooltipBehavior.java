@@ -32,14 +32,15 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior {
 
 		final HashMap<String, String> variables = new HashMap<String, String>();
 		variables.put("url", this.getCallbackUrl().toString());
-		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+        String uuidValidForJs = this.uuid.toString().replace("-", "_");
+        variables.put("uuidValidForJs", uuidValidForJs);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 																	 "script/draggableHandle/cardTooltip.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), "cardTooltipScript"
-																					+ this.uuid.toString().replace("-", "_")));
+																					+ uuidValidForJs));
 		try {
 			template.close();
 		} catch (final IOException e) {

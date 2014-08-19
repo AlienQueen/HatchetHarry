@@ -199,6 +199,9 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
+            justification="So you're saying I can't log the same thing in two different methods????")
 	public MagicCard getCardFromUuid(final UUID uuid) {
 		final Session session = this.magicCardDao.getSession();
 		final Query query = session
@@ -232,6 +235,9 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
+            justification="So you're saying I can't log the same thing in two different methods????")
 	public Token getTokenFromUuid(final UUID uuid) {
 		final Session session = this.tokenDao.getSession();
 		final Query query = session.createQuery("from Token token0 where token0.uuid= ? ");

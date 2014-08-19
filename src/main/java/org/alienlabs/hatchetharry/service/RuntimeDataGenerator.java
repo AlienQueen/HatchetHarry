@@ -71,6 +71,9 @@ public class RuntimeDataGenerator implements Serializable {
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
+            justification="the difference is in fake.setDeckArchive()")
 	public Deck generateData(final Long gameId, final Long playerId) throws IOException {
 		if (null == this.persistenceService.getCardFromUuid(UUID
 																	.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"))) {
@@ -97,12 +100,6 @@ public class RuntimeDataGenerator implements Serializable {
 			final File _deck = new File(ResourceBundle.getBundle(
 																		RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 			final byte[] content = new byte[475];
-
-			final FileInputStream fis = new FileInputStream(_deck);
-			if (fis.read(content) == -1) {
-				fis.close();
-			}
-			fis.close();
 
 			final String deckContent = new String(content, "UTF-8");
 			this.importDeckService.importDeck(deckContent, "Aura Bant", false);

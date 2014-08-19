@@ -93,6 +93,9 @@ public class DataGenerator implements InitializingBean {
 	}
 
 	@Override
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
+            justification="the difference is in fake.setDeckArchive()")
 	public void afterPropertiesSet() {
 		if ((this.generateCardCollection) && (this.cardCollectionDao.count() == 0)) {
 			try {

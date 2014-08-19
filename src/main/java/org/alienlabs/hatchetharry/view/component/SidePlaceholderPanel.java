@@ -40,7 +40,8 @@ public class SidePlaceholderPanel extends Panel {
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
-		sidePlaceholder.setMarkupId("sidePlaceholder" + this.uuid.toString().replace("-", "_"));
+        String uuidValidForJs = this.uuid.toString().replace("-", "_");
+        sidePlaceholder.setMarkupId("sidePlaceholder" + uuidValidForJs);
 		sidePlaceholder.add(new AttributeModifier("style", "position: absolute; top: "
 																   + mySide.getY() + "px; left: " + mySide.getX() + "px;"));
 		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
@@ -50,7 +51,7 @@ public class SidePlaceholderPanel extends Panel {
 
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setOutputMarkupId(true);
-		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
+		handleImage.setMarkupId("handleImage" + uuidValidForJs);
 
 		final String image = ("infrared".equals(this.side))
 									 ? "image/logobouclierrouge.png"

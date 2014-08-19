@@ -192,7 +192,6 @@ public class NonRegressionTest
 
 		PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(
 				0);
-		pcfhb = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(0);
 		Assert.assertNotNull(pcfhb);
 
 		NonRegressionTest.tester.getRequest().setParameter("card", card.getUuid());

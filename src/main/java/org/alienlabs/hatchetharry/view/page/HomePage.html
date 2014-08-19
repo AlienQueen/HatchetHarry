@@ -350,12 +350,13 @@
             </li>
 
             <li>
-                <a wicket:id="playCardLink" style="cursor: pointer; color: white;"
+                <img src="image/playCard.png"></img>
+                <a wicket:id="playCardLink" style="cursor: pointer; color: white; position: relative; top: -9px;"
                    title="Play the card currently shown in your hand">
                     Play
-                    <img src="image/playCard.png"></img>
+                    <img id="playCardIndicator" src="image/indicator.gif"
+                         style="position: absolute; float: right; top: 7px; left:39px;"></img>
                 </a>
-                <img id="playCardIndicator" src="image/indicator.gif" style="position: relative; float: right;"></img>
             </li>
 
             <li wicket:id="combatPlaceholder">

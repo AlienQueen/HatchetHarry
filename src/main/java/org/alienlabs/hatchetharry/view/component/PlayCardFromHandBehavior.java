@@ -158,8 +158,9 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior {
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuid", this.uuidToLookFor.toString());
-		variables.put("uuidValidForJs", this.uuidToLookFor.toString().replace("-", "_"));
+        String uuidAsString = this.uuidToLookFor.toString();
+        variables.put("uuid", uuidAsString);
+		variables.put("uuidValidForJs", uuidAsString.replace("-", "_"));
 		variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));
 		variables.put("side", this.side);
 

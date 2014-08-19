@@ -51,12 +51,12 @@ public class SpringContextLoaderBaseTest
 				.add(new SpringComponentInjector(this, SpringContextLoaderBaseTest.context,
 								true));
 
-                this.getMarkupSettings().setStripWicketTags(false);
-
                 this.eventBus = new EventBus(this);
                 this.eventBus.addRegistrationListener(this);
                 this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
                 this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
+
+                this.getMarkupSettings().setStripWicketTags(false);
 			}
 		};
 		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp);
@@ -111,7 +111,7 @@ public class SpringContextLoaderBaseTest
 		_tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		_tester.executeBehavior(pcfhb);
-
+		// _tester.assertRenderedPage(HomePage.class);
 		// We still should not have more cards that the number of cards in the
 		// deck
 		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(

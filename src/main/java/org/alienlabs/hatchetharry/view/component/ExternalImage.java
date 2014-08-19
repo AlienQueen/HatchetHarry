@@ -18,7 +18,7 @@ public class ExternalImage extends WebComponent {
 		super(id);
 		this.imageUrl = imageUrl;
 		this.add(AttributeModifier.replace("src", new Model<String>(this.imageUrl)));
-		this.setVisible(!((imageUrl == null) || imageUrl.equals("")));
+		this.setVisible(!((imageUrl == null) || "".equals(imageUrl)));
 	}
 
 	@Override

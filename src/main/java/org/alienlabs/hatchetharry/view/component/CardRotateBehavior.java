@@ -115,10 +115,11 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior {
 	public void renderHead(final Component component, final IHeaderResponse response) {
 		super.renderHead(component, response);
 
+        final String uuidAsString = this.uuid.toString();
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
-		variables.put("uuid", this.uuid.toString());
+		variables.put("uuidValidForJs", uuidAsString.replace("-", "_"));
+		variables.put("uuid", uuidAsString);
 		variables.put("tapped", this.tapped);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,

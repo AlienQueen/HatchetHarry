@@ -1,5 +1,9 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -23,28 +27,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
-
-public class CardPanel extends Panel {
+public class CardPanel extends Panel
+{
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardPanel.class);
-
-	@SpringBean
-	PersistenceService persistenceService;
-
 	final UUID uuid;
-
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 	private final DestroyTokenBehavior destroyTokenBehavior;
-
+	@SpringBean
+	PersistenceService persistenceService;
 	private Player owner;
 
-
-	public CardPanel(final String id, final String smallImage, final UUID _uuid, final Player _owner) {
+	public CardPanel(final String id, final String smallImage, final UUID _uuid, final Player _owner)
+	{
 		super(id);
 		Injector.get().inject(this);
 
@@ -53,16 +51,18 @@ public class CardPanel extends Panel {
 
 		this.setOutputMarkupId(true);
 
-		this.add(new Behavior() {
+		this.add(new Behavior()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void renderHead(final Component component, final IHeaderResponse response) {
+			public void renderHead(final Component component, final IHeaderResponse response)
+			{
 				super.renderHead(component, response);
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-																									  HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
+					HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-																							   HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
+					HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
 			}
 		});
 
@@ -70,15 +70,25 @@ public class CardPanel extends Panel {
 
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
 		cardHandle.setOutputMarkupId(true);
-		cardHandle.setMarkupId("cardHandle" + this.uuid.toString().replace("-", "_"));
+		String uuidValidForJs = this.uuid.toString().replace("-", "_");
+		cardHandle.setMarkupId("cardHandle" + uuidValidForJs);
 		cardHandle.add(new AttributeModifier("style", "position: absolute; top: "
-															  + this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
-															  + "px;  z-index: 1;"));
+			+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
+			+ "px;  z-index: 1;"));
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
+
+        if ("baldu".equals(id))
+		{
+			cardHandle.add(new AttributeModifier("class", "baldu"));
+		}
+		else
+		{
+			cardHandle.add(new AttributeModifier("class", "magicCard"));
+		}
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
-		menutoggleButton.setMarkupId("menutoggleButton" + this.uuid.toString().replace("-", "_"));
+		menutoggleButton.setMarkupId("menutoggleButton" + uuidValidForJs);
 
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
@@ -87,7 +97,7 @@ public class CardPanel extends Panel {
 		menutoggleButton.add(this.putToHandFromBattlefieldBehavior);
 
 		this.putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(
-																									  this.uuid);
+			this.uuid);
 		menutoggleButton.add(this.putToGraveyardFromBattlefieldBehavior);
 
 		this.putToExileFromBattlefieldBehavior = new PutToExileFromBattlefieldBehavior(this.uuid);
@@ -97,27 +107,27 @@ public class CardPanel extends Panel {
 		menutoggleButton.add(this.destroyTokenBehavior);
 
 		final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this, this.uuid,
-																			  this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior,
-																			  this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior, myCard.getX()
-																																						 .longValue() == -1l ? this.owner.getSide().getX().longValue() : myCard
-																																																								 .getX().longValue(), myCard.getY().longValue() == -1l ? this.owner
-																																																																								 .getSide().getY().longValue() : myCard.getY().longValue());
+			this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior,
+			this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior, myCard.getX()
+				.longValue() == -1l ? this.owner.getSide().getX().longValue() : myCard.getX()
+				.longValue(), myCard.getY().longValue() == -1l ? this.owner.getSide().getY()
+				.longValue() : myCard.getY().longValue());
 		menutoggleButton.add(cardMoveBehavior);
 
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid,
-																					myCard.isTapped());
+			myCard.isTapped());
 
 		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(this.uuid, myCard,
-																			  this.owner);
+			this.owner);
 		menutoggleButton.add(cardRotateBehavior, drawModeBehavior);
 
 		final ArrowDrawBehavior arrowDrawBehavior = new ArrowDrawBehavior("cardHandle"
-																				  + this.uuid.toString().replace("-", "_"));
+			+ uuidValidForJs);
 		menutoggleButton.add(arrowDrawBehavior);
 
 		final String requestedSessionId = this.getHttpServletRequest().getRequestedSessionId();
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-																										  requestedSessionId));
+			requestedSessionId));
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
@@ -131,77 +141,90 @@ public class CardPanel extends Panel {
 		mouseY.setOutputMarkupId(true);
 
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
-		handleImage.setMarkupId("handleImage" + this.uuid.toString().replace("-", "_"));
+		handleImage.setMarkupId("handleImage" + uuidValidForJs);
 		handleImage.setOutputMarkupId(true);
 
 		final ExternalImage tapHandleImage = new ExternalImage("tapHandleImage",
-																	  "image/rightArrow.png");
-		tapHandleImage.setMarkupId("tapHandleImage" + this.uuid.toString().replace("-", "_"));
+			"image/rightArrow.png");
+		tapHandleImage.setMarkupId("tapHandleImage" + uuidValidForJs);
 		tapHandleImage.setOutputMarkupId(true);
 
 		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
-		bullet.setOutputMarkupId(true).setMarkupId(
-														  "bullet" + this.uuid.toString().replace("-", "_"));
+		bullet.setOutputMarkupId(true).setMarkupId("bullet" + uuidValidForJs);
 
 		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
 		cardImage.setOutputMarkupId(true);
-		cardImage.setMarkupId("card" + this.uuid.toString().replace("-", "_"));
+		cardImage.setMarkupId("card" + uuidValidForJs);
 		cardImage.add(new AttributeModifier("class", "clickableCard"));
 
 		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
-		if (null != this.owner) {
-			if ("infrared".equals(this.owner.getSide().getSideName())) {
+		if (null != this.owner)
+		{
+			if ("infrared".equals(this.owner.getSide().getSideName()))
+			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
 				handleImage.add(new AttributeModifier("style", "border: 1px red dotted;"));
-			} else if ("ultraviolet".equals(this.owner.getSide().getSideName())) {
+			}
+			else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
+			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 				handleImage.add(new AttributeModifier("style", "border: 1px purple dotted;"));
 			}
-		} else {
+		}
+		else
+		{
 			cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
 			handleImage.add(new AttributeModifier("style", "border: 1px yellow dotted;"));
 		}
 
 		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
 		contextMenu.setOutputMarkupId(true);
-		contextMenu.setMarkupId("contextMenu" + this.uuid.toString().replace("-", "_"));
+		contextMenu.setMarkupId("contextMenu" + uuidValidForJs);
 
 		final WebMarkupContainer card = new WebMarkupContainer("card");
 		final WebMarkupContainer token = new WebMarkupContainer("token");
 		contextMenu.add(card, token);
 
-		if (null == myCard.getToken()) {
+		if (null == myCard.getToken())
+		{
 			token.setVisible(false);
-		} else {
+		}
+		else
+		{
 			card.setVisible(false);
 		}
 
 		form.add(jsessionid, mouseX, mouseY, handleImage, bullet, cardImage, tapHandleImage,
-						contextMenu);
+			contextMenu);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 		this.add(cardHandle);
 	}
 
-	public HttpServletRequest getHttpServletRequest() {
+	public HttpServletRequest getHttpServletRequest()
+	{
 		final Request servletWebRequest = this.getRequest();
-		return (HttpServletRequest) servletWebRequest.getContainerRequest();
+		return (HttpServletRequest)servletWebRequest.getContainerRequest();
 	}
 
-	public UUID getUuid() {
+	public UUID getUuid()
+	{
 		return this.uuid;
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 
-	public PutToGraveyardFromBattlefieldBehavior getPutToGraveyardFromBattlefieldBehavior() {
+	public PutToGraveyardFromBattlefieldBehavior getPutToGraveyardFromBattlefieldBehavior()
+	{
 		return this.putToGraveyardFromBattlefieldBehavior;
 	}
 
-	public PutToHandFromBattlefieldBehavior getPutToHandFromBattlefieldBehavior() {
+	public PutToHandFromBattlefieldBehavior getPutToHandFromBattlefieldBehavior()
+	{
 		return this.putToHandFromBattlefieldBehavior;
 	}
 
