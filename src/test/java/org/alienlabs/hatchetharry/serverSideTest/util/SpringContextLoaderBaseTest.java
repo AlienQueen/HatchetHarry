@@ -57,6 +57,7 @@ public class SpringContextLoaderBaseTest
                 this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
 
                 this.getMarkupSettings().setStripWicketTags(false);
+				this.getDebugSettings().setOutputComponentPath(true);
 			}
 		};
 		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp);

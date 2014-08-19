@@ -34,10 +34,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CreateTokenModalWindow extends Panel {
-	private static final long serialVersionUID = 1L;
-
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateTokenModalWindow.class);
-
+	private static final long serialVersionUID = 1L;
 	final ModalWindow modal;
 
 	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
