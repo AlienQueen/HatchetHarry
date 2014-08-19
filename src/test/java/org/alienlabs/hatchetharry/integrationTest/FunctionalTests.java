@@ -349,7 +349,7 @@ public class FunctionalTests
 		WebElement to = FunctionalTests.chromeDriver1.findElement(By.id("putToGraveyard"));
 		new Actions(FunctionalTests.chromeDriver1).dragAndDrop(draggable, to).build().perform();
 
-		Thread.sleep(7500);
+		Thread.sleep(10000);
 
 		// Assert graveyard is visible and contains one card
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
