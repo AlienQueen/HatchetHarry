@@ -316,7 +316,7 @@ public class FunctionalTests
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
 		FunctionalTests.chromeDriver2.findElements(By.cssSelector("img[id^='tapHandleImage']"))
 			.get(0).click();
-		Thread.sleep(2000);
+		Thread.sleep(7500);
 
 		// Verify card is tapped
 		assertTrue(FunctionalTests.chromeDriver2.findElements(By.cssSelector(".clickableCard"))
