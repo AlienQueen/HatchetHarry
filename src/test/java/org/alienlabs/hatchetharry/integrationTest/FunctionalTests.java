@@ -284,7 +284,7 @@ public class FunctionalTests
 			.executeScript(FunctionalTests.CLICK_PLAY_CARD_LINK);
 
 		// Verify that the hand contains only 6 cards, now
-		Thread.sleep(5000);
+		Thread.sleep(7500);
 		assertEquals(6, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".movers-row"))
 			.size());
 
