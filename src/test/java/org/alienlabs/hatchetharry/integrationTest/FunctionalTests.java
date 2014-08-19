@@ -149,7 +149,8 @@ public class FunctionalTests
 		+ "		break;\n"
 		+ "	} else {\n"
 		+ "		window.scrollBy(0,1);\n}\n}";
-	private static final String SCROLL_DOWN = "window.scrollBy(0,50);";
+    private static final String SCROLL_DOWN = "window.scrollBy(0,50);";
+	private static final String CLICK_PLAY_CARD_LINK = "$('#playCardLink0').click();";
 
 	private static WebDriver chromeDriver1;
 	private static WebDriver chromeDriver2;
@@ -274,12 +275,13 @@ public class FunctionalTests
 			.size());
 
 		// Find first hand card name of Chrome1
-        final String battlefieldCardName = FunctionalTests.chromeDriver2
+		final String battlefieldCardName = FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".active-thumb-Hand img")).get(0).getAttribute("name");
 
 		// Play a card in chrome
 		Thread.sleep(2500);
-		FunctionalTests.chromeDriver2.findElement(By.id("playCardLink0")).click();
+		((JavascriptExecutor)FunctionalTests.chromeDriver2)
+			.executeScript(FunctionalTests.CLICK_PLAY_CARD_LINK);
 
 		// Verify that the hand contains only 6 cards, now
 		Thread.sleep(3000);
