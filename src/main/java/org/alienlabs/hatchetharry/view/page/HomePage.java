@@ -2257,7 +2257,7 @@ public class HomePage extends TestReportPage {
         for (int i = 0; i < this.getAllTooltips().size(); i++) {
             final MagicCard targetCard = this.getAllTooltips().getItem(i).getModelObject();
 
-            if ((targetCard != null) && (mc != null) && (targetCard.getUuid().equals(mc.getUuid()))) {
+            if ((targetCard != null) && (targetCard.getUuid().equals(mc.getUuid()))) {
                 this.getAllTooltipsInBattlefield().remove(
                         this.getAllTooltips().getItem(i).getModelObject());
                 this.getAllTooltips().remove(this.getAllTooltips().getItem(i));
