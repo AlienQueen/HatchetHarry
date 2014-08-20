@@ -221,3 +221,10 @@ jQuery(function () {
         jQuery('#playCardIndicator').hide();
     }, 250);
 });
+
+jQuery(function () {
+    window.localStorage.setItem('org.doubango.expert.disable_video', "true");
+    window.localStorage.setItem('org.doubango.expert.enable_rtcweb_breaker', "true");
+    window.localStorage.setItem('org.doubango.expert.enable_media_caching', "true");
+    window.localStorage.setItem('org.doubango.expert.disable_callbtn_options', "true");
+});
