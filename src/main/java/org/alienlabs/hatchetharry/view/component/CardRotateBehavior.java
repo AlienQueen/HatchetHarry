@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
@@ -17,6 +16,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -91,18 +91,9 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 			ConsoleLogType.TAP_UNTAP, null, null, Boolean.valueOf(card.isTapped()),
 			card.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
 			null, gameId);
-
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-				playerToWhomToSend);
-			final CardRotateCometChannel crcc = new CardRotateCometChannel(gameId, card,
-				card.getUuid(), card.isTapped());
-			HatchetHarryApplication.get().getEventBus().post(crcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus()
-				.post(new ConsoleLogCometChannel(logger), pageUuid);
-		}
+		final CardRotateCometChannel crcc = new CardRotateCometChannel(gameId, card,
+			card.getUuid(), card.isTapped());
+		EventBusPostService.post(allPlayersInGame, crcc, new ConsoleLogCometChannel(logger));
 	}
 
 	@Override

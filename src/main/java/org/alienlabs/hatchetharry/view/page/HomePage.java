@@ -97,6 +97,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
 import org.alienlabs.hatchetharry.view.component.AskMulliganModalWindow;
@@ -269,19 +270,12 @@ public class HomePage extends TestReportPage
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.END_GAME_ACTION, null, null, this.session.getPlayer().getName(),
 				null, null, null, null, "");
+
 			final List<BigInteger> allPlayersInGameExceptMe = this.persistenceService
 				.giveAllPlayersFromGameExceptMe(this.session.getGameId(), this.session.getPlayer()
 					.getId());
-
-			for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
-			{
-				final Long playerToWhomToSend = allPlayersInGameExceptMe.get(i).longValue();
-				final String pageUuid = HatchetHarryApplication.getCometResources().get(
-					playerToWhomToSend);
-				HatchetHarryApplication.get().getEventBus()
-					.post(new ConsoleLogCometChannel(logger), pageUuid);
-				HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-			}
+			EventBusPostService.post(allPlayersInGameExceptMe, new ConsoleLogCometChannel(logger),
+				ncc);
 
 			this.session.reinitSession();
 			throw new RestartResponseException(HomePage.class);
@@ -338,7 +332,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.10.0 (release Test It All),");
-		final Label message2 = new Label("message2", "built on Tuesday, 19th of August 2014.");
+		final Label message2 = new Label("message2", "built on Thursday, 21st of August 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -637,25 +631,17 @@ public class HomePage extends TestReportPage
 				final RevealHandCometChannel rhcc = new RevealHandCometChannel(gameId,
 					HomePage.this.session.getPlayer().getId(), HomePage.this.session.getPlayer()
 						.getDeck().getDeckId());
+				EventBusPostService.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(
+					logger), rhcc);
 
-				for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
+				final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
 				{
-					final Long playerToWhomToSend = allPlayersInGameExceptMe.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-
-
-					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-					HatchetHarryApplication.get().getEventBus().post(rhcc, pageUuid);
-				}
-
-				final String myPageUuid = HatchetHarryApplication.getCometResources().get(
-					HomePage.this.session.getPlayer().getId());
-				HatchetHarryApplication.get().getEventBus().post(ncc, myPageUuid);
-				HatchetHarryApplication.get().getEventBus()
-					.post(new ConsoleLogCometChannel(logger), myPageUuid);
+					{
+						this.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()));
+					}
+				};
+				EventBusPostService.post(playerToWhomToSend, ncc,
+					new ConsoleLogCometChannel(logger));
 			}
 
 		});
@@ -704,23 +690,6 @@ public class HomePage extends TestReportPage
 				_player.setHandDisplayed(!isHandDisplayed);
 				HomePage.this.persistenceService.mergePlayer(_player);
 			}
-
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
-			{
-				super.onComponentTag(tag);
-
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-					|| tag.getName().equalsIgnoreCase("area"))
-				{
-					tag.put("href", "#");
-				}
-				else
-				{
-					this.disableLink(tag);
-				}
-
-			}
 		};
 
 		this.add(showHandLink);
@@ -744,17 +713,8 @@ public class HomePage extends TestReportPage
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 					.giveAllPlayersFromGame(HomePage.this.session.getGameId());
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-					final SwitchDrawModeCometChannel sdmcc = new SwitchDrawModeCometChannel(
-						g.isDrawMode());
-
-					HatchetHarryApplication.get().getEventBus().post(sdmcc, pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame,
+					new SwitchDrawModeCometChannel(g.isDrawMode()));
 			}
 
 			@Override
@@ -762,8 +722,8 @@ public class HomePage extends TestReportPage
 			{
 				super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-					|| tag.getName().equalsIgnoreCase("area"))
+				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "#");
 				}
@@ -815,8 +775,8 @@ public class HomePage extends TestReportPage
 			{
 				super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-					|| tag.getName().equalsIgnoreCase("area"))
+				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "#");
 				}
@@ -870,8 +830,8 @@ public class HomePage extends TestReportPage
 			{
 				super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-					|| tag.getName().equalsIgnoreCase("area"))
+				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "#");
 				}
@@ -906,23 +866,12 @@ public class HomePage extends TestReportPage
 					ConsoleLogType.END_OF_TURN, null, null, null, null, HomePage.this.session
 						.getPlayer().getName(), null, null, null, false, HomePage.this.session
 						.getGameId());
-
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+					NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me.getSide()
+						.getSideName(), null, null, null, "");
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 					.giveAllPlayersFromGame(gameId);
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-					final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
-							.getSide().getSideName(), null, null, null, "");
-
-					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 
 				HomePage.this.session.setCombatInProgress(false);
 			}
@@ -951,22 +900,13 @@ public class HomePage extends TestReportPage
 					.getGameId());
 
 				final Player me = HomePage.this.session.getPlayer();
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+					NotifierAction.IN_RESPONSE_ACTION, null, null, me.getName(), null, null, null,
+					null, "");
+
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 					.giveAllPlayersFromGame(game.getId());
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-					// TODO: the NotifierCometChannel should not be instantiated
-					// in the loop
-					final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.IN_RESPONSE_ACTION, null, null, me.getName(), null, null,
-						null, null, "");
-
-					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame, ncc);
 
 			}
 
@@ -994,22 +934,13 @@ public class HomePage extends TestReportPage
 					.getGameId());
 
 				final Player me = HomePage.this.session.getPlayer();
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+					NotifierAction.FINE_FOR_ME_ACTION, null, null, me.getName(), null, null, null,
+					null, "");
+
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 					.giveAllPlayersFromGame(game.getId());
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-					// TODO: the NotifierCometChannel should not be instantiated
-					// in the loop
-					final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.FINE_FOR_ME_ACTION, null, null, me.getName(), null, null,
-						null, null, "");
-
-					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame, ncc);
 			}
 		};
 
@@ -1060,24 +991,12 @@ public class HomePage extends TestReportPage
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 					ConsoleLogType.TAP_UNTAP, null, null, null, null, HomePage.this.session
 						.getPlayer().getName(), null, null, null, false, gameId);
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-
-					// TODO: the UntapAllCometChannel should not be instantiated
-					// in the loop
-					final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
-						HomePage.this.session.getPlayer().getId(), HomePage.this.session
-							.getPlayer().getDeck().getDeckId(), HomePage.this.session.getPlayer()
-							.getName(), allCards);
-					HatchetHarryApplication.get().getEventBus().post(uacc, pageUuid);
-
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-				}
+				final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
+					HomePage.this.session.getPlayer().getId(), HomePage.this.session.getPlayer()
+						.getDeck().getDeckId(), HomePage.this.session.getPlayer().getName(),
+					allCards);
+				EventBusPostService
+					.post(allPlayersInGame, uacc, new ConsoleLogCometChannel(logger));
 			}
 
 		};
@@ -1250,18 +1169,7 @@ public class HomePage extends TestReportPage
 					null, HomePage.this.session.getPlayer().getName(), null, null, null, false,
 					gameId);
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-
-
-					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-				}
-
+				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
 		};
 		combatLink.setMarkupId("combatLink");
@@ -1318,27 +1226,17 @@ public class HomePage extends TestReportPage
 							.getAllCardsInLibraryForDeckAndPlayer(gameId, me.getId(), d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(library);
 
-					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(gameId);
-
 					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.DRAW_CARD, null, null, null, null, HomePage.this.session
 							.getPlayer().getName(), null, null, null, null, gameId);
+					final NotifierCometChannel ncc = new NotifierCometChannel(
+						NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
+							.getSide().getSideName(), null, null, null, "");
 
-					for (int i = 0; i < allPlayersInGame.size(); i++)
-					{
-						final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-						final String pageUuid = HatchetHarryApplication.getCometResources().get(
-							playerToWhomToSend);
-
-						final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, null, "");
-
-						HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-						HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
-                    }
+					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+						.giveAllPlayersFromGame(gameId);
+					EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(
+						logger));
 				}
 				else
 				{
@@ -1352,8 +1250,8 @@ public class HomePage extends TestReportPage
 			{
 				super.onComponentTag(tag);
 
-				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
-					|| tag.getName().equalsIgnoreCase("area"))
+				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "");
 				}
@@ -1833,16 +1731,8 @@ public class HomePage extends TestReportPage
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 					.giveAllPlayersFromGame(gameId);
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-
-					HatchetHarryApplication.get().getEventBus().post(chan, pageUuid);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-				}
+				EventBusPostService
+					.post(allPlayersInGame, chan, new ConsoleLogCometChannel(logger));
 			}
 		};
 
@@ -1902,20 +1792,12 @@ public class HomePage extends TestReportPage
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 
 				final Long gameId = HomePage.this.session.getGameId();
+				final CountCardsCometChannel cccc = new CountCardsCometChannel(gameId,
+					HomePage.this.session.getPlayer().getName());
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 					.giveAllPlayersFromGame(gameId);
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-					final CountCardsCometChannel cccc = new CountCardsCometChannel(gameId,
-						HomePage.this.session.getPlayer().getName());
-
-					HatchetHarryApplication.get().getEventBus().post(cccc, pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame, cccc);
 			}
 		};
 
@@ -1982,25 +1864,7 @@ public class HomePage extends TestReportPage
 					ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
 					playerWhoDiscards.getName(), null, null, null, false, gameId);
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-
-					// For unit tests: for Christ sake, Emond, do something for
-					// us!
-					try
-					{
-						HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-						HatchetHarryApplication.get().getEventBus()
-							.post(new ConsoleLogCometChannel(logger), pageUuid);
-					}
-					catch (final NullPointerException e)
-					{
-						// Nothing to do here: unit tests
-					}
-				}
+				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
 		};
 
@@ -2087,21 +1951,14 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				final Long gameId = HomePage.this.session.getGameId();
-				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-					.giveAllPlayersFromGame(gameId);
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 					ConsoleLogType.INSERT_DIVISION, null, null, null, null, HomePage.this.session
 						.getPlayer().getName(), null, null, null, null, gameId);
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-				}
+				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
+					.giveAllPlayersFromGame(gameId);
+				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger));
 			}
 		};
 
@@ -2145,15 +2002,7 @@ public class HomePage extends TestReportPage
 
 				HomePage.this.persistenceService.saveOrUpdateAllMagicCards(allCardsInLibrary);
 
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						playerToWhomToSend);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-					HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger), ncc);
 			}
 		};
 
@@ -3286,12 +3135,6 @@ public class HomePage extends TestReportPage
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 			}
-
-			@Override
-			protected void onBeforeRender()
-			{
-				super.onBeforeRender();
-			}
 		};
 		this.allCardsInBattlefield.setOutputMarkupId(true);
 
@@ -3326,12 +3169,6 @@ public class HomePage extends TestReportPage
 
 					item.add(cardBubbleTip);
 				}
-			}
-
-			@Override
-			protected void onBeforeRender()
-			{
-				super.onBeforeRender();
 			}
 		};
 
@@ -3396,12 +3233,6 @@ public class HomePage extends TestReportPage
 					// don't use a SidePlaceholderPanel
 					item.add(new WebMarkupContainer("side"));
 				}
-			}
-
-			@Override
-			protected void onBeforeRender()
-			{
-				super.onBeforeRender();
 			}
 		};
 	}

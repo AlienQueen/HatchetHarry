@@ -16,15 +16,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class UserPreferencesModalWindow extends Panel {
-	private static final long serialVersionUID = 1L;
-
+public class UserPreferencesModalWindow extends Panel
+{
 	static final Logger LOGGER = LoggerFactory.getLogger(UserPreferencesModalWindow.class);
-
+	private static final long serialVersionUID = 1L;
 	@SpringBean
 	PersistenceService persistenceService;
 
-	public UserPreferencesModalWindow(final String id, final Long gameId, final ModalWindow window) {
+	public UserPreferencesModalWindow(final String id, final Long gameId, final ModalWindow window)
+	{
 		super(id);
 
 		final Form<String> form = new Form<String>("form");
@@ -32,8 +32,8 @@ public class UserPreferencesModalWindow extends Panel {
 		final User user;
 
 		if ((null == HatchetHarrySession.get().getUsername())
-					|| (null == this.persistenceService
-										.getUser(HatchetHarrySession.get().getUsername()))) {
+			|| (null == this.persistenceService.getUser(HatchetHarrySession.get().getUsername())))
+		{
 			user = new User();
 			user.setLogin("");
 			user.setPrivateIdentity("");
@@ -43,7 +43,9 @@ public class UserPreferencesModalWindow extends Panel {
 			user.setFacebook(true);
 			user.setUsername("");
 			user.setRealm("");
-		} else {
+		}
+		else
+		{
 			user = this.persistenceService.getUser(HatchetHarrySession.get().getUsername());
 		}
 
@@ -52,11 +54,11 @@ public class UserPreferencesModalWindow extends Panel {
 
 		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
 		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
-																							   "privateIdentity", privateIdentityModel);
+			"privateIdentity", privateIdentityModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
 		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
-																						identityModel);
+			identityModel);
 
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
@@ -64,12 +66,15 @@ public class UserPreferencesModalWindow extends Panel {
 		final Model<String> realmModel = Model.of(user.getRealm());
 		final RequiredTextField<String> realm = new RequiredTextField<String>("realm", realmModel);
 
-		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form) {
+		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
-				if (!"test".equals(loginModel.getObject())) {
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			{
+				if (!"test".equals(loginModel.getObject()))
+				{
 					user.setLogin(loginModel.getObject());
 					user.setPrivateIdentity(privateIdentityModel.getObject());
 					user.setIdentity(identityModel.getObject());
@@ -86,7 +91,8 @@ public class UserPreferencesModalWindow extends Panel {
 			}
 
 			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> _form) {
+			protected void onError(final AjaxRequestTarget target, final Form<?> _form)
+			{
 				UserPreferencesModalWindow.LOGGER.error("ERROR");
 			}
 		};
@@ -96,7 +102,8 @@ public class UserPreferencesModalWindow extends Panel {
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

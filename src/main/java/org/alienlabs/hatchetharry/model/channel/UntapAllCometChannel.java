@@ -1,10 +1,11 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import org.alienlabs.hatchetharry.model.MagicCard;
-
 import java.util.List;
 
-public class UntapAllCometChannel {
+import org.alienlabs.hatchetharry.model.MagicCard;
+
+public class UntapAllCometChannel
+{
 
 	private final Long gameId;
 	private final Long playerId;
@@ -13,7 +14,8 @@ public class UntapAllCometChannel {
 	private final List<MagicCard> cardsToUntap;
 
 	public UntapAllCometChannel(final Long _gameId, final Long _playerId, final Long _deckId,
-								final String _playerName, final List<MagicCard> _cardsToUntap) {
+		final String _playerName, final List<MagicCard> _cardsToUntap)
+	{
 		this.gameId = _gameId;
 		this.playerId = _playerId;
 		this.deckId = _deckId;
@@ -21,23 +23,28 @@ public class UntapAllCometChannel {
 		this.cardsToUntap = _cardsToUntap;
 	}
 
-	public Long getGameId() {
+	public Long getGameId()
+	{
 		return this.gameId;
 	}
 
-	public Long getPlayerId() {
+	public Long getPlayerId()
+	{
 		return this.playerId;
 	}
 
-	public Long getDeckId() {
+	public Long getDeckId()
+	{
 		return this.deckId;
 	}
 
-	public String getPlayerName() {
+	public String getPlayerName()
+	{
 		return this.playerName;
 	}
 
-	public List<MagicCard> getCardsToUntap() {
+	public List<MagicCard> getCardsToUntap()
+	{
 		return this.cardsToUntap;
 	}
 

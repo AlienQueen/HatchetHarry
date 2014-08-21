@@ -1,16 +1,18 @@
 package org.alienlabs.hatchetharry.model;
 
+import java.io.Serializable;
+
+import javax.persistence.*;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
 @Entity
-@Table(name = "Player", indexes = {@Index(columnList = "Player_Side"), @Index(columnList = "deck")})
+@Table(name = "Player", indexes = { @Index(columnList = "Player_Side"), @Index(columnList = "deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Player implements Serializable {
+public class Player implements Serializable
+{
 	private static final long serialVersionUID = 7963755937946852379L;
 
 	@Id
@@ -18,7 +20,7 @@ public class Player implements Serializable {
 	private Long playerId;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Game game = new Game();
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "Player_Side")
 	private Side side = new Side();
 	@Column
@@ -45,120 +47,149 @@ public class Player implements Serializable {
 	@Column
 	private String sideUuid;
 
-	public Long getId() {
+	public Long getId()
+	{
 		return this.playerId;
 	}
 
-	public void setId(final Long _id) {
+	public void setId(final Long _id)
+	{
 		this.playerId = _id;
 	}
 
-	public Side getSide() {
+	public Side getSide()
+	{
 		return this.side;
 	}
 
-	public void setSide(final Side _side) {
+	public void setSide(final Side _side)
+	{
 		this.side = _side;
 	}
 
-	public String getName() {
+	public String getName()
+	{
 		return this.name;
 	}
 
-	public void setName(final String _name) {
+	public void setName(final String _name)
+	{
 		this.name = _name;
 	}
 
-	public String getJsessionid() {
+	public String getJsessionid()
+	{
 		return this.jsessionid;
 	}
 
-	public void setJsessionid(final String _jsessionid) {
+	public void setJsessionid(final String _jsessionid)
+	{
 		this.jsessionid = _jsessionid;
 	}
 
-	public Long getLifePoints() {
+	public Long getLifePoints()
+	{
 		return this.lifePoints;
 	}
 
-	public void setLifePoints(final Long _lifePoints) {
+	public void setLifePoints(final Long _lifePoints)
+	{
 		this.lifePoints = _lifePoints;
 	}
 
-	public Game getGame() {
+	public Game getGame()
+	{
 		return this.game;
 	}
 
-	public void setGame(final Game _game) {
+	public void setGame(final Game _game)
+	{
 		this.game = _game;
 	}
 
-	public Deck getDeck() {
+	public Deck getDeck()
+	{
 		return this.deck;
 	}
 
-	public void setDeck(final Deck _deck) {
+	public void setDeck(final Deck _deck)
+	{
 		this.deck = _deck;
 	}
 
-	public Boolean isHandDisplayed() {
+	public Boolean isHandDisplayed()
+	{
 		return this.isHandDisplayed;
 	}
 
-	public void setHandDisplayed(final boolean _isHandDisplayed) {
+	public void setHandDisplayed(final boolean _isHandDisplayed)
+	{
 		this.isHandDisplayed = _isHandDisplayed;
 	}
 
-	public Boolean isGraveyardDisplayed() {
+	public Boolean isGraveyardDisplayed()
+	{
 		return this.isGraveyardDisplayed;
 	}
 
-	public void setGraveyardDisplayed(final boolean _isGraveyardDisplayed) {
+	public void setGraveyardDisplayed(final boolean _isGraveyardDisplayed)
+	{
 		this.isGraveyardDisplayed = _isGraveyardDisplayed;
 	}
 
-	public Boolean isExileDisplayed() {
+	public Boolean isExileDisplayed()
+	{
 		return this.isExileDisplayed;
 	}
 
-	public void setExileDisplayed(final boolean _isExileDisplayed) {
+	public void setExileDisplayed(final boolean _isExileDisplayed)
+	{
 		this.isExileDisplayed = _isExileDisplayed;
 	}
 
-	public CardZone getDefaultTargetZoneForHand() {
+	public CardZone getDefaultTargetZoneForHand()
+	{
 		return this.defaultTargetZoneForHand;
 	}
 
-	public void setDefaultTargetZoneForHand(final CardZone _defaultTargetZoneForHand) {
+	public void setDefaultTargetZoneForHand(final CardZone _defaultTargetZoneForHand)
+	{
 		this.defaultTargetZoneForHand = _defaultTargetZoneForHand;
 	}
 
-	public CardZone getDefaultTargetZoneForGraveyard() {
+	public CardZone getDefaultTargetZoneForGraveyard()
+	{
 		return this.defaultTargetZoneForGraveyard;
 	}
 
-	public void setDefaultTargetZoneForGraveyard(final CardZone _defaultTargetZoneForGraveyard) {
+	public void setDefaultTargetZoneForGraveyard(final CardZone _defaultTargetZoneForGraveyard)
+	{
 		this.defaultTargetZoneForGraveyard = _defaultTargetZoneForGraveyard;
 	}
 
-	public CardZone getDefaultTargetZoneForExile() {
+	public CardZone getDefaultTargetZoneForExile()
+	{
 		return this.defaultTargetZoneForExile;
 	}
 
-	public void setDefaultTargetZoneForExile(final CardZone _defaultTargetZoneForExile) {
+	public void setDefaultTargetZoneForExile(final CardZone _defaultTargetZoneForExile)
+	{
 		this.defaultTargetZoneForExile = _defaultTargetZoneForExile;
 	}
 
-	public String getSideUuid() {
+	public String getSideUuid()
+	{
 		return this.sideUuid;
 	}
 
-	public void setSideUuid(final String _sideUuid) {
+	public void setSideUuid(final String _sideUuid)
+	{
 		this.sideUuid = _sideUuid;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.deck == null) ? 0 : this.deck.hashCode());
@@ -169,43 +200,63 @@ public class Player implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
 			return true;
 		}
-		if (obj == null) {
+		if (obj == null)
+		{
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass())
+		{
 			return false;
 		}
-		final Player other = (Player) obj;
-		if (this.deck == null) {
-			if (other.deck != null) {
+		final Player other = (Player)obj;
+		if (this.deck == null)
+		{
+			if (other.deck != null)
+			{
 				return false;
 			}
-		} else if (!this.deck.equals(other.deck)) {
+		}
+		else if (!this.deck.equals(other.deck))
+		{
 			return false;
 		}
-		if (this.name == null) {
-			if (other.name != null) {
+		if (this.name == null)
+		{
+			if (other.name != null)
+			{
 				return false;
 			}
-		} else if (!this.name.equals(other.name)) {
+		}
+		else if (!this.name.equals(other.name))
+		{
 			return false;
 		}
-		if (this.playerId == null) {
-			if (other.playerId != null) {
+		if (this.playerId == null)
+		{
+			if (other.playerId != null)
+			{
 				return false;
 			}
-		} else if (!this.playerId.equals(other.playerId)) {
+		}
+		else if (!this.playerId.equals(other.playerId))
+		{
 			return false;
 		}
-		if (this.side == null) {
-			if (other.side != null) {
+		if (this.side == null)
+		{
+			if (other.side != null)
+			{
 				return false;
 			}
-		} else if (!this.side.equals(other.side)) {
+		}
+		else if (!this.side.equals(other.side))
+		{
 			return false;
 		}
 		return true;

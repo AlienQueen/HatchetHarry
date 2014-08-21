@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
@@ -101,14 +103,16 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
-			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-
-			final String _pageUuid = HatchetHarryApplication.getCometResources().get(
-				playerToWhomToSend);
+			final int index = i;
+			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
+			{
+				{
+					this.add(allPlayersInGame.get(index));
+				}
+			};
 
 			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
 				.getPlayerId());
-
 			final String targetPlayerName = targetPlayer.getName();
 			final Long targetDeckId = mc.getDeck().getDeckId();
 
@@ -122,18 +126,15 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 				session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
 				targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
 					.longValue()));
-
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
 				NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId, session
 					.getPlayer().getId(), session.getPlayer().getName(), "", "", mc.getTitle(),
 				null, targetPlayerName);
 
-			HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
-			HatchetHarryApplication.get().getEventBus()
-				.post(new ConsoleLogCometChannel(logger), _pageUuid);
+			EventBusPostService.post(playerToWhomToSend, _ptgcc, _ncc, new ConsoleLogCometChannel(
+				logger));
 		}
-    }
+	}
 
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)

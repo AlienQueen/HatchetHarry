@@ -1,17 +1,19 @@
 package org.alienlabs.hatchetharry.model;
 
+import java.io.Serializable;
+
+import javax.persistence.*;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
 @Entity
-@Table(name = "ConsoleLogMessage", uniqueConstraints = {@UniqueConstraint(columnNames = {"gameId",
-																								"message"})})
+@Table(name = "ConsoleLogMessage", uniqueConstraints = { @UniqueConstraint(columnNames = {
+		"gameId", "message" }) })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ConsoleLogMessage implements Serializable {
+public class ConsoleLogMessage implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -22,27 +24,33 @@ public class ConsoleLogMessage implements Serializable {
 	@Column(name = "message")
 	private String message;
 
-	public Long getId() {
+	public Long getId()
+	{
 		return this.id;
 	}
 
-	public void setId(final Long _id) {
+	public void setId(final Long _id)
+	{
 		this.id = _id;
 	}
 
-	public Long getGameId() {
+	public Long getGameId()
+	{
 		return this.gameId;
 	}
 
-	public void setGameId(final Long _gameId) {
+	public void setGameId(final Long _gameId)
+	{
 		this.gameId = _gameId;
 	}
 
-	public String getMessage() {
+	public String getMessage()
+	{
 		return this.message;
 	}
 
-	public void setMessage(final String _message) {
+	public void setMessage(final String _message)
+	{
 		this.message = _message;
 	}
 

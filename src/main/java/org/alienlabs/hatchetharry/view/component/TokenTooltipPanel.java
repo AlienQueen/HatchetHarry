@@ -12,35 +12,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class TokenTooltipPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+public class TokenTooltipPanel extends Panel
+{
 	static final Logger LOGGER = LoggerFactory.getLogger(TokenTooltipPanel.class);
-
+	private static final long serialVersionUID = 1L;
 	@SpringBean
 	PersistenceService persistenceService;
 
-	public TokenTooltipPanel(final String id, final Token token) {
+	public TokenTooltipPanel(final String id, final Token token)
+	{
 		super(id);
 		final String ownerSide = this.persistenceService.getPlayer(token.getPlayer().getId())
-										 .getSide().getSideName();
+			.getSide().getSideName();
 
 		final TokenTooltipBehavior ttb = new TokenTooltipBehavior(token.getUuid());
 		this.add(ttb);
 
-		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip") {
+		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(final AjaxRequestTarget target)
+			{
 				target.appendJavaScript("jQuery('.cardTooltip').attr('style', 'display: none;'); ");
 			}
 		};
 
-		if ("infrared".equals(ownerSide)) {
+		if ("infrared".equals(ownerSide))
+		{
 			this.add(new AttributeModifier("style", "border: 1px solid red;"));
-		} else if ("ultraviolet".equals(ownerSide)) {
+		}
+		else if ("ultraviolet".equals(ownerSide))
+		{
 			this.add(new AttributeModifier("style", "border: 1px solid purple;"));
-		} else {
+		}
+		else
+		{
 			this.add(new AttributeModifier("style", "border: 1px solid yellow;"));
 		}
 		this.add(closeTooltip);
@@ -58,7 +66,8 @@ public class TokenTooltipPanel extends Panel {
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

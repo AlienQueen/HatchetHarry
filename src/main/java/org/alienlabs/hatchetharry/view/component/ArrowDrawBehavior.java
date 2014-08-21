@@ -7,11 +7,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -66,18 +66,11 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		arrow.setTarget(arrowDrawTarget);
 		ArrowDrawBehavior.this.persistenceService.saveOrUpdateArrow(arrow);
 
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-				playerToWhomToSend);
-			final ArrowDrawCometChannel cacc = new ArrowDrawCometChannel(arrowDrawSource,
-				arrowDrawTarget);
-			HatchetHarryApplication.get().getEventBus().post(cacc, pageUuid);
-		}
+		EventBusPostService.post(allPlayersInGame, new ArrowDrawCometChannel(arrowDrawSource,
+			arrowDrawTarget));
 	}
 
-    @Override
+	@Override
 	public void renderHead(final Component component, final IHeaderResponse response)
 	{
 		super.renderHead(component, response);

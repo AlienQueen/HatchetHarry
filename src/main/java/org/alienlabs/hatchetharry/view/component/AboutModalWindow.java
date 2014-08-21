@@ -12,42 +12,46 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
-public class AboutModalWindow extends Panel {
+public class AboutModalWindow extends Panel
+{
 	private static final long serialVersionUID = -5432292812819537705L;
 
-	public AboutModalWindow(final String id, final ModalWindow _modal) {
+	public AboutModalWindow(final String id, final ModalWindow _modal)
+	{
 		super(id);
 
 		final Image img1 = new Image("img1", new PackageResourceReference(HomePage.class,
-																				 "image/logo.png"));
+			"image/logo.png"));
 
 		final Form<String> form = new Form<String>("form");
 
 		final Label text1 = new Label("text1", new Model<String>(
-																		"HatchetHarry is a Magic: the Gathering playing webapp."));
+			"HatchetHarry is a Magic: the Gathering playing webapp."));
 
 		final Label text2 = new Label(
-											 "text2",
-											 new Model<String>(
-																	  "It is free software licensed under the terms of the GNU Affero General Public License, version 3."));
+			"text2",
+			new Model<String>(
+				"It is free software licensed under the terms of the GNU Affero General Public License, version 3."));
 
 		final Label text3 = new Label(
-											 "text3",
-											 new Model<String>(
-																	  "You are free to modify any part of its source code (client-side or server-side), as long as the changes keep this license."));
+			"text3",
+			new Model<String>(
+				"You are free to modify any part of its source code (client-side or server-side), as long as the changes keep this license."));
 
 		final Label text4 = new Label("text4",
-											 new Model<String>("(c) 2011-2013 Zala Pierre GOUPIL"));
+			new Model<String>("(c) 2011-2013 Zala Pierre GOUPIL"));
 
 		final ExternalLink link = new ExternalLink("link", "http://www.gnu.org/licenses/agpl.html");
 		final ExternalLink whyLink = new ExternalLink("whyLink",
-															 "http://www.gnu.org/licenses/why-affero-gpl.html");
+			"http://www.gnu.org/licenses/why-affero-gpl.html");
 
-		final AjaxButton submit = new AjaxButton("submit", form) {
+		final AjaxButton submit = new AjaxButton("submit", form)
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			{
 				_modal.close(target);
 			}
 		};

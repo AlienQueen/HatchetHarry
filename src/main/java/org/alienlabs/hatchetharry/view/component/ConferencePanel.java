@@ -12,21 +12,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ConferencePanel extends Panel {
-	private static final long serialVersionUID = 1L;
+public class ConferencePanel extends Panel
+{
 	static final Logger LOGGER = LoggerFactory.getLogger(ConferencePanel.class);
-
+	private static final long serialVersionUID = 1L;
 	@SpringBean
 	PersistenceService persistenceService;
 
-	public ConferencePanel(final String id) {
+	public ConferencePanel(final String id)
+	{
 		super(id);
 
 		final User user;
 
 		if ((null == HatchetHarrySession.get().getUsername())
-					|| (null == this.persistenceService
-										.getUser(HatchetHarrySession.get().getUsername()))) {
+			|| (null == this.persistenceService.getUser(HatchetHarrySession.get().getUsername())))
+		{
 			ConferencePanel.LOGGER.info("#1");
 			user = new User();
 			user.setLogin("");
@@ -37,11 +38,14 @@ public class ConferencePanel extends Panel {
 			user.setFacebook(true);
 			user.setUsername("");
 			user.setRealm("");
-		} else if (null != this.persistenceService.getUser(HatchetHarrySession.get().getUsername())) {
+		}
+		else if (null != this.persistenceService.getUser(HatchetHarrySession.get().getUsername()))
+		{
 			user = this.persistenceService.getUser(HatchetHarrySession.get().getUsername());
 			ConferencePanel.LOGGER.info("#user: " + user);
 
-			if (null == user.getIdentity()) {
+			if (null == user.getIdentity())
+			{
 				user.setLogin("");
 				user.setPrivateIdentity("");
 				user.setPassword("");
@@ -51,7 +55,9 @@ public class ConferencePanel extends Panel {
 				user.setUsername("");
 				user.setRealm("");
 			}
-		} else {
+		}
+		else
+		{
 			ConferencePanel.LOGGER.info("#3");
 			user = new User();
 			user.setLogin("");
@@ -69,11 +75,11 @@ public class ConferencePanel extends Panel {
 
 		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
 		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
-																							   "privateIdentity", privateIdentityModel);
+			"privateIdentity", privateIdentityModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
 		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
-																						identityModel);
+			identityModel);
 
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
@@ -86,7 +92,8 @@ public class ConferencePanel extends Panel {
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

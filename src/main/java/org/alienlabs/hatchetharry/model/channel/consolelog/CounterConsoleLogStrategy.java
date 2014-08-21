@@ -2,7 +2,8 @@ package org.alienlabs.hatchetharry.model.channel.consolelog;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public class CounterConsoleLogStrategy extends ConsoleLogStrategy {
+public class CounterConsoleLogStrategy extends ConsoleLogStrategy
+{
 	private final String mc;
 	private final String player;
 	private final String counterName;
@@ -11,8 +12,9 @@ public class CounterConsoleLogStrategy extends ConsoleLogStrategy {
 	private final Long gameId;
 
 	public CounterConsoleLogStrategy(final String _mc, final String _player,
-									 final String _counterName, final Long _numberOfCounters,
-									 final String _targetPlayerName, final Long _gameId) {
+		final String _counterName, final Long _numberOfCounters, final String _targetPlayerName,
+		final Long _gameId)
+	{
 		super();
 		this.mc = _mc;
 		this.player = _player;
@@ -23,13 +25,17 @@ public class CounterConsoleLogStrategy extends ConsoleLogStrategy {
 	}
 
 	@Override
-	public void logToConsole(final AjaxRequestTarget target) {
+	public void logToConsole(final AjaxRequestTarget target)
+	{
 		String message = this.player + " has ";
 
-		if (this.numberOfCounters.longValue() != 0l) {
+		if (this.numberOfCounters.longValue() != 0l)
+		{
 			message += "put " + this.numberOfCounters.longValue() + " '" + this.counterName
-							   + "' counter(s) ";
-		} else {
+				+ "' counter(s) ";
+		}
+		else
+		{
 			message += "cleared '" + this.counterName + "' counters ";
 		}
 

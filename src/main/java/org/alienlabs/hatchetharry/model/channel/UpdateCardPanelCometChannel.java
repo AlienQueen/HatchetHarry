@@ -3,7 +3,8 @@ package org.alienlabs.hatchetharry.model.channel;
 import org.alienlabs.hatchetharry.model.MagicCard;
 
 
-public class UpdateCardPanelCometChannel {
+public class UpdateCardPanelCometChannel
+{
 
 	private final Long gameId;
 	private final String requestingPlayerName;
@@ -18,10 +19,11 @@ public class UpdateCardPanelCometChannel {
 	private final String ownerSide;
 
 	public UpdateCardPanelCometChannel(final Long _gameId, final String _requestingPlayerName,
-									   final String _targetPlayerName, final String _cardName, final String _counterName,
-									   final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
-									   final NotifierAction _action, final MagicCard _mc, final String _bigImage,
-									   final String _ownerSide) {
+		final String _targetPlayerName, final String _cardName, final String _counterName,
+		final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
+		final NotifierAction _action, final MagicCard _mc, final String _bigImage,
+		final String _ownerSide)
+	{
 		this.gameId = _gameId;
 		this.requestingPlayerName = _requestingPlayerName;
 		this.targetPlayerName = _targetPlayerName;
@@ -35,47 +37,58 @@ public class UpdateCardPanelCometChannel {
 		this.ownerSide = _ownerSide;
 	}
 
-	public Long getGameId() {
+	public Long getGameId()
+	{
 		return this.gameId;
 	}
 
-	public String getRequestingPlayerName() {
+	public String getRequestingPlayerName()
+	{
 		return this.requestingPlayerName;
 	}
 
-	public String getTargetPlayerName() {
+	public String getTargetPlayerName()
+	{
 		return this.targetPlayerName;
 	}
 
-	public String getCardName() {
+	public String getCardName()
+	{
 		return this.cardName;
 	}
 
-	public String getCounterName() {
+	public String getCounterName()
+	{
 		return this.counterName;
 	}
 
-	public Long getTargetNumberOfCounters() {
+	public Long getTargetNumberOfCounters()
+	{
 		return this.targetNumberOfCounters;
 	}
 
-	public NotifierAction getAction() {
+	public NotifierAction getAction()
+	{
 		return this.action;
 	}
 
-	public MagicCard getMagicCard() {
+	public MagicCard getMagicCard()
+	{
 		return this.mc;
 	}
 
-	public String getBigImage() {
+	public String getBigImage()
+	{
 		return this.bigImage;
 	}
 
-	public String getOwnerSide() {
+	public String getOwnerSide()
+	{
 		return this.ownerSide;
 	}
 
-	public Long getOriginalNumberOfCounters() {
+	public Long getOriginalNumberOfCounters()
+	{
 		return this.originalNumberOfCounters;
 	}
 

@@ -1,10 +1,10 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
@@ -18,6 +18,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -106,9 +107,13 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
-			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-				playerToWhomToSend);
+			final int index = i;
+			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
+			{
+				{
+					this.add(allPlayersInGame.get(index));
+				}
+			};
 
 			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
 				.getPlayerId());
@@ -124,19 +129,16 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 					.getPlayer().getId(), session.getPlayer().getName(), "", "", mc.getTitle(),
 				null, targetPlayerName);
 
-			HatchetHarryApplication.get().getEventBus().post(pthfbcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
 				targetPlayer.setHandDisplayed(true);
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
 
-			HatchetHarryApplication.get().getEventBus()
-				.post(new ConsoleLogCometChannel(logger), pageUuid);
+			EventBusPostService.post(playerToWhomToSend, pthfbcc, ncc, new ConsoleLogCometChannel(
+				logger));
 		}
-    }
+	}
 
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)

@@ -45,6 +45,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.ChatMessage;
 import org.alienlabs.hatchetharry.model.channel.ChatCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.atmosphere.Subscribe;
@@ -64,35 +65,37 @@ import org.springframework.beans.factory.annotation.Required;
  *
  * @author Andrey Belyaev
  */
-public class ChatPanel extends Panel {
+public class ChatPanel extends Panel
+{
+	static final Logger LOGGER = LoggerFactory.getLogger(ChatPanel.class);
 	private static final long serialVersionUID = 1L;
-
 	@SpringBean
 	PersistenceService persistenceService;
 
-	static final Logger LOGGER = LoggerFactory.getLogger(ChatPanel.class);
-
-	public ChatPanel(final String id, final Long _playerId) {
+	public ChatPanel(final String id, final Long _playerId)
+	{
 		super(id);
 		Injector.get().inject(this);
 
 		final Form<String> form = new Form<String>("chatForm");
 
 		final RequiredTextField<String> user = new RequiredTextField<String>("user",
-																					new Model<String>(""));
+			new Model<String>(""));
 		user.setMarkupId("userName");
 		user.setOutputMarkupId(true);
 		form.add(user);
 		final RequiredTextField<String> message = new RequiredTextField<String>("message",
-																					   new Model<String>(""));
+			new Model<String>(""));
 		message.setOutputMarkupId(true).setMarkupId("message");
 		form.add(message);
 
-		final AjaxButton button = new AjaxButton("submit") {
+		final AjaxButton button = new AjaxButton("submit")
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form) {
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
+			{
 				ChatPanel.LOGGER.info("submit");
 
 				final String _user = _form.get("user").getDefaultModelObjectAsString();
@@ -100,7 +103,7 @@ public class ChatPanel extends Panel {
 				ChatPanel.LOGGER.info("user: " + _user + ", message: " + _message);
 
 				final Long gameId = ChatPanel.this.persistenceService
-											.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
+					.getPlayer(HatchetHarrySession.get().getPlayer().getId()).getGame().getId();
 
 				final String chatMessage = _user + " said: " + _message;
 
@@ -110,18 +113,10 @@ public class ChatPanel extends Panel {
 				ChatPanel.this.persistenceService.saveChatMessage(msg);
 
 				final List<BigInteger> allPlayersInGame = ChatPanel.this.persistenceService
-																  .giveAllPlayersFromGame(gameId);
-
-				for (int i = 0; i < allPlayersInGame.size(); i++) {
-					final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(
-																								   playerToWhomToSend);
-
-					final ChatCometChannel ccc = new ChatCometChannel(HatchetHarrySession.get()
-																			  .getPlayer(), _user, gameId, chatMessage);
-
-					HatchetHarryApplication.get().getEventBus().post(ccc, pageUuid);
-				}
+					.giveAllPlayersFromGame(gameId);
+				final ChatCometChannel ccc = new ChatCometChannel(HatchetHarrySession.get()
+					.getPlayer(), _user, gameId, chatMessage);
+				EventBusPostService.post(allPlayersInGame, ccc);
 
 			}
 		};
@@ -130,21 +125,26 @@ public class ChatPanel extends Panel {
 	}
 
 	@Subscribe
-	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event) {
-		if (HatchetHarrySession.get().getPlayer().equals(event.getPlayer())) {
+	public void updateChat(final AjaxRequestTarget target, final ChatCometChannel event)
+	{
+		if (HatchetHarrySession.get().getPlayer().equals(event.getPlayer()))
+		{
 			target.appendJavaScript("document.getElementById('message').value=''; ");
 		}
 
-		target.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
-										+ event.getMessage()
-										+ "\" + \"&#013;&#010;\"; chatPanel.scrollTop = chatPanel.scrollHeight; document.activeElement.blur(); ");
-		target.appendJavaScript("jQuery.gritter.add({ title : '"
-										+ event.getUser()
-										+ "', text : 'said something on the chat!' , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-green'});");
+		target
+			.appendJavaScript("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \""
+				+ event.getMessage()
+				+ "\" + \"&#013;&#010;\"; chatPanel.scrollTop = chatPanel.scrollHeight; document.activeElement.blur(); ");
+		target
+			.appendJavaScript("jQuery.gritter.add({ title : '"
+				+ event.getUser()
+				+ "', text : 'said something on the chat!' , image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-green'});");
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

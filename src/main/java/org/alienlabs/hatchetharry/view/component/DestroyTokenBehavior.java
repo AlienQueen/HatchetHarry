@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -95,10 +97,13 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
-			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-
-			final String _pageUuid = HatchetHarryApplication.getCometResources().get(
-				playerToWhomToSend);
+			final int index = i;
+			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
+			{
+				{
+					this.add(allPlayersInGame.get(index));
+				}
+			};
 
 			final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
@@ -108,16 +113,14 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 				ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
 					.getPlayer().getName(), tokenName, null, null, false, gameId);
 
-			HatchetHarryApplication.get().getEventBus().post(dtcc, _pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
-			HatchetHarryApplication.get().getEventBus()
-				.post(new ConsoleLogCometChannel(logger), _pageUuid);
+			EventBusPostService.post(playerToWhomToSend, dtcc, _ncc, new ConsoleLogCometChannel(
+				logger));
 		}
 	}
 
 	@Override
 	public void renderHead(final Component component, final IHeaderResponse response)
-    {
+	{
 		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();

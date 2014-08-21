@@ -20,6 +20,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -161,18 +162,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 			HatchetHarrySession.get().getGameId());
 
 		// post a message for all players in the game
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long _player = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(_player);
-			PutToZoneBehavior.LOGGER.info("pageUuid: " + pageUuid);
-
-			HatchetHarryApplication.get().getEventBus().post(czmcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(czmn, pageUuid);
-
-			HatchetHarryApplication.get().getEventBus()
-				.post(new ConsoleLogCometChannel(logger), pageUuid);
-		}
+		EventBusPostService.post(allPlayersInGame, czmcc, czmn, new ConsoleLogCometChannel(logger));
 	}
 
 	@Override
@@ -180,7 +170,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-        final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("zone", this.sourceZone.toString());
 

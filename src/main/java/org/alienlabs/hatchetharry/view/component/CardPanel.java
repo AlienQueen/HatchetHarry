@@ -77,7 +77,7 @@ public class CardPanel extends Panel
 			+ "px;  z-index: 1;"));
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
-        if ("baldu".equals(id))
+		if ("baldu".equals(id))
 		{
 			cardHandle.add(new AttributeModifier("class", "baldu"));
 		}

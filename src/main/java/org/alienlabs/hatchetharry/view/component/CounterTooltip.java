@@ -15,6 +15,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -131,16 +132,8 @@ public class CounterTooltip extends Panel
 				counterAddName.setModel(Model.of(""));
 				final List<BigInteger> allPlayersInGame = CounterTooltip.this.persistenceService
 					.giveAllPlayersFromGame(game.getId());
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long p = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
-					CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
-					HatchetHarryApplication.get().getEventBus().post(updateCometChannel, pageUuid);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame, updateCometChannel,
+					new ConsoleLogCometChannel(logger));
 			}
 		};
 		submit.setOutputMarkupId(true);
@@ -227,17 +220,8 @@ public class CounterTooltip extends Panel
 									targetPlayerName, null, game.getId());
 						}
 
-						for (int i = 0; i < allPlayersInGame.size(); i++)
-						{
-							final Long p = allPlayersInGame.get(i).longValue();
-							final String pageUuid = HatchetHarryApplication.getCometResources()
-								.get(p);
-							CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
-							HatchetHarryApplication.get().getEventBus()
-								.post(counterTooltipCometChannel, pageUuid);
-							HatchetHarryApplication.get().getEventBus()
-								.post(new ConsoleLogCometChannel(logger), pageUuid);
-						}
+						EventBusPostService.post(allPlayersInGame, counterTooltipCometChannel,
+							new ConsoleLogCometChannel(logger));
 					}
 				};
 				addCounterLink.setOutputMarkupId(true);
@@ -362,16 +346,7 @@ public class CounterTooltip extends Panel
 		}
 		else if (action == NotifierAction.CLEAR_COUNTER_ACTION)
 		{
-			for (int i = 0; i < allPlayersInGame.size(); i++)
-			{
-				final Long p = allPlayersInGame.get(i).longValue();
-				final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
-				CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
-				HatchetHarryApplication.get().getEventBus().post(msg, pageUuid);
-
-				HatchetHarryApplication.get().getEventBus()
-					.post(new ConsoleLogCometChannel(logger), pageUuid);
-			}
+			EventBusPostService.post(allPlayersInGame, msg, new ConsoleLogCometChannel(logger));
 			return;
 		}
 		else
@@ -392,17 +367,8 @@ public class CounterTooltip extends Panel
 				counter.getNumberOfCounters(), targetPlayerName, null, game.getId());
 		}
 
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long p = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
-			CounterTooltip.LOGGER.info("pageUuid: " + pageUuid);
-
-			HatchetHarryApplication.get().getEventBus().post(counterTooltipCometChannel, pageUuid);
-
-			HatchetHarryApplication.get().getEventBus()
-				.post(new ConsoleLogCometChannel(logger), pageUuid);
-		}
+		EventBusPostService.post(allPlayersInGame, counterTooltipCometChannel,
+			new ConsoleLogCometChannel(logger));
 	}
 
 	@Required

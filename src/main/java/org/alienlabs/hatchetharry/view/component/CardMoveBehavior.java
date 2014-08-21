@@ -13,6 +13,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.CardMoveCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -127,18 +128,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final List<BigInteger> allPlayersInGame = CardMoveBehavior.this.persistenceService
 			.giveAllPlayersFromGame(gameId);
-
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-				playerToWhomToSend);
-			final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
-				Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
-
-			HatchetHarryApplication.get().getEventBus().post(cardMoveCometChannel, pageUuid);
-		}
-    }
+		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
+			Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
+		EventBusPostService.post(allPlayersInGame, cardMoveCometChannel);
+	}
 
 	@Override
 	public void renderHead(final Component component, final IHeaderResponse response)

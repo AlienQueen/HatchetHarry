@@ -19,6 +19,7 @@ import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -97,7 +98,6 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
 			card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());
-
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 			NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
 				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
@@ -105,16 +105,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 			.giveAllPlayersFromGame(gameId);
-
 		// post a message for all players in the game
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long player = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
-
-			HatchetHarryApplication.get().getEventBus().post(pcfgcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-		}
+		EventBusPostService.post(allPlayersInGame, pcfgcc, ncc);
 	}
 
 	@Override
@@ -122,7 +114,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-        final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("side", this.side);
 

@@ -352,15 +352,15 @@ public class FunctionalTests
 		Thread.sleep(20000);
 
 		// Assert graveyard is visible and contains one card
-//		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
-//			.isEmpty());
-//		assertTrue(FunctionalTests.chromeDriver2.findElements(
-//			By.cssSelector(".graveyard-cross-link")).size() == 1);
+		// assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
+		// .isEmpty());
+		// assertTrue(FunctionalTests.chromeDriver2.findElements(
+		// By.cssSelector(".graveyard-cross-link")).size() == 1);
 
 		// Verify name of the card in the graveyard
-//		assertTrue(battlefieldCardName.equals(FunctionalTests.chromeDriver2
-//			.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
-//			.getAttribute("name")));
+		// assertTrue(battlefieldCardName.equals(FunctionalTests.chromeDriver2
+		// .findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
+		// .getAttribute("name")));
 
 		// Play card from graveyard
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
@@ -382,10 +382,10 @@ public class FunctionalTests
 				.getAttribute("name"));
 
 		// Assert that the graveyard is visible and empty
-//		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
-//			.isEmpty());
-//		assertTrue(FunctionalTests.chromeDriver2.findElements(
-//			By.cssSelector(".graveyard-cross-link")).isEmpty());
+		// assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
+		// .isEmpty());
+		// assertTrue(FunctionalTests.chromeDriver2.findElements(
+		// By.cssSelector(".graveyard-cross-link")).isEmpty());
 
 		// Put card to hand
 		draggable = FunctionalTests.chromeDriver2.findElements(
@@ -651,7 +651,7 @@ public class FunctionalTests
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		FunctionalTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
-        Thread.sleep(15000);
+		Thread.sleep(15000);
 
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 			.executeScript(FunctionalTests.SCROLL_DOWN);

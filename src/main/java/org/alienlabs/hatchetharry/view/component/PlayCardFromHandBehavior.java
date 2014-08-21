@@ -24,6 +24,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -125,31 +126,18 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
 			HatchetHarrySession.get().getPlayer().getName(), gameId, _side);
-
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 			NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
 				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
 			card.getTitle(), null, "");
-
-		final List<BigInteger> allPlayersInGame = this.persistenceService
-			.giveAllPlayersFromGame(gameId);
-
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 			ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null, card.getTitle(),
 			owner.getName(), null, null, null, null, gameId);
 
 		// post a message for all players in the game
-		for (int i = 0; i < allPlayersInGame.size(); i++)
-		{
-			final Long player = allPlayersInGame.get(i).longValue();
-			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
-			PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
-
-			HatchetHarryApplication.get().getEventBus().post(pcfhcc, pageUuid);
-			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-			HatchetHarryApplication.get().getEventBus()
-				.post(new ConsoleLogCometChannel(logger), pageUuid);
-		}
+		final List<BigInteger> allPlayersInGame = this.persistenceService
+			.giveAllPlayersFromGame(gameId);
+		EventBusPostService.post(allPlayersInGame, pcfhcc, ncc, new ConsoleLogCometChannel(logger));
 	}
 
 	@Override
