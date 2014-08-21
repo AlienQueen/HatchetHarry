@@ -223,7 +223,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 		final Query query = session
 			.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid= :uuid ");
-        query.setString("uuid", uuid.toString());
+		query.setString("uuid", uuid.toString());
 		query.setCacheable(true);
 		PersistenceService.LOGGER.debug("card UUID: " + uuid.toString());
 
@@ -1066,7 +1066,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.gameDao.getSession();
 
 		final Query query = session
-			.createSQLQuery("select playerId from Player_Game pg where pg.gameId = :gameId and pg.playerId <> playerId");
+			.createSQLQuery("select playerId from Player_Game pg where pg.gameId = :gameId and pg.playerId <> :playerId");
 		query.setLong("gameId", gameId);
 		query.setLong("playerId", me);
 

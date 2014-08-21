@@ -229,6 +229,7 @@ public class FunctionalTests
 
 		FunctionalTests.chromeDriver1.findElement(By.id("name")).clear();
 		FunctionalTests.chromeDriver1.findElement(By.id("name")).sendKeys("Zala");
+		Thread.sleep(10000);
 		new Select(FunctionalTests.chromeDriver1.findElement(By.id("sideInput"))).getOptions()
 			.get(1).click();
 		new Select(FunctionalTests.chromeDriver1.findElement(By.id("decks"))).getOptions().get(1)
@@ -274,7 +275,7 @@ public class FunctionalTests
 		assertEquals(7, FunctionalTests.chromeDriver1.findElements(By.cssSelector(".movers-row"))
 			.size());
 
-		// Find first hand card name of Chrome1
+		// Find first hand card name of Chrome2
 		final String battlefieldCardName = FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".active-thumb-Hand img")).get(0).getAttribute("name");
 
@@ -475,6 +476,7 @@ public class FunctionalTests
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 
+		Thread.sleep(5000);
 		FunctionalTests.chromeDriver2.findElement(By.id("putToHandFromModalWindow")).click();
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
 
