@@ -3,7 +3,6 @@ package org.alienlabs.hatchetharry.view.component;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
@@ -11,7 +10,6 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;

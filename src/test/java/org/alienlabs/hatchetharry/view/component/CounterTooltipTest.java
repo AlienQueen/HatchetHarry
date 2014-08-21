@@ -1,15 +1,10 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
-import org.apache.wicket.Page;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.fail;
 

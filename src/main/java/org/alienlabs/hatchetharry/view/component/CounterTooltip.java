@@ -1,12 +1,18 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.model.Token;
-import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.Counter;
+import org.alienlabs.hatchetharry.model.Game;
+import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
@@ -15,7 +21,6 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -30,13 +35,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.math.BigInteger;
-import java.util.List;
-import java.util.UUID;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
 
 public class CounterTooltip extends Panel
 {

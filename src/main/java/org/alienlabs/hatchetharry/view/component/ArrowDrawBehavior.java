@@ -11,7 +11,6 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
