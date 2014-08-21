@@ -6,8 +6,6 @@
 	
 - in order to display a notifier pop-up: jQuery.gritter.add({ title : 'infrared', text : 'has played mountain!', image : 'image/logoh2.gif', sticky : false, time : ''});
 
-- jQuery('#menutoggleButton758f66a4-513b-40db-a3d9-83ec7e91f1e4').wicketAtmosphere({"url" : "http://localhost:8080/?0-1.IBehaviorListener.1-balduParent-baldu-menutoggleButton&uuid=758f66a4-513b-40db-a3d9-83ec7e91f1e4&_=1353358682233" });
-
 - never use: blahDao.save(blah) but blahDao.getSession().save(blah) otherwise you'll get strange bugs due to data duplication. Think about it in the PersistenceService!!!
 
 - mvn3.0.3 install:install-file -Dfile=src/main/resources/wicket-atmosphere-0.9.jar -Dsources=src/main/resources/wicket-atmosphere-0.9-sources.jar -Djavadoc=src/main/resources/wicket-atmosphere-0.9-javadoc.jar -DgroupId=org.apache.wicket -DartifactId=wicket-atmosphere -Dversion=0.9 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
