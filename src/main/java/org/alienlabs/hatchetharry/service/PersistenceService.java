@@ -45,7 +45,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-public class PersistenceService implements Serializable {
+public class PersistenceService implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(PersistenceService.class);
@@ -77,47 +78,55 @@ public class PersistenceService implements Serializable {
 	@SpringBean
 	private ChatMessageDao chatMessageDao;
 
-	public PersistenceService() {
+	public PersistenceService()
+	{
 	}
 
 	@Transactional(readOnly = true)
-	public MagicCard getNthCardOfGame(final Long index) {
+	public MagicCard getNthCardOfGame(final Long index)
+	{
 		final Session session = this.magicCardDao.getSession();
 		final Query query = session
-									.createQuery("from MagicCard magiccard0_ where magiccard0_.id=?");
-		query.setLong(0, index);
-		final MagicCard c = (MagicCard) query.uniqueResult();
+			.createQuery("from MagicCard magiccard0_ where magiccard0_.id=:id");
+		query.setLong("id", index);
+		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public MagicCard saveCardByGeneratingItsUuid(final MagicCard _c, final long gameId) {
+	public MagicCard saveCardByGeneratingItsUuid(final MagicCard _c, final long gameId)
+	{
 		final MagicCard c = _c;
 		c.setUuid(UUID.randomUUID().toString());
 		c.setGameId(gameId);
 
 		final Session session = this.magicCardDao.getSession();
-		final Long id = (Long) session.save(c);
+		final Long id = (Long)session.save(c);
 		c.setId(id);
 
 		return c;
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveCard(final MagicCard c) {
+	public void saveCard(final MagicCard c)
+	{
 		this.deckDao.getSession().save(c.getDeck());
 		this.magicCardDao.getSession().save(c);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public MagicCard saveOrUpdateCardAndDeck(final MagicCard c) {
+	public MagicCard saveOrUpdateCardAndDeck(final MagicCard c)
+	{
 		final MagicCard res;
 
-		if (c.getId() != null) {
-			res = (MagicCard) this.magicCardDao.getSession().merge(c);
+		if (c.getId() != null)
+		{
+			res = (MagicCard)this.magicCardDao.getSession().merge(c);
 			this.deckDao.getSession().saveOrUpdate(res.getDeck());
-		} else {
+		}
+		else
+		{
 			this.deckDao.getSession().saveOrUpdate(c.getDeck());
 			this.magicCardDao.getSession().saveOrUpdate(c);
 			res = c;
@@ -126,36 +135,44 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveToken(final Token t) {
+	public void saveToken(final Token t)
+	{
 		this.tokenDao.getSession().save(t);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveOrUpdateAllMagicCards(final List<MagicCard> allMagicCards) {
-		for (final MagicCard card : allMagicCards) {
+	public void saveOrUpdateAllMagicCards(final List<MagicCard> allMagicCards)
+	{
+		for (final MagicCard card : allMagicCards)
+		{
 			this.magicCardDao.getSession().saveOrUpdate(card);
 		}
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateAllMagicCards(final List<MagicCard> allMagicCards) {
-		for (final MagicCard card : allMagicCards) {
+	public void updateAllMagicCards(final List<MagicCard> allMagicCards)
+	{
+		for (final MagicCard card : allMagicCards)
+		{
 			this.magicCardDao.getSession().update(card);
 		}
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateCard(final MagicCard c) {
+	public void updateCard(final MagicCard c)
+	{
 		this.magicCardDao.getSession().merge(c);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateToken(final Token t) {
+	public void updateToken(final Token t)
+	{
 		this.tokenDao.getSession().update(t);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void deleteCardAndToken(final MagicCard c) {
+	public void deleteCardAndToken(final MagicCard c)
+	{
 		final Token token = c.getToken();
 		final Player p = token.getPlayer();
 		token.setPlayer(null);
@@ -174,91 +191,95 @@ public class PersistenceService implements Serializable {
 		this.deckDao.getSession().merge(d);
 
 		Session session = this.magicCardDao.getSession();
-		Query query = session.createSQLQuery("delete from MagicCard where magicCardId = ? ");
-		query.setLong(0, magicCardId);
+		Query query = session.createSQLQuery("delete from MagicCard where magicCardId = :id ");
+		query.setLong("id", magicCardId);
 		query.executeUpdate();
 
 		session = this.tokenDao.getSession();
 		query = session
-						.createSQLQuery("delete t.* from Card_Counter cc, Token t, MagicCard mc where t.tokenId = mc.token_tokenId and cc.counterId = t.tokenId and mc.magicCardId = ?");
-		query.setLong(0, magicCardId);
+			.createSQLQuery("delete t.* from Card_Counter cc, Token t, MagicCard mc where t.tokenId = mc.token_tokenId and cc.counterId = t.tokenId and mc.magicCardId = :id");
+		query.setLong("id", magicCardId);
 		query.executeUpdate();
 
 		session = this.magicCardDao.getSession();
 		query = session
-						.createSQLQuery("delete cc.* from Card_Counter cc, Counter c, MagicCard mc where c.card = mc.magicCardId and cc.counterId = c.counterId and mc.magicCardId = ?");
-		query.setLong(0, magicCardId);
+			.createSQLQuery("delete cc.* from Card_Counter cc, Counter c, MagicCard mc where c.card = mc.magicCardId and cc.counterId = c.counterId and mc.magicCardId = :id");
+		query.setLong("id", magicCardId);
 		query.executeUpdate();
 
-		for (final Counter counter : counters) {
+		for (final Counter counter : counters)
+		{
 			session = this.counterDao.getSession();
-			query = session.createSQLQuery("delete from Counter where counterId = ? ");
-			query.setLong(0, counter.getId());
+			query = session.createSQLQuery("delete from Counter where counterId = :id");
+			query.setLong("id", counter.getId());
 			query.executeUpdate();
 		}
 	}
 
 	@Transactional(readOnly = true)
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
-            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
-            justification="So you're saying I can't log the same thing in two different methods????")
-	public MagicCard getCardFromUuid(final UUID uuid) {
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "So you're saying I can't log the same thing in two different methods????")
+	public MagicCard getCardFromUuid(final UUID uuid)
+	{
 		final Session session = this.magicCardDao.getSession();
 		final Query query = session
-									.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid= ? ");
-		query.setString(0, uuid.toString());
+			.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid= :uuid ");
+        query.setString("uuid", uuid.toString());
 		query.setCacheable(true);
 		PersistenceService.LOGGER.debug("card UUID: " + uuid.toString());
 
-		if (query.list().size() > 1) {
-			return (MagicCard) query.list().get(0);
+		if (query.list().size() > 1)
+		{
+			return (MagicCard)query.list().get(0);
 		}
-		final MagicCard c = (MagicCard) query.uniqueResult();
+		final MagicCard c = (MagicCard)query.uniqueResult();
 
 		return c;
 	}
 
 	@Transactional(readOnly = true)
-	public Token getTokenFromUuid(final String uuid) {
+	public Token getTokenFromUuid(final String uuid)
+	{
 		final Session session = this.tokenDao.getSession();
-		final Query query = session.createQuery("from Token t0_ where t0_.uuid= ? ");
-		query.setString(0, uuid);
+		final Query query = session.createQuery("from Token t0_ where t0_.uuid= :uuid ");
+		query.setString("uuid", uuid);
 		query.setCacheable(true);
 		PersistenceService.LOGGER.debug("token UUID: ");
 
-		if (query.list().size() > 1) {
-			return (Token) query.list().get(0);
+		if (query.list().size() > 1)
+		{
+			return (Token)query.list().get(0);
 		}
-		final Token t = (Token) query.uniqueResult();
+		final Token t = (Token)query.uniqueResult();
 
 		return t;
 	}
 
 	@Transactional(readOnly = true)
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
-            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
-            justification="So you're saying I can't log the same thing in two different methods????")
-	public Token getTokenFromUuid(final UUID uuid) {
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "So you're saying I can't log the same thing in two different methods????")
+	public Token getTokenFromUuid(final UUID uuid)
+	{
 		final Session session = this.tokenDao.getSession();
-		final Query query = session.createQuery("from Token token0 where token0.uuid= ? ");
-		query.setString(0, uuid.toString());
+		final Query query = session.createQuery("from Token token0 where token0.uuid= :uuid ");
+		query.setString("uuid", uuid.toString());
 		PersistenceService.LOGGER.debug("token UUID: " + uuid.toString());
 
-		if (query.list().size() > 1) {
-			return (Token) query.list().get(0);
+		if (query.list().size() > 1)
+		{
+			return (Token)query.list().get(0);
 		}
-		final Token t = (Token) query.uniqueResult();
+		final Token t = (Token)query.uniqueResult();
 
 		return t;
 	}
 
 	@Transactional(readOnly = true)
-	public List<MagicCard> getFirstHand(final long gameId) {
+	public List<MagicCard> getFirstHand(final long gameId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session
-									.createQuery("from MagicCard magiccard0_ where magiccard0_.gameId=?");
-		query.setLong(0, gameId);
+			.createQuery("from MagicCard magiccard0_ where magiccard0_.gameId=:id");
+		query.setLong("id", gameId);
 		query.setFirstResult(0);
 		query.setMaxResults(7);
 		final List<MagicCard> cards = query.list();
@@ -267,7 +288,8 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public Player getFirstPlayer() {
+	public Player getFirstPlayer()
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session.createQuery("from Player player0_");
@@ -275,56 +297,64 @@ public class PersistenceService implements Serializable {
 		query.setMaxResults(1);
 		final Object mc = query.uniqueResult();
 
-		return (mc == null ? null : (Player) mc);
+		return (mc == null ? null : (Player)mc);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void mergePlayer(final Player p) {
+	public void mergePlayer(final Player p)
+	{
 		final Session session = this.playerDao.getSession();
 		session.merge(p);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updatePlayer(final Player p) {
+	public void updatePlayer(final Player p)
+	{
 		final Session session = this.playerDao.getSession();
 		session.update(p);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateSide(final Side s) {
+	public void updateSide(final Side s)
+	{
 		final Session session = this.sideDao.getSession();
 		session.merge(s);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveOrUpdateCounter(final Counter c) {
+	public void saveOrUpdateCounter(final Counter c)
+	{
 		final Session session = this.counterDao.getSession();
 		session.saveOrUpdate(c);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveGame(final Game g) {
+	public void saveGame(final Game g)
+	{
 		final Session session = this.gameDao.getSession();
 		session.save(g);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateGame(final Game g) {
+	public void updateGame(final Game g)
+	{
 		this.gameDao.getSession().update(g);
 	}
 
 	@Transactional(readOnly = true)
-	public int countPlayers(final long l) {
+	public int countPlayers(final long l)
+	{
 		final Session session = this.playerDao.getSession();
 
-		final Query query = session.createQuery("from Player player0_ where player0_.gameId=?");
-		query.setLong(0, l);
+		final Query query = session.createQuery("from Player player0_ where player0_.gameId=:id");
+		query.setLong("id", l);
 
 		return query.list().size();
 	}
 
 	@Transactional(readOnly = true)
-	public int countDeckArchives() {
+	public int countDeckArchives()
+	{
 		final Session session = this.deckArchiveDao.getSession();
 
 		final Query query = session.createQuery("from DeckArchive");
@@ -333,7 +363,8 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public int countCollectibleCards() {
+	public int countCollectibleCards()
+	{
 		final Session session = this.collectibleCardDao.getSession();
 
 		final Query query = session.createQuery("from CollectibleCard");
@@ -342,29 +373,32 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public int countCollectibleCardsInDeckArchive(final DeckArchive deckArchive) {
+	public int countCollectibleCardsInDeckArchive(final DeckArchive deckArchive)
+	{
 		final Session session = this.collectibleCardDao.getSession();
 
 		final Query query = session
-									.createQuery("from CollectibleCard cc where cc.deckArchiveId = ?");
-		query.setLong(0, deckArchive.getDeckArchiveId());
+			.createQuery("from CollectibleCard cc where cc.deckArchiveId = :id");
+		query.setLong("id", deckArchive.getDeckArchiveId());
 
 		return query.list().size();
 	}
 
 	@Transactional(readOnly = true)
-	public List<CollectibleCard> giveAllCollectibleCardsInDeckArchive(final DeckArchive deckArchive) {
+	public List<CollectibleCard> giveAllCollectibleCardsInDeckArchive(final DeckArchive deckArchive)
+	{
 		final Session session = this.collectibleCardDao.getSession();
 
 		final Query query = session
-									.createQuery("from CollectibleCard cc where cc.deckArchiveId = ?");
-		query.setLong(0, deckArchive.getDeckArchiveId());
+			.createQuery("from CollectibleCard cc where cc.deckArchiveId = :id");
+		query.setLong("id", deckArchive.getDeckArchiveId());
 
 		return query.list();
 	}
 
 	@Transactional(readOnly = true)
-	public int countMagicCards() {
+	public int countMagicCards()
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session.createQuery("from MagicCard");
@@ -373,7 +407,8 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public int countDecks() {
+	public int countDecks()
+	{
 		final Session session = this.deckDao.getSession();
 
 		final Query query = session.createQuery("from Deck");
@@ -382,27 +417,33 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void updateDeck(final Deck d) {
+	public void updateDeck(final Deck d)
+	{
 		final Session deckSession = this.deckDao.getSession();
 		final Session cardSession = this.magicCardDao.getSession();
 
-		for (final MagicCard c : d.getCards()) {
+		for (final MagicCard c : d.getCards())
+		{
 			cardSession.saveOrUpdate(c);
 		}
 		deckSession.update(d);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveOrUpdateDeck(final Deck d) {
+	public void saveOrUpdateDeck(final Deck d)
+	{
 		final Session session = this.deckDao.getSession();
 		session.merge(d);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public Deck saveDeck(final Deck d) {
+	public Deck saveDeck(final Deck d)
+	{
 		final Session cardSession = this.magicCardDao.getSession();
-		if (null != d.getCards()) {
-			for (final MagicCard c : d.getCards()) {
+		if (null != d.getCards())
+		{
+			for (final MagicCard c : d.getCards())
+			{
 				cardSession.save(c);
 			}
 		}
@@ -411,10 +452,13 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public Deck saveDeckOrUpdate(final Deck d) {
+	public Deck saveDeckOrUpdate(final Deck d)
+	{
 		final Session cardSession = this.magicCardDao.getSession();
-		if (null != d.getCards()) {
-			for (final MagicCard c : d.getCards()) {
+		if (null != d.getCards())
+		{
+			for (final MagicCard c : d.getCards())
+			{
 				cardSession.saveOrUpdate(c);
 			}
 		}
@@ -423,111 +467,129 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public Side saveSide(final Side s) {
+	public Side saveSide(final Side s)
+	{
 		this.sideDao.getSession().save(s);
 		return s;
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveSides(final Set<Side> sides) {
-		for (final Side s : sides) {
+	public void saveSides(final Set<Side> sides)
+	{
+		for (final Side s : sides)
+		{
 			this.sideDao.getSession().save(s);
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public Player getPlayer(final Long l) {
+	public Player getPlayer(final Long l)
+	{
 		return this.playerDao.load(l);
 	}
 
 	@Transactional(readOnly = true)
-	public boolean getPlayerByGame(final long l) {
+	public boolean getPlayerByGame(final long l)
+	{
 		final Session session = this.playerDao.getSession();
 
-		final Query query = session.createQuery("from Player player0_ where player0_.gameId=?");
-		query.setLong(0, l);
+		final Query query = session.createQuery("from Player player0_ where player0_.gameId=:id");
+		query.setLong("id", l);
 
 		return query.list().size() > 0;
 	}
 
 	@Transactional(readOnly = true)
-	public List<Player> getAllPlayersOfGame(final long l) {
+	public List<Player> getAllPlayersOfGame(final long l)
+	{
 		final Session session = this.playerDao.getSession();
 
-		final Query query = session.createQuery("from Player player0_ where player0_.game = ? ");
-		query.setLong(0, l);
+		final Query query = session
+			.createQuery("from Player player0_ where player0_.game = :game ");
+		query.setLong("game", l);
 		return query.list();
 	}
 
 	// Isolation level chosen to be consistent with
 	// RuntimeDataGenerator#generateData()
 	@Transactional(readOnly = true)
-	public DeckArchive getDeckArchiveByName(final String name) {
+	public DeckArchive getDeckArchiveByName(final String name)
+	{
 		final Session session = this.deckDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=? and da.deckArchiveId = d.Deck_DeckArchive");
+			.createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=:deckName and da.deckArchiveId = d.Deck_DeckArchive");
 		query.addEntity(DeckArchive.class);
-		query.setString(0, name);
+		query.setString("deckName", name);
 
 		@SuppressWarnings("rawtypes")
 		final List results = query.list();
-		return (results.size() > 0 ? (DeckArchive) query.list().get(0) : null);
+		return (results.size() > 0 ? (DeckArchive)query.list().get(0) : null);
 	}
 
 	@Transactional(readOnly = true)
-	public boolean getPlayerByJsessionId(final String jsessionid) {
+	public boolean getPlayerByJsessionId(final String jsessionid)
+	{
 		final Session session = this.playerDao.getSession();
 
-		final Query query = session.createQuery("from Player player0_ where player0_.jsessionid=?");
-		query.setString(0, jsessionid);
+		final Query query = session
+			.createQuery("from Player player0_ where player0_.jsessionid=:jsessionid");
+		query.setString("jsessionid", jsessionid);
 
 		return query.list().size() > 0;
 	}
 
 	@Transactional(readOnly = true)
-	public boolean doesCollectibleCardAlreadyExistsInDb(final String title) {
+	public boolean doesCollectibleCardAlreadyExistsInDb(final String title)
+	{
 		final Session session = this.collectibleCardDao.getSession();
 
-		final Query query = session.createQuery("from CollectibleCard cc0_ where cc0_.title=?");
-		query.setString(0, title);
+		final Query query = session
+			.createQuery("from CollectibleCard cc0_ where cc0_.title=:title");
+		query.setString("title", title);
 		final List<?> list = query.list();
 		return ((list != null) && (list.size() > 0));
 	}
 
 	@Transactional(readOnly = true)
-	public Deck getDeck(final long deckId) {
+	public Deck getDeck(final long deckId)
+	{
 		final Session session = this.deckDao.getSession();
 
-		final Query query = session.createQuery("from Deck deck0_ where deck0_.deckId=?");
-		query.setLong(0, deckId);
+		final Query query = session.createQuery("from Deck deck0_ where deck0_.deckId=:id");
+		query.setLong("id", deckId);
 		query.setMaxResults(1);
-		return (Deck) query.uniqueResult();
+		return (Deck)query.uniqueResult();
 	}
 
 	@Transactional(readOnly = true)
-	public Deck getDeckByDeckArchiveIdAndPlayerId(final long deckArchiveId, final long playerId) {
+	public Deck getDeckByDeckArchiveIdAndPlayerId(final long deckArchiveId, final long playerId)
+	{
 		final Session session = this.deckDao.getSession();
 
 		final Query query = session
-									.createQuery("from Deck d where d.deckArchive=? and d.playerId=?");
-		query.setLong(0, deckArchiveId);
-		query.setLong(1, playerId);
+			.createQuery("from Deck d where d.deckArchive=:deckArchive and d.playerId=:playerId");
+		query.setLong("deckArchive", deckArchiveId);
+		query.setLong("playerId", playerId);
 		query.setMaxResults(1);
-		return (Deck) query.uniqueResult();
+		return (Deck)query.uniqueResult();
 	}
 
 	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsFromDeck(final long l) {
+	public List<MagicCard> getAllCardsFromDeck(final long l)
+	{
 		final Session session = this.magicCardDao.getSession();
 
-		final Query query = session.createQuery("from MagicCard card0_ where card0_.deck=?");
-		query.setLong(0, l);
+		final Query query = session.createQuery("from MagicCard card0_ where card0_.deck=:deck");
+		query.setLong("deck", l);
 
 		List<MagicCard> list = new ArrayList<MagicCard>();
-		try {
+		try
+		{
 			list = query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("error!", e);
 		}
 		return list;
@@ -535,42 +597,49 @@ public class PersistenceService implements Serializable {
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInLibraryForDeckAndPlayer(final Long gameId,
-																final Long playerId, final Long deckId) {
+		final Long playerId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ? order by mc.zoneOrder");
+			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
-		query.setLong(0, gameId);
-		query.setString(1, CardZone.LIBRARY.toString());
-		query.setLong(2, playerId);
-		query.setLong(3, deckId);
+		query.setLong("gameId", gameId);
+		query.setString("zoneName", CardZone.LIBRARY.toString());
+		query.setLong("playerId", playerId);
+		query.setLong("deckId", deckId);
 
 		List<MagicCard> list = new ArrayList<MagicCard>();
-		try {
+		try
+		{
 			list = query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("error!", e);
 		}
 		return list;
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveCollectibleCard(final CollectibleCard cc) {
+	public void saveCollectibleCard(final CollectibleCard cc)
+	{
 		this.collectibleCardDao.getSession().save(cc);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public DeckArchive saveDeckArchive(final DeckArchive da) {
+	public DeckArchive saveDeckArchive(final DeckArchive da)
+	{
 		final Session session = this.deckArchiveDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=? and da.deckArchiveId = d.Deck_DeckArchive");
+			.createSQLQuery("select da.* from Deck d, DeckArchive da where da.deckName=:deck and da.deckArchiveId = d.Deck_DeckArchive");
 		query.addEntity(DeckArchive.class);
-		query.setString(0, da.getDeckName());
+		query.setString("deck", da.getDeckName());
 
-		if (query.list().size() > 0) {
-			return ((DeckArchive) query.list().get(0));
+		if (query.list().size() > 0)
+		{
+			return ((DeckArchive)query.list().get(0));
 		}
 
 		session.save(da);
@@ -578,89 +647,105 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public DeckArchive updateDeckArchive(final DeckArchive da) {
+	public DeckArchive updateDeckArchive(final DeckArchive da)
+	{
 		final Session session = this.deckArchiveDao.getSession();
 		session.update(da);
 		return da;
 	}
 
 	@Required
-	public void setPlayerDao(final PlayerDao _playerDao) {
+	public void setPlayerDao(final PlayerDao _playerDao)
+	{
 		this.playerDao = _playerDao;
 	}
 
 	@Required
-	public void setDeckDao(final DeckDao _deckDao) {
+	public void setDeckDao(final DeckDao _deckDao)
+	{
 		this.deckDao = _deckDao;
 	}
 
 	@Required
-	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao) {
+	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao)
+	{
 		this.deckArchiveDao = _deckArchiveDao;
 	}
 
 	@Required
-	public void setSideDao(final SideDao _sideDao) {
+	public void setSideDao(final SideDao _sideDao)
+	{
 		this.sideDao = _sideDao;
 	}
 
 	@Required
-	public void setCollectibleCardDao(final CollectibleCardDao _collectibleCardDao) {
+	public void setCollectibleCardDao(final CollectibleCardDao _collectibleCardDao)
+	{
 		this.collectibleCardDao = _collectibleCardDao;
 	}
 
 	@Required
-	public void setMagicCardDao(final MagicCardDao _magicCardDao) {
+	public void setMagicCardDao(final MagicCardDao _magicCardDao)
+	{
 		this.magicCardDao = _magicCardDao;
 	}
 
 	@Required
-	public void setGameDao(final GameDao _gameDao) {
+	public void setGameDao(final GameDao _gameDao)
+	{
 		this.gameDao = _gameDao;
 	}
 
 	@Required
-	public void setCounterDao(final CounterDao _counterDao) {
+	public void setCounterDao(final CounterDao _counterDao)
+	{
 		this.counterDao = _counterDao;
 	}
 
 	@Required
-	public void setTokenDao(final TokenDao _tokenDao) {
+	public void setTokenDao(final TokenDao _tokenDao)
+	{
 		this.tokenDao = _tokenDao;
 	}
 
 	@Required
-	public void setArrowDao(final ArrowDao _arrowDao) {
+	public void setArrowDao(final ArrowDao _arrowDao)
+	{
 		this.arrowDao = _arrowDao;
 	}
 
 	@Required
-	public void setConsoleLogMessageDao(final ConsoleLogMessageDao _consoleLogMessageDao) {
+	public void setConsoleLogMessageDao(final ConsoleLogMessageDao _consoleLogMessageDao)
+	{
 		this.consoleLogMessageDao = _consoleLogMessageDao;
 	}
 
 	@Required
-	public void setUserDao(final UserDao _userDao) {
+	public void setUserDao(final UserDao _userDao)
+	{
 		this.userDao = _userDao;
 	}
 
 	@Required
-	public void setChatMessageDao(final ChatMessageDao _chatMessageDao) {
+	public void setChatMessageDao(final ChatMessageDao _chatMessageDao)
+	{
 		this.chatMessageDao = _chatMessageDao;
 	}
 
 	@Transactional(readOnly = true)
-	public List<?> getCardsByDeckId(final long gameId) {
+	public List<?> getCardsByDeckId(final long gameId)
+	{
 		final Session session = this.magicCardDao.getSession();
 		final Query query = session
-									.createQuery("select card0_ from MagicCard card0_ , Deck deck0_ where card0_.deck  = deck0_.deckId  and deck0_.deckId = ?");
-		query.setLong(0, gameId);
+			.createQuery("select card0_ from MagicCard card0_ , Deck deck0_ where card0_.deck  = deck0_.deckId  and deck0_.deckId = :deck");
+		query.setLong("deck", gameId);
 
 		return query.list();
 	}
 
 	@Transactional(readOnly = true)
-	public List<Deck> getAllDecks() {
+	public List<Deck> getAllDecks()
+	{
 		final Session session = this.deckDao.getSession();
 		final Query query = session.createQuery("from Deck deck0_ where deck0_.playerId != -1");
 
@@ -668,7 +753,8 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public List<DeckArchive> getAllDeckArchives() {
+	public List<DeckArchive> getAllDeckArchives()
+	{
 		final Session session = this.deckDao.getSession();
 		final Query query = session.createQuery("from DeckArchive d where d.deckName != null");
 
@@ -676,17 +762,19 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Deck> getAllDecksFromDeckArchives() {
+	public List<Deck> getAllDecksFromDeckArchives()
+	{
 		final Session session = this.deckDao.getSession();
 		final SQLQuery query = session
-									   .createSQLQuery("select dd.* from Deck dd where dd.Deck_DeckArchive in (select distinct da.deckArchiveId from  Deck de, DeckArchive da where de.Deck_DeckArchive = da.deckArchiveId and da.deckName is not null) group by dd.Deck_DeckArchive");
+			.createSQLQuery("select dd.* from Deck dd where dd.Deck_DeckArchive in (select distinct da.deckArchiveId from  Deck de, DeckArchive da where de.Deck_DeckArchive = da.deckArchiveId and da.deckName is not null) group by dd.Deck_DeckArchive");
 		query.addEntity(Deck.class);
 
 		return query.list();
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public Game createGameAndPlayer(final Game game, final Player player) {
+	public Game createGameAndPlayer(final Game game, final Player player)
+	{
 		final Set<Player> set = game.getPlayers();
 		set.add(player);
 		game.setPlayers(set);
@@ -700,15 +788,19 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public MagicCard findCardByName(final String _name) {
+	public MagicCard findCardByName(final String _name)
+	{
 		final Session session = this.magicCardDao.getSession();
 
-		final Query query = session.createQuery("from MagicCard m where m.title = ?");
-		query.setString(0, _name);
+		final Query query = session.createQuery("from MagicCard m where m.title = :title");
+		query.setString("title", _name);
 		query.setMaxResults(1);
-		try {
-			return (MagicCard) query.list().get(0);
-		} catch (final IndexOutOfBoundsException e) {
+		try
+		{
+			return (MagicCard)query.list().get(0);
+		}
+		catch (final IndexOutOfBoundsException e)
+		{
 			PersistenceService.LOGGER.error("error!", e);
 			return null;
 		}
@@ -716,137 +808,166 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public CollectibleCard findCollectibleCardByName(final String title) {
+	public CollectibleCard findCollectibleCardByName(final String title)
+	{
 		final Session session = this.magicCardDao.getSession();
 
-		final Query query = session.createQuery("from CollectibleCard cc where cc.title = ?");
-		query.setString(0, title);
+		final Query query = session.createQuery("from CollectibleCard cc where cc.title = :title");
+		query.setString("title", title);
 		query.setMaxResults(1);
-		try {
-			return (CollectibleCard) query.uniqueResult();
-		} catch (final ObjectNotFoundException e) {
+		try
+		{
+			return (CollectibleCard)query.uniqueResult();
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("error!", e);
 			return null;
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public Game getGame(final Long _id) {
+	public Game getGame(final Long _id)
+	{
 		return this.gameDao.load(_id);
 	}
 
 	@Transactional
-	public void deleteMagicCard(final MagicCard mc) {
+	public void deleteMagicCard(final MagicCard mc)
+	{
 		this.magicCardDao.delete(mc.getId());
 	}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
-															   final Long playerId, final Long deckId) {
+		final Long playerId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ? order by mc.zoneOrder");
+			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
-		query.setLong(0, gameId);
-		query.setString(1, CardZone.HAND.toString());
-		query.setLong(2, playerId);
-		query.setLong(3, deckId);
+		query.setLong("gameId", gameId);
+		query.setString("zoneName", CardZone.HAND.toString());
+		query.setLong("playerId", playerId);
+		query.setLong("deckId", deckId);
 
-		try {
+		try
+		{
 			return query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in hand for game: " + gameId
-													+ " => no result found", e);
+				+ " => no result found", e);
 			return null;
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInBattleFieldForAGame(final Long gameId) {
+	public List<MagicCard> getAllCardsInBattleFieldForAGame(final Long gameId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session
-									.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
+			.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
 		query.setLong("gameId", gameId);
 		query.setParameter("zone", CardZone.BATTLEFIELD);
 		query.setCacheable(true);
 
-		try {
+		try
+		{
 			return query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for game: "
-													+ gameId + " => no result found", e);
+				+ gameId + " => no result found", e);
 			return null;
 		}
 	}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
-																	  final Long playerId, final Long deckId) {
+		final Long playerId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId  and d.deckId = ? order by mc.zoneOrder");
+			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
-		query.setLong(0, gameId);
-		query.setString(1, CardZone.BATTLEFIELD.toString());
-		query.setLong(2, playerId);
-		query.setLong(3, deckId);
+		query.setLong("gameId", gameId);
+		query.setString("zoneName", CardZone.BATTLEFIELD.toString());
+		query.setLong("playerId", playerId);
+		query.setLong("deckId", deckId);
 
-		try {
+		try
+		{
 			return query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-													+ gameId + " => no result found", e);
+				+ gameId + " => no result found", e);
 			return null;
 		}
 	}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(final Long gameId,
-																			   final Long playerId, final Long deckId) {
+		final Long playerId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 		final List<MagicCard> all = new ArrayList<MagicCard>();
 
 		SQLQuery query = session
-								 .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId  and d.deckId = ? order by mc.zoneOrder");
+			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
-		query.setLong(0, gameId);
-		query.setString(1, CardZone.BATTLEFIELD.toString());
-		query.setLong(2, playerId);
-		query.setLong(3, deckId);
+		query.setLong("gameId", gameId);
+		query.setString("zoneName", CardZone.BATTLEFIELD.toString());
+		query.setLong("playerId", playerId);
+		query.setLong("deckId", deckId);
 
-		try {
+		try
+		{
 			final List<MagicCard> allMagicCards = query.list();
-			if (null != allMagicCards) {
+			if (null != allMagicCards)
+			{
 				all.addAll(allMagicCards);
 			}
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-													+ gameId + " => no result found", e);
+				+ gameId + " => no result found", e);
 		}
 
 		query = session
-						.createSQLQuery("select t.* from Token t where t.gameId = ? and t.Player_Token = ? ");
+			.createSQLQuery("select t.* from Token t where t.gameId = :gameId and t.Player_Token = :playerId ");
 		query.addEntity(Token.class);
-		query.setLong(0, gameId);
-		query.setLong(1, playerId);
+		query.setLong("gameId", gameId);
+		query.setLong("gameId", playerId);
 
-		try {
+		try
+		{
 			final List<Token> allTokens = query.list();
-			if (null != allTokens) {
-				for (final Token t : allTokens) {
+			if (null != allTokens)
+			{
+				for (final Token t : allTokens)
+				{
 					final MagicCard card = this.getCardFromUuid(UUID.fromString(t.getUuid()));
 
-					if (null != card) {
+					if (null != card)
+					{
 						all.add(card);
 					}
 				}
 			}
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-													+ gameId + " => no result found", e);
+				+ gameId + " => no result found", e);
 		}
 
 		return all;
@@ -854,85 +975,100 @@ public class PersistenceService implements Serializable {
 
 	// TODO remove this
 	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInGraveyardForAGame(final Long gameId) {
+	public List<MagicCard> getAllCardsInGraveyardForAGame(final Long gameId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session
-									.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
+			.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
 		query.setLong("gameId", gameId);
 		query.setParameter("zone", CardZone.GRAVEYARD);
 
-		try {
+		try
+		{
 			return query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-													+ gameId + " => no result found", e);
+				+ gameId + " => no result found", e);
 			return null;
 		}
 	}
 
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInGraveyardForAGameAndAPlayer(final Long gameId,
-																	final Long playerId, final Long deckId) {
+		final Long playerId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ?");
+			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId");
 		query.addEntity(MagicCard.class);
-		query.setLong(0, gameId);
-		query.setString(1, CardZone.GRAVEYARD.toString());
-		query.setLong(2, playerId);
-		query.setLong(3, deckId);
+		query.setLong("gameId", gameId);
+		query.setString("zoneName", CardZone.GRAVEYARD.toString());
+		query.setLong("playerId", playerId);
+		query.setLong("deckId", deckId);
 
-		try {
+		try
+		{
 			return query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-													+ gameId + " => no result found", e);
+				+ gameId + " => no result found", e);
 			return null;
 		}
 	}
 
+	// TODO factorize this
 	@Transactional(readOnly = true)
 	public List<MagicCard> getAllCardsInExileForAGameAndAPlayer(final Long gameId,
-																final Long playerId, final Long deckId) {
+		final Long playerId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = ? and mc.zone = ? and d.playerId = ? and mc.card_deck = d.deckId and d.deckId = ?");
+			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId");
 		query.addEntity(MagicCard.class);
-		query.setLong(0, gameId);
-		query.setString(1, CardZone.EXILE.toString());
-		query.setLong(2, playerId);
-		query.setLong(3, deckId);
+		query.setLong("gameId", gameId);
+		query.setString("zoneName", CardZone.EXILE.toString());
+		query.setLong("playerId", playerId);
+		query.setLong("deckId", deckId);
 
-		try {
+		try
+		{
 			return query.list();
-		} catch (final ObjectNotFoundException e) {
+		}
+		catch (final ObjectNotFoundException e)
+		{
 			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-													+ gameId + " => no result found", e);
+				+ gameId + " => no result found", e);
 			return null;
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public List<Side> getSidesFromGame(final Game game) {
+	public List<Side> getSidesFromGame(final Game game)
+	{
 		final Session session = this.sideDao.getSession();
-		final Query query = session.createQuery("from Side s where s.game=?");
-		query.setEntity(0, game);
+		final Query query = session.createQuery("from Side s where s.game=:game");
+		query.setEntity("game", game);
 		final List<Side> s = query.list();
 
 		return s;
 	}
 
 	@Transactional(readOnly = true)
-	public List<BigInteger> giveAllPlayersFromGameExceptMe(final Long gameId, final Long me) {
+	public List<BigInteger> giveAllPlayersFromGameExceptMe(final Long gameId, final Long me)
+	{
 		final Session session = this.gameDao.getSession();
 
 		final Query query = session
-									.createSQLQuery("select playerId from Player_Game pg where pg.gameId = ? and pg.playerId <> ?");
-		query.setLong(0, gameId);
-		query.setLong(1, me);
+			.createSQLQuery("select playerId from Player_Game pg where pg.gameId = :gameId and pg.playerId <> playerId");
+		query.setLong("gameId", gameId);
+		query.setLong("playerId", me);
 
 		final List<BigInteger> l = query.list();
 
@@ -940,13 +1076,14 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Player> giveAllPlayersFromGameExceptMeAsPlayers(final Long gameId, final Long me) {
+	public List<Player> giveAllPlayersFromGameExceptMeAsPlayers(final Long gameId, final Long me)
+	{
 		final Session session = this.gameDao.getSession();
 
 		final SQLQuery query = session
-									   .createSQLQuery("select p.* from Player p, Player_Game pg where pg.gameId = ? and pg.playerId <> ? and pg.playerId = p.playerId");
-		query.setLong(0, gameId);
-		query.setLong(1, me);
+			.createSQLQuery("select p.* from Player p, Player_Game pg where pg.gameId = :gameId and pg.playerId <> :playerId and pg.playerId = p.playerId");
+		query.setLong("gameId", gameId);
+		query.setLong("playerId", me);
 		query.addEntity(Player.class);
 
 		final List<Player> l = query.list();
@@ -955,12 +1092,13 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional(readOnly = true)
-	public List<BigInteger> giveAllPlayersFromGame(final Long gameId) {
+	public List<BigInteger> giveAllPlayersFromGame(final Long gameId)
+	{
 		final Session session = this.gameDao.getSession();
 
 		final Query query = session
-									.createSQLQuery("select playerId from Player_Game pg where pg.gameId = ?");
-		query.setLong(0, gameId);
+			.createSQLQuery("select playerId from Player_Game pg where pg.gameId = :gameId");
+		query.setLong("gameId", gameId);
 
 		final List<BigInteger> l = query.list();
 
@@ -968,24 +1106,27 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional
-	public void deleteGame(final Game oldGame) {
+	public void deleteGame(final Game oldGame)
+	{
 		this.gameDao.delete(oldGame.getId());
 	}
 
 	@Transactional
-	public void clearAllMagicCardsForGameAndDeck(final Long gameId, final Long deckId) {
+	public void clearAllMagicCardsForGameAndDeck(final Long gameId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session
-									.createSQLQuery("delete from MagicCard where gameId = ? and card_deck = ?");
-		query.setLong(0, gameId);
-		query.setLong(1, deckId);
+			.createSQLQuery("delete from MagicCard where gameId = :gameId and card_deck = :deck");
+		query.setLong("gameId", gameId);
+		query.setLong("deck", deckId);
 
 		query.executeUpdate();
 	}
 
 	@Transactional
-	public void resetDb() {
+	public void resetDb()
+	{
 		final Session session = this.gameDao.getSession();
 
 		session.createSQLQuery("delete from Player_Game").executeUpdate();
@@ -1008,14 +1149,15 @@ public class PersistenceService implements Serializable {
 
 	@Transactional(readOnly = true)
 	public int getNumberOfCardsInACertainZoneForAGameAndADeck(final CardZone zone,
-															  final Long gameId, final Long deckId) {
+		final Long gameId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session
-									.createQuery("from MagicCard where zone = ? and gameId = ? and card_deck = ?");
-		query.setString(0, zone.toString());
-		query.setLong(1, gameId);
-		query.setLong(2, deckId);
+			.createQuery("from MagicCard where zone = :zoneName and gameId = :gameId and card_deck = :deckId");
+		query.setString("zoneName", zone.toString());
+		query.setLong("gameId", gameId);
+		query.setLong("deckId", deckId);
 
 		final List<MagicCard> cards = query.list();
 		return (cards == null) ? 0 : cards.size();
@@ -1023,13 +1165,17 @@ public class PersistenceService implements Serializable {
 
 	// The counter is deleted by cascade
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void deleteCounter(final Counter counter, final MagicCard card, final Token token) {
-		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty())) {
+	public void deleteCounter(final Counter counter, final MagicCard card, final Token token)
+	{
+		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty()))
+		{
 			card.getCounters().remove(counter);
 			this.magicCardDao.getSession().update(card);
 			this.counterDao.getSession().delete(counter);
-		} else if ((token != null) && (token.getCounters() != null)
-						   && (!token.getCounters().isEmpty())) {
+		}
+		else if ((token != null) && (token.getCounters() != null)
+			&& (!token.getCounters().isEmpty()))
+		{
 			token.getCounters().remove(counter);
 			this.tokenDao.getSession().update(token);
 			this.counterDao.getSession().delete(counter);
@@ -1037,94 +1183,109 @@ public class PersistenceService implements Serializable {
 	}
 
 	@Transactional
-	public void updateCounter(final Counter counter) {
+	public void updateCounter(final Counter counter)
+	{
 		final Query query = this.counterDao.getSession().createSQLQuery(
-																			   "update Counter set numberOfCounters = ? where counterId = ?");
-		query.setLong(0, counter.getNumberOfCounters());
-		query.setLong(1, counter.getId());
+			"update Counter set numberOfCounters = :counters where counterId = :id");
+		query.setLong("counters", counter.getNumberOfCounters());
+		query.setLong("id", counter.getId());
 		query.executeUpdate();
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveOrUpdateArrow(final Arrow arrow) {
+	public void saveOrUpdateArrow(final Arrow arrow)
+	{
 		this.arrowDao.getSession().saveOrUpdate(arrow);
 	}
 
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void deleteArrow(final Arrow arrow) {
+	public void deleteArrow(final Arrow arrow)
+	{
 		this.arrowDao.getSession().delete(arrow);
 	}
 
 	@Transactional(readOnly = true)
-	public List<Arrow> loadAllArrowsForAGame(final Long gameId) {
+	public List<Arrow> loadAllArrowsForAGame(final Long gameId)
+	{
 		final Session session = this.arrowDao.getSession();
 
-		final Query query = session.createQuery("from Arrow where gameId = ?");
-		query.setLong(0, gameId);
+		final Query query = session.createQuery("from Arrow where gameId = :id");
+		query.setLong("id", gameId);
 
 		return query.list();
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void deleteAllArrowsForAGame(final Long gameId) {
+	public void deleteAllArrowsForAGame(final Long gameId)
+	{
 		final List<Arrow> allArrows = this.loadAllArrowsForAGame(gameId);
 		final Session session = this.arrowDao.getSession();
 
-		for (final Arrow arrow : allArrows) {
+		for (final Arrow arrow : allArrows)
+		{
 			session.delete(arrow);
 		}
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveMessageWithoutDuplicate(final ConsoleLogMessage consoleLogMessage) {
-		if ((consoleLogMessage.getGameId() != null) && (consoleLogMessage.getMessage() != null)) {
+	public void saveMessageWithoutDuplicate(final ConsoleLogMessage consoleLogMessage)
+	{
+		if ((consoleLogMessage.getGameId() != null) && (consoleLogMessage.getMessage() != null))
+		{
 			this.consoleLogMessageDao.getSession().save(consoleLogMessage);
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public List<ConsoleLogMessage> loadAllConsoleLogMessagesForAGame(final Long gameId) {
+	public List<ConsoleLogMessage> loadAllConsoleLogMessagesForAGame(final Long gameId)
+	{
 		final Session session = this.consoleLogMessageDao.getSession();
 
-		final Query query = session.createQuery("from ConsoleLogMessage where gameId = ?");
-		query.setLong(0, gameId);
+		final Query query = session.createQuery("from ConsoleLogMessage where gameId = :id");
+		query.setLong("id", gameId);
 
 		return query.list();
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void deleteAllMessagesForAGame(final Long gameId) {
+	public void deleteAllMessagesForAGame(final Long gameId)
+	{
 		final List<ConsoleLogMessage> allMessages = this.loadAllConsoleLogMessagesForAGame(gameId);
 		final Session session = this.consoleLogMessageDao.getSession();
 
-		for (final ConsoleLogMessage consoleLogMessage : allMessages) {
+		for (final ConsoleLogMessage consoleLogMessage : allMessages)
+		{
 			session.delete(consoleLogMessage);
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public User getUser(final String username) {
+	public User getUser(final String username)
+	{
 		return this.userDao.load(username);
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveOrUpdateUser(final User user) {
+	public void saveOrUpdateUser(final User user)
+	{
 		this.userDao.getSession().saveOrUpdate(user);
 	}
 
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public void saveChatMessage(final ChatMessage msg) {
+	public void saveChatMessage(final ChatMessage msg)
+	{
 		this.chatMessageDao.save(msg);
 	}
 
 	@Transactional(readOnly = true)
-	public List<ChatMessage> loadAllChatMessagesForAGame(final Long gameId) {
+	public List<ChatMessage> loadAllChatMessagesForAGame(final Long gameId)
+	{
 		final Session session = this.chatMessageDao.getSession();
 
-		final Query query = session.createQuery("from ChatMessage where gameId = ? order by id");
-		query.setLong(0, gameId);
+		final Query query = session.createQuery("from ChatMessage where gameId = :id order by id");
+		query.setLong("id", gameId);
 
 		return query.list();
 	}

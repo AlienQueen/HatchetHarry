@@ -11,6 +11,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -47,7 +48,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		ArrowDrawBehavior.LOGGER.info("respond");
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-			.getRequest();
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String arrowDrawSource = request.getParameter("source");
@@ -57,7 +58,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<BigInteger> allPlayersInGame = ArrowDrawBehavior.this.persistenceService
-			.giveAllPlayersFromGame(gameId);
+				.giveAllPlayersFromGame(gameId);
 
 		final Arrow arrow = new Arrow();
 		arrow.setGame(gameId);
@@ -66,7 +67,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		ArrowDrawBehavior.this.persistenceService.saveOrUpdateArrow(arrow);
 
 		EventBusPostService.post(allPlayersInGame, new ArrowDrawCometChannel(arrowDrawSource,
-			arrowDrawTarget));
+				arrowDrawTarget));
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuidValidForJs", this.markupId);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/arrowDraw/arrowDraw.js");
+				"script/arrowDraw/arrowDraw.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
@@ -90,7 +91,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			ArrowDrawBehavior.LOGGER.error(
-				"unable to close template in CardRotateBehavior#renderHead()!", e);
+					"unable to close template in CardRotateBehavior#renderHead()!", e);
 		}
 	}
 
