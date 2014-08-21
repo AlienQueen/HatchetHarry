@@ -35,21 +35,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior {
-	private static final long serialVersionUID = 1L;
+public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
+{
 	static final Logger LOGGER = LoggerFactory.getLogger(PutToZoneBehavior.class);
-
-	@SpringBean
-	private PersistenceService persistenceService;
-
+	private static final long serialVersionUID = 1L;
 	private final CardZone sourceZone;
-	private UUID uuidToLookFor;
-	private CardZone targetZone;
 	private final Player player;
 	private final boolean isReveal;
+	@SpringBean
+	private PersistenceService persistenceService;
+	private UUID uuidToLookFor;
+	private CardZone targetZone;
 
 	public PutToZoneBehavior(final CardZone _sourceZone, final Player _player,
-							 final boolean _isReveal) {
+		final boolean _isReveal)
+	{
 		super();
 		Injector.get().inject(this);
 
@@ -59,152 +59,161 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior {
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target) {
-		final ServletWebRequest servletWebRequest = (ServletWebRequest) target.getPage()
-																				.getRequest();
+	protected void respond(final AjaxRequestTarget target)
+	{
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+			.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
-		try {
+		try
+		{
 			this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
-		} catch (final IllegalArgumentException ex) {
+		}
+		catch (final IllegalArgumentException ex)
+		{
 			PutToZoneBehavior.LOGGER.error("No card with UUID= " + request.getParameter("card")
-												   + " found!", ex);
+				+ " found!", ex);
 		}
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
-		if (null == card) {
+		if (null == card)
+		{
 			PutToZoneBehavior.LOGGER.error("UUID " + this.uuidToLookFor
-												   + " retrieved no MagicCard!");
+				+ " retrieved no MagicCard!");
 			return;
 		}
 
-		if (!this.sourceZone.equals(card.getZone())) {
+		if (!this.sourceZone.equals(card.getZone()))
+		{
 			return;
 		}
 
-		try {
+		try
+		{
 			this.targetZone = CardZone.valueOf(request.getParameter("targetZone").toUpperCase());
-		} catch (final IllegalArgumentException ex) {
+		}
+		catch (final IllegalArgumentException ex)
+		{
 			PutToZoneBehavior.LOGGER.error(
-												  "wrong zone " + request.getParameter("targetZone") + "!", ex);
+				"wrong zone " + request.getParameter("targetZone") + "!", ex);
 			return;
 		}
 
 		final Player ownerPlayer = this.persistenceService.getPlayer(card.getDeck().getPlayerId());
 
 		// TODO add more source zone one day
-		switch (this.sourceZone) {
-			case HAND:
+		switch (this.sourceZone)
+		{
+			case HAND :
 				ownerPlayer.setDefaultTargetZoneForHand(this.targetZone);
 				break;
-			case GRAVEYARD:
+			case GRAVEYARD :
 				ownerPlayer.setDefaultTargetZoneForGraveyard(this.targetZone);
 				break;
-			case EXILE:
+			case EXILE :
 				ownerPlayer.setDefaultTargetZoneForExile(this.targetZone);
 				break;
 			// $CASES-OMITTED$
-			default:
+			default :
 				throw new UnsupportedOperationException();
 		}
 		this.persistenceService.mergePlayer(ownerPlayer);
 
 		final String ownerPlayerName = ownerPlayer.getName();
 
-		switch (this.targetZone) {
-			case HAND:
+		switch (this.targetZone)
+		{
+			case HAND :
 				ownerPlayer.setHandDisplayed(true);
 				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
-			case GRAVEYARD:
+			case GRAVEYARD :
 				ownerPlayer.setGraveyardDisplayed(true);
 				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
-			case EXILE:
+			case EXILE :
 				ownerPlayer.setExileDisplayed(true);
 				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
-			case BATTLEFIELD:
+			case BATTLEFIELD :
 				break;
-			case LIBRARY:
+			case LIBRARY :
 				break;
-			default:
+			default :
 				throw new UnsupportedOperationException();
 		}
 
 		final CardZoneMoveCometChannel czmcc = new CardZoneMoveCometChannel(this.sourceZone,
-																				   this.targetZone, card, HatchetHarrySession.get().getPlayer().getId(), card
-																																								 .getDeck().getPlayerId(), card.getGameId(), card.getDeck(),
-																				   ownerPlayer.getSide(), this.isReveal);
+			this.targetZone, card, HatchetHarrySession.get().getPlayer().getId(), card.getDeck()
+				.getPlayerId(), card.getGameId(), card.getDeck(), ownerPlayer.getSide(),
+			this.isReveal);
 
 		final CardZoneMoveNotifier czmn = new CardZoneMoveNotifier(this.sourceZone,
-																		  this.targetZone, card, HatchetHarrySession.get().getPlayer().getName(),
-																		  ownerPlayerName);
+			this.targetZone, card, HatchetHarrySession.get().getPlayer().getName(), ownerPlayerName);
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
-														  .giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+			.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-																						   ConsoleLogType.ZONE_MOVE, this.sourceZone, this.targetZone, null, card.getTitle(),
-																						   HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
-																						   HatchetHarrySession.get().getGameId());
+			ConsoleLogType.ZONE_MOVE, this.sourceZone, this.targetZone, null, card.getTitle(),
+			HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
+			HatchetHarrySession.get().getGameId());
 
 		// post a message for all players in the game
-		for (int i = 0; i < allPlayersInGame.size(); i++) {
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
 			final Long _player = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(_player);
 			PutToZoneBehavior.LOGGER.info("pageUuid: " + pageUuid);
 
-			// For unit tests
-			try {
-				HatchetHarryApplication.get().getEventBus().post(czmcc, pageUuid);
-				HatchetHarryApplication.get().getEventBus().post(czmn, pageUuid);
-			} catch (final NullPointerException e) {
-				// For tests only, so do nothing
-			}
+			HatchetHarryApplication.get().getEventBus().post(czmcc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(czmn, pageUuid);
 
-			// For unit tests only, we'll ask a solution to Emond
-			try {
-				HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-			} catch (final NullPointerException e) {
-				// Nothing to do in unit tests
-			}
+			HatchetHarryApplication.get().getEventBus()
+				.post(new ConsoleLogCometChannel(logger), pageUuid);
 		}
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response) {
+	public void renderHead(final Component component, final IHeaderResponse response)
+	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+        final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("zone", this.sourceZone.toString());
 
-		if (this.isReveal) {
+		if (this.isReveal)
+		{
 			variables.put("Player", this.player.getId().toString());
 			variables.put("reveal", "Reveal");
-		} else {
+		}
+		else
+		{
 			variables.put("Player", "");
 			variables.put("reveal", "");
 		}
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-																	 "script/playCard/putToZone.js");
+			"script/playCard/putToZone.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-		try {
+		try
+		{
 			template.close();
-		} catch (final IOException e) {
+		}
+		catch (final IOException e)
+		{
 			PutToZoneBehavior.LOGGER.error(
-												  "unable to close template in PutToZoneBehavior#renderHead()!", e);
+				"unable to close template in PutToZoneBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

@@ -26,41 +26,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBehavior {
+public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBehavior
+{
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory
-												 .getLogger(PutToGraveyardFromBattlefieldBehavior.class);
+		.getLogger(PutToGraveyardFromBattlefieldBehavior.class);
 	private final UUID uuid;
 
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public PutToGraveyardFromBattlefieldBehavior(final UUID _uuid) {
+	public PutToGraveyardFromBattlefieldBehavior(final UUID _uuid)
+	{
 		Injector.get().inject(this);
 		this.uuid = _uuid;
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target) {
+	protected void respond(final AjaxRequestTarget target)
+	{
 		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("respond");
 
 		final String uniqueid = this.uuid.toString();
 		MagicCard mc = null;
 
-		try {
+		try
+		{
 			mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
-		} catch (final IllegalArgumentException e) {
+		}
+		catch (final IllegalArgumentException e)
+		{
 			PutToGraveyardFromBattlefieldBehavior.LOGGER.error("error parsing UUID of card", e);
 		}
 
-		if (null == mc) {
+		if (null == mc)
+		{
 			return;
 		}
 
 		final HatchetHarrySession session = HatchetHarrySession.get();
 		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
-																  + session.getPlayer().getId());
+			+ session.getPlayer().getId());
 		PutToGraveyardFromBattlefieldBehavior.LOGGER.info("mc.getTitle(): " + mc.getTitle());
 
 		mc.setZone(CardZone.GRAVEYARD);
@@ -74,71 +81,63 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 		final Deck d = p.getDeck();
 		// TODO: reorder?
 		final List<MagicCard> graveyard = this.persistenceService
-												  .getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+			.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
 		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
 
 		// TODO: reorder?
 		final List<MagicCard> battlefield = this.persistenceService
-													.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
-														  .giveAllPlayersFromGame(gameId);
+			.giveAllPlayersFromGame(gameId);
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-																						   ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.GRAVEYARD, null,
-																						   mc.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
-																						   null, gameId);
+			ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.GRAVEYARD, null,
+			mc.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
+			gameId);
 
-		for (int i = 0; i < allPlayersInGame.size(); i++) {
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 
 			final String _pageUuid = HatchetHarryApplication.getCometResources().get(
-																							playerToWhomToSend);
+				playerToWhomToSend);
 
 			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
-																				  .getPlayerId());
+				.getPlayerId());
 
 			final String targetPlayerName = targetPlayer.getName();
 			final Long targetDeckId = mc.getDeck().getDeckId();
 
-			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()) {
+			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
+			{
 				targetPlayer.setGraveyardDisplayed(true);
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
 
 			final PutToGraveyardCometChannel _ptgcc = new PutToGraveyardCometChannel(gameId, mc,
-																							session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
-																							targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
-																																						  .longValue()));
+				session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
+				targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
+					.longValue()));
 
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
-																			  NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId, session
-																																							 .getPlayer().getId(), session.getPlayer().getName(), "", "",
-																			  mc.getTitle(), null, targetPlayerName);
+				NotifierAction.PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION, gameId, session
+					.getPlayer().getId(), session.getPlayer().getName(), "", "", mc.getTitle(),
+				null, targetPlayerName);
 
-			// For unit tests
-			try {
-				HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
-				HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
-			} catch (final NullPointerException e) {
-				// Nothing to do in unit tests
-			}
-
-			// For unit tests only, we'll ask a solution to Emond
-			try {
-				HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), _pageUuid);
-			} catch (final NullPointerException e) {
-				// Nothing to do in unit tests
-			}
+			HatchetHarryApplication.get().getEventBus().post(_ptgcc, _pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
+			HatchetHarryApplication.get().getEventBus()
+				.post(new ConsoleLogCometChannel(logger), _pageUuid);
 		}
-	}
+    }
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

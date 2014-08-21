@@ -33,7 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior {
+public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
+{
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DestroyTokenBehavior.class);
@@ -42,25 +43,31 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior {
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	public DestroyTokenBehavior(final UUID _uuid) {
+	public DestroyTokenBehavior(final UUID _uuid)
+	{
 		Injector.get().inject(this);
 		this.uuid = _uuid;
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target) {
+	protected void respond(final AjaxRequestTarget target)
+	{
 		DestroyTokenBehavior.LOGGER.info("respond");
 
 		final String uniqueid = this.uuid.toString();
 		MagicCard mc = null;
 
-		try {
+		try
+		{
 			mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
-		} catch (final IllegalArgumentException e) {
+		}
+		catch (final IllegalArgumentException e)
+		{
 			DestroyTokenBehavior.LOGGER.error("error parsing UUID of card", e);
 		}
 
-		if (null == mc) {
+		if (null == mc)
+		{
 			return;
 		}
 
@@ -79,41 +86,38 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior {
 
 		// TODO: reorder?
 		final List<MagicCard> battlefield = this.persistenceService
-													.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = DestroyTokenBehavior.this.persistenceService
-														  .giveAllPlayersFromGame(gameId);
+			.giveAllPlayersFromGame(gameId);
 
-		for (int i = 0; i < allPlayersInGame.size(); i++) {
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 
 			final String _pageUuid = HatchetHarryApplication.getCometResources().get(
-																							playerToWhomToSend);
+				playerToWhomToSend);
 
 			final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
-																			  NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(), session
-																																								.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
+				NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(), session
+					.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
 			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-																							   ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
-																																										   .getPlayer().getName(), tokenName, null, null, false, gameId);
+				ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
+					.getPlayer().getName(), tokenName, null, null, false, gameId);
 
-			// For unit tests
-			try {
-				HatchetHarryApplication.get().getEventBus().post(dtcc, _pageUuid);
-				HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
-				HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), _pageUuid);
-			} catch (final NullPointerException e) {
-				// Nothing to do in unit tests
-			}
+			HatchetHarryApplication.get().getEventBus().post(dtcc, _pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(_ncc, _pageUuid);
+			HatchetHarryApplication.get().getEventBus()
+				.post(new ConsoleLogCometChannel(logger), _pageUuid);
 		}
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response) {
+	public void renderHead(final Component component, final IHeaderResponse response)
+    {
 		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
@@ -121,20 +125,24 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior {
 		variables.put("destroyTokenUrl", this.getCallbackUrl());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-																	 "script/draggableHandle/exileToken.js");
+			"script/draggableHandle/exileToken.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-		try {
+		try
+		{
 			template.close();
-		} catch (final IOException e) {
+		}
+		catch (final IOException e)
+		{
 			DestroyTokenBehavior.LOGGER.error(
-													 "unable to close template1 in DestroyTokenBehavior#renderHead()!", e);
+				"unable to close template1 in DestroyTokenBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

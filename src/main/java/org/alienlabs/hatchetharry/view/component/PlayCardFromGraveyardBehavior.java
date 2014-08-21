@@ -35,10 +35,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior {
+public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
+{
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory
-												 .getLogger(PlayCardFromGraveyardBehavior.class);
+		.getLogger(PlayCardFromGraveyardBehavior.class);
 
 	@SpringBean
 	private PersistenceService persistenceService;
@@ -46,25 +47,28 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior {
 	private UUID uuidToLookFor;
 	private String side;
 
-	public PlayCardFromGraveyardBehavior(final String _side) {
+	public PlayCardFromGraveyardBehavior(final String _side)
+	{
 		super();
 		Injector.get().inject(this);
 		this.side = _side;
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target) {
+	protected void respond(final AjaxRequestTarget target)
+	{
 		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 
-		final ServletWebRequest servletWebRequest = (ServletWebRequest) target.getPage()
-																				.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
+			.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
-		if (!CardZone.GRAVEYARD.equals(card.getZone())) {
+		if (!CardZone.GRAVEYARD.equals(card.getZone()))
+		{
 			return;
 		}
 		card.setZone(CardZone.BATTLEFIELD);
@@ -76,7 +80,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior {
 		this.persistenceService.updateGame(game);
 
 		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
-																   .getId());
+			.getId());
 		card.setX(p.getSide().getX());
 		card.setY(p.getSide().getY());
 		this.persistenceService.updateCard(card);
@@ -85,69 +89,73 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior {
 
 		final Deck d = p.getDeck();
 		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
-																	  .getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+			.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
 		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-																		.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
-																									  card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());
+			card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());
 
 		final NotifierCometChannel ncc = new NotifierCometChannel(
-																		 NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
-																																		 .getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
-																		 "", card.getTitle(), null, "");
+			NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
+				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
+			card.getTitle(), null, "");
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
-														  .giveAllPlayersFromGame(gameId);
+			.giveAllPlayersFromGame(gameId);
 
 		// post a message for all players in the game
-		for (int i = 0; i < allPlayersInGame.size(); i++) {
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
 			final Long player = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(player);
 
-			// For unit tests
-			try {
-				HatchetHarryApplication.get().getEventBus().post(pcfgcc, pageUuid);
-				HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-			} catch (final NullPointerException e) {
-				// Nothing to do in unit tests
-			}
+			HatchetHarryApplication.get().getEventBus().post(pcfgcc, pageUuid);
+			HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
 		}
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response) {
+	public void renderHead(final Component component, final IHeaderResponse response)
+	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+        final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("side", this.side);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-																	 "script/playCard/playCardFromGraveyard.js");
+			"script/playCard/playCardFromGraveyard.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "playCardFromGraveyard"));
-		try {
+		response
+			.render(JavaScriptHeaderItem.forScript(template.asString(), "playCardFromGraveyard"));
+		try
+		{
 			template.close();
-		} catch (final IOException e) {
+		}
+		catch (final IOException e)
+		{
 			PlayCardFromGraveyardBehavior.LOGGER.error(
-															  "unable to close template in PlayCardFromGraveyardBehavior#renderHead()!", e);
+				"unable to close template in PlayCardFromGraveyardBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 
-	public String getSide() {
+	public String getSide()
+	{
 		return this.side;
 	}
 
-	public void setSide(final String _side) {
+	public void setSide(final String _side)
+	{
 		this.side = _side;
 	}
 

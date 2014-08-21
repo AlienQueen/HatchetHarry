@@ -1335,30 +1335,10 @@ public class HomePage extends TestReportPage
 							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
 								.getSide().getSideName(), null, null, null, "");
 
-						try
-						{
-							HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
-						}
-						catch (final NullPointerException ex)
-						{
-							// NPE in unit tests
-							HomePage.LOGGER
-								.error("exception thrown while posting in event bus", ex);
-						}
-
-						try
-						{
-							HatchetHarryApplication.get().getEventBus()
-								.post(new ConsoleLogCometChannel(logger), pageUuid);
-						}
-						catch (final NullPointerException ex)
-						{
-							// NPE in unit tests
-							HomePage.LOGGER
-								.error("exception thrown while posting in event bus", ex);
-						}
-
-					}
+						HatchetHarryApplication.get().getEventBus().post(ncc, pageUuid);
+						HatchetHarryApplication.get().getEventBus()
+							.post(new ConsoleLogCometChannel(logger), pageUuid);
+                    }
 				}
 				else
 				{
@@ -3367,7 +3347,7 @@ public class HomePage extends TestReportPage
 		}
 
 		return this.allCardsInBattlefield;
-    }
+	}
 
 	public final QuickView<MagicCard> getAllCardsInBattlefield()
 	{

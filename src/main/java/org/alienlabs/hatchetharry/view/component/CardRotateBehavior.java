@@ -32,19 +32,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CardRotateBehavior extends AbstractDefaultAjaxBehavior {
+public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
+{
 	private static final long serialVersionUID = -9164073767944851883L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardRotateBehavior.class);
 	private final CardPanel panel;
 	private final UUID uuid;
-
+	private final boolean tapped;
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private final boolean tapped;
-
-	public CardRotateBehavior(final CardPanel cp, final UUID _uuid, final boolean _tapped) {
+	public CardRotateBehavior(final CardPanel cp, final UUID _uuid, final boolean _tapped)
+	{
 		this.panel = cp;
 		this.uuid = _uuid;
 		this.tapped = _tapped;
@@ -52,24 +52,29 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior {
 	}
 
 	@Override
-	protected void respond(final AjaxRequestTarget target) {
+	protected void respond(final AjaxRequestTarget target)
+	{
 		CardRotateBehavior.LOGGER.info("respond");
-		final ServletWebRequest servletWebRequest = (ServletWebRequest) this.panel.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		final String uuidToLookFor = request.getParameter("uuid");
 		final MagicCard card;
-		try {
+		try
+		{
 			card = this.persistenceService.getCardFromUuid(UUID.fromString(uuidToLookFor));
-		} catch (final NullPointerException e) {
+		}
+		catch (final NullPointerException e)
+		{
 			CardRotateBehavior.LOGGER.error("Error parsing UUID " + uuidToLookFor
-													+ " in CardRotateBehavior", e);
+				+ " in CardRotateBehavior", e);
 			return;
 		}
 
 		card.setTapped(!card.isTapped());
 
-		if (null != card.getToken()) {
+		if (null != card.getToken())
+		{
 			card.getToken().setTapped(card.isTapped());
 			this.persistenceService.updateToken(card.getToken());
 		}
@@ -80,42 +85,32 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior {
 
 		final Long gameId = card.getGameId();
 		final List<BigInteger> allPlayersInGame = CardRotateBehavior.this.persistenceService
-														  .giveAllPlayersFromGame(gameId);
+			.giveAllPlayersFromGame(gameId);
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-																						   ConsoleLogType.TAP_UNTAP, null, null, Boolean.valueOf(card.isTapped()),
-																						   card.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
-																						   null, gameId);
+			ConsoleLogType.TAP_UNTAP, null, null, Boolean.valueOf(card.isTapped()),
+			card.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
+			null, gameId);
 
-		for (int i = 0; i < allPlayersInGame.size(); i++) {
+		for (int i = 0; i < allPlayersInGame.size(); i++)
+		{
 			final Long playerToWhomToSend = allPlayersInGame.get(i).longValue();
 			final String pageUuid = HatchetHarryApplication.getCometResources().get(
-																						   playerToWhomToSend);
+				playerToWhomToSend);
 			final CardRotateCometChannel crcc = new CardRotateCometChannel(gameId, card,
-																				  card.getUuid(), card.isTapped());
-
-			// For unit tests only, we'll ask a solution to Emond
-			try {
-				HatchetHarryApplication.get().getEventBus().post(crcc, pageUuid);
-			} catch (final NullPointerException e) {
-				// Nothing to do in unit tests
-			}
-
-			// For unit tests only, we'll ask a solution to Emond
-			try {
-				HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-			} catch (final NullPointerException e) {
-				// Nothing to do in unit tests
-			}
+				card.getUuid(), card.isTapped());
+			HatchetHarryApplication.get().getEventBus().post(crcc, pageUuid);
+			HatchetHarryApplication.get().getEventBus()
+				.post(new ConsoleLogCometChannel(logger), pageUuid);
 		}
 	}
 
 	@Override
-	public void renderHead(final Component component, final IHeaderResponse response) {
+	public void renderHead(final Component component, final IHeaderResponse response)
+	{
 		super.renderHead(component, response);
 
-        final String uuidAsString = this.uuid.toString();
+		final String uuidAsString = this.uuid.toString();
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuidValidForJs", uuidAsString.replace("-", "_"));
@@ -123,20 +118,24 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior {
 		variables.put("tapped", this.tapped);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-																	 "script/rotate/cardRotate.js");
+			"script/rotate/cardRotate.js");
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-		try {
+		try
+		{
 			template.close();
-		} catch (final IOException e) {
+		}
+		catch (final IOException e)
+		{
 			CardRotateBehavior.LOGGER.error(
-												   "unable to close template in CardRotateBehavior#renderHead()!", e);
+				"unable to close template in CardRotateBehavior#renderHead()!", e);
 		}
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 
