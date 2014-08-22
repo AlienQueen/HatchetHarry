@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
@@ -26,6 +25,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -313,37 +313,18 @@ public class JoinGameModalWindow extends Panel
 
 				// post the DataBox update message to all players in the game,
 				// except me
-				for (int i = 0; i < allPlayersInGameExceptMe.size(); i++)
-				{
-					final Long p = allPlayersInGameExceptMe.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
-					PlayCardFromHandBehavior.LOGGER.info("pageUuid: " + pageUuid);
+				EventBusPostService.post(allPlayersInGameExceptMe, jgncc);
 
-					HatchetHarryApplication.get().getEventBus().post(jgncc, pageUuid);
-				}
-
-				for (int i = 0; i < allPlayersInGame.size(); i++)
-				{
-					final Long p = allPlayersInGame.get(i).longValue();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
-					HatchetHarryApplication.get().getEventBus().post(udbcc, pageUuid);
-					HatchetHarryApplication.get().getEventBus().post(ascc, pageUuid);
-					HatchetHarryApplication.get().getEventBus()
-						.post(new ConsoleLogCometChannel(logger), pageUuid);
-				}
+				EventBusPostService.post(allPlayersInGame, udbcc, ascc, new ConsoleLogCometChannel(
+					logger));
 
 				// In order to display the opponents' sides
 				final List<Player> giveAllPlayersFromGameExceptMeAsPlayers = JoinGameModalWindow.this.persistenceService
 					.giveAllPlayersFromGameExceptMeAsPlayers(_gameId,
 						JoinGameModalWindow.this.player.getId());
-				for (int i = 0; i < giveAllPlayersFromGameExceptMeAsPlayers.size(); i++)
-				{
-					final Long p = JoinGameModalWindow.this.player.getId();
-					final String pageUuid = HatchetHarryApplication.getCometResources().get(p);
-					final AddSidesFromOtherBrowsersCometChannel asfobcc = new AddSidesFromOtherBrowsersCometChannel(
-						JoinGameModalWindow.this.player, giveAllPlayersFromGameExceptMeAsPlayers);
-					HatchetHarryApplication.get().getEventBus().post(asfobcc, pageUuid);
-				}
+				final AddSidesFromOtherBrowsersCometChannel asfobcc = new AddSidesFromOtherBrowsersCometChannel(
+					JoinGameModalWindow.this.player, giveAllPlayersFromGameExceptMeAsPlayers);
+                EventBusPostService.post(allPlayersInGame, asfobcc);
 
 				session.resetCardsInGraveyard();
 

@@ -96,6 +96,7 @@ public class RuntimeDataGenerator implements Serializable {
 
 		if ((this.importDeck)
 					&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant"))) {
+            // TODO why this variable _deck?
 			final File _deck = new File(ResourceBundle.getBundle(
 																		RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 			final byte[] content = new byte[475];

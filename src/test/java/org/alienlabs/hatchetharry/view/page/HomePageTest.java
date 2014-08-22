@@ -313,8 +313,7 @@ public class HomePageTest {
 	@Test
 	@Ignore
 	public void testGenerateDrawCardLink() {
-		SpringContextLoaderBaseTest.startAGameAndPlayACard(HomePageTest.tester,
-																  HomePageTest.context);
+		SpringContextLoaderBaseTest.startAGameAndPlayACard();
 
 		final PersistenceService persistenceService = HomePageTest.context
 															  .getBean(PersistenceService.class);

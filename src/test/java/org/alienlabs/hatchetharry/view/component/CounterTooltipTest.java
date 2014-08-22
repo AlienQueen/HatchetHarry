@@ -15,8 +15,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 	public void testCardTooltip()
 	{
 		// Start a game and play a card
-		super.startAGameAndPlayACard(SpringContextLoaderBaseTest.tester,
-			SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT);
+		super.startAGameAndPlayACard();
 		SpringContextLoaderBaseTest.waTester.switchOffTestMode();
 
 		// Assert it's a card and not a token

@@ -76,14 +76,14 @@ public class SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
 	}
 
-	public static Long startAGameAndPlayACard(final WicketTester _tester,
-		final ApplicationContext _context)
+	public static Long startAGameAndPlayACard()
 	{
-		// Create game
-		_tester.assertComponent("createGameLink", AjaxLink.class);
-		_tester.clickLink("createGameLink", true);
+        // Create game
+		SpringContextLoaderBaseTest.tester.assertComponent("createGameLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("createGameLink", true);
 
-		final FormTester createGameForm = _tester.newFormTester("createGameWindow:content:form");
+		final FormTester createGameForm = SpringContextLoaderBaseTest.tester
+			.newFormTester("createGameWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "0");
 		createGameForm.setValue("deckParent:decks", "0");
@@ -95,8 +95,9 @@ public class SpringContextLoaderBaseTest
 
 
 		// Retrieve PlayCardFromHandBehavior
-		_tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)_tester
+		SpringContextLoaderBaseTest.tester
+			.assertComponent("playCardLink", WebMarkupContainer.class);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
 			.getComponentFromLastRenderedPage("playCardLink");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 			.getBehaviors().get(0);
@@ -108,10 +109,10 @@ public class SpringContextLoaderBaseTest
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card
-		_tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
 			HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		_tester.executeBehavior(pcfhb);
-		// _tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
+		// SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		// We still should not have more cards that the number of cards in the
 		// deck
 		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
@@ -121,7 +122,7 @@ public class SpringContextLoaderBaseTest
 		return gameId;
 	}
 
-	public void newHomePage() throws IOException
+	public static void newHomePage() throws IOException
 	{
 		final PageParameters pp = new PageParameters();
 		pp.add("test", "test");

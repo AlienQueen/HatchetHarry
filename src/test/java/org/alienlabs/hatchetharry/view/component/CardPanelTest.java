@@ -11,12 +11,13 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class CardPanelTest extends SpringContextLoaderBaseTest {
+public class CardPanelTest extends SpringContextLoaderBaseTest
+{
 	@Test
-	public void testCardPanel() throws SecurityException, NoSuchMethodException {
+	public void testCardPanel() throws SecurityException, NoSuchMethodException
+	{
 		// Start a game and play a card
-		super.startAGameAndPlayACard(SpringContextLoaderBaseTest.tester,
-											SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT);
+        super.startAGameAndPlayACard();
 
 		// We should have one card in the battlefield
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -24,26 +25,26 @@ public class CardPanelTest extends SpringContextLoaderBaseTest {
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
-															  .getBean(PersistenceService.class);
+			.getBean(PersistenceService.class);
 		List<MagicCard> allCardsInBattlefield = persistenceService
-														.getAllCardsInBattleFieldForAGame(gameId);
+			.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		// Put it to graveyard
 		SpringContextLoaderBaseTest.tester.assertComponent(
-																  "parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
-		final CardPanel card = (CardPanel) SpringContextLoaderBaseTest.tester
-												   .getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
+			"parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
+		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
+			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
 
 		SpringContextLoaderBaseTest.tester.getLastRenderedPage();
 
 		final PutToGraveyardFromBattlefieldBehavior ptgfbb = card
-																	 .getPutToGraveyardFromBattlefieldBehavior();
+			.getPutToGraveyardFromBattlefieldBehavior();
 		SpringContextLoaderBaseTest.tester.executeBehavior(ptgfbb);
 
 		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
-														   .getLastResponse().getDocument();
+			.getLastResponse().getDocument();
 		// SpringContextLoaderBaseTest.tester
 		// .assertComponentOnAjaxResponse("graveyardParent:graveyard:graveyardCardsPlaceholder:graveyardCards:0:wrapper:graveyardImagePlaceholder");
 
@@ -52,15 +53,15 @@ public class CardPanelTest extends SpringContextLoaderBaseTest {
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		List<MagicCard> allCardsInGraveyard = persistenceService
-													  .getAllCardsInGraveyardForAGame(gameId);
+			.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertEquals(1, allCardsInGraveyard.size());
 
 		// Now, put it back in play
-		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior) SpringContextLoaderBaseTest.tester
-																							.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop")
-																							.getBehaviorById(0);
+		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior)SpringContextLoaderBaseTest.tester
+			.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop")
+			.getBehaviorById(0);
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
-																			allCardsInGraveyard.get(0).getUuid());
+			allCardsInGraveyard.get(0).getUuid());
 		SpringContextLoaderBaseTest.tester.executeBehavior(pcfgb);
 		// Verify
 		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
@@ -80,20 +81,22 @@ public class CardPanelTest extends SpringContextLoaderBaseTest {
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		final List<MagicCard> allCardsInHand = persistenceService
-													   .getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
-																											.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+			.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
+				.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(7, allCardsInHand.size());
 	}
 
 	@Test
 	@Ignore
-	public void testPlayCardFromHandBehavior() {
+	public void testPlayCardFromHandBehavior()
+	{
 		// For later
 	}
 
 	@Test
 	@Ignore
-	public void testPlayCardFromGraveyardBehavior() {
+	public void testPlayCardFromGraveyardBehavior()
+	{
 		// For later
 	}
 
