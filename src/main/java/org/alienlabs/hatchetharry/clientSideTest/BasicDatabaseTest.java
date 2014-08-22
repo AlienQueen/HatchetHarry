@@ -24,7 +24,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class BasicDatabaseTest implements Serializable {
+public class BasicDatabaseTest implements Serializable
+{
 	@SpringBean
 	private CardCollectionDao cardCollectionDao;
 	@SpringBean
@@ -45,23 +46,26 @@ public class BasicDatabaseTest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-																															   new String[]{"applicationContext.xml"});
+		new String[] { "applicationContext.xml" });
 	static transient WicketTester tester;
 	static HatchetHarryApplication webApp;
 	static transient ApplicationContext context;
-	protected static String pageDocument;
+	static String pageDocument;
 
-	@BeforeClass
-	public static void setUpBeforeClass() {
-		BasicDatabaseTest.webApp = new HatchetHarryApplication() {
+    @BeforeClass
+	public static void setUpBeforeClass()
+	{
+		BasicDatabaseTest.webApp = new HatchetHarryApplication()
+		{
 			private static final long serialVersionUID = 1L;
 
 
 			@Override
-			public void init() {
+			public void init()
+			{
 				BasicDatabaseTest.context = BasicDatabaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-																	 new SpringComponentInjector(this, BasicDatabaseTest.context, true));
+					new SpringComponentInjector(this, BasicDatabaseTest.context, true));
 			}
 		};
 
@@ -77,12 +81,14 @@ public class BasicDatabaseTest implements Serializable {
 	}
 
 	@Before
-	public void setUp() {
+	public void setUp()
+	{
 		Injector.get().inject(this);
 	}
 
 	@Test
-	public void testDependencyInjection() {
+	public void testDependencyInjection()
+	{
 		Assert.assertNotNull(this.cardCollectionDao);
 		Assert.assertNotNull(this.collectibleCardDao);
 		Assert.assertNotNull(this.deckArchiveDao);
@@ -94,47 +100,56 @@ public class BasicDatabaseTest implements Serializable {
 	}
 
 	@Test
-	public void testDatabaseConnection() {
+	public void testDatabaseConnection()
+	{
 		Assert.assertTrue(this.gameDao.count() > 0);
 	}
 
 	@Required
-	public void setCardCollectionDao(final CardCollectionDao _cardCollectionDao) {
+	public void setCardCollectionDao(final CardCollectionDao _cardCollectionDao)
+	{
 		this.cardCollectionDao = _cardCollectionDao;
 	}
 
 	@Required
-	public void setCollectibleCardDao(final CollectibleCardDao _collectibleCardDao) {
+	public void setCollectibleCardDao(final CollectibleCardDao _collectibleCardDao)
+	{
 		this.collectibleCardDao = _collectibleCardDao;
 	}
 
 	@Required
-	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao) {
+	public void setDeckArchiveDao(final DeckArchiveDao _deckArchiveDao)
+	{
 		this.deckArchiveDao = _deckArchiveDao;
 	}
 
 	@Required
-	public void setDeckDao(final DeckDao _deckDao) {
+	public void setDeckDao(final DeckDao _deckDao)
+	{
 		this.deckDao = _deckDao;
 	}
 
 	@Required
-	public void setGameDao(final GameDao _gameDao) {
+	public void setGameDao(final GameDao _gameDao)
+	{
 		this.gameDao = _gameDao;
 	}
 
 	@Required
-	public void setMagicCardDao(final MagicCardDao _magicCardDao) {
+	public void setMagicCardDao(final MagicCardDao _magicCardDao)
+	{
 		this.magicCardDao = _magicCardDao;
 	}
 
 	@Required
-	public void setPlayerDao(final PlayerDao _playerDao) {
+	public void setPlayerDao(final PlayerDao _playerDao)
+	{
 		this.playerDao = _playerDao;
 	}
 
 	@Required
-	public void setSideDao(final SideDao _sideDao) {
+	public void setSideDao(final SideDao _sideDao)
+	{
 		this.sideDao = _sideDao;
 	}
 

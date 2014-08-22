@@ -171,6 +171,8 @@ import com.google.common.io.Files;
  * @author Andrey Belyaev
  * @author Zala Goupil
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
+        "SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class HomePage extends TestReportPage
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
@@ -2325,13 +2327,6 @@ public class HomePage extends TestReportPage
 		switch (event.getAction())
 		{
 			case ADD_COUNTER_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-					+ event.getRequestingPlayerName() + "', text : \"has put "
-					+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
-					+ " counter(s) on " + event.getTargetPlayerName() + "'s card: "
-					+ event.getCardName()
-					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
 			case REMOVE_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 					+ event.getRequestingPlayerName() + "', text : \"has put "
@@ -2999,29 +2994,26 @@ public class HomePage extends TestReportPage
 					+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
 					+ mc.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY() + "px\");\n");
 
+				String uuidValidForJs = mc.getUuid().replace("-", "_");
 				if (mc.isTapped())
 				{
-					js.append("jQuery('#card" + mc.getUuid().toString().replace("-", "_")
-						+ "').rotate(90); ");
+					js.append("jQuery('#card" + uuidValidForJs + "').rotate(90); ");
 				}
 				else
 				{
-					js.append("jQuery('#card" + mc.getUuid().toString().replace("-", "_")
-						+ "').rotate(0); ");
+					js.append("jQuery('#card" + uuidValidForJs + "').rotate(0); ");
 				}
 
 				if (((mc.getToken() == null) && mc.getCounters().isEmpty())
 					|| ((mc.getToken() != null) && mc.getToken().getCounters().isEmpty()))
 				{
-					HomePage.LOGGER.info("### bullet id="
-						+ mc.getUuid().toString().replace("-", "_") + " hidden");
+					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " hidden");
 					js.append("jQuery('#bullet" + mc.getUuid().toString().replace("-", "_")
 						+ "').hide(); ");
 				}
 				else
 				{
-					HomePage.LOGGER.info("### bullet id="
-						+ mc.getUuid().toString().replace("-", "_") + " shown");
+					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " shown");
 					js.append("jQuery('#bullet" + mc.getUuid().toString().replace("-", "_")
 						+ "').show(); ");
 				}
@@ -3226,7 +3218,7 @@ public class HomePage extends TestReportPage
 					item.add(new SidePlaceholderPanel("side", item.getModelObject().getSide()
 						.getSideName(), HomePage.this, uuid, item.getModelObject()));
 				}
-				catch (final Exception e)
+				catch (final NullPointerException e)
 				{
 					// At first page load, no player is already available, so we
 					// don't use a SidePlaceholderPanel
