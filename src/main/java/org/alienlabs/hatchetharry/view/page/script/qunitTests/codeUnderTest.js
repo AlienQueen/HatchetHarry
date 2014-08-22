@@ -228,3 +228,9 @@ jQuery(function () {
     window.localStorage.setItem('org.doubango.expert.enable_media_caching', "true");
     window.localStorage.setItem('org.doubango.expert.disable_callbtn_options', "false");
 });
+
+jQuery(function () {
+    window.setTimeout(function () {
+        jQuery('body').removeClass("cloak");
+    }, 1000);
+});

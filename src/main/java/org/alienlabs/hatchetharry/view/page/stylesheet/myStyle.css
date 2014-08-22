@@ -168,6 +168,10 @@ a, a:visited {
     width: 2500px;
 }
 
+.cloak {
+    display: none;
+}
+
 .myfont {
     font-family: 'Black Ops One', cursive;
     color: gray;
