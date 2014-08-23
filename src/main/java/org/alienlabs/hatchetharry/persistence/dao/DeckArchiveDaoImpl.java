@@ -31,23 +31,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author igor
  */
-public class DeckArchiveDaoImpl implements DeckArchiveDao {
+public class DeckArchiveDaoImpl implements DeckArchiveDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public DeckArchiveDaoImpl() {
+	public DeckArchiveDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param _factory hibernate session factory
+	 * @param _factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -57,20 +60,23 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link DeckArchive} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the DeckArchive to load.
+	 * @param id
+	 *            The id of the DeckArchive to load.
 	 * @return DeckArchive
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public DeckArchive load(final long id) {
-		return (DeckArchive) this.getSession().get(DeckArchive.class, Long.valueOf(id));
+	public DeckArchive load(final long id)
+	{
+		return (DeckArchive)this.getSession().get(DeckArchive.class, Long.valueOf(id));
 	}
 
 	/**
@@ -81,18 +87,21 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Long save(final DeckArchive deckArchive) {
-		return (Long) this.getSession().save(deckArchive);
+	public Long save(final DeckArchive deckArchive)
+	{
+		return (Long)this.getSession().save(deckArchive);
 	}
 
 	/**
 	 * Delete a {@link DeckArchive} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the DeckArchive to delete.
+	 * @param id
+	 *            The id of the DeckArchive to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 

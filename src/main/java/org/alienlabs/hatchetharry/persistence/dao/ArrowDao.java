@@ -24,18 +24,20 @@ import org.alienlabs.hatchetharry.model.Arrow;
 import org.hibernate.Session;
 
 /**
- * The implementation-independent DAO interface. Defines the operations required
- * to be supported by an implementation.
+ * The implementation-independent DAO interface. Defines the operations required to be supported by
+ * an implementation.
  *
  * @author igor
  */
-public interface ArrowDao extends Serializable {
+public interface ArrowDao extends Serializable
+{
 	Session getSession();
 
 	/**
 	 * Load a {@link Arrow} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Arrow to load.
+	 * @param id
+	 *            The id of the Arrow to load.
 	 * @return Arrow
 	 */
 	Arrow load(long id);
@@ -51,7 +53,8 @@ public interface ArrowDao extends Serializable {
 	/**
 	 * Delete a {@link Arrow} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Arrow to delete.
+	 * @param id
+	 *            The id of the Arrow to delete.
 	 */
 	void delete(long id);
 

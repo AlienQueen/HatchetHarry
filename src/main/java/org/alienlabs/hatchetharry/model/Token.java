@@ -23,10 +23,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Token", indexes = {@Index(columnList = "uuid"), @Index(columnList = "Player_Token")})
+@Table(name = "Token", indexes = { @Index(columnList = "uuid"), @Index(columnList = "Player_Token") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Token implements Serializable {
+public class Token implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -56,7 +57,7 @@ public class Token implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
 	private Set<Counter> counters = new HashSet<Counter>();
-	@OneToOne(cascade = {CascadeType.MERGE})
+	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "Player_Token")
 	private Player player = new Player();
 	@Column
@@ -64,11 +65,13 @@ public class Token implements Serializable {
 	@Column
 	private String creatureTypes;
 
-	public Token() {
+	public Token()
+	{
 	}
 
 	public Token(final String _type, final String _power, final String _toughness,
-				 final String _colors, final String _description, final String _uuid, final Long _gameId) {
+		final String _colors, final String _description, final String _uuid, final Long _gameId)
+	{
 		this.type = _type;
 		this.power = _power;
 		this.toughness = _toughness;
@@ -78,120 +81,149 @@ public class Token implements Serializable {
 		this.gameId = _gameId;
 	}
 
-	public Long getId() {
+	public Long getId()
+	{
 		return this.id;
 	}
 
-	public void setId(final Long _id) {
+	public void setId(final Long _id)
+	{
 		this.id = _id;
 	}
 
-	public String getType() {
+	public String getType()
+	{
 		return this.type;
 	}
 
-	public void setType(final String _type) {
+	public void setType(final String _type)
+	{
 		this.type = _type;
 	}
 
-	public String getPower() {
+	public String getPower()
+	{
 		return this.power;
 	}
 
-	public void setPower(final String _power) {
+	public void setPower(final String _power)
+	{
 		this.power = _power;
 	}
 
-	public String getToughness() {
+	public String getToughness()
+	{
 		return this.toughness;
 	}
 
-	public void setToughness(final String _toughness) {
+	public void setToughness(final String _toughness)
+	{
 		this.toughness = _toughness;
 	}
 
-	public String getColors() {
+	public String getColors()
+	{
 		return this.colors;
 	}
 
-	public void setColors(final String _colors) {
+	public void setColors(final String _colors)
+	{
 		this.colors = _colors;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+	{
 		return this.description;
 	}
 
-	public void setDescription(final String _description) {
+	public void setDescription(final String _description)
+	{
 		this.description = _description;
 	}
 
-	public String getUuid() {
+	public String getUuid()
+	{
 		return this.uuid;
 	}
 
-	public void setUuid(final String _uuid) {
+	public void setUuid(final String _uuid)
+	{
 		this.uuid = _uuid;
 	}
 
-	public Long getGameId() {
+	public Long getGameId()
+	{
 		return this.gameId;
 	}
 
-	public void setGameId(final Long _gameId) {
+	public void setGameId(final Long _gameId)
+	{
 		this.gameId = _gameId;
 	}
 
-	public Long getX() {
+	public Long getX()
+	{
 		return this.x;
 	}
 
-	public void setX(final Long _x) {
+	public void setX(final Long _x)
+	{
 		this.x = _x;
 	}
 
-	public Long getY() {
+	public Long getY()
+	{
 		return this.y;
 	}
 
-	public void setY(final Long _y) {
+	public void setY(final Long _y)
+	{
 		this.y = _y;
 	}
 
-	public boolean isTapped() {
+	public boolean isTapped()
+	{
 		return this.tapped;
 	}
 
-	public void setTapped(final boolean _tapped) {
+	public void setTapped(final boolean _tapped)
+	{
 		this.tapped = _tapped;
 	}
 
-	public Set<Counter> getCounters() {
+	public Set<Counter> getCounters()
+	{
 		return this.counters;
 	}
 
-	public void setCounters(final Set<Counter> _counters) {
+	public void setCounters(final Set<Counter> _counters)
+	{
 		this.counters = _counters;
 	}
 
-	public Player getPlayer() {
+	public Player getPlayer()
+	{
 		return this.player;
 	}
 
-	public void setPlayer(final Player _player) {
+	public void setPlayer(final Player _player)
+	{
 		this.player = _player;
 	}
 
 
-	public String getCapabilities() {
+	public String getCapabilities()
+	{
 		return this.capabilities;
 	}
 
-	public void setCapabilities(final String _capabilities) {
+	public void setCapabilities(final String _capabilities)
+	{
 		this.capabilities = _capabilities;
 	}
 
-	public String getCreatureTypes() {
+	public String getCreatureTypes()
+	{
 		return this.creatureTypes;
 	}
 

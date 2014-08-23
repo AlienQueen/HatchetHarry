@@ -46,18 +46,21 @@ import org.apache.wicket.model.IModel;
  *
  * @author Andrey Belyaev
  */
-public class ClockPanel extends Panel {
+public class ClockPanel extends Panel
+{
 	private static final long serialVersionUID = 1L;
 	private final IModel<String> time;
 
-	public ClockPanel(final String id, final IModel<String> model) {
+	public ClockPanel(final String id, final IModel<String> model)
+	{
 		super(id, model);
 
 		this.time = model;
 		this.add(new Label("clockLabel", this.time));
 	}
 
-	public IModel<String> getTime() {
+	public IModel<String> getTime()
+	{
 		return this.time;
 	}
 }

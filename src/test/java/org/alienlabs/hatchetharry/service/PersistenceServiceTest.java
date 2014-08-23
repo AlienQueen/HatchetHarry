@@ -12,13 +12,13 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class PersistenceServiceTest {
+public class PersistenceServiceTest
+{
 	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-																																	  new String[]{"applicationContext.xml", "applicationContextTest.xml"});
-
+		new String[] { "applicationContext.xml", "applicationContextTest.xml" });
+	public static transient ApplicationContext context;
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
-	public static transient ApplicationContext context;
 	protected static String pageDocument;
 
 	// public static final Operation INSERT_REFERENCE_DATA = Operations
@@ -26,15 +26,18 @@ public class PersistenceServiceTest {
 	// .columns("currentPlaceholderId").values(1L, null).build());
 
 	@BeforeClass
-	public static void setUpBeforeClass() {
-		PersistenceServiceTest.webApp = new HatchetHarryApplication() {
+	public static void setUpBeforeClass()
+	{
+		PersistenceServiceTest.webApp = new HatchetHarryApplication()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void init() {
+			public void init()
+			{
 				PersistenceServiceTest.context = PersistenceServiceTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-																	 new SpringComponentInjector(this, PersistenceServiceTest.context, true));
+					new SpringComponentInjector(this, PersistenceServiceTest.context, true));
 				// We'll ask Emond to enable unit testing in EventBus
 				// this.eventBus = new EventBusMock(this);
 			}
@@ -49,11 +52,12 @@ public class PersistenceServiceTest {
 		PersistenceServiceTest.tester.assertRenderedPage(HomePage.class);
 
 		PersistenceServiceTest.pageDocument = PersistenceServiceTest.tester.getLastResponse()
-													  .getDocument();
+			.getDocument();
 	}
 
 	@Before
-	public void before() {
+	public void before()
+	{
 		// DB-Setup from NinjaSquad
 		// final Operation operation = Operations.sequenceOf(
 		// PersistenceServiceTest.INSERT_REFERENCE_DATA,
@@ -70,7 +74,8 @@ public class PersistenceServiceTest {
 
 	@Test
 	@Ignore("implement some tests, men!!!")
-	public void testBlah() {
+	public void testBlah()
+	{
 		Assert.assertTrue(true);
 	}
 

@@ -33,23 +33,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author igor
  */
-public class GameDaoImpl implements GameDao {
+public class GameDaoImpl implements GameDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public GameDaoImpl() {
+	public GameDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param _factory hibernate session factory
+	 * @param _factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -59,20 +62,23 @@ public class GameDaoImpl implements GameDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link Game} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the Game to load.
+	 * @param id
+	 *            The id of the Game to load.
 	 * @return Game
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Game load(final long id) {
-		return (Game) this.getSession().get(Game.class, Long.valueOf(id));
+	public Game load(final long id)
+	{
+		return (Game)this.getSession().get(Game.class, Long.valueOf(id));
 	}
 
 	/**
@@ -83,18 +89,21 @@ public class GameDaoImpl implements GameDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Game save(final Game game) {
-		return (Game) this.getSession().merge(game);
+	public Game save(final Game game)
+	{
+		return (Game)this.getSession().merge(game);
 	}
 
 	/**
 	 * Delete a {@link Game} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Game to delete.
+	 * @param id
+	 *            The id of the Game to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 
@@ -103,12 +112,13 @@ public class GameDaoImpl implements GameDao {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> getUniqueLastNames() {
+	public List<String> getUniqueLastNames()
+	{
 		return this
-					   .getSession()
-					   .createQuery(
-										   "select distinct target.lastname "
-												   + " from Game target order by target.lastname").list();
+			.getSession()
+			.createQuery(
+				"select distinct target.lastname " + " from Game target order by target.lastname")
+			.list();
 	}
 
 	/**
@@ -118,9 +128,10 @@ public class GameDaoImpl implements GameDao {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public int count() {
+	public int count()
+	{
 		return this.getSession()
-					   .createQuery("select distinct target.id " + " from Game target order by target.id")
-					   .list().size();
+			.createQuery("select distinct target.id " + " from Game target order by target.id")
+			.list().size();
 	}
 }

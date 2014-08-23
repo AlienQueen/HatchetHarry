@@ -49,21 +49,7 @@ public class TokenPanel extends Panel
 
 		this.setOutputMarkupId(true);
 
-		this.add(new Behavior()
-		{
-			@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SIC_INNER_SHOULD_BE_STATIC_ANON", justification = "There's no practical other way round in Wicket")
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void renderHead(final Component component, final IHeaderResponse response)
-			{
-				super.renderHead(component, response);
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-					HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-					HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
-			}
-		});
+		this.add(new HeadProvider());
 
 		final Token myToken = this.persistenceService.getTokenFromUuid(this.uuid);
 		this.owner = this.persistenceService.getPlayer(myToken.getPlayer().getId());
@@ -155,5 +141,19 @@ public class TokenPanel extends Panel
 	{
 		this.persistenceService = _persistenceService;
 	}
+}
 
+class HeadProvider extends Behavior
+{
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void renderHead(final Component component, final IHeaderResponse response)
+	{
+		super.renderHead(component, response);
+		response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+			HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
+		response.render(CssHeaderItem.forReference(new PackageResourceReference(HomePage.class,
+			"script/contextmenu/jquery.contextMenu.css")));
+	}
 }

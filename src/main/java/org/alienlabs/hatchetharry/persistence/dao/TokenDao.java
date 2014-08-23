@@ -24,18 +24,20 @@ import org.alienlabs.hatchetharry.model.Token;
 import org.hibernate.Session;
 
 /**
- * The implementation-independent DAO interface. Defines the operations required
- * to be supported by an implementation.
+ * The implementation-independent DAO interface. Defines the operations required to be supported by
+ * an implementation.
  *
  * @author igor
  */
-public interface TokenDao extends Serializable {
+public interface TokenDao extends Serializable
+{
 	Session getSession();
 
 	/**
 	 * Load a {@link Token} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Token to load.
+	 * @param id
+	 *            The id of the Token to load.
 	 * @return Token
 	 */
 	Token load(long id);
@@ -51,7 +53,8 @@ public interface TokenDao extends Serializable {
 	/**
 	 * Delete a {@link Token} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Token to delete.
+	 * @param id
+	 *            The id of the Token to delete.
 	 */
 	void delete(long id);
 }

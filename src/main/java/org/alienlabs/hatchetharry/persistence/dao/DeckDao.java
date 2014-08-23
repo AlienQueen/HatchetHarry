@@ -25,18 +25,20 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.hibernate.Session;
 
 /**
- * The implementation-independent DAO interface. Defines the operations required
- * to be supported by an implementation.
+ * The implementation-independent DAO interface. Defines the operations required to be supported by
+ * an implementation.
  *
  * @author igor
  */
-public interface DeckDao extends Serializable {
+public interface DeckDao extends Serializable
+{
 	Session getSession();
 
 	/**
 	 * Load a {@link Deck} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Contact to load.
+	 * @param id
+	 *            The id of the Contact to load.
 	 * @return Deck
 	 */
 	Deck load(long id);
@@ -52,7 +54,8 @@ public interface DeckDao extends Serializable {
 	/**
 	 * Delete a {@link Deck} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Deck to delete.
+	 * @param id
+	 *            The id of the Deck to delete.
 	 */
 	void delete(long id);
 

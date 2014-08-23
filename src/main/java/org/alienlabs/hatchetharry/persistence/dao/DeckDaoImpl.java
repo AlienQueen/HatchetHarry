@@ -35,23 +35,26 @@ import org.springframework.transaction.annotation.Transactional;
  */
 // TODO remove all non-used methods in all DAOs: find(), uniqueNames(),
 // count()...
-public class DeckDaoImpl implements DeckDao {
+public class DeckDaoImpl implements DeckDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public DeckDaoImpl() {
+	public DeckDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param _factory hibernate session factory
+	 * @param _factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -61,20 +64,23 @@ public class DeckDaoImpl implements DeckDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link Deck} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the Deck to load.
+	 * @param id
+	 *            The id of the Deck to load.
 	 * @return Deck
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Deck load(final long id) {
-		return (Deck) this.getSession().get(Deck.class, Long.valueOf(id));
+	public Deck load(final long id)
+	{
+		return (Deck)this.getSession().get(Deck.class, Long.valueOf(id));
 	}
 
 	/**
@@ -85,18 +91,21 @@ public class DeckDaoImpl implements DeckDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Deck save(final Deck Deck) {
-		return (Deck) this.getSession().merge(Deck);
+	public Deck save(final Deck Deck)
+	{
+		return (Deck)this.getSession().merge(Deck);
 	}
 
 	/**
 	 * Delete a {@link Deck} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Deck to delete.
+	 * @param id
+	 *            The id of the Deck to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 
@@ -105,12 +114,13 @@ public class DeckDaoImpl implements DeckDao {
 	 */
 	@Override
 	@Transactional
-	public List<String> getUniqueLastNames() {
+	public List<String> getUniqueLastNames()
+	{
 		return this
-					   .getSession()
-					   .createQuery(
-										   "select distinct target.lastname "
-												   + " from Deck target order by target.lastname").list();
+			.getSession()
+			.createQuery(
+				"select distinct target.lastname " + " from Deck target order by target.lastname")
+			.list();
 	}
 
 }

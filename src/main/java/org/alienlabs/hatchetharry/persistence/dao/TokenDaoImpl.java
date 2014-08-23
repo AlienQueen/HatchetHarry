@@ -31,23 +31,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author igor
  */
-public class TokenDaoImpl implements TokenDao {
+public class TokenDaoImpl implements TokenDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public TokenDaoImpl() {
+	public TokenDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param _factory hibernate session factory
+	 * @param _factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -57,20 +60,23 @@ public class TokenDaoImpl implements TokenDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link Token} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the Token to load.
+	 * @param id
+	 *            The id of the Token to load.
 	 * @return Token
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Token load(final long id) {
-		return (Token) this.getSession().get(Token.class, Long.valueOf(id));
+	public Token load(final long id)
+	{
+		return (Token)this.getSession().get(Token.class, Long.valueOf(id));
 	}
 
 	/**
@@ -81,18 +87,21 @@ public class TokenDaoImpl implements TokenDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void save(final Token Token) {
+	public void save(final Token Token)
+	{
 		this.getSession().save(Token);
 	}
 
 	/**
 	 * Delete a {@link Token} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Token to delete.
+	 * @param id
+	 *            The id of the Token to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 

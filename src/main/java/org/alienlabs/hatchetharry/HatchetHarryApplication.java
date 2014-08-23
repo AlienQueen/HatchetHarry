@@ -110,7 +110,7 @@ public class HatchetHarryApplication extends WebApplication
 		this.eventBus = new EventBus(this);
 		this.eventBus.addRegistrationListener(this);
 		this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
-        this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.INFO);
+		this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.INFO);
 
 		this.getMarkupSettings().setStripWicketTags(false);
 

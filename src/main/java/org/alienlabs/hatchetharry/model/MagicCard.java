@@ -37,11 +37,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "MagicCard", indexes = {@Index(columnList = "uuid"), @Index(columnList = "gameId"),
-											 @Index(columnList = "card_deck")})
+@Table(name = "MagicCard", indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"),
+		@Index(columnList = "card_deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class MagicCard implements SlideshowImage, Serializable {
+public class MagicCard implements SlideshowImage, Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -62,8 +63,8 @@ public class MagicCard implements SlideshowImage, Serializable {
 	private String uuid;
 	@Column
 	private Long gameId;
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH,
-								 CascadeType.REMOVE}, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH,
+			CascadeType.REMOVE }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
 	@Column
@@ -77,19 +78,21 @@ public class MagicCard implements SlideshowImage, Serializable {
 	private CardZone zone;
 	@Column
 	private Long zoneOrder = 0l;
-	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "card")
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "card")
 	private Set<Counter> counters = new HashSet<Counter>();
 	@Column
 	private String ownerSide;
-	@OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+	@OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	private Token token;
 
-	public MagicCard() {
+	public MagicCard()
+	{
 	}
 
 	public MagicCard(final String _smallImageFilename, final String _bigImageFilename,
-					 final String _thumbnailFilename, final String _title, final String _description,
-					 final String _ownerSide, final Token _token) {
+		final String _thumbnailFilename, final String _title, final String _description,
+		final String _ownerSide, final Token _token)
+	{
 		this.smallImageFilename = _smallImageFilename;
 		this.bigImageFilename = _bigImageFilename;
 		this.thumbnailFilename = _thumbnailFilename;
@@ -100,164 +103,202 @@ public class MagicCard implements SlideshowImage, Serializable {
 
 	}
 
-	public Long getId() {
+	public Long getId()
+	{
 		return this.id;
 	}
 
-	public void setId(final Long _id) {
+	public void setId(final Long _id)
+	{
 		this.id = _id;
 	}
 
 	@Override
-	public String getLow() {
+	public String getLow()
+	{
 		return this.smallImageFilename;
 	}
 
 	@Override
-	public String getHigh() {
+	public String getHigh()
+	{
 		return this.smallImageFilename;
 	}
 
 	@Override
-	public String getThumb() {
+	public String getThumb()
+	{
 		return this.smallImageFilename;
 	}
 
 	@Override
-	public String getTitle() {
+	public String getTitle()
+	{
 		return this.title;
 	}
 
 	@Override
-	public String getDescription() {
+	public String getDescription()
+	{
 		return this.description;
 	}
 
-	public String getSmallImageFilename() {
+	public String getSmallImageFilename()
+	{
 		return this.smallImageFilename;
 	}
 
 
-	public void setSmallImageFilename(final String _smallImagefilename) {
+	public void setSmallImageFilename(final String _smallImagefilename)
+	{
 		this.smallImageFilename = _smallImagefilename;
 	}
 
-	public Model<String> getModel() {
+	public Model<String> getModel()
+	{
 		return new Model<String>(this.smallImageFilename);
 	}
 
-	public String getUuid() {
+	public String getUuid()
+	{
 		return this.uuid;
 	}
 
-	public void setUuid(final String _uuid) {
+	public void setUuid(final String _uuid)
+	{
 		this.uuid = _uuid;
 	}
 
 
-	public UUID getUuidObject() {
+	public UUID getUuidObject()
+	{
 		return UUID.fromString(this.uuid);
 	}
 
-	public void setUuidObject(final UUID _uuid) {
+	public void setUuidObject(final UUID _uuid)
+	{
 		this.uuid = _uuid.toString();
 	}
 
-	public String getBigImageFilename() {
+	public String getBigImageFilename()
+	{
 		return this.bigImageFilename;
 	}
 
-	public void setBigImageFilename(final String _bigImageFilename) {
+	public void setBigImageFilename(final String _bigImageFilename)
+	{
 		this.bigImageFilename = _bigImageFilename;
 	}
 
-	public Long getGameId() {
+	public Long getGameId()
+	{
 		return this.gameId;
 	}
 
-	public void setGameId(final Long _gameId) {
+	public void setGameId(final Long _gameId)
+	{
 		this.gameId = _gameId;
 	}
 
-	public Deck getDeck() {
+	public Deck getDeck()
+	{
 		return this.deck;
 	}
 
-	public void setDeck(final Deck _deck) {
+	public void setDeck(final Deck _deck)
+	{
 		this.deck = _deck;
 	}
 
-	public String getThumbnailFilename() {
+	public String getThumbnailFilename()
+	{
 		return this.thumbnailFilename;
 	}
 
-	public void setThumbnailFilename(final String _thumbnailFilename) {
+	public void setThumbnailFilename(final String _thumbnailFilename)
+	{
 		this.thumbnailFilename = _thumbnailFilename;
 	}
 
 
-	public Long getX() {
+	public Long getX()
+	{
 		return this.x;
 	}
 
-	public void setX(final Long _x) {
+	public void setX(final Long _x)
+	{
 		this.x = _x;
 	}
 
-	public Long getY() {
+	public Long getY()
+	{
 		return this.y;
 	}
 
-	public void setY(final Long _y) {
+	public void setY(final Long _y)
+	{
 		this.y = _y;
 	}
 
-	public boolean isTapped() {
+	public boolean isTapped()
+	{
 		return this.tapped;
 	}
 
-	public void setTapped(final boolean _tapped) {
+	public void setTapped(final boolean _tapped)
+	{
 		this.tapped = _tapped;
 	}
 
-	public CardZone getZone() {
+	public CardZone getZone()
+	{
 		return this.zone;
 	}
 
-	public void setZone(final CardZone _zone) {
+	public void setZone(final CardZone _zone)
+	{
 		this.zone = _zone;
 	}
 
-	public Long getZoneOrder() {
+	public Long getZoneOrder()
+	{
 		return this.zoneOrder;
 	}
 
-	public void setZoneOrder(final Long _zoneOrder) {
+	public void setZoneOrder(final Long _zoneOrder)
+	{
 		this.zoneOrder = _zoneOrder;
 	}
 
-	public Set<Counter> getCounters() {
+	public Set<Counter> getCounters()
+	{
 		return this.counters;
 	}
 
-	public void setCounters(final Set<Counter> _counters) {
+	public void setCounters(final Set<Counter> _counters)
+	{
 		this.counters = _counters;
 	}
 
-	public String getOwnerSide() {
+	public String getOwnerSide()
+	{
 		return this.ownerSide;
 	}
 
-	public void setOwnerSide(final String _ownerSide) {
+	public void setOwnerSide(final String _ownerSide)
+	{
 		this.ownerSide = _ownerSide;
 	}
 
-	public Token getToken() {
+	public Token getToken()
+	{
 		return this.token;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.deck == null) ? 0 : this.deck.hashCode());
@@ -268,43 +309,63 @@ public class MagicCard implements SlideshowImage, Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
 			return true;
 		}
-		if (obj == null) {
+		if (obj == null)
+		{
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass())
+		{
 			return false;
 		}
-		final MagicCard other = (MagicCard) obj;
-		if (this.deck == null) {
-			if (other.deck != null) {
+		final MagicCard other = (MagicCard)obj;
+		if (this.deck == null)
+		{
+			if (other.deck != null)
+			{
 				return false;
 			}
-		} else if (!this.deck.equals(other.deck)) {
+		}
+		else if (!this.deck.equals(other.deck))
+		{
 			return false;
 		}
-		if (this.gameId == null) {
-			if (other.gameId != null) {
+		if (this.gameId == null)
+		{
+			if (other.gameId != null)
+			{
 				return false;
 			}
-		} else if (!this.gameId.equals(other.gameId)) {
+		}
+		else if (!this.gameId.equals(other.gameId))
+		{
 			return false;
 		}
-		if (this.ownerSide == null) {
-			if (other.ownerSide != null) {
+		if (this.ownerSide == null)
+		{
+			if (other.ownerSide != null)
+			{
 				return false;
 			}
-		} else if (!this.ownerSide.equals(other.ownerSide)) {
+		}
+		else if (!this.ownerSide.equals(other.ownerSide))
+		{
 			return false;
 		}
-		if (this.uuid == null) {
-			if (other.uuid != null) {
+		if (this.uuid == null)
+		{
+			if (other.uuid != null)
+			{
 				return false;
 			}
-		} else if (!this.uuid.equals(other.uuid)) {
+		}
+		else if (!this.uuid.equals(other.uuid))
+		{
 			return false;
 		}
 		return true;

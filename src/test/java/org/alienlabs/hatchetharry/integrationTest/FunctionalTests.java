@@ -416,8 +416,8 @@ public class FunctionalTests
 			By.id("topLibraryCard")).getAttribute("name");
 
 		// Verify that the card name is the same in the second browser
-		assertEquals(topCardName, FunctionalTests.chromeDriver1.findElement(
-			By.id("topLibraryCard")).getAttribute("name"));
+		assertEquals(topCardName, FunctionalTests.chromeDriver1
+			.findElement(By.id("topLibraryCard")).getAttribute("name"));
 
 		// Click on the button "Do nothing"
 		FunctionalTests.chromeDriver2.findElement(By.id("doNothing")).click();
@@ -432,10 +432,10 @@ public class FunctionalTests
 		Thread.sleep(10000);
 
 		// Assert that the card is the same
-		assertEquals(topCardName, FunctionalTests.chromeDriver2.findElement(
-			By.id("topLibraryCard")).getAttribute("name"));
-		assertEquals(topCardName, FunctionalTests.chromeDriver1.findElement(
-			By.id("topLibraryCard")).getAttribute("name"));
+		assertEquals(topCardName, FunctionalTests.chromeDriver2
+			.findElement(By.id("topLibraryCard")).getAttribute("name"));
+		assertEquals(topCardName, FunctionalTests.chromeDriver1
+			.findElement(By.id("topLibraryCard")).getAttribute("name"));
 
 		// Put to battlefield
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
@@ -516,13 +516,16 @@ public class FunctionalTests
 		// Assert graveyard is visible and contains one card
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
 			.isEmpty());
-		assertEquals(1, FunctionalTests.chromeDriver2.findElements(
-			By.cssSelector(".graveyard-cross-link")).size());
+		assertEquals(1,
+			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".graveyard-cross-link"))
+				.size());
 
 		// Verify name of the card in the graveyard
-		assertEquals(graveyardCardName, FunctionalTests.chromeDriver2
-			.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
-			.getAttribute("name"));
+		assertEquals(
+			graveyardCardName,
+			FunctionalTests.chromeDriver2
+				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
+				.getAttribute("name"));
 
 		// Verify that there is still one card on the battlefield
 		assertEquals(1,

@@ -24,18 +24,20 @@ import org.alienlabs.hatchetharry.model.ConsoleLogMessage;
 import org.hibernate.Session;
 
 /**
- * The implementation-independent DAO interface. Defines the operations required
- * to be supported by an implementation.
+ * The implementation-independent DAO interface. Defines the operations required to be supported by
+ * an implementation.
  *
  * @author igor
  */
-public interface ConsoleLogMessageDao extends Serializable {
+public interface ConsoleLogMessageDao extends Serializable
+{
 	Session getSession();
 
 	/**
 	 * Load a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the ConsoleLogMessage to load.
+	 * @param id
+	 *            The id of the ConsoleLogMessage to load.
 	 * @return ConsoleLogMessage
 	 */
 	ConsoleLogMessage load(long id);
@@ -51,7 +53,8 @@ public interface ConsoleLogMessageDao extends Serializable {
 	/**
 	 * Delete a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the ConsoleLogMessage to delete.
+	 * @param id
+	 *            The id of the ConsoleLogMessage to delete.
 	 */
 	void delete(long id);
 

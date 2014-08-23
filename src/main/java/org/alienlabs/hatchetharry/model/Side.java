@@ -19,10 +19,11 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Table(name = "Side", indexes = {@Index(columnList = "uuid")})
+@Table(name = "Side", indexes = { @Index(columnList = "uuid") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Side implements Serializable {
+public class Side implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,71 +36,86 @@ public class Side implements Serializable {
 	@Column(name = "uuid")
 	private String uuid;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({CascadeType.SAVE_UPDATE})
+	@Cascade({ CascadeType.SAVE_UPDATE })
 	private Game game;
 	@Column
 	private Long x = 64l; // x coordinate
 	@Column
 	private Long y = 64l; // y coordinate
 
-	public Long getSideId() {
+	public Long getSideId()
+	{
 		return this.sideId;
 	}
 
-	public void setSideId(final Long _sideId) {
+	public void setSideId(final Long _sideId)
+	{
 		this.sideId = _sideId;
 	}
 
-	public String getWicketId() {
+	public String getWicketId()
+	{
 		return this.wicketId;
 	}
 
-	public void setWicketId(final String _wicketId) {
+	public void setWicketId(final String _wicketId)
+	{
 		this.wicketId = _wicketId;
 	}
 
-	public String getSideName() {
+	public String getSideName()
+	{
 		return this.sideName;
 	}
 
-	public void setSideName(final String _side) {
+	public void setSideName(final String _side)
+	{
 		this.sideName = _side;
 	}
 
-	public String getUuid() {
+	public String getUuid()
+	{
 		return this.uuid;
 	}
 
-	public void setUuid(final String _uuid) {
+	public void setUuid(final String _uuid)
+	{
 		this.uuid = _uuid;
 	}
 
-	public Game getGame() {
+	public Game getGame()
+	{
 		return this.game;
 	}
 
-	public void setGame(final Game _game) {
+	public void setGame(final Game _game)
+	{
 		this.game = _game;
 	}
 
-	public Long getX() {
+	public Long getX()
+	{
 		return this.x;
 	}
 
-	public void setX(final Long _x) {
+	public void setX(final Long _x)
+	{
 		this.x = _x;
 	}
 
-	public Long getY() {
+	public Long getY()
+	{
 		return this.y;
 	}
 
-	public void setY(final Long _y) {
+	public void setY(final Long _y)
+	{
 		this.y = _y;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.game == null) ? 0 : this.game.hashCode());
@@ -109,36 +125,52 @@ public class Side implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
 			return true;
 		}
-		if (obj == null) {
+		if (obj == null)
+		{
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass())
+		{
 			return false;
 		}
-		final Side other = (Side) obj;
-		if (this.game == null) {
-			if (other.game != null) {
+		final Side other = (Side)obj;
+		if (this.game == null)
+		{
+			if (other.game != null)
+			{
 				return false;
 			}
-		} else if (!this.game.equals(other.game)) {
+		}
+		else if (!this.game.equals(other.game))
+		{
 			return false;
 		}
-		if (this.sideId == null) {
-			if (other.sideId != null) {
+		if (this.sideId == null)
+		{
+			if (other.sideId != null)
+			{
 				return false;
 			}
-		} else if (!this.sideId.equals(other.sideId)) {
+		}
+		else if (!this.sideId.equals(other.sideId))
+		{
 			return false;
 		}
-		if (this.uuid == null) {
-			if (other.uuid != null) {
+		if (this.uuid == null)
+		{
+			if (other.uuid != null)
+			{
 				return false;
 			}
-		} else if (!this.uuid.equals(other.uuid)) {
+		}
+		else if (!this.uuid.equals(other.uuid))
+		{
 			return false;
 		}
 		return true;

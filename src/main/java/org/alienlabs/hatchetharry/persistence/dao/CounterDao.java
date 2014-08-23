@@ -25,18 +25,20 @@ import org.alienlabs.hatchetharry.model.Counter;
 import org.hibernate.Session;
 
 /**
- * The implementation-independent DAO interface. Defines the operations required
- * to be supported by an implementation.
+ * The implementation-independent DAO interface. Defines the operations required to be supported by
+ * an implementation.
  *
  * @author igor
  */
-public interface CounterDao extends Serializable {
+public interface CounterDao extends Serializable
+{
 	Session getSession();
 
 	/**
 	 * Load a {@link Counter} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Contact to load.
+	 * @param id
+	 *            The id of the Contact to load.
 	 * @return Counter
 	 */
 	Counter load(long id);
@@ -52,7 +54,8 @@ public interface CounterDao extends Serializable {
 	/**
 	 * Delete a {@link Counter} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Counter to delete.
+	 * @param id
+	 *            The id of the Counter to delete.
 	 */
 	void delete(long id);
 

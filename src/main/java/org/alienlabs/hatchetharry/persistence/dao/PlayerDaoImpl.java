@@ -33,23 +33,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author igor
  */
-public class PlayerDaoImpl implements PlayerDao {
+public class PlayerDaoImpl implements PlayerDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public PlayerDaoImpl() {
+	public PlayerDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param _factory hibernate session factory
+	 * @param _factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -59,20 +62,23 @@ public class PlayerDaoImpl implements PlayerDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link Player} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the Player to load.
+	 * @param id
+	 *            The id of the Player to load.
 	 * @return Player
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Player load(final long id) {
-		return (Player) this.getSession().get(Player.class, Long.valueOf(id));
+	public Player load(final long id)
+	{
+		return (Player)this.getSession().get(Player.class, Long.valueOf(id));
 	}
 
 	/**
@@ -83,18 +89,21 @@ public class PlayerDaoImpl implements PlayerDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void save(final Player Player) {
+	public void save(final Player Player)
+	{
 		this.getSession().save(Player);
 	}
 
 	/**
 	 * Delete a {@link Player} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Player to delete.
+	 * @param id
+	 *            The id of the Player to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 
@@ -103,12 +112,13 @@ public class PlayerDaoImpl implements PlayerDao {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> getUniqueLastNames() {
+	public List<String> getUniqueLastNames()
+	{
 		return this
-					   .getSession()
-					   .createQuery(
-										   "select distinct target.lastname "
-												   + " from Player target order by target.lastname").list();
+			.getSession()
+			.createQuery(
+				"select distinct target.lastname " + " from Player target order by target.lastname")
+			.list();
 	}
 
 }

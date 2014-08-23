@@ -31,23 +31,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author igor
  */
-public class ArrowDaoImpl implements ArrowDao {
+public class ArrowDaoImpl implements ArrowDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public ArrowDaoImpl() {
+	public ArrowDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param _factory hibernate session factory
+	 * @param _factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -57,20 +60,23 @@ public class ArrowDaoImpl implements ArrowDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link Arrow} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the Arrow to load.
+	 * @param id
+	 *            The id of the Arrow to load.
 	 * @return Arrow
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Arrow load(final long id) {
-		return (Arrow) this.getSession().get(Arrow.class, Long.valueOf(id));
+	public Arrow load(final long id)
+	{
+		return (Arrow)this.getSession().get(Arrow.class, Long.valueOf(id));
 	}
 
 	/**
@@ -81,18 +87,21 @@ public class ArrowDaoImpl implements ArrowDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Long save(final Arrow arrow) {
-		return (Long) this.getSession().save(arrow);
+	public Long save(final Arrow arrow)
+	{
+		return (Long)this.getSession().save(arrow);
 	}
 
 	/**
 	 * Delete a {@link Arrow} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Arrow to delete.
+	 * @param id
+	 *            The id of the Arrow to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 

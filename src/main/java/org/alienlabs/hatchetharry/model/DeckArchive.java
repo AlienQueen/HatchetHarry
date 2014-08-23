@@ -24,10 +24,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "DeckArchive", indexes = {@Index(columnList = "deckName")})
+@Table(name = "DeckArchive", indexes = { @Index(columnList = "deckName") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class DeckArchive implements Serializable {
+public class DeckArchive implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -37,29 +38,35 @@ public class DeckArchive implements Serializable {
 	@Column
 	private String deckName;
 
-	public Long getDeckArchiveId() {
+	public Long getDeckArchiveId()
+	{
 		return this.deckArchiveId;
 	}
 
-	public void setDeckArchiveId(final Long _deckArchiveId) {
+	public void setDeckArchiveId(final Long _deckArchiveId)
+	{
 		this.deckArchiveId = _deckArchiveId;
 	}
 
-	public String getDeckName() {
+	public String getDeckName()
+	{
 		return this.deckName;
 	}
 
-	public void setDeckName(final String _deckName) {
+	public void setDeckName(final String _deckName)
+	{
 		this.deckName = _deckName;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return this.deckName;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.deckName == null) ? 0 : this.deckName.hashCode());
@@ -67,22 +74,30 @@ public class DeckArchive implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
 			return true;
 		}
-		if (obj == null) {
+		if (obj == null)
+		{
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass())
+		{
 			return false;
 		}
-		final DeckArchive other = (DeckArchive) obj;
-		if (this.deckName == null) {
-			if (other.deckName != null) {
+		final DeckArchive other = (DeckArchive)obj;
+		if (this.deckName == null)
+		{
+			if (other.deckName != null)
+			{
 				return false;
 			}
-		} else if (!this.deckName.equals(other.deckName)) {
+		}
+		else if (!this.deckName.equals(other.deckName))
+		{
 			return false;
 		}
 		return true;

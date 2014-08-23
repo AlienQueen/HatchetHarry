@@ -31,23 +31,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author igor
  */
-public class ChatMessageDaoImpl implements ChatMessageDao {
+public class ChatMessageDaoImpl implements ChatMessageDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public ChatMessageDaoImpl() {
+	public ChatMessageDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param _factory hibernate session factory
+	 * @param _factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -57,20 +60,23 @@ public class ChatMessageDaoImpl implements ChatMessageDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link ChatMessage} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the ChatMessage to load.
+	 * @param id
+	 *            The id of the ChatMessage to load.
 	 * @return ChatMessage
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public ChatMessage load(final long id) {
-		return (ChatMessage) this.getSession().get(ChatMessage.class, Long.valueOf(id));
+	public ChatMessage load(final long id)
+	{
+		return (ChatMessage)this.getSession().get(ChatMessage.class, Long.valueOf(id));
 	}
 
 	/**
@@ -81,18 +87,21 @@ public class ChatMessageDaoImpl implements ChatMessageDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Long save(final ChatMessage chatMessage) {
-		return (Long) this.getSession().save(chatMessage);
+	public Long save(final ChatMessage chatMessage)
+	{
+		return (Long)this.getSession().save(chatMessage);
 	}
 
 	/**
 	 * Delete a {@link ChatMessage} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the ChatMessage to delete.
+	 * @param id
+	 *            The id of the ChatMessage to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 

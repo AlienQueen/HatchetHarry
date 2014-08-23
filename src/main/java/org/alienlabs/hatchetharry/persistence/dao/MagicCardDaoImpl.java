@@ -33,23 +33,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author igor
  */
-public class MagicCardDaoImpl implements MagicCardDao {
+public class MagicCardDaoImpl implements MagicCardDao
+{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SessionFactory factory;
 
-	public MagicCardDaoImpl() {
+	public MagicCardDaoImpl()
+	{
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session
-	 * factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
 	 *
-	 * @param factory hibernate session factory
+	 * @param factory
+	 *            hibernate session factory
 	 */
 	@Required
-	public void setSessionFactory(final SessionFactory _factory) {
+	public void setSessionFactory(final SessionFactory _factory)
+	{
 		this.factory = _factory;
 	}
 
@@ -59,20 +62,23 @@ public class MagicCardDaoImpl implements MagicCardDao {
 	 * @return hibernate session
 	 */
 	@Override
-	public Session getSession() {
+	public Session getSession()
+	{
 		return this.factory.getCurrentSession();
 	}
 
 	/**
 	 * Load a {@link MagicCard} from the DB, given it's <tt>id</tt> .
 	 *
-	 * @param id The id of the MagicCard to load.
+	 * @param id
+	 *            The id of the MagicCard to load.
 	 * @return MagicCard
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public MagicCard load(final long id) {
-		return (MagicCard) this.getSession().get(MagicCard.class, Long.valueOf(id));
+	public MagicCard load(final long id)
+	{
+		return (MagicCard)this.getSession().get(MagicCard.class, Long.valueOf(id));
 	}
 
 	/**
@@ -83,18 +89,21 @@ public class MagicCardDaoImpl implements MagicCardDao {
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public MagicCard save(final MagicCard mc) {
-		return (MagicCard) this.getSession().merge(mc);
+	public MagicCard save(final MagicCard mc)
+	{
+		return (MagicCard)this.getSession().merge(mc);
 	}
 
 	/**
 	 * Delete a {@link MagicCard} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the MagicCard to delete.
+	 * @param id
+	 *            The id of the MagicCard to delete.
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public void delete(final long id) {
+	public void delete(final long id)
+	{
 		this.getSession().delete(this.load(id));
 	}
 
@@ -103,12 +112,13 @@ public class MagicCardDaoImpl implements MagicCardDao {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> getUniqueLastNames() {
+	public List<String> getUniqueLastNames()
+	{
 		return this
-					   .getSession()
-					   .createQuery(
-										   "select distinct target.lastname "
-												   + " from MagicCard target order by target.lastname").list();
+			.getSession()
+			.createQuery(
+				"select distinct target.lastname "
+					+ " from MagicCard target order by target.lastname").list();
 	}
 
 }

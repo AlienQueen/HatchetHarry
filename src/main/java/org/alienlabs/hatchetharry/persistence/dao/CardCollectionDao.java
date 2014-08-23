@@ -25,18 +25,20 @@ import org.alienlabs.hatchetharry.model.CardCollection;
 import org.hibernate.Session;
 
 /**
- * The implementation-independent DAO interface. Defines the operations required
- * to be supported by an implementation.
+ * The implementation-independent DAO interface. Defines the operations required to be supported by
+ * an implementation.
  *
  * @author igor
  */
-public interface CardCollectionDao extends Serializable {
+public interface CardCollectionDao extends Serializable
+{
 	Session getSession();
 
 	/**
 	 * Load a {@link CardCollection} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the Contact to load.
+	 * @param id
+	 *            The id of the Contact to load.
 	 * @return CardCollection
 	 */
 	CardCollection load(long id);
@@ -52,7 +54,8 @@ public interface CardCollectionDao extends Serializable {
 	/**
 	 * Delete a {@link CardCollection} from the DB, given it's <tt>id</tt>.
 	 *
-	 * @param id The id of the CardCollection to delete.
+	 * @param id
+	 *            The id of the CardCollection to delete.
 	 */
 	void delete(long id);
 

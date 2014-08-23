@@ -110,7 +110,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 				"parentPlaceholder:tooltips:7:cardTooltip:counterPanel:counters:1:setCounterForm:counterName",
 				"charge");
 		SpringContextLoaderBaseTest.tester
-                .assertLabel(
+			.assertLabel(
 				"parentPlaceholder:tooltips:7:cardTooltip:counterPanel:counters:1:setCounterForm:numberOfCounters",
 				"10");
 
@@ -178,7 +178,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 			SpringContextLoaderBaseTest.tester
 				.assertLabel(
 					"parentPlaceholder:tooltips:11:cardTooltip:counterPanel:counters:0:setCounterForm:counterName",
-                        "blah");
+					"blah");
 			fail();
 		}
 		catch (AssertionError e)
