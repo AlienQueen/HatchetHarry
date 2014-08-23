@@ -372,13 +372,6 @@ public class FunctionalTests
 		new Actions(FunctionalTests.chromeDriver1).dragAndDrop(draggable, to).build().perform();
 		Thread.sleep(15000);
 
-		// Verify name of the card in the graveyard
-		assertEquals(
-			battlefieldCardName,
-			FunctionalTests.chromeDriver2
-				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
-				.getAttribute("name"));
-
 		// Play card from graveyard
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
