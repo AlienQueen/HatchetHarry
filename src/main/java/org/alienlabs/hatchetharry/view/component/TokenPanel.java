@@ -51,6 +51,7 @@ public class TokenPanel extends Panel
 
 		this.add(new Behavior()
 		{
+			@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SIC_INNER_SHOULD_BE_STATIC_ANON", justification = "There's no practical other way round in Wicket")
 			private static final long serialVersionUID = 1L;
 
 			@Override

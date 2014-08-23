@@ -213,7 +213,7 @@ public class FunctionalTests
 		}
 		catch (Exception e)
 		{
-			FunctionalTests.LOGGER.error("Error in stopping EMBEDDED JETTY SERVER, e");
+			FunctionalTests.LOGGER.error("Error in stopping EMBEDDED JETTY SERVER", e);
 		}
 	}
 

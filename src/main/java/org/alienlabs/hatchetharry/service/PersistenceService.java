@@ -2,10 +2,7 @@ package org.alienlabs.hatchetharry.service;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.CardZone;
@@ -598,7 +595,7 @@ public class PersistenceService implements Serializable
 			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.LIBRARY.toString().toUpperCase());
+		query.setString("zoneName", CardZone.LIBRARY.toString().toUpperCase(Locale.ENGLISH));
 		query.setLong("playerId", playerId);
 		query.setLong("deckId", deckId);
 
