@@ -150,7 +150,7 @@ public class FunctionalTests
 		+ "	if (elementInViewport(elementToLookFor)) {\n"
 		+ "		break;\n"
 		+ "	} else {\n"
-		+ "		window.scrollBy(0,1);\n}\n}";
+		+ "		window.scrollBy(1,10);\n}\n}";
 	private static final String SCROLL_DOWN = "window.scrollBy(0,50);";
 	private static final String CLICK_PLAY_CARD_LINK = "$('#playCardLink0').click();";
 
@@ -294,7 +294,7 @@ public class FunctionalTests
 			.elementToBeClickable(By.id("playCardLink0")));
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.CLICK_PLAY_CARD_LINK);
-		Thread.sleep(10000);
+		Thread.sleep(15000);
 
 		// Verify that the hand contains only 6 cards, now
 		assertEquals(6, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".movers-row"))
