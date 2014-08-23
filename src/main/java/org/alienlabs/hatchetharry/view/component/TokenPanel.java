@@ -28,7 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "There's no other way round")
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
+		"SE_INNER_CLASS" }, justification = "There's no other way round")
 public class TokenPanel extends Panel
 {
 

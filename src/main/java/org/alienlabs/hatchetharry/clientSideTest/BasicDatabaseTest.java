@@ -26,6 +26,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BasicDatabaseTest implements Serializable
 {
+	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+		new String[] { "applicationContext.xml" });
+	private static final long serialVersionUID = 1L;
+	static transient WicketTester tester;
+	static HatchetHarryApplication webApp;
+	static transient ApplicationContext context;
+	static String pageDocument;
 	@SpringBean
 	private CardCollectionDao cardCollectionDao;
 	@SpringBean
@@ -43,22 +50,13 @@ public class BasicDatabaseTest implements Serializable
 	@SpringBean
 	private SideDao sideDao;
 
-	private static final long serialVersionUID = 1L;
-
-	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-		new String[] { "applicationContext.xml" });
-	static transient WicketTester tester;
-	static HatchetHarryApplication webApp;
-	static transient ApplicationContext context;
-	static String pageDocument;
-
-    @BeforeClass
+	@BeforeClass
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "No choice as @BeforeClass is static and HatchetHarryApplication isn't")
 	public static void setUpBeforeClass()
 	{
 		BasicDatabaseTest.webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
-
 
 			@Override
 			public void init()

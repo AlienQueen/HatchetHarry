@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CreateGameModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
@@ -90,7 +91,7 @@ public class CreateGameModalWindow extends Panel
 			{
 				if ((null != target) && (null == CreateGameModalWindow.this.decks.getModelObject()))
 				{
-					final ArrayList<Deck> _allDecks = (ArrayList<Deck>)CreateGameModalWindow.this.persistenceService
+					final ArrayList<Deck> _allDecks = CreateGameModalWindow.this.persistenceService
 						.getAllDecksFromDeckArchives();
 					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
 					CreateGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
@@ -106,8 +107,7 @@ public class CreateGameModalWindow extends Panel
 
 		final Label chooseDeck = new Label("chooseDeck", "Choose a deck: ");
 
-		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService
-			.getAllDecksFromDeckArchives();
+		final ArrayList<Deck> allDecks = this.persistenceService.getAllDecksFromDeckArchives();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 
 		this.deckParent = new WebMarkupContainer("deckParent");

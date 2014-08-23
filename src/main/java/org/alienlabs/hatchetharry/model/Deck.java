@@ -34,33 +34,35 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Deck", indexes = {@Index(columnList = "Deck_DeckArchive"),
-										@Index(columnList = "playerId")})
+@Table(name = "Deck", indexes = { @Index(columnList = "Deck_DeckArchive"),
+		@Index(columnList = "playerId") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Deck implements Serializable {
+public class Deck implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckId")
 	private Long deckId;
-	@OneToOne(cascade = {CascadeType.MERGE})
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "Deck_DeckArchive")
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
 	private Long playerId;
-	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,
-																			 CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
+	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
 	/**
 	 * Shuffle the library.
 	 *
-	 * @param _cards all cards in the player's library
+	 * @param _cards
+	 *            all cards in the player's library
 	 * @return the same cards in another order
 	 */
-	public List<MagicCard> shuffleLibrary(final List<MagicCard> _cards) {
+	public List<MagicCard> shuffleLibrary(final List<MagicCard> _cards)
+	{
 		Collections.shuffle(_cards);
 		Collections.shuffle(_cards);
 		Collections.shuffle(_cards);
@@ -72,80 +74,95 @@ public class Deck implements Serializable {
 	/**
 	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone.
 	 *
-	 * @param _cards all cards of a player in a certain zone
-	 * @return the same cards, in the same order, in the same zone but with
-	 * zoneOrder reorder without any gap
+	 * @param _cards
+	 *            all cards of a player in a certain zone
+	 * @return the same cards, in the same order, in the same zone but with zoneOrder reorder
+	 *         without any gap
 	 */
-	public List<MagicCard> reorderMagicCards(final List<MagicCard> _cards) {
+	public List<MagicCard> reorderMagicCards(final List<MagicCard> _cards)
+	{
 		final List<MagicCard> orderedCards = new ArrayList<MagicCard>();
 
-		for (int i = 0; i < _cards.size(); i++) {
+		for (int i = 0; i < _cards.size(); i++)
+		{
 			orderedCards.add(_cards.get(i));
-			orderedCards.get(i).setZoneOrder((long) i);
+			orderedCards.get(i).setZoneOrder((long)i);
 		}
 
 		return orderedCards;
 	}
 
 	/**
-	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone and
-	 * increment it, the goal being to be able to put a MagicCard in front of
-	 * the list.
+	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone and increment it, the
+	 * goal being to be able to put a MagicCard in front of the list.
 	 *
-	 * @param _cards all cards of a player in a certain zone
-	 * @return the same cards, in the same order, in the same zone but with
-	 * zoneOrder reorder without any gap, and incremented
+	 * @param _cards
+	 *            all cards of a player in a certain zone
+	 * @return the same cards, in the same order, in the same zone but with zoneOrder reorder
+	 *         without any gap, and incremented
 	 */
-	public ArrayList<MagicCard> reorderAndIncrementMagicCards(final List<MagicCard> _cards) {
+	public ArrayList<MagicCard> reorderAndIncrementMagicCards(final List<MagicCard> _cards)
+	{
 		final ArrayList<MagicCard> orderedCards = new ArrayList<MagicCard>(_cards.size() + 1);
 
-		for (int i = 0; i < _cards.size(); i++) {
+		for (int i = 0; i < _cards.size(); i++)
+		{
 			orderedCards.add(i, _cards.get(i));
-			orderedCards.get(i).setZoneOrder((long) i + 1);
+			orderedCards.get(i).setZoneOrder((long)i + 1);
 		}
 
 		return orderedCards;
 	}
 
-	public Long getPlayerId() {
+	public Long getPlayerId()
+	{
 		return this.playerId;
 	}
 
-	public void setPlayerId(final Long _playerId) {
+	public void setPlayerId(final Long _playerId)
+	{
 		this.playerId = _playerId;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return this.deckArchive.getDeckName();
 	}
 
-	public Long getDeckId() {
+	public Long getDeckId()
+	{
 		return this.deckId;
 	}
 
-	public void setDeckId(final Long _deckId) {
+	public void setDeckId(final Long _deckId)
+	{
 		this.deckId = _deckId;
 	}
 
-	public DeckArchive getDeckArchive() {
+	public DeckArchive getDeckArchive()
+	{
 		return this.deckArchive;
 	}
 
-	public void setDeckArchive(final DeckArchive _deckArchive) {
+	public void setDeckArchive(final DeckArchive _deckArchive)
+	{
 		this.deckArchive = _deckArchive;
 	}
 
-	public List<MagicCard> getCards() {
+	public List<MagicCard> getCards()
+	{
 		return this.cards;
 	}
 
-	public void setCards(final List<MagicCard> _cards) {
+	public void setCards(final List<MagicCard> _cards)
+	{
 		this.cards = _cards;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.deckArchive == null) ? 0 : this.deckArchive.hashCode());
@@ -154,29 +171,41 @@ public class Deck implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
 			return true;
 		}
-		if (obj == null) {
+		if (obj == null)
+		{
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass())
+		{
 			return false;
 		}
-		final Deck other = (Deck) obj;
-		if (this.deckArchive == null) {
-			if (other.deckArchive != null) {
+		final Deck other = (Deck)obj;
+		if (this.deckArchive == null)
+		{
+			if (other.deckArchive != null)
+			{
 				return false;
 			}
-		} else if (!this.deckArchive.equals(other.deckArchive)) {
+		}
+		else if (!this.deckArchive.equals(other.deckArchive))
+		{
 			return false;
 		}
-		if (this.playerId == null) {
-			if (other.playerId != null) {
+		if (this.playerId == null)
+		{
+			if (other.playerId != null)
+			{
 				return false;
 			}
-		} else if (!this.playerId.equals(other.playerId)) {
+		}
+		else if (!this.playerId.equals(other.playerId))
+		{
 			return false;
 		}
 		return true;

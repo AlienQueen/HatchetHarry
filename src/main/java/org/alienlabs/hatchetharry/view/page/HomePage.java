@@ -172,7 +172,7 @@ import com.google.common.io.Files;
  * @author Zala Goupil
  */
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
-        "SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class HomePage extends TestReportPage
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
@@ -385,6 +385,10 @@ public class HomePage extends TestReportPage
 		}
 		else
 		{
+			if (this.session.getPlayer() == null)
+			{
+				this.createPlayer();
+			}
 			this.player = this.session.getPlayer();
 
 			this.buildHandCards();
@@ -1050,7 +1054,7 @@ public class HomePage extends TestReportPage
 		HomePage.LOGGER.info("building DataBox with gameId= " + _gameId);
 	}
 
-	private final void buildHandCards()
+	private void buildHandCards()
 	{
 		if (this.session.isHandHasBeenCreated())
 		{
@@ -1098,7 +1102,10 @@ public class HomePage extends TestReportPage
 
 		this.session.setPlayerHasBeenCreated();
 
-		this.deck = this.runtimeDataGenerator.generateData(game.getId(), p.getId());
+		// Import example decks
+		this.runtimeDataGenerator.generateData(game.getId(), p.getId());
+
+		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
 		this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
 		this.deck.setPlayerId(p.getId());
 
@@ -1670,8 +1677,17 @@ public class HomePage extends TestReportPage
 		final List<MagicCard> allCardsInLibrary = this.persistenceService
 			.getAllCardsInLibraryForDeckAndPlayer(this.session.getGameId(), this.session
 				.getPlayer().getId(), this.session.getPlayer().getDeck().getDeckId());
-		final MagicCard firstCard = allCardsInLibrary
-			.get(this.session.getTopCardIndex().intValue());
+		final MagicCard firstCard;
+
+		if (allCardsInLibrary.isEmpty())
+		{
+			firstCard = null;
+		}
+		else
+		{
+			firstCard = allCardsInLibrary.get(this.session.getTopCardIndex().intValue());
+		}
+
 		window.setContent(new RevealTopLibraryCardModalWindow(window.getContentId(), window,
 			firstCard));
 
@@ -2391,13 +2407,6 @@ public class HomePage extends TestReportPage
 		switch (event.getAction())
 		{
 			case ADD_COUNTER_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-					+ event.getRequestingPlayerName() + "', text : \"has put "
-					+ event.getTargetNumberOfCounters() + " " + event.getCounterName()
-					+ " counter(s) on " + event.getTargetPlayerName() + "'s token: "
-					+ token.getCreatureTypes()
-					+ "\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
-				break;
 			case REMOVE_COUNTER_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 					+ event.getRequestingPlayerName() + "', text : \"has put "
@@ -2947,7 +2956,8 @@ public class HomePage extends TestReportPage
 
 	private final void restoreBattlefieldState()
 	{
-		// TODO: catch NPE and restart the page
+		// Sessions must be clean-up between server restarts, as it's too much difficult
+		// to manage a state recovery
 		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
 			this.session.getPlayer().getId()).isHandDisplayed();
 		final Component galleryToUpdate = isHandDisplayed
@@ -3008,14 +3018,12 @@ public class HomePage extends TestReportPage
 					|| ((mc.getToken() != null) && mc.getToken().getCounters().isEmpty()))
 				{
 					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " hidden");
-					js.append("jQuery('#bullet" + mc.getUuid().toString().replace("-", "_")
-						+ "').hide(); ");
-				}
+					js.append("jQuery('#bullet" + uuidValidForJs + "').hide(); ");
+	}
 				else
 				{
 					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " shown");
-					js.append("jQuery('#bullet" + mc.getUuid().toString().replace("-", "_")
-						+ "').show(); ");
+					js.append("jQuery('#bullet" + uuidValidForJs + "').show(); ");
 				}
 			}
 			catch (final IllegalArgumentException e)
@@ -3293,6 +3301,7 @@ public class HomePage extends TestReportPage
 		Mockito.when(persistenceServiceMock.giveAllPlayersFromGame(Matchers.any(Long.class)))
 			.thenReturn(playerIds);
 		Mockito.when(persistenceServiceMock.getPlayer(Matchers.any(Long.class))).thenReturn(p1);
+		Mockito.when(persistenceServiceMock.getDeck(Matchers.any(Long.class))).thenCallRealMethod();
 		return persistenceServiceMock;
 	}
 
@@ -3302,6 +3311,7 @@ public class HomePage extends TestReportPage
 		p1.setId(1l);
 		p1.setName("1");
 		p1.setLifePoints(20l);
+		p1.setDeck(this.persistenceService.getDeck(1l));
 		p1.setHandDisplayed(true);
 
 		final HatchetHarrySession sessionMock = Mockito.mock(HatchetHarrySession.class);

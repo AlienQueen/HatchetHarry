@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 
-// TODO: write tests and refactor the Comet channels
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class JoinGameModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
@@ -100,7 +100,7 @@ public class JoinGameModalWindow extends Panel
 			{
 				if ((null != target) && (null == JoinGameModalWindow.this.decks.getModelObject()))
 				{
-					final ArrayList<Deck> _allDecks = (ArrayList<Deck>)JoinGameModalWindow.this.persistenceService
+					final ArrayList<Deck> _allDecks = JoinGameModalWindow.this.persistenceService
 						.getAllDecksFromDeckArchives();
 					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
 					JoinGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
@@ -116,8 +116,7 @@ public class JoinGameModalWindow extends Panel
 
 		final Label chooseDeck = new Label("chooseDeck", "Choose a deck: ");
 
-		final ArrayList<Deck> allDecks = (ArrayList<Deck>)this.persistenceService
-			.getAllDecksFromDeckArchives();
+		final ArrayList<Deck> allDecks = this.persistenceService.getAllDecksFromDeckArchives();
 		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
 
 		this.deckParent = new WebMarkupContainer("deckParent");
@@ -324,7 +323,7 @@ public class JoinGameModalWindow extends Panel
 						JoinGameModalWindow.this.player.getId());
 				final AddSidesFromOtherBrowsersCometChannel asfobcc = new AddSidesFromOtherBrowsersCometChannel(
 					JoinGameModalWindow.this.player, giveAllPlayersFromGameExceptMeAsPlayers);
-                EventBusPostService.post(allPlayersInGame, asfobcc);
+				EventBusPostService.post(allPlayersInGame, asfobcc);
 
 				session.resetCardsInGraveyard();
 

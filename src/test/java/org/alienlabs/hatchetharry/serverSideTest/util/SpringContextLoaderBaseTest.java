@@ -78,7 +78,7 @@ public class SpringContextLoaderBaseTest
 
 	public static Long startAGameAndPlayACard()
 	{
-        // Create game
+		// Create game
 		SpringContextLoaderBaseTest.tester.assertComponent("createGameLink", AjaxLink.class);
 		SpringContextLoaderBaseTest.tester.clickLink("createGameLink", true);
 

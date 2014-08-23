@@ -42,34 +42,35 @@ import org.springframework.beans.factory.annotation.Required;
  * @author ivaynberg
  * @author Kare Nuorteva
  */
-public class DataGenerator implements InitializingBean {
-	private static final String[] TITLES1 = {"Goblin Guide", "Goblin Guide", "Goblin Guide",
-													"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
-													"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
-													"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
-													"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
-													"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-													"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
-													"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
-													"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
-													"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
-													"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-													"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
-													"Swamp"};
+public class DataGenerator implements InitializingBean
+{
+	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
+			"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
+			"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
+			"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
+			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
+			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+			"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
+			"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
+			"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
+			"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
+			"Swamp" };
 
-	private static final String[] TITLES2 = {"Goblin Guide", "Goblin Guide", "Goblin Guide",
-													"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
-													"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
-													"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
-													"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
-													"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
-													"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
-													"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
-													"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-													"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
-													"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-													"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-													"Mountain", "Mountain", "Mountain", "Mountain"};
+	private static final String[] TITLES2 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
+			"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
+			"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
+			"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
+			"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
+			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
+			"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
+			"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
+			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+			"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
+			"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+			"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
 	private PersistenceService persistenceService;
@@ -83,43 +84,62 @@ public class DataGenerator implements InitializingBean {
 	private transient boolean generateCardCollection;
 
 	@Required
-	public void setCardCollectionDao(final CardCollectionDao _cardCollectionDao) {
+	public void setCardCollectionDao(final CardCollectionDao _cardCollectionDao)
+	{
 		this.cardCollectionDao = _cardCollectionDao;
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 
 	@Override
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
-            value="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS",
-            justification="the difference is in fake.setDeckArchive()")
-	public void afterPropertiesSet() {
-		if ((this.generateCardCollection) && (this.cardCollectionDao.count() == 0)) {
-			try {
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "the difference is in fake.setDeckArchive()")
+	public void afterPropertiesSet()
+	{
+		if ((this.generateCardCollection) && (this.cardCollectionDao.count() == 0))
+		{
+			try
+			{
 				final JAXBContext context = JAXBContext
-													.newInstance(CardCollectionRootElement.class);
+					.newInstance(CardCollectionRootElement.class);
 				final Unmarshaller um = context.createUnmarshaller();
-				final CardCollectionRootElement cardCollection = (CardCollectionRootElement) um
-																									 .unmarshal(new File(ResourceBundle.getBundle(
-																																						 DataGenerator.class.getCanonicalName()).getString(
-																																																				  "AllCardsInCollectionUntilReturnToRavnica")));
+				final CardCollectionRootElement cardCollection = (CardCollectionRootElement)um
+					.unmarshal(new File(ResourceBundle.getBundle(
+						DataGenerator.class.getCanonicalName()).getString(
+						"AllCardsInCollectionUntilReturnToRavnica")));
 
 				final Object[] array = cardCollection.getCardCollectionList().toArray();
 
-				for (int i = 0; i < array.length; i++) {
-					this.cardCollectionDao.save((CardCollection) array[i]);
+				for (int i = 0; i < array.length; i++)
+				{
+					this.cardCollectionDao.save((CardCollection)array[i]);
 				}
-			} catch (final JAXBException e) {
+			}
+			catch (final JAXBException e)
+			{
 				e.printStackTrace();
 			}
 		}
 
 		if ((this.generateData)
-					&& (null == this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black"))
-					&& (null == this.persistenceService.getDeckArchiveByName("burn mono-Red"))) {
+			&& (null == this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black"))
+			&& (null == this.persistenceService.getDeckArchiveByName("burn mono-Red")))
+		{
+
+			final Deck deck1 = new Deck();
+			deck1.setPlayerId(-1l);
+			deck1.setDeckArchive(this.persistenceService
+				.getDeckArchiveByName("aggro-combo Red / Black"));
+			this.persistenceService.saveDeck(deck1);
+
+			final Deck deck2 = new Deck();
+			deck2.setPlayerId(-1l);
+			deck2.setDeckArchive(this.persistenceService.getDeckArchiveByName("burn mono-Red"));
+			this.persistenceService.saveDeck(deck2);
+
 			final DeckArchive deckArchive1 = new DeckArchive();
 			deckArchive1.setDeckName("aggro-combo Red / Black");
 
@@ -130,58 +150,71 @@ public class DataGenerator implements InitializingBean {
 			this.persistenceService.saveDeckArchive(deckArchive1);
 			this.persistenceService.saveDeckArchive(deckArchive2);
 
-			for (int j = 1; j < 3; j++) {
-				for (int i = 0; i < 60; i++) {
+			for (int j = 1; j < 3; j++)
+			{
+				for (int i = 0; i < 60; i++)
+				{
 					final CollectibleCard c = new CollectibleCard();
 					c.setTitle((j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]));
 					c.setDeckArchiveId(j == 1 ? deckArchive1.getDeckArchiveId() : deckArchive2
-																						  .getDeckArchiveId());
+						.getDeckArchiveId());
 					// A CollectibleCard can be duplicated: lands, normal cards
 					// which may be present 4 times in a Deck...
 					this.persistenceService.saveCollectibleCard(c);
 
+					this.persistenceService.updateDeckArchive(deckArchive1);
+					this.persistenceService.updateDeckArchive(deckArchive2);
+
+					if (null == this.persistenceService.getCardFromUuid(UUID
+						.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347")))
+					{
+						MagicCard card = new MagicCard("cards/Balduvian Horde_small.jpg",
+							"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
+							"Balduvian Horde", "Isn't it a spoiler?", "", null);
+						card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
+						Deck fake = new Deck();
+						fake.setPlayerId(-1l);
+						fake.setDeckArchive(deckArchive1);
+						card.setDeck(fake);
+						card.setGameId(-1l);
+						card.setZone(CardZone.BATTLEFIELD);
+						this.persistenceService.saveCard(card);
+
+						card = new MagicCard("cards/Balduvian Horde_small.jpg",
+							"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
+							"Balduvian Horde", "Isn't it a spoiler?", "", null);
+						card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
+						fake = new Deck();
+						fake.setPlayerId(-1l);
+						fake.setDeckArchive(deckArchive2);
+						card.setDeck(fake);
+						card.setGameId(-1l);
+						card.setZone(CardZone.BATTLEFIELD);
+						this.persistenceService.saveCard(card);
+					}
 				}
-			}
 
-			this.persistenceService.updateDeckArchive(deckArchive1);
-			this.persistenceService.updateDeckArchive(deckArchive2);
-
-			if (null == this.persistenceService.getCardFromUuid(UUID
-																		.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"))) {
-				MagicCard card = new MagicCard("cards/Balduvian Horde_small.jpg",
-													  "cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-													  "Balduvian Horde", "Isn't it a spoiler?", "", null);
-				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
-				Deck fake = new Deck();
-				fake.setPlayerId(-1l);
-				fake.setDeckArchive(deckArchive1);
-				card.setDeck(fake);
-				card.setGameId(-1l);
-				card.setZone(CardZone.BATTLEFIELD);
-				this.persistenceService.saveCard(card);
-
-				card = new MagicCard("cards/Balduvian Horde_small.jpg",
-											"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-											"Balduvian Horde", "Isn't it a spoiler?", "", null);
-				card.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
-				fake = new Deck();
-				fake.setPlayerId(-1l);
-				fake.setDeckArchive(deckArchive2);
-				card.setDeck(fake);
-				card.setGameId(-1l);
-				card.setZone(CardZone.BATTLEFIELD);
-				this.persistenceService.saveCard(card);
+				if (j == 1)
+				{
+					this.persistenceService.updateDeck(deck1);
+				}
+				else
+				{
+					this.persistenceService.updateDeck(deck2);
+				}
 			}
 		}
 	}
 
 	@Required
-	public void setGenerateData(final boolean _generateData) {
+	public void setGenerateData(final boolean _generateData)
+	{
 		this.generateData = _generateData;
 	}
 
 	@Required
-	public void setGenerateCardCollection(final boolean _generateCardCollection) {
+	public void setGenerateCardCollection(final boolean _generateCardCollection)
+	{
 		this.generateCardCollection = _generateCardCollection;
 	}
 

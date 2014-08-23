@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,7 +92,8 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 
 		try
 		{
-			this.targetZone = CardZone.valueOf(request.getParameter("targetZone").toUpperCase());
+			this.targetZone = CardZone.valueOf(request.getParameter("targetZone").toUpperCase(
+				Locale.ENGLISH));
 		}
 		catch (final IllegalArgumentException ex)
 		{

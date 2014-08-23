@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import com.google.common.io.Files;
 
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealTopLibraryCardModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(RevealTopLibraryCardModalWindow.class);

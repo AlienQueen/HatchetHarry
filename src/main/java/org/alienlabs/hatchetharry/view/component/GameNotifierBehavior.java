@@ -13,9 +13,9 @@ import org.atmosphere.cpr.Meteor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("serial")
 public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameNotifierBehavior.class);
 	private final WebPage page;
 

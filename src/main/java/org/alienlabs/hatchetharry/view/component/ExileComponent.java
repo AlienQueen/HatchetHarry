@@ -14,21 +14,25 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ExileComponent extends Panel {
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
+		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+public class ExileComponent extends Panel
+{
 	private static final long serialVersionUID = 1L;
-
-	@SpringBean
-	private PersistenceService persistenceService;
-
 	private final WebMarkupContainer exileCardsPlaceholder;
 	private final ListView<MagicCard> allCards;
 	private final WebMarkupContainer thumbsPlaceholder;
+	@SpringBean
+	private PersistenceService persistenceService;
 
 	/**
-	 * @param id  wicket:id
-	 * @param ids gameId, playerId, deckId
+	 * @param id
+	 *            wicket:id
+	 * @param ids
+	 *            gameId, playerId, deckId
 	 */
-	public ExileComponent(final String id, final Long... ids) {
+	public ExileComponent(final String id, final Long... ids)
+	{
 		super(id);
 
 		this.setOutputMarkupId(true);
@@ -38,17 +42,18 @@ public class ExileComponent extends Panel {
 		this.exileCardsPlaceholder.setOutputMarkupId(true);
 
 		final List<MagicCard> allCardsInExile = this.persistenceService
-														.getAllCardsInExileForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
-																														 .getPlayer().getGame().getId() : ids[0]), (ids.length == 0
-																																											? HatchetHarrySession.get().getPlayer().getId()
-																																											: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
-																																																				  .getDeck().getDeckId() : ids[2]));
+			.getAllCardsInExileForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
+				.getPlayer().getGame().getId() : ids[0]), (ids.length == 0 ? HatchetHarrySession
+				.get().getPlayer().getId() : ids[1]), (ids.length == 0 ? HatchetHarrySession.get()
+				.getPlayer().getDeck().getDeckId() : ids[2]));
 
-		this.allCards = new ListView<MagicCard>("exileCards", allCardsInExile) {
+		this.allCards = new ListView<MagicCard>("exileCards", allCardsInExile)
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<MagicCard> item) {
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
 				final MagicCard card = item.getModelObject();
 
 				final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
@@ -56,7 +61,7 @@ public class ExileComponent extends Panel {
 				wrapper.setOutputMarkupId(true);
 
 				final ExternalImage handImagePlaceholder = new ExternalImage(
-																					"exileImagePlaceholder", card.getBigImageFilename());
+					"exileImagePlaceholder", card.getBigImageFilename());
 				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
 				handImagePlaceholder.setOutputMarkupId(true);
 
@@ -69,11 +74,13 @@ public class ExileComponent extends Panel {
 		this.add(this.exileCardsPlaceholder);
 
 		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
-		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", allCardsInExile) {
+		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", allCardsInExile)
+		{
 			private static final long serialVersionUID = -787466183866875L;
 
 			@Override
-			protected void populateItem(final ListItem<MagicCard> item) {
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
 				final MagicCard card = item.getModelObject();
 
 				final WebMarkupContainer crossLinkDiv = new WebMarkupContainer("crossLinkDiv");
@@ -86,7 +93,7 @@ public class ExileComponent extends Panel {
 				crossLink.setOutputMarkupId(true);
 
 				final ExternalImage thumb = new ExternalImage("thumbPlaceholder",
-																	 card.getThumbnailFilename());
+					card.getThumbnailFilename());
 				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
 				thumb.setOutputMarkupId(true);
 				thumb.add(new AttributeModifier("name", card.getTitle()));
@@ -100,8 +107,8 @@ public class ExileComponent extends Panel {
 		this.thumbsPlaceholder.setOutputMarkupId(true);
 
 		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.EXILE,
-																		this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
-																																	 .getPlayer().getId() : ids[1])), false);
+			this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
+				.getPlayer().getId() : ids[1])), false);
 		this.add(putToZonePanel);
 
 		this.thumbsPlaceholder.add(thumbs);
@@ -109,7 +116,8 @@ public class ExileComponent extends Panel {
 	}
 
 	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService) {
+	public void setPersistenceService(final PersistenceService _persistenceService)
+	{
 		this.persistenceService = _persistenceService;
 	}
 

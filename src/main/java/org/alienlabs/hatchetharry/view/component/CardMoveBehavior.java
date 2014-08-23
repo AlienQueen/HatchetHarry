@@ -82,9 +82,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		try
 		{
 			final String roundedX = _mouseX.substring(0,
-				(_mouseX.contains(".")) ? _mouseX.indexOf(".") : _mouseX.length());
+				(_mouseX.contains(".")) ? _mouseX.indexOf('.') : _mouseX.length());
 			final String roundedY = _mouseY.substring(0,
-				(_mouseY.contains(".")) ? _mouseY.indexOf(".") : _mouseY.length());
+				(_mouseY.contains(".")) ? _mouseY.indexOf('.') : _mouseY.length());
 			final long _x = Long.parseLong(roundedX);
 			final long _y = Long.parseLong(roundedY);
 			this.posX = _x <= -300 ? -300 : _x;
