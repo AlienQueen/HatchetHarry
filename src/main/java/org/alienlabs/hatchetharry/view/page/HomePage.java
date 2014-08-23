@@ -378,8 +378,9 @@ public class HomePage extends TestReportPage
 				&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer().getSide()
 					.getSideName())))
 			{
-				balduParent.add(new CardPanel("baldu", card.getSmallImageFilename(), card
-					.getUuidObject(), this.player));
+				CardPanel baldu = new CardPanel("baldu", card.getSmallImageFilename(),
+					card.getUuidObject(), this.player);
+				balduParent.add(baldu);
 				this.session.getAllMagicCardsInBattleField().add(card);
 			}
 		}
@@ -1353,6 +1354,8 @@ public class HomePage extends TestReportPage
 					HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "script/jquery.jsPlumb-1.5.3-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+                        HomePage.class, "script/tour/bootstrap-tour-standalone.min.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "stylesheet/jMenu.jquery.css")));
@@ -1386,6 +1389,8 @@ public class HomePage extends TestReportPage
 					HomePage.class, "stylesheet/jquery-ui dialog.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "stylesheet/qunit-1.12.0.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+                        HomePage.class, "stylesheet/bootstrap-tour-standalone.min.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "stylesheet/myStyle.css")));
 
@@ -1456,10 +1461,10 @@ public class HomePage extends TestReportPage
 			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 
-//			if (!this.session.isHandCardsHaveBeenBuilt())
-//			{
-				this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
-//			}
+			// if (!this.session.isHandCardsHaveBeenBuilt())
+			// {
+			this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
+			// }
 
 			for (int i = 0; i < 7; i++)
 			{

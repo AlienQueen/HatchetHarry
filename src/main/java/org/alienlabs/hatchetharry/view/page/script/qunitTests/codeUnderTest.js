@@ -36,11 +36,6 @@ jQuery(function () {
         });
 });
 
-//The website tour, a jQuery plugin
-jQuery(function () {
-    tl.pg.init({ 'pg_caption': 'Site tour', 'auto_show_first': true});
-});
-
 jQuery(function () {
     setTimeout(function () {
         // Freebox
@@ -229,8 +224,62 @@ jQuery(function () {
     window.localStorage.setItem('org.doubango.expert.disable_callbtn_options', "false");
 });
 
+//The website tour, a jQuery plugin
+jQuery(function () {
+    // Instance the tour
+    var tour = new Tour({
+        steps: [
+            {
+                element: "#tour1",
+                title: "Drawing cards",
+                placement: "top",
+                trigger: 'manual',
+                content: "When you've joined a game, you'll be able to draw cards, thanks to the button in this toolbar."
+            },
+            {
+                element: "#tour2",
+                title: "Untap all",
+                placement: "top",
+                trigger: 'manual',
+                content: "You can untap all your permanents at once using the toolbar button."
+            },
+            {
+                element: "#baldu",
+                title: "An example card",
+                placement: "right",
+                trigger: 'manual',
+                content: "This is a card. You can move it by drag and drop using the small, green handle on its side. If you do so, the opponent will see its move matched in her own browser. Additionaly, you can call a context menu by right-clicking on the card itself."
+            },
+            {
+                element: "#tour3",
+                title: "Play cards",
+                placement: "top",
+                trigger: 'manual',
+                content: "You can play cards and the opponent will see them on the battlefield."
+            },
+            {
+                element: "#cssmenu",
+                title: "Menu bar",
+                placement: "bottom",
+                trigger: 'manual',
+                content: "This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu entries."
+            }
+        ]});
+
+    // Initialize the tour
+    tour.init();
+
+    jQuery('#launch_tour').click(function () {
+        // Start the tour
+        tour.start(true);
+        tour.goTo(0);
+        return false;
+    });
+
+});
+
 jQuery(function () {
     window.setTimeout(function () {
         jQuery('body').removeClass("cloak");
-    }, 1000);
+    }, 2000);
 });

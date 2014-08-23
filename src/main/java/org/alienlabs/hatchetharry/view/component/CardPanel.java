@@ -156,7 +156,14 @@ public class CardPanel extends Panel
 
 		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
 		cardImage.setOutputMarkupId(true);
-		cardImage.setMarkupId("card" + uuidValidForJs);
+		if ("baldu".equals(id))
+		{
+			cardImage.setMarkupId("baldu");
+		}
+		else
+		{
+            cardImage.setMarkupId("card" + uuidValidForJs);
+		}
 		cardImage.add(new AttributeModifier("class", "clickableCard"));
 
 		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());

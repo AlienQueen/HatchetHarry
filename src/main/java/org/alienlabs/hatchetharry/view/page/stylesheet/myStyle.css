@@ -174,11 +174,20 @@ a, a:visited {
 
 .cloak {
     display: none;
+    background: white;
 }
 
 .myfont {
     font-family: 'Black Ops One', cursive;
     color: gray;
+}
+
+.popover-content, .popover-title,
+.popover-navigation, .btn-default {
+    font-family: 'Black Ops One', cursive;
+    color: gray;
+    background: black;
+    background-color: black;
 }
 
 /* for the light (white) version of the gritter notice */
@@ -223,7 +232,7 @@ div.wicket-modal h3.w_captionText {
     padding-left: 10px;
     position: fixed;
     left: 5px;
-    top: 90px;
+    top: 110px;
 }
 
 .black {

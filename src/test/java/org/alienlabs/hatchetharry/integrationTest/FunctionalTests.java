@@ -370,19 +370,21 @@ public class FunctionalTests
 			By.cssSelector("img[id^='handleImage']")).get(0);
 		WebElement to = FunctionalTests.chromeDriver1.findElement(By.id("putToGraveyard"));
 		new Actions(FunctionalTests.chromeDriver1).dragAndDrop(draggable, to).build().perform();
-		Thread.sleep(10000);
+		Thread.sleep(15000);
 
 		// Assert graveyard is visible and contains one card
 		assertFalse(FunctionalTests.chromeDriver2.findElements(
 			By.cssSelector(".graveyard-cross-link")).isEmpty());
 		assertEquals(1,
 			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".graveyard-cross-link"))
-                    .size());
+				.size());
 
 		// Verify name of the card in the graveyard
-		// assertTrue(battlefieldCardName.equals(FunctionalTests.chromeDriver2
-		// .findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
-		// .getAttribute("name")));
+		assertEquals(
+			battlefieldCardName,
+			FunctionalTests.chromeDriver2
+				.findElements(By.cssSelector(".graveyard-cross-link:nth-child(1) img")).get(0)
+                    .getAttribute("name"));
 
 		// Play card from graveyard
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)

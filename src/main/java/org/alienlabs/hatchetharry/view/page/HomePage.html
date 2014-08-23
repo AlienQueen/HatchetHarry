@@ -92,11 +92,17 @@
         <span wicket:id="message2" id="message2" class="myfont">message will be here</span>
     </strong>
 </h3>
-
 <br/><br/><br/>
+
+<h3>
+    <a href="#" id="launch_tour" class="myfont" style="position: absolute; left: 0px; color: gray;">
+        First time here? Wanna go for a ride?
+    </a>
+</h3>
+<br/><br/>
 <h4><strong><span wicket:id="usernameParent"><span wicket:id="username" class="myfont login"></span></span></strong>
 </h4>
-<br/><br/>
+<br/><br/><br/><br/><br/>
   <span class="zone-images">
 	<img id="putToHand" src="image/hand.jpg" alt="Put back to hand"
          title="      Drag a card here to put it back to hand"
@@ -152,9 +158,9 @@
 <!-- end menus -->
 <br/><br/><br/><br/><br/>
 <br/><br/><br/><br/><br/>
-	<span wicket:id="balduParent" id="tour_6">
-		<span wicket:id="baldu"></span>
-	</span>
+<span wicket:id="balduParent" id="tour_6" style="position: relative; top 15%; left: 15%;">
+    <span wicket:id=" baldu"></span>
+</span>
 <br/><br/><br/><br/>
 <br/><br/><br/><br/>
 <br/><br/><br/><br/>
@@ -339,18 +345,19 @@
 
             <li id="untapAllPlaceholder" wicket:id="untapAllPlaceholder">
                 <a wicket:id="untapAllLink" style="cursor: pointer; color: white;"
-                   title="Untall all your permanents"><span><img src="image/googlebuzz.png"></img> Untap</span></a>
+                   title="Untall all your permanents"><span><img src="image/googlebuzz.png"
+                                                                 id="tour2"></img> Untap</span></a>
             </li>
 
             <li rel="prettyPhoto[iframe]" id="tour_3">
                 <a wicket:id="drawCardLink" title="Draw a card" style="cursor: pointer; color: white;">
-                    <img src="image/youtube.png"></img>
+                    <img src="image/youtube.png" id="tour1"></img>
                     Draw
                 </a>
             </li>
 
             <li>
-                <img src="image/playCard.png"></img>
+                <img src="image/playCard.png" id="tour3"></img>
                 <a wicket:id="playCardLink" style="cursor: pointer; color: white; position: relative; top: -9px;"
                    title="Play the card currently shown in your hand">
                     Play
