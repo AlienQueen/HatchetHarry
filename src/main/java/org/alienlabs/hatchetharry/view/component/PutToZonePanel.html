@@ -5,10 +5,12 @@
 
         <label wicket:id="targetZoneLabel" for="targetZoneInput" class="myfont black">Put card to: <br/>
 					<span wicket:id="targetZoneGroup">
-						<select wicket:id="targetZoneInput" class="myfont black"></select>&nbsp;<br/><br/>
+						<select wicket:id="targetZoneInput" class="myfont black myselect"></select>&nbsp;<br/><br/>
 					</span>
-        </label>
-        <a wicket:id="submit" style="cursor: pointer;" class="myfont black">Send</a><br/>
+        </label><br/>
+        <a wicket:id="submit" style="cursor: pointer;" class="myfont black">Send</a>
+        <img wicket:id="indicator" style="display:none; position: absolute; left: 45px; top: 100px;"/>
+        <br/>
     </form>
 
 </wicket:panel>

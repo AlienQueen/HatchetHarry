@@ -1,6 +1,7 @@
 window.setTimeout(function () {
 
     jQuery('#moveToZoneSubmit${zone}${Player}').click(function () {
+        jQuery('#putToZoneIndicator${zone}').css('display', 'block');
         var img = jQuery(".active-thumb-${reveal}${zone} img");
         var id = img.attr('id');
         var withoutPlaceholder = id.split('placeholder')[1];

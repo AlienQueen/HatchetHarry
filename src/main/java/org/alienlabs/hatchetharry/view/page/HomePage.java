@@ -2754,6 +2754,9 @@ public class HomePage extends TestReportPage
 			default :
 				throw new UnsupportedOperationException();
 		}
+
+		target.appendJavaScript("jQuery('#putToZoneIndicator" + event.getSourceZone().toString()
+			+ "').css('display', 'none');");
 	}
 
 	@Subscribe
@@ -3021,7 +3024,7 @@ public class HomePage extends TestReportPage
 					js.append("jQuery('#bullet" + uuidValidForJs + "').hide(); ");
 				}
 				else
-	{
+				{
 					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " shown");
 					js.append("jQuery('#bullet" + uuidValidForJs + "').show(); ");
 				}
