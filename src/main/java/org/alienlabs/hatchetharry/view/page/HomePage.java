@@ -1456,10 +1456,10 @@ public class HomePage extends TestReportPage
 			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 
-			if (!this.session.isHandCardsHaveBeenBuilt())
-			{
+//			if (!this.session.isHandCardsHaveBeenBuilt())
+//			{
 				this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
-			}
+//			}
 
 			for (int i = 0; i < 7; i++)
 			{

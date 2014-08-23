@@ -1,21 +1,13 @@
 jQuery(function () {
     window.setTimeout(function () {
-        var dragUrl$
-        {
-            uuidValidForJs
-        }
-        = jQuery('#handleImage${uuidValidForJs}').data('dragUrl');
+        var dragUrl${uuidValidForJs} = jQuery('#handleImage${uuidValidForJs}').data('dragUrl');
 
         jQuery('#cardHandle${uuidValidForJs}').draggable({ handle: '#handleImage${uuidValidForJs}', helper: 'original', stop: function (event, ui) {
             if (!shouldMove) {
                 shouldMove = true;
                 return;
             }
-            Wicket.Ajax.get({ 'u': dragUrl$
-            {
-                uuidValidForJs
-            }
-            +'&posX=' + (ui.offset.left) + '&posY=' + (ui.offset.top)
+            Wicket.Ajax.get({ 'u': dragUrl${uuidValidForJs} +'&posX=' + (ui.offset.left) + '&posY=' + (ui.offset.top)
         });
     }
 });

@@ -17,13 +17,13 @@ window.setTimeout(function () {
                 Wicket.Ajax.get({ 'u': '${handUrl}&uuid=' + uuid });
             } else if (action === 'exile') {
                 jQuery('#' + jQuery(el).attr('id').replace('card', 'cardHandle')).hide();
-                var url = jQuery('#handleImage' + uuid).data('exileUrl');
+                var url = jQuery('#handleImage${uuidValidForJs}').data('exileUrl');
                 Wicket.Ajax.get({ 'u': url + '&uuid=' + uuid });
             } else if (action === 'move') {
                 var body = document.getElementById('body');
                 body.style.cursor = 'move';
                 jQuery("body").click(function (event) {
-                    var url = jQuery('#handleImage' + uuid).data('dragUrl');
+                    var url = jQuery('#handleImage${uuidValidForJs}').data('dragUrl');
                     body.style.cursor = "default";
                     Wicket.Ajax.get({ 'u': url + '&uuid=' + uuid + '&posX=' + event.pageX + '&posY=' + event.pageY});
                     jQuery("body").unbind('click');

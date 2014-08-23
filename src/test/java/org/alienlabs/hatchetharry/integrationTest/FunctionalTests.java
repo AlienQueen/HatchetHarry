@@ -14,7 +14,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +82,7 @@ public class FunctionalTests
 		+ "  );\n"
 		+ "}\n"
 		+ "\n"
-		+ "var elementToLookFor = jQuery(\"img[id^='tapHandleImage']\");\n"
+		+ "var elementToLookFor = jQuery(\".magicCard .tap-handle-image\");\n"
 		+ "\n"
 		+ "for (var i = 0; i < 10000; i = i + 1) {\n"
 		+ "	if (elementInViewport(elementToLookFor)) {\n"
@@ -193,7 +195,7 @@ public class FunctionalTests
 	}
 
 	@AfterClass
-	public static void tearDown()
+	public static void tearDown() throws InterruptedException
 	{
 		if (null != FunctionalTests.chromeDriver1)
 		{
@@ -225,11 +227,11 @@ public class FunctionalTests
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FunctionalTests.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
-		Thread.sleep(10000);
+		new WebDriverWait(FunctionalTests.chromeDriver1, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("name")));
 
 		FunctionalTests.chromeDriver1.findElement(By.id("name")).clear();
 		FunctionalTests.chromeDriver1.findElement(By.id("name")).sendKeys("Zala");
-		Thread.sleep(10000);
 		new Select(FunctionalTests.chromeDriver1.findElement(By.id("sideInput"))).getOptions()
 			.get(1).click();
 		new Select(FunctionalTests.chromeDriver1.findElement(By.id("decks"))).getOptions().get(1)
@@ -238,21 +240,27 @@ public class FunctionalTests
 		final String gameId = FunctionalTests.chromeDriver1.findElement(By.id("gameId")).getText();
 
 		FunctionalTests.chromeDriver1.findElement(By.id("createSubmit")).click();
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 
 		// Join a game in chrome
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		Thread.sleep(10000);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
+		// Thread.sleep(10000);
+
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
-		Thread.sleep(10000);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("revealTopLibraryCardLinkResponsive")));
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("joinGameLinkResponsive")));
 		FunctionalTests.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
-		Thread.sleep(10000);
 
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("name")));
 		FunctionalTests.chromeDriver2.findElement(By.id("name")).clear();
 		FunctionalTests.chromeDriver2.findElement(By.id("name")).sendKeys("Marie");
-		Thread.sleep(10000);
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("sideInput"))).getOptions()
 			.get(2).click();
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("decks"))).getOptions().get(3)
@@ -264,6 +272,8 @@ public class FunctionalTests
 
 		// Assert that no card is present on battlefield
 		Thread.sleep(10000);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".magicCard")));
 		assertEquals(1, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".magicCard"))
 			.size());
 		assertEquals(1, FunctionalTests.chromeDriver1.findElements(By.cssSelector(".magicCard"))
@@ -279,17 +289,20 @@ public class FunctionalTests
 		final String battlefieldCardName = FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".active-thumb-Hand img")).get(0).getAttribute("name");
 
-		// Play a card in chrome
-		Thread.sleep(10000);
+		// Play a card in chrome2
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("playCardLink0")));
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.CLICK_PLAY_CARD_LINK);
+		Thread.sleep(10000);
 
 		// Verify that the hand contains only 6 cards, now
-		Thread.sleep(10000);
 		assertEquals(6, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".movers-row"))
 			.size());
 
 		// Verify that card is present on the battlefield
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".clickableCard")));
 		assertEquals(1, FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".clickableCard")).size());
 
@@ -315,15 +328,21 @@ public class FunctionalTests
 		// Tap card
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_CARD);
-		FunctionalTests.chromeDriver2.findElements(By.cssSelector("img[id^='tapHandleImage']"))
-			.get(0).click();
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.cssSelector(".clickableCard + .tap-handle-image")));
+		FunctionalTests.chromeDriver2.findElement(
+			By.cssSelector(".clickableCard + .tap-handle-image")).click();
 		Thread.sleep(10000);
 
 		// Verify card is tapped
-		assertTrue(FunctionalTests.chromeDriver2.findElements(By.cssSelector(".clickableCard"))
-			.get(0).getAttribute("style").contains("rotate(90deg)"));
-		assertTrue(FunctionalTests.chromeDriver1.findElements(By.cssSelector(".clickableCard"))
-			.get(0).getAttribute("style").contains("rotate(90deg)"));
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".clickableCard")));
+		assertTrue(FunctionalTests.chromeDriver2.findElements(By.cssSelector(".magicCard")).get(1)
+			.findElement(By.cssSelector(".clickableCard")).getAttribute("style")
+			.contains("rotate(90deg)"));
+		assertTrue(FunctionalTests.chromeDriver1.findElements(By.cssSelector(".magicCard")).get(1)
+			.findElement(By.cssSelector(".clickableCard")).getAttribute("style")
+			.contains("rotate(90deg)"));
 
 		// Assert that graveyard is not visible
 		assertTrue(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
@@ -345,18 +364,20 @@ public class FunctionalTests
 			.executeScript("$('#putToExile').attr('src', 'image/exile.jpg');");
 
 		// Put card to graveyard
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector("img[id^='handleImage")));
 		WebElement draggable = FunctionalTests.chromeDriver1.findElements(
 			By.cssSelector("img[id^='handleImage']")).get(0);
 		WebElement to = FunctionalTests.chromeDriver1.findElement(By.id("putToGraveyard"));
 		new Actions(FunctionalTests.chromeDriver1).dragAndDrop(draggable, to).build().perform();
-
-		Thread.sleep(20000);
+		Thread.sleep(10000);
 
 		// Assert graveyard is visible and contains one card
-		// assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
-		// .isEmpty());
-		// assertTrue(FunctionalTests.chromeDriver2.findElements(
-		// By.cssSelector(".graveyard-cross-link")).size() == 1);
+		assertFalse(FunctionalTests.chromeDriver2.findElements(
+			By.cssSelector(".graveyard-cross-link")).isEmpty());
+		assertEquals(1,
+			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".graveyard-cross-link"))
+                    .size());
 
 		// Verify name of the card in the graveyard
 		// assertTrue(battlefieldCardName.equals(FunctionalTests.chromeDriver2
@@ -366,21 +387,31 @@ public class FunctionalTests
 		// Play card from graveyard
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
+
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("playCardFromGraveyardLinkResponsive")));
+		Thread.sleep(10000);
 		FunctionalTests.chromeDriver2.findElement(By.id("playCardFromGraveyardLinkResponsive"))
 			.click();
 		Thread.sleep(10000);
 
 		// Verify the name of the card on the battlefield
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".clickableCard")));
 		assertEquals(battlefieldCardName,
-			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".magicCard")).get(1)
-				.getAttribute("name"));
+			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".clickableCard")).get(0)
+				.findElement(By.xpath("..")).findElement(By.xpath(".."))
+				.findElement(By.xpath("..")).findElement(By.xpath("..")).getAttribute("name"));
 		assertEquals(battlefieldCardName,
-			FunctionalTests.chromeDriver1.findElements(By.cssSelector(".magicCard")).get(1)
-				.getAttribute("name"));
+			FunctionalTests.chromeDriver1.findElements(By.cssSelector(".clickableCard")).get(0)
+				.findElement(By.xpath("..")).findElement(By.xpath(".."))
+				.findElement(By.xpath("..")).findElement(By.xpath("..")).getAttribute("name"));
 
 		// Assert that the graveyard is visible and empty
 		// assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
@@ -389,6 +420,8 @@ public class FunctionalTests
 		// By.cssSelector(".graveyard-cross-link")).isEmpty());
 
 		// Put card to hand
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector("img.drag-handle-image")));
 		draggable = FunctionalTests.chromeDriver2.findElements(
 			By.cssSelector("img.drag-handle-image")).get(0);
 		to = FunctionalTests.chromeDriver2.findElement(By.id("putToHand"));
@@ -397,41 +430,60 @@ public class FunctionalTests
 		Thread.sleep(10000);
 
 		// Assert that the hand contains 7 cards again
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".movers-row")));
 		assertEquals(7, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".movers-row"))
 			.size());
 
 		// Reveal top card of library
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
-		Thread.sleep(10000);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
+		// Thread.sleep(10000);
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
-
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("revealTopLibraryCardLinkResponsive")));
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("revealTopLibraryCardLinkResponsive")));
 		FunctionalTests.chromeDriver2.findElement(By.id("revealTopLibraryCardLinkResponsive"))
 			.click();
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
 
 		// Get top card name
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("topLibraryCard")));
 		final String topCardName = FunctionalTests.chromeDriver2.findElement(
 			By.id("topLibraryCard")).getAttribute("name");
 
 		// Verify that the card name is the same in the second browser
+		new WebDriverWait(FunctionalTests.chromeDriver1, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("topLibraryCard")));
 		assertEquals(topCardName, FunctionalTests.chromeDriver1
 			.findElement(By.id("topLibraryCard")).getAttribute("name"));
 
 		// Click on the button "Do nothing"
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("doNothing")));
 		FunctionalTests.chromeDriver2.findElement(By.id("doNothing")).click();
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
 
 		// Reveal again
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("revealTopLibraryCardLinkResponsive")));
 		FunctionalTests.chromeDriver2.findElement(By.id("revealTopLibraryCardLinkResponsive"))
 			.click();
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
 
 		// Assert that the card is the same
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("topLibraryCard")));
 		assertEquals(topCardName, FunctionalTests.chromeDriver2
 			.findElement(By.id("topLibraryCard")).getAttribute("name"));
 		assertEquals(topCardName, FunctionalTests.chromeDriver1
@@ -440,20 +492,28 @@ public class FunctionalTests
 		// Put to battlefield
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToBattlefieldFromModalWindow")));
 
 		FunctionalTests.chromeDriver2.findElement(By.id("putToBattlefieldFromModalWindow")).click();
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
 
 		// Verify that the card is present on the battlefield
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".clickableCard")));
 		assertEquals(1, FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".clickableCard")).size());
 		assertEquals(1, FunctionalTests.chromeDriver1
 			.findElements(By.cssSelector(".clickableCard")).size());
 
 		// Assert that the card on the battlefield is the same
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".clickableCard")));
 		assertEquals(topCardName,
 			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".clickableCard")).get(0)
 				.findElement(By.xpath("..")).findElement(By.xpath(".."))
@@ -466,6 +526,8 @@ public class FunctionalTests
 		// Reveal top card of library
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		FunctionalTests.chromeDriver2.findElement(By.id("revealTopLibraryCardLinkResponsive"))
 			.click();
 		Thread.sleep(10000);
@@ -473,10 +535,17 @@ public class FunctionalTests
 		// Put to hand
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		new WebDriverWait(FunctionalTests.chromeDriver1, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 
-		Thread.sleep(5000);
+
+		// Thread.sleep(5000);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToHandFromModalWindow")));
 		FunctionalTests.chromeDriver2.findElement(By.id("putToHandFromModalWindow")).click();
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
 
@@ -487,6 +556,8 @@ public class FunctionalTests
 			.size());
 
 		// Verify that there is still two cards on the battlefield
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".tap-handle-image")));
 		assertEquals(1,
 			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".tap-handle-image")).size());
 		assertEquals(1,
@@ -495,32 +566,50 @@ public class FunctionalTests
 		// Reveal again
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("revealTopLibraryCardLinkResponsive")));
 		FunctionalTests.chromeDriver2.findElement(By.id("revealTopLibraryCardLinkResponsive"))
 			.click();
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
 
 		// Get top card name
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("topLibraryCard")));
 		final String graveyardCardName = FunctionalTests.chromeDriver2.findElement(
 			By.id("topLibraryCard")).getAttribute("name");
 
 		// Put to graveyard
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
+		new WebDriverWait(FunctionalTests.chromeDriver1, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToGraveyardFromModalWindow")));
 		FunctionalTests.chromeDriver2.findElement(By.id("putToGraveyardFromModalWindow")).click();
 		FunctionalTests.chromeDriver1.findElement(By.id("doNothing")).click();
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
 
 		// Assert graveyard is visible and contains one card
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("graveyard-page-wrap")));
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
 			.isEmpty());
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".graveyard-cross-link")));
 		assertEquals(1,
 			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".graveyard-cross-link"))
 				.size());
 
 		// Verify name of the card in the graveyard
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".graveyard-cross-link")));
 		assertEquals(
 			graveyardCardName,
 			FunctionalTests.chromeDriver2
@@ -528,12 +617,16 @@ public class FunctionalTests
 				.getAttribute("name"));
 
 		// Verify that there is still one card on the battlefield
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".tap-handle-image")));
 		assertEquals(1,
 			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".tap-handle-image")).size());
 		assertEquals(1,
 			FunctionalTests.chromeDriver1.findElements(By.cssSelector(".tap-handle-image")).size());
 
 		// Verify the name of the card on the battlefield
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".clickableCard")));
 		assertEquals(topCardName,
 			FunctionalTests.chromeDriver1.findElements(By.cssSelector(".clickableCard")).get(0)
 				.findElement(By.xpath("..")).findElement(By.xpath(".."))
@@ -544,6 +637,8 @@ public class FunctionalTests
 				.findElement(By.xpath("..")).findElement(By.xpath("..")).getAttribute("name"));
 
 		// Verify that the hands contains 8 cards
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".movers-row")));
 		assertEquals(8, FunctionalTests.chromeDriver2.findElements(By.cssSelector(".movers-row"))
 			.size());
 		assertEquals(7, FunctionalTests.chromeDriver1.findElements(By.cssSelector(".movers-row"))
@@ -552,8 +647,14 @@ public class FunctionalTests
 		// Put one card from hand to graveyard
 		((JavascriptExecutor)FunctionalTests.chromeDriver2)
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_PUT_TO_ZONE_SUMBIT_BUTTON_FOR_HAND);
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("moveToZoneSubmitHand")));
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToZoneSelectForHand")));
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForHand")))
 			.getOptions().get(1).click();
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("moveToZoneSubmitHand")));
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
 		Thread.sleep(10000);
 
@@ -565,47 +666,69 @@ public class FunctionalTests
 				.size());
 
 		// Put current card from hand to exile
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToZoneSelectForHand")));
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForHand")))
 			.getOptions().get(2).click();
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("moveToZoneSubmitHand")));
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
 
 		// Verify that there is one more card in the exile and that it is
 		// visible
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("exile-page-wrap")));
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("exile-page-wrap")).isEmpty());
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".exile-cross-link")));
 		assertEquals(1,
 			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".exile-cross-link")).size());
 
 		// Put current card in exile to graveyard
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToZoneSelectForExile")));
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForExile")))
 			.getOptions().get(1).click();
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("moveToZoneSubmitExile")));
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitExile")).click();
 		Thread.sleep(10000);
 
 		// Verify that there is one more card in the graveyard
-		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("graveyard-page-wrap"))
-			.isEmpty());
 		assertEquals(3,
-			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".graveyard-cross-link"))
+			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".graveyard-nav-thumb"))
 				.size());
 
 		// Get name of the current card in the hand
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".cross-link")));
 		final String handCardName = FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".cross-link:nth-child(1) img")).get(0)
 			.getAttribute("name");
 
 		// Put current card from hand to exile
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToZoneSelectForHand")));
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForHand")))
 			.getOptions().get(2).click();
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("moveToZoneSubmitHand")));
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitHand")).click();
-		Thread.sleep(10000);
+		// Thread.sleep(10000);
 
 		// Verify that there is one more card in the exile
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.id("exile-page-wrap")));
 		assertFalse(FunctionalTests.chromeDriver2.findElements(By.id("exile-page-wrap")).isEmpty());
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".exile-cross-link")));
 		assertEquals(1,
 			FunctionalTests.chromeDriver2.findElements(By.cssSelector(".exile-cross-link")).size());
 
 		// Get name of the current card in the exile
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.presenceOfElementLocated(By.cssSelector(".exile-cross-link")));
 		final String exileCardName = FunctionalTests.chromeDriver2
 			.findElements(By.cssSelector(".exile-cross-link:nth-child(1) img")).get(0)
 			.getAttribute("name");
@@ -614,8 +737,12 @@ public class FunctionalTests
 		assertEquals(handCardName, exileCardName);
 
 		// Put card from exile to battlefield
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("putToZoneSelectForExile")));
 		new Select(FunctionalTests.chromeDriver2.findElement(By.id("putToZoneSelectForExile")))
 			.getOptions().get(0).click();
+		new WebDriverWait(FunctionalTests.chromeDriver2, 10).until(ExpectedConditions
+			.elementToBeClickable(By.id("moveToZoneSubmitExile")));
 		FunctionalTests.chromeDriver2.findElement(By.id("moveToZoneSubmitExile")).click();
 		Thread.sleep(10000);
 
