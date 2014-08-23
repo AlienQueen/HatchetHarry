@@ -598,7 +598,7 @@ public class PersistenceService implements Serializable
 			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.LIBRARY.toString());
+		query.setString("zoneName", CardZone.LIBRARY.toString().toUpperCase());
 		query.setLong("playerId", playerId);
 		query.setLong("deckId", deckId);
 
@@ -755,6 +755,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = " Hibernate returns ArrayList, for the moment at least")
 	public ArrayList<Deck> getAllDecksFromDeckArchives()
 	{
 		final Session session = this.deckDao.getSession();

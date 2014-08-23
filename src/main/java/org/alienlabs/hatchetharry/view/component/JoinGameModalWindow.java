@@ -250,8 +250,6 @@ public class JoinGameModalWindow extends Panel
 				players.add(JoinGameModalWindow.this.player);
 				game.setPlayers(players);
 
-				HatchetHarrySession.get().setPlayer(JoinGameModalWindow.this.player);
-
 				if (JoinGameModalWindow.this.player.isHandDisplayed())
 				{
 					JavaScriptUtils.updateHand(target);

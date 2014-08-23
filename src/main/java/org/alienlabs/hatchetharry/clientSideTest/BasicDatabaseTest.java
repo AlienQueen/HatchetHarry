@@ -51,7 +51,6 @@ public class BasicDatabaseTest implements Serializable
 	private SideDao sideDao;
 
 	@BeforeClass
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "No choice as @BeforeClass is static and HatchetHarryApplication isn't")
 	public static void setUpBeforeClass()
 	{
 		BasicDatabaseTest.webApp = new HatchetHarryApplication()
@@ -59,6 +58,7 @@ public class BasicDatabaseTest implements Serializable
 			private static final long serialVersionUID = 1L;
 
 			@Override
+			@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "No choice as @BeforeClass is static and HatchetHarryApplication isn't")
 			public void init()
 			{
 				BasicDatabaseTest.context = BasicDatabaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;

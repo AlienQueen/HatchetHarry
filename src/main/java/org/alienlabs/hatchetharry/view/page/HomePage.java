@@ -1705,15 +1705,15 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				if (allCardsInLibrary.isEmpty())
-				{
-					return;
-				}
-
 				final List<MagicCard> _allCardsInLibrary = HomePage.this.persistenceService
 					.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
 						HomePage.this.session.getPlayer().getId(), HomePage.this.session
 							.getPlayer().getDeck().getDeckId());
+				if (_allCardsInLibrary.isEmpty())
+				{
+					return;
+				}
+
 				final MagicCard _firstCard = _allCardsInLibrary.get(HomePage.this.session
 					.getTopCardIndex().intValue());
 				final String topCardName = _firstCard.getBigImageFilename();
@@ -3019,9 +3019,9 @@ public class HomePage extends TestReportPage
 				{
 					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " hidden");
 					js.append("jQuery('#bullet" + uuidValidForJs + "').hide(); ");
-	}
+				}
 				else
-				{
+	{
 					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " shown");
 					js.append("jQuery('#bullet" + uuidValidForJs + "').show(); ");
 				}
