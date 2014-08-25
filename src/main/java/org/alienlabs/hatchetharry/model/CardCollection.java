@@ -2,10 +2,7 @@ package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -25,7 +22,8 @@ public class CardCollection implements Serializable
 
 	@Id
 	private String id;
-
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column
 	private String lang, name, altart, cost, color, type;
 	@Column(length = 1024)
@@ -252,4 +250,13 @@ public class CardCollection implements Serializable
 	{
 		this.rulings = _rulings;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
+
 }

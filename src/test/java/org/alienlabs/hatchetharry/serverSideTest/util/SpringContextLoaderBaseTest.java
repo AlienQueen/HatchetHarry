@@ -20,35 +20,34 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringContextLoaderBaseTest
 {
-	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+	public ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 		new String[] { "applicationContext.xml", "applicationContextTest.xml" });
-	public static transient ApplicationContext context;
-	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
-	protected static String pageDocument;
-	protected static PersistenceService persistenceService;
-	protected static AtmosphereTester waTester;
+	public transient ApplicationContext context;
+	protected transient WicketTester tester;
+	protected HatchetHarryApplication webApp;
+	protected String pageDocument;
+	protected PersistenceService persistenceService;
+	protected AtmosphereTester waTester;
 
-	@BeforeClass
-	public static void setUpBeforeClassWithMocks() throws IOException
+	@Before
+	public void setUpBeforeClassWithMocks() throws IOException
 	{
 		// Init the EventBus
-		SpringContextLoaderBaseTest.webApp = new HatchetHarryApplication()
+		this.webApp = new HatchetHarryApplication()
 		{
 			@Override
 			public void init()
 			{
-				SpringContextLoaderBaseTest.context = SpringContextLoaderBaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
+				SpringContextLoaderBaseTest.this.context = SpringContextLoaderBaseTest.this.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-					new SpringComponentInjector(this, SpringContextLoaderBaseTest.context, true));
+					new SpringComponentInjector(this, SpringContextLoaderBaseTest.this.context,
+						true));
 
 				this.eventBus = new EventBus(this);
 				this.eventBus.addRegistrationListener(this);
@@ -59,73 +58,71 @@ public class SpringContextLoaderBaseTest
 				this.getDebugSettings().setOutputComponentPath(true);
 			}
 		};
-		SpringContextLoaderBaseTest.tester = new WicketTester(SpringContextLoaderBaseTest.webApp);
-		SpringContextLoaderBaseTest.persistenceService = SpringContextLoaderBaseTest.context
-			.getBean(PersistenceService.class);
+		this.tester = new WicketTester(this.webApp);
+		this.persistenceService = this.context.getBean(PersistenceService.class);
 
 		// start and render the test page
 		final PageParameters pp = new PageParameters();
 		pp.add("test", "test");
-		SpringContextLoaderBaseTest.waTester = new AtmosphereTester(
-			SpringContextLoaderBaseTest.tester, new HomePage(pp));
+		this.waTester = new AtmosphereTester(this.tester, new HomePage(pp));
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass()
+	@After
+	public void tearDownAfterClass()
 	{
-		SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
+		// SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
+		HatchetHarrySession.get().reinitSession();
 	}
 
-	public static Long startAGameAndPlayACard()
+	public Long startAGameAndPlayACard()
 	{
 		// Create game
-		SpringContextLoaderBaseTest.tester.assertComponent("createGameLink", AjaxLink.class);
-		SpringContextLoaderBaseTest.tester.clickLink("createGameLink", true);
+		this.tester.assertComponent("createGameLink", AjaxLink.class);
+		this.tester.clickLink("createGameLink", true);
 
-		final FormTester createGameForm = SpringContextLoaderBaseTest.tester
+		final FormTester createGameForm = this.tester
 			.newFormTester("createGameWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "0");
 		createGameForm.setValue("deckParent:decks", "0");
 		createGameForm.submit();
 
-		Player p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
+		Player p = this.persistenceService.getAllPlayersOfGame(
 			HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 
 		// Retrieve PlayCardFromHandBehavior
-		SpringContextLoaderBaseTest.tester
-			.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
+		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
+		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
 			.getComponentFromLastRenderedPage("playCardLink");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 			.getBehaviors().get(0);
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
+		final List<MagicCard> allCardsInBattlefield = this.persistenceService
 			.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		this.tester.getRequest().setParameter("card",
 			HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
-		// SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		this.tester.executeBehavior(pcfhb);
+		// this.tester.assertRenderedPage(HomePage.class);
 		// We still should not have more cards that the number of cards in the
 		// deck
-		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
-			HatchetHarrySession.get().getGameId()).get(0);
+		p = this.persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId()).get(
+			0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 		return gameId;
 	}
 
-	public static void newHomePage() throws IOException
+    public void newHomePage() throws IOException
 	{
 		final PageParameters pp = new PageParameters();
 		pp.add("test", "test");
-		SpringContextLoaderBaseTest.tester.startPage(new HomePage(pp));
+		this.tester.startPage(new HomePage(pp));
 	}
 }

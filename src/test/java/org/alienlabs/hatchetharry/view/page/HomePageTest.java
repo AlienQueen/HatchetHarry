@@ -324,7 +324,7 @@ public class HomePageTest
 	@Ignore
 	public void testGenerateDrawCardLink()
 	{
-		SpringContextLoaderBaseTest.startAGameAndPlayACard();
+		// this.startAGameAndPlayACard();
 
 		final PersistenceService persistenceService = HomePageTest.context
 			.getBean(PersistenceService.class);

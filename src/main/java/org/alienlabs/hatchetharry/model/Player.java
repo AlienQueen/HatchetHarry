@@ -8,7 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Player", indexes = { @Index(columnList = "Player_Side"), @Index(columnList = "deck") })
+@Table(name = "Player")//, indexes = { @Index(columnList = "Player_Side"), @Index(columnList = "deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Player implements Serializable
@@ -18,7 +18,9 @@ public class Player implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long playerId;
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Column(name="VERSION", length=20)
+    private String version;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity=Game.class)
 	private Game game = new Game();
 	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "Player_Side")
@@ -29,7 +31,7 @@ public class Player implements Serializable
 	private String jsessionid;
 	@Column
 	private Long lifePoints;
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Deck.class)
 	@JoinColumn(name = "deck")
 	private Deck deck;
 	@Column
@@ -186,6 +188,14 @@ public class Player implements Serializable
 	{
 		this.sideUuid = _sideUuid;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 	@Override
 	public int hashCode()

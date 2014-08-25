@@ -11,20 +11,13 @@ package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "DeckArchive", indexes = { @Index(columnList = "deckName") })
+@Table(name = "DeckArchive")//, indexes = { @Index(columnList = "deckName") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DeckArchive implements Serializable
@@ -35,6 +28,8 @@ public class DeckArchive implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckArchiveId")
 	private Long deckArchiveId;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column
 	private String deckName;
 
@@ -57,6 +52,14 @@ public class DeckArchive implements Serializable
 	{
 		this.deckName = _deckName;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 	@Override
 	public String toString()

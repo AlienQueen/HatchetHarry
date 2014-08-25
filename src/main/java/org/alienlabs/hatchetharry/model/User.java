@@ -2,13 +2,7 @@ package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -25,12 +19,14 @@ public class User implements Serializable
 
 	@Id
 	private String username;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column
 	private String login;
 	@Column
 	private String privateIdentity;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE })
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Player.class)
+	@Cascade(CascadeType.ALL)
 	private Player player;
 	@Column
 	private String identity;
@@ -125,4 +121,11 @@ public class User implements Serializable
 		this.privateIdentity = _privateIdentity;
 	}
 
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 }

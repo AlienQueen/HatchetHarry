@@ -19,6 +19,8 @@ public class ConsoleLogMessage implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column(name = "gameId")
 	private Long gameId;
 	@Column(name = "message")
@@ -53,5 +55,13 @@ public class ConsoleLogMessage implements Serializable
 	{
 		this.message = _message;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 }

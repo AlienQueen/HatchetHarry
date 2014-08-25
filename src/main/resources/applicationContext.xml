@@ -129,8 +129,9 @@
         <property name="hibernateProperties">
             <props>
                 <!--  create-drop= provide database model at start-up by dropping tables, update= no start-up data model modification -->
-                <prop key="hibernate.hbm2ddl.auto">udpate</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect </prop>
                 <prop key="jdbc.driverClassName">org.mariadb.jdbc.Driver</prop>
                 <prop key="jdbc.url">jdbc:mysql://localhost:3306/hh</prop>
                 <prop key="jdbc.username">less</prop>
@@ -295,6 +296,7 @@
         <property name="cardCollectionDao" ref="cardCollectionDao"/>
         <property name="generateCardCollection" value="false"/>
         <property name="generateData" value="true"/>
+        <property name="importDeckService" ref="importDeckService"/>
         <property name="persistenceService" ref="persistenceService"/>
     </bean>
     <bean id="runtimeDataGenerator" class="org.alienlabs.hatchetharry.service.RuntimeDataGenerator">

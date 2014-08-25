@@ -13,20 +13,14 @@ package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-@Table(name = "CollectibleCard", indexes = { @Index(columnList = "title"),
-		@Index(columnList = "deckArchiveId") })
+@Table(name = "CollectibleCard")
+// , indexes = { @Index(columnList = "title"),
+// @Index(columnList = "deckArchiveId") })
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -37,6 +31,8 @@ public class CollectibleCard implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(name = "VERSION", length = 20)
+	private String version;
 	@Column
 	private String title;
 	@Column
@@ -70,6 +66,16 @@ public class CollectibleCard implements Serializable
 	public void setDeckArchiveId(final Long _deckArchiveId)
 	{
 		this.deckArchiveId = _deckArchiveId;
+	}
+
+	public String getVersion()
+	{
+		return this.version;
+	}
+
+	public void setVersion(String _version)
+	{
+		this.version = _version;
 	}
 
 }

@@ -20,7 +20,9 @@ public class Game implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long gameId;
-	@OneToMany(fetch = FetchType.EAGER)
+    @Column(name="VERSION", length=20)
+    private String version;
+    @OneToMany(fetch = FetchType.EAGER, targetEntity=Player.class)
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
 	private Set<Player> players = new HashSet<Player>();
 	@Column
@@ -68,6 +70,14 @@ public class Game implements Serializable
 	{
 		this.isDrawMode = drawMode;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 	@Override
 	public int hashCode()

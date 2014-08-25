@@ -95,6 +95,7 @@ import org.alienlabs.hatchetharry.model.channel.UpdateTokenPanelCometChannel;
 import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
+import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
@@ -195,10 +196,14 @@ public class HomePage extends TestReportPage
 	private final WebMarkupContainer conferenceParent;
 	private final ModalWindow mulliganWindow;
 	private final ModalWindow askMulliganWindow;
+
 	@SpringBean
 	public PersistenceService persistenceService;
 	@SpringBean
 	RuntimeDataGenerator runtimeDataGenerator;
+	@SpringBean
+	DataGenerator dataGenerator;
+
 	ModalWindow teamInfoWindow;
 	ModalWindow aboutWindow;
 	ModalWindow teamInfoWindowResponsive;
@@ -694,7 +699,7 @@ public class HomePage extends TestReportPage
 				}
 
 				_player.setHandDisplayed(!isHandDisplayed);
-				HomePage.this.persistenceService.mergePlayer(_player);
+				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 		};
 
@@ -773,7 +778,7 @@ public class HomePage extends TestReportPage
 				{
 					_player.setGraveyardDisplayed(true);
 				}
-				HomePage.this.persistenceService.mergePlayer(_player);
+				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
 			@Override
@@ -828,7 +833,7 @@ public class HomePage extends TestReportPage
 					_player.setExileDisplayed(true);
 				}
 
-				HomePage.this.persistenceService.mergePlayer(_player);
+				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
 			@Override
@@ -1103,15 +1108,21 @@ public class HomePage extends TestReportPage
 
 		this.session.setPlayerHasBeenCreated();
 
-		// Import example decks
-		this.runtimeDataGenerator.generateData(game.getId(), p.getId());
-
 		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
+        p.setDeck(this.deck);
+		List<MagicCard> mc = this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId());
+
+		for (MagicCard card : mc)
+		{
+			card.setGameId(game.getId());
+		}
+		this.persistenceService.saveOrUpdateAllMagicCards(mc);
+
 		this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
 		this.deck.setPlayerId(p.getId());
 
 		p.setDeck(this.deck);
-		this.persistenceService.mergePlayer(p);
+		this.persistenceService.updatePlayer(p);
 		this.session.setGameId(game.getId());
 
 		this.session.setPlayer(p);
@@ -1355,7 +1366,7 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "script/jquery.jsPlumb-1.5.3-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-                        HomePage.class, "script/tour/bootstrap-tour-standalone.min.js")));
+					HomePage.class, "script/tour/bootstrap-tour-standalone.min.js")));
 
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "stylesheet/jMenu.jquery.css")));
@@ -1390,7 +1401,7 @@ public class HomePage extends TestReportPage
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "stylesheet/qunit-1.12.0.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-                        HomePage.class, "stylesheet/bootstrap-tour-standalone.min.css")));
+					HomePage.class, "stylesheet/bootstrap-tour-standalone.min.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 					HomePage.class, "stylesheet/myStyle.css")));
 
@@ -1449,41 +1460,43 @@ public class HomePage extends TestReportPage
 
 	private List<MagicCard> createFirstCards()
 	{
-		if (this.session.isPlayerCreated())
+		// if (this.session.isPlayerCreated())
+		// {
+		// this.player = this.session.getPlayer();
+		// this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
+		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
+		// if (this.deck == null)
+		// {
+		// this.deck = this.persistenceService.getDeck(1l);
+		// this.player.setDeck(this.deck);
+		// }
+		this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
+		System.out.println("### " + deck.getCards().size());
+		final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+
+		// if (!this.session.isHandCardsHaveBeenBuilt())
+		// {
+		this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
+		// }
+
+		for (int i = 0; i < 7; i++)
 		{
-			this.player = this.session.getPlayer();
-			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
-			if (this.deck == null)
-			{
-				this.deck = this.persistenceService.getDeck(1l);
-				this.player.setDeck(this.deck);
-			}
-			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
-			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+			final MagicCard mc = this.deck.getCards().get(i);
+			mc.setZone(CardZone.HAND);
+			mc.setGameId(this.session.getPlayer().getGame().getId());
+			this.persistenceService.updateCard(mc);
 
-			// if (!this.session.isHandCardsHaveBeenBuilt())
-			// {
-			this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
-			// }
-
-			for (int i = 0; i < 7; i++)
-			{
-				final MagicCard mc = this.deck.getCards().get(i);
-				mc.setZone(CardZone.HAND);
-				mc.setGameId(this.session.getPlayer().getGame().getId());
-				this.persistenceService.updateCard(mc);
-
-				cards.add(i, mc);
-			}
-
-			this.session.setFirstCardsInHand(cards);
-			this.session.setHandHasBeenCreated();
-
-			this.hand = cards;
-			return cards;
+			cards.add(i, mc);
 		}
 
-		return new ArrayList<MagicCard>();
+		this.session.setFirstCardsInHand(cards);
+		this.session.setHandHasBeenCreated();
+
+		this.hand = cards;
+		return cards;
+		// }
+
+		// return new ArrayList<MagicCard>();
 	}
 
 	private ModalWindow generateAboutLink(final String id, final ModalWindow window)
@@ -1871,7 +1884,7 @@ public class HomePage extends TestReportPage
 					playerWhoDiscards.getDeck().getCards().clear();
 				}
 
-				HomePage.this.persistenceService.mergePlayer(playerWhoDiscards);
+				HomePage.this.persistenceService.updatePlayer(playerWhoDiscards);
 				HomePage.this.persistenceService
 					.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
 
@@ -3058,6 +3071,12 @@ public class HomePage extends TestReportPage
 	public void setRuntimeDataGenerator(final RuntimeDataGenerator _runtimeDataGenerator)
 	{
 		this.runtimeDataGenerator = _runtimeDataGenerator;
+	}
+
+	@Required
+	public void setDataGenerator(final DataGenerator _dataGenerator)
+	{
+		this.dataGenerator = _dataGenerator;
 	}
 
 	public WebMarkupContainer getFirstSidePlaceholderParent()

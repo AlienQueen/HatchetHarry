@@ -90,7 +90,7 @@ public class PersistenceService implements Serializable
 		return c;
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public MagicCard saveCardByGeneratingItsUuid(final MagicCard _c, final long gameId)
 	{
 		final MagicCard c = _c;
@@ -104,14 +104,15 @@ public class PersistenceService implements Serializable
 		return c;
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void saveCard(final MagicCard c)
 	{
-		this.deckDao.getSession().save(c.getDeck());
-		this.magicCardDao.getSession().save(c);
+		this.deckDao.save(c.getDeck());
+		this.magicCardDao.save(c);
+
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public MagicCard saveOrUpdateCardAndDeck(final MagicCard c)
 	{
 		final MagicCard res;
@@ -130,13 +131,13 @@ public class PersistenceService implements Serializable
 		return res;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveToken(final Token t)
 	{
 		this.tokenDao.getSession().save(t);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveOrUpdateAllMagicCards(final List<MagicCard> allMagicCards)
 	{
 		for (final MagicCard card : allMagicCards)
@@ -145,7 +146,7 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void updateAllMagicCards(final List<MagicCard> allMagicCards)
 	{
 		for (final MagicCard card : allMagicCards)
@@ -154,19 +155,19 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void updateCard(final MagicCard c)
 	{
 		this.magicCardDao.getSession().merge(c);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void updateToken(final Token t)
 	{
 		this.tokenDao.getSession().update(t);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void deleteCardAndToken(final MagicCard c)
 	{
 		final Token token = c.getToken();
@@ -296,42 +297,50 @@ public class PersistenceService implements Serializable
 		return (mc == null ? null : (Player)mc);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void mergePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
 		session.merge(p);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void updatePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
 		session.update(p);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public void savePlayer(final Player p)
+	{
+		this.deckDao.getSession().saveOrUpdate(p.getDeck());
+		final Session session = this.playerDao.getSession();
+		session.save(p);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void updateSide(final Side s)
 	{
 		final Session session = this.sideDao.getSession();
 		session.merge(s);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveOrUpdateCounter(final Counter c)
 	{
 		final Session session = this.counterDao.getSession();
 		session.saveOrUpdate(c);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveGame(final Game g)
 	{
 		final Session session = this.gameDao.getSession();
 		session.save(g);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void updateGame(final Game g)
 	{
 		this.gameDao.getSession().update(g);
@@ -412,21 +421,21 @@ public class PersistenceService implements Serializable
 		return query.list().size();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void updateDeck(final Deck d)
 	{
 		final Session deckSession = this.deckDao.getSession();
 		deckSession.update(d);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveOrUpdateDeck(final Deck d)
 	{
 		final Session session = this.deckDao.getSession();
 		session.merge(d);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Deck saveDeck(final Deck d)
 	{
 		final Session cardSession = this.magicCardDao.getSession();
@@ -441,7 +450,7 @@ public class PersistenceService implements Serializable
 		return d;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Deck saveDeckOrUpdate(final Deck d)
 	{
 		final Session cardSession = this.magicCardDao.getSession();
@@ -456,14 +465,14 @@ public class PersistenceService implements Serializable
 		return d;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Side saveSide(final Side s)
 	{
 		this.sideDao.getSession().save(s);
 		return s;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveSides(final Set<Side> sides)
 	{
 		for (final Side s : sides)
@@ -497,7 +506,15 @@ public class PersistenceService implements Serializable
 		final Query query = session
 			.createQuery("from Player player0_ where player0_.game = :game ");
 		query.setLong("game", l);
-		return query.list();
+
+		List<Player> all = query.list();
+		for (Player p : all)
+		{
+			List<MagicCard> cards = this.getAllCardsFromDeck(p.getDeck().getDeckId());
+			p.getDeck().setCards(cards);
+		}
+
+		return all;
 	}
 
 	// Isolation level chosen to be consistent with
@@ -549,7 +566,13 @@ public class PersistenceService implements Serializable
 		final Query query = session.createQuery("from Deck deck0_ where deck0_.deckId=:id");
 		query.setLong("id", deckId);
 		query.setMaxResults(1);
-		return (Deck)query.uniqueResult();
+
+		Deck deck = (Deck)query.uniqueResult();
+
+		List<MagicCard> cards = this.getAllCardsFromDeck(deck.getDeckId());
+		deck.setCards(cards);
+
+		return deck;
 	}
 
 	@Transactional(readOnly = true)
@@ -562,7 +585,13 @@ public class PersistenceService implements Serializable
 		query.addEntity(Deck.class);
 		query.setString("deckArchiveName", deckArchiveName);
 		query.setMaxResults(1);
-		return (Deck)query.uniqueResult();
+
+		Deck deck = (Deck)query.uniqueResult();
+
+		List<MagicCard> cards = this.getAllCardsFromDeck(deck.getDeckId());
+		deck.setCards(cards);
+
+		return deck;
 	}
 
 	@Transactional(readOnly = true)
@@ -611,13 +640,13 @@ public class PersistenceService implements Serializable
 		return list;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveCollectibleCard(final CollectibleCard cc)
 	{
 		this.collectibleCardDao.getSession().save(cc);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public DeckArchive saveDeckArchive(final DeckArchive da)
 	{
 		final Session session = this.deckArchiveDao.getSession();
@@ -636,7 +665,7 @@ public class PersistenceService implements Serializable
 		return da;
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public DeckArchive updateDeckArchive(final DeckArchive da)
 	{
 		final Session session = this.deckArchiveDao.getSession();
@@ -763,7 +792,7 @@ public class PersistenceService implements Serializable
 		return (ArrayList<Deck>)query.list();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Game createGameAndPlayer(final Game game, final Player player)
 	{
 		final Set<Player> set = game.getPlayers();
@@ -1125,17 +1154,18 @@ public class PersistenceService implements Serializable
 		session.createSQLQuery("delete from Counter").executeUpdate();
 		session.createSQLQuery("delete from MagicCard").executeUpdate();
 		session.createSQLQuery("delete from Token").executeUpdate();
-		session.createSQLQuery("delete from Player").executeUpdate();
-		session.createSQLQuery("delete from Game").executeUpdate();
-		session.createSQLQuery("delete from Side").executeUpdate();
 		session.createSQLQuery("delete from Counter").executeUpdate();
-		session.createSQLQuery("delete from Deck").executeUpdate();
-		session.createSQLQuery("delete from DeckArchive").executeUpdate();
 		session.createSQLQuery("delete from CollectibleCard").executeUpdate();
 		session.createSQLQuery("delete from Arrow").executeUpdate();
 		session.createSQLQuery("delete from CardCollection").executeUpdate();
 		session.createSQLQuery("delete from ChatMessage").executeUpdate();
 		session.createSQLQuery("delete from ConsoleLogMessage").executeUpdate();
+		session.createSQLQuery("delete from User").executeUpdate();
+		session.createSQLQuery("delete from Player").executeUpdate();
+		session.createSQLQuery("delete from Deck").executeUpdate();
+		session.createSQLQuery("delete from DeckArchive").executeUpdate();
+		session.createSQLQuery("delete from Side").executeUpdate();
+		session.createSQLQuery("delete from Game").executeUpdate();
 	}
 
 	@Transactional(readOnly = true)
@@ -1155,7 +1185,7 @@ public class PersistenceService implements Serializable
 	}
 
 	// The counter is deleted by cascade
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void deleteCounter(final Counter counter, final MagicCard card, final Token token)
 	{
 		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty()))
@@ -1183,14 +1213,14 @@ public class PersistenceService implements Serializable
 		query.executeUpdate();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveOrUpdateArrow(final Arrow arrow)
 	{
 		this.arrowDao.getSession().saveOrUpdate(arrow);
 	}
 
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void deleteArrow(final Arrow arrow)
 	{
 		this.arrowDao.getSession().delete(arrow);
@@ -1207,7 +1237,7 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void deleteAllArrowsForAGame(final Long gameId)
 	{
 		final List<Arrow> allArrows = this.loadAllArrowsForAGame(gameId);
@@ -1219,7 +1249,7 @@ public class PersistenceService implements Serializable
 		}
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveMessageWithoutDuplicate(final ConsoleLogMessage consoleLogMessage)
 	{
 		if ((consoleLogMessage.getGameId() != null) && (consoleLogMessage.getMessage() != null))
@@ -1239,7 +1269,7 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void deleteAllMessagesForAGame(final Long gameId)
 	{
 		final List<ConsoleLogMessage> allMessages = this.loadAllConsoleLogMessagesForAGame(gameId);
@@ -1257,14 +1287,14 @@ public class PersistenceService implements Serializable
 		return this.userDao.load(username);
 	}
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveOrUpdateUser(final User user)
 	{
 		this.userDao.getSession().saveOrUpdate(user);
 	}
 
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveChatMessage(final ChatMessage msg)
 	{
 		this.chatMessageDao.save(msg);

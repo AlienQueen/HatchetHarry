@@ -134,6 +134,8 @@ public class CreateGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+                CreateGameModalWindow.LOGGER.info("CreateGameModalWindow");
+
 				if ((null == CreateGameModalWindow.this.nameInput.getModelObject())
 					|| ("".equals(CreateGameModalWindow.this.nameInput.getModelObject().trim()))
 					|| (null == CreateGameModalWindow.this.decks.getModelObject())
@@ -203,7 +205,7 @@ public class CreateGameModalWindow extends Panel
 					firstCards.add(aCard);
 				}
 
-				CreateGameModalWindow.this.persistenceService.saveDeckOrUpdate(deck);
+				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 					+ ", deckId: " + deck.getDeckId());
 
@@ -271,7 +273,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setSideUuid(s.getUuid());
 				CreateGameModalWindow.this.persistenceService.updateSide(s);
 				CreateGameModalWindow.this.persistenceService
-					.mergePlayer(CreateGameModalWindow.this.player);
+					.updatePlayer(CreateGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 					CreateGameModalWindow.this.player);

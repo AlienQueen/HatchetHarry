@@ -13,4 +13,4 @@
 - For the error messages "Deadlock found when trying to get lock; try restarting transaction" or equivalent:
 
     + there's a parameter to provide to MySQL / MariaDB: http://dba.stackexchange.com/questions/58459/mysql-error-impossible-to-write-to-binary-log      http://www.yellowfinbi.com/YFForum-Time-out-Error-BINLOG-FORMAT-in-log-file-?thread=105422
-    + and an annotation to provide to the problematic method of the PersistenceService: @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation=Isolation.READ_UNCOMMITTED) (http://stackoverflow.com/questions/7947582/spring-transactional-deadlock)
+    + and an annotation to provide to the problematic method of the PersistenceService: @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation=Isolation.SERIALIZABLEa) (http://stackoverflow.com/questions/7947582/spring-transactional-deadlock)

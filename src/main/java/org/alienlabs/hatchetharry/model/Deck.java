@@ -16,26 +16,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Deck", indexes = { @Index(columnList = "Deck_DeckArchive"),
-		@Index(columnList = "playerId") })
+@Table(name = "Deck")
+// , indexes = { @Index(columnList = "Deck_DeckArchive"),
+// @Index(columnList = "playerId") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Deck implements Serializable
@@ -46,12 +35,14 @@ public class Deck implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckId")
 	private Long deckId;
+	@Column(name = "VERSION", length = 20)
+	private String version;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "Deck_DeckArchive")
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
 	private Long playerId;
-	@OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, targetEntity = MagicCard.class)
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
 	/**
@@ -158,6 +149,16 @@ public class Deck implements Serializable
 	public void setCards(final List<MagicCard> _cards)
 	{
 		this.cards = _cards;
+	}
+
+	public String getVersion()
+	{
+		return this.version;
+	}
+
+	public void setVersion(String _version)
+	{
+		this.version = _version;
 	}
 
 	@Override

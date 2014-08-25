@@ -1,14 +1,13 @@
 package org.alienlabs.hatchetharry.model;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 @Entity
-@Table(name = "ChatMessage", indexes = { @Index(columnList = "gameId") })
+@Table(name = "ChatMessage")//, indexes = { @Index(columnList = "gameId") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ChatMessage implements Serializable
@@ -18,6 +17,8 @@ public class ChatMessage implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column(name = "gameId")
 	private Long gameId;
 	@Column(name = "message")
@@ -52,5 +53,13 @@ public class ChatMessage implements Serializable
 	{
 		this.message = _message;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 }

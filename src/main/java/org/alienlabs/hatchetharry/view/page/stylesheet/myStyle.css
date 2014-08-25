@@ -173,13 +173,22 @@ a, a:visited {
 }
 
 .cloak {
-    display: none;
+    visibility: hidden;
     background: white;
 }
 
 .myfont {
     font-family: 'Black Ops One', cursive;
     color: gray;
+}
+
+.loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -128px;
+    visibility: visible !important;
 }
 
 .popover-content, .popover-title,

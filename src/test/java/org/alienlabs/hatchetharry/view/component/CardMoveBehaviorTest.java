@@ -20,13 +20,13 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard();
 
 		// Retrieve the card and the CardMoveBehavior
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		super.tester.startPage(HomePage.class);
+		super.tester.assertRenderedPage(HomePage.class);
 
-		SpringContextLoaderBaseTest.tester.assertComponent(
+		super.tester.assertComponent(
 			"parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton",
 			WebMarkupContainer.class);
-		final WebMarkupContainer button = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
+		final WebMarkupContainer button = (WebMarkupContainer)super.tester
 			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(button);
 		@SuppressWarnings("unchecked")
@@ -45,24 +45,24 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		Assert.assertNotNull(cmb);
 
 		// Move the card
-		SpringContextLoaderBaseTest.tester.assertComponent(
+		super.tester.assertComponent(
 			"parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
-		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
+		final CardPanel card = (CardPanel)super.tester
 			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
 
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		super.tester.getRequest().setParameter("card",
 			card.getUuid().toString());
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posX", "128.36");
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("posY", "821.63");
-		SpringContextLoaderBaseTest.tester.executeBehavior(cmb);
+		super.tester.getRequest().setParameter("posX", "128.36");
+		super.tester.getRequest().setParameter("posY", "821.63");
+		super.tester.executeBehavior(cmb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		super.tester.startPage(HomePage.class);
+		super.tester.assertRenderedPage(HomePage.class);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
+		final List<MagicCard> allCardsInBattlefield = super.persistenceService
 			.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 

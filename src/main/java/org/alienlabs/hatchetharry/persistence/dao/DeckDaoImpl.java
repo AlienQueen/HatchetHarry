@@ -26,6 +26,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -90,7 +91,7 @@ public class DeckDaoImpl implements DeckDao
 	 * @return persistent instance of Deck
 	 */
 	@Override
-	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public Deck save(final Deck Deck)
 	{
 		return (Deck)this.getSession().merge(Deck);

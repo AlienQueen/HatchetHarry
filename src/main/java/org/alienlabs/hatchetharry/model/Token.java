@@ -4,26 +4,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Token", indexes = { @Index(columnList = "uuid"), @Index(columnList = "Player_Token") })
+@Table(name = "Token")//, indexes = { @Index(columnList = "uuid"), @Index(columnList = "Player_Token") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Token implements Serializable
@@ -34,6 +21,8 @@ public class Token implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tokenId")
 	private Long id;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column
 	private String type;
 	@Column
@@ -54,7 +43,7 @@ public class Token implements Serializable
 	private Long y = -1l; // y coordinate
 	@Column
 	private boolean tapped = false;
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, targetEntity=Counter.class)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
 	private Set<Counter> counters = new HashSet<Counter>();
 	@OneToOne(cascade = { CascadeType.MERGE })
@@ -232,4 +221,13 @@ public class Token implements Serializable
 	{
 		this.creatureTypes = _creatureTypes;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
+
 }

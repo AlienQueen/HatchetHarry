@@ -15,16 +15,16 @@ import org.junit.Test;
 public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 {
 
-	private static void clickOnCardHandle(final CardRotateBehavior _crb, final MagicCard _mc)
+	private void clickOnCardHandle(final CardRotateBehavior _crb, final MagicCard _mc)
 	{
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("uuid",
+		super.tester.getRequest().setParameter("uuid",
 			_mc.getUuid().toString());
-		SpringContextLoaderBaseTest.tester.executeBehavior(_crb);
+		super.tester.executeBehavior(_crb);
 	}
 
-	private static MagicCard giveMagicCard()
+	private MagicCard giveMagicCard()
 	{
-		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
+		final PersistenceService persistenceService = super.context
 			.getBean(PersistenceService.class);
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = persistenceService
@@ -42,13 +42,13 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard();
 
 		// Retrieve the card and the CardMoveBehavior
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		super.tester.startPage(HomePage.class);
+		super.tester.assertRenderedPage(HomePage.class);
 
-		SpringContextLoaderBaseTest.tester.assertComponent(
+		super.tester.assertComponent(
 			"parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton",
 			WebMarkupContainer.class);
-		final WebMarkupContainer button = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
+		final WebMarkupContainer button = (WebMarkupContainer)super.tester
 			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(button);
 		@SuppressWarnings("unchecked")
@@ -67,22 +67,22 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		Assert.assertNotNull(crb);
 
 		// Card default state
-		MagicCard mc = CardRotateBehaviorTest.giveMagicCard();
+		MagicCard mc = this.giveMagicCard();
 		Assert.assertFalse(mc.isTapped());
 
 		// Rotate the card
-		CardRotateBehaviorTest.clickOnCardHandle(crb, mc);
+		this.clickOnCardHandle(crb, mc);
 
 		// Verify
-		mc = CardRotateBehaviorTest.giveMagicCard();
+		mc = this.giveMagicCard();
 		Assert.assertTrue(mc.isTapped());
 
 
 		// Rotate the card again
-		CardRotateBehaviorTest.clickOnCardHandle(crb, mc);
+		this.clickOnCardHandle(crb, mc);
 
 		// Verify again
-		mc = CardRotateBehaviorTest.giveMagicCard();
+		mc = this.giveMagicCard();
 		Assert.assertFalse(mc.isTapped());
 	}
 

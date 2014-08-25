@@ -280,6 +280,7 @@ jQuery(function () {
 
 jQuery(function () {
     window.setTimeout(function () {
+        jQuery('.loader').hide();
         jQuery('body').removeClass("cloak");
-    }, 2000);
+    }, 3000);
 });

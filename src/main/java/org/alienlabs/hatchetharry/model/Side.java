@@ -2,16 +2,7 @@ package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -19,7 +10,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Table(name = "Side", indexes = { @Index(columnList = "uuid") })
+@Table(name = "Side")//, indexes = { @Index(columnList = "uuid") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Side implements Serializable
@@ -29,14 +20,16 @@ public class Side implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long sideId;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column
 	private String wicketId;
 	@Column
 	private String sideName;
 	@Column(name = "uuid")
 	private String uuid;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE })
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Game.class)
+    @Cascade(CascadeType.ALL)
 	private Game game;
 	@Column
 	private Long x = 64l; // x coordinate
@@ -112,6 +105,14 @@ public class Side implements Serializable
 	{
 		this.y = _y;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 	@Override
 	public int hashCode()

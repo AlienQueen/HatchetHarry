@@ -8,7 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Counter", indexes = { @Index(columnList = "card"), @Index(columnList = "token") })
+@Table(name = "Counter")//, indexes = { @Index(columnList = "card"), @Index(columnList = "token") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Counter implements Serializable, Comparable<Counter>
@@ -18,16 +18,18 @@ public class Counter implements Serializable, Comparable<Counter>
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long counterId;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column
 	private String counterName;
 	@Column
 	private Long numberOfCounters = 0l;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=MagicCard.class)
 	@JoinColumn(name = "card")
 	private MagicCard card;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Token.class)
 	@JoinColumn(name = "token")
 	private Token token;
 
@@ -80,6 +82,14 @@ public class Counter implements Serializable, Comparable<Counter>
 	{
 		this.token = _token;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 	/**
 	 * This class defines a compareTo(...) method and doesn't inherit its equals() method from

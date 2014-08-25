@@ -15,30 +15,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.apache.wicket.model.Model;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "MagicCard", indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"),
-		@Index(columnList = "card_deck") })
+@Table(name = "MagicCard")//, indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"),
+		//@Index(columnList = "card_deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MagicCard implements SlideshowImage, Serializable
@@ -49,6 +34,8 @@ public class MagicCard implements SlideshowImage, Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "magicCardId")
 	private Long id;
+    @Column(name="VERSION", length=20)
+    private String version;
 	@Column
 	private String smallImageFilename = "";
 	@Column
@@ -63,8 +50,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	private String uuid;
 	@Column
 	private Long gameId;
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH,
-			CascadeType.REMOVE }, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity=Deck.class)
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
 	@Column
@@ -78,7 +64,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	private CardZone zone;
 	@Column
 	private Long zoneOrder = 0l;
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "card")
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "card", targetEntity=Counter.class)
 	private Set<Counter> counters = new HashSet<Counter>();
 	@Column
 	private String ownerSide;
@@ -295,6 +281,14 @@ public class MagicCard implements SlideshowImage, Serializable
 	{
 		return this.token;
 	}
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String _version) {
+        this.version = _version;
+    }
 
 	@Override
 	public int hashCode()

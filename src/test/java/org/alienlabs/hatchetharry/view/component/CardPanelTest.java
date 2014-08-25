@@ -20,30 +20,30 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard();
 
 		// We should have one card in the battlefield
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		super.tester.startPage(HomePage.class);
+		super.tester.assertRenderedPage(HomePage.class);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final PersistenceService persistenceService = SpringContextLoaderBaseTest.context
+		final PersistenceService persistenceService = super.context
 			.getBean(PersistenceService.class);
 		List<MagicCard> allCardsInBattlefield = persistenceService
 			.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		// Put it to graveyard
-		SpringContextLoaderBaseTest.tester.assertComponent(
+		super.tester.assertComponent(
 			"parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
-		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
+		final CardPanel card = (CardPanel)super.tester
 			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
 
-		SpringContextLoaderBaseTest.tester.getLastRenderedPage();
+		super.tester.getLastRenderedPage();
 
 		final PutToGraveyardFromBattlefieldBehavior ptgfbb = card
 			.getPutToGraveyardFromBattlefieldBehavior();
-		SpringContextLoaderBaseTest.tester.executeBehavior(ptgfbb);
+		super.tester.executeBehavior(ptgfbb);
 
-		SpringContextLoaderBaseTest.pageDocument = SpringContextLoaderBaseTest.tester
+		super.pageDocument = super.tester
 			.getLastResponse().getDocument();
 		// SpringContextLoaderBaseTest.tester
 		// .assertComponentOnAjaxResponse("graveyardParent:graveyard:graveyardCardsPlaceholder:graveyardCards:0:wrapper:graveyardImagePlaceholder");
@@ -57,12 +57,12 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(1, allCardsInGraveyard.size());
 
 		// Now, put it back in play
-		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior)SpringContextLoaderBaseTest.tester
+		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior)super.tester
 			.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop")
 			.getBehaviorById(0);
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		super.tester.getRequest().setParameter("card",
 			allCardsInGraveyard.get(0).getUuid());
-		SpringContextLoaderBaseTest.tester.executeBehavior(pcfgb);
+		super.tester.executeBehavior(pcfgb);
 		// Verify
 		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
@@ -72,9 +72,9 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 
 		// Put it back to hand
 		final PutToHandFromBattlefieldBehavior pthfbb = card.getPutToHandFromBattlefieldBehavior();
-		// SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		// super.tester.getRequest().setParameter("card",
 		// allCardsInGraveyard.get(0).getUuid());
-		SpringContextLoaderBaseTest.tester.executeBehavior(pthfbb);
+		super.tester.executeBehavior(pthfbb);
 
 		// Verify
 		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
