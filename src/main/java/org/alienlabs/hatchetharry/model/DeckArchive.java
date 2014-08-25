@@ -17,7 +17,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "DeckArchive")//, indexes = { @Index(columnList = "deckName") })
+@Table(name = "DeckArchive", indexes = { @Index(columnList = "deckName") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DeckArchive implements Serializable

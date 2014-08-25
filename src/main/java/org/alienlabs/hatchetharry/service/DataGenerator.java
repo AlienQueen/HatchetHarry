@@ -259,14 +259,14 @@ public class DataGenerator implements InitializingBean
 						final List<MagicCard> cards = deck1.getCards();
 						cards.add(card);
 						deck1.setCards(cards);
-						this.persistenceService.saveCard(card);
+//						this.persistenceService.saveCard(card);
 					}
 					else
 					{
 						final List<MagicCard> cards = deck2.getCards();
 						cards.add(card);
 						deck2.setCards(cards);
-						this.persistenceService.saveCard(card);
+//						this.persistenceService.saveCard(card);
 					}
 				}
 

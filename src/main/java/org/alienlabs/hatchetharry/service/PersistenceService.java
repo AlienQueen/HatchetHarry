@@ -115,20 +115,9 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public MagicCard saveOrUpdateCardAndDeck(final MagicCard c)
 	{
-		final MagicCard res;
-
-		if (c.getId() != null)
-		{
-			res = (MagicCard)this.magicCardDao.getSession().merge(c);
-			this.deckDao.getSession().saveOrUpdate(res.getDeck());
-		}
-		else
-		{
-			this.deckDao.getSession().saveOrUpdate(c.getDeck());
-			this.magicCardDao.getSession().saveOrUpdate(c);
-			res = c;
-		}
-		return res;
+        this.magicCardDao.getSession().update(this.magicCardDao.getSession().merge(c));
+		this.deckDao.getSession().saveOrUpdate(c.getDeck());
+		return c;
 	}
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -567,12 +556,7 @@ public class PersistenceService implements Serializable
 		query.setLong("id", deckId);
 		query.setMaxResults(1);
 
-		Deck deck = (Deck)query.uniqueResult();
-
-		List<MagicCard> cards = this.getAllCardsFromDeck(deck.getDeckId());
-		deck.setCards(cards);
-
-		return deck;
+		return (Deck)query.uniqueResult();
 	}
 
 	@Transactional(readOnly = true)
@@ -586,12 +570,7 @@ public class PersistenceService implements Serializable
 		query.setString("deckArchiveName", deckArchiveName);
 		query.setMaxResults(1);
 
-		Deck deck = (Deck)query.uniqueResult();
-
-		List<MagicCard> cards = this.getAllCardsFromDeck(deck.getDeckId());
-		deck.setCards(cards);
-
-		return deck;
+		return (Deck)query.uniqueResult();
 	}
 
 	@Transactional(readOnly = true)

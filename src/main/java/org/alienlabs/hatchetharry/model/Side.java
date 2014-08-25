@@ -10,7 +10,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Table(name = "Side")//, indexes = { @Index(columnList = "uuid") })
+@Table(name = "Side", indexes = { @Index(columnList = "uuid") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Side implements Serializable

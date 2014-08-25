@@ -50,8 +50,7 @@
         <targetJdk>1.6</targetJdk>
         <project.build.finalName>ROOT</project.build.finalName>
         <selenium.version>2.42.2</selenium.version>
-        <!-- Don't switch to the latest hibernate version as there's a bug -->
-        <hibernate.version>4.2.15.Final</hibernate.version>
+        <hibernate.version>4.3.6.Final</hibernate.version>
         <jetty.version>9.2.2.v20140723</jetty.version>
     </properties>
 

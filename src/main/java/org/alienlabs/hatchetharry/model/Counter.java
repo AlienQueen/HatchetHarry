@@ -8,7 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Counter")//, indexes = { @Index(columnList = "card"), @Index(columnList = "token") })
+@Table(name = "Counter", indexes = { @Index(columnList = "card"), @Index(columnList = "token") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Counter implements Serializable, Comparable<Counter>

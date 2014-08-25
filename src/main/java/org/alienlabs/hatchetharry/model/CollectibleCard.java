@@ -18,9 +18,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-@Table(name = "CollectibleCard")
-// , indexes = { @Index(columnList = "title"),
-// @Index(columnList = "deckArchiveId") })
+@Table(name = "CollectibleCard", indexes = { @Index(columnList = "title"), @Index(columnList = "deckArchiveId") })
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

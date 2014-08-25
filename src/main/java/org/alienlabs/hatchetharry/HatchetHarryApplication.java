@@ -126,7 +126,7 @@ public class HatchetHarryApplication extends WebApplication
 				}
 				catch (final Exception e)
 				{
-					HatchetHarryApplication.LOGGER.error("Error in clock channel!", e);
+					// Nothing to do except opening a ticket at Apache's
 				}
 			}
 		};
@@ -375,8 +375,8 @@ public class HatchetHarryApplication extends WebApplication
 			"image/reveal.png"));
 		this.mountResource("image/indicator.gif", new PackageResourceReference(HomePage.class,
 			"image/indicator.gif"));
-        this.mountResource("image/loader.png", new PackageResourceReference(HomePage.class,
-			"image/loader.png"));
+        this.mountResource("image/loader.gif", new PackageResourceReference(HomePage.class,
+			"image/loader.gif"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.hours(1));

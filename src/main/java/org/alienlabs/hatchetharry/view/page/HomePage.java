@@ -1109,7 +1109,7 @@ public class HomePage extends TestReportPage
 		this.session.setPlayerHasBeenCreated();
 
 		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
-        p.setDeck(this.deck);
+		p.setDeck(this.deck);
 		List<MagicCard> mc = this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId());
 
 		for (MagicCard card : mc)
@@ -2980,7 +2980,7 @@ public class HomePage extends TestReportPage
 		// Sessions must be clean-up between server restarts, as it's too much difficult
 		// to manage a state recovery
 		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
-			this.session.getPlayer().getId()).isHandDisplayed();
+                this.session.getPlayer().getId()).isHandDisplayed();
 		final Component galleryToUpdate = isHandDisplayed
 			? new HandComponent("gallery", false)
 			: new WebMarkupContainer("gallery");

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "ChatMessage")//, indexes = { @Index(columnList = "gameId") })
+@Table(name = "ChatMessage", indexes = { @Index(columnList = "gameId") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ChatMessage implements Serializable

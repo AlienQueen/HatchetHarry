@@ -8,7 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Player")//, indexes = { @Index(columnList = "Player_Side"), @Index(columnList = "deck") })
+@Table(name = "Player", indexes = { @Index(columnList = "Player_Side"), @Index(columnList = "deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Player implements Serializable

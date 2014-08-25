@@ -278,9 +278,7 @@ jQuery(function () {
 
 });
 
-jQuery(function () {
-    window.setTimeout(function () {
-        jQuery('.loader').hide();
-        jQuery('body').removeClass("cloak");
-    }, 3000);
-});
+var uncloak = function () {
+    jQuery('.loader').hide();
+    jQuery('body').removeClass("cloak");
+};
