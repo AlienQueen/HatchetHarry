@@ -5,7 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.model.*;
+import org.alienlabs.hatchetharry.model.CardZone;
+import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.DeckArchive;
+import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;

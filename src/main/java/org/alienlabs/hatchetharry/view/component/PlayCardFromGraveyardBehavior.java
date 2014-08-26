@@ -87,12 +87,24 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 
 		JavaScriptUtils.updateGraveyard(target);
 
-		final Deck d = p.getDeck();
-		final List<MagicCard> graveyard = d.reorderMagicCards(this.persistenceService
-			.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		final List<Deck> d = this.persistenceService.getAllDecks();
+		Deck mydeck = new Deck();
+
+		for (Deck deck : d)
+		{
+			if (deck.getPlayerId().longValue() == p.getId().longValue())
+			{
+				mydeck = deck;
+				p.setDeck(deck);
+				break;
+			}
+		}
+
+		final List<MagicCard> graveyard = mydeck.reorderMagicCards(this.persistenceService
+			.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
-		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		final List<MagicCard> battlefield = mydeck.reorderMagicCards(this.persistenceService
+			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(

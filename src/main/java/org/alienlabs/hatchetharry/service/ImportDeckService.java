@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,6 +51,8 @@ public class ImportDeckService implements Serializable
 			return false;
 		}
 
+        List<MagicCard> allCards = new ArrayList<MagicCard>();
+
 		for (final String line : fileContent.split("\n"))
 		{
 			ImportDeckService.LOGGER.info("line: " + line);
@@ -63,7 +66,6 @@ public class ImportDeckService implements Serializable
 			final int numberOfItems = Integer.parseInt(numberOfItemsAsString);
 			final int indexOfSpace = line.indexOf(' ');
 			final String cardName = line.substring(indexOfSpace + 1, line.length());
-
 
 			ImportDeckService.LOGGER.info(numberOfItems + " x " + cardName);
 
@@ -87,10 +89,11 @@ public class ImportDeckService implements Serializable
 				card.setZone(CardZone.LIBRARY);
 
 				deck.setDeckArchive(deckArchive);
-				this.persistenceService.updateDeck(deck);
-                this.persistenceService.saveCard(card);
+                allCards.add(card);
 			}
 		}
+        this.persistenceService.saveAllMagicCards(allCards);
+	    this.persistenceService.updateDeck(deck);
 		this.persistenceService.updateDeckArchive(deckArchive);
 		return true;
 	}

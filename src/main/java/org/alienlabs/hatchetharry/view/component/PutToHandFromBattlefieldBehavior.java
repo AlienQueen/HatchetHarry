@@ -90,14 +90,26 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		}
 
 		final Long gameId = session.getPlayer().getGame().getId();
-
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
-		final Deck d = p.getDeck();
-		final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
-			.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+
+        final List<Deck> d = this.persistenceService.getAllDecks();
+        Deck mydeck = new Deck();
+
+        for (Deck deck : d)
+        {
+            if (deck.getPlayerId().longValue() == p.getId().longValue())
+            {
+                mydeck = deck;
+                p.setDeck(deck);
+                break;
+            }
+        }
+
+		final List<MagicCard> hand = mydeck.reorderMagicCards(this.persistenceService
+			.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(hand);
-		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		final List<MagicCard> battlefield = mydeck.reorderMagicCards(this.persistenceService
+			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = PutToHandFromBattlefieldBehavior.this.persistenceService

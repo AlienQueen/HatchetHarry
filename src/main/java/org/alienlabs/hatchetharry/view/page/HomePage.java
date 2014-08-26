@@ -294,25 +294,6 @@ public class HomePage extends TestReportPage
 		fsdk.setFbAdmins("goupilpierre@wanadoo.fr");
 		this.add(fsdk);
 
-		// Side
-		this.sideParent = new WebMarkupContainer("sideParent");
-		this.sideParent.setOutputMarkupId(true);
-
-		this.allPlayerSidesInGame = this.persistenceService.getAllPlayersOfGame(this.session
-			.getGameId());
-		final ListDataProvider<Player> data = new ListDataProvider<Player>(
-			this.allPlayerSidesInGame);
-
-		this.allSidesInGame = this.populateSides(data);
-
-		this.sideParent.add(this.allSidesInGame);
-		this.add(this.sideParent);
-
-		// Hand
-		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
-		this.parentPlaceholder.setOutputMarkupId(true);
-		this.add(this.parentPlaceholder);
-
 		this.galleryParent = new WebMarkupContainer("galleryParent");
 		this.galleryParent.setMarkupId("galleryParent");
 		this.galleryParent.setOutputMarkupId(true);
@@ -325,47 +306,6 @@ public class HomePage extends TestReportPage
 		this.galleryReveal.setOutputMarkupId(true);
 		this.galleryRevealParent.add(this.galleryReveal);
 		this.add(this.galleryRevealParent);
-
-		this.graveyardParent = new WebMarkupContainer("graveyardParent");
-		this.graveyardParent.setMarkupId("graveyardParent");
-		this.graveyardParent.setOutputMarkupId(true);
-		this.add(this.graveyardParent);
-
-		this.exileParent = new WebMarkupContainer("exileParent");
-		this.exileParent.setMarkupId("exileParent");
-		this.exileParent.setOutputMarkupId(true);
-		this.add(this.exileParent);
-
-		// Welcome message
-		final Label message1 = new Label("message1", "version 0.10.0 (release Test It All),");
-		final Label message2 = new Label("message2", "built on Thursday, 21st of August 2014.");
-		this.add(message1, message2);
-
-		// Comet clock channel
-		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
-		this.clockPanel.setOutputMarkupId(true);
-		this.clockPanel.setMarkupId("clock");
-		this.add(this.clockPanel);
-
-		// Sides
-		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
-		this.secondSidePlaceholderParent.setOutputMarkupId(true);
-		this.secondSidePlaceholderParent.setMarkupId("secondSidePlaceholderParent");
-		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
-			"secondSidePlaceholder");
-		secondSidePlaceholder.setOutputMarkupId(true);
-		secondSidePlaceholder.setMarkupId("secondSidePlaceholder");
-		this.secondSidePlaceholderParent.add(secondSidePlaceholder);
-
-		this.firstSidePlaceholderParent = new WebMarkupContainer("firstSidePlaceholderParent");
-		this.firstSidePlaceholderParent.setOutputMarkupId(true);
-		this.firstSidePlaceholderParent.setMarkupId("firstSidePlaceholderParent");
-		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
-			"firstSidePlaceholder");
-		firstSidePlaceholder.setOutputMarkupId(true);
-		this.firstSidePlaceholderParent.add(firstSidePlaceholder);
-
-		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
 
 		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
 		balduParent.setOutputMarkupId(true);
@@ -404,6 +344,67 @@ public class HomePage extends TestReportPage
 			balduParent.add(new WebMarkupContainer("baldu"));
 		}
 		this.add(balduParent);
+
+		// Side
+		this.sideParent = new WebMarkupContainer("sideParent");
+		this.sideParent.setOutputMarkupId(true);
+
+		this.allPlayerSidesInGame = this.persistenceService.getAllPlayersOfGame(this.session
+			.getGameId());
+		final ListDataProvider<Player> data = new ListDataProvider<Player>(
+			this.allPlayerSidesInGame);
+
+		this.allSidesInGame = this.populateSides(data);
+
+		this.sideParent.add(this.allSidesInGame);
+		this.add(this.sideParent);
+
+		// Hand
+		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
+		this.parentPlaceholder.setOutputMarkupId(true);
+		this.add(this.parentPlaceholder);
+
+		this.graveyardParent = new WebMarkupContainer("graveyardParent");
+		this.graveyardParent.setMarkupId("graveyardParent");
+		this.graveyardParent.setOutputMarkupId(true);
+		this.add(this.graveyardParent);
+
+		this.exileParent = new WebMarkupContainer("exileParent");
+		this.exileParent.setMarkupId("exileParent");
+		this.exileParent.setOutputMarkupId(true);
+		this.add(this.exileParent);
+
+		// Welcome message
+		final Label message1 = new Label("message1", "version 0.10.0 (release Test It All),");
+		final Label message2 = new Label("message2", "built on Monday, 26th of August 2014.");
+		this.add(message1, message2);
+
+		// Comet clock channel
+		this.clockPanel = new ClockPanel("clockPanel", Model.of("###"));
+		this.clockPanel.setOutputMarkupId(true);
+		this.clockPanel.setMarkupId("clock");
+		this.add(this.clockPanel);
+
+		// Sides
+		this.secondSidePlaceholderParent = new WebMarkupContainer("secondSidePlaceholderParent");
+		this.secondSidePlaceholderParent.setOutputMarkupId(true);
+		this.secondSidePlaceholderParent.setMarkupId("secondSidePlaceholderParent");
+		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
+			"secondSidePlaceholder");
+		secondSidePlaceholder.setOutputMarkupId(true);
+		secondSidePlaceholder.setMarkupId("secondSidePlaceholder");
+		this.secondSidePlaceholderParent.add(secondSidePlaceholder);
+
+		this.firstSidePlaceholderParent = new WebMarkupContainer("firstSidePlaceholderParent");
+		this.firstSidePlaceholderParent.setOutputMarkupId(true);
+		this.firstSidePlaceholderParent.setMarkupId("firstSidePlaceholderParent");
+		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
+			"firstSidePlaceholder");
+		firstSidePlaceholder.setOutputMarkupId(true);
+		this.firstSidePlaceholderParent.add(firstSidePlaceholder);
+
+		this.add(this.secondSidePlaceholderParent, this.firstSidePlaceholderParent);
+
 
 		// Placeholders for CardPanel-adding with AjaxRequestTarget
 		this.createCardPanelPlaceholders();
@@ -1060,7 +1061,7 @@ public class HomePage extends TestReportPage
 		HomePage.LOGGER.info("building DataBox with gameId= " + _gameId);
 	}
 
-	private void buildHandCards()
+	private void buildHandCards() throws IOException
 	{
 		if (this.session.isHandHasBeenCreated())
 		{
@@ -1458,45 +1459,91 @@ public class HomePage extends TestReportPage
 		this.exileParent.add(exileToUpdate);
 	}
 
-	private List<MagicCard> createFirstCards()
+	private List<MagicCard> createFirstCards() throws IOException
 	{
-		// if (this.session.isPlayerCreated())
-		// {
-		// this.player = this.session.getPlayer();
-		// this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
-		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
-		// if (this.deck == null)
-		// {
-		// this.deck = this.persistenceService.getDeck(1l);
-		// this.player.setDeck(this.deck);
-		// }
-		this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
-		System.out.println("### " + deck.getCards().size());
-		final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
-
-		// if (!this.session.isHandCardsHaveBeenBuilt())
-		// {
-		this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
-		// }
-
-		for (int i = 0; i < 7; i++)
+		if (this.session.isPlayerCreated())
 		{
-			final MagicCard mc = this.deck.getCards().get(i);
-			mc.setZone(CardZone.HAND);
-			mc.setGameId(this.session.getPlayer().getGame().getId());
-			this.persistenceService.updateCard(mc);
+			this.player = this.session.getPlayer();
+			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
 
-			cards.add(i, mc);
+			if (this.deck == null)
+			{
+				this.deck = this.persistenceService
+					.getDeckByDeckArchiveName("aggro-combo Red / Black");
+				this.player.setDeck(this.deck);
+			}
+
+			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
+			final ArrayList<MagicCard> _cards = new ArrayList<MagicCard>();
+
+			for (MagicCard mc : this.deck.getCards())
+			{
+				mc.setGameId(this.session.getGameId());
+				mc.getDeck().setPlayerId(this.player.getId());
+				_cards.add(mc);
+			}
+			this.persistenceService.updateAllMagicCards(_cards);
+
+			System.out.println("### cards: " + this.player.getDeck().getCards().size());
+			System.out.println("### game: " + this.session.getGameId());
+			System.out.println("### player: " + this.player.getId());
+			System.out.println("### deck: " + this.player.getDeck().getDeckId());
+			System.out.println("########################");
+
+			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+			if (!this.session.isHandCardsHaveBeenBuilt())
+			{
+				this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
+			}
+
+			for (int i = 0; i < 7; i++)
+			{
+				final MagicCard mc = this.deck.getCards().get(i);
+				mc.setZone(CardZone.HAND);
+				mc.setGameId(this.session.getPlayer().getGame().getId());
+				cards.add(i, mc);
+				System.out.println("### " + mc.getTitle());
+			}
+
+			for (int i = 7; i < this.deck.getCards().size(); i++)
+			{
+				final MagicCard mc = this.deck.getCards().get(i);
+				mc.setZone(CardZone.LIBRARY);
+				mc.setGameId(this.session.getPlayer().getGame().getId());
+				cards.add(i, mc);
+            }
+
+			this.persistenceService.updateAllMagicCards(cards);
+			this.session.setFirstCardsInHand(cards);
+			this.session.setHandHasBeenCreated();
+
+			this.hand = cards;
+			return cards;
+		}
+		else
+		{
+			this.createPlayer();
+			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
+			System.out.println("~~~ " + deck.getCards().size());
+			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+
+			for (int i = 0; i < this.deck.getCards().size(); i++)
+			{
+				final MagicCard mc = this.deck.getCards().get(i);
+
+				if (CardZone.HAND.equals(mc.getZone()))
+				{
+					cards.add(i, mc);
+				}
+			}
+
+			this.session.setFirstCardsInHand(cards);
+			this.session.setHandHasBeenCreated();
+			this.hand = cards;
+
+			return this.session.getPlayer().getDeck().getCards();
 		}
 
-		this.session.setFirstCardsInHand(cards);
-		this.session.setHandHasBeenCreated();
-
-		this.hand = cards;
-		return cards;
-		// }
-
-		// return new ArrayList<MagicCard>();
 	}
 
 	private ModalWindow generateAboutLink(final String id, final ModalWindow window)
@@ -2977,10 +3024,10 @@ public class HomePage extends TestReportPage
 
 	private final void restoreBattlefieldState()
 	{
-		// Sessions must be clean-up between server restarts, as it's too much difficult
+		// Sessions must be cleaned up between server restarts, as it's too much difficult
 		// to manage a state recovery
 		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
-                this.session.getPlayer().getId()).isHandDisplayed();
+			this.session.getPlayer().getId()).isHandDisplayed();
 		final Component galleryToUpdate = isHandDisplayed
 			? new HandComponent("gallery", false)
 			: new WebMarkupContainer("gallery");

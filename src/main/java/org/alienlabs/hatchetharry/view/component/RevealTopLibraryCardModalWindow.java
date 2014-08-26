@@ -207,16 +207,19 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 				final Player p = RevealTopLibraryCardModalWindow.this.persistenceService
 					.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck().getPlayerId());
-				final Deck d = p.getDeck();
 				final Long gameId = game.getId();
-				final List<MagicCard> hand = d
-					.reorderMagicCards(RevealTopLibraryCardModalWindow.this.persistenceService
-						.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+
+				final List<MagicCard> hand = RevealTopLibraryCardModalWindow.this.card.getDeck()
+					.reorderMagicCards(
+						RevealTopLibraryCardModalWindow.this.persistenceService
+							.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
+								RevealTopLibraryCardModalWindow.this.card.getDeck().getDeckId()));
 				RevealTopLibraryCardModalWindow.this.persistenceService
 					.saveOrUpdateAllMagicCards(hand);
 
 				final PutTopLibraryCardToHandCometChannel ptlccc = new PutTopLibraryCardToHandCometChannel(
-					gameId, p.getId(), d.getDeckId());
+					gameId, p.getId(), RevealTopLibraryCardModalWindow.this.card.getDeck()
+						.getDeckId());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION, gameId, p.getId(),
@@ -254,11 +257,11 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 				final Player p = RevealTopLibraryCardModalWindow.this.persistenceService
 					.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck().getPlayerId());
-				final Deck d = p.getDeck();
+				final Deck d = RevealTopLibraryCardModalWindow.this.card.getDeck();
 				final Long gameId = game.getId();
 				final List<MagicCard> hand = d
 					.reorderMagicCards(RevealTopLibraryCardModalWindow.this.persistenceService
-						.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+                            .getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
 				RevealTopLibraryCardModalWindow.this.persistenceService
 					.saveOrUpdateAllMagicCards(hand);
 

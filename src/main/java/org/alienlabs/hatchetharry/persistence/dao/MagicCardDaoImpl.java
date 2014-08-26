@@ -89,9 +89,9 @@ public class MagicCardDaoImpl implements MagicCardDao
 	 */
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public MagicCard save(final MagicCard mc)
+	public MagicCard save(final MagicCard card)
 	{
-		return (MagicCard)this.getSession().merge(mc);
+		return (MagicCard)this.getSession().merge(card);
 	}
 
 	/**
