@@ -13,7 +13,6 @@ package org.alienlabs.hatchetharry.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +27,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "CollectibleCard", indexes = { @Index(columnList = "title"),
         @Index(columnList = "deckArchiveId") })
 @Entity
-@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CollectibleCard implements Serializable
 {

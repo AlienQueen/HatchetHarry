@@ -1,22 +1,13 @@
 package org.alienlabs.hatchetharry.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 @Table(name = "Arrow", indexes = { @Index(columnList = "gameId"), @Index(columnList = "source"), @Index(columnList = "target") })
 @Entity
-@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Arrow implements Serializable
 {

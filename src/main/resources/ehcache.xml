@@ -6,12 +6,155 @@
     <defaultCache
             maxElementsInMemory="10000"
             eternal="false"
-            timeToIdleSeconds="120"
-            timeToLiveSeconds="120"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="3600"
             overflowToDisk="false"
             maxElementsOnDisk="0"
             diskPersistent="false"
             diskExpiryThreadIntervalSeconds="120"
-            memoryStoreEvictionPolicy="LRU"/>
+            memoryStoreEvictionPolicy="LRU"
+            name="HHDefault"/>
+
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+           maxEntriesLocalHeap="75"
+           eternal="false"
+           timeToIdleSeconds="1800"
+           timeToLiveSeconds="3600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+           maxEntriesLocalHeap="5000"
+           timeToIdleSeconds="1800"
+           timeToLiveSeconds="3600"
+           eternal="false">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.Token"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.User"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.MagicCard"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.ConsoleLogMessage"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.CardCollection"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.DeckArchive"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.Player"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.Deck"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.Side"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.Game"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.Arrow"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.Counter"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.CollectibleCard"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache
+            name="org.alienlabs.hatchetharry.model.ChatMessage"
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
 
 </Ehcache>

@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +38,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "MagicCard", indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"),
 		@Index(columnList = "card_deck") })
-@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MagicCard implements SlideshowImage, Serializable
 {
@@ -84,7 +82,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private String ownerSide;
 	@OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    private Token token;
+	private Token token;
 
 	public MagicCard()
 	{
@@ -307,20 +305,25 @@ public class MagicCard implements SlideshowImage, Serializable
 		this.version = _version;
 	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MagicCard)) return false;
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o)
+			return true;
+		if (!(o instanceof MagicCard))
+			return false;
 
-        MagicCard magicCard = (MagicCard) o;
+		MagicCard magicCard = (MagicCard)o;
 
-        if (id != null ? !id.equals(magicCard.id) : magicCard.id != null) return false;
+		if (id != null ? !id.equals(magicCard.id) : magicCard.id != null)
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+	@Override
+	public int hashCode()
+	{
+		return id != null ? id.hashCode() : 0;
+	}
 }
