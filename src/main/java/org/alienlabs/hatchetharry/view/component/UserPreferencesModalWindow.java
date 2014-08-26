@@ -24,7 +24,7 @@ public class UserPreferencesModalWindow extends Panel
 	@SpringBean
 	PersistenceService persistenceService;
 
-	public UserPreferencesModalWindow(final String id, final Long gameId, final ModalWindow window)
+    public UserPreferencesModalWindow(final String id, final ModalWindow window)
 	{
 		super(id);
 

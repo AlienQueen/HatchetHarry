@@ -15,7 +15,7 @@ public class LoginModalWindow extends Panel
 	static final Logger LOGGER = LoggerFactory.getLogger(LoginModalWindow.class);
 	private static final long serialVersionUID = 1L;
 
-	public LoginModalWindow(final String id, final Long gameId, final ModalWindow window)
+    public LoginModalWindow(final String id, final ModalWindow window)
 	{
 		super(id);
 

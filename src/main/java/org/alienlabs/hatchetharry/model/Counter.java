@@ -128,67 +128,20 @@ public class Counter implements Serializable, Comparable<Counter>
 		return this.getCounterName().compareTo(c.getCounterName());
 	}
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.card == null) ? 0 : this.card.hashCode());
-		result = (prime * result) + ((this.counterName == null) ? 0 : this.counterName.hashCode());
-		result = (prime * result) + ((this.token == null) ? 0 : this.token.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Counter)) return false;
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Counter other = (Counter)obj;
-		if (this.card == null)
-		{
-			if (other.card != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.card.equals(other.card))
-		{
-			return false;
-		}
-		if (this.counterName == null)
-		{
-			if (other.counterName != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.counterName.equals(other.counterName))
-		{
-			return false;
-		}
-		if (this.token == null)
-		{
-			if (other.token != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.token.equals(other.token))
-		{
-			return false;
-		}
-		return true;
-	}
+        Counter counter = (Counter) o;
 
+        if (counterId != null ? !counterId.equals(counter.counterId) : counter.counterId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return counterId != null ? counterId.hashCode() : 0;
+    }
 }

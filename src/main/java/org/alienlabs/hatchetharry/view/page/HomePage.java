@@ -97,7 +97,6 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.service.RuntimeDataGenerator;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.component.AboutModalWindow;
@@ -176,6 +175,7 @@ import com.google.common.io.Files;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class HomePage extends TestReportPage
 {
+	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
 
 	public final HatchetHarrySession session;
@@ -199,8 +199,6 @@ public class HomePage extends TestReportPage
 
 	@SpringBean
 	public PersistenceService persistenceService;
-	@SpringBean
-	RuntimeDataGenerator runtimeDataGenerator;
 	@SpringBean
 	DataGenerator dataGenerator;
 
@@ -464,7 +462,7 @@ public class HomePage extends TestReportPage
 		this.add(rab);
 
 		// Comet chat channel
-		this.add(new ChatPanel("chatPanel", this.player.getId()));
+        this.add(new ChatPanel("chatPanel"));
 
 		this.buildEndTurnLink();
 		this.buildInResponseLink();
@@ -1511,7 +1509,7 @@ public class HomePage extends TestReportPage
 				mc.setZone(CardZone.LIBRARY);
 				mc.setGameId(this.session.getPlayer().getGame().getId());
 				cards.add(i, mc);
-            }
+			}
 
 			this.persistenceService.updateAllMagicCards(cards);
 			this.session.setFirstCardsInHand(cards);
@@ -1932,8 +1930,6 @@ public class HomePage extends TestReportPage
 				}
 
 				HomePage.this.persistenceService.updatePlayer(playerWhoDiscards);
-				HomePage.this.persistenceService
-					.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
 
 				JavaScriptUtils.updateHand(target);
 				JavaScriptUtils.updateGraveyard(target);
@@ -1959,8 +1955,7 @@ public class HomePage extends TestReportPage
 		window.setInitialWidth(300);
 		window.setInitialHeight(200);
 		window.setTitle("HatchetHarry login");
-		window.setContent(new LoginModalWindow(window.getContentId(), this.session.getGameId(),
-			window));
+		window.setContent(new LoginModalWindow(window.getContentId(), window));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		window.setOutputMarkupId(true);
@@ -2011,8 +2006,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				window.setContent(new UserPreferencesModalWindow(window.getContentId(),
-					HomePage.this.session.getGameId(), window));
+				window.setContent(new UserPreferencesModalWindow(window.getContentId(), window));
 				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.preferencesWindow.show(target);
@@ -3112,12 +3106,6 @@ public class HomePage extends TestReportPage
 		throws IOException
 	{
 		this.persistenceService = _persistenceService;
-	}
-
-	@Required
-	public void setRuntimeDataGenerator(final RuntimeDataGenerator _runtimeDataGenerator)
-	{
-		this.runtimeDataGenerator = _runtimeDataGenerator;
 	}
 
 	@Required

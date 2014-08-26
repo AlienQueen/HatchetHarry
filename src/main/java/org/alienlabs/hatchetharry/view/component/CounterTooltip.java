@@ -93,7 +93,7 @@ public class CounterTooltip extends Panel
 						HatchetHarrySession.get().getPlayer().getName(), targetPlayer.getName(),
 						CounterTooltip.this.token.getCreatureTypes(), _counterName,
 						counter.getNumberOfCounters(), 0l, NotifierAction.ADD_COUNTER_ACTION,
-						CounterTooltip.this.token, "", CounterTooltip.this.token.getPlayer()
+						CounterTooltip.this.token, CounterTooltip.this.token.getPlayer()
 							.getSide().getSideName());
 
 					logger = AbstractConsoleLogStrategy.chooseStrategy(
@@ -209,7 +209,7 @@ public class CounterTooltip extends Panel
 								game.getId(), HatchetHarrySession.get().getPlayer().getName(),
 								targetPlayerName, CounterTooltip.this.token.getCreatureTypes(),
 								counter.getCounterName(), counter.getNumberOfCounters(), 0l,
-								NotifierAction.ADD_COUNTER_ACTION, CounterTooltip.this.token, "",
+								NotifierAction.ADD_COUNTER_ACTION, CounterTooltip.this.token,
 								CounterTooltip.this.token.getPlayer().getSide().getSideName());
 
 							logger = AbstractConsoleLogStrategy
@@ -357,7 +357,7 @@ public class CounterTooltip extends Panel
 			counterTooltipCometChannel = new UpdateTokenPanelCometChannel(game.getId(),
 				HatchetHarrySession.get().getPlayer().getName(), targetPlayerName,
 				this.token.getCreatureTypes(), counter.getCounterName(), targetNumberOfCounters,
-				originalNumberOfCounters, action, this.token, "", this.token.getPlayer().getSide()
+				originalNumberOfCounters, action, this.token, this.token.getPlayer().getSide()
 					.getSideName());
 
 
@@ -459,7 +459,7 @@ public class CounterTooltip extends Panel
 					msg = new UpdateTokenPanelCometChannel(game.getId(), HatchetHarrySession.get()
 						.getPlayer().getName(), targetPlayerName,
 						CounterTooltip.this.token.getCreatureTypes(), counter.getCounterName(),
-						counter.getNumberOfCounters(), 0l, action, CounterTooltip.this.token, "",
+						counter.getNumberOfCounters(), 0l, action, CounterTooltip.this.token,
 						CounterTooltip.this.token.getPlayer().getSide().getSideName());
 
 					logger = AbstractConsoleLogStrategy.chooseStrategy(

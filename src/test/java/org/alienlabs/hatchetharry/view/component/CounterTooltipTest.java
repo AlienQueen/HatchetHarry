@@ -19,8 +19,8 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		super.waTester.switchOffTestMode();
 
 		// Assert it's a card and not a token
-		super.tester.assertComponent(
-			"parentPlaceholder:tooltips:1:cardTooltip", MagicCardTooltipPanel.class);
+		super.tester.assertComponent("parentPlaceholder:tooltips:1:cardTooltip",
+			MagicCardTooltipPanel.class);
 
 		// Put a blah counter
 		final FormTester form1 = super.tester
@@ -55,16 +55,15 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// Create a token
 		super.tester.assertComponent("createTokenLink", AjaxLink.class);
 		super.tester.clickLink("createTokenLink", true);
-		final FormTester form3 = super.tester
-			.newFormTester("createTokenWindow:content:form");
+		final FormTester form3 = super.tester.newFormTester("createTokenWindow:content:form");
 		form3.setValue("type", "rat");
 		form3.submit("createToken");
 
 		// Assert token on battlefield
-		super.tester.assertComponent(
-			"parentPlaceholder:magicCards:2:cardPanel:cardHandle", WebMarkupContainer.class);
-		super.tester.assertComponent(
-			"parentPlaceholder:tooltips:4:cardTooltip", TokenTooltipPanel.class);
+		super.tester.assertComponent("parentPlaceholder:magicCards:2:cardPanel:cardHandle",
+			WebMarkupContainer.class);
+		super.tester.assertComponent("parentPlaceholder:tooltips:4:cardTooltip",
+			TokenTooltipPanel.class);
 
 
 		// Add a poison counter to token
@@ -140,12 +139,12 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		try
 		{
 			super.tester
-				.assertLabel(
+                    .assertLabel(
 					"parentPlaceholder:tooltips:9:cardTooltip:counterPanel:counters:1:setCounterForm:counterName",
 					"charge");
 			fail();
 		}
-		catch (AssertionError e)
+		catch (NullPointerException e)
 		{
 			// Success
 		}
@@ -181,7 +180,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 					"blah");
 			fail();
 		}
-		catch (AssertionError e)
+		catch (NullPointerException e)
 		{
 			// Success
 		}

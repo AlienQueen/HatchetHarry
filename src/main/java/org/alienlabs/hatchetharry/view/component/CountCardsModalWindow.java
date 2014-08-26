@@ -35,6 +35,7 @@ public class CountCardsModalWindow extends Panel
 			protected void populateItem(final ListItem<Player> item)
 			{
 				final Player p = item.getModelObject();
+
 				item.add(new Label("playerName", p.getName()));
 				item.add(new Label("hand", CountCardsModalWindow.this.persistenceService
 					.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.HAND, gameId, p

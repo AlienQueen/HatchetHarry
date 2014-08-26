@@ -3,19 +3,13 @@ package org.alienlabs.hatchetharry;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.Application;
-import org.apache.wicket.Page;
-import org.apache.wicket.RuntimeConfigurationType;
-import org.apache.wicket.Session;
+import org.apache.wicket.*;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.ResourceRegistrationListener;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
@@ -25,10 +19,7 @@ import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
 import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.servlet.XForwardedRequestWrapperFactory;
-import org.apache.wicket.request.IRequestHandler;
-import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Response;
-import org.apache.wicket.request.Url;
+import org.apache.wicket.request.*;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -81,13 +72,13 @@ public class HatchetHarryApplication extends WebApplication
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
-	public Class<HomePage> getHomePage()
+    public Class<HomePage> getHomePage()
 	{
 		return HomePage.class;
 	}
 
 	@Override
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
 	protected void init()
 	{
 		super.init();
@@ -133,7 +124,7 @@ public class HatchetHarryApplication extends WebApplication
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 5, 2, TimeUnit.SECONDS);
 
-		this.getRootRequestMapperAsCompound().add(new NoVersionMapper(this.getHomePage()));
+		this.getRootRequestMapperAsCompound().add(new NoVersionMapper(HomePage.class));
 
 		this.mountResource("favicon.ico", new PackageResourceReference(HomePage.class,
 			"image/favicon.ico"));

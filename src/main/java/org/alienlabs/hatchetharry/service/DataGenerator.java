@@ -51,7 +51,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class DataGenerator implements InitializingBean, Serializable
 {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
 
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
@@ -179,8 +179,8 @@ public class DataGenerator implements InitializingBean, Serializable
 		if ((this.generateData)
 			&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
 		{
-			Path path = Paths.get(ResourceBundle.getBundle(
-				RuntimeDataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
+			Path path = Paths.get(ResourceBundle.getBundle(DataGenerator.class.getCanonicalName())
+                    .getString("AuraBantDeck"));
 			final byte[] content = Files.readAllBytes(path);
 			final String deckContent = new String(content, "UTF-8");
 			this.importDeckService.importDeck(deckContent, "Aura Bant", false);

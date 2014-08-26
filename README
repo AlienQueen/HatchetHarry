@@ -18,4 +18,4 @@
 - In case of cascading object graph not working:
 
     + annotate the PersistenceService method with  @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-    + retrieve the object from its parent, remove the objet from its parent (nullify it if needed) and merge the retrieved object
+    + retrieve the object from its parent, remove the objet from its parent (nullify it if needed) and do saveOrUpdate(merge(blah)) on the retrieved object

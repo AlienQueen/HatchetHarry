@@ -1,4 +1,4 @@
-window.setTimeout(function () {
+jQuery(function () {
     jQuery("#playCardLink0").click(function () {
         if (document.getElementById('content').nodeName === 'DIV') {
             return false;
@@ -17,4 +17,4 @@ window.setTimeout(function () {
         jQuery('#playCardIndicator').show();
         Wicket.Ajax.get({'u': '${url}&card=' + uuid + '&indexOfClickedCard=' + currentCard + '&side=${side}'});
     });
-}, 1500);
+});

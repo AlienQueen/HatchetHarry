@@ -55,7 +55,7 @@ public class HatchetHarrySession extends WebSession
 		this.reinitSession();
 		this.setAttribute(HatchetHarrySession.IS_LOGGED_IN, false);
 		this.setLocale(Locale.ENGLISH);
-	}
+    }
 
 	public static HatchetHarrySession get()
 	{

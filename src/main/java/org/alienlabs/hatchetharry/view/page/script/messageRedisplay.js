@@ -1,3 +1,3 @@
-window.setTimeout(function () {
+jQuery(function () {
     ${content}
-}, 1000);
+});

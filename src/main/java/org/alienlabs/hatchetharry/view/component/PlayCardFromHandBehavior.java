@@ -100,31 +100,34 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		this.persistenceService.updateGame(game);
 
-		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
-			.getId());
+		final Player p = HatchetHarrySession.get().getPlayer();
 		Deck d = p.getDeck();
 
 		card.setZone(CardZone.BATTLEFIELD);
 
-		final Player owner = this.persistenceService.getPlayer(card.getDeck().getPlayerId());
-		final Side _side = owner.getSide();
+		final Side _side = p.getSide();
 		card.setX(_side.getX());
 		card.setY(_side.getY());
-		card.setDeck(d);
-		this.persistenceService.updateCard(card);
-        d = this.persistenceService.saveOrUpdateDeck(d);
 
-		final List<MagicCard> hand = d.reorderMagicCards(this.persistenceService
-			.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+		final List<MagicCard> hand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(
+			gameId, p.getId(), d.getDeckId());
+		hand.remove(card);
+		d.reorderMagicCards(hand);
 		this.persistenceService.saveOrUpdateAllMagicCards(hand);
-		final List<MagicCard> battlefield = d.reorderMagicCards(this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+
+		final List<MagicCard> battlefield = this.persistenceService
+			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+		d.reorderMagicCards(battlefield);
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
+
+		this.persistenceService.updateCard(card);
+		// this.persistenceService.saveOrUpdateAllMagicCards(hand);
+		this.persistenceService.updatePlayer(p);
 
 		JavaScriptUtils.updateHand(target);
 		target.appendJavaScript("jQuery('#playCardIndicator').hide(); ");
 
-		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
+        final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
 			HatchetHarrySession.get().getPlayer().getName(), gameId, _side);
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 			NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
@@ -132,7 +135,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 			card.getTitle(), null, "");
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 			ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null, card.getTitle(),
-			owner.getName(), null, null, null, null, gameId);
+			p.getName(), null, null, null, null, gameId);
 
 		// post a message for all players in the game
 		final List<BigInteger> allPlayersInGame = this.persistenceService

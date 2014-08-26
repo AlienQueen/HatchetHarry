@@ -2,7 +2,6 @@ package org.alienlabs.hatchetharry.view.component;
 
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -37,8 +36,7 @@ public class SidePlaceholderPanel extends Panel
 		final Side mySide = this.player.getSide();
 
 
-		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid,
-			HatchetHarrySession.get().getGameId(), this.player));
+        this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid, this.player));
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
@@ -48,8 +46,7 @@ public class SidePlaceholderPanel extends Panel
 			+ mySide.getY() + "px; left: " + mySide.getX() + "px;"));
 		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
 
-		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
-			HatchetHarrySession.get().getGameId(), this.player));
+		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid, this.player));
 
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setOutputMarkupId(true);

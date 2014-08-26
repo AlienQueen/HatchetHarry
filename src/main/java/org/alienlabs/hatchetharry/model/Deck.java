@@ -34,7 +34,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "Deck", indexes = { @Index(columnList = "Deck_DeckArchive"), @Index(columnList = "playerId") })
+@Table(name = "Deck", indexes = { @Index(columnList = "Deck_DeckArchive"),
+		@Index(columnList = "playerId") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Deck implements Serializable
@@ -52,7 +53,7 @@ public class Deck implements Serializable
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
 	private Long playerId;
-    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = MagicCard.class)
+	@OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = MagicCard.class)
 	private List<MagicCard> cards = new ArrayList<MagicCard>();
 
 	/**
@@ -171,55 +172,20 @@ public class Deck implements Serializable
 		this.version = _version;
 	}
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.deckArchive == null) ? 0 : this.deckArchive.hashCode());
-		result = (prime * result) + ((this.playerId == null) ? 0 : this.playerId.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Deck)) return false;
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Deck other = (Deck)obj;
-		if (this.deckArchive == null)
-		{
-			if (other.deckArchive != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.deckArchive.equals(other.deckArchive))
-		{
-			return false;
-		}
-		if (this.playerId == null)
-		{
-			if (other.playerId != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.playerId.equals(other.playerId))
-		{
-			return false;
-		}
-		return true;
-	}
+        Deck deck = (Deck) o;
 
+        if (deckId != null ? !deckId.equals(deck.deckId) : deck.deckId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return deckId != null ? deckId.hashCode() : 0;
+    }
 }

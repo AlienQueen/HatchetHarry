@@ -209,79 +209,21 @@ public class Player implements Serializable
         this.version = _version;
     }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.deck == null) ? 0 : this.deck.hashCode());
-		result = (prime * result) + ((this.name == null) ? 0 : this.name.hashCode());
-		result = (prime * result) + ((this.playerId == null) ? 0 : this.playerId.hashCode());
-		result = (prime * result) + ((this.side == null) ? 0 : this.side.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Player other = (Player)obj;
-		if (this.deck == null)
-		{
-			if (other.deck != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.deck.equals(other.deck))
-		{
-			return false;
-		}
-		if (this.name == null)
-		{
-			if (other.name != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.name.equals(other.name))
-		{
-			return false;
-		}
-		if (this.playerId == null)
-		{
-			if (other.playerId != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.playerId.equals(other.playerId))
-		{
-			return false;
-		}
-		if (this.side == null)
-		{
-			if (other.side != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.side.equals(other.side))
-		{
-			return false;
-		}
-		return true;
-	}
+        Player player = (Player) o;
+
+        if (playerId != null ? !playerId.equals(player.playerId) : player.playerId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return playerId != null ? playerId.hashCode() : 0;
+    }
 
 }

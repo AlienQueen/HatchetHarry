@@ -37,7 +37,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "MagicCard", indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"), @Index(columnList = "card_deck") })
+@Table(name = "MagicCard", indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"),
+		@Index(columnList = "card_deck") })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MagicCard implements SlideshowImage, Serializable
@@ -83,7 +84,7 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Column
 	private String ownerSide;
 	@OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-	private Token token;
+    private Token token;
 
 	public MagicCard()
 	{
@@ -306,79 +307,20 @@ public class MagicCard implements SlideshowImage, Serializable
 		this.version = _version;
 	}
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.deck == null) ? 0 : this.deck.hashCode());
-		result = (prime * result) + ((this.gameId == null) ? 0 : this.gameId.hashCode());
-		result = (prime * result) + ((this.ownerSide == null) ? 0 : this.ownerSide.hashCode());
-		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MagicCard)) return false;
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final MagicCard other = (MagicCard)obj;
-		if (this.deck == null)
-		{
-			if (other.deck != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.deck.equals(other.deck))
-		{
-			return false;
-		}
-		if (this.gameId == null)
-		{
-			if (other.gameId != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.gameId.equals(other.gameId))
-		{
-			return false;
-		}
-		if (this.ownerSide == null)
-		{
-			if (other.ownerSide != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.ownerSide.equals(other.ownerSide))
-		{
-			return false;
-		}
-		if (this.uuid == null)
-		{
-			if (other.uuid != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.uuid.equals(other.uuid))
-		{
-			return false;
-		}
-		return true;
-	}
+        MagicCard magicCard = (MagicCard) o;
 
+        if (id != null ? !id.equals(magicCard.id) : magicCard.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

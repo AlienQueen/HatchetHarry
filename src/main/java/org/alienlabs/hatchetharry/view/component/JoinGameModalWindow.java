@@ -185,6 +185,9 @@ public class JoinGameModalWindow extends Panel
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
 				deck.setDeckArchive(JoinGameModalWindow.this.decks.getModelObject()
 					.getDeckArchive());
+				JoinGameModalWindow.this.player.setDeck(deck);
+                deck.setPlayerId(JoinGameModalWindow.this.player.getId());
+				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = JoinGameModalWindow.this.persistenceService
 					.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
@@ -201,7 +204,7 @@ public class JoinGameModalWindow extends Panel
 						"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle() + "Thumb.jpg",
 						cc.getTitle(), "",
 						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(), null);
-					card.setGameId(game.getId());
+					card.setGameId(_id);
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
 					card.setZone(CardZone.LIBRARY);
@@ -221,12 +224,11 @@ public class JoinGameModalWindow extends Panel
 					firstCards.add(aCard);
 				}
 
-				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
+				JoinGameModalWindow.this.persistenceService.updateDeck(deck);
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
 					+ ", deckId: " + deck.getDeckId());
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
-				JoinGameModalWindow.this.player.setDeck(deck);
 				JoinGameModalWindow.this.player.setGame(game);
 				JoinGameModalWindow.this.persistenceService
 					.mergePlayer(JoinGameModalWindow.this.player);

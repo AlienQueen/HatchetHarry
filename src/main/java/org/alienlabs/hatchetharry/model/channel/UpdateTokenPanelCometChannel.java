@@ -19,9 +19,8 @@ public class UpdateTokenPanelCometChannel
 
 	public UpdateTokenPanelCometChannel(final Long _gameId, final String _requestingPlayerName,
 		final String _targetPlayerName, final String _tokenName, final String _counterName,
-		final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
-		final NotifierAction _action, final Token _token, final String _bigImage,
-		final String _ownerSide)
+        final Long _targetNumberOfCounters, final Long _originalNumberOfCounters,
+		final NotifierAction _action, final Token _token, final String _ownerSide)
 	{
 		this.gameId = _gameId;
 		this.requestingPlayerName = _requestingPlayerName;

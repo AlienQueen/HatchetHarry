@@ -245,4 +245,21 @@ public class Token implements Serializable
 		this.version = _version;
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Token)) return false;
+
+        Token token = (Token) o;
+
+        if (id != null ? !id.equals(token.id) : token.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 }

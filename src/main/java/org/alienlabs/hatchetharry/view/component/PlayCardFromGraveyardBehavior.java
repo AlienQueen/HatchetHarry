@@ -66,26 +66,10 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
-
-		if (!CardZone.GRAVEYARD.equals(card.getZone()))
-		{
-			return;
-		}
-		card.setZone(CardZone.BATTLEFIELD);
-
-		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
-		final Game game = this.persistenceService.getGame(gameId);
-		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
-		game.setCurrentPlaceholderId(currentPlaceholderId);
-		this.persistenceService.updateGame(game);
-
 		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
 			.getId());
 		card.setX(p.getSide().getX());
 		card.setY(p.getSide().getY());
-		this.persistenceService.updateCard(card);
-
-		JavaScriptUtils.updateGraveyard(target);
 
 		final List<Deck> d = this.persistenceService.getAllDecks();
 		Deck mydeck = new Deck();
@@ -100,11 +84,28 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 			}
 		}
 
-		final List<MagicCard> graveyard = mydeck.reorderMagicCards(this.persistenceService
-			.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
+		if (!CardZone.GRAVEYARD.equals(card.getZone()))
+		{
+			return;
+		}
+
+		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
+		List<MagicCard> graveyard = this.persistenceService
+			.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
+		graveyard.remove(card);
+		graveyard = mydeck.reorderMagicCards(graveyard);
 		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
-		final List<MagicCard> battlefield = mydeck.reorderMagicCards(this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
+
+		final Game game = this.persistenceService.getGame(gameId);
+		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
+		game.setCurrentPlaceholderId(currentPlaceholderId);
+		this.persistenceService.updateGame(game);
+
+		List<MagicCard> battlefield = this.persistenceService
+			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
+		battlefield.add(card);
+		card.setZone(CardZone.BATTLEFIELD);
+        battlefield = mydeck.reorderMagicCards(battlefield);
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
@@ -113,6 +114,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 			NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
 				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
 			card.getTitle(), null, "");
+
+		JavaScriptUtils.updateGraveyard(target);
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 			.giveAllPlayersFromGame(gameId);

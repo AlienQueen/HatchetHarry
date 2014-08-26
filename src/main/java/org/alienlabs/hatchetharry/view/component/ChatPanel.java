@@ -72,7 +72,7 @@ public class ChatPanel extends Panel
 	@SpringBean
 	PersistenceService persistenceService;
 
-	public ChatPanel(final String id, final Long _playerId)
+    public ChatPanel(final String id)
 	{
 		super(id);
 		Injector.get().inject(this);

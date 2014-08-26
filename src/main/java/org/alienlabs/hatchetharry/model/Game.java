@@ -89,43 +89,20 @@ public class Game implements Serializable
         this.version = _version;
     }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.players == null) ? 0 : this.players.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Game)) return false;
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Game other = (Game)obj;
-		if (this.players == null)
-		{
-			if (other.players != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.players.equals(other.players))
-		{
-			return false;
-		}
-		return true;
-	}
+        Game game = (Game) o;
 
+        if (gameId != null ? !gameId.equals(game.gameId) : game.gameId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return gameId != null ? gameId.hashCode() : 0;
+    }
 }

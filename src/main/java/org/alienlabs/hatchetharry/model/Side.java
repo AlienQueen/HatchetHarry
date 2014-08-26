@@ -123,67 +123,21 @@ public class Side implements Serializable
         this.version = _version;
     }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.game == null) ? 0 : this.game.hashCode());
-		result = (prime * result) + ((this.sideId == null) ? 0 : this.sideId.hashCode());
-		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Side)) return false;
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Side other = (Side)obj;
-		if (this.game == null)
-		{
-			if (other.game != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.game.equals(other.game))
-		{
-			return false;
-		}
-		if (this.sideId == null)
-		{
-			if (other.sideId != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.sideId.equals(other.sideId))
-		{
-			return false;
-		}
-		if (this.uuid == null)
-		{
-			if (other.uuid != null)
-			{
-				return false;
-			}
-		}
-		else if (!this.uuid.equals(other.uuid))
-		{
-			return false;
-		}
-		return true;
-	}
+        Side side = (Side) o;
+
+        if (sideId != null ? !sideId.equals(side.sideId) : side.sideId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return sideId != null ? sideId.hashCode() : 0;
+    }
 
 }
