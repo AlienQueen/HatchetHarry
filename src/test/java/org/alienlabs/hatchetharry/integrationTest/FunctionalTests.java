@@ -771,7 +771,7 @@ public class FunctionalTests
 			.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		FunctionalTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
-		Thread.sleep(15000);
+		Thread.sleep(20000);
 
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 			.executeScript(FunctionalTests.SCROLL_DOWN);
