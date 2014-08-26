@@ -19,6 +19,7 @@
 package org.alienlabs.hatchetharry.service;
 
 import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,8 +49,9 @@ import org.springframework.beans.factory.annotation.Required;
  * @author ivaynberg
  * @author Kare Nuorteva
  */
-public class DataGenerator implements InitializingBean
+public class DataGenerator implements InitializingBean, Serializable
 {
+    private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
 
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
@@ -190,7 +192,7 @@ public class DataGenerator implements InitializingBean
 			.getDeckArchiveByName("burn mono-Red")))
 			|| ((this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black")
 				.getCards().isEmpty()) && (this.persistenceService.getDeckByDeckArchiveName(
-                "burn mono-Red").getCards().isEmpty())))
+				"burn mono-Red").getCards().isEmpty())))
 		{
 			DataGenerator.LOGGER.info("importing decks");
 
@@ -258,14 +260,14 @@ public class DataGenerator implements InitializingBean
 						final List<MagicCard> cards = deck1.getCards();
 						cards.add(card);
 						deck1.setCards(cards);
-//						this.persistenceService.saveCard(card);
+						// this.persistenceService.saveCard(card);
 					}
 					else
 					{
 						final List<MagicCard> cards = deck2.getCards();
 						cards.add(card);
 						deck2.setCards(cards);
-//						this.persistenceService.saveCard(card);
+						// this.persistenceService.saveCard(card);
 					}
 				}
 

@@ -524,7 +524,7 @@ public class PersistenceService implements Serializable
 			}
 			List<MagicCard> cards = this.getAllCardsFromDeck(p.getDeck().getDeckId());
 			p.getDeck().setCards(cards);
-            this.updatePlayer(p);
+			this.updatePlayer(p);
 		}
 
 		return all;
@@ -871,7 +871,7 @@ public class PersistenceService implements Serializable
 			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId order by mc.zoneOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.HAND.toString().toUpperCase());
+		query.setString("zoneName", CardZone.HAND.toString().toUpperCase(Locale.ENGLISH));
 		query.setLong("playerId", playerId);
 		query.setLong("deckId", deckId);
 
@@ -1029,7 +1029,7 @@ public class PersistenceService implements Serializable
 			.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId");
 		query.addEntity(MagicCard.class);
 		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.GRAVEYARD.toString().toUpperCase());
+        query.setString("zoneName", CardZone.GRAVEYARD.toString().toUpperCase(Locale.ENGLISH));
 		query.setLong("playerId", playerId);
 		query.setLong("deckId", deckId);
 

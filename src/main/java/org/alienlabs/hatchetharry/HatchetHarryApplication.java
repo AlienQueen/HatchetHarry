@@ -87,6 +87,7 @@ public class HatchetHarryApplication extends WebApplication
 	}
 
 	@Override
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
 	protected void init()
 	{
 		super.init();
@@ -375,7 +376,7 @@ public class HatchetHarryApplication extends WebApplication
 			"image/reveal.png"));
 		this.mountResource("image/indicator.gif", new PackageResourceReference(HomePage.class,
 			"image/indicator.gif"));
-        this.mountResource("image/loader.gif", new PackageResourceReference(HomePage.class,
+		this.mountResource("image/loader.gif", new PackageResourceReference(HomePage.class,
 			"image/loader.gif"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));

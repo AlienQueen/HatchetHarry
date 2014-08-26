@@ -177,7 +177,7 @@ import com.google.common.io.Files;
 public class HomePage extends TestReportPage
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
-	private static final long serialVersionUID = 1L;
+
 	public final HatchetHarrySession session;
 	final WebMarkupContainer galleryParent;
 	final WebMarkupContainer galleryRevealParent;
