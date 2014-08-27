@@ -251,6 +251,13 @@ jQuery(function () {
                 content: "This is a card. You can move it by drag and drop using the small, green handle on its side. If you do so, the opponent will see its move matched in her own browser. Additionaly, you can call a context menu by right-clicking on the card itself."
             },
             {
+                element: "#baldu",
+                title: "The card",
+                placement: "right",
+                trigger: 'manual',
+                content: "One more thing about this card: using the small green arrow on its other side, you can tap and untap it."
+            },
+            {
                 element: "#tour3",
                 title: "Play cards",
                 placement: "top",
@@ -263,6 +270,76 @@ jQuery(function () {
                 placement: "bottom",
                 trigger: 'manual',
                 content: "This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu entries."
+            },
+            {
+                element: "#page-wrap",
+                title: "Your hand",
+                placement: "right",
+                trigger: 'manual',
+                content: "This is your hand. You can browse the cards in it and play one of them."
+            },
+            {
+                element: "#tour_10",
+                title: "The dock",
+                placement: "top",
+                trigger: 'manual',
+                content: "This is the dock. You can show the different zones of Magic using its icons."
+            },
+            {
+                element: "#tour_10",
+                title: "Dock button",
+                placement: "top",
+                trigger: 'manual',
+                content: "Hide or display your hand using this button."
+            },
+            {
+                element: "#tour_11",
+                title: "Dock button",
+                placement: "top",
+                trigger: 'manual',
+                content: "Browse through your graveyard using this button."
+            },
+            {
+                element: "#tour_12",
+                title: "Dock button",
+                placement: "top",
+                trigger: 'manual',
+                content: "Browse through the exiled cards using this button."
+            },
+            {
+                element: "#tour_13",
+                title: "Hide all",
+                placement: "top",
+                trigger: 'manual',
+                content: "Hide every zone of the game except the battlefield using this button. Only the permanents remain, so that you can have a vista of the game. If you click here again, the previously displayed zones will be restored, at the same place."
+            },
+            {
+                element: "#tour_14",
+                title: "The library",
+                placement: "top",
+                trigger: 'manual',
+                content: "Browse through your library using this button. Your opponent will be notified of this action. Beware: you're supposed to play fair! Don't forget the rules of the game."
+            },
+            {
+                element: "#chat",
+                title: "The chat",
+                placement: "bottom",
+                trigger: 'manual',
+                content: "This is a chat. Its behavior is standard and you DON'T need to refresh your browser in order to receive new messages."
+            },
+            {
+                element: "#dataBoxParent",
+                title: "The Databox",
+                placement: "bottom",
+                trigger: 'manual',
+                content: "This is what we call the Databox: it gives the life point totals of all players of the game. If you click on one of these numbers, you can set it up directly. And you can use the 'plus' and 'minus' buttons."
+            },
+            {
+                element: "#tour_1",
+                title: "You're done!",
+                placement: "bottom",
+                trigger: 'manual',
+                content: "Have fun!"
             }
         ]});
 
