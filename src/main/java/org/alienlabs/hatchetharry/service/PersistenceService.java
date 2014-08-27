@@ -2,12 +2,9 @@ package org.alienlabs.hatchetharry.service;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.ChatMessage;
@@ -1191,16 +1188,60 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void deleteCounter(final Counter counter, final MagicCard card, final Token token)
 	{
-		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty()))
+		if ((card != null) && (card.getCounters() != null) && (!card.getCounters().isEmpty())
+			&& (token == null))
 		{
-			card.getCounters().remove(counter);
-			this.counterDao.getSession().delete(counter);
+			System.out.println("[[[");
+			for (MagicCard mc : HatchetHarrySession.get().getPlayer().getDeck().getCards())
+			{
+				if (mc.equals(card))
+				{
+					System.out.println("~~~");
+					this.deckDao.getSession().saveOrUpdate(
+						this.getDeck(counter.getCard().getDeck().getDeckId()));
+					System.out.println("~~~");
+					this.playerDao.getSession().saveOrUpdate(
+						this.getPlayer(counter.getCard().getDeck().getPlayerId()));
+					System.out.println("~~~");
+					counter.getCard().setDeck(null);
+					System.out.println("~~~");
+					counter.setCard(null);
+
+					System.out.println("~~~");
+					Set<Counter> set = new HashSet<Counter>();
+					for (Counter c : card.getCounters())
+					{
+						if (c.getId().longValue() != counter.getId().longValue())
+						{
+							set.add(c);
+						}
+						else
+						{
+							System.out.println("true: " + counter);
+						}
+					}
+					mc.setCounters(set);
+					this.magicCardDao.getSession().saveOrUpdate(
+                            this.magicCardDao.getSession().merge(mc));
+
+					System.out.println("~~~");
+					this.counterDao.getSession()
+						.delete(this.counterDao.getSession().merge(counter));
+					break;
+				}
+			}
+			// System.out.println("[[[");
+			// this.magicCardDao.getSession().delete(counter);
 		}
 		else if ((token != null) && (token.getCounters() != null)
 			&& (!token.getCounters().isEmpty()))
 		{
+			System.out.println("[[[");
 			token.getCounters().remove(counter);
-			this.counterDao.getSession().delete(counter);
+			this.updatePlayer(HatchetHarrySession.get().getPlayer());
+			this.updateToken(token);
+			this.counterDao.getSession().delete(this.counterDao.getSession().merge(counter));
+			// this.counterDao.getSession().delete(counter);
 		}
 	}
 

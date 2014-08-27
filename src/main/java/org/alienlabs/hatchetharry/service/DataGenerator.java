@@ -167,7 +167,7 @@ public class DataGenerator implements InitializingBean, Serializable
 			fake.setCards(null);
 			fake.setPlayerId(-1l);
 
-			baldu.setDeck(fake);
+            baldu.setDeck(fake);
 			baldu.setGameId(-1l);
 			baldu.setX(350l);
 			baldu.setY(350l);

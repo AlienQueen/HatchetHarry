@@ -56,10 +56,10 @@ public class Token implements Serializable
 	private Long y = -1l; // y coordinate
 	@Column
 	private boolean tapped = false;
-	@OneToMany(fetch = FetchType.EAGER, targetEntity = Counter.class)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Counter.class, orphanRemoval = true)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
 	private Set<Counter> counters = new HashSet<Counter>();
-	@OneToOne(cascade = { CascadeType.MERGE })
+    @OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Player_Token")
 	private Player player = new Player();
 	@Column

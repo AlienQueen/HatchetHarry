@@ -121,12 +121,6 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <listener>
-        <listener-class>
-            org.springframework.web.context.ContextLoaderListener
-        </listener-class>
-    </listener>
-
     <session-config>
         <session-timeout>45</session-timeout>
         <tracking-mode>COOKIE</tracking-mode>

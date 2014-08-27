@@ -46,13 +46,13 @@ public class Deck implements Serializable
 	private Long deckId;
 	@Column(name = "VERSION", length = 20)
 	private String version;
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "Deck_DeckArchive")
 	private DeckArchive deckArchive = new DeckArchive();
 	@Column
 	private Long playerId;
 	@OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = MagicCard.class)
-	private List<MagicCard> cards = new ArrayList<MagicCard>();
+    private List<MagicCard> cards = new ArrayList<MagicCard>();
 
 	/**
 	 * Shuffle the library.

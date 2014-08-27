@@ -77,11 +77,11 @@ public class MagicCard implements SlideshowImage, Serializable
 	private CardZone zone;
 	@Column
 	private Long zoneOrder = 0l;
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "card", targetEntity = Counter.class)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "card", targetEntity = Counter.class, orphanRemoval = true)
 	private Set<Counter> counters = new HashSet<Counter>();
 	@Column
 	private String ownerSide;
-	@OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Token token;
 
 	public MagicCard()

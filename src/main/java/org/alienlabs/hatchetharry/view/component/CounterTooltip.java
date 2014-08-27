@@ -436,7 +436,7 @@ public class CounterTooltip extends Panel
 
 					this.targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
 						CounterTooltip.this.card.getDeck().getPlayerId()).getName();
-					CounterTooltip.this.persistenceService.deleteCounter(this.counter,
+                    CounterTooltip.this.persistenceService.deleteCounter(this.counter,
 						CounterTooltip.this.card, null);
 
 

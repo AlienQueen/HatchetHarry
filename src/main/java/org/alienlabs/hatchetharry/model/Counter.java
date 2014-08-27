@@ -1,20 +1,10 @@
 package org.alienlabs.hatchetharry.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Counter", indexes = { @Index(columnList = "card"), @Index(columnList = "token") })
@@ -33,11 +23,11 @@ public class Counter implements Serializable, Comparable<Counter>
 	@Column
 	private Long numberOfCounters = 0l;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = MagicCard.class)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = MagicCard.class)
 	@JoinColumn(name = "card")
 	private MagicCard card;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Token.class)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Token.class)
 	@JoinColumn(name = "token")
 	private Token token;
 

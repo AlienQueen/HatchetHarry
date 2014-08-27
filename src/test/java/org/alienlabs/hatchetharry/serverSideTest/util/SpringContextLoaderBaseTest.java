@@ -38,7 +38,7 @@ public class SpringContextLoaderBaseTest
 	protected AtmosphereTester waTester;
 
 	@Before
-	public void setUpBeforeClassWithMocks() throws IOException
+	public void setUpWithMocks() throws IOException
 	{
 		// Init the EventBus
 		this.webApp = new HatchetHarryApplication()
@@ -75,7 +75,7 @@ public class SpringContextLoaderBaseTest
 	}
 
 	@After
-	public void tearDownAfterClass()
+	public void tearDown()
 	{
 		// SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
 		HatchetHarrySession.get().reinitSession();
