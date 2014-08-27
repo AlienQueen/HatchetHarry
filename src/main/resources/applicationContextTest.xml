@@ -97,9 +97,9 @@
                 <!-- We tell Hibernate that we use EhCache as a second-level cache -->
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
-                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
                 <prop key="hibernate.cache.use_structured_entries">true</prop>
-                <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
+                <prop key="hibernate.cache.generate_statistics">true</prop>
                 <!-- To avoid "Deadlock found when trying to get lock; try restarting transaction" -->
                 <prop key="hibernate.jdbc.batch_size">100</prop>
                 <prop key="hibernate.order_inserts">true</prop>
