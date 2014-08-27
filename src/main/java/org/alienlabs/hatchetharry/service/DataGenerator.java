@@ -88,10 +88,10 @@ public class DataGenerator implements InitializingBean, Serializable
 	private CardCollectionDao cardCollectionDao;
 
 	@SpringBean
-	private transient boolean generateData;
+	private boolean generateData;
 
 	@SpringBean
-	private transient boolean generateCardCollection;
+    private boolean generateCardCollection;
 
 	@SpringBean
 	private ImportDeckService importDeckService;
@@ -180,7 +180,7 @@ public class DataGenerator implements InitializingBean, Serializable
 			&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
 		{
 			Path path = Paths.get(ResourceBundle.getBundle(DataGenerator.class.getCanonicalName())
-                    .getString("AuraBantDeck"));
+				.getString("AuraBantDeck"));
 			final byte[] content = Files.readAllBytes(path);
 			final String deckContent = new String(content, "UTF-8");
 			this.importDeckService.importDeck(deckContent, "Aura Bant", false);

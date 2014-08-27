@@ -72,13 +72,12 @@ public class HatchetHarryApplication extends WebApplication
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
-    public Class<HomePage> getHomePage()
+	public Class<HomePage> getHomePage()
 	{
 		return HomePage.class;
 	}
 
 	@Override
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
 	protected void init()
 	{
 		super.init();
@@ -110,6 +109,7 @@ public class HatchetHarryApplication extends WebApplication
 		final Runnable beeper = new Runnable()
 		{
 			@Override
+            @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
 			public void run()
 			{
 				try
