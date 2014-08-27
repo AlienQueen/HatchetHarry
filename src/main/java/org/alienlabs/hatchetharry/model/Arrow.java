@@ -1,12 +1,20 @@
 package org.alienlabs.hatchetharry.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
-@Table(name = "Arrow", indexes = { @Index(columnList = "gameId"), @Index(columnList = "source"), @Index(columnList = "target") })
+@Table(name = "Arrow", indexes = { @Index(columnList = "gameId"), @Index(columnList = "source"),
+		@Index(columnList = "target") })
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Arrow implements Serializable
@@ -16,9 +24,9 @@ public class Arrow implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-    @Column(name="VERSION", length=20)
-    private String version;
-    @Column
+	@Column(name = "VERSION", length = 20)
+	private String version;
+	@Column
 	private Long gameId;
 	@Column
 	private String source;
@@ -65,12 +73,14 @@ public class Arrow implements Serializable
 		this.target = _target;
 	}
 
-    public String getVersion() {
-        return this.version;
-    }
+	public String getVersion()
+	{
+		return this.version;
+	}
 
-    public void setVersion(String _version) {
-        this.version = _version;
-    }
+	public void setVersion(final String _version)
+	{
+		this.version = _version;
+	}
 
 }

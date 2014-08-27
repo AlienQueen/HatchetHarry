@@ -30,9 +30,9 @@ public class Player implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long playerId;
-    @Column(name="VERSION", length=20)
-    private String version;
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity=Game.class)
+	@Column(name = "VERSION", length = 20)
+	private String version;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Game.class)
 	private Game game = new Game();
 	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "Player_Side")
@@ -43,7 +43,7 @@ public class Player implements Serializable
 	private String jsessionid;
 	@Column
 	private Long lifePoints;
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Deck.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Deck.class)
 	@JoinColumn(name = "deck")
 	private Deck deck;
 	@Column
@@ -201,29 +201,44 @@ public class Player implements Serializable
 		this.sideUuid = _sideUuid;
 	}
 
-    public String getVersion() {
-        return this.version;
-    }
+	public String getVersion()
+	{
+		return this.version;
+	}
 
-    public void setVersion(String _version) {
-        this.version = _version;
-    }
+	public void setVersion(final String _version)
+	{
+		this.version = _version;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Player)) return false;
+	@Override
+	public boolean equals(final Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		if (!(o instanceof Player))
+		{
+			return false;
+		}
 
-        Player player = (Player) o;
+		final Player player = (Player)o;
 
-        if (playerId != null ? !playerId.equals(player.playerId) : player.playerId != null) return false;
+		if (this.playerId != null
+			? !this.playerId.equals(player.playerId)
+			: player.playerId != null)
+		{
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        return playerId != null ? playerId.hashCode() : 0;
-    }
+	@Override
+	public int hashCode()
+	{
+		return this.playerId != null ? this.playerId.hashCode() : 0;
+	}
 
 }

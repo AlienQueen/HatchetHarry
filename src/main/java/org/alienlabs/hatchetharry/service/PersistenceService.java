@@ -432,13 +432,13 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public Deck saveOrUpdateDeck(Deck d)
+	public Deck saveOrUpdateDeck(final Deck d)
 	{
 		final Session session = this.deckDao.getSession();
 		// Player p = this.getPlayer(d.getPlayerId());
 		// Deck _deck = p.getDeck();
 		// p.setDeck(null);
-		session.saveOrUpdate((Deck)session.merge(d));
+		session.saveOrUpdate(session.merge(d));
 		return d;
 	}
 
@@ -514,15 +514,15 @@ public class PersistenceService implements Serializable
 			.createQuery("from Player player0_ where player0_.game = :game ");
 		query.setLong("game", l);
 
-		List<Player> all = query.list();
-		for (Player p : all)
+		final List<Player> all = query.list();
+		for (final Player p : all)
 		{
 			if (null == p.getDeck())
 			{
-				Deck d = this.getDeckByDeckArchiveName("aggro-combo Red / Black");
+				final Deck d = this.getDeckByDeckArchiveName("aggro-combo Red / Black");
 				p.setDeck(d);
 			}
-			List<MagicCard> cards = this.getAllCardsFromDeck(p.getDeck().getDeckId());
+			final List<MagicCard> cards = this.getAllCardsFromDeck(p.getDeck().getDeckId());
 			p.getDeck().setCards(cards);
 			this.updatePlayer(p);
 		}
@@ -969,7 +969,7 @@ public class PersistenceService implements Serializable
 			.createSQLQuery("select t.* from Token t where t.gameId = :gameId and t.Player_Token = :playerId ");
 		query.addEntity(Token.class);
 		query.setLong("gameId", gameId);
-        query.setLong("playerId", playerId);
+		query.setLong("playerId", playerId);
 
 		try
 		{

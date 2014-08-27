@@ -72,7 +72,7 @@ public class CardPanel extends Panel
 
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
 		cardHandle.setOutputMarkupId(true);
-		String uuidValidForJs = this.uuid.toString().replace("-", "_");
+		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		cardHandle.setMarkupId("cardHandle" + uuidValidForJs);
 		cardHandle.add(new AttributeModifier("style", "position: absolute; top: "
 			+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
@@ -162,7 +162,7 @@ public class CardPanel extends Panel
 		}
 		else
 		{
-            cardImage.setMarkupId("card" + uuidValidForJs);
+			cardImage.setMarkupId("card" + uuidValidForJs);
 		}
 		cardImage.add(new AttributeModifier("class", "clickableCard"));
 

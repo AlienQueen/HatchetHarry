@@ -248,7 +248,8 @@ public class HomePage extends TestReportPage
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
 	public HomePage(final PageParameters pp) throws IOException
 	{
-		// If we put "test".equals(pp.get("test").toString()) it breaks everything!
+		// If we put "test".equals(pp.get("test").toString()) it breaks
+		// everything!
 		if ((null != pp) && ("test".equals(pp.get("test"))))
 		{
 			this.persistenceService = this.mockPersistenceService();
@@ -321,7 +322,7 @@ public class HomePage extends TestReportPage
 				&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer().getSide()
 					.getSideName())))
 			{
-				CardPanel baldu = new CardPanel("baldu", card.getSmallImageFilename(),
+				final CardPanel baldu = new CardPanel("baldu", card.getSmallImageFilename(),
 					card.getUuidObject(), this.player);
 				balduParent.add(baldu);
 				this.session.getAllMagicCardsInBattleField().add(card);
@@ -374,7 +375,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.10.0 (release Test It All),");
-        final Label message2 = new Label("message2", "built on Tuesday, 26th of August 2014.");
+		final Label message2 = new Label("message2", "built on Tuesday, 26th of August 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -646,6 +647,11 @@ public class HomePage extends TestReportPage
 
 				final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
 				{
+					/**
+					 *
+					 */
+					private static final long serialVersionUID = 1L;
+
 					{
 						this.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()));
 					}
@@ -1109,9 +1115,10 @@ public class HomePage extends TestReportPage
 
 		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
 		p.setDeck(this.deck);
-		List<MagicCard> mc = this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId());
+		final List<MagicCard> mc = this.persistenceService.getAllCardsFromDeck(this.deck
+			.getDeckId());
 
-		for (MagicCard card : mc)
+		for (final MagicCard card : mc)
 		{
 			card.setGameId(game.getId());
 		}
@@ -1474,7 +1481,7 @@ public class HomePage extends TestReportPage
 			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
 			final ArrayList<MagicCard> _cards = new ArrayList<MagicCard>();
 
-			for (MagicCard mc : this.deck.getCards())
+			for (final MagicCard mc : this.deck.getCards())
 			{
 				mc.setGameId(this.session.getGameId());
 				mc.getDeck().setPlayerId(this.player.getId());
@@ -1522,7 +1529,7 @@ public class HomePage extends TestReportPage
 		{
 			this.createPlayer();
 			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
-			System.out.println("~~~ " + deck.getCards().size());
+			System.out.println("~~~ " + this.deck.getCards().size());
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 
 			for (int i = 0; i < this.deck.getCards().size(); i++)
@@ -3018,7 +3025,8 @@ public class HomePage extends TestReportPage
 
 	private final void restoreBattlefieldState()
 	{
-		// Sessions must be cleaned up between server restarts, as it's too much difficult
+		// Sessions must be cleaned up between server restarts, as it's too much
+		// difficult
 		// to manage a state recovery
 		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
 			this.session.getPlayer().getId()).isHandDisplayed();
@@ -3066,7 +3074,7 @@ public class HomePage extends TestReportPage
 					+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
 					+ mc.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY() + "px\");\n");
 
-				String uuidValidForJs = mc.getUuid().replace("-", "_");
+				final String uuidValidForJs = mc.getUuid().replace("-", "_");
 				if (mc.isTapped())
 				{
 					js.append("jQuery('#card" + uuidValidForJs + "').rotate(90); ");

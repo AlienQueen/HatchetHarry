@@ -4,9 +4,8 @@ import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTes
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.tester.FormTester;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.fail;
 
 
 public class CounterTooltipTest extends SpringContextLoaderBaseTest
@@ -139,12 +138,12 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		try
 		{
 			super.tester
-                    .assertLabel(
+				.assertLabel(
 					"parentPlaceholder:tooltips:9:cardTooltip:counterPanel:counters:1:setCounterForm:counterName",
 					"charge");
-			fail();
+			Assert.fail();
 		}
-		catch (NullPointerException e)
+		catch (final NullPointerException e)
 		{
 			// Success
 		}
@@ -178,9 +177,9 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 				.assertLabel(
 					"parentPlaceholder:tooltips:11:cardTooltip:counterPanel:counters:0:setCounterForm:counterName",
 					"blah");
-			fail();
+			Assert.fail();
 		}
-		catch (NullPointerException e)
+		catch (final NullPointerException e)
 		{
 			// Success
 		}

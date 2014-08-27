@@ -35,7 +35,7 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, String> variables = new HashMap<String, String>();
 		variables.put("url", this.getCallbackUrl().toString());
-		String uuidValidForJs = this.uuid.toString().replace("-", "_");
+		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		variables.put("uuidValidForJs", uuidValidForJs);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,

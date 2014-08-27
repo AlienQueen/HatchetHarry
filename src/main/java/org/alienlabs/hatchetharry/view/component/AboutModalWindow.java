@@ -16,7 +16,7 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class AboutModalWindow extends Panel
 {
-	private static final long serialVersionUID =1L;
+	private static final long serialVersionUID = 1L;
 
 	public AboutModalWindow(final String id, final ModalWindow _modal)
 	{

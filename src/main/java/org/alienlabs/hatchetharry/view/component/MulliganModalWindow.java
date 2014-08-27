@@ -50,6 +50,11 @@ public class MulliganModalWindow extends Panel
 		@SuppressWarnings("serial")
 		final ArrayList<String> mulligan = new ArrayList<String>()
 		{
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 1L;
+
 			{
 				this.add("1");
 				this.add("2");

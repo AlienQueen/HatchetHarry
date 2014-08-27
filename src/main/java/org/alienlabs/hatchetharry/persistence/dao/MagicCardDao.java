@@ -49,7 +49,7 @@ public interface MagicCardDao extends Serializable
 	 * @param MagicCard
 	 * @return persistent instance of contact
 	 */
-    MagicCard save(MagicCard card);
+	MagicCard save(MagicCard card);
 
 	/**
 	 * Delete a {@link MagicCard} from the DB, given it's <tt>id</tt>.

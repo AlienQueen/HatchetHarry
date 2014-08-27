@@ -36,17 +36,18 @@ public class SidePlaceholderPanel extends Panel
 		final Side mySide = this.player.getSide();
 
 
-        this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid, this.player));
+		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid, this.player));
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
-		String uuidValidForJs = this.uuid.toString().replace("-", "_");
+		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		sidePlaceholder.setMarkupId("sidePlaceholder" + uuidValidForJs);
 		sidePlaceholder.add(new AttributeModifier("style", "position: absolute; top: "
 			+ mySide.getY() + "px; left: " + mySide.getX() + "px;"));
 		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
 
-		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid, this.player));
+		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
+			this.player));
 
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setOutputMarkupId(true);

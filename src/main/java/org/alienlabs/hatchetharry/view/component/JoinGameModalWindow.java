@@ -186,7 +186,7 @@ public class JoinGameModalWindow extends Panel
 				deck.setDeckArchive(JoinGameModalWindow.this.decks.getModelObject()
 					.getDeckArchive());
 				JoinGameModalWindow.this.player.setDeck(deck);
-                deck.setPlayerId(JoinGameModalWindow.this.player.getId());
+				deck.setPlayerId(JoinGameModalWindow.this.player.getId());
 				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = JoinGameModalWindow.this.persistenceService

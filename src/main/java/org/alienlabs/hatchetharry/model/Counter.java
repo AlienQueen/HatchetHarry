@@ -26,18 +26,18 @@ public class Counter implements Serializable, Comparable<Counter>
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long counterId;
-    @Column(name="VERSION", length=20)
-    private String version;
+	@Column(name = "VERSION", length = 20)
+	private String version;
 	@Column
 	private String counterName;
 	@Column
 	private Long numberOfCounters = 0l;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=MagicCard.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = MagicCard.class)
 	@JoinColumn(name = "card")
 	private MagicCard card;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Token.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Token.class)
 	@JoinColumn(name = "token")
 	private Token token;
 
@@ -91,13 +91,15 @@ public class Counter implements Serializable, Comparable<Counter>
 		this.token = _token;
 	}
 
-    public String getVersion() {
-        return this.version;
-    }
+	public String getVersion()
+	{
+		return this.version;
+	}
 
-    public void setVersion(String _version) {
-        this.version = _version;
-    }
+	public void setVersion(final String _version)
+	{
+		this.version = _version;
+	}
 
 	/**
 	 * This class defines a compareTo(...) method and doesn't inherit its equals() method from
@@ -126,20 +128,33 @@ public class Counter implements Serializable, Comparable<Counter>
 		return this.getCounterName().compareTo(c.getCounterName());
 	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Counter)) return false;
+	@Override
+	public boolean equals(final Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		if (!(o instanceof Counter))
+		{
+			return false;
+		}
 
-        Counter counter = (Counter) o;
+		final Counter counter = (Counter)o;
 
-        if (counterId != null ? !counterId.equals(counter.counterId) : counter.counterId != null) return false;
+		if (this.counterId != null
+			? !this.counterId.equals(counter.counterId)
+			: counter.counterId != null)
+		{
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        return counterId != null ? counterId.hashCode() : 0;
-    }
+	@Override
+	public int hashCode()
+	{
+		return this.counterId != null ? this.counterId.hashCode() : 0;
+	}
 }

@@ -51,6 +51,11 @@ public class HomePageTest
 		// Init the EventBus
 		HomePageTest.webApp = new HatchetHarryApplication()
 		{
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void init()
 			{
@@ -67,7 +72,7 @@ public class HomePageTest
 	// Assert dock element is present and contains a .gif
 	private static void testDockElement(final String name)
 	{
-		String document = HomePageTest.tester.getLastResponse().getDocument();
+		final String document = HomePageTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "title", name,
 			false);
 		Assert.assertNotNull(tagTester);
@@ -105,7 +110,7 @@ public class HomePageTest
 	public void testFirstRenderBaldu() throws IOException
 	{
 		// Test the baldu and its different children
-		this.tester.startPage(HomePage.class);
+		HomePageTest.tester.startPage(HomePage.class);
 		HomePageTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
 		final CardPanel baldu = (CardPanel)HomePageTest.tester
 			.getComponentFromLastRenderedPage("balduParent:baldu");
@@ -123,12 +128,12 @@ public class HomePageTest
 	@Test
 	public void testRenderHand() throws IOException
 	{
-		this.tester.startPage(HomePage.class);
+		HomePageTest.tester.startPage(HomePage.class);
 		// assert hand is present
 		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 
 		// assert URL of a thumbnail
-		String document = HomePageTest.tester.getLastResponse().getDocument();
+		final String document = HomePageTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
 			"nav-thumb", false);
 		Assert.assertNotNull(tagTester);
@@ -153,7 +158,7 @@ public class HomePageTest
 	@Test
 	public void testRenderClock() throws IOException
 	{
-		this.tester.startPage(HomePage.class);
+		HomePageTest.tester.startPage(HomePage.class);
 		// assert clock is present
 		HomePageTest.tester.assertComponent("clockPanel", ClockPanel.class);
 
@@ -166,9 +171,9 @@ public class HomePageTest
 	@Test
 	public void testRenderMenuBar() throws IOException
 	{
-		this.tester.startPage(HomePage.class);
+		HomePageTest.tester.startPage(HomePage.class);
 		// Assert menubar
-		String document = HomePageTest.tester.getLastResponse().getDocument();
+		final String document = HomePageTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
 			"shift-bottom", false);
 		Assert.assertNotNull(tagTester);
@@ -190,7 +195,7 @@ public class HomePageTest
 	@Test
 	public void testRenderDataBox() throws IOException
 	{
-		this.tester.startPage(HomePage.class);
+		HomePageTest.tester.startPage(HomePage.class);
 		// assert DataBox is present
 		HomePageTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
 
@@ -207,7 +212,7 @@ public class HomePageTest
 	@Test
 	public void testRenderChat() throws IOException
 	{
-		this.tester.startPage(HomePage.class);
+		HomePageTest.tester.startPage(HomePage.class);
 		// assert chat is present
 		HomePageTest.tester.assertComponent("chatPanel", ChatPanel.class);
 		HomePageTest.tester.assertComponent("chatPanel:chatForm:user", RequiredTextField.class);
@@ -217,7 +222,7 @@ public class HomePageTest
 	@Test
 	public void testRenderDock() throws IOException
 	{
-		this.tester.startPage(HomePage.class);
+		HomePageTest.tester.startPage(HomePage.class);
 		// Assert hand
 		HomePageTest.testDockElement("Hand");
 

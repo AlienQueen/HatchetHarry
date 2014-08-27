@@ -101,7 +101,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateGame(game);
 
 		final Player p = HatchetHarrySession.get().getPlayer();
-		Deck d = p.getDeck();
+		final Deck d = p.getDeck();
 
 		card.setZone(CardZone.BATTLEFIELD);
 
@@ -127,7 +127,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		JavaScriptUtils.updateHand(target);
 		target.appendJavaScript("jQuery('#playCardIndicator').hide(); ");
 
-        final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
+		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
 			HatchetHarrySession.get().getPlayer().getName(), gameId, _side);
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 			NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
@@ -150,7 +150,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		String uuidAsString = this.uuidToLookFor.toString();
+		final String uuidAsString = this.uuidToLookFor.toString();
 		variables.put("uuid", uuidAsString);
 		variables.put("uuidValidForJs", uuidAsString.replace("-", "_"));
 		variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));

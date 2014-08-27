@@ -40,6 +40,11 @@ public class ImportDeckServiceTest
 		// Init the EventBus
 		ImportDeckServiceTest.webApp = new HatchetHarryApplication()
 		{
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void init()
 			{
@@ -79,7 +84,7 @@ public class ImportDeckServiceTest
 		final int initialNumberOfMagicCards = persistenceService.countMagicCards();
 
 		final File deck = new File(ResourceBundle.getBundle(DataGenerator.class.getCanonicalName())
-                .getString("AuraBantDeck"));
+			.getString("AuraBantDeck"));
 		final byte[] content = new byte[475];
 
 		final FileInputStream fis = new FileInputStream(deck);

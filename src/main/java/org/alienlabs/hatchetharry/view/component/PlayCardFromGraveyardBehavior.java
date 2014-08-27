@@ -74,7 +74,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		final List<Deck> d = this.persistenceService.getAllDecks();
 		Deck mydeck = new Deck();
 
-		for (Deck deck : d)
+		for (final Deck deck : d)
 		{
 			if (deck.getPlayerId().longValue() == p.getId().longValue())
 			{
@@ -105,7 +105,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
 		battlefield.add(card);
 		card.setZone(CardZone.BATTLEFIELD);
-        battlefield = mydeck.reorderMagicCards(battlefield);
+		battlefield = mydeck.reorderMagicCards(battlefield);
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(

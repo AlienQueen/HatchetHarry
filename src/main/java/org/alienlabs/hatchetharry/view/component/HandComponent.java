@@ -154,11 +154,11 @@ public class HandComponent extends Panel
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 
-        HandComponent.LOGGER.info("### cards: "
+		HandComponent.LOGGER.info("### cards: "
 			+ HatchetHarrySession.get().getPlayer().getDeck().getCards().size());
-        HandComponent.LOGGER.info("### game: " + HatchetHarrySession.get().getGameId());
-        HandComponent.LOGGER.info("### player: " + HatchetHarrySession.get().getPlayer().getId());
-        HandComponent.LOGGER.info("### deck: "
+		HandComponent.LOGGER.info("### game: " + HatchetHarrySession.get().getGameId());
+		HandComponent.LOGGER.info("### player: " + HatchetHarrySession.get().getPlayer().getId());
+		HandComponent.LOGGER.info("### deck: "
 			+ HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 
 		this.allCardsInHand = this.persistenceService
@@ -166,7 +166,7 @@ public class HandComponent extends Panel
 				.getPlayer().getGame().getId() : ids[0]), (ids.length == 0 ? HatchetHarrySession
 				.get().getPlayer().getId() : ids[1]), (ids.length == 0 ? HatchetHarrySession.get()
 				.getPlayer().getDeck().getDeckId() : ids[2]));
-        HandComponent.LOGGER.info("### allCardsInHand: " + allCardsInHand.size());
+		HandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)
 		{

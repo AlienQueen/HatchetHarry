@@ -56,7 +56,7 @@ public class TokenPanel extends Panel
 
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("tokenHandle");
 		cardHandle.setOutputMarkupId(true);
-		String uuidValidForJs = this.uuid.toString().replace("-", "_");
+		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		cardHandle.setMarkupId("tokenHandle" + uuidValidForJs);
 		cardHandle.add(new AttributeModifier("style", "position: absolute; top: "
 			+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX() + "px;"));

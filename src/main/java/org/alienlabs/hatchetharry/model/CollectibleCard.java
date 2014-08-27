@@ -1,13 +1,13 @@
 /*
  * CollectibleCards are the list of cards in a particular DeckArchive.
- * The CollectibleCard has got only a name and if it is present multiple times in a DeckArchive, that number of CollectibleCard objects are 
+ * The CollectibleCard has got only a name and if it is present multiple times in a DeckArchive, that number of CollectibleCard objects are
  * linked to their DeckArchive.
  * If a player chooses to play the deck corresponding to the DeckArchive onto which a CollectibleCard points to,
  * the CollectibleCard is not duplicated, as the DeckArchive is itself unique in DB.
- * 
+ *
  * @see: DeckArchive
  * @See: Deck
- * @see: MagicCard 
+ * @see: MagicCard
  */
 package org.alienlabs.hatchetharry.model;
 
@@ -25,7 +25,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Table(name = "CollectibleCard", indexes = { @Index(columnList = "title"),
-        @Index(columnList = "deckArchiveId") })
+		@Index(columnList = "deckArchiveId") })
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CollectibleCard implements Serializable
@@ -77,7 +77,7 @@ public class CollectibleCard implements Serializable
 		return this.version;
 	}
 
-	public void setVersion(String _version)
+	public void setVersion(final String _version)
 	{
 		this.version = _version;
 	}

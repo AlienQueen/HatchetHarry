@@ -43,6 +43,11 @@ public class SpringContextLoaderBaseTest
 		// Init the EventBus
 		this.webApp = new HatchetHarryApplication()
 		{
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void init()
 			{
@@ -121,7 +126,7 @@ public class SpringContextLoaderBaseTest
 		return gameId;
 	}
 
-    public void newHomePage() throws IOException
+	public void newHomePage() throws IOException
 	{
 		final PageParameters pp = new PageParameters();
 		pp.add("test", "test");

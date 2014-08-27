@@ -45,14 +45,12 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		Assert.assertNotNull(cmb);
 
 		// Move the card
-		super.tester.assertComponent(
-			"parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
+		super.tester.assertComponent("parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
 		final CardPanel card = (CardPanel)super.tester
 			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
 
-		super.tester.getRequest().setParameter("card",
-			card.getUuid().toString());
+		super.tester.getRequest().setParameter("card", card.getUuid().toString());
 		super.tester.getRequest().setParameter("posX", "128.36");
 		super.tester.getRequest().setParameter("posY", "821.63");
 		super.tester.executeBehavior(cmb);

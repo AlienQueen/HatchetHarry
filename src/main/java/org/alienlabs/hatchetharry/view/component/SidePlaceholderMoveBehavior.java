@@ -1,5 +1,13 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Side;
@@ -22,13 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
 public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
@@ -43,7 +44,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	private PersistenceService persistenceService;
 
 	public SidePlaceholderMoveBehavior(final SidePlaceholderPanel _panel,
-                                       final WebMarkupContainer _parent, final UUID _uuid, final Player _player)
+		final WebMarkupContainer _parent, final UUID _uuid, final Player _player)
 	{
 		super();
 		Injector.get().inject(this);

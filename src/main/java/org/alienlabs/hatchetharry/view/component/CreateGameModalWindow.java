@@ -134,7 +134,7 @@ public class CreateGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-                CreateGameModalWindow.LOGGER.info("CreateGameModalWindow");
+				CreateGameModalWindow.LOGGER.info("CreateGameModalWindow");
 
 				if ((null == CreateGameModalWindow.this.nameInput.getModelObject())
 					|| ("".equals(CreateGameModalWindow.this.nameInput.getModelObject().trim()))
@@ -283,6 +283,11 @@ public class CreateGameModalWindow extends Panel
 
 				final List<BigInteger> allPlayersInGame = new ArrayList<BigInteger>()
 				{
+					/**
+					 *
+					 */
+					private static final long serialVersionUID = 1L;
+
 					{
 						this.add(BigInteger.valueOf(CreateGameModalWindow.this.player.getId()));
 					}

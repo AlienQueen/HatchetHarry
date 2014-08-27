@@ -1,10 +1,10 @@
 /*
  * A DeckArchive is the name of a Deck, linked to CollectibleCard which both represent the deck and its cards list.
  * The DeckArchive name must be unique in DB and if a Player uses it as deck for his game, it is not duplicated, hence the suffix "Archive".
- * 
+ *
  * @see: CollectibleCard
  * @See: Deck
- * @see: MagicCard 
+ * @see: MagicCard
  */
 
 package org.alienlabs.hatchetharry.model;
@@ -33,8 +33,8 @@ public class DeckArchive implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckArchiveId")
 	private Long deckArchiveId;
-    @Column(name="VERSION", length=20)
-    private String version;
+	@Column(name = "VERSION", length = 20)
+	private String version;
 	@Column
 	private String deckName;
 
@@ -58,13 +58,15 @@ public class DeckArchive implements Serializable
 		this.deckName = _deckName;
 	}
 
-    public String getVersion() {
-        return this.version;
-    }
+	public String getVersion()
+	{
+		return this.version;
+	}
 
-    public void setVersion(String _version) {
-        this.version = _version;
-    }
+	public void setVersion(final String _version)
+	{
+		this.version = _version;
+	}
 
 	@Override
 	public String toString()

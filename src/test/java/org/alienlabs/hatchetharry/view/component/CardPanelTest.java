@@ -31,8 +31,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		// Put it to graveyard
-		super.tester.assertComponent(
-			"parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
+		super.tester.assertComponent("parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
 		final CardPanel card = (CardPanel)super.tester
 			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
@@ -43,8 +42,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 			.getPutToGraveyardFromBattlefieldBehavior();
 		super.tester.executeBehavior(ptgfbb);
 
-		super.pageDocument = super.tester
-			.getLastResponse().getDocument();
+		super.pageDocument = super.tester.getLastResponse().getDocument();
 		// SpringContextLoaderBaseTest.tester
 		// .assertComponentOnAjaxResponse("graveyardParent:graveyard:graveyardCardsPlaceholder:graveyardCards:0:wrapper:graveyardImagePlaceholder");
 
@@ -60,8 +58,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior)super.tester
 			.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop")
 			.getBehaviorById(0);
-		super.tester.getRequest().setParameter("card",
-			allCardsInGraveyard.get(0).getUuid());
+		super.tester.getRequest().setParameter("card", allCardsInGraveyard.get(0).getUuid());
 		super.tester.executeBehavior(pcfgb);
 		// Verify
 		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);

@@ -101,6 +101,11 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 			final int index = i;
 			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
 			{
+				/**
+				 *
+				 */
+				private static final long serialVersionUID = 1L;
+
 				{
 					this.add(allPlayersInGame.get(index));
 				}

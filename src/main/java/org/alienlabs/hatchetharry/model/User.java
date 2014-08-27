@@ -25,13 +25,13 @@ public class User implements Serializable
 
 	@Id
 	private String username;
-    @Column(name="VERSION", length=20)
-    private String version;
+	@Column(name = "VERSION", length = 20)
+	private String version;
 	@Column
 	private String login;
 	@Column
 	private String privateIdentity;
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Player.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Player.class)
 	@Cascade(CascadeType.ALL)
 	private Player player;
 	@Column
@@ -127,11 +127,13 @@ public class User implements Serializable
 		this.privateIdentity = _privateIdentity;
 	}
 
-    public String getVersion() {
-        return this.version;
-    }
+	public String getVersion()
+	{
+		return this.version;
+	}
 
-    public void setVersion(String _version) {
-        this.version = _version;
-    }
+	public void setVersion(final String _version)
+	{
+		this.version = _version;
+	}
 }

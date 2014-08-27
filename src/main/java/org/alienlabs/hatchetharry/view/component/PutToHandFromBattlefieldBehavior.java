@@ -1,5 +1,10 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
@@ -22,11 +27,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
@@ -92,18 +92,18 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		final Long gameId = session.getPlayer().getGame().getId();
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 
-        final List<Deck> d = this.persistenceService.getAllDecks();
-        Deck mydeck = new Deck();
+		final List<Deck> d = this.persistenceService.getAllDecks();
+		Deck mydeck = new Deck();
 
-        for (Deck deck : d)
-        {
-            if (deck.getPlayerId().longValue() == p.getId().longValue())
-            {
-                mydeck = deck;
-                p.setDeck(deck);
-                break;
-            }
-        }
+		for (final Deck deck : d)
+		{
+			if (deck.getPlayerId().longValue() == p.getId().longValue())
+			{
+				mydeck = deck;
+				p.setDeck(deck);
+				break;
+			}
+		}
 
 		final List<MagicCard> hand = mydeck.reorderMagicCards(this.persistenceService
 			.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
@@ -124,6 +124,11 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			final int index = i;
 			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
 			{
+				/**
+				 *
+				 */
+				private static final long serialVersionUID = 1L;
+
 				{
 					this.add(allPlayersInGame.get(index));
 				}

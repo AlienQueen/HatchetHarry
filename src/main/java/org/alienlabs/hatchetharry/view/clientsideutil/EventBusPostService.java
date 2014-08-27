@@ -14,16 +14,16 @@ public class EventBusPostService
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(EventBusPostService.class);
 
-	public static void post(List<BigInteger> players, Object... messages)
+	public static void post(final List<BigInteger> players, final Object... messages)
 	{
 		if ((messages.length > 0) && (players != null) && (!players.isEmpty()))
 		{
-			for (BigInteger player : players)
+			for (final BigInteger player : players)
 			{
 				final String pageUuid = HatchetHarryApplication.getCometResources().get(
 					player.longValue());
 				EventBusPostService.LOGGER.info("pageUuid: " + pageUuid);
-				for (Object message : messages)
+				for (final Object message : messages)
 				{
 					HatchetHarryApplication.get().getEventBus().post(message, pageUuid);
 				}

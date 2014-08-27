@@ -28,9 +28,9 @@ public class Game implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long gameId;
-    @Column(name="VERSION", length=20)
-    private String version;
-    @OneToMany(fetch = FetchType.EAGER, targetEntity=Player.class)
+	@Column(name = "VERSION", length = 20)
+	private String version;
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = Player.class)
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
 	private Set<Player> players = new HashSet<Player>();
 	@Column
@@ -79,28 +79,41 @@ public class Game implements Serializable
 		this.isDrawMode = drawMode;
 	}
 
-    public String getVersion() {
-        return this.version;
-    }
+	public String getVersion()
+	{
+		return this.version;
+	}
 
-    public void setVersion(String _version) {
-        this.version = _version;
-    }
+	public void setVersion(final String _version)
+	{
+		this.version = _version;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Game)) return false;
+	@Override
+	public boolean equals(final Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		if (!(o instanceof Game))
+		{
+			return false;
+		}
 
-        Game game = (Game) o;
+		final Game game = (Game)o;
 
-        if (gameId != null ? !gameId.equals(game.gameId) : game.gameId != null) return false;
+		if (this.gameId != null ? !this.gameId.equals(game.gameId) : game.gameId != null)
+		{
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        return gameId != null ? gameId.hashCode() : 0;
-    }
+	@Override
+	public int hashCode()
+	{
+		return this.gameId != null ? this.gameId.hashCode() : 0;
+	}
 }

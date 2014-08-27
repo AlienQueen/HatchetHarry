@@ -51,7 +51,7 @@ public class ImportDeckService implements Serializable
 			return false;
 		}
 
-        List<MagicCard> allCards = new ArrayList<MagicCard>();
+		final List<MagicCard> allCards = new ArrayList<MagicCard>();
 
 		for (final String line : fileContent.split("\n"))
 		{
@@ -83,17 +83,17 @@ public class ImportDeckService implements Serializable
 					+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "", "", null);
 				card.setGameId(-1l);
 				card.setUuidObject(UUID.randomUUID());
-                card.setX(16l);
-                card.setY(16l);
+				card.setX(16l);
+				card.setY(16l);
 				card.setDeck(deck);
 				card.setZone(CardZone.LIBRARY);
 
 				deck.setDeckArchive(deckArchive);
-                allCards.add(card);
+				allCards.add(card);
 			}
 		}
-        this.persistenceService.saveAllMagicCards(allCards);
-	    this.persistenceService.updateDeck(deck);
+		this.persistenceService.saveAllMagicCards(allCards);
+		this.persistenceService.updateDeck(deck);
 		this.persistenceService.updateDeckArchive(deckArchive);
 		return true;
 	}

@@ -75,7 +75,7 @@ public class PutToZonePanel extends Panel
 		final WebMarkupContainer targetZoneGroup = new WebMarkupContainer("targetZoneGroup");
 		targetZoneLabel.add(targetZoneGroup);
 		targetZoneGroup.add(this.targetZoneInput);
-		ExternalImage indicator = new ExternalImage("indicator", "image/indicator.gif");
+		final ExternalImage indicator = new ExternalImage("indicator", "image/indicator.gif");
 		indicator.setOutputMarkupId(true);
 		indicator.setMarkupId("putToZoneIndicator" + this.sourceZone.toString());
 

@@ -23,8 +23,8 @@ public class CardCollection implements Serializable
 
 	@Id
 	private String id;
-    @Column(name="VERSION", length=20)
-    private String version;
+	@Column(name = "VERSION", length = 20)
+	private String version;
 	@Column
 	private String lang, name, altart, cost, color, type;
 	@Column(length = 1024)
@@ -252,12 +252,14 @@ public class CardCollection implements Serializable
 		this.rulings = _rulings;
 	}
 
-    public String getVersion() {
-        return this.version;
-    }
+	public String getVersion()
+	{
+		return this.version;
+	}
 
-    public void setVersion(String _version) {
-        this.version = _version;
-    }
+	public void setVersion(final String _version)
+	{
+		this.version = _version;
+	}
 
 }

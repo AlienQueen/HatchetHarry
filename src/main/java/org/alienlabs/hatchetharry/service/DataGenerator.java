@@ -91,7 +91,7 @@ public class DataGenerator implements InitializingBean, Serializable
 	private boolean generateData;
 
 	@SpringBean
-    private boolean generateCardCollection;
+	private boolean generateCardCollection;
 
 	@SpringBean
 	private ImportDeckService importDeckService;
@@ -144,9 +144,9 @@ public class DataGenerator implements InitializingBean, Serializable
 
 				final Object[] array = cardCollection.getCardCollectionList().toArray();
 
-				for (int i = 0; i < array.length; i++)
+				for (final Object element : array)
 				{
-					this.cardCollectionDao.save((CardCollection)array[i]);
+					this.cardCollectionDao.save((CardCollection)element);
 				}
 			}
 			catch (final JAXBException e)
@@ -155,7 +155,7 @@ public class DataGenerator implements InitializingBean, Serializable
 			}
 		}
 
-		UUID uuid = UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347");
+		final UUID uuid = UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347");
 		if (null == this.persistenceService.getCardFromUuid(uuid))
 		{
 			final MagicCard baldu = new MagicCard("cards/Balduvian Horde_small.jpg",
@@ -179,8 +179,8 @@ public class DataGenerator implements InitializingBean, Serializable
 		if ((this.generateData)
 			&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
 		{
-			Path path = Paths.get(ResourceBundle.getBundle(DataGenerator.class.getCanonicalName())
-				.getString("AuraBantDeck"));
+			final Path path = Paths.get(ResourceBundle.getBundle(
+				DataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 			final byte[] content = Files.readAllBytes(path);
 			final String deckContent = new String(content, "UTF-8");
 			this.importDeckService.importDeck(deckContent, "Aura Bant", false);
@@ -188,7 +188,7 @@ public class DataGenerator implements InitializingBean, Serializable
 
 		DataGenerator.LOGGER.info("preparing to import decks");
 
-		if ((null == this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black") && (null == this.persistenceService
+		if (((null == this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black")) && (null == this.persistenceService
 			.getDeckArchiveByName("burn mono-Red")))
 			|| ((this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black")
 				.getCards().isEmpty()) && (this.persistenceService.getDeckByDeckArchiveName(
@@ -197,11 +197,11 @@ public class DataGenerator implements InitializingBean, Serializable
 			DataGenerator.LOGGER.info("importing decks");
 
 
-			DeckArchive da1 = new DeckArchive();
+			final DeckArchive da1 = new DeckArchive();
 			da1.setDeckName("aggro-combo Red / Black");
 			this.persistenceService.saveDeckArchive(da1);
 
-			DeckArchive da2 = new DeckArchive();
+			final DeckArchive da2 = new DeckArchive();
 			da2.setDeckName("burn mono-Red");
 			this.persistenceService.saveDeckArchive(da2);
 

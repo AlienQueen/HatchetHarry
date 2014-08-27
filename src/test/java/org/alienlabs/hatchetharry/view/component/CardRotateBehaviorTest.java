@@ -17,8 +17,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 
 	private void clickOnCardHandle(final CardRotateBehavior _crb, final MagicCard _mc)
 	{
-		super.tester.getRequest().setParameter("uuid",
-			_mc.getUuid().toString());
+		super.tester.getRequest().setParameter("uuid", _mc.getUuid().toString());
 		super.tester.executeBehavior(_crb);
 	}
 

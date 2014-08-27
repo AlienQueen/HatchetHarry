@@ -2,8 +2,8 @@
  * A MagicCard is a card in a Deck currently played, i.e. it has game state-related information.
  * It is instantiated (i.e. duplicated in DB) via the CollectibleCard object which represent the list
  * of cards in the Deck but without any game state information.
- * 
- * @see: Deck 
+ *
+ * @see: Deck
  * @see: DeckArchive
  * @See: CollectibleCard
  */
@@ -300,23 +300,29 @@ public class MagicCard implements SlideshowImage, Serializable
 		return this.version;
 	}
 
-	public void setVersion(String _version)
+	public void setVersion(final String _version)
 	{
 		this.version = _version;
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(final Object o)
 	{
 		if (this == o)
+		{
 			return true;
+		}
 		if (!(o instanceof MagicCard))
+		{
 			return false;
+		}
 
-		MagicCard magicCard = (MagicCard)o;
+		final MagicCard magicCard = (MagicCard)o;
 
-		if (id != null ? !id.equals(magicCard.id) : magicCard.id != null)
+		if (this.id != null ? !this.id.equals(magicCard.id) : magicCard.id != null)
+		{
 			return false;
+		}
 
 		return true;
 	}
@@ -324,6 +330,6 @@ public class MagicCard implements SlideshowImage, Serializable
 	@Override
 	public int hashCode()
 	{
-		return id != null ? id.hashCode() : 0;
+		return this.id != null ? this.id.hashCode() : 0;
 	}
 }
