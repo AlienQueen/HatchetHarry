@@ -103,28 +103,24 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final Player p = HatchetHarrySession.get().getPlayer();
 		final Deck d = p.getDeck();
 
-		card.setZone(CardZone.BATTLEFIELD);
-
 		final Side _side = p.getSide();
 		card.setX(_side.getX());
 		card.setY(_side.getY());
 
 		final List<MagicCard> hand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(
 			gameId, p.getId(), d.getDeckId());
-		hand.remove(card);
+		PlayCardFromHandBehavior.LOGGER.info("remove? " + hand.remove(card));
+		card.setZone(CardZone.BATTLEFIELD);
 		d.reorderMagicCards(hand);
 		this.persistenceService.saveOrUpdateAllMagicCards(hand);
+		this.persistenceService.updateCard(card);
 
 		final List<MagicCard> battlefield = this.persistenceService
 			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 		d.reorderMagicCards(battlefield);
+		PlayCardFromHandBehavior.LOGGER.info("In battlefield: " + battlefield.size());
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
-		this.persistenceService.updateCard(card);
-		// this.persistenceService.saveOrUpdateAllMagicCards(hand);
-		this.persistenceService.updatePlayer(p);
-
-		JavaScriptUtils.updateHand(target);
 		target.appendJavaScript("jQuery('#playCardIndicator').hide(); ");
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
@@ -141,6 +137,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 			.giveAllPlayersFromGame(gameId);
 		EventBusPostService.post(allPlayersInGame, pcfhcc, ncc, new ConsoleLogCometChannel(logger));
+
+		JavaScriptUtils.updateHand(target);
 	}
 
 	@Override

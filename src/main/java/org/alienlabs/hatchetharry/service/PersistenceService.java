@@ -897,7 +897,7 @@ public class PersistenceService implements Serializable
 
 		try
 		{
-			return query.list();
+            return query.list();
 		}
 		catch (final ObjectNotFoundException e)
 		{
@@ -1222,7 +1222,7 @@ public class PersistenceService implements Serializable
 					}
 					mc.setCounters(set);
 					this.magicCardDao.getSession().saveOrUpdate(
-                            this.magicCardDao.getSession().merge(mc));
+						this.magicCardDao.getSession().merge(mc));
 
 					System.out.println("~~~");
 					this.counterDao.getSession()

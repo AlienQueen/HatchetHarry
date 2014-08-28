@@ -159,7 +159,7 @@ public class JavaScriptUtils
 		final List<MagicCard> allCards = persistenceService
 			.getAllCardsInBattleFieldForAGame(gameId);
 		buil.append("window.setTimeout(function() { ");
-		JavaScriptUtils.LOGGER.info("###  allCards.size(): " + allCards.size());
+        JavaScriptUtils.LOGGER.info("###  allCards.size(): " + allCards.size());
 
 		for (final MagicCard magicCard : allCards)
 		{
