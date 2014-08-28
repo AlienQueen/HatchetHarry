@@ -295,6 +295,11 @@ public class MagicCard implements SlideshowImage, Serializable
 		return this.token;
 	}
 
+	public void setToken(Token _token)
+	{
+		this.token = _token;
+	}
+
 	public String getVersion()
 	{
 		return this.version;

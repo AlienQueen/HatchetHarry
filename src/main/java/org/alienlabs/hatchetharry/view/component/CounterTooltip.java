@@ -8,11 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.model.Counter;
-import org.alienlabs.hatchetharry.model.Game;
-import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.model.Token;
+import org.alienlabs.hatchetharry.model.*;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.UpdateCardPanelCometChannel;
@@ -425,20 +421,23 @@ public class CounterTooltip extends Panel
 				this.action = NotifierAction.CLEAR_COUNTER_ACTION;
 				if (CounterTooltip.this.card != null)
 				{
-					this.msg = new UpdateCardPanelCometChannel(this.game.getId(),
-						HatchetHarrySession.get().getPlayer().getName(),
-						CounterTooltip.this.persistenceService.getPlayer(
-							CounterTooltip.this.card.getDeck().getPlayerId()).getName(),
-						CounterTooltip.this.card.getTitle(), this.counter.getCounterName(),
-						this.counter.getNumberOfCounters(), 0l, this.action,
-						CounterTooltip.this.card, CounterTooltip.this.card.getBigImageFilename(),
-						CounterTooltip.this.card.getOwnerSide());
+					final Deck d = CounterTooltip.this.card.getDeck();
+					final String counterName = this.counter.getCounterName();
+					final Long targetNumberOfCounters = this.counter.getNumberOfCounters();
 
-					this.targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
+                    this.targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
 						CounterTooltip.this.card.getDeck().getPlayerId()).getName();
-                    CounterTooltip.this.persistenceService.deleteCounter(this.counter,
+
+					CounterTooltip.this.persistenceService.deleteCounter(this.counter,
 						CounterTooltip.this.card, null);
 
+					this.msg = new UpdateCardPanelCometChannel(
+						this.game.getId(),
+						HatchetHarrySession.get().getPlayer().getName(),
+						CounterTooltip.this.persistenceService.getPlayer(d.getPlayerId()).getName(),
+						CounterTooltip.this.card.getTitle(), counterName, targetNumberOfCounters,
+						0l, this.action, CounterTooltip.this.card, CounterTooltip.this.card
+							.getBigImageFilename(), CounterTooltip.this.card.getOwnerSide());
 
 					this.logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
