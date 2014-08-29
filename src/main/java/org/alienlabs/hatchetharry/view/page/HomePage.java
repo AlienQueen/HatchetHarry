@@ -1478,16 +1478,18 @@ public class HomePage extends TestReportPage
 				this.player.setDeck(this.deck);
 			}
 
-			this.deck.setCards(this.persistenceService.getAllCardsFromDeck(this.deck.getDeckId()));
-			final ArrayList<MagicCard> _cards = new ArrayList<MagicCard>();
+            System.out.println("### cards: " + this.deck.getCards().size());
 
-			for (final MagicCard mc : this.deck.getCards())
+            final ArrayList<MagicCard> _cards = new ArrayList<MagicCard>();
+
+			for (final MagicCard mc : this.persistenceService.getAllCardsFromDeck(this.deck
+				.getDeckId()))
 			{
 				mc.setGameId(this.session.getGameId());
 				mc.getDeck().setPlayerId(this.player.getId());
 				_cards.add(mc);
 			}
-			this.persistenceService.updateAllMagicCards(_cards);
+            this.player.getDeck().setCards(_cards);
 
 			System.out.println("### cards: " + this.player.getDeck().getCards().size());
 			System.out.println("### game: " + this.session.getGameId());

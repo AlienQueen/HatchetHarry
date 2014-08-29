@@ -168,7 +168,10 @@ public class JoinGameModalWindow extends Panel
 				for (final Player p : oldGame.getPlayers())
 				{
 					p.setGame(null);
-					JoinGameModalWindow.this.persistenceService.mergePlayer(p);
+					Deck d = p.getDeck();
+					p.setDeck(null);
+					d.setPlayerId(-1l);
+					JoinGameModalWindow.this.persistenceService.updatePlayer(p);
 				}
 
 				oldGame.getPlayers().clear();
@@ -279,7 +282,7 @@ public class JoinGameModalWindow extends Panel
 				s.setX(Long.valueOf(posX));
 				s.setY(500l);
 
-				JoinGameModalWindow.this.persistenceService.updateGame(game);
+                JoinGameModalWindow.this.persistenceService.updateGame(game);
 
 				session.setGameCreated();
 				_modal.close(target);

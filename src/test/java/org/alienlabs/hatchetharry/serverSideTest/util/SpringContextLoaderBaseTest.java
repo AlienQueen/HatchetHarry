@@ -65,6 +65,7 @@ public class SpringContextLoaderBaseTest
 				this.getDebugSettings().setOutputComponentPath(true);
 			}
 		};
+
 		this.tester = new WicketTester(this.webApp);
 		this.persistenceService = this.context.getBean(PersistenceService.class);
 
@@ -77,7 +78,7 @@ public class SpringContextLoaderBaseTest
 	@After
 	public void tearDown()
 	{
-		// SpringContextLoaderBaseTest.context.getBean(PersistenceService.class).resetDb();
+		SpringContextLoaderBaseTest.this.context.getBean(PersistenceService.class).resetDb();
 		HatchetHarrySession.get().reinitSession();
 	}
 

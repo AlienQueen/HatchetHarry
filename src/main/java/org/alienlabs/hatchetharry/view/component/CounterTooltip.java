@@ -104,8 +104,8 @@ public class CounterTooltip extends Panel
 					counter.setCard(CounterTooltip.this.card);
 					counters = CounterTooltip.this.card.getCounters();
 					counters.add(counter);
-					CounterTooltip.this.persistenceService.saveOrUpdateCounter(counter);
 					CounterTooltip.this.persistenceService.updateCard(CounterTooltip.this.card);
+
 					targetPlayer = CounterTooltip.this.persistenceService
 						.getPlayer(CounterTooltip.this.card.getDeck().getPlayerId());
 					game = CounterTooltip.this.persistenceService.getGame(targetPlayer.getGame()

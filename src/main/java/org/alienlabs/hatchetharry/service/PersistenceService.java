@@ -222,15 +222,22 @@ public class PersistenceService implements Serializable
 			.createQuery("from MagicCard magiccard0_ where magiccard0_.uuid= :uuid ");
 		query.setString("uuid", uuid.toString());
 		query.setCacheable(true);
-		PersistenceService.LOGGER.debug("card UUID: " + uuid.toString());
+		PersistenceService.LOGGER.info("card UUID: " + uuid.toString());
 
-		if (query.list().size() > 1)
+		try
 		{
-			return (MagicCard)query.list().get(0);
-		}
-		final MagicCard c = (MagicCard)query.uniqueResult();
+			if ((query.list() != null) && (query.list().size() > 1))
+			{
+				return (MagicCard)query.list().get(0);
+			}
+			final MagicCard c = (MagicCard)query.uniqueResult();
 
-		return c;
+			return c;
+		}
+		catch (ObjectNotFoundException e)
+		{
+			return null;
+		}
 	}
 
 	@Transactional(readOnly = true)
@@ -301,14 +308,14 @@ public class PersistenceService implements Serializable
 	public void mergePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
-		session.merge(p);
+		session.saveOrUpdate(session.merge(p));
 	}
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void updatePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();
-		session.update(p);
+		session.update(session.merge(p));
 	}
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -1125,10 +1132,10 @@ public class PersistenceService implements Serializable
 		return l;
 	}
 
-	@Transactional
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void deleteGame(final Game oldGame)
 	{
-		this.gameDao.delete(oldGame.getId());
+		this.gameDao.delete(oldGame.getId().longValue());
 	}
 
 	@Transactional
@@ -1221,7 +1228,7 @@ public class PersistenceService implements Serializable
 						}
 					}
 					mc.setCounters(set);
-                    mc.setZone(CardZone.BATTLEFIELD);
+					mc.setZone(CardZone.BATTLEFIELD);
 					this.magicCardDao.getSession().saveOrUpdate(
 						this.magicCardDao.getSession().merge(mc));
 
