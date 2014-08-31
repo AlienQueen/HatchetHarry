@@ -2635,6 +2635,8 @@ public class HomePage extends TestReportPage
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 			event.getGameId(), mc, true);
+
+        target.appendJavaScript("resizeCards();");
 	}
 
 	@Subscribe
@@ -3200,7 +3202,7 @@ public class HomePage extends TestReportPage
 			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
-				final CardPanel cp = new CardPanel("cardPanel", mc.getSmallImageFilename(),
+				final CardPanel cp = new CardPanel("cardPanel", mc.getBigImageFilename(),
 					mc.getUuidObject(), HomePage.this.persistenceService.getPlayer(mc.getDeck()
 						.getPlayerId()));
 				cp.setOutputMarkupId(true);

@@ -163,7 +163,7 @@ jQuery(function () {
             jQuery('#putToExile').attr('src', 'image/exile_small.jpg');
         }
 
-        jQuery(window).resize(function () {
+        /* jQuery(window).resize(function () {
             getViewPortSize();
             var allCards = jQuery('.magicCard.ui-draggable');
 
@@ -189,7 +189,7 @@ jQuery(function () {
                     }
                 }
             }
-        });
+        });*/
     }, 500);
 });
 
@@ -359,3 +359,9 @@ var uncloak = function () {
     jQuery('.loader').hide();
     jQuery('body').removeClass("cloak");
 };
+
+var resizeCards = function() {
+    jQuery('.clickableCards').each(function(index, value) {
+        jQuery(this).css('float: left; margin-left: 2rem; width: ' + Math.min(25, 100 / cards.length) + '%; max-width: 226px; height: auto;');
+    });
+}

@@ -74,9 +74,7 @@ public class CardPanel extends Panel
 		cardHandle.setOutputMarkupId(true);
 		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		cardHandle.setMarkupId("cardHandle" + uuidValidForJs);
-		cardHandle.add(new AttributeModifier("style", "position: absolute; top: "
-			+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
-			+ "px;  z-index: 1;"));
+		cardHandle.add(new AttributeModifier("style", "position: relative; top: 85%; float: left; z-index: 1;"));
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
 		if ("baldu".equals(id))
@@ -165,6 +163,7 @@ public class CardPanel extends Panel
 			cardImage.setMarkupId("card" + uuidValidForJs);
 		}
 		cardImage.add(new AttributeModifier("class", "clickableCard"));
+        cardImage.add(new AttributeModifier("style", "float: left; margin-left: 2rem; width: 25%; max-width: 339px; height: auto;"));
 
 		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
 		if (null != this.owner)
