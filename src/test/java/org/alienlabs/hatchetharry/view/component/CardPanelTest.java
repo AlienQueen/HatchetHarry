@@ -20,8 +20,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard();
 
 		// We should have one card in the battlefield
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+//		super.tester.startPage(HomePage.class);
+//		super.tester.assertRenderedPage(HomePage.class);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = super.context
