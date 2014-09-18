@@ -117,23 +117,35 @@ public class HandComponent extends Panel
 				//				variables.put("player", ids[1].toString());
 				//					final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				//						"script/gallery/coda-slider.1.1.1.pack-for-hand-reveal.js");
-				final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(HomePage.class,
+                final TextTemplate sortableTemplate = new PackageTextTemplate(HomePage.class,
+                        "script/gallery/sortable.js");
+                final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(HomePage.class,
 						"script/gallery/handInBattlefield.js");
 				final TextTemplate cssTemplate = new PackageTextTemplate(HomePage.class,
 						"stylesheet/handInBattlefield.css");
 
 				//				handInBattlefieldTemplate.interpolate(variables);
-				response.render(JavaScriptHeaderItem.forScript(handInBattlefieldTemplate.asString(), null));
-				response.render(CssHeaderItem.forCSS(cssTemplate.asString(), null));
-				try
+                response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
+                response.render(JavaScriptHeaderItem.forScript(handInBattlefieldTemplate.asString(), null));
+                response.render(CssHeaderItem.forCSS(cssTemplate.asString(), null));
+                try
+                {
+                    sortableTemplate.close();
+                }
+                catch (final IOException e)
+                {
+                    HandComponent.LOGGER.error(
+                            "unable to close sortableTemplate in HandComponent#renderHead()!", e);
+                }
+                try
 				{
-					handInBattlefieldTemplate.close();
-				}
+                    handInBattlefieldTemplate.close();
+                }
 				catch (final IOException e)
 				{
-					HandComponent.LOGGER.error(
-							"unable to close template in HandComponent#renderHead()!", e);
-				}
+                    HandComponent.LOGGER.error(
+							"unable to close handInBattlefieldTemplate in HandComponent#renderHead()!", e);
+                }
 				try
 				{
 					cssTemplate.close();
@@ -141,7 +153,7 @@ public class HandComponent extends Panel
 				catch (final IOException e)
 				{
 					HandComponent.LOGGER.error(
-							"unable to close template in HandComponent#renderHead()!", e);
+							"unable to close cssTemplate in HandComponent#renderHead()!", e);
 				}
 			}
 		});

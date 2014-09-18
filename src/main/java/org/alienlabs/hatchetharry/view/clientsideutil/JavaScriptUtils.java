@@ -21,7 +21,7 @@ public class JavaScriptUtils
 {
 	public static final String REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT = "var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumb-Graveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumb-Graveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumb-Graveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumb-Graveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard(); ";
 	public static final String REACTIVATE_EXILE_COMPONENT_JAVASCRIPT = "var theIntExile = null; var $crosslinkExile, $navthumbExile; var curclickedExile = 0; theIntervalExile = function(cur) { if (typeof cur != 'undefined') curclickedExile = cur; $crosslinkExile.removeClass('active-thumb-Exile'); $navthumbExile.eq(curclickedExile).parent().addClass('active-thumb-Exile'); jQuery('.stripNavExile ul li a').eq(curclickedExile).trigger('click'); $crosslinkExile.removeClass('active-thumb-Exile'); $navthumbExile.eq(curclickedExile).parent().addClass('active-thumb-Exile'); jQuery('.stripNavExile ul li a').eq(curclickedExile).trigger('click'); curclickedExile++; if (6 == curclickedExile) curclickedExile = 0; }; jQuery('#exile-main-photo-slider').codaSliderExile(); $navthumbExile = jQuery('.exile-nav-thumb'); $crosslinkExile = jQuery('.exile-cross-link'); $navthumbExile.click(function() { var $this = jQuery(this); theIntervalExile($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalExile(); function updateExileLabel(){ var exileCardName = jQuery('#exileGallery .active-thumb-Exile .nav-thumb').attr('name'); if (exileCardName == undefined) { exileCardName = jQuery('#exileGallery .active-thumb-Exile .nav-thumb').attr('name'); } jQuery('#exileCardLabel').text(exileCardName); }; jQuery(function() { setTimeout(function() { updateExileLabel(); jQuery('#exileGallery .cross-link .nav-thumb').click(updateExileLabel); }, 175); }); ";
-	public static final String REACTIVATE_HAND_COMPONENT_JAVASCRIPT = "window.setTimeout(function() { var theInt = null; var $crosslink, $navthumb; var curclicked = 0; theInterval = function(cur) { if (typeof cur != 'undefined') curclicked = cur; $crosslink.removeClass('active-thumb-Hand'); $navthumb.eq(curclicked).parent().addClass('active-thumb-Hand'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); $crosslink.removeClass('active-thumb-Hand'); $navthumb.eq(curclicked).parent().addClass('active-thumb-Hand'); jQuery('.stripNav ul li a').eq(curclicked).trigger('click'); curclicked++; if (6 == curclicked) curclicked = 0; }; jQuery('#main-photo-sliderPlayer').codaSlider(); $navthumb = jQuery('.nav-thumb'); $crosslink = jQuery('.cross-link'); $navthumb.click(function() { var $this = jQuery(this); theInterval($this.parent().attr('href').slice(1) - 1); return false; }); theInterval(); jQuery('#content').show(); }, 500); ";
+    public static final String REACTIVATE_HAND_COMPONENT_JAVASCRIPT = "window.setTimeout(function() { sortableInProgress = false; $('.cardContainer img').click(turn); function turn(){ if (sortableInProgress) { sortableInProgress = false; return; } $(this).parent().toggleClass('turned'); } $('.cards').sortable({ placeholder: \"ui-state-highlight\",start: function( event, ui ) { sortableInProgress = true; } }); $('.cardContainer .tooltips').click(tooltips); function tooltips(){ $(this).parent().toggleClass('details'); if($(this).parent().hasClass('details')) $('img',$(this).parent()).unbind('click').click(tooltips); else $('img',$(this).parent()).unbind('click').click(turn); } }, 500); ";
 	public static final String REVEAL_HAND_COMPONENT_JAVASCRIPT = "var theIntPlayer = null; var $crosslinkPlayer, $navthumbPlayer; var curclickedPlayer = 0; theIntervalPlayer = function(cur) { if (typeof cur != 'undefined') curclickedPlayer = cur; $crosslinkPlayer.removeClass('active-thumb-RevealHand'); $navthumbPlayer.eq(curclickedPlayer).parent().addClass('active-thumb-RevealHand'); jQuery('.stripNavPlayer ul li a').eq(curclickedPlayer).trigger('click'); $crosslinkPlayer.removeClass('active-thumb-RevealHand'); $navthumbPlayer.eq(curclickedPlayer).parent().addClass('active-thumb-RevealHand'); jQuery('.stripNavPlayer ul li a').eq(curclickedPlayer).trigger('click'); curclickedPlayer++; if (6 == curclickedPlayer) curclickedPlayer = 0; }; jQuery('#main-photo-sliderPlayer').codaSliderPlayer(); $navthumbPlayer = jQuery('.nav-thumbPlayer'); $crosslinkPlayer = jQuery('.cross-link'); $navthumbPlayer.click(function() { var $thisPlayer = jQuery(this); theIntervalPlayer($thisPlayer.parent().attr('href').slice(1) - 1); return false; }); theIntervalPlayer(); jQuery(function() { setTimeout(function() { jQuery('#stripNavPlayer0').hide(); jQuery('#galleryRevealParent').children().first().attr('style', ''); jQuery('#handGalleryPlayer').attr('style', 'width: 262px; margin: 25px auto; position: absolute; top: 1%; left: 70%; min-height: 420px;'); jQuery('#handlehandGalleryPlayer').attr('style', 'position: relative; top: 110px; left: 0%; z-index: 10; cursor: move;'); jQuery('#handGalleryPlayer').draggable({ handle : '#handlehandGalleryPlayer', helper : 'original'}); jQuery('#revealedContent').show(); }, 500); }); ";
 	public static final String HIDE_MENUS = "if (jQuery('#cssmenu').is(':visible')) { jQuery('#cssmenu').hide(); jQuery('#cssmenu').show(); } else { jQuery('.dropdownmenu').hide(); jQuery('.categories').hide(); jQuery('.dropdownmenu').show(); } ";
 	public static final String HIDE_ALL_TOOLTIPS = "jQuery('.tooltip').attr('style', 'display: none;'); jQuery('.cardTooltip').attr('style', 'display: none;'); ";
@@ -33,16 +33,16 @@ public class JavaScriptUtils
 	}
 
 	public static void updateCardsAndRestoreStateInBattlefield(final AjaxRequestTarget target,
-		final PersistenceService persistenceService, final Long gameId, final MagicCard mc,
-		final boolean added)
+			final PersistenceService persistenceService, final Long gameId, final MagicCard mc,
+			final boolean added)
 	{
 		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, mc, added);
 		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, mc, added,
-			gameId);
+				gameId);
 	}
 
 	public static void updateCardsInBattlefield(final AjaxRequestTarget target,
-		final PersistenceService persistenceService, final MagicCard mc, final boolean added)
+			final PersistenceService persistenceService, final MagicCard mc, final boolean added)
 	{
 		final HomePage homePage = (HomePage)target.getPage();
 
@@ -66,7 +66,7 @@ public class JavaScriptUtils
 				for (int i = 0; i < magicCardList.size(); i++)
 				{
 					final MagicCard targetCard = homePage.getAllCardsInBattlefield().getItem(i)
-						.getModelObject();
+							.getModelObject();
 
 					for (final Counter count : mc.getCounters())
 					{
@@ -87,7 +87,7 @@ public class JavaScriptUtils
 				for (int i = 0; i < tooltipList.size(); i++)
 				{
 					final MagicCard targetCard = homePage.getAllTooltips().getItem(i)
-						.getModelObject();
+							.getModelObject();
 					if (mc.equals(targetCard))
 					{
 						homePage.getAllTooltipsInBattlefield().remove(mc);
@@ -101,8 +101,8 @@ public class JavaScriptUtils
 	}
 
 	public static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
-		final PersistenceService persistenceService, final MagicCard mc, final boolean added,
-		final Long gameId)
+			final PersistenceService persistenceService, final MagicCard mc, final boolean added,
+			final Long gameId)
 	{
 		final Boolean drawMode = persistenceService.getGame(gameId).isDrawMode();
 		final StringBuilder buil = new StringBuilder();
@@ -120,14 +120,14 @@ public class JavaScriptUtils
 			for (final Arrow arrow : allArrows)
 			{
 				JavaScriptUtils.LOGGER.info("source: " + arrow.getSource() + ", target: "
-					+ arrow.getTarget() + ", uuidValidForJs: " + uuidValidForJs);
+						+ arrow.getTarget() + ", uuidValidForJs: " + uuidValidForJs);
 
 				if (arrow.getSource().equals(cardToRemove)
-					|| arrow.getTarget().equals(cardToRemove))
+						|| arrow.getTarget().equals(cardToRemove))
 				{
 					buil.append("for (var index = 0; index < arrows.length; index++) { ");
 					buil.append("if (arrows[index]['source'].id === '" + cardToRemove
-						+ "' || arrows[index]['target'].id === '" + cardToRemove + "') { ");
+							+ "' || arrows[index]['target'].id === '" + cardToRemove + "') { ");
 					buil.append("arrows.splice( jQuery.inArray(index, arrows), 1 ); ");
 					buil.append("index--; ");
 					buil.append("} } ");
@@ -157,27 +157,27 @@ public class JavaScriptUtils
 		}
 
 		final List<MagicCard> allCards = persistenceService
-			.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattleFieldForAGame(gameId);
 		buil.append("window.setTimeout(function() { ");
-        JavaScriptUtils.LOGGER.info("###  allCards.size(): " + allCards.size());
+		JavaScriptUtils.LOGGER.info("###  allCards.size(): " + allCards.size());
 
 		for (final MagicCard magicCard : allCards)
 		{
 			JavaScriptUtils.LOGGER.info("### "
-				+ (magicCard.getToken() != null
-					? magicCard.getToken().getCounters().size()
-					: magicCard.getCounters().size()) + " counters, uuid = "
-				+ magicCard.getUuid().replace("-", "_"));
+					+ (magicCard.getToken() != null
+							? magicCard.getToken().getCounters().size()
+							: magicCard.getCounters().size()) + " counters, uuid = "
+					+ magicCard.getUuid().replace("-", "_"));
 			if (((magicCard.getToken() != null) && magicCard.getToken().getCounters().isEmpty())
-				|| (((magicCard.getToken() == null) && magicCard.getCounters().isEmpty())))
+					|| (((magicCard.getToken() == null) && magicCard.getCounters().isEmpty())))
 			{
 				buil.append("jQuery('#bullet" + magicCard.getUuid().replace("-", "_")
-					+ "').hide(); ");
+						+ "').hide(); ");
 			}
 			else
 			{
 				buil.append("jQuery('#bullet" + magicCard.getUuid().replace("-", "_")
-					+ "').show(); ");
+						+ "').show(); ");
 			}
 		}
 
@@ -189,66 +189,66 @@ public class JavaScriptUtils
 	public static void updateHand(final AjaxRequestTarget target)
 	{
 		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
-			new HandComponent("gallery", false));
+				new HandComponent("gallery", false));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT.replaceAll(
-			"Player", ""));
+				"Player", ""));
 	}
 
 	public static void updateHand(final AjaxRequestTarget target, final Long gameId,
-		final Long playerId, final Long deckId)
+			final Long playerId, final Long deckId)
 	{
 		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
-			new HandComponent("gallery", false, gameId, playerId, deckId));
+				new HandComponent("gallery", false, gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT.replaceAll(
-			"Player", playerId.toString()));
+				"Player", playerId.toString()));
 	}
 
 	public static void revealHand(final AjaxRequestTarget target, final Long gameId,
-		final Long playerId, final Long deckId)
+			final Long playerId, final Long deckId)
 	{
 		((HomePage)target.getPage()).getGalleryRevealParent().addOrReplace(
-			new HandComponent("galleryReveal", true, gameId, playerId, deckId));
+				new HandComponent("galleryReveal", true, gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGalleryRevealParent());
 
 		target.appendJavaScript(JavaScriptUtils.REVEAL_HAND_COMPONENT_JAVASCRIPT.replaceAll(
-			"Player", playerId.toString()));
+				"Player", playerId.toString()));
 	}
 
 	public static void hideHand(final AjaxRequestTarget target)
 	{
 		((HomePage)target.getPage()).getGalleryRevealParent().addOrReplace(
-			new WebMarkupContainer("galleryReveal"));
+				new WebMarkupContainer("galleryReveal"));
 		target.add(((HomePage)target.getPage()).getGalleryRevealParent());
 	}
 
 	public static void updateGraveyard(final AjaxRequestTarget target)
 	{
 		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
-			new GraveyardComponent("graveyard"));
+				new GraveyardComponent("graveyard"));
 		target.add(((HomePage)target.getPage()).getGraveyardParent());
 
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
 	}
 
 	public static void updateGraveyard(final AjaxRequestTarget target, final Long gameId,
-		final Long playerId, final Long deckId)
+			final Long playerId, final Long deckId)
 	{
 		((HomePage)target.getPage()).getGraveyardParent().addOrReplace(
-			new GraveyardComponent("graveyard", gameId, playerId, deckId));
+				new GraveyardComponent("graveyard", gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGraveyardParent());
 
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
 	}
 
 	public static void updateExile(final AjaxRequestTarget target, final Long gameId,
-		final Long playerId, final Long deckId)
+			final Long playerId, final Long deckId)
 	{
 		((HomePage)target.getPage()).getExileParent().addOrReplace(
-			new ExileComponent("exile", gameId, playerId, deckId));
+				new ExileComponent("exile", gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getExileParent());
 
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_EXILE_COMPONENT_JAVASCRIPT);

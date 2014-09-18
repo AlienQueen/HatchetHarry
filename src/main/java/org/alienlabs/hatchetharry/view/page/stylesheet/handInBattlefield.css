@@ -1,42 +1,40 @@
-*{margin:0;padding:0;}
+/**{margin:0;padding:0;}
 html, body {height:95%;}
-body{padding:1%;}
+body{padding:1%;}*/
 .cards{
-  list-style: none;
-  display:flex;
-  flex-flow: wrap;
+    list-style: none;
+    display:flex;
+    flex-flow: wrap;
 }
 .ui-state-highlight{ min-width:100px; }
-.cardContainer, .ui-state-highlight{
-  display:block;
-  position:relative;
-  margin:2px;
-  max-height:350px;
-  max-width:350px;
-  flex: 1 100px;
-  img{
+.cardContainer, .ui-state-highlight {
+    display: block;
+    position: relative;
+    margin: 2px;
+    max-height: 350px;
+    max-width: 350px;
+    flex: 1 100px;
+}
+.cardContainer img{
     display:block;
     margin:auto;
     width:70%;
     height:100%;
     z-index:1;
-    transition: .8s all cubic-bezier(.8,-0.3,.2,1.3);
-    // http://cubic-bezier.com/
-  }
-  .tooltips{
+    transition: 0.8s all cubic-bezier(.8,-0.3,.2,1.3);
+}
+.tooltips{
     display:block;
     position:absolute;
     left:85%;
     bottom:85%;
     top:0;
     right:0;
-    background-image:url(http://icdn.pro/images/fr/t/r/trouver-loupe-recherche-zoom-icone-6756-128.png);
+    background-image:url(/image/loupe.png);
     background-size:100%;
-  }
 }
-//.cardContainer img:hover,
 .cardContainer.turned img { transform: rotate(90deg); }
 .cardContainer.details img{ transform:scale(2); }
 .cardContainer.details.turned img {
-  transform:scale(2) rotate(0);
+    transform:scale(2) rotate(0);
 }
