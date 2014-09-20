@@ -14,6 +14,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -48,62 +49,6 @@ public class HandComponent extends Panel
 		super(id);
 		Injector.get().inject(this);
 
-		//		final String markupId = "handGallery" + (ids.length != 0 ? ids[1].toString() : "");
-		//		final WebMarkupContainer parent = new WebMarkupContainer("parent");
-		//		parent.setMarkupId(markupId);
-		//		parent.setOutputMarkupId(true);
-		//		this.add(parent);
-		//
-		//		final WebMarkupContainer content = new WebMarkupContainer("content");
-		//		content.setOutputMarkupId(true);
-		//
-		//		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
-		//		handleImage.setMarkupId("handle" + markupId);
-		//		handleImage.setOutputMarkupId(true);
-		//		content.add(handleImage);
-		//
-		//		final ZoneMoveBehavior zmb = new ZoneMoveBehavior(this);
-		//		this.add(zmb);
-		//
-		//		final WebMarkupContainer slider = new WebMarkupContainer("slider");
-		//		slider.setMarkupId("main-photo-slider" + (ids.length != 0 ? ids[1].toString() : ""));
-		//		slider.setOutputMarkupId(true);
-		//
-		//		final WebMarkupContainer page_wrap = new WebMarkupContainer("page-wrap");
-		//		page_wrap.add(slider);
-		//		content.add(page_wrap);
-		//
-		//		if (isReveal)
-		//		{
-		//			final IndicatingAjaxLink<Void> closeHand = new IndicatingAjaxLink<Void>("closeHand")
-		//			{
-		//				private static final long serialVersionUID = 1L;
-		//
-		//				@Override
-		//				public void onClick(final AjaxRequestTarget target)
-		//				{
-		//					final String playerRevealing = HandComponent.this.persistenceService.getPlayer(
-		//						ids[1]).getName();
-		//					final String playerStopping = HatchetHarrySession.get().getPlayer().getName();
-		//
-		//					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-		//						ConsoleLogType.REVEAL_HAND, null, null, false, null, playerRevealing, null,
-		//						null, playerStopping, null, ids[0]);
-		//					final NotifierCometChannel ncc = new NotifierCometChannel(
-		//						NotifierAction.REVEAL_HAND, null, null, playerRevealing, null, null, null,
-		//						null, playerStopping);
-		//					final StopRevealingHandCometChannel rhcc = new StopRevealingHandCometChannel();
-		//					final List<BigInteger> allPlayersInGame = HandComponent.this.persistenceService
-		//						.giveAllPlayersFromGame(ids[0]);
-		//
-		//					EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger),
-		//						ncc, rhcc);
-		//				}
-		//
-		//			};
-		//			content.add(closeHand);
-		//			content.setMarkupId("revealedContent");
-
 		this.add(new Behavior()
 		{
 			private static final long serialVersionUID = 1L;
@@ -113,10 +58,6 @@ public class HandComponent extends Panel
 			{
 				super.renderHead(component, response);
 
-				//				final HashMap<String, Object> variables = new HashMap<String, Object>();
-				//				variables.put("player", ids[1].toString());
-				//					final TextTemplate template = new PackageTextTemplate(HomePage.class,
-				//						"script/gallery/coda-slider.1.1.1.pack-for-hand-reveal.js");
                 final TextTemplate sortableTemplate = new PackageTextTemplate(HomePage.class,
                         "script/gallery/sortable.js");
                 final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(HomePage.class,
@@ -124,7 +65,6 @@ public class HandComponent extends Panel
 				final TextTemplate cssTemplate = new PackageTextTemplate(HomePage.class,
 						"stylesheet/handInBattlefield.css");
 
-				//				handInBattlefieldTemplate.interpolate(variables);
                 response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
                 response.render(JavaScriptHeaderItem.forScript(handInBattlefieldTemplate.asString(), null));
                 response.render(CssHeaderItem.forCSS(cssTemplate.asString(), null));
@@ -157,15 +97,6 @@ public class HandComponent extends Panel
 				}
 			}
 		});
-		//		}
-		//		else
-		//		{
-		//			content.add(new WebMarkupContainer("closeHand").setVisible(false));
-		//			content.setMarkupId("content");
-		//		}
-
-		//		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
-		//		this.handCardsPlaceholder.setOutputMarkupId(true);
 
 		HandComponent.LOGGER.info("### cards: "
 				+ HatchetHarrySession.get().getPlayer().getDeck().getCards().size());
@@ -191,77 +122,21 @@ public class HandComponent extends Panel
 				HatchetHarrySession.get().addCardIdInHand(item.getIndex(), item.getIndex());
 				final MagicCard card = item.getModelObject();
 
-				//				final WebMarkupContainer wrapper = new WebMarkupContainer("wrapper");
-				//				wrapper.setMarkupId("wrapper" + item.getIndex());
-				//				wrapper.setOutputMarkupId(true);
-
 				final ExternalImage handImagePlaceholder = new ExternalImage(
 						"handImagePlaceholder", card.getBigImageFilename());
-				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
+                String uuid = card.getUuid().replace("-", "_");
+                handImagePlaceholder.setMarkupId("placeholder" + uuid);
 				handImagePlaceholder.setOutputMarkupId(true);
+                Label play = new Label("play");
+                play.setOutputMarkupId(true);
+                play.setMarkupId("play" + uuid);
 
-				//				wrapper.add(handImagePlaceholder);
-				//				item.add(wrapper);
-
-				item.add(handImagePlaceholder);
+				item.add(handImagePlaceholder, play);
+                item.add(new PlayCardFromHandBehavior(card.getUuidObject()));
 			}
 				};
 				this.allCards.setOutputMarkupId(true);
 				this.add(this.allCards);
-				//		this.handCardsPlaceholder.setOutputMarkupId(true);
-
-				//		this.handCardsPlaceholder.addOrReplace(this.allCards);
-				//		slider.add(this.handCardsPlaceholder);
-
-				//		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
-				//		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", this.allCardsInHand)
-				//		{
-				//			private static final long serialVersionUID = -787466183866875L;
-				//
-				//			@Override
-				//			protected void populateItem(final ListItem<MagicCard> item)
-				//			{
-				//				final MagicCard card = item.getModelObject();
-				//
-				//				final WebMarkupContainer crossLinkDiv = new WebMarkupContainer("crossLinkDiv");
-				//				crossLinkDiv.setMarkupId("cross-link-div" + item.getIndex());
-				//				crossLinkDiv.setOutputMarkupId(true);
-				//
-				//				final WebMarkupContainer crossLink = new WebMarkupContainer("crossLink");
-				//				crossLink.add(new AttributeModifier("href", "#" + (item.getIndex() + 1)));
-				//				crossLink.setMarkupId("cross-link" + item.getIndex());
-				//				crossLink.setOutputMarkupId(true);
-				//
-				//				final ExternalImage thumb = new ExternalImage("thumbPlaceholder",
-				//					card.getThumbnailFilename());
-				//				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
-				//				thumb.setOutputMarkupId(true);
-				//				thumb.add(new AttributeModifier("name", card.getTitle()));
-				//
-				//				if (isReveal)
-				//				{
-				//					thumb.add(new AttributeModifier("class", "nav-thumb" + ids[1].toString()));
-				//				}
-				//
-				//				crossLink.add(thumb);
-				//				crossLinkDiv.add(crossLink);
-				//				item.add(crossLinkDiv);
-				//			}
-				//		};
-				//		thumbs.setOutputMarkupId(true);
-				//		this.thumbsPlaceholder.setOutputMarkupId(true);
-				//
-				//		this.thumbsPlaceholder.addOrReplace(thumbs);
-				//		page_wrap.add(this.thumbsPlaceholder);
-				//
-				//		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND,
-				//			this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
-				//				.getPlayer().getId() : ids[1])), isReveal);
-				//		putToZonePanel.add(new AttributeModifier("style", isReveal
-				//			? "position: absolute; top:25%; left: 0px;"
-				//			: "position: absolute; top:21%; left: 13px;"));
-				//		parent.add(putToZonePanel);
-				//		parent.add(content);
 
 				HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
 	}

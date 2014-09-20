@@ -1,6 +1,6 @@
 $(function() {
     sortableInProgress = false;
-    $('.cardContainer img').click(turn);
+    //$('.cardContainer img').click(turn);
     function turn(){
       if (sortableInProgress) {
           sortableInProgress = false;
@@ -11,7 +11,7 @@ $(function() {
     $('.cards').sortable({ placeholder: "ui-state-highlight", start: function( event, ui ) {
         sortableInProgress = true;
     } });
-    $('.cardContainer .tooltips').click(tooltips);
+    $('.magicCard').click(tooltips);
 
     function tooltips(){
       $(this).parent().toggleClass('details');

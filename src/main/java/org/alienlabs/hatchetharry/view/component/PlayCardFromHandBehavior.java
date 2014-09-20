@@ -44,45 +44,26 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 	private static final long serialVersionUID = 1L;
-	private final int currentCard;
 	@SpringBean
 	private PersistenceService persistenceService;
 	private UUID uuidToLookFor;
-	private String side;
 
-	public PlayCardFromHandBehavior(final UUID _uuidToLookFor, final int _currentCard,
-		final String _side)
+	public PlayCardFromHandBehavior(final UUID _uuidToLookFor)
 	{
 		super();
 		Injector.get().inject(this);
 		this.uuidToLookFor = _uuidToLookFor;
-		this.currentCard = _currentCard;
-		this.side = _side;
 	}
 
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-			.getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-
-		try
-		{
-			this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
-		}
-		catch (final IllegalArgumentException ex)
-		{
-			PlayCardFromHandBehavior.LOGGER.error(
-				"No card with UUID= " + request.getParameter("card") + " found!", ex);
-		}
-
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 
 		if (null == card)
 		{
 			PlayCardFromHandBehavior.LOGGER.error("UUID " + this.uuidToLookFor
-				+ " retrieved no MagicCard!");
+					+ " retrieved no MagicCard!");
 			return;
 		}
 
@@ -103,12 +84,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final Player p = HatchetHarrySession.get().getPlayer();
 		final Deck d = p.getDeck();
 
-		final Side _side = p.getSide();
-		card.setX(_side.getX());
-		card.setY(_side.getY());
-
 		final List<MagicCard> hand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(
-			gameId, p.getId(), d.getDeckId());
+				gameId, p.getId(), d.getDeckId());
 		PlayCardFromHandBehavior.LOGGER.info("remove? " + hand.remove(card));
 		card.setZone(CardZone.BATTLEFIELD);
 		d.reorderMagicCards(hand);
@@ -116,7 +93,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateCard(card);
 
 		final List<MagicCard> battlefield = this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 		d.reorderMagicCards(battlefield);
 		PlayCardFromHandBehavior.LOGGER.info("In battlefield: " + battlefield.size());
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
@@ -124,18 +101,18 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		target.appendJavaScript("jQuery('#playCardIndicator').hide(); ");
 
 		final PlayCardFromHandCometChannel pcfhcc = new PlayCardFromHandCometChannel(card,
-			HatchetHarrySession.get().getPlayer().getName(), gameId, _side);
+				HatchetHarrySession.get().getPlayer().getName(), gameId);
 		final NotifierCometChannel ncc = new NotifierCometChannel(
-			NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
-				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
-			card.getTitle(), null, "");
+				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
+						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+				"", card.getTitle(), null, "");
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-			ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null, card.getTitle(),
-			p.getName(), null, null, null, null, gameId);
+				ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null,
+				card.getTitle(), p.getName(), null, null, null, null, gameId);
 
 		// post a message for all players in the game
 		final List<BigInteger> allPlayersInGame = this.persistenceService
-			.giveAllPlayersFromGame(gameId);
+				.giveAllPlayersFromGame(gameId);
 		EventBusPostService.post(allPlayersInGame, pcfhcc, ncc, new ConsoleLogCometChannel(logger));
 
 		JavaScriptUtils.updateHand(target);
@@ -149,25 +126,21 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
 		final String uuidAsString = this.uuidToLookFor.toString();
-		variables.put("uuid", uuidAsString);
 		variables.put("uuidValidForJs", uuidAsString.replace("-", "_"));
-		variables.put("next", (this.currentCard == 6 ? 0 : this.currentCard + 1));
-		variables.put("side", this.side);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/playCard/playCard.js");
+				"script/playCard/playCard.js");
 		template.interpolate(variables);
 
-		PlayCardFromHandBehavior.LOGGER.info("### clicked: " + this.currentCard);
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "playCardFromHand"));
-		try
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+        try
 		{
 			template.close();
 		}
 		catch (final IOException e)
 		{
 			PlayCardFromHandBehavior.LOGGER.error(
-				"unable to close template in PlayCardFromHandBehavior#renderHead()!", e);
+					"unable to close template in PlayCardFromHandBehavior#renderHead()!", e);
 		}
 	}
 
@@ -175,16 +148,6 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
-	}
-
-	public String getSide()
-	{
-		return this.side;
-	}
-
-	public void setSide(final String _side)
-	{
-		this.side = _side;
 	}
 
 }

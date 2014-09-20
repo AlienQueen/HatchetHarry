@@ -30,7 +30,7 @@ body{padding:1%;}*/
     bottom:85%;
     top:0;
     right:0;
-    background-image:url(/image/loupe.png);
+    background-image:url(/image/playCard.png);
     background-size:100%;
 }
 .cardContainer.turned img { transform: rotate(90deg); }

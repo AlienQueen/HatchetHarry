@@ -272,8 +272,6 @@ public class JoinGameModalWindow extends Panel
 				final int posX = ("infrared".equals(JoinGameModalWindow.this.sideInput
 					.getDefaultModelObjectAsString())) ? 300 : 900;
 
-				JoinGameModalWindow.this.hp.getPlayCardBehavior().setSide(
-					JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
 				session.setMySidePosY(300);
 
