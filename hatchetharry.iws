@@ -7,19 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53d66d2c-c1ab-4ba4-a372-63c0f71212f3" name="Default" comment="Optimized DB requests again:&#10;&#10;- setCacheable(true) on one more request&#10;- got rid of 3 (!) useless calls to getCardFromUuid when playing a card&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardPanel.html" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardPanel.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardPanel.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardTooltipBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardTooltipBehavior.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/HandComponent.html" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/HandComponent.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/JavaScriptUtils.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/JavaScriptUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/draggableHandle/cardTooltip.js" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/draggableHandle/cardTooltip.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/handInBattlefield.css" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/handInBattlefield.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/gallery/handInBattlefield.js" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/gallery/handInBattlefield.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hatchetharry.iws" afterPath="$PROJECT_DIR$/hatchetharry.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/myStyle.css" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/myStyle.css" />
     </list>
     <ignored path="hatchetharry.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -242,20 +231,20 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HomePage.html" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="HomePage.html" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-8.518518" vertical-offset="4558" max-vertical-offset="7308">
-                  <caret line="266" column="35" selection-start-line="266" selection-start-column="35" selection-end-line="266" selection-end-column="35" />
+                <state vertical-scroll-proportion="0.6837607" vertical-offset="4558" max-vertical-offset="7308">
+                  <caret line="271" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="271" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="JavaScriptUtils.java" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="JavaScriptUtils.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/JavaScriptUtils.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.27136752" vertical-offset="35" max-vertical-offset="4446">
+                <state vertical-scroll-proportion="-4.703704" vertical-offset="35" max-vertical-offset="4446">
                   <caret line="24" column="253" selection-start-line="24" selection-start-column="253" selection-end-line="24" selection-end-column="253" />
                   <folding />
                 </state>
@@ -350,7 +339,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HomePage.java" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="HomePage.java" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.40234375" vertical-offset="5950" max-vertical-offset="60048">
@@ -405,12 +394,12 @@
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardPanel.html" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/handInBattlefield.css" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/myStyle.css" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/JavaScriptUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/CardPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/gallery/handInBattlefield.js" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/draggableHandle/cardTooltip.js" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html" />
       </list>
     </option>
   </component>
@@ -1637,7 +1626,7 @@
       <workItem from="1409774677261" duration="8417000" />
       <workItem from="1411065253505" duration="26527000" />
       <workItem from="1411232646537" duration="950000" />
-      <workItem from="1411253171697" duration="20689000" />
+      <workItem from="1411253171697" duration="21385000" />
     </task>
     <task id="LOCAL-00001" summary="- FIXED performance problems thanks to &quot;@Transactional(readOnly=true)&quot; on PersistenceService's methods that are... read-only&#10;- FIXED bug occurring when dragging and dropping a card several times over the hand or the graveyard zones by means of hiding the card's HTML when droppable is taken into account">
       <created>1374753426598</created>
@@ -1727,7 +1716,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56945000" />
+    <option name="totallyTimeSpent" value="57641000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2240,16 +2229,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/myStyle.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="6084">
-          <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.518518" vertical-offset="4558" max-vertical-offset="7308">
-          <caret line="266" column="35" selection-start-line="266" selection-start-column="35" selection-end-line="266" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="6084">
+          <caret line="30" column="11" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="11" />
           <folding />
         </state>
       </provider>
@@ -2296,7 +2277,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/JavaScriptUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27136752" vertical-offset="35" max-vertical-offset="4446">
+        <state vertical-scroll-proportion="-4.703704" vertical-offset="35" max-vertical-offset="4446">
           <caret line="24" column="253" selection-start-line="24" selection-start-column="253" selection-end-line="24" selection-end-column="253" />
           <folding />
         </state>
@@ -2309,6 +2290,14 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6837607" vertical-offset="4558" max-vertical-offset="7308">
+          <caret line="271" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="271" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
