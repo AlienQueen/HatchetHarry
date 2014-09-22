@@ -43,7 +43,7 @@ public class CardPanel extends Panel
 	PersistenceService persistenceService;
 	private Player owner;
 
-	public CardPanel(final String id, final String smallImage, final UUID _uuid, final Player _owner)
+	public CardPanel(final String id, final String image, final UUID _uuid, final Player _owner)
 	{
 		super(id);
 		Injector.get().inject(this);
@@ -62,9 +62,9 @@ public class CardPanel extends Panel
 			{
 				super.renderHead(component, response);
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-					HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
+						HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-					HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
+						HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
 			}
 		});
 
@@ -74,18 +74,16 @@ public class CardPanel extends Panel
 		cardHandle.setOutputMarkupId(true);
 		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		cardHandle.setMarkupId("cardHandle" + uuidValidForJs);
-		cardHandle.add(new AttributeModifier("style", "position: absolute; top: "
-			+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
-			+ "px;  z-index: 1;"));
+		/*
+		 * cardHandle.add(new AttributeModifier("style",
+		 * "position: absolute; top: " + this.owner.getSide().getY() +
+		 * "px; left: " + this.owner.getSide().getX() + "px;  z-index: 1;"));
+		 */
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
 		if ("baldu".equals(id))
 		{
 			cardHandle.add(new AttributeModifier("class", "baldu"));
-		}
-		else
-		{
-			cardHandle.add(new AttributeModifier("class", "magicCard"));
 		}
 
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
@@ -99,7 +97,7 @@ public class CardPanel extends Panel
 		menutoggleButton.add(this.putToHandFromBattlefieldBehavior);
 
 		this.putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(
-			this.uuid);
+				this.uuid);
 		menutoggleButton.add(this.putToGraveyardFromBattlefieldBehavior);
 
 		this.putToExileFromBattlefieldBehavior = new PutToExileFromBattlefieldBehavior(this.uuid);
@@ -108,28 +106,32 @@ public class CardPanel extends Panel
 		this.destroyTokenBehavior = new DestroyTokenBehavior(this.uuid);
 		menutoggleButton.add(this.destroyTokenBehavior);
 
-		final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this, this.uuid,
-			this.putToGraveyardFromBattlefieldBehavior, this.putToHandFromBattlefieldBehavior,
-			this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior, myCard.getX()
-				.longValue() == -1l ? this.owner.getSide().getX().longValue() : myCard.getX()
-				.longValue(), myCard.getY().longValue() == -1l ? this.owner.getSide().getY()
-				.longValue() : myCard.getY().longValue());
-		menutoggleButton.add(cardMoveBehavior);
+		/*
+		 * final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this,
+		 * this.uuid, this.putToGraveyardFromBattlefieldBehavior,
+		 * this.putToHandFromBattlefieldBehavior,
+		 * this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior,
+		 * myCard.getX() .longValue() == -1l ?
+		 * this.owner.getSide().getX().longValue() : myCard.getX() .longValue(),
+		 * myCard.getY().longValue() == -1l ? this.owner.getSide().getY()
+		 * .longValue() : myCard.getY().longValue());
+		 * menutoggleButton.add(cardMoveBehavior);
+		 */
 
 		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid,
-			myCard.isTapped());
+				myCard.isTapped());
 
 		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(this.uuid, myCard,
-			this.owner);
+				this.owner);
 		menutoggleButton.add(cardRotateBehavior, drawModeBehavior);
 
 		final ArrowDrawBehavior arrowDrawBehavior = new ArrowDrawBehavior("cardHandle"
-			+ uuidValidForJs);
+				+ uuidValidForJs);
 		menutoggleButton.add(arrowDrawBehavior);
 
 		final String requestedSessionId = this.getHttpServletRequest().getRequestedSessionId();
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-			requestedSessionId));
+				requestedSessionId));
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
@@ -142,19 +144,10 @@ public class CardPanel extends Panel
 		mouseX.setOutputMarkupId(true);
 		mouseY.setOutputMarkupId(true);
 
-		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
-		handleImage.setMarkupId("handleImage" + uuidValidForJs);
-		handleImage.setOutputMarkupId(true);
-
-		final ExternalImage tapHandleImage = new ExternalImage("tapHandleImage",
-			"image/rightArrow.png");
-		tapHandleImage.setMarkupId("tapHandleImage" + uuidValidForJs);
-		tapHandleImage.setOutputMarkupId(true);
-
 		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
 		bullet.setOutputMarkupId(true).setMarkupId("bullet" + uuidValidForJs);
 
-		final ExternalImage cardImage = new ExternalImage("cardImage", smallImage);
+		final ExternalImage cardImage = new ExternalImage("cardImage", image);
 		cardImage.setOutputMarkupId(true);
 		if ("baldu".equals(id))
 		{
@@ -164,7 +157,6 @@ public class CardPanel extends Panel
 		{
 			cardImage.setMarkupId("card" + uuidValidForJs);
 		}
-		cardImage.add(new AttributeModifier("class", "clickableCard"));
 
 		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
 		if (null != this.owner)
@@ -172,18 +164,15 @@ public class CardPanel extends Panel
 			if ("infrared".equals(this.owner.getSide().getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
-				handleImage.add(new AttributeModifier("style", "border: 1px red dotted;"));
 			}
 			else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
-				handleImage.add(new AttributeModifier("style", "border: 1px purple dotted;"));
 			}
 		}
 		else
 		{
 			cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
-			handleImage.add(new AttributeModifier("style", "border: 1px yellow dotted;"));
 		}
 
 		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
@@ -203,11 +192,13 @@ public class CardPanel extends Panel
 			card.setVisible(false);
 		}
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, bullet, cardImage, tapHandleImage,
-			contextMenu);
+		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, contextMenu);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 		this.add(cardHandle);
+
+		final CardTooltipBehavior ctb = new CardTooltipBehavior(this.uuid);
+		this.add(ctb);
 	}
 
 	public HttpServletRequest getHttpServletRequest()

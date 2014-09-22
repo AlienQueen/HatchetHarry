@@ -322,7 +322,7 @@ public class HomePage extends TestReportPage
 					&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer()
 							.getSide().getSideName())))
 			{
-				final CardPanel baldu = new CardPanel("baldu", card.getSmallImageFilename(),
+				final CardPanel baldu = new CardPanel("baldu", card.getBigImageFilename(),
 						card.getUuidObject(), this.player);
 				balduParent.add(baldu);
 				this.session.getAllMagicCardsInBattleField().add(card);
@@ -375,7 +375,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.20.0 (release Battlefield),");
-        final Label message2 = new Label("message2", "built on Saturday, 20th of September 2014.");
+        final Label message2 = new Label("message2", "built on Monday, 22nd of September 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -3071,10 +3071,6 @@ public class HomePage extends TestReportPage
 				{
 					js.append("jQuery('#card" + uuidValidForJs + "').rotate(90); ");
 				}
-				else
-				{
-					js.append("jQuery('#card" + uuidValidForJs + "').rotate(0); ");
-				}
 
 				if (((mc.getToken() == null) && mc.getCounters().isEmpty())
 						|| ((mc.getToken() != null) && mc.getToken().getCounters().isEmpty()))
@@ -3185,7 +3181,7 @@ public class HomePage extends TestReportPage
 			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
-				final CardPanel cp = new CardPanel("cardPanel", mc.getSmallImageFilename(),
+				final CardPanel cp = new CardPanel("cardPanel", mc.getBigImageFilename(),
 						mc.getUuidObject(), HomePage.this.persistenceService.getPlayer(mc.getDeck()
 								.getPlayerId()));
 				cp.setOutputMarkupId(true);
@@ -3194,49 +3190,40 @@ public class HomePage extends TestReportPage
 		};
 		this.allCardsInBattlefield.setOutputMarkupId(true);
 
-		this.allTooltips = new QuickView<MagicCard>("tooltips", data)
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void populate(final Item<MagicCard> item)
-			{
-				final MagicCard mc = item.getModelObject();
-
-				if (null == mc.getToken())
-				{
-					final MagicCardTooltipPanel cardBubbleTip = new MagicCardTooltipPanel(
-							"cardTooltip", mc.getUuidObject(), mc.getBigImageFilename(),
-							mc.getOwnerSide(), mc);
-					cardBubbleTip.setOutputMarkupId(true);
-					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip.add(new AttributeModifier("style",
-							"display: none; position: relative; left: 50%; top: 50%; z-index: 1;"));
-
-					item.add(cardBubbleTip);
-				}
-				else
-				{
-					final TokenTooltipPanel cardBubbleTip = new TokenTooltipPanel("cardTooltip",
-							mc.getToken());
-					cardBubbleTip.setOutputMarkupId(true);
-					cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-", "_"));
-					cardBubbleTip.add(new AttributeModifier("class", "black"));
-
-					item.add(cardBubbleTip);
-				}
-			}
-		};
-
-		this.allTooltips.setOutputMarkupId(true);
+		/*
+		 * this.allTooltips = new QuickView<MagicCard>("tooltips", data) {
+		 * private static final long serialVersionUID = 1L;
+		 * 
+		 * @Override protected void populate(final Item<MagicCard> item) { final
+		 * MagicCard mc = item.getModelObject();
+		 * 
+		 * if (null == mc.getToken()) { final MagicCardTooltipPanel
+		 * cardBubbleTip = new MagicCardTooltipPanel( "cardTooltip",
+		 * mc.getUuidObject(), mc.getBigImageFilename(), mc.getOwnerSide(), mc);
+		 * cardBubbleTip.setOutputMarkupId(true);
+		 * cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-",
+		 * "_")); cardBubbleTip.add(new AttributeModifier("style",
+		 * "display: none; position: relative; left: 50%; top: 50%; z-index: 1;"
+		 * ));
+		 * 
+		 * item.add(cardBubbleTip); } else { final TokenTooltipPanel
+		 * cardBubbleTip = new TokenTooltipPanel("cardTooltip", mc.getToken());
+		 * cardBubbleTip.setOutputMarkupId(true);
+		 * cardBubbleTip.setMarkupId("cardTooltip" + mc.getUuid().replace("-",
+		 * "_")); cardBubbleTip.add(new AttributeModifier("class", "black"));
+		 * 
+		 * item.add(cardBubbleTip); } } };
+		 * 
+		 * this.allTooltips.setOutputMarkupId(true);
+		 */
 
 		if (replace)
 		{
-			this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield, this.allTooltips);
+			this.parentPlaceholder.addOrReplace(this.allCardsInBattlefield);
 		}
 		else
 		{
-			this.parentPlaceholder.add(this.allCardsInBattlefield, this.allTooltips);
+			this.parentPlaceholder.add(this.allCardsInBattlefield);
 		}
 
 		return this.allCardsInBattlefield;

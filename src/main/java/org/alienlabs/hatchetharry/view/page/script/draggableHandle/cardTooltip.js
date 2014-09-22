@@ -1,22 +1,21 @@
 window.setTimeout(function () {
     if (typeof drawMode === 'undefined' || !drawMode) {
+        var sortableInProgress = false;
+        var battlefieldTurn = function (){
+            if (sortableInProgress) {
+                sortableInProgress = false;
+                return;
+            }
+            $(this).prev().toggleClass('battlefieldTurned');
+        }
+        $('.battlefieldCards').sortable({ placeholder: "ui-state-highlight", start: function( event, ui ) {
+            sortableInProgress = true;
+        } });
 
-        jQuery('#card${uuidValidForJs}').unbind('click');
-        jQuery('#card${uuidValidForJs}').unbind('tap');
-
-        jQuery('#card${uuidValidForJs}').click(function (e) {
-            jQuery('#cardTooltip${uuidValidForJs}').children(0).children(0).show();
-            jQuery('#cardTooltip${uuidValidForJs}').attr('style', 'display: block; position: absolute; left: ' + (jQuery('#card${uuidValidForJs}').offset().left + 20) + 'px; top: ' + (jQuery('#card${uuidValidForJs}').offset().top + 20) + 'px; z-index: 50;');
-        });
-
-        // For mobile
-        var hammertime${uuidValidForJs}
-        = jQuery('#card${uuidValidForJs}').hammer();
-        hammertime${uuidValidForJs}.on('tap', function (ev) {
-            jQuery('#cardTooltip${uuidValidForJs}').attr('style', 'display: block; position: absolute; left: '
-                + (jQuery('#card${uuidValidForJs}').offset().left + 20) + 'px; top: ' + (jQuery('#card${uuidValidForJs}').offset().top + 20)
-                + 'px; z-index: 50;');
-            jQuery('#cardTooltip${uuidValidForJs}').children(0).children(0).show();
-        });
+        var battlefieldTooltips = function (){
+            $(this).toggleClass('battlefieldDetails');
+        }
+        $('.clickableCard').unbind('click').click(battlefieldTooltips);
+        $('.cardTooltips').unbind('click').click(battlefieldTurn);
     }
 }, 1000);

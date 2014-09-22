@@ -33,8 +33,4 @@ body{padding:1%;}*/
     background-image:url(/image/playCard.png);
     background-size:100%;
 }
-.cardContainer.turned img { transform: rotate(90deg); }
-.cardContainer.details img{ transform:scale(2); }
-.cardContainer.details.turned img {
-    transform:scale(2) rotate(0);
-}
+.details{ transform:scale(2); }

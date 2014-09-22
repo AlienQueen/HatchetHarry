@@ -81,11 +81,11 @@
             cursor: move;
         }
 
-        .tap-handle-image {
+        /*.tap-handle-image {
             cursor: ne-resize;
             width: 30px;
             height: 30px;
-        }
+        }*/
 
     </style>
 </wicket:head>
@@ -95,17 +95,16 @@
     <h2 id="status2"/>
     <br/><br/>
 		<span wicket:id="cardHandle">
-			<span id="special" class="magicCard">
+            <span id="special" class="battlefieldCard">
 				<div wicket:id="menutoggleButton" id="menutoggleButton" class="tour_5">
                     <form wicket:id="form">
                         <input wicket:id="jsessionid" id="jsessionid" type="text" style="display: none;"/>
                         <input wicket:id="mouseX" id="mouseX" type="text" style="display: none;"/>
                         <input wicket:id="mouseY" id="mouseY" type="text" style="display: none;"/>
-                        <img wicket:id="handleImage" id="handle" class="drag-handle-image"/>
                         <span wicket:id="bullet" class="bullet"
-                              title="There is at least one counter on this permanent">&bull;</span><img
-                            wicket:id="cardImage" id="card"/>
-                        <img wicket:id="tapHandleImage" id="tapHandleImage" class="tap-handle-image"/>
+                              title="There is at least one counter on this permanent">&bull;</span>
+                        <img wicket:id="cardImage" class="clickableCard"/>
+                        <img class="cardTooltips" src="/image/rightArrow.png"></img>
                         <ul wicket:id="contextMenu" id="contextMenu" class="contextMenu">
 							<span wicket:id="card">
 								<li class="hand"><a href="#hand">&nbsp;Put to hand&nbsp;&nbsp;&nbsp;</a></li>
@@ -121,7 +120,7 @@
                         </ul>
                     </form>
                 </div>
-			</span>
+            </span>
 		</span>
 
 </wicket:panel>

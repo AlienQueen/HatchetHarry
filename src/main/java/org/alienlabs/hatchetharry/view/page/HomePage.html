@@ -245,7 +245,7 @@
 <div wicket:id="preferencesWindow"></div>
 
 <span wicket:id="secondSidePlaceholderParent"><span wicket:id="secondSidePlaceholder"></span></span>
-  	
+
 	<span align="left">
 	  	<span id="header"></span>
 		<span id="nav"></span>
@@ -263,16 +263,18 @@
 <span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
 <br/><br/>
 
-<div wicket:id="parentPlaceholder">
-    <table>
-        <tr wicket:id="magicCards">
-            <td wicket:id="cardPanel"></td>
-        </tr>
+<ul wicket:id="parentPlaceholder" class="battlefieldCards">
+        <li wicket:id="magicCards">
+            <span wicket:id="cardPanel" class="battlefieldCardContainer">
+            </span>
+        </li>
+    </ul>
+
+    <!--<table>
         <tr wicket:id="tooltips">
             <td wicket:id="cardTooltip"></td>
         </tr>
-    </table>
-</div>
+    </table>-->
 <span wicket:id="galleryParent" id="#">
 	<span wicket:id="gallery" class="gallery"></span>
 </span>

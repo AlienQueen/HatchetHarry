@@ -1,9 +1,5 @@
 package org.alienlabs.hatchetharry.view.component;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -14,6 +10,9 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.UUID;
 
 public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -33,25 +32,18 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, String> variables = new HashMap<String, String>();
-		variables.put("url", this.getCallbackUrl().toString());
-		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
-		variables.put("uuidValidForJs", uuidValidForJs);
-
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/cardTooltip.js");
-		template.interpolate(variables);
+				"script/draggableHandle/cardTooltip.js");
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "cardTooltipScript"
-			+ uuidValidForJs));
-		try
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+        try
 		{
 			template.close();
 		}
 		catch (final IOException e)
 		{
 			CardTooltipBehavior.LOGGER.error(
-				"unable to close template in CardTooltipBehavior#renderHead()!", e);
+					"unable to close template in CardTooltipBehavior#renderHead()!", e);
 		}
 	}
 
