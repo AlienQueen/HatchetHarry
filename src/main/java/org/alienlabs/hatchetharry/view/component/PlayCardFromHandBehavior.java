@@ -6,15 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
@@ -32,7 +29,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
@@ -104,7 +100,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				HatchetHarrySession.get().getPlayer().getName(), gameId);
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
-						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
 				"", card.getTitle(), null, "");
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null,
@@ -133,7 +129,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		template.interpolate(variables);
 
 		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-        try
+		try
 		{
 			template.close();
 		}

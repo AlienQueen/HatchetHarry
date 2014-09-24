@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CardPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
@@ -74,11 +74,6 @@ public class CardPanel extends Panel
 		cardHandle.setOutputMarkupId(true);
 		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		cardHandle.setMarkupId("cardHandle" + uuidValidForJs);
-		/*
-		 * cardHandle.add(new AttributeModifier("style",
-		 * "position: absolute; top: " + this.owner.getSide().getY() +
-		 * "px; left: " + this.owner.getSide().getX() + "px;  z-index: 1;"));
-		 */
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
 		if ("baldu".equals(id))
@@ -106,20 +101,7 @@ public class CardPanel extends Panel
 		this.destroyTokenBehavior = new DestroyTokenBehavior(this.uuid);
 		menutoggleButton.add(this.destroyTokenBehavior);
 
-		/*
-		 * final CardMoveBehavior cardMoveBehavior = new CardMoveBehavior(this,
-		 * this.uuid, this.putToGraveyardFromBattlefieldBehavior,
-		 * this.putToHandFromBattlefieldBehavior,
-		 * this.putToExileFromBattlefieldBehavior, this.destroyTokenBehavior,
-		 * myCard.getX() .longValue() == -1l ?
-		 * this.owner.getSide().getX().longValue() : myCard.getX() .longValue(),
-		 * myCard.getY().longValue() == -1l ? this.owner.getSide().getY()
-		 * .longValue() : myCard.getY().longValue());
-		 * menutoggleButton.add(cardMoveBehavior);
-		 */
-
-		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this, this.uuid,
-				myCard.isTapped());
+		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this.uuid);
 
 		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(this.uuid, myCard,
 				this.owner);
@@ -149,6 +131,11 @@ public class CardPanel extends Panel
 
 		final ExternalImage cardImage = new ExternalImage("cardImage", image);
 		cardImage.setOutputMarkupId(true);
+
+		final ExternalImage cardRotate = new ExternalImage("cardRotate", "/image/rightArrow.png");
+		cardRotate.setOutputMarkupId(true);
+		cardRotate.setMarkupId("cardRotate" + uuidValidForJs);
+
 		if ("baldu".equals(id))
 		{
 			cardImage.setMarkupId("baldu");
@@ -192,7 +179,7 @@ public class CardPanel extends Panel
 			card.setVisible(false);
 		}
 
-		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, contextMenu);
+		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 		this.add(cardHandle);

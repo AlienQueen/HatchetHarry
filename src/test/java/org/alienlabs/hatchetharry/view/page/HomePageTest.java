@@ -38,7 +38,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class HomePageTest
 {
 	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-		new String[] { "applicationContext.xml", "applicationContextTest.xml" });
+			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
 	public static transient ApplicationContext context;
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
@@ -62,7 +62,7 @@ public class HomePageTest
 				super.init();
 				HomePageTest.context = HomePageTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-					new SpringComponentInjector(this, HomePageTest.context, true));
+						new SpringComponentInjector(this, HomePageTest.context, true));
 			}
 		};
 		HomePageTest.tester = new WicketTester(HomePageTest.webApp);
@@ -74,7 +74,7 @@ public class HomePageTest
 	{
 		final String document = HomePageTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "title", name,
-			false);
+				false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
@@ -92,17 +92,16 @@ public class HomePageTest
 		// assert modal windows are in the page
 		HomePageTest.tester.assertComponent(_window, ModalWindow.class);
 		final ModalWindow window = (ModalWindow)HomePageTest.tester
-			.getComponentFromLastRenderedPage(_window);
+				.getComponentFromLastRenderedPage(_window);
 		HomePageTest.tester.assertInvisible(window.getPageRelativePath() + ":"
-			+ window.getContentId());
+				+ window.getContentId());
 
-		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> link = (AjaxLink<Void>)HomePageTest.tester
-			.getComponentFromLastRenderedPage(linkToActivateWindow);
+				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
 		HomePageTest.tester.clickLink(linkToActivateWindow, true);
 		HomePageTest.tester.assertVisible(window.getPageRelativePath() + ":"
-			+ window.getContentId());
+				+ window.getContentId());
 	}
 
 	@Test
@@ -113,15 +112,15 @@ public class HomePageTest
 		HomePageTest.tester.startPage(HomePage.class);
 		HomePageTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
 		final CardPanel baldu = (CardPanel)HomePageTest.tester
-			.getComponentFromLastRenderedPage("balduParent:baldu");
+				.getComponentFromLastRenderedPage("balduParent:baldu");
 		final ExternalImage tapHandleImage = (ExternalImage)baldu
-			.get("cardHandle:menutoggleButton:form:tapHandleImage");
+				.get("cardHandle:menutoggleButton:form:tapHandleImage");
 		Assert.assertNotNull(tapHandleImage);
 		final ExternalImage handleImage = (ExternalImage)baldu
-			.get("cardHandle:menutoggleButton:form:handleImage");
+				.get("cardHandle:menutoggleButton:form:handleImage");
 		Assert.assertNotNull(handleImage);
 		final ExternalImage cardImage = (ExternalImage)baldu
-			.get("cardHandle:menutoggleButton:form:cardImage");
+				.get("cardHandle:menutoggleButton:form:cardImage");
 		Assert.assertNotNull(cardImage);
 	}
 
@@ -135,7 +134,7 @@ public class HomePageTest
 		// assert URL of a thumbnail
 		final String document = HomePageTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
-			"nav-thumb", false);
+				"nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -150,7 +149,7 @@ public class HomePageTest
 	{
 		// assert rendered label component
 		final Label message = (Label)HomePageTest.tester
-			.getComponentFromLastRenderedPage("message1");
+				.getComponentFromLastRenderedPage("message1");
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
 	}
@@ -164,7 +163,7 @@ public class HomePageTest
 
 		// assert clock content
 		final ClockPanel clock = (ClockPanel)HomePageTest.tester
-			.getComponentFromLastRenderedPage("clockPanel");
+				.getComponentFromLastRenderedPage("clockPanel");
 		Assert.assertTrue(clock.getTime().getObject().contains("###"));
 	}
 
@@ -175,7 +174,7 @@ public class HomePageTest
 		// Assert menubar
 		final String document = HomePageTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
-			"shift-bottom", false);
+				"shift-bottom", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(3, tagTester.size());
 
@@ -201,11 +200,10 @@ public class HomePageTest
 
 		// assert DataBox content
 		HomePageTest.tester.assertComponent(
-			"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
-			AjaxEditableLabel.class);
-		@SuppressWarnings("unchecked")
+				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
+				AjaxEditableLabel.class);
 		final AjaxEditableLabel<String> lifePoints = (AjaxEditableLabel<String>)HomePageTest.tester
-			.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
+				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
 		Assert.assertEquals("20", lifePoints.getDefaultModelObject().toString());
 	}
 
@@ -243,7 +241,7 @@ public class HomePageTest
 		HomePageTest.tester.clickLink("handLink", true);
 
 		WebMarkupContainer handParent = (WebMarkupContainer)HomePageTest.tester
-			.getComponentFromLastRenderedPage("galleryParent");
+				.getComponentFromLastRenderedPage("galleryParent");
 		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
 		Component gallery = handParent.get("gallery");
 		Assert.assertNotNull(gallery);
@@ -254,7 +252,7 @@ public class HomePageTest
 		HomePageTest.tester.clickLink("handLink", true);
 
 		handParent = (WebMarkupContainer)HomePageTest.tester
-			.getComponentFromLastRenderedPage("galleryParent");
+				.getComponentFromLastRenderedPage("galleryParent");
 		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
 		gallery = handParent.get("gallery");
 		Assert.assertNotNull(gallery);
@@ -268,7 +266,7 @@ public class HomePageTest
 		final String markupWithoutCdata = markupAfterOpeningCdata.split("<!\\[CDATA\\[")[0];
 
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(markupWithoutCdata,
-			"class", "nav-thumb", false);
+				"class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -331,18 +329,18 @@ public class HomePageTest
 		// this.startAGameAndPlayACard();
 
 		final PersistenceService persistenceService = HomePageTest.context
-			.getBean(PersistenceService.class);
+				.getBean(PersistenceService.class);
 		final HatchetHarrySession session = HatchetHarrySession.get();
 		Assert.assertTrue(persistenceService.getAllCardsInLibraryForDeckAndPlayer(
-			session.getGameId(), session.getPlayer().getId(),
-			session.getPlayer().getDeck().getDeckId()).size() > 0);
+				session.getGameId(), session.getPlayer().getId(),
+				session.getPlayer().getDeck().getDeckId()).size() > 0);
 		// assert hand is present
 		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 
 		// assert presence of a thumbnail
 		HomePageTest.pageDocument = HomePageTest.tester.getLastResponse().getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument,
-			"class", "nav-thumb", false);
+				"class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -357,9 +355,8 @@ public class HomePageTest
 		HomePageTest.pageDocument = HomePageTest.tester.getLastResponse().getDocument();
 		// Draw a card
 		HomePageTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		@SuppressWarnings("unchecked")
 		final AjaxLink<String> drawCardLink = (AjaxLink<String>)HomePageTest.tester
-			.getComponentFromLastRenderedPage("drawCardLink");
+				.getComponentFromLastRenderedPage("drawCardLink");
 		HomePageTest.tester.executeAjaxEvent(drawCardLink, "onclick");
 
 		// assert presence of a thumbnail
@@ -368,7 +365,7 @@ public class HomePageTest
 		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 		HomePageTest.pageDocument = HomePageTest.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument, "class",
-			"nav-thumb", false);
+				"nav-thumb", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -381,7 +378,7 @@ public class HomePageTest
 		// Drawing card successful?
 		final String firstCardIdAfterDraw = tagTester.get(0).getAttribute("id");
 		Assert.assertFalse("The first thumb of the hand component has not changed!",
-			firstCardIdBeforeDraw.equals(firstCardIdAfterDraw));
+				firstCardIdBeforeDraw.equals(firstCardIdAfterDraw));
 
 		Assert.assertNotNull(tagTester.get(1).getAttribute("id"));
 		Assert.assertTrue(tagTester.get(1).getAttribute("id").contains("placeholder"));

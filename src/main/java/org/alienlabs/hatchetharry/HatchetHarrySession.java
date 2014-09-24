@@ -14,7 +14,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 
-@SuppressWarnings("unchecked")
 public class HatchetHarrySession extends WebSession
 {
 	private static final long serialVersionUID = 4565051252275468687L;
@@ -70,16 +69,16 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.INDEX_NEXT_PLAYER, 1l);
 		this.setAttribute(HatchetHarrySession.GAME_CREATED, false);
 		this.setAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD,
-			new ArrayList<CardPanel>());
+				new ArrayList<CardPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
 		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, false);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD,
-			new ArrayList<MagicCard>());
+				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
-			new ArrayList<MagicCard>());
+				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, 0l);
 	}
 
@@ -253,7 +252,7 @@ public class HatchetHarrySession extends WebSession
 	public List<CardPanel> getAllCardsToRemove()
 	{
 		final List<CardPanel> cards = (ArrayList<CardPanel>)this
-			.getAttribute(HatchetHarrySession.TO_REMOVE);
+				.getAttribute(HatchetHarrySession.TO_REMOVE);
 		return cards;
 	}
 
@@ -261,7 +260,7 @@ public class HatchetHarrySession extends WebSession
 	public ArrayList<CardPanel> getAllCardPanelsInBattleField()
 	{
 		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
-			.getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
+				.getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
 		return cards;
 	}
 
@@ -273,7 +272,7 @@ public class HatchetHarrySession extends WebSession
 	public void setMySidePlaceholder(final SidePlaceholderPanel _mySidePlaceholder)
 	{
 		final ArrayList<SidePlaceholderPanel> l = (ArrayList<SidePlaceholderPanel>)this
-			.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
+				.getAttribute(HatchetHarrySession.MY_SIDE_PANELS);
 		l.add(_mySidePlaceholder);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, l);
 	}
@@ -281,13 +280,13 @@ public class HatchetHarrySession extends WebSession
 	public boolean isMySidePlaceholderInSesion(final String side)
 	{
 		return ((List<String>)this.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER))
-			.contains(side);
+				.contains(side);
 	}
 
 	public void putMySidePlaceholderInSesion(final String side)
 	{
 		final ArrayList<String> l = (ArrayList<String>)this
-			.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
+				.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER);
 		l.add(side);
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, l);
 	}
@@ -360,7 +359,7 @@ public class HatchetHarrySession extends WebSession
 	public ArrayList<MagicCard> getAllCardsWhichHaveBeenInBattlefield()
 	{
 		return (ArrayList<MagicCard>)this
-			.getAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD);
+				.getAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD);
 	}
 
 	public void setAllCardsWhichHaveBeenInBattlefield(final ArrayList<MagicCard> list)
@@ -371,7 +370,7 @@ public class HatchetHarrySession extends WebSession
 	public ArrayList<MagicCard> getAllMagicCardsInBattleField()
 	{
 		return (ArrayList<MagicCard>)this
-			.getAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD);
+				.getAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD);
 	}
 
 	public void setAllMagicCardsInBattleField(final ArrayList<MagicCard> list)

@@ -1,14 +1,7 @@
-jQuery(function () {
-    window.setTimeout(function () {
-        jQuery("#tapHandleImage${uuidValidForJs}").data("tapUrl", "${url}");
+window.setTimeout(function () {
+	jQuery("#cardRotate${uuidValidForJs}").data("tapUrl", "${url}");
 
-        jQuery('#tapHandleImage${uuidValidForJs}').unbind('click');
-        var tapUrl${uuidValidForJs} = jQuery('#tapHandleImage${uuidValidForJs}').data('tapUrl');
-        Wicket.Ajax.get({'u': tapUrl${uuidValidForJs} +'&uuid=${uuid}', 'e' : 'click', 'c' : 'tapHandleImage${uuidValidForJs}'});
-
-    if (${tapped}) {
-        jQuery('#card${uuidValidForJs}').rotate(90);
-    }
-}, 125);
-})
-;
+    jQuery('#cardRotate${uuidValidForJs}').unbind('click');
+    var tapUrl${uuidValidForJs} = jQuery('#cardRotate${uuidValidForJs}').data('tapUrl');
+    Wicket.Ajax.get({'u': tapUrl${uuidValidForJs}, 'e' : 'click', 'c' : 'cardRotate${uuidValidForJs}'});
+}, 500);

@@ -6,7 +6,6 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,26 +19,26 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard();
 
 		// We should have one card in the battlefield
-//		super.tester.startPage(HomePage.class);
-//		super.tester.assertRenderedPage(HomePage.class);
+		//		super.tester.startPage(HomePage.class);
+		//		super.tester.assertRenderedPage(HomePage.class);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = super.context
-			.getBean(PersistenceService.class);
+				.getBean(PersistenceService.class);
 		List<MagicCard> allCardsInBattlefield = persistenceService
-			.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		// Put it to graveyard
 		super.tester.assertComponent("parentPlaceholder:magicCards:1:cardPanel", CardPanel.class);
 		final CardPanel card = (CardPanel)super.tester
-			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel");
 		Assert.assertNotNull(card);
 
 		super.tester.getLastRenderedPage();
 
 		final PutToGraveyardFromBattlefieldBehavior ptgfbb = card
-			.getPutToGraveyardFromBattlefieldBehavior();
+				.getPutToGraveyardFromBattlefieldBehavior();
 		super.tester.executeBehavior(ptgfbb);
 
 		super.pageDocument = super.tester.getLastResponse().getDocument();
@@ -51,13 +50,13 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		List<MagicCard> allCardsInGraveyard = persistenceService
-			.getAllCardsInGraveyardForAGame(gameId);
+				.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertEquals(1, allCardsInGraveyard.size());
 
 		// Now, put it back in play
 		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior)super.tester
-			.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop")
-			.getBehaviorById(0);
+				.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop")
+				.getBehaviorById(0);
 		super.tester.getRequest().setParameter("card", allCardsInGraveyard.get(0).getUuid());
 		super.tester.executeBehavior(pcfgb);
 		// Verify
@@ -78,8 +77,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		final List<MagicCard> allCardsInHand = persistenceService
-			.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
-				.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+				.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
+						.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(7, allCardsInHand.size());
 	}
 

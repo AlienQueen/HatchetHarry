@@ -1,7 +1,16 @@
 package org.alienlabs.hatchetharry.serverSideTest.util;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -29,12 +38,6 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockingDetails;
-import static org.mockito.Mockito.when;
 
 public class SpringContextLoaderBaseTest
 {
@@ -84,10 +87,10 @@ public class SpringContextLoaderBaseTest
 		this.tester = new WicketTester(this.webApp);
 		this.context = new ApplicationContextMock();
 		this.tester
-				.getApplication()
-				.getComponentInstantiationListeners()
-				.add(new SpringComponentInjector(tester.getApplication(),
-						SpringContextLoaderBaseTest.this.context));
+		.getApplication()
+		.getComponentInstantiationListeners()
+		.add(new SpringComponentInjector(tester.getApplication(),
+				SpringContextLoaderBaseTest.this.context));
 		this.initApplicationContextMock();
 		this.persistenceService = this.context.getBean(PersistenceService.class);
 
@@ -109,7 +112,7 @@ public class SpringContextLoaderBaseTest
 		p.setHandDisplayed(true);
 		p.setGame(game);
 		p.setId(1L);
-        p.setLifePoints(20L);
+		p.setLifePoints(20L);
 		players.add(p);
 		game.setPlayers(players);
 
@@ -120,7 +123,7 @@ public class SpringContextLoaderBaseTest
 		deck.setDeckId(1L);
 		deck.setPlayerId(p.getId());
 		when(persistenceServiceMock.getDeckByDeckArchiveName("aggro-combo Red / Black"))
-				.thenReturn(deck);
+		.thenReturn(deck);
 
 		final List<MagicCard> cards = initHand(deck);
 		final MagicCard baldu = new MagicCard("baldu", "baldu", "baldu", "baldu", "baldu",
@@ -136,7 +139,7 @@ public class SpringContextLoaderBaseTest
 		when(persistenceServiceMock.findCardByName("Balduvian Horde")).thenReturn(baldu);
 		when(persistenceServiceMock.getCardFromUuid((UUID)any())).thenReturn(baldu);
 		when(persistenceServiceMock.getPlayer(anyLong())).thenReturn(p);
-        when(persistenceServiceMock.getAllPlayersOfGame(anyLong())).thenReturn(playersAsList);
+		when(persistenceServiceMock.getAllPlayersOfGame(anyLong())).thenReturn(playersAsList);
 
 		DataGenerator dataGeneratorMock = mock(DataGenerator.class);
 		ImportDeckService importDeckServiceMock = mock(ImportDeckService.class);

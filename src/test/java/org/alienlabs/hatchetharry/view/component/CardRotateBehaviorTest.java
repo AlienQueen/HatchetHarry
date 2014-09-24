@@ -24,10 +24,10 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 	private MagicCard giveMagicCard()
 	{
 		final PersistenceService persistenceService = super.context
-			.getBean(PersistenceService.class);
+				.getBean(PersistenceService.class);
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = persistenceService
-			.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		final MagicCard mc = allCardsInBattlefield.get(0);
@@ -45,12 +45,11 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		super.tester.assertRenderedPage(HomePage.class);
 
 		super.tester.assertComponent(
-			"parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton",
-			WebMarkupContainer.class);
+				"parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton",
+				WebMarkupContainer.class);
 		final WebMarkupContainer button = (WebMarkupContainer)super.tester
-			.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
 		Assert.assertNotNull(button);
-		@SuppressWarnings("unchecked")
 		final List<Behavior> allCardBehaviors = (List<Behavior>)button.getBehaviors();
 		CardRotateBehavior crb = null;
 

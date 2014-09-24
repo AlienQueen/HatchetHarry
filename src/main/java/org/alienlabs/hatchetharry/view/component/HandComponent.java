@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry.view.component;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -58,34 +57,34 @@ public class HandComponent extends Panel
 			{
 				super.renderHead(component, response);
 
-                final TextTemplate sortableTemplate = new PackageTextTemplate(HomePage.class,
-                        "script/gallery/sortable.js");
-                final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(HomePage.class,
+				final TextTemplate sortableTemplate = new PackageTextTemplate(HomePage.class,
+						"script/gallery/sortable.js");
+				final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(HomePage.class,
 						"script/gallery/handInBattlefield.js");
 				final TextTemplate cssTemplate = new PackageTextTemplate(HomePage.class,
 						"stylesheet/handInBattlefield.css");
 
-                response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
-                response.render(JavaScriptHeaderItem.forScript(handInBattlefieldTemplate.asString(), null));
-                response.render(CssHeaderItem.forCSS(cssTemplate.asString(), null));
-                try
-                {
-                    sortableTemplate.close();
-                }
-                catch (final IOException e)
-                {
-                    HandComponent.LOGGER.error(
-                            "unable to close sortableTemplate in HandComponent#renderHead()!", e);
-                }
-                try
+				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
+				response.render(JavaScriptHeaderItem.forScript(handInBattlefieldTemplate.asString(), null));
+				response.render(CssHeaderItem.forCSS(cssTemplate.asString(), null));
+				try
 				{
-                    handInBattlefieldTemplate.close();
-                }
+					sortableTemplate.close();
+				}
 				catch (final IOException e)
 				{
-                    HandComponent.LOGGER.error(
+					HandComponent.LOGGER.error(
+							"unable to close sortableTemplate in HandComponent#renderHead()!", e);
+				}
+				try
+				{
+					handInBattlefieldTemplate.close();
+				}
+				catch (final IOException e)
+				{
+					HandComponent.LOGGER.error(
 							"unable to close handInBattlefieldTemplate in HandComponent#renderHead()!", e);
-                }
+				}
 				try
 				{
 					cssTemplate.close();
@@ -124,15 +123,15 @@ public class HandComponent extends Panel
 
 				final ExternalImage handImagePlaceholder = new ExternalImage(
 						"handImagePlaceholder", card.getBigImageFilename());
-                String uuid = card.getUuid().replace("-", "_");
-                handImagePlaceholder.setMarkupId("placeholder" + uuid);
+				String uuid = card.getUuid().replace("-", "_");
+				handImagePlaceholder.setMarkupId("placeholder" + uuid);
 				handImagePlaceholder.setOutputMarkupId(true);
-                Label play = new Label("play");
-                play.setOutputMarkupId(true);
-                play.setMarkupId("play" + uuid);
+				Label play = new Label("play");
+				play.setOutputMarkupId(true);
+				play.setMarkupId("play" + uuid);
 
 				item.add(handImagePlaceholder, play);
-                item.add(new PlayCardFromHandBehavior(card.getUuidObject()));
+				item.add(new PlayCardFromHandBehavior(card.getUuidObject()));
 			}
 				};
 				this.allCards.setOutputMarkupId(true);

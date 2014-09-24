@@ -12,8 +12,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ CounterTooltipTest.class, ImportDeckServiceTest.class, CardPanelTest.class,
-		CardMoveBehaviorTest.class, CardRotateBehaviorTest.class, NonRegressionTest.class,
-		HomePageTest.class })
+	CardMoveBehaviorTest.class, CardRotateBehaviorTest.class, NonRegressionTest.class,
+	HomePageTest.class })
 public class LaunchAllServerSideTests
 {
 	// Just a helper class to launch all WicketTester tests at once, in Eclipse
