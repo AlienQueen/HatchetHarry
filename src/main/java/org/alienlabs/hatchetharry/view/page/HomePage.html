@@ -263,18 +263,19 @@
 <span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
 <br/><br/>
 
-<ul wicket:id="parentPlaceholder" class="battlefieldCards">
-    <li wicket:id="magicCards">
+<ul wicket:id="parentPlaceholder" class="battlefieldCardsForSide1">
+    <li wicket:id="magicCardsForSide1">
+        <span wicket:id="cardPanel" class="battlefieldCardContainer">
+        </span>
+    </li>
+</ul>
+<ul wicket:id="opponentParentPlaceholder" class="battlefieldCardsForSide2">
+    <li wicket:id="magicCardsForSide2">
         <span wicket:id="cardPanel" class="battlefieldCardContainer">
         </span>
     </li>
 </ul>
 
-    <!--<table>
-        <tr wicket:id="tooltips">
-            <td wicket:id="cardTooltip"></td>
-        </tr>
-    </table>-->
 <span wicket:id="galleryParent" id="#">
 	<span wicket:id="gallery" class="gallery"></span>
 </span>

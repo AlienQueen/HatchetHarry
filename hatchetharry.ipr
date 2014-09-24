@@ -2207,13 +2207,13 @@
     </library>
     <library name="Maven: org.apache.wicket.experimental.wicket6:wicket-atmosphere:0.21-SNAPSHOT">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140917.125226-9.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140923.131637-11.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140917.125226-9-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140923.131637-11-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140917.125226-9-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140923.131637-11-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.apache.wicket:wicket-core:6.17.0">

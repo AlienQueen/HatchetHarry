@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
-"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CardPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
@@ -135,6 +136,8 @@ public class CardPanel extends Panel
 		final ExternalImage cardRotate = new ExternalImage("cardRotate", "/image/rightArrow.png");
 		cardRotate.setOutputMarkupId(true);
 		cardRotate.setMarkupId("cardRotate" + uuidValidForJs);
+        cardRotate.add(new AttributeModifier("style", "width:18%"));
+
 
 		if ("baldu".equals(id))
 		{
@@ -145,7 +148,10 @@ public class CardPanel extends Panel
 			cardImage.setMarkupId("card" + uuidValidForJs);
 		}
 
-		this.owner = this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
+		/*
+		 * this.owner =
+		 * this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
+		 */
 		if (null != this.owner)
 		{
 			if ("infrared".equals(this.owner.getSide().getSideName()))
@@ -181,7 +187,20 @@ public class CardPanel extends Panel
 
 		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
 		menutoggleButton.add(form);
-		cardHandle.add(menutoggleButton);
+
+		WebMarkupContainer side = new WebMarkupContainer("side");
+		if (this.owner.getSide().getSideName()
+				.equals(HatchetHarrySession.get().getPlayer().getSide().getSideName()))
+		{
+			side.add(new AttributeModifier("class", "battlefieldCardsForSide1"));
+		}
+		else
+		{
+			side.add(new AttributeModifier("class", "battlefieldCardsForSide2"));
+		}
+
+		side.add(menutoggleButton);
+		cardHandle.add(side);
 		this.add(cardHandle);
 
 		final CardTooltipBehavior ctb = new CardTooltipBehavior(this.uuid);
