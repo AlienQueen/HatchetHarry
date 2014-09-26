@@ -2349,7 +2349,7 @@ public class HomePage extends TestReportPage
 		for (int i = 0; i < event.getCardsToUntap().size(); i++)
 		{
 			final MagicCard mc = event.getCardsToUntap().get(i);
-			buil.append("jQuery('#card" + mc.getUuid().replace("-", "_") + "').removeClass('battlefieldTurned'); ");
+			buil.append("jQuery('#card" + mc.getUuid().replace("-", "_") + "').removeClass('tapped'); ");
 			mc.setTapped(false);
 			this.persistenceService.updateCard(mc);
 		}
@@ -2558,9 +2558,9 @@ public class HomePage extends TestReportPage
 		buil.append("window.setTimeout(function() { jQuery('#card");
 		buil.append(event.getCardUuid().replace("-", "_"));
 		if (mc.isTapped()) {
-			buil.append("').addClass('battlefieldTurned'); }, 500); ");
+			buil.append("').addClass('tapped'); }, 500); ");
 		} else {
-			buil.append("').removeClass('battlefieldTurned'); }, 500); ");
+			buil.append("').removeClass('tapped'); }, 500); ");
 		}
 
 		target.appendJavaScript(buil.toString());

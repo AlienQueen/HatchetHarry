@@ -23,3 +23,7 @@ META-INF
 /hatchetharry.iml
 out
 hatchetharry.iws
+
+src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.properties
+src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.properties
+src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.properties

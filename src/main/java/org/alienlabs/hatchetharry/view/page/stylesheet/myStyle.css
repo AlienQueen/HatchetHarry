@@ -1,72 +1,8 @@
-.battlefieldTurned{
-    transform: rotate(90deg);
-}
 .battlefieldCardsForSide1{
-    list-style: none;
-    display:flex;
-    flex-flow: wrap;
-    /*position: absolute;*/
     bottom: 40%;
 }
 .battlefieldCardsForSide2{
-    list-style: none;
-    display:flex;
-    flex-flow: wrap;
-    /*position: absolute;*/
     top: 10%;
-}
-.battlefieldCardsForSide1 img{
-    display:block;
-    margin:auto;
-    width:50%;
-    height:100%;
-    z-index:1;
-    transition: 0.8s all cubic-bezier(.8,-0.3,.2,1.3);
-}
-.battlefieldCardsForSide2 img{
-    display:block;
-    margin:auto;
-    width:50%;
-    height:100%;
-    z-index:1;
-    transition: 0.8s all cubic-bezier(.8,-0.3,.2,1.3);
-}
-.clickableCard{
-    display:block;
-    margin:auto;
-    width:300%;
-    z-index:1;
-    transition: 0.8s all cubic-bezier(.8,-0.3,.2,1.3);
-}
-.cardTooltips{
-    display:block;
-    position:relative;
-    left:85px;
-    top:-160px;
-    right:0;
-}
-.battlefieldTurned{ transform: rotate(90deg); }
-.battlefieldDetails{ transform:scale(2); }
-.battlefieldDetails.turned{
-    transform:scale(2) rotate(0);
-}
-.ui-state-highlight{ min-width:100px; }
-.magicCards, .ui-state-highlight {
-    display: block;
-    position: relative;
-    margin: 2px;
-    max-height: 350px;
-    max-width: 350px;
-    flex: 1 100px;
-}
-.battlefieldCardContainer img{
-    z-index:1;
-    transition: 0.8s all cubic-bezier(.8,-0.3,.2,1.3);
-}
-.battlefieldCardContainer.turned img { transform: rotate(90deg); }
-.battlefieldCardContainer.details img{ transform:scale(2); }
-.battlefieldCardContainer.details.turned img {
-    transform:scale(2) rotate(0);
 }
 .gallery {
     position: absolute;
