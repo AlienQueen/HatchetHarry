@@ -136,8 +136,6 @@ public class CardPanel extends Panel
 		final ExternalImage cardRotate = new ExternalImage("cardRotate", "/image/rightArrow.png");
 		cardRotate.setOutputMarkupId(true);
 		cardRotate.setMarkupId("cardRotate" + uuidValidForJs);
-        //cardRotate.add(new AttributeModifier("style", "width:18%"));
-
 
 		if ("baldu".equals(id))
 		{

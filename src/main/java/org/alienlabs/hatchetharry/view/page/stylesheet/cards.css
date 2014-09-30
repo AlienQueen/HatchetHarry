@@ -1,6 +1,13 @@
-/**{margin:0;padding:0;}
-html, body {height:95%;}
-body{padding:1%;}*/
+.battlefieldCardsForSide1{
+    bottom: 40%;
+}
+.battlefieldCardsForSide2{
+    top: 10%;
+}
+.gallery {
+    position: absolute;
+    bottom: 7%;
+}
 .cards{
     list-style: none;
     display:flex;
@@ -31,6 +38,8 @@ body{padding:1%;}*/
     top:0;
     right:0;
     background-size:100%;
+	cursor: pointer;
+    transition: 0.8s all cubic-bezier(.8,-0.3,.2,1.3);
 }
 .gallery .cardActions{
     background-image:url(/image/playCard.png);
@@ -38,9 +47,9 @@ body{padding:1%;}*/
 .battlefieldCardsForSide1 .cardActions, .battlefieldCardsForSide2 .cardActions{
     background-image:url(/image/rightArrow.png);
 }
-.cardContainer.details{ transform:scale(2); }
-.cardContainer.turned .magicCard { transform: rotate(90deg); }
+.cardContainer.tapped .magicCard { transform: rotate(90deg); }
+.cardContainer.tapped .cardActions { transform: scale(-1, 1); }
 .cardContainer.details .magicCard{ transform:scale(2); }
-.cardContainer.details.turned .magicCard {
+.cardContainer.details.tapped .magicCard {
     transform:scale(2) rotate(0);
 }

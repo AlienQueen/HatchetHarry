@@ -62,7 +62,7 @@ public class HandComponent extends Panel
 				final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(HomePage.class,
 						"script/gallery/handInBattlefield.js");
 				final TextTemplate cssTemplate = new PackageTextTemplate(HomePage.class,
-						"stylesheet/handInBattlefield.css");
+						"stylesheet/cards.css");
 
 				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
 				response.render(JavaScriptHeaderItem.forScript(handInBattlefieldTemplate.asString(), null));
