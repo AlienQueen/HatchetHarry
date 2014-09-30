@@ -357,14 +357,10 @@ public class HomePage extends TestReportPage
 
 		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
 		this.parentPlaceholder.setOutputMarkupId(true);
-		this.parentPlaceholder
-				.add(new AttributeModifier("style", "position: absolute; bottom:30%"));
 		this.add(this.parentPlaceholder);
 
 		this.opponentParentPlaceholder = new WebMarkupContainer("opponentParentPlaceholder");
 		this.opponentParentPlaceholder.setOutputMarkupId(true);
-		this.opponentParentPlaceholder.add(new AttributeModifier("style",
-				"position: absolute; top:10%"));
 		this.add(this.opponentParentPlaceholder);
 
 		this.graveyardParent = new WebMarkupContainer("graveyardParent");

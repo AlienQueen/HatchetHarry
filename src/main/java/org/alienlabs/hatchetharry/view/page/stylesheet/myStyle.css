@@ -1,3 +1,6 @@
+.contextMenu{
+	display: none !important;	
+}
 #baldu {
 	width: 300%;
 }

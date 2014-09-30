@@ -1,17 +1,18 @@
-.battlefieldCardsForSide1{
-    bottom: 40%;
+#allCardsParent{
+	position:absolute;
+	bottom:7%;
+	top: 15%;
+	display:flex;
+	flex-direction: column;
 }
-.battlefieldCardsForSide2{
-    top: 10%;
-}
-.gallery {
-    position: absolute;
-    bottom: 7%;
+#allCardsParent>*{
+	flex:1 100px;
 }
 .cards{
     list-style: none;
     display:flex;
     flex-flow: wrap;
+    height: 24.7vh;
 }
 .ui-state-highlight{ min-width:100px; }
 .cardContainer, .ui-state-highlight {
@@ -20,21 +21,28 @@
     margin: 2px;
     max-height: 350px;
     max-width: 350px;
-    flex: 1 100px;
+    width: 24.7vh;
+  
+    /*flex: 1 100px;*/
+}
+.cardContainer * {
+	height:100%;
+	display:block;
 }
 .cardContainer .magicCard{
     display:block;
-    margin:auto;
+    position: absolute;
+    margin:0 15%;
     width:70%;
     height:100%;
     z-index:1;
     transition: 0.8s all cubic-bezier(.8,-0.3,.2,1.3);
 }
-.cardActions{
+.cardContainer .cardActions{
     display:block;
     position:absolute;
-    left:85%;
-    bottom:85%;
+    height:15%;
+    width: 15%;
     top:0;
     right:0;
     background-size:100%;
