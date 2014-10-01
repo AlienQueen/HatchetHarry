@@ -123,7 +123,6 @@ import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
 import org.alienlabs.hatchetharry.view.component.UserPreferencesModalWindow;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -242,7 +241,7 @@ public class HomePage extends TestReportPage
 	private Label username;
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
-	public HomePage(final PageParameters pp) throws IOException
+	public HomePage(final PageParameters pp) throws Exception
 	{
 		// If we put "test".equals(pp.get("test").toString()) it breaks
 		// everything!
@@ -309,6 +308,7 @@ public class HomePage extends TestReportPage
 
 		if (!this.session.isGameCreated())
 		{
+			this.dataGenerator.afterPropertiesSet();
 			this.createPlayer();
 
 			this.buildHandCards();
@@ -1129,7 +1129,7 @@ public class HomePage extends TestReportPage
 		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
 		p.setDeck(this.deck);
 		final List<MagicCard> mc = this.persistenceService.getAllCardsFromDeck(this.deck
-				.getDeckId());
+				.getDeckArchive().getDeckName());
 
 		for (final MagicCard card : mc)
 		{
@@ -1479,7 +1479,7 @@ public class HomePage extends TestReportPage
 			this.player = this.session.getPlayer();
 			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
 
-			if (this.deck == null)
+			if (this.deck == null || deck.getCards() == null || deck.getCards().isEmpty())
 			{
 				this.deck = this.persistenceService
 						.getDeckByDeckArchiveName("aggro-combo Red / Black");
@@ -1491,7 +1491,7 @@ public class HomePage extends TestReportPage
 			final ArrayList<MagicCard> _cards = new ArrayList<MagicCard>();
 
 			for (final MagicCard mc : this.persistenceService.getAllCardsFromDeck(this.deck
-					.getDeckId()))
+					.getDeckArchive().getDeckName()))
 			{
 				mc.setGameId(this.session.getGameId());
 				mc.getDeck().setPlayerId(this.player.getId());

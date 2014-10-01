@@ -127,7 +127,7 @@ public class CreateTokenModalWindow extends Panel
 				token.setCreatureTypes(CreateTokenModalWindow.this.creatureTypesModel.getObject());
 				token.setPlayer(player);
 
-				CreateTokenModalWindow.this.persistenceService.saveDeckArchive(dummyDeck
+				CreateTokenModalWindow.this.persistenceService.saveOrUpdateDeckArchive(dummyDeck
 					.getDeckArchive());
 				CreateTokenModalWindow.this.persistenceService.saveDeck(dummyDeck);
 				CreateTokenModalWindow.this.persistenceService.saveToken(token);

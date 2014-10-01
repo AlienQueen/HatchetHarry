@@ -37,7 +37,7 @@ public class ImportDeckService implements Serializable
 		}
 		deckArchive = new DeckArchive();
 		deckArchive.setDeckName(deckName);
-		deckArchive = this.persistenceService.saveDeckArchive(deckArchive);
+		deckArchive = this.persistenceService.saveOrUpdateDeckArchive(deckArchive);
 
 		Deck deck = new Deck();
 		deck.setPlayerId(1l);

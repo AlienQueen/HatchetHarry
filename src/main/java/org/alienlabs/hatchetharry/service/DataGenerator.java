@@ -135,12 +135,12 @@ public class DataGenerator implements InitializingBean, Serializable
 			try
 			{
 				final JAXBContext context = JAXBContext
-					.newInstance(CardCollectionRootElement.class);
+						.newInstance(CardCollectionRootElement.class);
 				final Unmarshaller um = context.createUnmarshaller();
 				final CardCollectionRootElement cardCollection = (CardCollectionRootElement)um
-					.unmarshal(new File(ResourceBundle.getBundle(
-						DataGenerator.class.getCanonicalName()).getString(
-						"AllCardsInCollectionUntilReturnToRavnica")));
+						.unmarshal(new File(ResourceBundle.getBundle(
+								DataGenerator.class.getCanonicalName()).getString(
+								"AllCardsInCollectionUntilReturnToRavnica")));
 
 				final Object[] array = cardCollection.getCardCollectionList().toArray();
 
@@ -159,15 +159,15 @@ public class DataGenerator implements InitializingBean, Serializable
 		if (null == this.persistenceService.getCardFromUuid(uuid))
 		{
 			final MagicCard baldu = new MagicCard("cards/Balduvian Horde_small.jpg",
-				"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg", "Balduvian Horde",
-				"Isn't it a spoiler?", "", null);
+					"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
+					"Balduvian Horde", "Isn't it a spoiler?", "", null);
 			baldu.setUuidObject(uuid);
 			final Deck fake = new Deck();
 			fake.setDeckArchive(null);
 			fake.setCards(null);
 			fake.setPlayerId(-1l);
 
-            baldu.setDeck(fake);
+			baldu.setDeck(fake);
 			baldu.setGameId(-1l);
 			baldu.setX(350l);
 			baldu.setY(350l);
@@ -177,10 +177,10 @@ public class DataGenerator implements InitializingBean, Serializable
 		}
 
 		if ((this.generateData)
-			&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
+				&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
 		{
 			final Path path = Paths.get(ResourceBundle.getBundle(
-				DataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
+					DataGenerator.class.getCanonicalName()).getString("AuraBantDeck"));
 			final byte[] content = Files.readAllBytes(path);
 			final String deckContent = new String(content, "UTF-8");
 			this.importDeckService.importDeck(deckContent, "Aura Bant", false);
@@ -189,99 +189,137 @@ public class DataGenerator implements InitializingBean, Serializable
 		DataGenerator.LOGGER.info("preparing to import decks");
 
 		if (((null == this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black")) && (null == this.persistenceService
-			.getDeckArchiveByName("burn mono-Red")))
-			|| ((this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black")
-				.getCards().isEmpty()) && (this.persistenceService.getDeckByDeckArchiveName(
-				"burn mono-Red").getCards().isEmpty())))
+				.getDeckArchiveByName("burn mono-Red")))
+				|| ((this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black")
+						.getCards().isEmpty()) || (this.persistenceService
+						.getDeckByDeckArchiveName("burn mono-Red").getCards().isEmpty())))
 		{
 			DataGenerator.LOGGER.info("importing decks");
 
+			final DeckArchive da1;
+			final DeckArchive da2;
+			final Deck deck1;
+			final Deck deck2;
 
-			final DeckArchive da1 = new DeckArchive();
-			da1.setDeckName("aggro-combo Red / Black");
-			this.persistenceService.saveDeckArchive(da1);
+			if (null == this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black"))
+			{
+				da1 = new DeckArchive();
+				da1.setDeckName("aggro-combo Red / Black");
+				this.persistenceService.saveOrUpdateDeckArchive(da1);
+				deck1 = new Deck();
+				deck1.setPlayerId(1l);
+				deck1.setDeckArchive(da1);
+			}
+			else
+			{
+				da1 = this.persistenceService.getDeckArchiveByName("aggro-combo Red / Black");
+				deck1 = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
+			}
 
-			final DeckArchive da2 = new DeckArchive();
-			da2.setDeckName("burn mono-Red");
-			this.persistenceService.saveDeckArchive(da2);
-
-			final Deck deck1 = new Deck();
-			deck1.setPlayerId(1l);
-			deck1.setDeckArchive(da1);
-			this.persistenceService.saveDeck(deck1);
-
-			final Deck deck2 = new Deck();
-			deck2.setPlayerId(2l);
-			deck2.setDeckArchive(da2);
-			this.persistenceService.saveDeck(deck2);
+			if (null == this.persistenceService.getDeckArchiveByName("burn mono-Red"))
+			{
+				da2 = new DeckArchive();
+				da2.setDeckName("burn mono-Red");
+				this.persistenceService.saveOrUpdateDeckArchive(da2);
+				deck2 = new Deck();
+				deck2.setPlayerId(2l);
+				deck2.setDeckArchive(da2);
+			}
+			else
+			{
+				da2 = this.persistenceService.getDeckArchiveByName("burn mono-Red");
+				deck2 = this.persistenceService.getDeckByDeckArchiveName("burn mono-Red");
+			}
 
 			for (int j = 1; j < 3; j++)
 			{
-				for (int i = 0; i < 60; i++)
+				if (((j == 1) && ((deck1.getCards() == null) || (deck1.getCards().isEmpty())))
+						|| (((j == 2) && ((deck2.getCards() == null) || (deck2.getCards().isEmpty())))))
 				{
-					// A CollectibleCard can be duplicated: lands, normal cards
-					//
-					System.out.print(".");
-					MagicCard card;
+					for (int i = 0; i < 60; i++)
+					{
+						// A CollectibleCard can be duplicated: lands, normal
+						// cards
+						//
+						System.out.print(".");
+						MagicCard card = null;
 
-					final CollectibleCard cc = new CollectibleCard();
-					cc.setTitle(DataGenerator.TITLES1[i]);
-					cc.setDeckArchiveId(j == 1 ? da1.getDeckArchiveId() : da2.getDeckArchiveId());
+						final CollectibleCard cc = new CollectibleCard();
+						cc.setTitle(DataGenerator.TITLES1[i]);
+						cc.setDeckArchiveId(j == 1 ? da1.getDeckArchiveId() : da2
+								.getDeckArchiveId());
 
-					// A CollectibleCard can be duplicated: lands, normal cards
-					// which may be present 4 times in a Deck...
-					this.persistenceService.saveCollectibleCard(cc);
+						// A CollectibleCard can be duplicated: lands, normal
+						// cards
+						// which may be present 4 times in a Deck...
+						this.persistenceService.saveCollectibleCard(cc);
 
+						if (j == 1)
+						{
+							card = new MagicCard(
+									"cards/" + DataGenerator.TITLES1[i] + "_small.jpg", "cards/"
+											+ DataGenerator.TITLES1[i] + ".jpg", "cards/"
+											+ DataGenerator.TITLES1[i] + "Thumb.jpg",
+									DataGenerator.TITLES1[i], "", "", null);
+							card.setDeck(deck1);
+						}
+						else
+						{
+							card = new MagicCard(
+									"cards/" + DataGenerator.TITLES2[i] + "_small.jpg", "cards/"
+											+ DataGenerator.TITLES2[i] + ".jpg", "cards/"
+											+ DataGenerator.TITLES2[i] + "Thumb.jpg",
+									DataGenerator.TITLES2[i], "", "", null);
+							card.setDeck(deck2);
+						}
+
+						card.setGameId(-1l);
+						card.setUuidObject(UUID.randomUUID());
+						card.setX(16l);
+						card.setY(16l);
+						card.setZone(CardZone.LIBRARY);
+
+						if (j == 1)
+						{
+							final List<MagicCard> cards = deck1.getCards();
+							cards.add(card);
+							deck1.setCards(cards);
+						}
+						else
+						{
+							final List<MagicCard> cards = deck2.getCards();
+							cards.add(card);
+							deck2.setCards(cards);
+						}
+					}
+				}
+				else
+				{
 					if (j == 1)
 					{
-						card = new MagicCard("cards/" + DataGenerator.TITLES1[i] + "_small.jpg",
-							"cards/" + DataGenerator.TITLES1[i] + ".jpg", "cards/"
-								+ DataGenerator.TITLES1[i] + "Thumb.jpg", DataGenerator.TITLES1[i],
-							"", "", null);
-						card.setDeck(deck1);
-					}
-					else
-					{
-						card = new MagicCard("cards/" + DataGenerator.TITLES2[i] + "_small.jpg",
-							"cards/" + DataGenerator.TITLES2[i] + ".jpg", "cards/"
-								+ DataGenerator.TITLES2[i] + "Thumb.jpg", DataGenerator.TITLES2[i],
-							"", "", null);
-						card.setDeck(deck2);
-					}
-
-					card.setGameId(-1l);
-					card.setUuidObject(UUID.randomUUID());
-					card.setX(16l);
-					card.setY(16l);
-					card.setZone(CardZone.LIBRARY);
-
-					if (j == 1)
-					{
-						final List<MagicCard> cards = deck1.getCards();
-						cards.add(card);
+						final List<MagicCard> cards = this.persistenceService
+								.getAllCardsFromDeck("aggro-combo Red / Black");
 						deck1.setCards(cards);
-						// this.persistenceService.saveCard(card);
 					}
 					else
 					{
-						final List<MagicCard> cards = deck2.getCards();
-						cards.add(card);
+						final List<MagicCard> cards = this.persistenceService
+								.getAllCardsFromDeck("burn mono-Red");
 						deck2.setCards(cards);
-						// this.persistenceService.saveCard(card);
 					}
 				}
 
 				System.out.println("");
 				if (j == 1)
 				{
-					this.persistenceService.updateDeckArchive(da1);
-					this.persistenceService.updateDeck(deck1);
+					this.persistenceService.saveOrUpdateDeck(deck1);
+					this.persistenceService.saveOrUpdateDeckArchive(da1);
 					DataGenerator.LOGGER.info("updating deck 1");
 				}
 				else
 				{
-					this.persistenceService.updateDeckArchive(da2);
-					this.persistenceService.updateDeck(deck2);
+					this.persistenceService.saveOrUpdateDeck(deck2);
+					this.persistenceService.saveOrUpdateDeckArchive(da2);
 					DataGenerator.LOGGER.info("updating deck 2");
 				}
 			}

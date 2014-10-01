@@ -52,7 +52,11 @@ public class Deck implements Serializable
 	@Column
 	private Long playerId;
 	@OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = MagicCard.class)
-    private List<MagicCard> cards = new ArrayList<MagicCard>();
+	private List<MagicCard> cards = new ArrayList<MagicCard>();
+
+	public Deck()
+	{
+	};
 
 	/**
 	 * Shuffle the library.
@@ -76,8 +80,8 @@ public class Deck implements Serializable
 	 *
 	 * @param _cards
 	 *            all cards of a player in a certain zone
-	 * @return the same cards, in the same order, in the same zone but with zoneOrder reorder
-	 *         without any gap
+	 * @return the same cards, in the same order, in the same zone but with
+	 *         zoneOrder reorder without any gap
 	 */
 	public List<MagicCard> reorderMagicCards(final List<MagicCard> _cards)
 	{
@@ -93,13 +97,14 @@ public class Deck implements Serializable
 	}
 
 	/**
-	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone and increment it, the
-	 * goal being to be able to put a MagicCard in front of the list.
+	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone and
+	 * increment it, the goal being to be able to put a MagicCard in front of
+	 * the list.
 	 *
 	 * @param _cards
 	 *            all cards of a player in a certain zone
-	 * @return the same cards, in the same order, in the same zone but with zoneOrder reorder
-	 *         without any gap, and incremented
+	 * @return the same cards, in the same order, in the same zone but with
+	 *         zoneOrder reorder without any gap, and incremented
 	 */
 	public ArrayList<MagicCard> reorderAndIncrementMagicCards(final List<MagicCard> _cards)
 	{
