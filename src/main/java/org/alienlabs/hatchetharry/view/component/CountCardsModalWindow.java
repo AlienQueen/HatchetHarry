@@ -28,7 +28,7 @@ public class CountCardsModalWindow extends Panel
 
 		final List<Player> allPlayersOfGame = this.persistenceService.getAllPlayersOfGame(gameId);
 		final ListView<Player> list = new ListView<Player>("players", allPlayersOfGame)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -38,24 +38,25 @@ public class CountCardsModalWindow extends Panel
 
 				item.add(new Label("playerName", p.getName()));
 				item.add(new Label("hand", CountCardsModalWindow.this.persistenceService
-					.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.HAND, gameId, p
-						.getDeck().getDeckId())));
+						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.HAND, gameId, p
+								.getDeck().getDeckId())));
 				item.add(new Label("library", CountCardsModalWindow.this.persistenceService
-					.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.LIBRARY, gameId, p
-						.getDeck().getDeckId())));
+						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.LIBRARY, gameId, p
+								.getDeck().getDeckId())));
 				item.add(new Label("graveyard", CountCardsModalWindow.this.persistenceService
-					.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.GRAVEYARD, gameId, p
-						.getDeck().getDeckId())));
+						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.GRAVEYARD, gameId,
+								p.getDeck().getDeckId())));
 				item.add(new Label("exile", CountCardsModalWindow.this.persistenceService
-					.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.EXILE, gameId, p
-						.getDeck().getDeckId())));
+						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.EXILE, gameId, p
+								.getDeck().getDeckId())));
 				item.add(new Label("battlefield", CountCardsModalWindow.this.persistenceService
-					.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.BATTLEFIELD, gameId, p
-						.getDeck().getDeckId())));
-				item.add(new Label("total", p.getDeck().getCards().size()));
+						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.BATTLEFIELD,
+								gameId, p.getDeck().getDeckId())));
+				item.add(new Label("total", CountCardsModalWindow.this.persistenceService
+						.getDeck(p.getDeck().getDeckId()).getCards().size()));
 			}
-		};
-		this.add(list);
+				};
+				this.add(list);
 	}
 
 	@Required
