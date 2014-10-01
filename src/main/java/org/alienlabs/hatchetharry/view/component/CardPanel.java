@@ -166,24 +166,7 @@ public class CardPanel extends Panel
 			cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
 		}
 
-		final WebMarkupContainer contextMenu = new WebMarkupContainer("contextMenu");
-		contextMenu.setOutputMarkupId(true);
-		contextMenu.setMarkupId("contextMenu" + uuidValidForJs);
-
-		final WebMarkupContainer card = new WebMarkupContainer("card");
-		final WebMarkupContainer token = new WebMarkupContainer("token");
-		contextMenu.add(card, token);
-
-		if (null == myCard.getToken())
-		{
-			token.setVisible(false);
-		}
-		else
-		{
-			card.setVisible(false);
-		}
-
-		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
+		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate);
 		menutoggleButton.add(form);
 
 		WebMarkupContainer side = new WebMarkupContainer("side");
