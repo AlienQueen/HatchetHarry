@@ -44,6 +44,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author ivaynberg
@@ -55,32 +58,32 @@ public class DataGenerator implements InitializingBean, Serializable
 	static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
 
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
-			"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
-			"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
-			"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
-			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
-			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-			"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
-			"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
-			"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
-			"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
-			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-			"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
-			"Swamp" };
+		"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
+		"Vampire Lacerator", "Bloodchief Ascension", "Bloodchief Ascension",
+		"Bloodchief Ascension", "Bloodchief Ascension", "Mindcrank", "Mindcrank", "Mindcrank",
+		"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Arc Trail",
+		"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+		"Staggershock", "Volt Charge", "Volt Charge", "Volt Charge", "Volt Charge",
+		"Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit", "Tezzeret's Gambit",
+		"Hideous End", "Hideous End", "Hideous End", "Blackcleave Cliffs",
+		"Blackcleave Cliffs", "Blackcleave Cliffs", "Blackcleave Cliffs", "Mountain",
+		"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+		"Mountain", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp", "Swamp",
+	"Swamp" };
 
 	private static final String[] TITLES2 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
-			"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
-			"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
-			"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
-			"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
-			"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
-			"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
-			"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
-			"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
-			"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
-			"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-			"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
-			"Mountain", "Mountain", "Mountain", "Mountain" };
+		"Goblin Guide", "Spikeshot Elder", "Spikeshot Elder", "Spikeshot Elder",
+		"Spikeshot Elder", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend", "Kiln Fiend",
+		"Shrine of Burning Rage", "Shrine of Burning Rage", "Shrine of Burning Rage",
+		"Shrine of Burning Rage", "Gut Shot", "Gut Shot", "Gut Shot", "Gut Shot",
+		"Lightning Bolt", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
+		"Burst Lightning", "Burst Lightning", "Burst Lightning", "Burst Lightning",
+		"Searing Blaze", "Searing Blaze", "Searing Blaze", "Searing Blaze", "Arc Trail",
+		"Arc Trail", "Arc Trail", "Arc Trail", "Staggershock", "Staggershock", "Staggershock",
+		"Staggershock", "Teetering Peaks", "Teetering Peaks", "Teetering Peaks",
+		"Teetering Peaks", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+		"Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain", "Mountain",
+		"Mountain", "Mountain", "Mountain", "Mountain" };
 
 	@SpringBean
 	private PersistenceService persistenceService;
@@ -128,6 +131,7 @@ public class DataGenerator implements InitializingBean, Serializable
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "the difference is in fake.setDeckArchive()")
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void afterPropertiesSet() throws Exception
 	{
 		if ((this.generateCardCollection) && (this.cardCollectionDao.count() == 0))
@@ -140,7 +144,7 @@ public class DataGenerator implements InitializingBean, Serializable
 				final CardCollectionRootElement cardCollection = (CardCollectionRootElement)um
 						.unmarshal(new File(ResourceBundle.getBundle(
 								DataGenerator.class.getCanonicalName()).getString(
-								"AllCardsInCollectionUntilReturnToRavnica")));
+										"AllCardsInCollectionUntilReturnToRavnica")));
 
 				final Object[] array = cardCollection.getCardCollectionList().toArray();
 
@@ -192,7 +196,7 @@ public class DataGenerator implements InitializingBean, Serializable
 				.getDeckArchiveByName("burn mono-Red")))
 				|| ((this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black")
 						.getCards().isEmpty()) || (this.persistenceService
-						.getDeckByDeckArchiveName("burn mono-Red").getCards().isEmpty())))
+								.getDeckByDeckArchiveName("burn mono-Red").getCards().isEmpty())))
 		{
 			DataGenerator.LOGGER.info("importing decks");
 
@@ -259,8 +263,8 @@ public class DataGenerator implements InitializingBean, Serializable
 							card = new MagicCard(
 									"cards/" + DataGenerator.TITLES1[i] + "_small.jpg", "cards/"
 											+ DataGenerator.TITLES1[i] + ".jpg", "cards/"
-											+ DataGenerator.TITLES1[i] + "Thumb.jpg",
-									DataGenerator.TITLES1[i], "", "", null);
+													+ DataGenerator.TITLES1[i] + "Thumb.jpg",
+													DataGenerator.TITLES1[i], "", "", null);
 							card.setDeck(deck1);
 						}
 						else
@@ -268,8 +272,8 @@ public class DataGenerator implements InitializingBean, Serializable
 							card = new MagicCard(
 									"cards/" + DataGenerator.TITLES2[i] + "_small.jpg", "cards/"
 											+ DataGenerator.TITLES2[i] + ".jpg", "cards/"
-											+ DataGenerator.TITLES2[i] + "Thumb.jpg",
-									DataGenerator.TITLES2[i], "", "", null);
+													+ DataGenerator.TITLES2[i] + "Thumb.jpg",
+													DataGenerator.TITLES2[i], "", "", null);
 							card.setDeck(deck2);
 						}
 
