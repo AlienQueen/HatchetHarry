@@ -42,7 +42,7 @@ public class CardPanel extends Panel
 	private final DestroyTokenBehavior destroyTokenBehavior;
 	@SpringBean
 	PersistenceService persistenceService;
-	private Player owner;
+	private final Player owner;
 
 	public CardPanel(final String id, final String image, final UUID _uuid, final Player _owner)
 	{
@@ -146,10 +146,6 @@ public class CardPanel extends Panel
 			cardImage.setMarkupId("card" + uuidValidForJs);
 		}
 
-		/*
-		 * this.owner =
-		 * this.persistenceService.getPlayer(myCard.getDeck().getPlayerId());
-		 */
 		if (null != this.owner)
 		{
 			if ("infrared".equals(this.owner.getSide().getSideName()))
@@ -169,7 +165,7 @@ public class CardPanel extends Panel
 		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate);
 		menutoggleButton.add(form);
 
-		WebMarkupContainer side = new WebMarkupContainer("side");
+		final WebMarkupContainer side = new WebMarkupContainer("side");
 		if (this.owner.getSide().getSideName()
 				.equals(HatchetHarrySession.get().getPlayer().getSide().getSideName()))
 		{

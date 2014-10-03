@@ -57,7 +57,8 @@ public class JavaScriptUtils
 			if (added)
 			{
 				if (mc.getOwnerSide().equals(
-						HatchetHarrySession.get().getPlayer().getSide().getSideName()))
+						persistenceService.getPlayer(HatchetHarrySession.get().getPlayer().getId())
+								.getSide().getSideName()))
 				{
 					homePage.getAllMagicCardsInBattlefieldForSide1().add(mc);
 					// just enough to create and add a new item in the end
@@ -69,9 +70,6 @@ public class JavaScriptUtils
 					// just enough to create and add a new item in the end
 					magicCardListForSide2.addNewItems(mc);
 				}
-				/* homePage.getAllTooltipsInBattlefield().add(mc); */
-				// just enough to create and add a new item in the end
-				/* tooltipList.addNewItems(mc); */
 			}
 			else
 			{
@@ -113,21 +111,11 @@ public class JavaScriptUtils
 					{
 						homePage.getAllMagicCardsInBattlefieldForSide2().remove(mc);
 						magicCardListForSide2.remove(homePage.getAllCardsInBattlefieldForSide2()
-                                .getItem(i));
+								.getItem(i));
 						JavaScriptUtils.LOGGER.info("remove card: " + mc.getTitle());
 						break;
 					}
 				}
-
-				/*
-				 * for (int i = 0; i < tooltipList.size(); i++) { final
-				 * MagicCard targetCard = homePage.getAllTooltips().getItem(i)
-				 * .getModelObject(); if (mc.equals(targetCard)) {
-				 * homePage.getAllTooltipsInBattlefield().remove(mc);
-				 * tooltipList.remove(homePage.getAllTooltips().getItem(i));
-				 * JavaScriptUtils.LOGGER.info("remove tooltip: " +
-				 * mc.getTitle()); break; } }
-				 */
 			}
 		}
 	}

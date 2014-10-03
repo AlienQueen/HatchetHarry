@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -51,13 +52,13 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("posY", this.mc.getY());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
-		final Boolean fromDb = this.persistenceService.getGame(this.player.getGame().getId())
-			.isDrawMode();
-		final Boolean drawMode = fromDb != null ? fromDb : false;
+		final Game aGame = this.player.getGame();
+		final Game game = this.persistenceService.getGame(aGame.getId());
+		final Boolean drawMode = game == null ? false : (game.isDrawMode() == null ? false : game.isDrawMode());
 		variables.put("drawMode", drawMode);
 
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/drawMode.js");
+				"script/draggableHandle/drawMode.js");
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
@@ -69,7 +70,7 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			DrawModeBehavior.LOGGER.error(
-				"unable to close template1 in CardTooltipBehavior#renderHead()!", e);
+					"unable to close template1 in CardTooltipBehavior#renderHead()!", e);
 		}
 	}
 

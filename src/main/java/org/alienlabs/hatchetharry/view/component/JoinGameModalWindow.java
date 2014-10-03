@@ -65,7 +65,7 @@ public class JoinGameModalWindow extends Panel
 	DropDownChoice<Deck> decks;
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-		final WebMarkupContainer _dataBoxParent, final HomePage _hp)
+			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
 		this.modal = _modal;
@@ -101,14 +101,14 @@ public class JoinGameModalWindow extends Panel
 				if ((null != target) && (null == JoinGameModalWindow.this.decks.getModelObject()))
 				{
 					final ArrayList<Deck> _allDecks = JoinGameModalWindow.this.persistenceService
-						.getAllDecksFromDeckArchives();
+							.getAllDecksFromDeckArchives();
 					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
 					JoinGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
-						new Model<Deck>(), _decksModel);
+							new Model<Deck>(), _decksModel);
 					JoinGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					JoinGameModalWindow.this.deckParent
-						.addOrReplace(JoinGameModalWindow.this.decks);
+							.addOrReplace(JoinGameModalWindow.this.decks);
 					target.add(JoinGameModalWindow.this.deckParent);
 				}
 			}
@@ -126,7 +126,7 @@ public class JoinGameModalWindow extends Panel
 		this.deckParent.add(this.decks);
 
 		final Label gameIdLabel = new Label("gameIdLabel",
-			"Please provide the game id given by your opponent: ");
+				"Please provide the game id given by your opponent: ");
 		final Model<Long> gameId = new Model<Long>(0l);
 		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
 		this.gameIdInput.setOutputMarkupId(true).setMarkupId("gameIdInput");
@@ -139,36 +139,37 @@ public class JoinGameModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				if ((null == JoinGameModalWindow.this.nameInput.getModelObject())
-					|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
-					|| (null == JoinGameModalWindow.this.decks.getModelObject())
-					|| (null == JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString()))
+						|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
+						|| (null == JoinGameModalWindow.this.decks.getModelObject())
+						|| (null == JoinGameModalWindow.this.sideInput
+								.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
 
 				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
-					.getDefaultModelObjectAsString());
+						.getDefaultModelObjectAsString());
 
 				final Game game = JoinGameModalWindow.this.persistenceService.getGame(_id);
 				if (null == game)
 				{
 					target.appendJavaScript("alert('The selected game (id= "
-						+ JoinGameModalWindow.this.gameIdInput.getDefaultModelObjectAsString()
-						+ ") does not exist!');");
+							+ JoinGameModalWindow.this.gameIdInput.getDefaultModelObjectAsString()
+							+ ") does not exist!');");
 					return;
 				}
 
 				final HatchetHarrySession session = HatchetHarrySession.get();
 
 				JoinGameModalWindow.this.player = JoinGameModalWindow.this.persistenceService
-					.getPlayer(session.getPlayer().getId());
+						.getPlayer(session.getPlayer().getId());
 
 				final Game oldGame = session.getPlayer().getGame();
 
 				for (final Player p : oldGame.getPlayers())
 				{
 					p.setGame(null);
-					Deck d = p.getDeck();
+					final Deck d = p.getDeck();
 					p.setDeck(null);
 					d.setPlayerId(-1l);
 					JoinGameModalWindow.this.persistenceService.updatePlayer(p);
@@ -182,31 +183,31 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.LOGGER.info("~~~ " + _id);
 
 				JoinGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(_id,
-					JoinGameModalWindow.this.decks.getModelObject().getDeckId());
+						JoinGameModalWindow.this.decks.getModelObject().getDeckId());
 
 				final Deck deck = new Deck();
-				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
-				deck.setDeckArchive(JoinGameModalWindow.this.decks.getModelObject()
-					.getDeckArchive());
-				JoinGameModalWindow.this.player.setDeck(deck);
 				deck.setPlayerId(JoinGameModalWindow.this.player.getId());
+				deck.setDeckArchive(JoinGameModalWindow.this.decks.getModelObject()
+						.getDeckArchive());
+				JoinGameModalWindow.this.player.setDeck(deck);
 				JoinGameModalWindow.this.persistenceService.saveDeck(deck);
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = JoinGameModalWindow.this.persistenceService
-					.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
+						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
 				JoinGameModalWindow.LOGGER.info("deck.getDeckArchive().getDeckArchiveId(): "
-					+ deck.getDeckArchive().getDeckArchiveId());
+						+ deck.getDeckArchive().getDeckArchiveId());
 				JoinGameModalWindow.LOGGER.info("allCollectibleCardsInDeckArchive.size(): "
-					+ allCollectibleCardsInDeckArchive.size());
+						+ allCollectibleCardsInDeckArchive.size());
 
 				final List<MagicCard> allMagicCards = new ArrayList<MagicCard>();
 
 				for (final CollectibleCard cc : allCollectibleCardsInDeckArchive)
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
-						"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle() + "Thumb.jpg",
-						cc.getTitle(), "",
-						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(), null);
+							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
+									+ "Thumb.jpg", cc.getTitle(), "",
+							JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
+							null);
 					card.setGameId(_id);
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
@@ -216,7 +217,7 @@ public class JoinGameModalWindow extends Panel
 				deck.setCards(deck.reorderMagicCards(deck.shuffleLibrary(allMagicCards)));
 
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
-					+ ", deckId: " + deck.getDeckId());
+						+ ", deckId: " + deck.getDeckId());
 
 				final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
 
@@ -229,27 +230,25 @@ public class JoinGameModalWindow extends Panel
 
 				JoinGameModalWindow.this.persistenceService.updateDeck(deck);
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
-					+ ", deckId: " + deck.getDeckId());
+						+ ", deckId: " + deck.getDeckId());
 
 				HatchetHarrySession.get().setFirstCardsInHand(firstCards);
 				JoinGameModalWindow.this.player.setGame(game);
+				JoinGameModalWindow.this.player.getSide().setSideName(
+						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
+				JoinGameModalWindow.this.player.setName(JoinGameModalWindow.this.nameInput
+						.getDefaultModelObjectAsString());
+
 				JoinGameModalWindow.this.persistenceService
-					.mergePlayer(JoinGameModalWindow.this.player);
+						.mergePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
 
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
-					+ ", deckId: " + deck.getDeckId());
+						+ ", deckId: " + deck.getDeckId());
 
 				// Remove Balduvian Horde
-				target
-					.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
+				target.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
 				HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
-
-				JoinGameModalWindow.this.player.getSide().setSideName(
-					JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
-				JoinGameModalWindow.this.player.setName(JoinGameModalWindow.this.nameInput
-					.getDefaultModelObjectAsString());
-				JoinGameModalWindow.this.player.setGame(game);
 
 				final Set<Player> players = game.getPlayers();
 				players.add(JoinGameModalWindow.this.player);
@@ -261,16 +260,16 @@ public class JoinGameModalWindow extends Panel
 				}
 
 				final StringBuilder buil = new StringBuilder(
-					"jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
+						"jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 				JoinGameModalWindow.LOGGER.info("close!");
 
 				final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage()
-					.getRequest();
+						.getRequest();
 				final HttpServletRequest request = servletWebRequest.getContainerRequest();
-				final String jsessionid = request.getRequestedSessionId();
+				request.getRequestedSessionId();
 
 				final int posX = ("infrared".equals(JoinGameModalWindow.this.sideInput
-					.getDefaultModelObjectAsString())) ? 300 : 900;
+						.getDefaultModelObjectAsString())) ? 300 : 900;
 
 				session.setMySidePosX(posX);
 				session.setMySidePosY(300);
@@ -280,7 +279,7 @@ public class JoinGameModalWindow extends Panel
 				s.setX(Long.valueOf(posX));
 				s.setY(500l);
 
-                JoinGameModalWindow.this.persistenceService.updateGame(game);
+				JoinGameModalWindow.this.persistenceService.updateGame(game);
 
 				session.setGameCreated();
 				_modal.close(target);
@@ -289,60 +288,60 @@ public class JoinGameModalWindow extends Panel
 
 				final Long _gameId = game.getId();
 				final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(
-					JoinGameModalWindow.this.player.getName(), jsessionid, _gameId);
+						JoinGameModalWindow.this.player.getName(), _gameId);
 
 				final List<BigInteger> allPlayersInGameExceptMe = JoinGameModalWindow.this.persistenceService
-					.giveAllPlayersFromGameExceptMe(_gameId,
-						JoinGameModalWindow.this.player.getId());
+						.giveAllPlayersFromGameExceptMe(_gameId,
+								JoinGameModalWindow.this.player.getId());
 
 				final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(_gameId);
 
 				final List<BigInteger> allPlayersInGame = JoinGameModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(_gameId);
+						.giveAllPlayersFromGame(_gameId);
 
 				JoinGameModalWindow.this.persistenceService.updateSide(s);
 				JoinGameModalWindow.this.player.setSideUuid(s.getUuid());
 				JoinGameModalWindow.this.persistenceService
-					.updatePlayer(JoinGameModalWindow.this.player);
+						.updatePlayer(JoinGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
-					JoinGameModalWindow.this.player);
+						JoinGameModalWindow.this.player);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.GAME, null, null, false, null, HatchetHarrySession.get()
-						.getPlayer().getName(), null, _gameId, null, null, _gameId);
+						ConsoleLogType.GAME, null, null, false, null, HatchetHarrySession.get()
+								.getPlayer().getName(), null, _gameId, null, null, _gameId);
 
 				// post the DataBox update message to all players in the game,
 				// except me
 				EventBusPostService.post(allPlayersInGameExceptMe, jgncc);
 
 				EventBusPostService.post(allPlayersInGame, udbcc, ascc, new ConsoleLogCometChannel(
-					logger));
+						logger));
 
 				// In order to display the opponents' sides
 				final List<Player> giveAllPlayersFromGameExceptMeAsPlayers = JoinGameModalWindow.this.persistenceService
-					.giveAllPlayersFromGameExceptMeAsPlayers(_gameId,
-						JoinGameModalWindow.this.player.getId());
+						.giveAllPlayersFromGameExceptMeAsPlayers(_gameId,
+								JoinGameModalWindow.this.player.getId());
 				final AddSidesFromOtherBrowsersCometChannel asfobcc = new AddSidesFromOtherBrowsersCometChannel(
-					JoinGameModalWindow.this.player, giveAllPlayersFromGameExceptMeAsPlayers);
+						JoinGameModalWindow.this.player, giveAllPlayersFromGameExceptMeAsPlayers);
 				EventBusPostService.post(allPlayersInGame, asfobcc);
 
 				session.resetCardsInGraveyard();
 
 				if ((JoinGameModalWindow.this.player.isGraveyardDisplayed() != null)
-					&& JoinGameModalWindow.this.player.isGraveyardDisplayed())
+						&& JoinGameModalWindow.this.player.isGraveyardDisplayed())
 				{
 					JavaScriptUtils.updateGraveyard(target);
 				}
 
 				target.appendJavaScript("document.getElementById('userName').value = '"
-					+ JoinGameModalWindow.this.player.getName() + "'; ");
+						+ JoinGameModalWindow.this.player.getName() + "'; ");
 			}
 		};
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("joinSubmit");
 
 		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, this.nameInput, this.sideInput,
-			gameIdLabel, this.gameIdInput, submit);
+				gameIdLabel, this.gameIdInput, submit);
 
 		this.add(form);
 	}

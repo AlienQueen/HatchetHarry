@@ -46,6 +46,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String TOP_CARD_INDEX = "TOP_CARD_INDEX";
 	private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
 	private static final String USERNAME = "USERNAME";
+
 	private String cometUser; // TODO: do something, Gromit
 
 	public HatchetHarrySession(final Request request)
@@ -253,14 +254,6 @@ public class HatchetHarrySession extends WebSession
 	{
 		final List<CardPanel> cards = (ArrayList<CardPanel>)this
 				.getAttribute(HatchetHarrySession.TO_REMOVE);
-		return cards;
-	}
-
-	// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
-	public ArrayList<CardPanel> getAllCardPanelsInBattleField()
-	{
-		final ArrayList<CardPanel> cards = (ArrayList<CardPanel>)this
-				.getAttribute(HatchetHarrySession.ALL_CARD_PANELS_IN_BATTLEFIELD);
 		return cards;
 	}
 

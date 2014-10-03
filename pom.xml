@@ -46,11 +46,11 @@
         <atmosphere.version>2.1.8</atmosphere.version>
         <jquery.atmosphere.version>2.2.2</jquery.atmosphere.version>
         <atmosphere-compat.version>2.0.1</atmosphere-compat.version>
-        <spring.version>4.0.6.RELEASE</spring.version>
+        <spring.version>4.1.1.RELEASE</spring.version>
         <slf4j.version>1.7.7</slf4j.version>
         <log4j.version>1.2.16</log4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <targetJdk>1.6</targetJdk>
+        <targetJdk>1.7</targetJdk>
         <project.build.finalName>ROOT</project.build.finalName>
         <selenium.version>2.42.2</selenium.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
@@ -622,8 +622,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <optimize>true</optimize>
                     <debug>true</debug>
                 </configuration>
@@ -691,7 +691,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
-                    <targetJdk>1.6</targetJdk>
+                    <targetJdk>1.7</targetJdk>
                     <minimumPriority>0</minimumPriority>
                     <rulesets>
                         <ruleset>/home/nostromo/rulesets/basic.xml</ruleset>
@@ -742,7 +742,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
-                    <targetJdk>1.6</targetJdk>
+                    <targetJdk>1.7</targetJdk>
                     <minimumPriority>0</minimumPriority>
                     <rulesets>
                         <ruleset>/home/nostromo/rulesets/basic.xml</ruleset>

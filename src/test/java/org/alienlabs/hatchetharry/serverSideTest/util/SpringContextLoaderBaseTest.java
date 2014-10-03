@@ -5,7 +5,6 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +51,7 @@ public class SpringContextLoaderBaseTest
 	protected AtmosphereTester waTester;
 
 	@Before
-	public void setUpWithMocks() throws IOException
+	public void setUpWithMocks() throws Exception
 	{
 		// Init the EventBus
 		this.webApp = new HatchetHarryApplication()
@@ -87,10 +86,10 @@ public class SpringContextLoaderBaseTest
 		this.tester = new WicketTester(this.webApp);
 		this.context = new ApplicationContextMock();
 		this.tester
-		.getApplication()
-		.getComponentInstantiationListeners()
-		.add(new SpringComponentInjector(tester.getApplication(),
-				SpringContextLoaderBaseTest.this.context));
+				.getApplication()
+				.getComponentInstantiationListeners()
+				.add(new SpringComponentInjector(this.tester.getApplication(),
+						SpringContextLoaderBaseTest.this.context));
 		this.initApplicationContextMock();
 		this.persistenceService = this.context.getBean(PersistenceService.class);
 
@@ -104,7 +103,7 @@ public class SpringContextLoaderBaseTest
 
 	private void initApplicationContextMock()
 	{
-		PersistenceService persistenceServiceMock = mock(PersistenceService.class);
+		final PersistenceService persistenceServiceMock = mock(PersistenceService.class);
 		final Game game = new Game();
 		game.setId(1L);
 		final Set<Player> players = new HashSet<Player>();
@@ -123,17 +122,17 @@ public class SpringContextLoaderBaseTest
 		deck.setDeckId(1L);
 		deck.setPlayerId(p.getId());
 		when(persistenceServiceMock.getDeckByDeckArchiveName("aggro-combo Red / Black"))
-		.thenReturn(deck);
+				.thenReturn(deck);
 
-		final List<MagicCard> cards = initHand(deck);
+		final List<MagicCard> cards = this.initHand(deck);
 		final MagicCard baldu = new MagicCard("baldu", "baldu", "baldu", "baldu", "baldu",
 				"infrared", null);
 		baldu.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 		baldu.setDeck(deck);
-		List<Player> playersAsList = new ArrayList<Player>();
+		final List<Player> playersAsList = new ArrayList<Player>();
 		playersAsList.addAll(players);
 
-		when(persistenceServiceMock.getAllCardsFromDeck(anyLong())).thenReturn(cards);
+		when(persistenceServiceMock.getAllCardsFromDeck((String)any())).thenReturn(cards);
 		when(persistenceServiceMock.getPlayer(anyLong())).thenReturn(p);
 		when(persistenceServiceMock.getGame(anyLong())).thenReturn(game);
 		when(persistenceServiceMock.findCardByName("Balduvian Horde")).thenReturn(baldu);
@@ -141,16 +140,16 @@ public class SpringContextLoaderBaseTest
 		when(persistenceServiceMock.getPlayer(anyLong())).thenReturn(p);
 		when(persistenceServiceMock.getAllPlayersOfGame(anyLong())).thenReturn(playersAsList);
 
-		DataGenerator dataGeneratorMock = mock(DataGenerator.class);
-		ImportDeckService importDeckServiceMock = mock(ImportDeckService.class);
+		final DataGenerator dataGeneratorMock = mock(DataGenerator.class);
+		final ImportDeckService importDeckServiceMock = mock(ImportDeckService.class);
 		this.addMock("persistenceService", persistenceServiceMock);
 		this.addMock("dataGenerator", dataGeneratorMock);
 		this.addMock("importDeckService", importDeckServiceMock);
 	}
 
-	private List<MagicCard> initHand(Deck deck)
+	private List<MagicCard> initHand(final Deck deck)
 	{
-		List<MagicCard> cards = new ArrayList<MagicCard>();
+		final List<MagicCard> cards = new ArrayList<MagicCard>();
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -216,7 +215,7 @@ public class SpringContextLoaderBaseTest
 		return gameId;
 	}
 
-	public void newHomePage() throws IOException
+	public void newHomePage() throws Exception
 	{
 		final PageParameters pp = new PageParameters();
 		pp.add("test", "test");
@@ -231,7 +230,7 @@ public class SpringContextLoaderBaseTest
 	 * @param mock
 	 *            The mock object.
 	 */
-	protected void addMock(String beanName, Object mock)
+	protected void addMock(final String beanName, final Object mock)
 	{
 		this.context.putBean(beanName, mock);
 	}

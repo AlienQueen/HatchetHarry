@@ -1,6 +1,5 @@
 package org.alienlabs.hatchetharry.serverSideTest;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +47,7 @@ public class NonRegressionTest
 	private PersistenceService persistenceService;
 
 	@Before
-	public void setUpBeforeClass() throws IOException
+	public void setUpBeforeClass() throws Exception
 	{
 		this.webApp = new HatchetHarryApplication()
 		{
@@ -84,14 +83,14 @@ public class NonRegressionTest
 		HatchetHarrySession.get().reinitSession();
 	}
 
-	public void newHomePage() throws IOException
+	public void newHomePage() throws Exception
 	{
 		final PageParameters pp = this.pageParameters();
 		pp.add("test", "test");
 		this.tester.startPage(new HomePage(pp));
 	}
 
-	public void startAGameAndPlayACard(final WicketTester _tester) throws IOException
+	public void startAGameAndPlayACard(final WicketTester _tester) throws Exception
 	{
 		// Create game
 		this.newHomePage();
@@ -144,9 +143,8 @@ public class NonRegressionTest
 	 * Verify: the card should be untapped.
 	 *
 	 */
-	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped()
-			throws IOException
-			{
+	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped() throws Exception
+	{
 		this.startAGameAndPlayACard(this.tester);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -207,23 +205,23 @@ public class NonRegressionTest
 		// We should have one card on the battlefield, untapped
 		allCardsInBattlefield = this.persistenceService.getAllCardsInBattleFieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
-			}
+	}
 
 	@Test
 	public void whenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
-			throws IOException
-			{
+			throws Exception
+	{
 		this.startAGameAndPlayACard(this.tester);
 
 		final Player p = this.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
-			}
+	}
 
 	@Test
 	public void whenCreatingAGamePlayingACardAndPlayingATokenTheNumberOfCardsInTheHandMustNotChange()
-			throws IOException
-			{
+			throws Exception
+	{
 		this.startAGameAndPlayACard(this.tester);
 
 		// 60 cards in the deck?
@@ -342,7 +340,7 @@ public class NonRegressionTest
 		this.verifyFieldsOfCountCardsModalWindow(4, "0");
 		this.verifyFieldsOfCountCardsModalWindow(5, "1");
 		this.verifyFieldsOfCountCardsModalWindow(6, "60"); // \O/
-			}
+	}
 
 	private PageParameters pageParameters()
 	{
@@ -353,8 +351,8 @@ public class NonRegressionTest
 
 	@Test
 	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
-			throws IOException
-			{
+			throws Exception
+	{
 		this.startAGameAndPlayACard(this.tester);
 
 		final Player player = this.persistenceService.getAllPlayersOfGame(
@@ -374,7 +372,7 @@ public class NonRegressionTest
 		joinGameForm.submit();
 
 		Assert.assertEquals(60, player.getDeck().getCards().size());
-			}
+	}
 
 	private void openModalWindow(final String _window, final String linkToActivateWindow,
 			final String componentIdToCheck, final String valueToCheck)
@@ -394,6 +392,7 @@ public class NonRegressionTest
 				.getComponentFromLastRenderedPage(_window);
 		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
 
+		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> link = (AjaxLink<Void>)this.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);

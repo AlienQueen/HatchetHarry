@@ -160,7 +160,7 @@ import com.google.common.io.Files;
 
 /**
  * HatchetHarry one and only WebPage
- *
+ * 
  * @author Andrey Belyaev
  * @author Zala Goupil
  */
@@ -306,6 +306,14 @@ public class HomePage extends TestReportPage
 		balduParent.setOutputMarkupId(true);
 		balduParent.setMarkupId("tour_6");
 
+		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
+		this.parentPlaceholder.setOutputMarkupId(true);
+		this.add(this.parentPlaceholder);
+
+		this.opponentParentPlaceholder = new WebMarkupContainer("opponentParentPlaceholder");
+		this.opponentParentPlaceholder.setOutputMarkupId(true);
+		this.add(this.opponentParentPlaceholder);
+
 		if (!this.session.isGameCreated())
 		{
 			this.dataGenerator.afterPropertiesSet();
@@ -354,14 +362,6 @@ public class HomePage extends TestReportPage
 
 		this.sideParent.add(this.allSidesInGame);
 		this.add(this.sideParent);
-
-		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
-		this.parentPlaceholder.setOutputMarkupId(true);
-		this.add(this.parentPlaceholder);
-
-		this.opponentParentPlaceholder = new WebMarkupContainer("opponentParentPlaceholder");
-		this.opponentParentPlaceholder.setOutputMarkupId(true);
-		this.add(this.opponentParentPlaceholder);
 
 		this.graveyardParent = new WebMarkupContainer("graveyardParent");
 		this.graveyardParent.setMarkupId("graveyardParent");
@@ -454,7 +454,7 @@ public class HomePage extends TestReportPage
 		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinGameLinkResponsive",
 				this.player, this.joinGameWindow));
 
-		this.generatePlayCardLink(this.hand);
+		this.generatePlayCardLink();
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkDesktop"));
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkResponsive"));
 		this.generateCardPanels();
@@ -561,22 +561,24 @@ public class HomePage extends TestReportPage
 
 	private final void generateCardPanels()
 	{
-		for (Player p : this.player.getGame().getPlayers())
+		this.generateCardListViewForSide1(new ArrayList<MagicCard>());
+		this.generateCardListViewForSide2(new ArrayList<MagicCard>());
+
+		final Game g = this.persistenceService.getGame(this.session.getPlayer().getGame().getId());
+
+		for (final Player p : g.getPlayers())
 		{
-			if (p.getSide().getSideName()
-					.equals(HatchetHarrySession.get().getPlayer().getSide().getSideName()))
+			if (p.getSide().getSideName().equals(this.session.getPlayer().getSide().getSideName()))
 			{
 				this.generateCardListViewForSide1(this.persistenceService
 						.getAllCardsInBattlefieldForAGameAndAPlayer(p.getGame().getId(), p.getId(),
-								p.getDeck().getDeckId()), false);
-				this.generateCardListViewForSide2(new ArrayList<MagicCard>(), false);
+								p.getDeck().getDeckId()));
 			}
 			else
 			{
-				this.generateCardListViewForSide1(new ArrayList<MagicCard>(), false);
 				this.generateCardListViewForSide2(this.persistenceService
 						.getAllCardsInBattlefieldForAGameAndAPlayer(p.getGame().getId(), p.getId(),
-								p.getDeck().getDeckId()), false);
+								p.getDeck().getDeckId()));
 			}
 		}
 	}
@@ -1148,7 +1150,7 @@ public class HomePage extends TestReportPage
 		this.player = p;
 	}
 
-	private void generatePlayCardLink(final List<MagicCard> mc)
+	private void generatePlayCardLink()
 	{
 		this.playCardLink = new WebMarkupContainer("playCardLink");
 		this.playCardLink.setMarkupId("playCardLink0");
@@ -1479,14 +1481,14 @@ public class HomePage extends TestReportPage
 			this.player = this.session.getPlayer();
 			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
 
-			if (this.deck == null || deck.getCards() == null || deck.getCards().isEmpty())
+			if ((this.deck == null) || (this.deck.getCards() == null)
+					|| (this.deck.getCards().isEmpty()))
 			{
 				this.deck = this.persistenceService
 						.getDeckByDeckArchiveName("aggro-combo Red / Black");
 				this.player.setDeck(this.deck);
 			}
 
-			System.out.println("### cards: " + this.deck.getCards().size());
 
 			final ArrayList<MagicCard> _cards = new ArrayList<MagicCard>();
 
@@ -1498,12 +1500,6 @@ public class HomePage extends TestReportPage
 				_cards.add(mc);
 			}
 			this.player.getDeck().setCards(_cards);
-
-			System.out.println("### cards: " + this.player.getDeck().getCards().size());
-			System.out.println("### game: " + this.session.getGameId());
-			System.out.println("### player: " + this.player.getId());
-			System.out.println("### deck: " + this.player.getDeck().getDeckId());
-			System.out.println("########################");
 
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 			if (!this.session.isHandCardsHaveBeenBuilt())
@@ -1517,7 +1513,6 @@ public class HomePage extends TestReportPage
 				mc.setZone(CardZone.HAND);
 				mc.setGameId(this.session.getPlayer().getGame().getId());
 				cards.add(i, mc);
-				System.out.println("### " + mc.getTitle());
 			}
 
 			for (int i = 7; i < this.deck.getCards().size(); i++)
@@ -1539,7 +1534,6 @@ public class HomePage extends TestReportPage
 		{
 			this.createPlayer();
 			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
-			System.out.println("~~~ " + this.deck.getCards().size());
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
 
 			for (int i = 0; i < this.deck.getCards().size(); i++)
@@ -2456,7 +2450,7 @@ public class HomePage extends TestReportPage
 		}
 		else
 		{
-            buil.append("').parents('.cardContainer').removeClass('tapped'); }, 500); ");
+			buil.append("').parents('.cardContainer').removeClass('tapped'); }, 500); ");
 		}
 
 		target.appendJavaScript(buil.toString());
@@ -2888,11 +2882,30 @@ public class HomePage extends TestReportPage
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.addOrReplace(galleryToUpdate);
 
-		// TODO use PersistenceService#getAllCardsInBattleFieldForAGame()
-		for (final CardPanel cp : this.session.getAllCardPanelsInBattleField())
+		final List<MagicCard> allCardsInBattlefield = this.persistenceService
+				.getAllCardsInBattlefieldForAGame(this.session.getGameId());
+		LOGGER.info("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
+		final List<MagicCard> allCardsInBattlefieldForPlayer1 = new ArrayList<MagicCard>();
+		final List<MagicCard> allCardsInBattlefieldForPlayer2 = new ArrayList<MagicCard>();
+
+		for (final MagicCard mc : allCardsInBattlefield)
 		{
-			this.playCardParent.addOrReplace(cp);
+			if (mc.getOwnerSide().equals(this.session.getPlayer().getSide().getSideName()))
+			{
+				allCardsInBattlefieldForPlayer1.add(mc);
+			}
+			else
+			{
+				allCardsInBattlefieldForPlayer2.add(mc);
+			}
 		}
+
+		this.generateCardListViewForSide1(allCardsInBattlefieldForPlayer1);
+		this.generateCardListViewForSide2(allCardsInBattlefieldForPlayer2);
+		LOGGER.info("allCardsInBattlefieldForPlayer1.size(): "
+				+ allCardsInBattlefieldForPlayer1.size());
+		LOGGER.info("allCardsInBattlefieldForPlayer2.size(): "
+				+ allCardsInBattlefieldForPlayer2.size());
 
 		this.add(new Behavior()
 		{
@@ -3020,16 +3033,16 @@ public class HomePage extends TestReportPage
 	}
 
 	public QuickView<MagicCard> generateCardListViewForSide1(
-			final List<MagicCard> _allMagicCardsInBattlefield, final boolean replace)
+			final List<MagicCard> _allMagicCardsInBattlefieldForSide1)
 	{
-		if (null == _allMagicCardsInBattlefield)
+		if (null == _allMagicCardsInBattlefieldForSide1)
 		{
 			final List<MagicCard> newCards = new ArrayList<MagicCard>();
 			this.allMagicCardsInBattlefieldForSide1 = newCards;
 		}
 		else
 		{
-			this.allMagicCardsInBattlefieldForSide1 = _allMagicCardsInBattlefield;
+			this.allMagicCardsInBattlefieldForSide1 = _allMagicCardsInBattlefieldForSide1;
 		}
 
 		final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
@@ -3052,29 +3065,21 @@ public class HomePage extends TestReportPage
 		};
 		this.allCardsInBattlefieldForSide1.setOutputMarkupId(true);
 
-		/*
-		 * if (replace) {
-		 */
 		this.parentPlaceholder.addOrReplace(this.allCardsInBattlefieldForSide1);
-		/*
-		 * } else {
-		 * this.parentPlaceholder.add(this.allCardsInBattlefieldForSide1); }
-		 */
-
 		return this.allCardsInBattlefieldForSide1;
 	}
 
 	public QuickView<MagicCard> generateCardListViewForSide2(
-			final List<MagicCard> _allMagicCardsInBattlefield, final boolean replace)
+			final List<MagicCard> _allMagicCardsInBattlefieldForSide2)
 	{
-		if (null == _allMagicCardsInBattlefield)
+		if (null == _allMagicCardsInBattlefieldForSide2)
 		{
 			final List<MagicCard> newCards = new ArrayList<MagicCard>();
 			this.allMagicCardsInBattlefieldForSide2 = newCards;
 		}
 		else
 		{
-			this.allMagicCardsInBattlefieldForSide2 = _allMagicCardsInBattlefield;
+			this.allMagicCardsInBattlefieldForSide2 = _allMagicCardsInBattlefieldForSide2;
 		}
 
 		final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
@@ -3097,16 +3102,7 @@ public class HomePage extends TestReportPage
 		};
 		this.allCardsInBattlefieldForSide2.setOutputMarkupId(true);
 
-		/*
-		 * if (replace) {
-		 */
 		this.opponentParentPlaceholder.addOrReplace(this.allCardsInBattlefieldForSide2);
-		/*
-		 * } else {
-		 * this.opponentParentPlaceholder.add(this.allCardsInBattlefieldForSide2
-		 * ); }
-		 */
-
 		return this.allCardsInBattlefieldForSide2;
 	}
 
