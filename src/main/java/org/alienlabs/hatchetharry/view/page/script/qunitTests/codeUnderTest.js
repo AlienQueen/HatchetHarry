@@ -359,3 +359,24 @@ var uncloak = function () {
     jQuery('.loader').hide();
     jQuery('body').removeClass("cloak");
 };
+
+var responsiveCards = function() {
+	var cardBitmapSize = 310;
+	var screenHeight = jQuery(window).height();
+	var screenReservedHeight = (7+15)/100; // 7% and 15 % from cards.css #allCardsParent
+	var marginSize = 20;
+	var numberOfCardsLine = 3;
+	var availableLineHeight =  Math.floor( ( screenHeight*(1-screenReservedHeight) / numberOfCardsLine ) - marginSize );
+	var cardMaxSize = Math.min(availableLineHeight, cardBitmapSize);
+	var css = '.cardContainer, .magicCard {max-height:'+cardMaxSize+'px;max-width:'+cardMaxSize+'px;}';
+	domSingleton('style', 'responsiveCards',css);
+};
+function domSingleton(tag,id,content){
+	if(jQuery(id).length>0) {
+		jQuery(id).html(content);
+	}
+	else {
+		jQuery('body').append('<'+tag+' id="'+id+'">'+content+'</'+tag+'>');
+	}
+}
+jQuery(window).on('load resize',responsiveCards);
