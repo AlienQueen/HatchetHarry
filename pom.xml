@@ -42,9 +42,9 @@
         <wicket.version>6.17.0</wicket.version>
         <quickview.version>6.0-SNAPSHOT</quickview.version>
         <wicketstuff.version>6.17.0</wicketstuff.version>
-        <wicket-atmosphere.version>0.21-SNAPSHOT</wicket-atmosphere.version>
+        <wicket-atmosphere.version>0.20</wicket-atmosphere.version>
         <atmosphere.version>2.1.8</atmosphere.version>
-        <jquery.atmosphere.version>2.2.2</jquery.atmosphere.version>
+        <jquery.atmosphere.version>2.1.6</jquery.atmosphere.version>
         <atmosphere-compat.version>2.0.1</atmosphere-compat.version>
         <spring.version>4.1.1.RELEASE</spring.version>
         <slf4j.version>1.7.7</slf4j.version>

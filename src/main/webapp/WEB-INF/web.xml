@@ -36,6 +36,10 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
+    <listener>
+        <listener-class>org.atmosphere.cpr.SessionSupport</listener-class>
+    </listener>
+    
     <servlet>
         <description>MeteorServlet</description>
         <servlet-name>MeteorServlet</servlet-name>
@@ -85,6 +89,10 @@
             <param-value>org.apache.wicket.atmosphere.TrackMessageSizeFilter</param-value>
         </init-param>
         <init-param>
+		   	<param-name>org.atmosphere.cpr.BroadcasterCache.strategy</param-name>
+   			<param-value>beforeFilter</param-value>
+		</init-param>
+        <init-param>
             <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
             <param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
         </init-param>
@@ -98,7 +106,7 @@
         </init-param>
         <init-param>
             <param-name>org.atmosphere.useWebSocketAndServlet3</param-name>
-            <param-value>false</param-value>
+            <param-value>true</param-value>
         </init-param>
         <init-param>
             <param-name>org.atmosphere.cpr.AtmosphereInterceptor</param-name>
@@ -111,6 +119,10 @@
         <init-param>
             <param-name>org.atmosphere.cpr.broadcasterLifeCyclePolicy</param-name>
             <param-value>EMPTY_DESTROY</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.AtmosphereFramework.analytics</param-name>
+            <param-value>false</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
         <async-supported>true</async-supported>
