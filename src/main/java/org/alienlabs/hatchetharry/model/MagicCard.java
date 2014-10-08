@@ -39,7 +39,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "MagicCard", indexes = { @Index(columnList = "uuid"), @Index(columnList = "gameId"),
 		@Index(columnList = "card_deck") })
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class MagicCard implements SlideshowImage, Serializable
+public class MagicCard implements SlideshowImage, Serializable, Comparable<MagicCard>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -83,14 +83,16 @@ public class MagicCard implements SlideshowImage, Serializable
 	private String ownerSide;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Token token;
+	@Column
+	private Integer battlefieldOrder;
 
 	public MagicCard()
 	{
 	}
 
 	public MagicCard(final String _smallImageFilename, final String _bigImageFilename,
-		final String _thumbnailFilename, final String _title, final String _description,
-		final String _ownerSide, final Token _token)
+			final String _thumbnailFilename, final String _title, final String _description,
+			final String _ownerSide, final Token _token, final Integer _battlefieldOrder)
 	{
 		this.smallImageFilename = _smallImageFilename;
 		this.bigImageFilename = _bigImageFilename;
@@ -99,7 +101,7 @@ public class MagicCard implements SlideshowImage, Serializable
 		this.description = _description;
 		this.ownerSide = _ownerSide;
 		this.token = _token;
-
+		this.battlefieldOrder = _battlefieldOrder;
 	}
 
 	public Long getId()
@@ -295,7 +297,7 @@ public class MagicCard implements SlideshowImage, Serializable
 		return this.token;
 	}
 
-	public void setToken(Token _token)
+	public void setToken(final Token _token)
 	{
 		this.token = _token;
 	}
@@ -308,6 +310,16 @@ public class MagicCard implements SlideshowImage, Serializable
 	public void setVersion(final String _version)
 	{
 		this.version = _version;
+	}
+
+	public Integer getBattlefieldOrder()
+	{
+		return this.battlefieldOrder;
+	}
+
+	public void setBattlefieldOrder(final Integer battlefieldOrder)
+	{
+		this.battlefieldOrder = battlefieldOrder;
 	}
 
 	@Override
@@ -337,4 +349,11 @@ public class MagicCard implements SlideshowImage, Serializable
 	{
 		return this.id != null ? this.id.hashCode() : 0;
 	}
+
+	@Override
+	public int compareTo(final MagicCard o)
+	{
+		return this.battlefieldOrder.compareTo(o.getBattlefieldOrder());
+	}
+
 }

@@ -41,7 +41,7 @@ public class CreateTokenModalWindow extends Panel
 	final ModalWindow modal;
 
 	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
-		creatureTypesModel, descriptionModel;
+			creatureTypesModel, descriptionModel;
 
 	@SpringBean
 	PersistenceService persistenceService;
@@ -52,7 +52,7 @@ public class CreateTokenModalWindow extends Panel
 		this.modal = _modal;
 
 		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
-			"cards/token_medium.jpg");
+				"cards/token_medium.jpg");
 
 		this.typeModel = Model.of("");
 		this.colorsModel = Model.of("");
@@ -78,15 +78,15 @@ public class CreateTokenModalWindow extends Panel
 
 		final Label capabilitiesLabel = new Label("capabilitiesLabel", "Capabilities: ");
 		final TextField<String> capabilities = new TextField<String>("capabilities",
-			this.capabilitiesModel);
+				this.capabilitiesModel);
 
 		final Label creatureTypesLabel = new Label("creatureTypesLabel", "Creature types: ");
 		final TextField<String> creatureTypes = new TextField<String>("creatureTypes",
-			this.creatureTypesModel);
+				this.creatureTypesModel);
 
 		final Label descriptionLabel = new Label("descriptionLabel", "Description: ");
 		final TextField<String> description = new TextField<String>("description",
-			this.descriptionModel);
+				this.descriptionModel);
 
 		final IndicatingAjaxButton createTokenButton = new IndicatingAjaxButton("createToken", form)
 		{
@@ -98,17 +98,18 @@ public class CreateTokenModalWindow extends Panel
 				final UUID uuid = UUID.randomUUID();
 				final Long gameId = HatchetHarrySession.get().getGameId();
 				final Player player = CreateTokenModalWindow.this.persistenceService
-					.getPlayer(HatchetHarrySession.get().getPlayer().getId());
+						.getPlayer(HatchetHarrySession.get().getPlayer().getId());
 
 				final Token token = new Token(CreateTokenModalWindow.this.typeModel.getObject(),
-					CreateTokenModalWindow.this.powerModel.getObject(),
-					CreateTokenModalWindow.this.toughnessModel.getObject(),
-					CreateTokenModalWindow.this.colorsModel.getObject(),
-					CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
-					gameId);
+						CreateTokenModalWindow.this.powerModel.getObject(),
+						CreateTokenModalWindow.this.toughnessModel.getObject(),
+						CreateTokenModalWindow.this.colorsModel.getObject(),
+						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
+						gameId);
 
 				final MagicCard card = new MagicCard("cards/token_small.jpg", "", "", "token", "",
-					player.getSide().getSideName(), token);
+						player.getSide().getSideName(), token, HatchetHarrySession.get()
+								.incrementLastBattlefieldOder());
 
 				final Deck dummyDeck = new Deck();
 				final DeckArchive dummyDeckArchive = new DeckArchive();
@@ -128,26 +129,26 @@ public class CreateTokenModalWindow extends Panel
 				token.setPlayer(player);
 
 				CreateTokenModalWindow.this.persistenceService.saveOrUpdateDeckArchive(dummyDeck
-					.getDeckArchive());
+						.getDeckArchive());
 				CreateTokenModalWindow.this.persistenceService.saveDeck(dummyDeck);
 				CreateTokenModalWindow.this.persistenceService.saveToken(token);
 				CreateTokenModalWindow.this.persistenceService.saveCard(card);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(
-					gameId, card, player.getSide());
+						gameId, card, player.getSide());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.PUT_TOKEN_ON_BATTLEFIELD_ACTION, gameId, player.getId(),
-					player.getName(), "", "",
-					CreateTokenModalWindow.this.creatureTypesModel.getObject(), null, null);
+						NotifierAction.PUT_TOKEN_ON_BATTLEFIELD_ACTION, gameId, player.getId(),
+						player.getName(), "", "",
+						CreateTokenModalWindow.this.creatureTypesModel.getObject(), null, null);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, true, null,
-					HatchetHarrySession.get().getPlayer().getName(), token.getCreatureTypes(),
-					null, null, false, gameId);
+						ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, true, null,
+						HatchetHarrySession.get().getPlayer().getName(), token.getCreatureTypes(),
+						null, null, false, gameId);
 
 				final List<BigInteger> allPlayersInGame = CreateTokenModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(gameId);
+						.giveAllPlayersFromGame(gameId);
 				EventBusPostService.post(allPlayersInGame, ptobcc, ncc, new ConsoleLogCometChannel(
-					logger));
+						logger));
 
 				CreateTokenModalWindow.this.modal.close(target);
 			}
@@ -167,8 +168,8 @@ public class CreateTokenModalWindow extends Panel
 		cancelButton.setOutputMarkupId(true).setMarkupId("cancel");
 
 		form.add(typeLabel, type, powerLabel, power, thoughnessLabel, thoughness, colorsLabel,
-			colors, capabilitiesLabel, capabilities, creatureTypesLabel, creatureTypes,
-			descriptionLabel, description);
+				colors, capabilitiesLabel, capabilities, creatureTypesLabel, creatureTypes,
+				descriptionLabel, description);
 
 		form.add(createTokenButton, cancelButton);
 		this.add(topLibraryCard, form);

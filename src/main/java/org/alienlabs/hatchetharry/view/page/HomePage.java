@@ -83,6 +83,7 @@ import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometCha
 import org.alienlabs.hatchetharry.model.channel.PutTokenOnBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
+import org.alienlabs.hatchetharry.model.channel.ReorderCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.StopRevealingHandCometChannel;
@@ -119,6 +120,7 @@ import org.alienlabs.hatchetharry.view.component.MessageRedisplayBehavior;
 import org.alienlabs.hatchetharry.view.component.MulliganModalWindow;
 import org.alienlabs.hatchetharry.view.component.PlayCardFromGraveyardBehavior;
 import org.alienlabs.hatchetharry.view.component.RedrawArrowsBehavior;
+import org.alienlabs.hatchetharry.view.component.ReorderCardInBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.component.RevealTopLibraryCardModalWindow;
 import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
 import org.alienlabs.hatchetharry.view.component.TeamInfoModalWindow;
@@ -568,17 +570,18 @@ public class HomePage extends TestReportPage
 
 		for (final Player p : g.getPlayers())
 		{
+			final List<MagicCard> allCardsInBattlefieldForAGameAndAPlayer = this.persistenceService
+					.getAllCardsInBattlefieldForAGameAndAPlayer(p.getGame().getId(), p.getId(), p
+							.getDeck().getDeckId());
+			Collections.sort(allCardsInBattlefieldForAGameAndAPlayer);
+
 			if (p.getSide().getSideName().equals(this.session.getPlayer().getSide().getSideName()))
 			{
-				this.generateCardListViewForSide1(this.persistenceService
-						.getAllCardsInBattlefieldForAGameAndAPlayer(p.getGame().getId(), p.getId(),
-								p.getDeck().getDeckId()));
+				this.generateCardListViewForSide1(allCardsInBattlefieldForAGameAndAPlayer);
 			}
 			else
 			{
-				this.generateCardListViewForSide2(this.persistenceService
-						.getAllCardsInBattlefieldForAGameAndAPlayer(p.getGame().getId(), p.getId(),
-								p.getDeck().getDeckId()));
+				this.generateCardListViewForSide2(allCardsInBattlefieldForAGameAndAPlayer);
 			}
 		}
 	}
@@ -2854,6 +2857,33 @@ public class HomePage extends TestReportPage
 		this.askMulliganWindow.show(target);
 	}
 
+	@Subscribe
+	public void reorderCardsInBattlefield(final AjaxRequestTarget target,
+			final ReorderCardCometChannel event)
+	{
+		HomePage.LOGGER.info("reorderCardsInBattlefield");
+
+		final List<MagicCard> allCardsAndTokensInBattlefieldForAGameAndAPlayer = this.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(event.getGameId(),
+						event.getPlayerId(), event.getDeckId());
+
+		HomePage.LOGGER.info("requesting side: " + event.getPlayerSide() + ", this side: "
+				+ this.session.getPlayer().getSide().getSideName());
+		for (int i = 0; i < allCardsAndTokensInBattlefieldForAGameAndAPlayer.size(); i++)
+		{
+			HomePage.LOGGER
+					.info("quickview 2, index: "
+							+ i
+							+ ", card: "
+							+ allCardsAndTokensInBattlefieldForAGameAndAPlayer.get(i).getTitle()
+							+ ", order: "
+							+ allCardsAndTokensInBattlefieldForAGameAndAPlayer.get(i)
+									.getBattlefieldOrder());
+		}
+		target.add(this
+				.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer));
+	}
+
 	@Override
 	protected void configureResponse(final WebResponse response)
 	{
@@ -3032,7 +3062,7 @@ public class HomePage extends TestReportPage
 		return this.opponentParentPlaceholder;
 	}
 
-	public QuickView<MagicCard> generateCardListViewForSide1(
+	public WebMarkupContainer generateCardListViewForSide1(
 			final List<MagicCard> _allMagicCardsInBattlefieldForSide1)
 	{
 		if (null == _allMagicCardsInBattlefieldForSide1)
@@ -3066,10 +3096,12 @@ public class HomePage extends TestReportPage
 		this.allCardsInBattlefieldForSide1.setOutputMarkupId(true);
 
 		this.parentPlaceholder.addOrReplace(this.allCardsInBattlefieldForSide1);
-		return this.allCardsInBattlefieldForSide1;
+		final ReorderCardInBattlefieldBehavior reorder = new ReorderCardInBattlefieldBehavior();
+		this.add(reorder);
+		return this.parentPlaceholder;
 	}
 
-	public QuickView<MagicCard> generateCardListViewForSide2(
+	public WebMarkupContainer generateCardListViewForSide2(
 			final List<MagicCard> _allMagicCardsInBattlefieldForSide2)
 	{
 		if (null == _allMagicCardsInBattlefieldForSide2)
@@ -3103,7 +3135,7 @@ public class HomePage extends TestReportPage
 		this.allCardsInBattlefieldForSide2.setOutputMarkupId(true);
 
 		this.opponentParentPlaceholder.addOrReplace(this.allCardsInBattlefieldForSide2);
-		return this.allCardsInBattlefieldForSide2;
+		return this.opponentParentPlaceholder;
 	}
 
 	public final QuickView<MagicCard> getAllCardsInBattlefieldForSide1()

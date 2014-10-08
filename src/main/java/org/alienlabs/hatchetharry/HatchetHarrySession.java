@@ -46,6 +46,7 @@ public class HatchetHarrySession extends WebSession
 	private static final String TOP_CARD_INDEX = "TOP_CARD_INDEX";
 	private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
 	private static final String USERNAME = "USERNAME";
+	private static final String LAST_BATTLEFIELD_ORDER = "LAST_BATTLEFIELD_ORDER";
 
 	private String cometUser; // TODO: do something, Gromit
 
@@ -81,6 +82,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, 0l);
+		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, 0);
 	}
 
 	public String getCometUser()
@@ -411,4 +413,11 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.USERNAME, username);
 	}
 
+	public Integer incrementLastBattlefieldOder()
+	{
+		int myBattlefieldOrder = ((Integer)this
+				.getAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER)).intValue();
+		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, ++myBattlefieldOrder);
+		return myBattlefieldOrder - 1;
+	}
 }

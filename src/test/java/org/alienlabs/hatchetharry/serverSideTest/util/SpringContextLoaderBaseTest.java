@@ -126,7 +126,7 @@ public class SpringContextLoaderBaseTest
 
 		final List<MagicCard> cards = this.initHand(deck);
 		final MagicCard baldu = new MagicCard("baldu", "baldu", "baldu", "baldu", "baldu",
-				"infrared", null);
+				"infrared", null, 0);
 		baldu.setUuidObject(UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347"));
 		baldu.setDeck(deck);
 		final List<Player> playersAsList = new ArrayList<Player>();
@@ -154,7 +154,7 @@ public class SpringContextLoaderBaseTest
 		for (int i = 0; i < 7; i++)
 		{
 			final MagicCard card = new MagicCard("test" + i, "test" + i, "test" + i, "test" + i,
-					"test" + i, "infrared" + i, null);
+					"test" + i, "infrared" + i, null, 0);
 			card.setDeck(deck);
 			card.setUuidObject(UUID.randomUUID());
 			cards.add(card);

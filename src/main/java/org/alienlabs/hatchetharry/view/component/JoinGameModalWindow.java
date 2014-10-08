@@ -207,7 +207,7 @@ public class JoinGameModalWindow extends Panel
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
 									+ "Thumb.jpg", cc.getTitle(), "",
 							JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-							null);
+							null, 0);
 					card.setGameId(_id);
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());

@@ -99,7 +99,7 @@ public class CreateGameModalWindow extends Panel
 					CreateGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					CreateGameModalWindow.this.deckParent
-					.addOrReplace(CreateGameModalWindow.this.decks);
+							.addOrReplace(CreateGameModalWindow.this.decks);
 					target.add(CreateGameModalWindow.this.deckParent);
 				}
 			}
@@ -140,7 +140,7 @@ public class CreateGameModalWindow extends Panel
 						|| ("".equals(CreateGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == CreateGameModalWindow.this.decks.getModelObject())
 						|| (null == CreateGameModalWindow.this.sideInput
-						.getDefaultModelObjectAsString()))
+								.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
@@ -161,7 +161,7 @@ public class CreateGameModalWindow extends Panel
 
 				CreateGameModalWindow.this.persistenceService.clearAllMagicCardsForGameAndDeck(
 						CreateGameModalWindow.this.game.getId(), CreateGameModalWindow.this.player
-						.getDeck().getDeckId());
+								.getDeck().getDeckId());
 
 				final Deck deck = new Deck();
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
@@ -180,9 +180,9 @@ public class CreateGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-							+ "Thumb.jpg", cc.getTitle(), "",
+									+ "Thumb.jpg", cc.getTitle(), "",
 							CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-							null);
+							null, 0);
 					card.setGameId(g.getId());
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
@@ -214,7 +214,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setDeck(deck);
 				CreateGameModalWindow.this.player.setGame(g);
 				CreateGameModalWindow.this.persistenceService
-				.mergePlayer(CreateGameModalWindow.this.player);
+						.mergePlayer(CreateGameModalWindow.this.player);
 				HatchetHarrySession.get().setPlayer(CreateGameModalWindow.this.player);
 
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
@@ -235,10 +235,10 @@ public class CreateGameModalWindow extends Panel
 				target.appendJavaScript(buil.toString());
 
 				session.getPlayer()
-				.getSide()
-				.setSideName(
-						CreateGameModalWindow.this.sideInput
-						.getDefaultModelObjectAsString());
+						.getSide()
+						.setSideName(
+								CreateGameModalWindow.this.sideInput
+										.getDefaultModelObjectAsString());
 				session.getPlayer().setName(
 						CreateGameModalWindow.this.nameInput.getDefaultModelObjectAsString());
 				session.setMySidePosX(posX);
@@ -267,27 +267,27 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setSideUuid(s.getUuid());
 				CreateGameModalWindow.this.persistenceService.updateSide(s);
 				CreateGameModalWindow.this.persistenceService
-				.updatePlayer(CreateGameModalWindow.this.player);
+						.updatePlayer(CreateGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						CreateGameModalWindow.this.player);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.GAME, null, null, true, null, HatchetHarrySession.get()
-						.getPlayer().getName(), null, g.getId(), null, null, g.getId());
+								.getPlayer().getName(), null, g.getId(), null, null, g.getId());
 
 				final List<BigInteger> allPlayersInGame = new ArrayList<BigInteger>()
-						{
+				{
 					private static final long serialVersionUID = 1L;
 
 					{
 						this.add(BigInteger.valueOf(CreateGameModalWindow.this.player.getId()));
 					}
-						};
-						EventBusPostService
+				};
+				EventBusPostService
 						.post(allPlayersInGame, ascc, new ConsoleLogCometChannel(logger));
 
-						target.appendJavaScript("document.getElementById('userName').value = '"
-								+ CreateGameModalWindow.this.player.getName() + "'; ");
+				target.appendJavaScript("document.getElementById('userName').value = '"
+						+ CreateGameModalWindow.this.player.getName() + "'; ");
 			}
 
 			@Override

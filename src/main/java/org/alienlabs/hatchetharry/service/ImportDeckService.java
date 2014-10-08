@@ -23,7 +23,7 @@ public class ImportDeckService implements Serializable
 	private PersistenceService persistenceService;
 
 	public boolean importDeck(final String fileContent, final String deckName,
-		final boolean testDeck)
+			final boolean testDeck)
 	{
 		DeckArchive deckArchive;
 
@@ -80,7 +80,8 @@ public class ImportDeckService implements Serializable
 				this.persistenceService.saveCollectibleCard(cc);
 
 				final MagicCard card = new MagicCard("cards/" + cardName + "_small.jpg", "cards/"
-					+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "", "", null);
+						+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "", "",
+						null, 0);
 				card.setGameId(-1l);
 				card.setUuidObject(UUID.randomUUID());
 				card.setX(16l);

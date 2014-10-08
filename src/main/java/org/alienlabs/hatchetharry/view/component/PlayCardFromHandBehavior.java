@@ -42,7 +42,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = 1L;
 	@SpringBean
 	private PersistenceService persistenceService;
-	private UUID uuidToLookFor;
+	private final UUID uuidToLookFor;
 
 	public PlayCardFromHandBehavior(final UUID _uuidToLookFor)
 	{
@@ -86,6 +86,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		card.setZone(CardZone.BATTLEFIELD);
 		d.reorderMagicCards(hand);
 		this.persistenceService.saveOrUpdateAllMagicCards(hand);
+
+		card.setBattlefieldOrder(HatchetHarrySession.get().incrementLastBattlefieldOder());
 		this.persistenceService.updateCard(card);
 
 		final List<MagicCard> battlefield = this.persistenceService
@@ -100,7 +102,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				HatchetHarrySession.get().getPlayer().getName(), gameId);
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
-				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
 				"", card.getTitle(), null, "");
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null,
