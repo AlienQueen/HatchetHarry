@@ -12,4 +12,4 @@ window.setTimeout(function() {
 			        Wicket.Ajax.get({'u': '${url}&uuid=' + uuid + '&index=' + index});
 			    }
 			});
-}, 1000);
+}, 2000);
