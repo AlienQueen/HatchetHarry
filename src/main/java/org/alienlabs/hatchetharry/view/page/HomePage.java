@@ -241,7 +241,6 @@ public class HomePage extends TestReportPage
 	/* private QuickView<MagicCard> allTooltips; */
 	/* private List<MagicCard> allTooltipsInBattlefield; */
 	private Label username;
-	private ReorderCardInBattlefieldBehavior reorderCardBehavior;
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
 	public HomePage(final PageParameters pp) throws Exception
@@ -3095,15 +3094,8 @@ public class HomePage extends TestReportPage
 			}
 				};
 				this.allCardsInBattlefieldForSide1.setOutputMarkupId(true);
-
 				this.parentPlaceholder.addOrReplace(this.allCardsInBattlefieldForSide1);
-
-				if (this.reorderCardBehavior != null)  {
-					this.reorderCardBehavior = null;
-				}
-				this.reorderCardBehavior = new ReorderCardInBattlefieldBehavior();
-				this.allCardsInBattlefieldForSide1.add(this.reorderCardBehavior);
-
+				this.allCardsInBattlefieldForSide1.add(new ReorderCardInBattlefieldBehavior());
 				return this.parentPlaceholder;
 	}
 
