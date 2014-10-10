@@ -130,6 +130,7 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.atmosphere.Subscribe;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -3091,6 +3092,10 @@ public class HomePage extends TestReportPage
 								.getPlayerId()));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
+
+				if (mc.isTapped()) {
+					item.getParent().add(new AttributeAppender("class", "details"));
+				}
 			}
 				};
 				this.allCardsInBattlefieldForSide1.setOutputMarkupId(true);
