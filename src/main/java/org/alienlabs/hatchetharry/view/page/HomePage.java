@@ -3102,7 +3102,7 @@ public class HomePage extends TestReportPage
 					this.reorderCardBehavior = null;
 				}
 				this.reorderCardBehavior = new ReorderCardInBattlefieldBehavior();
-				this.add(this.reorderCardBehavior);
+				this.allCardsInBattlefieldForSide1.add(this.reorderCardBehavior);
 
 				return this.parentPlaceholder;
 	}
