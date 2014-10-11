@@ -21,6 +21,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -117,8 +118,10 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 						.getPlayer().getSide().getSideName());
 		EventBusPostService.post(giveAllPlayersFromGameExceptMe, reorder);
 
-		target.add(((HomePage)target.getPage())
-				.generateCardListViewForSide1(allCardsInBattlefieldForPlayer));
+		final WebMarkupContainer listViewForSide1 = ((HomePage)target.getPage())
+				.generateCardListViewForSide1(allCardsInBattlefieldForPlayer);
+		listViewForSide1.add(new ReorderCardInBattlefieldBehavior());
+		target.add(listViewForSide1);
 	}
 
 	@Override
