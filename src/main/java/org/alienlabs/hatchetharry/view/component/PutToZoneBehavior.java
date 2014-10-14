@@ -49,7 +49,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 	private CardZone targetZone;
 
 	public PutToZoneBehavior(final CardZone _sourceZone, final Player _player,
-		final boolean _isReveal)
+			final boolean _isReveal)
 	{
 		super();
 		Injector.get().inject(this);
@@ -63,7 +63,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-			.getRequest();
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		try
@@ -73,7 +73,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IllegalArgumentException ex)
 		{
 			PutToZoneBehavior.LOGGER.error("No card with UUID= " + request.getParameter("card")
-				+ " found!", ex);
+					+ " found!", ex);
 		}
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
@@ -81,7 +81,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		if (null == card)
 		{
 			PutToZoneBehavior.LOGGER.error("UUID " + this.uuidToLookFor
-				+ " retrieved no MagicCard!");
+					+ " retrieved no MagicCard!");
 			return;
 		}
 
@@ -93,12 +93,12 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		try
 		{
 			this.targetZone = CardZone.valueOf(request.getParameter("targetZone").toUpperCase(
-				Locale.ENGLISH));
+					Locale.ENGLISH));
 		}
 		catch (final IllegalArgumentException ex)
 		{
 			PutToZoneBehavior.LOGGER.error(
-				"wrong zone " + request.getParameter("targetZone") + "!", ex);
+					"wrong zone " + request.getParameter("targetZone") + "!", ex);
 			return;
 		}
 
@@ -147,20 +147,21 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final CardZoneMoveCometChannel czmcc = new CardZoneMoveCometChannel(this.sourceZone,
-			this.targetZone, card, HatchetHarrySession.get().getPlayer().getId(), card.getDeck()
-				.getPlayerId(), card.getGameId(), card.getDeck(), ownerPlayer.getSide(),
-			this.isReveal);
+				this.targetZone, card, HatchetHarrySession.get().getPlayer().getId(), card
+						.getDeck().getPlayerId(), card.getGameId(), card.getDeck(),
+				ownerPlayer.getSide(), this.isReveal);
 
 		final CardZoneMoveNotifier czmn = new CardZoneMoveNotifier(this.sourceZone,
-			this.targetZone, card, HatchetHarrySession.get().getPlayer().getName(), ownerPlayerName);
+				this.targetZone, card, HatchetHarrySession.get().getPlayer().getName(),
+				ownerPlayerName);
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
-			.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+				.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-			ConsoleLogType.ZONE_MOVE, this.sourceZone, this.targetZone, null, card.getTitle(),
-			HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
-			HatchetHarrySession.get().getGameId());
+				ConsoleLogType.ZONE_MOVE, this.sourceZone, this.targetZone, null, card.getTitle(),
+				HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
+				HatchetHarrySession.get().getGameId());
 
 		// post a message for all players in the game
 		EventBusPostService.post(allPlayersInGame, czmcc, czmn, new ConsoleLogCometChannel(logger));
@@ -187,10 +188,10 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/playCard/putToZone.js");
+				"script/playCard/putToZone.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "putToZone"));
 		try
 		{
 			template.close();
@@ -198,7 +199,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			PutToZoneBehavior.LOGGER.error(
-				"unable to close template in PutToZoneBehavior#renderHead()!", e);
+					"unable to close template in PutToZoneBehavior#renderHead()!", e);
 		}
 	}
 

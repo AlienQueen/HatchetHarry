@@ -40,10 +40,10 @@ public class ZoneMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("handle", "handle" + this.zone.getMarkupId());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/zoneMove.js");
+				"script/draggableHandle/zoneMove.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "zoneMoveBehavior"));
 		try
 		{
 			template.close();
@@ -51,7 +51,7 @@ public class ZoneMoveBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			ZoneMoveBehavior.LOGGER.error(
-				"unable to close template in ZoneMoveBehavior#renderHead()!", e);
+					"unable to close template in ZoneMoveBehavior#renderHead()!", e);
 		}
 	}
 

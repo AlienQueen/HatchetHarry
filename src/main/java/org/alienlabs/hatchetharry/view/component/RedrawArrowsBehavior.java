@@ -50,17 +50,16 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 
 		final List<Arrow> allArrows = this.persistenceService.loadAllArrowsForAGame(this.gameId);
 		final StringBuilder content = new StringBuilder(
-			"var redraw = function() { arrow = new Array(); ");
+				"var redraw = function() { arrow = new Array(); ");
 
 		final Boolean drawMode = this.persistenceService.getGame(
-			HatchetHarrySession.get().getGameId()).isDrawMode();
+				HatchetHarrySession.get().getGameId()).isDrawMode();
 		content.append("drawMode = " + drawMode.booleanValue() + "; ");
 		RedrawArrowsBehavior.LOGGER.info("drawMode: " + drawMode.booleanValue());
 
 		if (drawMode.booleanValue())
 		{
-			content
-				.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
+			content.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
 			for (final Arrow arrow : allArrows)
 			{
@@ -75,12 +74,10 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 				content.append(", 'target' : ");
 				content.append(arrow.getTarget());
 				content.append(" }); ");
-				content
-					.append("	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ ");
+				content.append("	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ ");
 				content.append("					['Label', {location:0.7, id:'label', events:{ ");
 				content.append("							} }], ['Arrow', { ");
-				content
-					.append("						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]] }); ");
+				content.append("						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]] }); ");
 			}
 		}
 		content.append("}; ");
@@ -88,10 +85,10 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("content", content.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/arrowDraw/redrawArrows.js");
+				"script/arrowDraw/redrawArrows.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "redrawArrows"));
 		try
 		{
 			template.close();
@@ -99,7 +96,7 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			RedrawArrowsBehavior.LOGGER.error(
-				"unable to close template in RedrawArrowsBehavior#renderHead()!", e);
+					"unable to close template in RedrawArrowsBehavior#renderHead()!", e);
 		}
 	}
 

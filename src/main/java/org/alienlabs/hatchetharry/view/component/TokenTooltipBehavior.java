@@ -39,11 +39,11 @@ public class TokenTooltipBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuidValidForJs", this.uuid.replace("-", "_"));
 
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/cardTooltip.js");
+				"script/draggableHandle/cardTooltip.js");
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "tokenTooltip"));
 		try
 		{
 			template1.close();
@@ -51,7 +51,7 @@ public class TokenTooltipBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			TokenTooltipBehavior.LOGGER.error(
-				"unable to close template1 in CardTooltipBehavior#renderHead()!", e);
+					"unable to close template1 in CardTooltipBehavior#renderHead()!", e);
 		}
 	}
 

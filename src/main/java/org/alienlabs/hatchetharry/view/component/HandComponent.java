@@ -10,7 +10,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
@@ -60,13 +59,15 @@ public class HandComponent extends Panel
 						"script/gallery/sortable.js");
 				final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(
 						HomePage.class, "script/gallery/handInBattlefield.js");
-				final TextTemplate cssTemplate = new PackageTextTemplate(HomePage.class,
-						"stylesheet/cards.css");
+				// final TextTemplate cssTemplate = new
+				// PackageTextTemplate(HomePage.class,
+				// "stylesheet/cards.css");
 
-				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
+				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), "hand1"));
 				response.render(JavaScriptHeaderItem.forScript(
-						handInBattlefieldTemplate.asString(), null));
-				response.render(CssHeaderItem.forCSS(cssTemplate.asString(), null));
+						handInBattlefieldTemplate.asString(), "hand2"));
+				// response.render(CssHeaderItem.forCSS(cssTemplate.asString(),
+				// "hand3"));
 				try
 				{
 					sortableTemplate.close();
@@ -86,15 +87,16 @@ public class HandComponent extends Panel
 							.error("unable to close handInBattlefieldTemplate in HandComponent#renderHead()!",
 									e);
 				}
-				try
-				{
-					cssTemplate.close();
-				}
-				catch (final IOException e)
-				{
-					HandComponent.LOGGER.error(
-							"unable to close cssTemplate in HandComponent#renderHead()!", e);
-				}
+				// try
+				// {
+				// cssTemplate.close();
+				// }
+				// catch (final IOException e)
+				// {
+				// HandComponent.LOGGER.error(
+				// "unable to close cssTemplate in HandComponent#renderHead()!",
+				// e);
+				// }
 			}
 		});
 

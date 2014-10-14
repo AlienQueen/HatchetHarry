@@ -1395,8 +1395,9 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/jMenu.jquery.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/layout.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/menu_black.css")));
+				// response.render(CssHeaderItem.forReference(new
+				// PackageResourceReference(
+				// HomePage.class, "stylesheet/menu_black.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/pageguide.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
@@ -1427,6 +1428,8 @@ public class HomePage extends TestReportPage
 						HomePage.class, "stylesheet/bootstrap-tour-standalone.min.css")));
 				response.render(CssHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "stylesheet/myStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+						HomePage.class, "stylesheet/cards.css")));
 
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
@@ -1653,7 +1656,7 @@ public class HomePage extends TestReportPage
 			final WebMarkupContainer sidePlaceholderParent, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(350);
+		window.setInitialHeight(390);
 		window.setTitle("Create a game");
 
 		window.setContent(new CreateGameModalWindow(window, window.getContentId(), _player,
@@ -1686,7 +1689,7 @@ public class HomePage extends TestReportPage
 			final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(350);
+		window.setInitialHeight(390);
 		window.setTitle("Join a game");
 
 		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,

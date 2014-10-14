@@ -48,7 +48,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		CardRotateBehavior.LOGGER.info("respond");
-		MagicCard card = this.persistenceService.getCardFromUuid(this.uuid);
+		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuid);
 
 		card.setTapped(!card.isTapped());
 

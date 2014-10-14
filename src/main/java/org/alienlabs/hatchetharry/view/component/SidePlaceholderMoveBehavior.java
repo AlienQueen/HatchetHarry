@@ -44,7 +44,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 	private PersistenceService persistenceService;
 
 	public SidePlaceholderMoveBehavior(final SidePlaceholderPanel _panel,
-		final WebMarkupContainer _parent, final UUID _uuid, final Player _player)
+			final WebMarkupContainer _parent, final UUID _uuid, final Player _player)
 	{
 		super();
 		Injector.get().inject(this);
@@ -75,7 +75,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		catch (final Exception e)
 		{
 			SidePlaceholderMoveBehavior.LOGGER.info("could not parse position " + _sideX + " or "
-				+ _sideY);
+					+ _sideY);
 			return;
 		}
 
@@ -87,9 +87,9 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateSide(side);
 
 		final List<BigInteger> allPlayersInGame = SidePlaceholderMoveBehavior.this.persistenceService
-			.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+				.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 		final MoveSideCometChannel mscc = new MoveSideCometChannel(this.uuid,
-			Integer.toString(sideX), Integer.toString(sideY));
+				Integer.toString(sideX), Integer.toString(sideY));
 		EventBusPostService.post(allPlayersInGame, mscc);
 		SidePlaceholderMoveBehavior.LOGGER.info("done");
 	}
@@ -106,11 +106,11 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/initSidePlaceholderDrag.js");
+				"script/draggableHandle/initSidePlaceholderDrag.js");
 		template.interpolate(variables);
 		js = js.append(template.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "initSidePlaceholderDrag"));
 		try
 		{
 			template.close();
@@ -118,7 +118,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			SidePlaceholderMoveBehavior.LOGGER.error(
-				"unable to close template1 in SidePlaceholderMoveBehavior#renderHead()!", e);
+					"unable to close template1 in SidePlaceholderMoveBehavior#renderHead()!", e);
 		}
 	}
 

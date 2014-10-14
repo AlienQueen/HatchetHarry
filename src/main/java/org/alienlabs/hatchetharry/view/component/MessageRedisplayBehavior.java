@@ -50,7 +50,7 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 		final StringBuilder buil = new StringBuilder();
 
 		final List<ConsoleLogMessage> allConsoleLogMessages = this.persistenceService
-			.loadAllConsoleLogMessagesForAGame(this.gameId);
+				.loadAllConsoleLogMessagesForAGame(this.gameId);
 		for (final ConsoleLogMessage msg : allConsoleLogMessages)
 		{
 			buil.append("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"&#013;&#010;\" + \"");
@@ -59,7 +59,7 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final List<ChatMessage> allChatMessages = this.persistenceService
-			.loadAllChatMessagesForAGame(this.gameId);
+				.loadAllChatMessagesForAGame(this.gameId);
 		for (final ChatMessage msg : allChatMessages)
 		{
 			buil.append("var chatPanel = document.getElementById('chat'); chatPanel.innerHTML = chatPanel.innerHTML + \"&#013;&#010;\" + \"");
@@ -70,10 +70,10 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("content", buil.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/messageRedisplay.js");
+				"script/messageRedisplay.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "messageRedisplay"));
 		try
 		{
 			template.close();
@@ -81,7 +81,7 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			MessageRedisplayBehavior.LOGGER.error(
-				"unable to close template in MessageRedisplayBehavior#renderHead()!", e);
+					"unable to close template in MessageRedisplayBehavior#renderHead()!", e);
 		}
 	}
 

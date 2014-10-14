@@ -49,10 +49,10 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 
 	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
-		final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
-		final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
-		final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,
-		final DestroyTokenBehavior _destroyTokenBehavior, final long _posX, final long _posY)
+			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
+			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
+			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,
+			final DestroyTokenBehavior _destroyTokenBehavior, final long _posX, final long _posY)
 	{
 		Injector.get().inject(this);
 
@@ -82,9 +82,9 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		try
 		{
 			final String roundedX = _mouseX.substring(0,
-				(_mouseX.contains(".")) ? _mouseX.indexOf('.') : _mouseX.length());
+					(_mouseX.contains(".")) ? _mouseX.indexOf('.') : _mouseX.length());
 			final String roundedY = _mouseY.substring(0,
-				(_mouseY.contains(".")) ? _mouseY.indexOf('.') : _mouseY.length());
+					(_mouseY.contains(".")) ? _mouseY.indexOf('.') : _mouseY.length());
 			final long _x = Long.parseLong(roundedX);
 			final long _y = Long.parseLong(roundedY);
 			this.posX = _x <= -300 ? -300 : _x;
@@ -111,7 +111,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			mc.setX(this.posX);
 			mc.setY(this.posY);
 			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + this.posX + ", posY: "
-				+ this.posY);
+					+ this.posY);
 			this.persistenceService.updateCard(mc);
 		}
 		catch (final IllegalArgumentException e)
@@ -123,12 +123,12 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 
 		CardMoveBehavior.LOGGER.info("playerId in respond(): "
-			+ HatchetHarrySession.get().getPlayer().getId());
+				+ HatchetHarrySession.get().getPlayer().getId());
 
 		final List<BigInteger> allPlayersInGame = CardMoveBehavior.this.persistenceService
-			.giveAllPlayersFromGame(gameId);
+				.giveAllPlayersFromGame(gameId);
 		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
-			Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
+				Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
 		EventBusPostService.post(allPlayersInGame, cardMoveCometChannel);
 	}
 
@@ -152,21 +152,21 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/cardMove.js");
+				"script/draggableHandle/cardMove.js");
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
 		final TextTemplate template2 = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/initDrag.js");
+				"script/draggableHandle/initDrag.js");
 		template2.interpolate(variables);
 		js = js.append("\n" + template2.asString());
 
 		final TextTemplate template3 = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/dragCard.js");
+				"script/draggableHandle/dragCard.js");
 		template3.interpolate(variables);
 		js = js.append("\n" + template3.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "cardMove"));
 		try
 		{
 			template1.close();
@@ -174,7 +174,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			CardMoveBehavior.LOGGER.error(
-				"unable to close template1 in CardMoveBehavior#renderHead()!", e);
+					"unable to close template1 in CardMoveBehavior#renderHead()!", e);
 		}
 		try
 		{
@@ -183,7 +183,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			CardMoveBehavior.LOGGER.error(
-				"unable to close template2 in CardMoveBehavior#renderHead()!", e);
+					"unable to close template2 in CardMoveBehavior#renderHead()!", e);
 		}
 		try
 		{
@@ -192,7 +192,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			CardMoveBehavior.LOGGER.error(
-				"unable to close template3 in CardMoveBehavior#renderHead()!", e);
+					"unable to close template3 in CardMoveBehavior#renderHead()!", e);
 		}
 	}
 

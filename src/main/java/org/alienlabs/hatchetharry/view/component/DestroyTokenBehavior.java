@@ -89,12 +89,12 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 
 		// TODO: reorder?
 		final List<MagicCard> battlefield = this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
 
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = DestroyTokenBehavior.this.persistenceService
-			.giveAllPlayersFromGame(gameId);
+				.giveAllPlayersFromGame(gameId);
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
@@ -113,14 +113,14 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 
 			final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
-				NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(), session
-					.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
+					NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(),
+					session.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
 			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-				ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
-					.getPlayer().getName(), tokenName, null, null, false, gameId);
+					ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
+							.getPlayer().getName(), tokenName, null, null, false, gameId);
 
 			EventBusPostService.post(playerToWhomToSend, dtcc, _ncc, new ConsoleLogCometChannel(
-				logger));
+					logger));
 		}
 	}
 
@@ -134,10 +134,10 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("destroyTokenUrl", this.getCallbackUrl());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/draggableHandle/exileToken.js");
+				"script/draggableHandle/exileToken.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "destroyToken"));
 		try
 		{
 			template.close();
@@ -145,7 +145,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			DestroyTokenBehavior.LOGGER.error(
-				"unable to close template1 in DestroyTokenBehavior#renderHead()!", e);
+					"unable to close template1 in DestroyTokenBehavior#renderHead()!", e);
 		}
 	}
 

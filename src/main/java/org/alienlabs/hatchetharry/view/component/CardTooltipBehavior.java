@@ -1,5 +1,8 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.IOException;
+import java.util.UUID;
+
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -10,9 +13,6 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.UUID;
 
 public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -35,8 +35,8 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/cardTooltip.js");
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-        try
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "cardTooltip"));
+		try
 		{
 			template.close();
 		}

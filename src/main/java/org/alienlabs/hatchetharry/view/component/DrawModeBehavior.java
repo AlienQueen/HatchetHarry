@@ -54,7 +54,8 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 
 		final Game aGame = this.player.getGame();
 		final Game game = this.persistenceService.getGame(aGame.getId());
-		final Boolean drawMode = game == null ? false : (game.isDrawMode() == null ? false : game.isDrawMode());
+		final Boolean drawMode = game == null ? false : (game.isDrawMode() == null ? false : game
+				.isDrawMode());
 		variables.put("drawMode", drawMode);
 
 		final TextTemplate template1 = new PackageTextTemplate(HomePage.class,
@@ -62,7 +63,7 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), "drawMode"));
 		try
 		{
 			template1.close();
