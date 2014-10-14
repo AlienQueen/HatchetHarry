@@ -3,22 +3,31 @@ window.setTimeout(function() {
 		$('.battlefieldCardsForSide1.cards').sortable('destroy');
 	}
 	jQuery('.battlefieldCardsForSide1.cards').sortable(
-			{ 	placeholder: "ui-state-highlight",
+			{
+				placeholder: "ui-state-highlight",
+				update: function(e, ui) {
+					// ui.item.sortable is the model but it is not updated until after update
+					$(this).data("old_position", ui.item.sortable.index);
+					$(this).data("new_position", ui.item.index());
+					// new Index because the ui.item is the node and the visual element has been reordered
+				},
 				stop: function(event, ui) {
-			        index = ui.item.index();
-			        var myId = ui.item.children(":first").children(":first").children(":first").attr('id');
-			        var uuid=myId.slice(10, myId.length).replace(new RegExp("_", 'g'), "-");
+					if ($(this).data("old_position") !== ($(this).data("new_position")))
+					{
+						var myId = ui.item.children(":first").children(":first").children(":first").attr('id');
+						var uuid=myId.slice(10, myId.length).replace(new RegExp("_", 'g'), "-");
 
-			        dontZoom = true;
-			        Wicket.Ajax.get({'u': '${url}&uuid=' + uuid + '&index=' + index});
-			    }
+						dontZoom = true;
+						Wicket.Ajax.get({'u': '${url}&uuid=' + uuid + '&index=' + $(this).data("new_position")});
+					}
+				}
 			});
 	var dontZoom = false;
-	
-    function tooltips() {
-    	if ((typeof dontZoom === 'undefined') || (!dontZoom)) {
-    		$(this).parents('.cardContainer').toggleClass('details');
-    	}
-    }
-    jQuery('.magicCard').unbind('click').click(tooltips);
+
+	function tooltips() {
+		if ((typeof dontZoom === 'undefined') || (!dontZoom)) {
+			$(this).parents('.cardContainer').toggleClass('details');
+		}
+	}
+	jQuery('.magicCard').unbind('click').click(tooltips);
 }, 1000);
