@@ -372,8 +372,8 @@ var responsiveCards = function() {
 	domSingleton('style', 'responsiveCards',css);
 };
 function domSingleton(tag,id,content){
-	if(jQuery(id).length>0) {
-		jQuery(id).html(content);
+	if(jQuery('#'+id).length>0) {
+		jQuery('#'+id).html(content);
 	}
 	else {
 		jQuery('body').append('<'+tag+' id="'+id+'">'+content+'</'+tag+'>');
