@@ -137,7 +137,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 				"script/draggableHandle/exileToken.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "destroyToken"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

@@ -63,7 +63,7 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "drawMode"));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 		try
 		{
 			template1.close();

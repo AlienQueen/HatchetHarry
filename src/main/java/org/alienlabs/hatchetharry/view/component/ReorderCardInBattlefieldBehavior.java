@@ -136,7 +136,7 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 				"script/playCard/reorderCard.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "reorderCard"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

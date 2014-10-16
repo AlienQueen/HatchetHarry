@@ -83,7 +83,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 				"script/arrowDraw/arrowDraw.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "arrowDraw"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

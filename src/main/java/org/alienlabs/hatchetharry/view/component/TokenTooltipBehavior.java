@@ -43,7 +43,7 @@ public class TokenTooltipBehavior extends AbstractDefaultAjaxBehavior
 		template1.interpolate(variables);
 		js = js.append("\n" + template1.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "tokenTooltip"));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 		try
 		{
 			template1.close();

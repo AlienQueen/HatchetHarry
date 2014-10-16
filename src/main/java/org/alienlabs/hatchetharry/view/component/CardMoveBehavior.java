@@ -166,7 +166,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		template3.interpolate(variables);
 		js = js.append("\n" + template3.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "cardMove"));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 		try
 		{
 			template1.close();

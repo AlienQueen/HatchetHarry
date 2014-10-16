@@ -73,7 +73,7 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 				"script/messageRedisplay.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "messageRedisplay"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

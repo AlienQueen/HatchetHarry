@@ -110,7 +110,7 @@ public class SidePlaceholderMoveBehavior extends AbstractDefaultAjaxBehavior
 		template.interpolate(variables);
 		js = js.append(template.asString());
 
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "initSidePlaceholderDrag"));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 		try
 		{
 			template.close();

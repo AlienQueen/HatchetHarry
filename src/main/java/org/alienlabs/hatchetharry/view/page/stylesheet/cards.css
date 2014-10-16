@@ -45,9 +45,23 @@
 .battlefieldCardsForSide1 .cardActions, .battlefieldCardsForSide2 .cardActions{
     background-image:url(/image/rightArrow.png);
 }
-.cardContainer.tapped .magicCard { transform: rotate(90deg); }
-.cardContainer.tapped .cardActions { transform: scale(-1, 1); }
-.cardContainer.details .magicCard{ transform:scale(2); }
-.cardContainer.details.tapped .magicCard {
-    transform:scale(2) rotate(0);
+.cardContainer:not(.tapped) {
+	transition: 0.8s all cubic-bezier(0.8,-0.3,0.2,1.3);
+    transform: scale(1) rotate(0deg);
+}
+.cardContainer.tapped .magicCard { 
+	transition: 0.8s all cubic-bezier(0.8,-0.3,0.2,1.3);
+	transform: rotate(90deg);
+}
+.cardContainer.tapped .cardActions { 
+	transition: 0.8s all cubic-bezier(0.8,-0.3,0.2,1.3);	
+	transform: scale(-1, 1);
+}
+.cardContainer.details {
+	transition: 0.8s all cubic-bezier(0.8,-0.3,0.2,1.3);
+	transform: scale(2); 
+}
+.cardContainer.details.tapped {
+	transition: 0.8s all cubic-bezier(0.8,-0.3,0.2,1.3);
+    transform: scale(2) rotate(-90deg);
 }

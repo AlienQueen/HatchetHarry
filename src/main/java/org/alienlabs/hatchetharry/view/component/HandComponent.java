@@ -63,11 +63,9 @@ public class HandComponent extends Panel
 				// PackageTextTemplate(HomePage.class,
 				// "stylesheet/cards.css");
 
-				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), "hand1"));
+				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
 				response.render(JavaScriptHeaderItem.forScript(
-						handInBattlefieldTemplate.asString(), "hand2"));
-				// response.render(CssHeaderItem.forCSS(cssTemplate.asString(),
-				// "hand3"));
+						handInBattlefieldTemplate.asString(), null));
 				try
 				{
 					sortableTemplate.close();
@@ -87,16 +85,6 @@ public class HandComponent extends Panel
 							.error("unable to close handInBattlefieldTemplate in HandComponent#renderHead()!",
 									e);
 				}
-				// try
-				// {
-				// cssTemplate.close();
-				// }
-				// catch (final IOException e)
-				// {
-				// HandComponent.LOGGER.error(
-				// "unable to close cssTemplate in HandComponent#renderHead()!",
-				// e);
-				// }
 			}
 		});
 

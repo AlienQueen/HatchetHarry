@@ -36,7 +36,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(final AjaxRequestTarget target)
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-			.getRequest();
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		FacebookLoginBehavior.LOGGER.info("respond to: " + request.getQueryString());
@@ -50,7 +50,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 			HatchetHarrySession.get().setLoggedIn(true);
 
 			final WebMarkupContainer usernameParent = ((HomePage)target.getPage())
-				.getUsernameParent();
+					.getUsernameParent();
 			usernameParent.addOrReplace(usernameLabel);
 			target.add(usernameParent);
 
@@ -75,10 +75,10 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("url", this.getCallbackUrl());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/login/facebook.js");
+				"script/login/facebook.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "facebook"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();
@@ -86,7 +86,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			FacebookLoginBehavior.LOGGER.error(
-				"unable to close template in FacebookLoginBehavior#renderHead()!", e);
+					"unable to close template in FacebookLoginBehavior#renderHead()!", e);
 		}
 	}
 

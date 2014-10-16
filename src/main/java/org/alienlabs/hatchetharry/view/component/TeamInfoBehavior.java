@@ -44,10 +44,10 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url_for_team_info", this.getCallbackUrl());
 		final TextTemplate template = new PackageTextTemplate(TeamInfoBehavior.class,
-			"script/menubar/menubar.js");
+				"script/menubar/menubar.js");
 		template.interpolate(variables);
 		final String js1 = template.asString();
-		response.render(JavaScriptHeaderItem.forScript(js1, "menubar.js"));
+		response.render(JavaScriptHeaderItem.forScript(js1, null));
 		try
 		{
 			template.close();
@@ -55,7 +55,7 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			TeamInfoBehavior.LOGGER.error(
-				"unable to close template in TeamInfoBehavior#renderHead()!", e);
+					"unable to close template in TeamInfoBehavior#renderHead()!", e);
 		}
 	}
 

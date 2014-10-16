@@ -39,7 +39,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory
-		.getLogger(PlayCardFromGraveyardBehavior.class);
+			.getLogger(PlayCardFromGraveyardBehavior.class);
 
 	@SpringBean
 	private PersistenceService persistenceService;
@@ -60,14 +60,14 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
-			.getRequest();
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
 		this.uuidToLookFor = UUID.fromString(request.getParameter("card"));
 
 		final MagicCard card = this.persistenceService.getCardFromUuid(this.uuidToLookFor);
 		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
-			.getId());
+				.getId());
 		card.setX(p.getSide().getX());
 		card.setY(p.getSide().getY());
 
@@ -91,7 +91,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 
 		final Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
 		List<MagicCard> graveyard = this.persistenceService
-			.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
+				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
 		graveyard.remove(card);
 		graveyard = mydeck.reorderMagicCards(graveyard);
 		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
@@ -102,23 +102,23 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateGame(game);
 
 		List<MagicCard> battlefield = this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
 		battlefield.add(card);
 		card.setZone(CardZone.BATTLEFIELD);
 		battlefield = mydeck.reorderMagicCards(battlefield);
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final PlayCardFromGraveyardCometChannel pcfgcc = new PlayCardFromGraveyardCometChannel(
-			card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());
+				card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());
 		final NotifierCometChannel ncc = new NotifierCometChannel(
-			NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
-				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "", "",
-			card.getTitle(), null, "");
+				NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
+						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+				"", card.getTitle(), null, "");
 
 		JavaScriptUtils.updateGraveyard(target);
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
-			.giveAllPlayersFromGame(gameId);
+				.giveAllPlayersFromGame(gameId);
 		// post a message for all players in the game
 		EventBusPostService.post(allPlayersInGame, pcfgcc, ncc);
 	}
@@ -133,11 +133,10 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("side", this.side);
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
-			"script/playCard/playCardFromGraveyard.js");
+				"script/playCard/playCardFromGraveyard.js");
 		template.interpolate(variables);
 
-		response
-			.render(JavaScriptHeaderItem.forScript(template.asString(), "playCardFromGraveyard"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();
@@ -145,7 +144,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		catch (final IOException e)
 		{
 			PlayCardFromGraveyardBehavior.LOGGER.error(
-				"unable to close template in PlayCardFromGraveyardBehavior#renderHead()!", e);
+					"unable to close template in PlayCardFromGraveyardBehavior#renderHead()!", e);
 		}
 	}
 

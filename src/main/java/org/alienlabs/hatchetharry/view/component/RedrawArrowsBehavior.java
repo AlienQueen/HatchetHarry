@@ -88,7 +88,7 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 				"script/arrowDraw/redrawArrows.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "redrawArrows"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

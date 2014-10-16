@@ -43,7 +43,7 @@ public class ZoneMoveBehavior extends AbstractDefaultAjaxBehavior
 				"script/draggableHandle/zoneMove.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "zoneMoveBehavior"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

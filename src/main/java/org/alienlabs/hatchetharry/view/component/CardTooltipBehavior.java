@@ -35,7 +35,7 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/draggableHandle/cardTooltip.js");
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "cardTooltip"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

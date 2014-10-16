@@ -191,7 +191,7 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 				"script/playCard/putToZone.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), "putToZone"));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
 		try
 		{
 			template.close();

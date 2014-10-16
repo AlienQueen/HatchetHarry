@@ -2996,7 +2996,7 @@ public class HomePage extends TestReportPage
 		HomePage.LOGGER.info("size: " + allSides.size());
 
 		js.append(" }, 300); ");
-		response.render(JavaScriptHeaderItem.forScript(js.toString(), "homePage"));
+		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 	}
 
 	@Required
