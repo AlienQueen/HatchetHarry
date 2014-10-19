@@ -1383,8 +1383,6 @@ public class HomePage extends TestReportPage
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/gallery/coda-sliderExile.1.1.1.pack.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/rotate/jQueryRotate.2.1.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
 						HomePage.class, "script/jquery.jsPlumb-1.5.3-min.js")));
@@ -2971,7 +2969,8 @@ public class HomePage extends TestReportPage
 				final String uuidValidForJs = mc.getUuid().replace("-", "_");
 				if (mc.isTapped())
 				{
-					js.append("jQuery('#card" + uuidValidForJs + "').rotate(90); ");
+					js.append("jQuery('#card" + uuidValidForJs
+							+ "').parents('.cardContainer').addClass('tapped'); ");
 				}
 
 				if (((mc.getToken() == null) && mc.getCounters().isEmpty())
