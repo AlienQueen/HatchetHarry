@@ -108,7 +108,7 @@ public class JoinGameModalWindow extends Panel
 					JoinGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					JoinGameModalWindow.this.deckParent
-							.addOrReplace(JoinGameModalWindow.this.decks);
+					.addOrReplace(JoinGameModalWindow.this.decks);
 					target.add(JoinGameModalWindow.this.deckParent);
 				}
 			}
@@ -142,7 +142,7 @@ public class JoinGameModalWindow extends Panel
 						|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == JoinGameModalWindow.this.decks.getModelObject())
 						|| (null == JoinGameModalWindow.this.sideInput
-								.getDefaultModelObjectAsString()))
+						.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
@@ -205,7 +205,7 @@ public class JoinGameModalWindow extends Panel
 				{
 					final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg",
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
-									+ "Thumb.jpg", cc.getTitle(), "",
+							+ "Thumb.jpg", cc.getTitle(), "",
 							JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
 							null, 0);
 					card.setGameId(_id);
@@ -240,9 +240,10 @@ public class JoinGameModalWindow extends Panel
 						.getDefaultModelObjectAsString());
 
 				JoinGameModalWindow.this.persistenceService
-						.mergePlayer(JoinGameModalWindow.this.player);
+				.mergePlayer(JoinGameModalWindow.this.player);
 				session.setPlayer(JoinGameModalWindow.this.player);
 
+				session.setPlayer(JoinGameModalWindow.this.player);
 				JoinGameModalWindow.LOGGER.info("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
@@ -302,13 +303,13 @@ public class JoinGameModalWindow extends Panel
 				JoinGameModalWindow.this.persistenceService.updateSide(s);
 				JoinGameModalWindow.this.player.setSideUuid(s.getUuid());
 				JoinGameModalWindow.this.persistenceService
-						.updatePlayer(JoinGameModalWindow.this.player);
+				.updatePlayer(JoinGameModalWindow.this.player);
 
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						JoinGameModalWindow.this.player);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.GAME, null, null, false, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, _gameId, null, null, _gameId);
+						.getPlayer().getName(), null, _gameId, null, null, _gameId);
 
 				// post the DataBox update message to all players in the game,
 				// except me

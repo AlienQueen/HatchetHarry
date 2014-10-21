@@ -2483,7 +2483,7 @@ public class HomePage extends TestReportPage
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
-		JavaScriptUtils.updateHand(target);
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT);
 	}
 
 	@Subscribe
