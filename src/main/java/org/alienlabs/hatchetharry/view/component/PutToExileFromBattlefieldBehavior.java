@@ -1,7 +1,9 @@
 package org.alienlabs.hatchetharry.view.component;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,10 +21,16 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
+import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.template.PackageTextTemplate;
+import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -34,7 +42,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory
-		.getLogger(PutToExileFromBattlefieldBehavior.class);
+			.getLogger(PutToExileFromBattlefieldBehavior.class);
 	private final UUID uuid;
 
 	@SpringBean
@@ -75,7 +83,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 
 		final HatchetHarrySession session = HatchetHarrySession.get();
 		PutToExileFromBattlefieldBehavior.LOGGER.info("playerId in respond(): "
-			+ session.getPlayer().getId());
+				+ session.getPlayer().getId());
 
 		mc.setZone(CardZone.EXILE);
 		mc.setTapped(false);
@@ -98,18 +106,19 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 		}
 
 		final List<MagicCard> exile = mydeck.reorderMagicCards(this.persistenceService
-			.getAllCardsInExileForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
+				.getAllCardsInExileForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(exile);
 		final List<MagicCard> battlefield = mydeck.reorderMagicCards(this.persistenceService
-			.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
+				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		final List<BigInteger> allPlayersInGame = PutToExileFromBattlefieldBehavior.this.persistenceService
-			.giveAllPlayersFromGame(gameId);
+				.giveAllPlayersFromGame(gameId);
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-			ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.EXILE, null, mc.getTitle(),
-			HatchetHarrySession.get().getPlayer().getName(), null, null, null, null, gameId);
+				ConsoleLogType.ZONE_MOVE, CardZone.BATTLEFIELD, CardZone.EXILE, null,
+				mc.getTitle(), HatchetHarrySession.get().getPlayer().getName(), null, null, null,
+				null, gameId);
 
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
@@ -127,26 +136,52 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 			};
 
 			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
-				.getPlayerId());
+					.getPlayerId());
 			final String targetPlayerName = targetPlayer.getName();
 			final Long targetDeckId = mc.getDeck().getDeckId();
 
 			final PutToExileFromBattlefieldCometChannel ptefbcc = new PutToExileFromBattlefieldCometChannel(
-				gameId, mc, session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
-				targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
-					.longValue()));
+					gameId, mc, session.getPlayer().getName(), targetPlayerName,
+					targetPlayer.getId(), targetDeckId,
+					(allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()));
 			final NotifierCometChannel ncc = new NotifierCometChannel(
-				NotifierAction.PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION, gameId, session
-					.getPlayer().getId(), session.getPlayer().getName(), "", "", mc.getTitle(),
-				null, targetPlayerName);
+					NotifierAction.PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION, gameId, session
+							.getPlayer().getId(), session.getPlayer().getName(), "", "",
+					mc.getTitle(), null, targetPlayerName);
 			EventBusPostService.post(playerToWhomToSend, ptefbcc, ncc, new ConsoleLogCometChannel(
-				logger));
+					logger));
 
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
 				targetPlayer.setExileDisplayed(true);
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
+		}
+	}
+
+	@Override
+	public void renderHead(final Component component, final IHeaderResponse response)
+	{
+		super.renderHead(component, response);
+
+		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		variables.put("uuidValidForJs", this.uuid.toString().replaceAll("-", "_"));
+		variables.put("url", this.getCallbackUrl());
+
+		final TextTemplate template = new PackageTextTemplate(HomePage.class,
+				"script/contextmenu/putToExileFromBattlefield.js");
+		template.interpolate(variables);
+
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		try
+		{
+			template.close();
+		}
+		catch (final IOException e)
+		{
+			PutToExileFromBattlefieldBehavior.LOGGER.error(
+					"unable to close template in PutToExileFromBattlefieldBehavior#renderHead()!",
+					e);
 		}
 	}
 

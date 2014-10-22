@@ -162,7 +162,10 @@ public class CardPanel extends Panel
 			cardImage.add(new AttributeModifier("style", "border: 1px solid yellow;"));
 		}
 
-		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate);
+		final CardInBattlefieldContextMenu contextMenu = new CardInBattlefieldContextMenu(
+				"contextMenu", this.uuid);
+
+		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
 		menutoggleButton.add(form);
 
 		final WebMarkupContainer side = new WebMarkupContainer("side");

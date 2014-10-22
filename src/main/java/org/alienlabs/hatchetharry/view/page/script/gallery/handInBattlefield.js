@@ -6,5 +6,5 @@ window.setTimeout(function () {
     		$(this).parents('.cardContainer').toggleClass('details');
     	}
     }
-    jQuery('.magicCard').unbind('click').click(tooltips);
+    jQuery('.magicCard').click(tooltips);
 }, 1000);

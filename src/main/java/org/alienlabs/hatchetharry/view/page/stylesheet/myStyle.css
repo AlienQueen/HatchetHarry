@@ -1,3 +1,11 @@
+.contextMenuButton {
+	background-image: url('/image/contextmenu.png');
+	display:block;
+	position:absolute;
+	background-size:100%;
+    top:48px;
+    right:0;
+}
 #baldu {
 	width: 300%;
 }

@@ -1,5 +1,5 @@
 window.setTimeout(function() {
-    jQuery('#play${uuidValidForJs}').click(function (event) {
+    jQuery('#play${uuidValidForJs}').unbind('click').click(function (event) {
         event.stopPropagation();
         jQuery('#playCardIndicator').show();
         Wicket.Ajax.get({'u': '${url}'});

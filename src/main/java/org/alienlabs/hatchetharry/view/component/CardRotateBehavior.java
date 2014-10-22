@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 {
-	private static final long serialVersionUID = -9164073767944851883L;
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardRotateBehavior.class);
 	private final UUID uuid;
