@@ -29,5 +29,5 @@ window.setTimeout(function() {
 			$(this).parents('.cardContainer').toggleClass('details');
 		}
 	}
-	jQuery('.magicCard').click(tooltips);
+	jQuery('.magicCard').unbind('click').click(tooltips);
 }, 1000);

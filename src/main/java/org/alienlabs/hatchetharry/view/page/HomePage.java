@@ -2383,6 +2383,7 @@ public class HomePage extends TestReportPage
 		}
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMagicCard(), false);
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2397,6 +2398,7 @@ public class HomePage extends TestReportPage
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMc(), false);
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2471,6 +2473,7 @@ public class HomePage extends TestReportPage
 		}
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMc(), false);
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2481,7 +2484,7 @@ public class HomePage extends TestReportPage
 
 		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_HAND_COMPONENT_JAVASCRIPT);
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2672,6 +2675,7 @@ public class HomePage extends TestReportPage
 
 		target.appendJavaScript("jQuery('#putToZoneIndicator" + event.getSourceZone().toString()
 				+ "').css('display', 'none');");
+		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
