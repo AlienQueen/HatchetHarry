@@ -6,8 +6,8 @@ import java.util.Locale;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.view.component.CardPanel;
-import org.alienlabs.hatchetharry.view.component.SidePlaceholderPanel;
+import org.alienlabs.hatchetharry.view.component.card.CardPanel;
+import org.alienlabs.hatchetharry.view.component.gui.SidePlaceholderPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebMarkupContainer;

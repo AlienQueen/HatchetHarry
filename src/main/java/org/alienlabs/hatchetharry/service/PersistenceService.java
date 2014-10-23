@@ -933,7 +933,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.zoneOrder");
+				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.battlefieldOrder");
 		query.addEntity(MagicCard.class);
 		query.setLong("gameId", gameId);
 		query.setString("zoneName", CardZone.BATTLEFIELD.toString());

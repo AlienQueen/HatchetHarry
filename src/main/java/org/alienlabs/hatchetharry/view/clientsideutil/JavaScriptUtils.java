@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.view.clientsideutil;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
@@ -7,9 +8,9 @@ import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.component.ExileComponent;
-import org.alienlabs.hatchetharry.view.component.GraveyardComponent;
-import org.alienlabs.hatchetharry.view.component.HandComponent;
+import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
+import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
+import org.alienlabs.hatchetharry.view.component.gui.HandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -273,4 +274,20 @@ public class JavaScriptUtils
 		target.appendJavaScript(JavaScriptUtils.REACTIVATE_EXILE_COMPONENT_JAVASCRIPT);
 	}
 
+	public static List<MagicCard> reorderCards(
+			final List<MagicCard> allCardsInBattlefieldForPlayer, final Integer removedCardIndex)
+	{
+		Collections.sort(allCardsInBattlefieldForPlayer);
+
+		for (int index = removedCardIndex; index < allCardsInBattlefieldForPlayer.size(); index++)
+		{
+			final MagicCard magicCard = allCardsInBattlefieldForPlayer.get(index);
+			magicCard.setBattlefieldOrder(index);
+
+			LOGGER.info("&&& mc: " + magicCard.getTitle() + ", order: "
+					+ magicCard.getBattlefieldOrder().intValue());
+		}
+
+		return allCardsInBattlefieldForPlayer;
+	}
 }
