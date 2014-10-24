@@ -18,7 +18,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
+import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -189,7 +189,7 @@ public class MulliganModalWindow extends Panel
 		MulliganModalWindow.this.persistenceService.saveOrUpdateAllMagicCards(deck);
 		HatchetHarrySession.get().setFirstCardsInHand(newHand);
 
-		JavaScriptUtils.updateHand(target);
+		BattlefieldService.updateHand(target);
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 			ConsoleLogType.DONE_MULLIGAN, null, null, null, null, me.getName(), null, null, null,

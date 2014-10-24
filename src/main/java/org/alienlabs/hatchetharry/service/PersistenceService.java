@@ -18,6 +18,7 @@ import org.alienlabs.hatchetharry.model.ConsoleLogMessage;
 import org.alienlabs.hatchetharry.model.Counter;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.DeckArchive;
+import org.alienlabs.hatchetharry.model.Format;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
@@ -1386,4 +1387,21 @@ public class PersistenceService implements Serializable
 		return query.list();
 	}
 
+	@Transactional(readOnly = true)
+	public Long getPendingGame(final Format desiredFormat)
+	{
+		final Session session = this.gameDao.getSession();
+
+		final Query query = session
+				.createQuery("from Game g where g.pending is true and desiredFormat = '"
+						+ desiredFormat.name() + "'");
+		query.setMaxResults(1);
+
+		final Game g = (Game)query.uniqueResult();
+		if (null == g)
+		{
+			return null;
+		}
+		return g.getId();
+	}
 }

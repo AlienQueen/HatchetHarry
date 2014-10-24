@@ -21,7 +21,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
+import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -98,7 +98,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 		final List<MagicCard> exile = mydeck.reorderMagicCards(this.persistenceService
 				.getAllCardsInExileForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(exile);
-		final List<MagicCard> battlefield = JavaScriptUtils.reorderCards(
+		final List<MagicCard> battlefield = BattlefieldService.reorderCards(
 				this.persistenceService.getAllCardsInBattlefieldForAGameAndAPlayer(gameId,
 						p.getId(), mydeck.getDeckId()), mc.getBattlefieldOrder());
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);

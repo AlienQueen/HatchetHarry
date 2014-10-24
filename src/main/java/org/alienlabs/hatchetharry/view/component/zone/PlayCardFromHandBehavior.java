@@ -21,7 +21,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
+import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -113,7 +113,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				.giveAllPlayersFromGame(gameId);
 		EventBusPostService.post(allPlayersInGame, pcfhcc, ncc, new ConsoleLogCometChannel(logger));
 
-		JavaScriptUtils.updateHand(target);
+		BattlefieldService.updateHand(target);
 	}
 
 	@Override

@@ -2,7 +2,7 @@
 
     <div style="position:absolute; left: 15%;">
         <form wicket:id="form" action="" class="myfont">
-
+			
             <br/><br/>
 
             <span wicket:id="nameLabel">Your name</span><input wicket:id="name" type="text" class="myfont"></input>
@@ -12,16 +12,13 @@
             <br/><br/>
             <br/><br/>
             <span wicket:id="chooseDeck">Choose a deck</span>
-				<span wicket:id="deckParent">
-					<select wicket:id="decks" class="myfont"></select>
-				</span>
+			<span wicket:id="deckParent">
+				<select wicket:id="decks" class="myfont"></select>
+			</span>
             <br/><br/>
             <br/><br/>
-            <b>
-            	<span wicket:id="gameIdLabel">Id of the Game</span>
-            	<input wicket:id="gameIdInput" type="text" class="myfont"></input>
-            	<br/><br/>
-            </b>
+           	<span wicket:id="feedback"></span><br/>
+			<span>Desired format: </span><select wicket:id="formats" class="myfont"></select>
             <br/><br/>
             <button wicket:id="submit" id="#" type="submit" class="myfont">OK</button>
 

@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component.modalwindow;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
 import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.Format;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
@@ -19,8 +21,8 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.component.gui.DataBox;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -56,6 +58,7 @@ public class CreateGameModalWindow extends Panel
 	Player player;
 	WebMarkupContainer deckParent;
 	DropDownChoice<Deck> decks;
+	private DropDownChoice<Format> formats;
 
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
@@ -127,10 +130,14 @@ public class CreateGameModalWindow extends Panel
 				". You'll have to provide it to your opponent(s).");
 		HatchetHarrySession.get().setGameId(this.game.getId());
 
+		final ArrayList<Format> allFormats = new ArrayList<Format>();
+		allFormats.addAll(Arrays.asList(Format.values()));
+		final Model<ArrayList<Format>> formatsModel = new Model<ArrayList<Format>>(allFormats);
+		this.formats = new DropDownChoice<Format>("formats", new Model<Format>(), formatsModel);
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
-			private static final long serialVersionUID = 5612763286127668L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
@@ -140,6 +147,7 @@ public class CreateGameModalWindow extends Panel
 				if ((null == CreateGameModalWindow.this.nameInput.getModelObject())
 						|| ("".equals(CreateGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == CreateGameModalWindow.this.decks.getModelObject())
+						|| (null == CreateGameModalWindow.this.formats.getModelObject())
 						|| (null == CreateGameModalWindow.this.sideInput
 								.getDefaultModelObjectAsString()))
 				{
@@ -157,6 +165,10 @@ public class CreateGameModalWindow extends Panel
 						CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString());
 				CreateGameModalWindow.this.player.setName(CreateGameModalWindow.this.nameInput
 						.getDefaultModelObjectAsString());
+
+				g.setPending(true);
+				g.setDesiredFormat(CreateGameModalWindow.this.formats.getModelObject());
+				LOGGER.info("desiredFormat: " + g.getDesiredFormat());
 
 				CreateGameModalWindow.this.persistenceService.updateGame(g);
 
@@ -257,12 +269,12 @@ public class CreateGameModalWindow extends Panel
 				session.setGameCreated();
 				session.resetCardsInGraveyard();
 
-				JavaScriptUtils.updateHand(target);
+				BattlefieldService.updateHand(target);
 
 				if ((CreateGameModalWindow.this.player.isGraveyardDisplayed() != null)
 						&& CreateGameModalWindow.this.player.isGraveyardDisplayed())
 				{
-					JavaScriptUtils.updateGraveyard(target);
+					BattlefieldService.updateGraveyard(target);
 				}
 
 				CreateGameModalWindow.this.player.setSideUuid(s.getUuid());
@@ -301,7 +313,7 @@ public class CreateGameModalWindow extends Panel
 		submit.setMarkupId("createSubmit");
 
 		form.add(chooseDeck, this.deckParent, beforeGameId, gameId, afterGameId, sideLabel,
-				nameLabel, this.nameInput, this.sideInput, submit);
+				nameLabel, this.nameInput, this.sideInput, this.formats, submit);
 
 		this.add(form);
 	}

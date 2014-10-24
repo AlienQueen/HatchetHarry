@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aplombee.QuickView;
 
-public class JavaScriptUtils
+public class BattlefieldService
 {
 	public static final String REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT = "var theIntGraveyard = null; var $crosslinkGraveyard, $navthumbGraveyard; var curclickedGraveyard = 0; theIntervalGraveyard = function(cur) { if (typeof cur != 'undefined') curclickedGraveyard = cur; $crosslinkGraveyard.removeClass('active-thumb-Graveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumb-Graveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); $crosslinkGraveyard.removeClass('active-thumb-Graveyard'); $navthumbGraveyard.eq(curclickedGraveyard).parent().addClass('active-thumb-Graveyard'); jQuery('.stripNavGraveyard ul li a').eq(curclickedGraveyard).trigger('click'); curclickedGraveyard++; if (6 == curclickedGraveyard) curclickedGraveyard = 0; }; jQuery('#graveyard-main-photo-slider').codaSliderGraveyard(); $navthumbGraveyard = jQuery('.graveyard-nav-thumb'); $crosslinkGraveyard = jQuery('.graveyard-cross-link'); $navthumbGraveyard.click(function() { var $this = jQuery(this); theIntervalGraveyard($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalGraveyard(); ";
 	public static final String REACTIVATE_EXILE_COMPONENT_JAVASCRIPT = "var theIntExile = null; var $crosslinkExile, $navthumbExile; var curclickedExile = 0; theIntervalExile = function(cur) { if (typeof cur != 'undefined') curclickedExile = cur; $crosslinkExile.removeClass('active-thumb-Exile'); $navthumbExile.eq(curclickedExile).parent().addClass('active-thumb-Exile'); jQuery('.stripNavExile ul li a').eq(curclickedExile).trigger('click'); $crosslinkExile.removeClass('active-thumb-Exile'); $navthumbExile.eq(curclickedExile).parent().addClass('active-thumb-Exile'); jQuery('.stripNavExile ul li a').eq(curclickedExile).trigger('click'); curclickedExile++; if (6 == curclickedExile) curclickedExile = 0; }; jQuery('#exile-main-photo-slider').codaSliderExile(); $navthumbExile = jQuery('.exile-nav-thumb'); $crosslinkExile = jQuery('.exile-cross-link'); $navthumbExile.click(function() { var $this = jQuery(this); theIntervalExile($this.parent().attr('href').slice(1) - 1); return false; }); theIntervalExile(); function updateExileLabel(){ var exileCardName = jQuery('#exileGallery .active-thumb-Exile .nav-thumb').attr('name'); if (exileCardName == undefined) { exileCardName = jQuery('#exileGallery .active-thumb-Exile .nav-thumb').attr('name'); } jQuery('#exileCardLabel').text(exileCardName); }; jQuery(function() { setTimeout(function() { updateExileLabel(); jQuery('#exileGallery .cross-link .nav-thumb').click(updateExileLabel); }, 175); }); ";
@@ -28,9 +28,9 @@ public class JavaScriptUtils
 	public static final String HIDE_MENUS = "if (jQuery('#cssmenu').is(':visible')) { jQuery('#cssmenu').hide(); jQuery('#cssmenu').show(); } else { jQuery('.dropdownmenu').hide(); jQuery('.categories').hide(); jQuery('.dropdownmenu').show(); } ";
 	public static final String HIDE_ALL_TOOLTIPS = "jQuery('.tooltip').attr('style', 'display: none;'); jQuery('.cardTooltip').attr('style', 'display: none;'); ";
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(JavaScriptUtils.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BattlefieldService.class);
 
-	private JavaScriptUtils()
+	private BattlefieldService()
 	{
 	}
 
@@ -38,8 +38,8 @@ public class JavaScriptUtils
 			final PersistenceService persistenceService, final Long gameId, final MagicCard mc,
 			final boolean added)
 	{
-		JavaScriptUtils.updateCardsInBattlefield(target, persistenceService, mc, added);
-		JavaScriptUtils.restoreStateOfCardsInBattlefield(target, persistenceService, mc, added,
+		BattlefieldService.updateCardsInBattlefield(target, persistenceService, mc, added);
+		BattlefieldService.restoreStateOfCardsInBattlefield(target, persistenceService, mc, added,
 				gameId);
 	}
 
@@ -83,7 +83,7 @@ public class JavaScriptUtils
 					{
 						count.setNumberOfCounters(0l);
 						persistenceService.updateCounter(count);
-						JavaScriptUtils.LOGGER.info("clear");
+						BattlefieldService.LOGGER.info("clear");
 					}
 
 					if (mc.equals(targetCard))
@@ -91,7 +91,7 @@ public class JavaScriptUtils
 						homePage.getAllMagicCardsInBattlefieldForSide1().remove(mc);
 						magicCardListForSide1.remove(homePage.getAllCardsInBattlefieldForSide1()
 								.getItem(i));
-						JavaScriptUtils.LOGGER.info("remove card: " + mc.getTitle());
+						BattlefieldService.LOGGER.info("remove card: " + mc.getTitle());
 						break;
 					}
 				}
@@ -105,7 +105,7 @@ public class JavaScriptUtils
 					{
 						count.setNumberOfCounters(0l);
 						persistenceService.updateCounter(count);
-						JavaScriptUtils.LOGGER.info("clear");
+						BattlefieldService.LOGGER.info("clear");
 					}
 
 					if (mc.equals(targetCard))
@@ -113,7 +113,7 @@ public class JavaScriptUtils
 						homePage.getAllMagicCardsInBattlefieldForSide2().remove(mc);
 						magicCardListForSide2.remove(homePage.getAllCardsInBattlefieldForSide2()
 								.getItem(i));
-						JavaScriptUtils.LOGGER.info("remove card: " + mc.getTitle());
+						BattlefieldService.LOGGER.info("remove card: " + mc.getTitle());
 						break;
 					}
 				}
@@ -140,7 +140,7 @@ public class JavaScriptUtils
 			final List<Arrow> allArrows = persistenceService.loadAllArrowsForAGame(gameId);
 			for (final Arrow arrow : allArrows)
 			{
-				JavaScriptUtils.LOGGER.info("source: " + arrow.getSource() + ", target: "
+				BattlefieldService.LOGGER.info("source: " + arrow.getSource() + ", target: "
 						+ arrow.getTarget() + ", uuidValidForJs: " + uuidValidForJs);
 
 				if (arrow.getSource().equals(cardToRemove)
@@ -180,11 +180,11 @@ public class JavaScriptUtils
 		final List<MagicCard> allCards = persistenceService
 				.getAllCardsInBattleFieldForAGame(gameId);
 		buil.append("window.setTimeout(function() { ");
-		JavaScriptUtils.LOGGER.info("###  allCards.size(): " + allCards.size());
+		BattlefieldService.LOGGER.info("###  allCards.size(): " + allCards.size());
 
 		for (final MagicCard magicCard : allCards)
 		{
-			JavaScriptUtils.LOGGER.info("### "
+			BattlefieldService.LOGGER.info("### "
 					+ (magicCard.getToken() != null
 							? magicCard.getToken().getCounters().size()
 							: magicCard.getCounters().size()) + " counters, uuid = "
@@ -213,7 +213,7 @@ public class JavaScriptUtils
 				new HandComponent("gallery", false));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	public static void updateHand(final AjaxRequestTarget target, final Long gameId,
@@ -223,7 +223,7 @@ public class JavaScriptUtils
 				new HandComponent("gallery", false, gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT.replaceAll(
+		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT.replaceAll(
 				"Player", playerId.toString()));
 	}
 
@@ -234,7 +234,7 @@ public class JavaScriptUtils
 				new HandComponent("galleryReveal", true, gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGalleryRevealParent());
 
-		target.appendJavaScript(JavaScriptUtils.REVEAL_HAND_COMPONENT_JAVASCRIPT.replaceAll(
+		target.appendJavaScript(BattlefieldService.REVEAL_HAND_COMPONENT_JAVASCRIPT.replaceAll(
 				"Player", playerId.toString()));
 	}
 
@@ -251,7 +251,7 @@ public class JavaScriptUtils
 				new GraveyardComponent("graveyard"));
 		target.add(((HomePage)target.getPage()).getGraveyardParent());
 
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
 	}
 
 	public static void updateGraveyard(final AjaxRequestTarget target, final Long gameId,
@@ -261,7 +261,7 @@ public class JavaScriptUtils
 				new GraveyardComponent("graveyard", gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGraveyardParent());
 
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_GRAVEYARD_COMPONENT_JAVASCRIPT);
 	}
 
 	public static void updateExile(final AjaxRequestTarget target, final Long gameId,
@@ -271,7 +271,7 @@ public class JavaScriptUtils
 				new ExileComponent("exile", gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getExileParent());
 
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_EXILE_COMPONENT_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_EXILE_COMPONENT_JAVASCRIPT);
 	}
 
 	public static List<MagicCard> reorderCards(

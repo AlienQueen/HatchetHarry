@@ -95,8 +95,8 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
 import org.alienlabs.hatchetharry.view.component.card.CardPanel;
 import org.alienlabs.hatchetharry.view.component.card.RedrawArrowsBehavior;
 import org.alienlabs.hatchetharry.view.component.gui.ChatPanel;
@@ -119,6 +119,7 @@ import org.alienlabs.hatchetharry.view.component.modalwindow.CountCardsModalWind
 import org.alienlabs.hatchetharry.view.component.modalwindow.CreateGameModalWindow;
 import org.alienlabs.hatchetharry.view.component.modalwindow.CreateTokenModalWindow;
 import org.alienlabs.hatchetharry.view.component.modalwindow.JoinGameModalWindow;
+import org.alienlabs.hatchetharry.view.component.modalwindow.JoinGameWithoutIdModalWindow;
 import org.alienlabs.hatchetharry.view.component.modalwindow.LoginModalWindow;
 import org.alienlabs.hatchetharry.view.component.modalwindow.MulliganModalWindow;
 import org.alienlabs.hatchetharry.view.component.modalwindow.RevealTopLibraryCardModalWindow;
@@ -205,6 +206,7 @@ public class HomePage extends TestReportPage
 	ModalWindow aboutWindowResponsive;
 	ModalWindow createGameWindow;
 	ModalWindow joinGameWindow;
+	ModalWindow joinGameWithoutIdWindow;
 	ImportDeckDialog importDeckDialog;
 	ModalWindow revealTopLibraryCardWindow;
 	ModalWindow createTokenWindow;
@@ -235,6 +237,7 @@ public class HomePage extends TestReportPage
 	private Component dataBox;
 	private AjaxLink<Void> createGameLink;
 	private AjaxLink<Void> joinGameLink;
+	private AjaxLink<Void> joinGameWithoutIdLink;
 	private QuickView<MagicCard> allCardsInBattlefieldForSide1;
 	private List<MagicCard> allMagicCardsInBattlefieldForSide1;
 	private QuickView<MagicCard> allCardsInBattlefieldForSide2;
@@ -375,8 +378,8 @@ public class HomePage extends TestReportPage
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.20.0 (release Battlefield),");
-		final Label message2 = new Label("message2", "built on Wednesday, 22nd of October 2014.");
+		final Label message1 = new Label("message1", "version 0.21.0 (release Battlefield),");
+		final Label message2 = new Label("message2", "built on Friday, 24th of October 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -454,6 +457,12 @@ public class HomePage extends TestReportPage
 				this.player, this.joinGameWindow));
 		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinGameLinkResponsive",
 				this.player, this.joinGameWindow));
+
+		this.joinGameWithoutIdWindow = new ModalWindow("joinGameWithoutIdWindow");
+		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
+				"joinGameWithoutIdLink", this.player, this.joinGameWithoutIdWindow));
+		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
+				"joinGameWithoutIdLinkResponsive", this.player, this.joinGameWithoutIdWindow));
 
 		this.generatePlayCardLink();
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkDesktop"));
@@ -597,8 +606,8 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.appendJavaScript(JavaScriptUtils.HIDE_ALL_TOOLTIPS);
-				target.appendJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.appendJavaScript(BattlefieldService.HIDE_ALL_TOOLTIPS);
+				target.appendJavaScript(BattlefieldService.HIDE_MENUS);
 			}
 
 		});
@@ -613,7 +622,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#conference').dialog('open');");
 
 				if (null != HomePage.this.session.getUsername())
@@ -720,7 +729,7 @@ public class HomePage extends TestReportPage
 				}
 				else
 				{
-					JavaScriptUtils.updateHand(target);
+					BattlefieldService.updateHand(target);
 
 				}
 
@@ -792,7 +801,7 @@ public class HomePage extends TestReportPage
 				}
 				else
 				{
-					JavaScriptUtils.updateGraveyard(target);
+					BattlefieldService.updateGraveyard(target);
 
 				}
 
@@ -845,8 +854,8 @@ public class HomePage extends TestReportPage
 				}
 				else
 				{
-					JavaScriptUtils.updateExile(target, _player.getGame().getId(), _player.getId(),
-							_player.getDeck().getDeckId());
+					BattlefieldService.updateExile(target, _player.getGame().getId(),
+							_player.getId(), _player.getDeck().getDeckId());
 
 				}
 
@@ -1249,7 +1258,7 @@ public class HomePage extends TestReportPage
 					list.add(card);
 					HomePage.this.session.setFirstCardsInHand(list);
 
-					JavaScriptUtils.updateHand(target);
+					BattlefieldService.updateHand(target);
 
 					final Player me = HomePage.this.session.getPlayer();
 					final Long gameId = HomePage.this.persistenceService
@@ -1576,7 +1585,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
@@ -1605,7 +1614,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
@@ -1634,7 +1643,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
@@ -1650,7 +1659,7 @@ public class HomePage extends TestReportPage
 			final WebMarkupContainer sidePlaceholderParent, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(390);
+		window.setInitialHeight(430);
 		window.setTitle("Create a game");
 
 		window.setContent(new CreateGameModalWindow(window, window.getContentId(), _player,
@@ -1665,7 +1674,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget _target)
 			{
-				_target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
@@ -1698,7 +1707,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget _target)
 			{
-				_target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
@@ -1712,6 +1721,39 @@ public class HomePage extends TestReportPage
 		return window;
 	}
 
+	private ModalWindow generateJoinGameWithoutIdModalWindow(final String id, final Player _player,
+			final ModalWindow window)
+	{
+		window.setInitialWidth(475);
+		window.setInitialHeight(390);
+		window.setTitle("Join a game without ID");
+
+		window.setContent(new JoinGameWithoutIdModalWindow(window, window.getContentId(), _player,
+				this.dataBoxParent, this));
+		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
+		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+
+		this.joinGameWithoutIdLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget _target)
+			{
+				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
+				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				window.show(_target);
+			}
+		};
+
+		this.joinGameWithoutIdLink.setOutputMarkupId(true).setMarkupId(id);
+		window.setOutputMarkupId(true);
+
+		this.add(this.joinGameWithoutIdLink);
+
+		return window;
+	}
+
 	private void generateImportDeckLink(final String id)
 	{
 		final AjaxLink<Void> importDeckLink = new AjaxLink<Void>(id)
@@ -1721,7 +1763,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#importDeck').dialog('open');");
 			}
 		};
@@ -1854,7 +1896,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
 				HomePage.this.createTokenWindow.show(target);
@@ -1883,7 +1925,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 
 				final Long gameId = HomePage.this.session.getGameId();
 				final CountCardsCometChannel cccc = new CountCardsCometChannel(gameId,
@@ -1908,7 +1950,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 
 				final Long gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
@@ -1945,8 +1987,8 @@ public class HomePage extends TestReportPage
 
 				HomePage.this.persistenceService.updatePlayer(playerWhoDiscards);
 
-				JavaScriptUtils.updateHand(target);
-				JavaScriptUtils.updateGraveyard(target);
+				BattlefieldService.updateHand(target);
+				BattlefieldService.updateGraveyard(target);
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
@@ -1993,7 +2035,7 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.loginWindow.show(target);
 			}
@@ -2021,7 +2063,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				window.setContent(new UserPreferencesModalWindow(window.getContentId(), window));
-				target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.preferencesWindow.show(target);
 			}
@@ -2378,12 +2420,12 @@ public class HomePage extends TestReportPage
 	{
 		if (event.isShouldUpdateGraveyard())
 		{
-			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
+			BattlefieldService.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMagicCard(), false);
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2392,13 +2434,13 @@ public class HomePage extends TestReportPage
 	{
 		if (event.isShouldUpdateExile())
 		{
-			JavaScriptUtils.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
+			BattlefieldService.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
 
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMc(), false);
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2468,12 +2510,12 @@ public class HomePage extends TestReportPage
 	{
 		if (event.isShouldUpdateHand())
 		{
-			JavaScriptUtils.updateHand(target, event.getGameId(), event.getTargetPlayerId(),
+			BattlefieldService.updateHand(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMc(), false);
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2482,9 +2524,9 @@ public class HomePage extends TestReportPage
 	{
 		final MagicCard mc = event.getMagicCard();
 
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2493,7 +2535,7 @@ public class HomePage extends TestReportPage
 	{
 		final MagicCard mc = event.getCard();
 
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
 	}
 
@@ -2505,7 +2547,7 @@ public class HomePage extends TestReportPage
 		mc.setX(event.getSide().getX());
 		mc.setY(event.getSide().getY());
 
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
 	}
 
@@ -2518,7 +2560,7 @@ public class HomePage extends TestReportPage
 			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
 			p.setHandDisplayed(true);
 			this.persistenceService.mergePlayer(p);
-			JavaScriptUtils.updateHand(target, event.getGameId(), event.getPlayerId(),
+			BattlefieldService.updateHand(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
 		}
 	}
@@ -2532,7 +2574,7 @@ public class HomePage extends TestReportPage
 			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
 			p.setGraveyardDisplayed(true);
 			this.persistenceService.mergePlayer(p);
-			JavaScriptUtils.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
+			BattlefieldService.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
 		}
 	}
@@ -2542,7 +2584,7 @@ public class HomePage extends TestReportPage
 			final PlayCardFromGraveyardCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
 	}
 
@@ -2550,7 +2592,7 @@ public class HomePage extends TestReportPage
 	public void revealTopLibraryCard(final AjaxRequestTarget target,
 			final RevealTopLibraryCardCometChannel event)
 	{
-		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
 		this.revealTopLibraryCardWindow.setTitle("This is the top card #"
@@ -2567,7 +2609,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void countCards(final AjaxRequestTarget target, final CountCardsCometChannel event)
 	{
-		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 		this.countCardsWindow.setTitle(event.getRequestingPlayerName()
 				+ " asks the number of cards by zone for each player of game #" + event.getGameId()
@@ -2607,20 +2649,20 @@ public class HomePage extends TestReportPage
 				mc.setX(event.getSide().getX());
 				mc.setY(event.getSide().getY());
 				this.persistenceService.updateCard(mc);
-				JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target,
+				BattlefieldService.updateCardsAndRestoreStateInBattlefield(target,
 						this.persistenceService, event.getGameId(), mc, true);
 				break;
 			case HAND :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateHand(target, event.getGameId(),
+					BattlefieldService.updateHand(target, event.getGameId(),
 							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			case GRAVEYARD :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateGraveyard(target, event.getGameId(),
+					BattlefieldService.updateGraveyard(target, event.getGameId(),
 							event.getTargetPlayerId(), d.getDeckId());
 					hasAlreadyDisplayedGraveyard = true;
 				}
@@ -2628,7 +2670,7 @@ public class HomePage extends TestReportPage
 			case EXILE :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateExile(target, event.getGameId(),
+					BattlefieldService.updateExile(target, event.getGameId(),
 							event.getTargetPlayerId(), d.getDeckId());
 					hasAlreadyDisplayedExile = true;
 				}
@@ -2645,26 +2687,26 @@ public class HomePage extends TestReportPage
 			case HAND :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					JavaScriptUtils.updateHand(target, event.getGameId(),
+					BattlefieldService.updateHand(target, event.getGameId(),
 							event.getTargetPlayerId(), d.getDeckId());
 				}
 				if (event.isReveal() && isCurrentPlayerSameThanRequestingPlayer)
 				{
-					JavaScriptUtils.revealHand(target, event.getGameId(),
+					BattlefieldService.revealHand(target, event.getGameId(),
 							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			case GRAVEYARD :
 				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedGraveyard)
 				{
-					JavaScriptUtils.updateGraveyard(target, event.getGameId(),
+					BattlefieldService.updateGraveyard(target, event.getGameId(),
 							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			case EXILE :
 				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedExile)
 				{
-					JavaScriptUtils.updateExile(target, event.getGameId(),
+					BattlefieldService.updateExile(target, event.getGameId(),
 							event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
@@ -2675,7 +2717,7 @@ public class HomePage extends TestReportPage
 
 		target.appendJavaScript("jQuery('#putToZoneIndicator" + event.getSourceZone().toString()
 				+ "').css('display', 'none');");
-		target.appendJavaScript(JavaScriptUtils.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
+		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	@Subscribe
@@ -2698,7 +2740,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void destroyToken(final AjaxRequestTarget target, final DestroyTokenCometChannel event)
 	{
-		JavaScriptUtils.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getCard(), false);
 	}
 
@@ -2839,13 +2881,13 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void hideHand(final AjaxRequestTarget target, final StopRevealingHandCometChannel event)
 	{
-		JavaScriptUtils.hideHand(target);
+		BattlefieldService.hideHand(target);
 	}
 
 	@Subscribe
 	public void revealHand(final AjaxRequestTarget target, final RevealHandCometChannel event)
 	{
-		JavaScriptUtils.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
+		BattlefieldService.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
 	}
 
 	@Subscribe
@@ -2858,7 +2900,7 @@ public class HomePage extends TestReportPage
 						this.askMulliganWindow.getContentId(), event.getPlayer(), event
 								.getNumberOfCards()));
 
-		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 		this.askMulliganWindow.show(target);
 	}

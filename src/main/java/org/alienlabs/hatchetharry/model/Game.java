@@ -37,6 +37,12 @@ public class Game implements Serializable
 	private Long currentPlaceholderId = 0L;
 	@Column
 	private Boolean isDrawMode = false;
+	@Column
+	private Boolean pending = false;
+	@Column
+	Integer numberOfPlayers;
+	@Column
+	Format desiredFormat;
 
 
 	public Long getId()
@@ -89,6 +95,36 @@ public class Game implements Serializable
 		this.version = _version;
 	}
 
+	public Boolean isPending()
+	{
+		return this.pending;
+	}
+
+	public void setPending(final Boolean _pending)
+	{
+		this.pending = _pending;
+	}
+
+	public Integer getNumberOfPlayers()
+	{
+		return this.numberOfPlayers;
+	}
+
+	public void setNumberOfPlayers(final Integer _numberOfPlayers)
+	{
+		this.numberOfPlayers = _numberOfPlayers;
+	}
+
+	public Format getDesiredFormat()
+	{
+		return this.desiredFormat;
+	}
+
+	public void setDesiredFormat(final Format _desiredFormat)
+	{
+		this.desiredFormat = _desiredFormat;
+	}
+
 	@Override
 	public boolean equals(final Object o)
 	{
@@ -116,4 +152,5 @@ public class Game implements Serializable
 	{
 		return this.gameId != null ? this.gameId.hashCode() : 0;
 	}
+
 }

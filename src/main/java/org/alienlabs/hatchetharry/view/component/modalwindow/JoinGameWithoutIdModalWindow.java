@@ -1,8 +1,10 @@
 package org.alienlabs.hatchetharry.view.component.modalwindow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.alienlabs.hatchetharry.model.Deck;
+import org.alienlabs.hatchetharry.model.Format;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -18,6 +20,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -27,11 +30,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
-public class JoinGameModalWindow extends Panel
+public class JoinGameWithoutIdModalWindow extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameWithoutIdModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	final TextField<Long> gameIdInput;
 	final WebMarkupContainer dataBoxParent;
 	final TextField<String> nameInput;
 	final DropDownChoice<String> sideInput;
@@ -42,9 +44,12 @@ public class JoinGameModalWindow extends Panel
 	HomePage hp;
 	WebMarkupContainer deckParent;
 	DropDownChoice<Deck> decks;
+	DropDownChoice<Format> formats;
+	Long myGame;
+	private FeedbackPanel feedback;
 
-	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
+	public JoinGameWithoutIdModalWindow(final ModalWindow _modal, final String id,
+			final Player _player, final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
 		this.modal = _modal;
@@ -54,8 +59,8 @@ public class JoinGameModalWindow extends Panel
 		this.hp = _hp;
 		this.dataBoxParent = _dataBoxParent;
 
+		this.myGame = _player.getGame().getId();
 		final Form<String> form = new Form<String>("form");
-
 
 		final ArrayList<String> allSides = new ArrayList<String>();
 		allSides.add("infrared");
@@ -77,18 +82,20 @@ public class JoinGameModalWindow extends Panel
 			@Override
 			protected void onUpdate(final AjaxRequestTarget target)
 			{
-				if ((null != target) && (null == JoinGameModalWindow.this.decks.getModelObject()))
+				if ((null != target)
+						&& (null == JoinGameWithoutIdModalWindow.this.decks.getModelObject()))
 				{
-					final ArrayList<Deck> _allDecks = JoinGameModalWindow.this.persistenceService
+					final ArrayList<Deck> _allDecks = JoinGameWithoutIdModalWindow.this.persistenceService
 							.getAllDecksFromDeckArchives();
 					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
-					JoinGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
+					JoinGameWithoutIdModalWindow.this.decks = new DropDownChoice<Deck>("decks",
 							new Model<Deck>(), _decksModel);
-					JoinGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
+					JoinGameWithoutIdModalWindow.this.decks.setOutputMarkupId(true).setMarkupId(
+							"decks");
 
-					JoinGameModalWindow.this.deckParent
-							.addOrReplace(JoinGameModalWindow.this.decks);
-					target.add(JoinGameModalWindow.this.deckParent);
+					JoinGameWithoutIdModalWindow.this.deckParent
+							.addOrReplace(JoinGameWithoutIdModalWindow.this.decks);
+					target.add(JoinGameWithoutIdModalWindow.this.deckParent);
 				}
 			}
 		});
@@ -104,11 +111,13 @@ public class JoinGameModalWindow extends Panel
 		this.decks.setOutputMarkupId(true).setMarkupId("decks");
 		this.deckParent.add(this.decks);
 
-		final Label gameIdLabel = new Label("gameIdLabel",
-				"Please provide the game id given by your opponent: ");
-		final Model<Long> gameId = new Model<Long>(0l);
-		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
-		this.gameIdInput.setOutputMarkupId(true).setMarkupId("gameIdInput");
+		final ArrayList<Format> allFormats = new ArrayList<Format>();
+		allFormats.addAll(Arrays.asList(Format.values()));
+		final Model<ArrayList<Format>> formatsModel = new Model<ArrayList<Format>>(allFormats);
+		this.formats = new DropDownChoice<Format>("formats", new Model<Format>(), formatsModel);
+
+		this.feedback = new FeedbackPanel("feedback");
+		this.feedback.setOutputMarkupId(true);
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
@@ -117,34 +126,48 @@ public class JoinGameModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				if ((null == JoinGameModalWindow.this.nameInput.getModelObject())
-						|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
-						|| (null == JoinGameModalWindow.this.decks.getModelObject())
-						|| (null == JoinGameModalWindow.this.sideInput
+				if ((null == JoinGameWithoutIdModalWindow.this.nameInput.getModelObject())
+						|| ("".equals(JoinGameWithoutIdModalWindow.this.nameInput.getModelObject()
+								.trim()))
+						|| (null == JoinGameWithoutIdModalWindow.this.decks.getModelObject())
+						|| (null == JoinGameWithoutIdModalWindow.this.formats.getModelObject())
+						|| (null == JoinGameWithoutIdModalWindow.this.sideInput
 								.getDefaultModelObjectAsString()))
 				{
 					return;
 				}
 
+				final Long _id = JoinGameWithoutIdModalWindow.this.persistenceService
+						.getPendingGame(JoinGameWithoutIdModalWindow.this.formats.getModelObject());
 
-				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
-						.getDefaultModelObjectAsString());
-				final Game g = JoinGameModalWindow.this.persistenceService.getGame(_id);
+				if (null == _id)
+				{
+					target.add(JoinGameWithoutIdModalWindow.this.feedback);
+					this.error("No pending games for this format for the moment, please try creating one or change the desired format.");
+					return;
+				}
+
+				final Game g = JoinGameWithoutIdModalWindow.this.persistenceService.getGame(_id);
+
 				g.setPending(false);
-				JoinGameModalWindow.this.persistenceService.updateGame(g);
+				JoinGameWithoutIdModalWindow.this.persistenceService.updateGame(g);
 
-				GameService.joinGame(JoinGameModalWindow.this.persistenceService, _modal, target,
-						_id, JoinGameModalWindow.this.decks.getModelObject(),
-						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-						JoinGameModalWindow.this.nameInput.getDefaultModelObjectAsString(),
-						JoinGameModalWindow.this.hp);
+				GameService
+						.joinGame(JoinGameWithoutIdModalWindow.this.persistenceService, _modal,
+								target, _id, JoinGameWithoutIdModalWindow.this.decks
+										.getModelObject(),
+								JoinGameWithoutIdModalWindow.this.sideInput
+										.getDefaultModelObjectAsString(),
+								JoinGameWithoutIdModalWindow.this.nameInput
+										.getDefaultModelObjectAsString(),
+								JoinGameWithoutIdModalWindow.this.hp);
 			}
 		};
 		submit.setOutputMarkupId(true);
 		submit.setMarkupId("joinSubmit");
 
 		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, this.nameInput, this.sideInput,
-				gameIdLabel, this.gameIdInput, submit);
+				this.formats, this.feedback, submit);
 
 		this.add(form);
 	}

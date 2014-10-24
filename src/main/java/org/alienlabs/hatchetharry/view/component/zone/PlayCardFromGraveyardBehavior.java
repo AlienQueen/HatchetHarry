@@ -19,7 +19,7 @@ import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
-import org.alienlabs.hatchetharry.view.clientsideutil.JavaScriptUtils;
+import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -57,7 +57,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
-		target.prependJavaScript(JavaScriptUtils.HIDE_MENUS);
+		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)target.getPage()
 				.getRequest();
@@ -115,7 +115,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
 				"", card.getTitle(), null, "");
 
-		JavaScriptUtils.updateGraveyard(target);
+		BattlefieldService.updateGraveyard(target);
 
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 				.giveAllPlayersFromGame(gameId);
