@@ -41,7 +41,7 @@ public class Game implements Serializable
 	private boolean pending = false;
 	@Column
 	Integer desiredNumberOfPlayers = 0;
-	@Column(name = "desiredFormat")
+	@Column
 	Format desiredFormat;
 
 
