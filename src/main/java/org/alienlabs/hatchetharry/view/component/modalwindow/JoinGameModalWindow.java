@@ -132,7 +132,6 @@ public class JoinGameModalWindow extends Panel
 					return;
 				}
 
-
 				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
 						.getDefaultModelObjectAsString());
 				final Game g = JoinGameModalWindow.this.persistenceService.getGame(_id);

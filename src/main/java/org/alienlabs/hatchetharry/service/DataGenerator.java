@@ -249,7 +249,7 @@ public class DataGenerator implements InitializingBean, Serializable
 						MagicCard card = null;
 
 						final CollectibleCard cc = new CollectibleCard();
-						cc.setTitle(DataGenerator.TITLES1[i]);
+						cc.setTitle(j == 1 ? DataGenerator.TITLES1[i] : DataGenerator.TITLES2[i]);
 						cc.setDeckArchiveId(j == 1 ? da1.getDeckArchiveId() : da2
 								.getDeckArchiveId());
 
@@ -318,13 +318,13 @@ public class DataGenerator implements InitializingBean, Serializable
 				{
 					this.persistenceService.saveOrUpdateDeck(deck1);
 					this.persistenceService.saveOrUpdateDeckArchive(da1);
-					DataGenerator.LOGGER.info("updating deck 1");
+					DataGenerator.LOGGER.info("updated deck 1");
 				}
 				else
 				{
 					this.persistenceService.saveOrUpdateDeck(deck2);
 					this.persistenceService.saveOrUpdateDeckArchive(da2);
-					DataGenerator.LOGGER.info("updating deck 2");
+					DataGenerator.LOGGER.info("updated deck 2");
 				}
 			}
 		}
