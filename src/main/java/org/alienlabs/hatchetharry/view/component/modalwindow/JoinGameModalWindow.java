@@ -18,6 +18,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -42,6 +43,7 @@ public class JoinGameModalWindow extends Panel
 	HomePage hp;
 	WebMarkupContainer deckParent;
 	DropDownChoice<Deck> decks;
+	FeedbackPanel feedback;
 
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
@@ -110,6 +112,9 @@ public class JoinGameModalWindow extends Panel
 		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
 		this.gameIdInput.setOutputMarkupId(true).setMarkupId("gameIdInput");
 
+		this.feedback = new FeedbackPanel("feedback");
+		this.feedback.setOutputMarkupId(true);
+
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
 			private static final long serialVersionUID = 1L;
@@ -130,6 +135,14 @@ public class JoinGameModalWindow extends Panel
 				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
 						.getDefaultModelObjectAsString());
 				final Game g = JoinGameModalWindow.this.persistenceService.getGame(_id);
+
+				if (null == g)
+				{
+					target.add(JoinGameModalWindow.this.feedback);
+					this.error("No pending game with this ID.");
+					return;
+				}
+
 				if (g.getPlayers().size() <= (g.getDesiredNumberOfPlayers().intValue() - 1))
 				{
 					g.setPending(false);
@@ -151,7 +164,7 @@ public class JoinGameModalWindow extends Panel
 		submit.setMarkupId("joinSubmit");
 
 		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, this.nameInput, this.sideInput,
-				gameIdLabel, this.gameIdInput, submit);
+				gameIdLabel, this.gameIdInput, this.feedback, submit);
 
 		this.add(form);
 	}

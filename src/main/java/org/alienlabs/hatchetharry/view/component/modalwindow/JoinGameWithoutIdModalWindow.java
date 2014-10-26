@@ -173,7 +173,7 @@ public class JoinGameWithoutIdModalWindow extends Panel
 				if (null == _id)
 				{
 					target.add(JoinGameWithoutIdModalWindow.this.feedback);
-					this.error("No pending games for this format / number of players for the moment, please try creating a game or change the desired format / number of players.");
+					this.error("No pending game for this format / number of players for the moment, please try creating a game or change the desired format / number of players.");
 					return;
 				}
 

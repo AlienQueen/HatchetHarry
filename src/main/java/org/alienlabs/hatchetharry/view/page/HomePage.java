@@ -1659,7 +1659,7 @@ public class HomePage extends TestReportPage
 			final WebMarkupContainer sidePlaceholderParent, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(530);
+		window.setInitialHeight(550);
 		window.setTitle("Create a game");
 
 		window.setContent(new CreateGameModalWindow(window, window.getContentId(), _player,
@@ -1692,7 +1692,7 @@ public class HomePage extends TestReportPage
 			final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(370);
+		window.setInitialHeight(410);
 		window.setTitle("Join a game");
 
 		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,
@@ -1725,7 +1725,7 @@ public class HomePage extends TestReportPage
 			final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(400);
+		window.setInitialHeight(500);
 		window.setTitle("Join a game without ID");
 
 		window.setContent(new JoinGameWithoutIdModalWindow(window, window.getContentId(), _player,
