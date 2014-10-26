@@ -46,7 +46,8 @@ public class JoinGameWithoutIdModalWindow extends Panel
 	DropDownChoice<Deck> decks;
 	DropDownChoice<Format> formats;
 	Long myGame;
-	private FeedbackPanel feedback;
+	FeedbackPanel feedback;
+	TextField<String> numberOfPlayers;
 
 	public JoinGameWithoutIdModalWindow(final ModalWindow _modal, final String id,
 			final Player _player, final WebMarkupContainer _dataBoxParent, final HomePage _hp)
@@ -119,6 +120,9 @@ public class JoinGameWithoutIdModalWindow extends Panel
 		this.feedback = new FeedbackPanel("feedback");
 		this.feedback.setOutputMarkupId(true);
 
+		final Model<String> numberOfPlayersModel = new Model<String>("");
+		this.numberOfPlayers = new TextField<String>("numberOfPlayers", numberOfPlayersModel);
+
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
 			private static final long serialVersionUID = 1L;
@@ -132,25 +136,58 @@ public class JoinGameWithoutIdModalWindow extends Panel
 						|| (null == JoinGameWithoutIdModalWindow.this.decks.getModelObject())
 						|| (null == JoinGameWithoutIdModalWindow.this.formats.getModelObject())
 						|| (null == JoinGameWithoutIdModalWindow.this.sideInput
-								.getDefaultModelObjectAsString()))
+								.getDefaultModelObjectAsString())
+						|| (null == JoinGameWithoutIdModalWindow.this.numberOfPlayers
+								.getModelObject())
+						|| ("".equals(JoinGameWithoutIdModalWindow.this.numberOfPlayers
+								.getDefaultModelObjectAsString())))
+				{
+					return;
+				}
+
+				int desiredPlayers = 0;
+				try
+				{
+					desiredPlayers = Integer
+							.parseInt(JoinGameWithoutIdModalWindow.this.numberOfPlayers
+									.getDefaultModelObjectAsString());
+				}
+				catch (final NumberFormatException e)
+				{
+					LOGGER.error(
+							"invalid integer: "
+									+ JoinGameWithoutIdModalWindow.this.numberOfPlayers
+											.getDefaultModelObjectAsString(), e);
+					return;
+				}
+
+				if ((desiredPlayers < 2) || (desiredPlayers > 10))
 				{
 					return;
 				}
 
 				final Long _id = JoinGameWithoutIdModalWindow.this.persistenceService
-						.getPendingGame(JoinGameWithoutIdModalWindow.this.formats.getModelObject());
+						.getPendingGame(JoinGameWithoutIdModalWindow.this.formats.getModelObject(),
+								desiredPlayers);
 
 				if (null == _id)
 				{
 					target.add(JoinGameWithoutIdModalWindow.this.feedback);
-					this.error("No pending games for this format for the moment, please try creating one or change the desired format.");
+					this.error("No pending games for this format / number of players for the moment, please try creating a game or change the desired format / number of players.");
 					return;
 				}
 
 				final Game g = JoinGameWithoutIdModalWindow.this.persistenceService.getGame(_id);
-
-				g.setPending(false);
+				if (g.getPlayers().size() <= (g.getDesiredNumberOfPlayers().intValue() - 1))
+				{
+					g.setPending(false);
+				}
+				else
+				{
+					g.setPending(true);
+				}
 				JoinGameWithoutIdModalWindow.this.persistenceService.updateGame(g);
+
 
 				GameService
 						.joinGame(JoinGameWithoutIdModalWindow.this.persistenceService, _modal,
@@ -167,7 +204,7 @@ public class JoinGameWithoutIdModalWindow extends Panel
 		submit.setMarkupId("joinSubmit");
 
 		form.add(chooseDeck, this.deckParent, sideLabel, nameLabel, this.nameInput, this.sideInput,
-				this.formats, this.feedback, submit);
+				this.formats, this.feedback, this.numberOfPlayers, submit);
 
 		this.add(form);
 	}

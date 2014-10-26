@@ -379,7 +379,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.21.0 (release Battlefield),");
-		final Label message2 = new Label("message2", "built on Friday, 24th of October 2014.");
+		final Label message2 = new Label("message2", "built on Sunday, 26th of October 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1659,7 +1659,7 @@ public class HomePage extends TestReportPage
 			final WebMarkupContainer sidePlaceholderParent, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(430);
+		window.setInitialHeight(530);
 		window.setTitle("Create a game");
 
 		window.setContent(new CreateGameModalWindow(window, window.getContentId(), _player,
@@ -1692,7 +1692,7 @@ public class HomePage extends TestReportPage
 			final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(390);
+		window.setInitialHeight(370);
 		window.setTitle("Join a game");
 
 		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,
@@ -1725,7 +1725,7 @@ public class HomePage extends TestReportPage
 			final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(390);
+		window.setInitialHeight(400);
 		window.setTitle("Join a game without ID");
 
 		window.setContent(new JoinGameWithoutIdModalWindow(window, window.getContentId(), _player,
@@ -2420,8 +2420,8 @@ public class HomePage extends TestReportPage
 	{
 		if (event.isShouldUpdateGraveyard())
 		{
-			BattlefieldService.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
-					event.getDeckId());
+			BattlefieldService.updateGraveyard(target, event.getGameId(),
+					event.getTargetPlayerId(), event.getDeckId());
 		}
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMagicCard(), false);

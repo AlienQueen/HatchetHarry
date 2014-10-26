@@ -1388,13 +1388,17 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	public Long getPendingGame(final Format desiredFormat)
+	public Long getPendingGame(final Format desiredFormat, final int desiredPlayers)
 	{
 		final Session session = this.gameDao.getSession();
 
+		// < (and not <=) because when joining, there is only the player who
+		// have created the game
 		final Query query = session
 				.createQuery("from Game g where g.pending is true and desiredFormat = '"
-						+ desiredFormat.name() + "'");
+						+ desiredFormat.name()
+						+ "' and size(g.players) < :desiredPlayers and g.desiredNumberOfPlayers = :desiredPlayers");
+		query.setInteger("desiredPlayers", desiredPlayers);
 		query.setMaxResults(1);
 
 		final Game g = (Game)query.uniqueResult();

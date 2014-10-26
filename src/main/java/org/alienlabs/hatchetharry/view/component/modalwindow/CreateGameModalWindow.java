@@ -58,7 +58,8 @@ public class CreateGameModalWindow extends Panel
 	Player player;
 	WebMarkupContainer deckParent;
 	DropDownChoice<Deck> decks;
-	private DropDownChoice<Format> formats;
+	DropDownChoice<Format> formats;
+	TextField<String> numberOfPlayers;
 
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
@@ -135,6 +136,9 @@ public class CreateGameModalWindow extends Panel
 		final Model<ArrayList<Format>> formatsModel = new Model<ArrayList<Format>>(allFormats);
 		this.formats = new DropDownChoice<Format>("formats", new Model<Format>(), formatsModel);
 
+		final Model<String> numberOfPlayersModel = new Model<String>("");
+		this.numberOfPlayers = new TextField<String>("numberOfPlayers", numberOfPlayersModel);
+
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{
 			private static final long serialVersionUID = 1L;
@@ -149,7 +153,30 @@ public class CreateGameModalWindow extends Panel
 						|| (null == CreateGameModalWindow.this.decks.getModelObject())
 						|| (null == CreateGameModalWindow.this.formats.getModelObject())
 						|| (null == CreateGameModalWindow.this.sideInput
-								.getDefaultModelObjectAsString()))
+								.getDefaultModelObjectAsString())
+						|| (null == CreateGameModalWindow.this.numberOfPlayers.getModelObject())
+						|| ("".equals(CreateGameModalWindow.this.numberOfPlayers
+								.getDefaultModelObjectAsString())))
+				{
+					return;
+				}
+
+				Integer players = 0;
+				try
+				{
+					players = Integer.parseInt(CreateGameModalWindow.this.numberOfPlayers
+							.getDefaultModelObjectAsString());
+				}
+				catch (final NumberFormatException e)
+				{
+					LOGGER.error(
+							"invalid integer: "
+									+ CreateGameModalWindow.this.numberOfPlayers
+											.getDefaultModelObjectAsString(), e);
+					return;
+				}
+
+				if ((players.intValue() < 2) || (players.intValue() > 10))
 				{
 					return;
 				}
@@ -166,6 +193,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.this.player.setName(CreateGameModalWindow.this.nameInput
 						.getDefaultModelObjectAsString());
 
+				g.setDesiredNumberOfPlayers(players);
 				g.setPending(true);
 				g.setDesiredFormat(CreateGameModalWindow.this.formats.getModelObject());
 				LOGGER.info("desiredFormat: " + g.getDesiredFormat());
@@ -313,7 +341,8 @@ public class CreateGameModalWindow extends Panel
 		submit.setMarkupId("createSubmit");
 
 		form.add(chooseDeck, this.deckParent, beforeGameId, gameId, afterGameId, sideLabel,
-				nameLabel, this.nameInput, this.sideInput, this.formats, submit);
+				nameLabel, this.nameInput, this.sideInput, this.formats, this.numberOfPlayers,
+				submit);
 
 		this.add(form);
 	}

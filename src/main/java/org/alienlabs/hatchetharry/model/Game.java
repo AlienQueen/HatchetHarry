@@ -40,7 +40,7 @@ public class Game implements Serializable
 	@Column
 	private Boolean pending = false;
 	@Column
-	Integer numberOfPlayers;
+	Integer desiredNumberOfPlayers = 0;
 	@Column
 	Format desiredFormat;
 
@@ -105,14 +105,14 @@ public class Game implements Serializable
 		this.pending = _pending;
 	}
 
-	public Integer getNumberOfPlayers()
+	public Integer getDesiredNumberOfPlayers()
 	{
-		return this.numberOfPlayers;
+		return this.desiredNumberOfPlayers;
 	}
 
-	public void setNumberOfPlayers(final Integer _numberOfPlayers)
+	public void setDesiredNumberOfPlayers(final Integer _desiredNumberOfPlayers)
 	{
-		this.numberOfPlayers = _numberOfPlayers;
+		this.desiredNumberOfPlayers = _desiredNumberOfPlayers;
 	}
 
 	public Format getDesiredFormat()

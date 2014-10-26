@@ -130,7 +130,14 @@ public class JoinGameModalWindow extends Panel
 				final Long _id = Long.valueOf(JoinGameModalWindow.this.gameIdInput
 						.getDefaultModelObjectAsString());
 				final Game g = JoinGameModalWindow.this.persistenceService.getGame(_id);
-				g.setPending(false);
+				if (g.getPlayers().size() <= (g.getDesiredNumberOfPlayers().intValue() - 1))
+				{
+					g.setPending(false);
+				}
+				else
+				{
+					g.setPending(true);
+				}
 				JoinGameModalWindow.this.persistenceService.updateGame(g);
 
 				GameService.joinGame(JoinGameModalWindow.this.persistenceService, _modal, target,
