@@ -38,7 +38,7 @@ public class Game implements Serializable
 	@Column
 	private Boolean isDrawMode = false;
 	@Column
-	private Boolean pending = false;
+	private boolean pending = false;
 	@Column
 	Integer desiredNumberOfPlayers = 0;
 	@Column
@@ -95,12 +95,12 @@ public class Game implements Serializable
 		this.version = _version;
 	}
 
-	public Boolean isPending()
+	public boolean isPending()
 	{
 		return this.pending;
 	}
 
-	public void setPending(final Boolean _pending)
+	public void setPending(final boolean _pending)
 	{
 		this.pending = _pending;
 	}

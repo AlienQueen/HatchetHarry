@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component.modalwindow;
 
 import java.util.ArrayList;
 
+import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.Player;
@@ -136,7 +137,21 @@ public class JoinGameModalWindow extends Panel
 						.getDefaultModelObjectAsString());
 				final Game g = JoinGameModalWindow.this.persistenceService.getGame(_id);
 
-				if (null == g)
+				if ((null == g))
+				{
+					target.add(JoinGameModalWindow.this.feedback);
+					this.error("No pending game with this ID.");
+					return;
+				}
+
+				if (_id.longValue() == HatchetHarrySession.get().getGameId().longValue())
+				{
+					target.add(JoinGameModalWindow.this.feedback);
+					this.error("You can not join your own game! If you want to play alone, just create a game with one player.");
+					return;
+				}
+
+				if (!g.isPending())
 				{
 					target.add(JoinGameModalWindow.this.feedback);
 					this.error("No pending game with this ID.");

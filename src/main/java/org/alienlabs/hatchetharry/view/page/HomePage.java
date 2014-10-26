@@ -1692,7 +1692,7 @@ public class HomePage extends TestReportPage
 			final ModalWindow window)
 	{
 		window.setInitialWidth(475);
-		window.setInitialHeight(410);
+		window.setInitialHeight(430);
 		window.setTitle("Join a game");
 
 		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,

@@ -184,8 +184,12 @@ a, a:visited {
     visibility: hidden;
     background: white;
 }
-
 .myfont {
+    font-family: 'Black Ops One', cursive;
+    color: gray;
+}
+
+.feedbackPanelERROR {
     font-family: 'Black Ops One', cursive;
     color: gray;
 }

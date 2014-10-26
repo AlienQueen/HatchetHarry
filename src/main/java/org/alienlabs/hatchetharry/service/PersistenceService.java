@@ -818,6 +818,7 @@ public class PersistenceService implements Serializable
 		final Set<Player> set = game.getPlayers();
 		set.add(player);
 		game.setPlayers(set);
+		game.setPending(false);
 
 		player.setGame(game);
 
@@ -1397,8 +1398,9 @@ public class PersistenceService implements Serializable
 		final Query query = session
 				.createQuery("from Game g where g.pending is true and desiredFormat = '"
 						+ desiredFormat.name()
-						+ "' and size(g.players) < :desiredPlayers and g.desiredNumberOfPlayers = :desiredPlayers");
+						+ "' and size(g.players) < :desiredPlayers and g.desiredNumberOfPlayers = :desiredPlayers and g.gameId <> :gameIdToExclude");
 		query.setInteger("desiredPlayers", desiredPlayers);
+		query.setLong("gameIdToExclude", HatchetHarrySession.get().getGameId().longValue());
 		query.setMaxResults(1);
 
 		final Game g = (Game)query.uniqueResult();
