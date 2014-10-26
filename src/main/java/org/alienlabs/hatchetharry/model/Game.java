@@ -23,7 +23,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Game implements Serializable
 {
-	private static final long serialVersionUID = 5336828396327485268L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,7 +41,7 @@ public class Game implements Serializable
 	private boolean pending = false;
 	@Column
 	Integer desiredNumberOfPlayers = 0;
-	@Column
+	@Column(name = "desiredFormat")
 	Format desiredFormat;
 
 
