@@ -41,7 +41,7 @@ public class CreateTokenModalWindow extends Panel
 	final ModalWindow modal;
 
 	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
-	creatureTypesModel, descriptionModel;
+			creatureTypesModel, descriptionModel;
 
 	@SpringBean
 	PersistenceService persistenceService;
@@ -107,9 +107,9 @@ public class CreateTokenModalWindow extends Panel
 						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
 						gameId);
 
-				final MagicCard card = new MagicCard("cards/token_small.jpg", "cards/token.jpg", "", "token", "",
-						player.getSide().getSideName(), token, HatchetHarrySession.get()
-						.incrementLastBattlefieldOder());
+				final MagicCard card = new MagicCard("cards/token_small.jpg", "cards/token.jpg",
+						"", "token", "", player.getSide().getSideName(), token, HatchetHarrySession
+								.get().incrementLastBattlefieldOder());
 				card.setGameId(gameId);
 
 				final Deck deck = HatchetHarrySession.get().getPlayer().getDeck();
@@ -126,9 +126,7 @@ public class CreateTokenModalWindow extends Panel
 				token.setCreatureTypes(CreateTokenModalWindow.this.creatureTypesModel.getObject());
 				token.setPlayer(player);
 
-				//				CreateTokenModalWindow.this.persistenceService.saveOrUpdateDeckArchive(deck.getDeckArchive());
-				CreateTokenModalWindow.this.persistenceService.updateDeckWithMerge(deck);
-				CreateTokenModalWindow.this.persistenceService.saveCard(card);
+				CreateTokenModalWindow.this.persistenceService.mergeDeck(deck);
 				CreateTokenModalWindow.this.persistenceService.saveToken(token);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(

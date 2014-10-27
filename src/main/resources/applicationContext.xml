@@ -152,6 +152,7 @@
                 <prop key="hibernate.jdbc.batch_size">100</prop>
                 <prop key="hibernate.order_inserts">true</prop>
                 <prop key="hibernate.order_updates">true</prop>
+                <prop key="hibernate.event.merge.entity_copy_observer">allow</prop>
             </props>
         </property>
     </bean>
