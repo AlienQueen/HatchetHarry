@@ -114,7 +114,6 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void saveCard(final MagicCard c)
 	{
-		this.deckDao.save(c.getDeck());
 		this.magicCardDao.save(c);
 
 	}
@@ -459,6 +458,14 @@ public class PersistenceService implements Serializable
 	{
 		final Session session = this.deckDao.getSession();
 		session.saveOrUpdate(session.merge(d));
+		return d;
+	}
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+	public Deck updateDeckWithMerge(final Deck d)
+	{
+		final Session session = this.deckDao.getSession();
+		session.update(session.merge(d));
 		return d;
 	}
 

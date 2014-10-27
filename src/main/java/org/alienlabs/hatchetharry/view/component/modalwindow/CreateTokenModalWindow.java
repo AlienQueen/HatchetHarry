@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
-import org.alienlabs.hatchetharry.model.DeckArchive;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Token;
@@ -42,7 +41,7 @@ public class CreateTokenModalWindow extends Panel
 	final ModalWindow modal;
 
 	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
-			creatureTypesModel, descriptionModel;
+	creatureTypesModel, descriptionModel;
 
 	@SpringBean
 	PersistenceService persistenceService;
@@ -108,32 +107,29 @@ public class CreateTokenModalWindow extends Panel
 						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
 						gameId);
 
-				final MagicCard card = new MagicCard("cards/token_small.jpg", "", "", "token", "",
+				final MagicCard card = new MagicCard("cards/token_small.jpg", "cards/token.jpg", "", "token", "",
 						player.getSide().getSideName(), token, HatchetHarrySession.get()
-								.incrementLastBattlefieldOder());
-
-				final Deck dummyDeck = new Deck();
-				final DeckArchive dummyDeckArchive = new DeckArchive();
-				dummyDeckArchive.setDeckName(UUID.randomUUID().toString());
-				dummyDeck.setDeckArchive(dummyDeckArchive);
-
+						.incrementLastBattlefieldOder());
 				card.setGameId(gameId);
-				card.setDeck(dummyDeck);
+
+				final Deck deck = HatchetHarrySession.get().getPlayer().getDeck();
+				card.setDeck(deck);
+
 				card.setUuidObject(uuid);
 				card.setZone(CardZone.BATTLEFIELD);
 				card.getDeck().setPlayerId(player.getId());
 				card.setX(card.getX() == -1l ? player.getSide().getX() : card.getX());
 				card.setY(card.getY() == -1l ? player.getSide().getY() : card.getY());
+				deck.getCards().add(card);
 
 				token.setCapabilities(CreateTokenModalWindow.this.capabilitiesModel.getObject());
 				token.setCreatureTypes(CreateTokenModalWindow.this.creatureTypesModel.getObject());
 				token.setPlayer(player);
 
-				CreateTokenModalWindow.this.persistenceService.saveOrUpdateDeckArchive(dummyDeck
-						.getDeckArchive());
-				CreateTokenModalWindow.this.persistenceService.saveDeck(dummyDeck);
-				CreateTokenModalWindow.this.persistenceService.saveToken(token);
+				//				CreateTokenModalWindow.this.persistenceService.saveOrUpdateDeckArchive(deck.getDeckArchive());
+				CreateTokenModalWindow.this.persistenceService.updateDeckWithMerge(deck);
 				CreateTokenModalWindow.this.persistenceService.saveCard(card);
+				CreateTokenModalWindow.this.persistenceService.saveToken(token);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(
 						gameId, card, player.getSide());
