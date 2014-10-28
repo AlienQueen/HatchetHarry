@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
@@ -24,12 +25,14 @@ public class CardInBattlefieldContextMenu extends Panel
 
 	private final UUID uuid;
 	private final String uuidAsString;
+	private MagicCard magicCard;
 
-	public CardInBattlefieldContextMenu(final String id, final UUID _uuid)
+	public CardInBattlefieldContextMenu(final String id, final UUID _uuid, final MagicCard mc)
 	{
 		super(id);
 		this.uuid = _uuid;
 		this.uuidAsString = this.uuid.toString().replaceAll("-", "_");
+		this.magicCard = mc;
 
 		final WebMarkupContainer cardInBattlefieldContextMenu = new WebMarkupContainer(
 				"cardInBattlefieldContextMenu");
@@ -46,7 +49,18 @@ public class CardInBattlefieldContextMenu extends Panel
 		final WebMarkupContainer putToExile = new WebMarkupContainer("putToExile");
 		putToExile.setOutputMarkupId(true).setMarkupId("putToExile" + this.uuidAsString);
 
-		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile);
+		final WebMarkupContainer destroyToken = new WebMarkupContainer("destroyToken");
+		destroyToken.setOutputMarkupId(true).setMarkupId("destroyToken" + this.uuidAsString);
+
+		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile, destroyToken);
+
+		if (this.magicCard.getToken() != null) {
+			putToHand.setVisible(false);
+			putToGraveyard.setVisible(false);
+			putToExile.setVisible(false);
+		} else {
+			destroyToken.setVisible(false);
+		}
 
 		this.add(new Behavior()
 		{
@@ -72,8 +86,8 @@ public class CardInBattlefieldContextMenu extends Panel
 				catch (final IOException e)
 				{
 					CardInBattlefieldContextMenu.LOGGER
-							.error("unable to close template in CardInBattlefieldContextMenu#renderHead()!",
-									e);
+					.error("unable to close template in CardInBattlefieldContextMenu#renderHead()!",
+							e);
 				}
 			}
 		});

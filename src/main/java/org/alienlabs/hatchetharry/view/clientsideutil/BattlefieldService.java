@@ -59,7 +59,7 @@ public class BattlefieldService
 			{
 				if (mc.getOwnerSide().equals(
 						persistenceService.getPlayer(HatchetHarrySession.get().getPlayer().getId())
-								.getSide().getSideName()))
+						.getSide().getSideName()))
 				{
 					homePage.getAllMagicCardsInBattlefieldForSide1().add(mc);
 					// just enough to create and add a new item in the end
@@ -86,7 +86,7 @@ public class BattlefieldService
 						BattlefieldService.LOGGER.info("clear");
 					}
 
-					if (mc.equals(targetCard))
+					if ((mc.equals(targetCard)) || (mc.getToken() != null && targetCard.getToken() != null && mc.getToken().equals(targetCard.getToken())))
 					{
 						homePage.getAllMagicCardsInBattlefieldForSide1().remove(mc);
 						magicCardListForSide1.remove(homePage.getAllCardsInBattlefieldForSide1()
@@ -108,7 +108,7 @@ public class BattlefieldService
 						BattlefieldService.LOGGER.info("clear");
 					}
 
-					if (mc.equals(targetCard))
+					if ((mc.equals(targetCard)) || (mc.getToken() != null && targetCard.getToken() != null && mc.getToken().equals(targetCard.getToken())))
 					{
 						homePage.getAllMagicCardsInBattlefieldForSide2().remove(mc);
 						magicCardListForSide2.remove(homePage.getAllCardsInBattlefieldForSide2()
@@ -186,9 +186,9 @@ public class BattlefieldService
 		{
 			BattlefieldService.LOGGER.info("### "
 					+ (magicCard.getToken() != null
-							? magicCard.getToken().getCounters().size()
+					? magicCard.getToken().getCounters().size()
 							: magicCard.getCounters().size()) + " counters, uuid = "
-					+ magicCard.getUuid().replace("-", "_"));
+							+ magicCard.getUuid().replace("-", "_"));
 			if (((magicCard.getToken() != null) && magicCard.getToken().getCounters().isEmpty())
 					|| (((magicCard.getToken() == null) && magicCard.getCounters().isEmpty())))
 			{
@@ -276,7 +276,7 @@ public class BattlefieldService
 
 	public static List<MagicCard> reorderCards(
 			final List<MagicCard> allCardsInBattlefieldForPlayer, final Integer removedCardIndex)
-	{
+			{
 		Collections.sort(allCardsInBattlefieldForPlayer);
 
 		for (int index = removedCardIndex; index < allCardsInBattlefieldForPlayer.size(); index++)
@@ -289,5 +289,5 @@ public class BattlefieldService
 		}
 
 		return allCardsInBattlefieldForPlayer;
-	}
+			}
 }

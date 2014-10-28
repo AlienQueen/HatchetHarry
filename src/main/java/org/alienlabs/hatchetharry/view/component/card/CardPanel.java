@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CardPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
@@ -168,7 +168,7 @@ public class CardPanel extends Panel
 		}
 
 		final CardInBattlefieldContextMenu contextMenu = new CardInBattlefieldContextMenu(
-				"contextMenu", this.uuid);
+				"contextMenu", this.uuid, myCard);
 
 		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
 		menutoggleButton.add(form);

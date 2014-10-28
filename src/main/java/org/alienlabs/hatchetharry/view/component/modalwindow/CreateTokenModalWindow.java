@@ -41,7 +41,7 @@ public class CreateTokenModalWindow extends Panel
 	final ModalWindow modal;
 
 	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
-			creatureTypesModel, descriptionModel;
+	creatureTypesModel, descriptionModel;
 
 	@SpringBean
 	PersistenceService persistenceService;
@@ -109,12 +109,13 @@ public class CreateTokenModalWindow extends Panel
 
 				final MagicCard card = new MagicCard("cards/token_small.jpg", "cards/token.jpg",
 						"", "token", "", player.getSide().getSideName(), token, HatchetHarrySession
-								.get().incrementLastBattlefieldOder());
+						.get().incrementLastBattlefieldOder());
 				card.setGameId(gameId);
 
 				final Deck deck = HatchetHarrySession.get().getPlayer().getDeck();
 				card.setDeck(deck);
 
+				card.setToken(token);
 				card.setUuidObject(uuid);
 				card.setZone(CardZone.BATTLEFIELD);
 				card.getDeck().setPlayerId(player.getId());
