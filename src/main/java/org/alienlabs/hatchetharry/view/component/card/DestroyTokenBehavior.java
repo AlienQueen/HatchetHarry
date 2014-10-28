@@ -76,6 +76,11 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final HatchetHarrySession session = HatchetHarrySession.get();
+		if (mc.getBattlefieldOrder().intValue() >= (session.getLastBattlefieldOrder().intValue() - 1))
+		{
+			session.setLastBattlefieldOrder(session.getLastBattlefieldOrder().intValue() - 1);
+		}
+
 		DestroyTokenBehavior.LOGGER.info("playerId in respond(): " + session.getPlayer().getId());
 		DestroyTokenBehavior.LOGGER.info("mc.getTitle(): " + mc.getTitle());
 

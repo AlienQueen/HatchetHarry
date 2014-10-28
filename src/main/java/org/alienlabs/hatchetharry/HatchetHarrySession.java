@@ -420,4 +420,15 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, ++myBattlefieldOrder);
 		return myBattlefieldOrder - 1;
 	}
+
+	public void setLastBattlefieldOrder(Integer value)
+	{
+		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, value.intValue());
+	}
+
+	public Integer getLastBattlefieldOrder()
+	{
+		return (Integer)this.getAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER);
+	}
+
 }
