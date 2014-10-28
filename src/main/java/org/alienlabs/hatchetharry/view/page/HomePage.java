@@ -2321,9 +2321,9 @@ public class HomePage extends TestReportPage
 			{
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getTargetPlayerName()
-						+ "', text : ' stops looking at "
+						+ "', text : \" stops looking at "
 						+ event.getPlayerName()
-						+ "&quot;s hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
+						+ "'s hand\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 			}
 			break;
 

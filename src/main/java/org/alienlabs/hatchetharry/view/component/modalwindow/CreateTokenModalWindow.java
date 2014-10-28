@@ -112,7 +112,7 @@ public class CreateTokenModalWindow extends Panel
 						.get().incrementLastBattlefieldOder());
 				card.setGameId(gameId);
 
-				final Deck deck = HatchetHarrySession.get().getPlayer().getDeck();
+				final Deck deck = CreateTokenModalWindow.this.persistenceService.getDeck(HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 				card.setDeck(deck);
 
 				card.setToken(token);

@@ -11,6 +11,7 @@ import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
 import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.gui.HandComponent;
+import org.alienlabs.hatchetharry.view.component.gui.RevealHandComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -231,7 +232,7 @@ public class BattlefieldService
 			final Long playerId, final Long deckId)
 	{
 		((HomePage)target.getPage()).getGalleryRevealParent().addOrReplace(
-				new HandComponent("galleryReveal", true, gameId, playerId, deckId));
+				new RevealHandComponent("galleryReveal", true, gameId, playerId, deckId));
 		target.add(((HomePage)target.getPage()).getGalleryRevealParent());
 
 		target.appendJavaScript(BattlefieldService.REVEAL_HAND_COMPONENT_JAVASCRIPT.replaceAll(

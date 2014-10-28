@@ -19,6 +19,7 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -81,16 +82,14 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		final String tokenName = mc.getToken().getCreatureTypes();
 		final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck().getPlayerId());
 
-		this.persistenceService.deleteCardAndToken(mc);
-
 		final Long gameId = session.getPlayer().getGame().getId();
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 		final Deck d = p.getDeck();
-
-		final List<MagicCard> battlefield = this.persistenceService
+		List<MagicCard> allCards = this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
-
-		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
+		allCards = BattlefieldService.reorderCards(allCards, allCards.indexOf(mc));
+		allCards.remove(mc);
+		this.persistenceService.deleteCardAndToken(mc);
 
 		final List<BigInteger> allPlayersInGame = DestroyTokenBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
