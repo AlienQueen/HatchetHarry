@@ -1,12 +1,8 @@
-.contextMenuButton {
-	background-image: url('/image/contextmenu.png');
-	display:block;
-	position:absolute;
-	background-size:100%;
-    top:48px;
-    right:0;
-}
 .graveyard-cross-link {
+	position: relative;
+	z-index: 2;
+}
+.exile-cross-link {
 	position: relative;
 	z-index: 2;
 }
