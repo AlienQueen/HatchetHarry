@@ -6,6 +6,10 @@
     top:48px;
     right:0;
 }
+.graveyard-cross-link {
+	position: relative;
+	z-index: 2;
+}
 #baldu {
 	width: 300%;
 }
@@ -181,7 +185,7 @@ a, a:visited {
 }
 
 .cloak {
-    visibility: hidden; // TODO display: none
+    visibility: hidden; /* TODO display: none */
     background: white;
 }
 .myfont {
