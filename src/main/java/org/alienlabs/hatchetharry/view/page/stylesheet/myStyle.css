@@ -181,7 +181,7 @@ a, a:visited {
 }
 
 .cloak {
-    visibility: hidden;
+    visibility: hidden; // TODO display: none
     background: white;
 }
 .myfont {
