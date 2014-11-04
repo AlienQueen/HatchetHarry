@@ -1,6 +1,7 @@
 // The dock
 jQuery(function () {
-    jQuery('#dock').jqDock();
+	var dockOptions = { align: 'top' };
+    jQuery('#dock').jqDock(dockOptions);
 });
 
 // The toolbar, a jQuery plugin
@@ -380,3 +381,16 @@ function domSingleton(tag,id,content){
 	}
 }
 jQuery(window).on('load resize',responsiveCards);
+
+jQuery(function () {
+		jQuery('.scroller').click(function() {
+			scroller = jQuery(this)
+			if (scroller.hasClass('up')){
+				scroller.removeClass('up');
+				scroller.attr('href', '#');
+			} else {
+				scroller.addClass('up');
+				scroller.attr('href', '#dataScreen');
+			}
+		});        
+});
