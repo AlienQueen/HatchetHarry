@@ -262,14 +262,6 @@ div.wicket-modal h3.w_captionText {
     padding-left: 40%;
 }
 
-.zone-images {
-    float: left;
-    padding-left: 10px;
-    position: fixed;
-    left: 5px;
-    top: 110px;
-}
-
 .black {
     background-color: black;
 }
