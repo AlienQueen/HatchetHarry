@@ -20,10 +20,11 @@ META-INF
 /mem.trace.db
 /pmd-eclipse.log
 /projectFilesBackup
-/hatchetharry.iml
+hatchetharry.iml
 out
 hatchetharry.iws
 
 src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.properties
 src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.properties
 src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.properties
+projectFilesBackup1

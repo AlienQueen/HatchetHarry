@@ -113,15 +113,14 @@ public class HomePageTest
 		HomePageTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
 		final CardPanel baldu = (CardPanel)HomePageTest.tester
 				.getComponentFromLastRenderedPage("balduParent:baldu");
+
 		final ExternalImage tapHandleImage = (ExternalImage)baldu
-				.get("cardHandle:menutoggleButton:form:tapHandleImage");
+				.get("cardHandle:side:menutoggleButton:form:cardRotate");
 		Assert.assertNotNull(tapHandleImage);
-		final ExternalImage handleImage = (ExternalImage)baldu
-				.get("cardHandle:menutoggleButton:form:handleImage");
-		Assert.assertNotNull(handleImage);
 		final ExternalImage cardImage = (ExternalImage)baldu
-				.get("cardHandle:menutoggleButton:form:cardImage");
+				.get("cardHandle:side:menutoggleButton:form:cardImage");
 		Assert.assertNotNull(cardImage);
+		Assert.assertTrue(cardImage.getImageUrl().contains("Balduvian Horde.jpg"));
 	}
 
 	@Test
@@ -133,8 +132,9 @@ public class HomePageTest
 
 		// assert URL of a thumbnail
 		final String document = HomePageTest.tester.getLastResponse().getDocument();
+		System.out.println(document);
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
-				"nav-thumb", false);
+				"magicCard", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -266,7 +266,7 @@ public class HomePageTest
 		final String markupWithoutCdata = markupAfterOpeningCdata.split("<!\\[CDATA\\[")[0];
 
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(markupWithoutCdata,
-				"class", "nav-thumb", false);
+				"class", "magicCard", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
@@ -319,8 +319,8 @@ public class HomePageTest
 	}
 
 	/**
-	 * When drawing a card, it should appear at the left of the hand thumb list, hence be visible in
-	 * the hand component
+	 * When drawing a card, it should appear at the left of the hand thumb list,
+	 * hence be visible in the hand component
 	 */
 	@Test
 	@Ignore
