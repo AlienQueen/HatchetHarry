@@ -39,7 +39,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 	public void testCardRotateBehavior()
 	{
 		// Start a game and play a card
-		super.startAGameAndPlayACard();
+        super.startAGameAndPlayACard();
 
 		// Retrieve the card and the CardMoveBehavior
 		super.tester.startPage(HomePage.class);

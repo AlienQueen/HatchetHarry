@@ -249,20 +249,7 @@
             <ref bean="sessionFactory"/>
         </property>
     </bean>
-    <!-- setup transactions -->
 
-    <!--	<bean id="playerDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-            <property name="transactionManager" ref="transactionManager"/>
-            <property name="target" ref="playerDaoTarget"/>
-            <property name="transactionAttributes">
-                <props>
-                    <prop key="save">PROPAGATION_REQUIRED</prop>
-                    <prop key="delete">PROPAGATION_REQUIRED</prop>
-                    <prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-                </props>
-            </property>
-        </bean>
-    -->
 
 
     <!--

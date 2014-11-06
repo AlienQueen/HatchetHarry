@@ -26,10 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -38,27 +35,27 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class NonRegressionTest
 {
-	final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
-	transient ApplicationContext context;
-	private AtmosphereTester waTester;
-	private transient WicketTester tester;
-	private HatchetHarryApplication webApp;
-	private PersistenceService persistenceService;
+	static transient ApplicationContext context;
+	static AtmosphereTester waTester;
+	static transient WicketTester tester;
+	static HatchetHarryApplication webApp;
+	static PersistenceService persistenceService;
 
-	@Before
-	public void setUpBeforeClass() throws Exception
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception
 	{
-		this.webApp = new HatchetHarryApplication()
+		webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void init()
 			{
-				NonRegressionTest.this.context = NonRegressionTest.this.CLASS_PATH_XML_APPLICATION_CONTEXT;
+				context = CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, NonRegressionTest.this.context, true));
+						new SpringComponentInjector(this, context, true));
 
 				this.eventBus = new EventBus(this);
 				this.eventBus.addRegistrationListener(this);
@@ -71,29 +68,22 @@ public class NonRegressionTest
 		};
 
 		// start and render the test page
-		this.tester = new WicketTester(this.webApp);
-		this.persistenceService = this.context.getBean(PersistenceService.class);
-		this.waTester = new AtmosphereTester(this.tester, new HomePage(this.pageParameters()));
+		tester = new WicketTester(webApp);
+		persistenceService = context.getBean(PersistenceService.class);
+		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters().add("test",
+				"test")));
 	}
 
-	@After
-	public void tearDown()
+	@AfterClass
+	public static void tearDown()
 	{
-		this.persistenceService.resetDb();
+		persistenceService.resetDb();
 		HatchetHarrySession.get().reinitSession();
-	}
-
-	public void newHomePage() throws Exception
-	{
-		final PageParameters pp = this.pageParameters();
-		pp.add("test", "test");
-		this.tester.startPage(new HomePage(pp));
 	}
 
 	public void startAGameAndPlayACard(final WicketTester _tester) throws Exception
 	{
 		// Create game
-		this.newHomePage();
 		this.tester.assertRenderedPage(HomePage.class);
 
 		_tester.assertComponent("createGameLink", AjaxLink.class);
@@ -158,7 +148,7 @@ public class NonRegressionTest
 		Assert.assertFalse(card.isTapped());
 
 		// Tap card
-		this.tester.startPage(new HomePage(this.pageParameters()));
+		this.tester.startPage(new HomePage(new PageParameters().add("test", "test")));
 		this.tester.assertRenderedPage(HomePage.class);
 
 		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
@@ -188,7 +178,7 @@ public class NonRegressionTest
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play card again
-		this.tester.startPage(new HomePage(this.pageParameters()));
+		this.tester.startPage(new HomePage(new PageParameters().add("test", "test")));
 		this.tester.assertRenderedPage(HomePage.class);
 
 		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
@@ -242,7 +232,8 @@ public class NonRegressionTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// Is there really one card on the battlefield?
-		final HomePage hp = this.tester.startPage(new HomePage(this.pageParameters()));
+		final HomePage hp = this.tester.startPage(new HomePage(new PageParameters().add("test",
+                "test")));
 		this.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument().replace("<![CDATA[", "");
 
@@ -340,13 +331,6 @@ public class NonRegressionTest
 		this.verifyFieldsOfCountCardsModalWindow(4, "0");
 		this.verifyFieldsOfCountCardsModalWindow(5, "1");
 		this.verifyFieldsOfCountCardsModalWindow(6, "60"); // \O/
-	}
-
-	private PageParameters pageParameters()
-	{
-		final PageParameters pp = new PageParameters();
-		pp.add("test", "test");
-		return pp;
 	}
 
 	@Test

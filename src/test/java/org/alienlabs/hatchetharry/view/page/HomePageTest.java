@@ -27,6 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -51,15 +52,11 @@ public class HomePageTest
 		// Init the EventBus
 		HomePageTest.webApp = new HatchetHarryApplication()
 		{
-			/**
-			 *
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void init()
 			{
-				super.init();
 				HomePageTest.context = HomePageTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
 						new SpringComponentInjector(this, HomePageTest.context, true));
@@ -132,7 +129,6 @@ public class HomePageTest
 
 		// assert URL of a thumbnail
 		final String document = HomePageTest.tester.getLastResponse().getDocument();
-		System.out.println(document);
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
 				"magicCard", false);
 		Assert.assertNotNull(tagTester);

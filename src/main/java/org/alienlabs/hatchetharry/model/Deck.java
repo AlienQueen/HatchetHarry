@@ -44,8 +44,6 @@ public class Deck implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "deckId")
 	private Long deckId;
-	@Column(name = "VERSION", length = 20)
-	private String version;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "Deck_DeckArchive")
 	private DeckArchive deckArchive = new DeckArchive();
@@ -163,16 +161,6 @@ public class Deck implements Serializable
 	public void setCards(final List<MagicCard> _cards)
 	{
 		this.cards = _cards;
-	}
-
-	public String getVersion()
-	{
-		return this.version;
-	}
-
-	public void setVersion(final String _version)
-	{
-		this.version = _version;
 	}
 
 	@Override

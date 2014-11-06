@@ -16,5 +16,5 @@ import org.junit.runners.Suite;
 		HomePageTest.class })
 public class LaunchAllServerSideTests
 {
-	// Just a helper class to launch all WicketTester tests at once, in Eclipse
+    // Just a helper class to launch all WicketTester tests at once, in an IDE
 }
