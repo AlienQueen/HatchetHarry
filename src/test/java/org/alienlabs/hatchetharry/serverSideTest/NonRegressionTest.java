@@ -21,7 +21,6 @@ import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.atmosphere.tester.AtmosphereTester;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -44,6 +43,7 @@ public class NonRegressionTest
 	static transient WicketTester tester;
 	static HatchetHarryApplication webApp;
 	static PersistenceService persistenceService;
+	private static HatchetHarrySession session;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
@@ -73,18 +73,26 @@ public class NonRegressionTest
 		tester = new WicketTester(webApp);
 		persistenceService = context.getBean(PersistenceService.class);
 		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
+		session = HatchetHarrySession.get();
+	}
+
+	@After
+	public void tearDown()
+	{
+		webApp.newSession(tester.getRequestCycle().getRequest(), tester.getRequestCycle()
+				.getResponse());
 	}
 
 	@AfterClass
-	public static void tearDown()
+	public static void tearDownAfterClass()
 	{
 		persistenceService.resetDb();
-		HatchetHarrySession.get().reinitSession();
 	}
 
 	public void startAGameAndPlayACard(final WicketTester _tester) throws Exception
 	{
 		// Create game
+		this.tester.startPage(new HomePage(new PageParameters()));
 		this.tester.assertRenderedPage(HomePage.class);
 
 		_tester.assertComponent("createGameLink", AjaxLink.class);
@@ -122,8 +130,12 @@ public class NonRegressionTest
 		_tester.executeBehavior(pcfhb);
 
 		// One card on the battlefield, 6 in the hand
-		Assert.assertEquals(1, this.persistenceService.getAllCardsInBattlefieldForAGame(gameId).size());
-		Assert.assertEquals(6, this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), p.getDeck().getDeckId()).size());
+		Assert.assertEquals(1, this.persistenceService.getAllCardsInBattlefieldForAGame(gameId)
+				.size());
+		Assert.assertEquals(
+				6,
+				this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
+						p.getDeck().getDeckId()).size());
 
 		// We still should not have more cards that the number of cards in the
 		// deck
@@ -154,12 +166,16 @@ public class NonRegressionTest
 		Assert.assertFalse(card.isTapped());
 
 		// Tap card
-		this.tester.startPage(new HomePage(new PageParameters().add("test", "test")));
+		this.tester.startPage(new HomePage(new PageParameters()));
 		this.tester.assertRenderedPage(HomePage.class);
 
 		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
+		this.tester
+				.assertComponent(
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton",
+						WebMarkupContainer.class);
 		final WebMarkupContainer cardButton = (WebMarkupContainer)page
-				.get("parentPlaceholder:magicCards:1:cardPanel:cardHandle:menutoggleButton");
+				.get("parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton");
 		Assert.assertNotNull(cardButton);
 		final CardRotateBehavior rotateBehavior = cardButton.getBehaviors(CardRotateBehavior.class)
 				.get(0);
@@ -184,23 +200,24 @@ public class NonRegressionTest
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play card again
-		this.tester.startPage(new HomePage(new PageParameters().add("test", "test")));
+		this.tester.startPage(new HomePage(new PageParameters()));
 		this.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
-				.getComponentFromLastRenderedPage("playCardLink");
-
+		this.tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
+		final ListItem playCardLink = (ListItem)this.tester
+				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 				.getBehaviors().get(0);
 		Assert.assertNotNull(pcfhb);
 
-		this.tester.getRequest().setParameter("card", card.getUuid());
+		this.tester.getRequest().setParameter("card",
+				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		this.tester.executeBehavior(pcfhb);
 
 		// We should have one card on the battlefield, untapped
 		allCardsInBattlefield = this.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
+		Assert.assertFalse(allCardsInBattlefield.get(0).isTapped());
 	}
 
 	@Test
@@ -227,7 +244,7 @@ public class NonRegressionTest
 
 		// 6 cards in the hand?
 		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
-		String pageDocument = this.tester.getLastResponse().getDocument().replace("<![CDATA[", "");
+		String pageDocument = this.tester.getLastResponse().getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"magicCard", false);
 		Assert.assertNotNull(tagTester);
@@ -241,30 +258,30 @@ public class NonRegressionTest
 		final HomePage hp = this.tester.startPage(new HomePage(new PageParameters()));
 		this.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
-		System.out.println(pageDocument);
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "battlefieldCardContainer", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
+				"battlefieldCardContainer", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
 		// Play another card
-		this.tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)this.tester
-				.getComponentFromLastRenderedPage("playCardLink");
+		this.tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
+		final ListItem playCardLink = (ListItem)this.tester
+				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 				.getBehaviors().get(0);
 		this.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		this.tester.executeBehavior(pcfhb);
 
-		// 6 cards in the hand instead of 5!!!
+		// 5 cards in the hand instead of 6
 		this.tester.startPage(hp);
 		this.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument().replace("<![CDATA[", "");
-
+		pageDocument = this.tester.getLastResponse().getDocument();
 		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "nav-thumb", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertEquals(6, tagTester.size());
+		Assert.assertEquals(5, tagTester.size());
 
 		// Do they look OK?
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
@@ -273,9 +290,9 @@ public class NonRegressionTest
 		// Is there really one card on the battlefield? (beware of
 		// wicket-quickview)
 		this.waTester.switchOnTestMode();
-		pageDocument = this.tester.getLastResponse().getDocument().replace("<![CDATA[", "");
+		pageDocument = this.tester.getLastResponse().getDocument();
 
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardPanel", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
@@ -300,21 +317,22 @@ public class NonRegressionTest
 
 		// Are there really 2 cards on the battlefield?
 		this.waTester.switchOffTestMode();
-		pageDocument = this.waTester.getPushedResponse().replace("<![CDATA[", "");
+		pageDocument = this.waTester.getPushedResponse();
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
-		// Are there still 6 cards in the hand
+		// Are there still 5 cards in the hand?
 		this.tester.startPage(hp);
 		this.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument().replace("<![CDATA[", "");
+		pageDocument = this.tester.getLastResponse().getDocument();
 
 		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "nav-thumb", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertEquals(6, tagTester.size());
+		Assert.assertEquals(5, tagTester.size());
 
 		// Do they still look OK?
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
@@ -325,15 +343,15 @@ public class NonRegressionTest
 		this.tester.clickLink("countCardsLink", true);
 
 		// And now: does the "count cards" modal window display the right
-		// result: 6 cards in hand, 1 on the battlefield ( + 1 token),
+		// result: 5 cards in hand, 2 on the battlefield ( + 1 token),
 		// 53 in the library, 0 in
 		// exile & graveyard and 60 in total (beware, there's a token!)
 		this.verifyFieldsOfCountCardsModalWindow(0, "infrared");
-		this.verifyFieldsOfCountCardsModalWindow(1, "6");
+		this.verifyFieldsOfCountCardsModalWindow(1, "5");
 		this.verifyFieldsOfCountCardsModalWindow(2, "53");
 		this.verifyFieldsOfCountCardsModalWindow(3, "0");
 		this.verifyFieldsOfCountCardsModalWindow(4, "0");
-		this.verifyFieldsOfCountCardsModalWindow(5, "1");
+		this.verifyFieldsOfCountCardsModalWindow(5, "2");
 		this.verifyFieldsOfCountCardsModalWindow(6, "60"); // \O/
 	}
 
@@ -393,7 +411,7 @@ public class NonRegressionTest
 			final String expectedFieldContent)
 	{
 		this.waTester.switchOffTestMode();
-		final String pageDocument = this.waTester.getPushedResponse().replace("<![CDATA[", "");
+		final String pageDocument = this.waTester.getPushedResponse();
 
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"countedCards", false);

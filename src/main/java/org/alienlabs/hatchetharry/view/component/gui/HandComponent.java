@@ -60,9 +60,6 @@ public class HandComponent extends Panel
 						"script/gallery/sortable.js");
 				final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(
 						HomePage.class, "script/gallery/handInBattlefield.js");
-				// final TextTemplate cssTemplate = new
-				// PackageTextTemplate(HomePage.class,
-				// "stylesheet/cards.css");
 
 				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
 				response.render(JavaScriptHeaderItem.forScript(
