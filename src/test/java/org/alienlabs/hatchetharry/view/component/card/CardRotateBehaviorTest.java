@@ -28,7 +28,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 				.getBean(PersistenceService.class);
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		final MagicCard mc = allCardsInBattlefield.get(0);

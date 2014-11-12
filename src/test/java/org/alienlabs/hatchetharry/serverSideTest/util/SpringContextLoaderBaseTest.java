@@ -198,7 +198,7 @@ public class SpringContextLoaderBaseTest
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card

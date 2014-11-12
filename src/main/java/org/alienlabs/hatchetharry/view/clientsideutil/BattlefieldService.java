@@ -179,8 +179,9 @@ public class BattlefieldService
 		}
 
 		final List<MagicCard> allCards = persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattlefieldForAGame(gameId);
 		buil.append("window.setTimeout(function() { ");
+		BattlefieldService.LOGGER.info("###  gameId: " + gameId);
 		BattlefieldService.LOGGER.info("###  allCards.size(): " + allCards.size());
 
 		for (final MagicCard magicCard : allCards)

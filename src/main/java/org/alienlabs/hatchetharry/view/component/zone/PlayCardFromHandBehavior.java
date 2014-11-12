@@ -87,6 +87,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		d.reorderMagicCards(hand);
 		this.persistenceService.saveOrUpdateAllMagicCards(hand);
 
+		card.setOwnerSide(p.getSide().getSideName());
 		card.setBattlefieldOrder(HatchetHarrySession.get().incrementLastBattlefieldOder());
 		this.persistenceService.updateCard(card);
 

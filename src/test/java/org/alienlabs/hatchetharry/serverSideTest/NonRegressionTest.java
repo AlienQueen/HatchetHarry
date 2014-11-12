@@ -21,6 +21,8 @@ import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.atmosphere.tester.AtmosphereTester;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
@@ -70,8 +72,7 @@ public class NonRegressionTest
 		// start and render the test page
 		tester = new WicketTester(webApp);
 		persistenceService = context.getBean(PersistenceService.class);
-		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters().add("test",
-				"test")));
+		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
 	}
 
 	@AfterClass
@@ -91,8 +92,10 @@ public class NonRegressionTest
 
 		final FormTester createGameForm = _tester.newFormTester("createGameWindow:content:form");
 		createGameForm.setValue("name", "Zala");
-		createGameForm.setValue("sideInput", "0");
-		createGameForm.setValue("deckParent:decks", "0");
+		createGameForm.setValue("sideInput", "1");
+		createGameForm.setValue("deckParent:decks", "1");
+		createGameForm.setValue("formats", "1");
+		createGameForm.setValue("numberOfPlayers", "2");
 		createGameForm.submit();
 
 		Player p = this.persistenceService.getAllPlayersOfGame(
@@ -101,16 +104,16 @@ public class NonRegressionTest
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 		// Retrieve PlayCardFromHandBehavior
-		_tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		final WebMarkupContainer playCardLink = (WebMarkupContainer)_tester
-				.getComponentFromLastRenderedPage("playCardLink");
+		_tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
+		final ListItem playCardLink = (ListItem)_tester
+				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
 		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
 				.getBehaviors().get(0);
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card
@@ -118,6 +121,9 @@ public class NonRegressionTest
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		_tester.executeBehavior(pcfhb);
 
+		// One card on the battlefield, 6 in the hand
+		Assert.assertEquals(1, this.persistenceService.getAllCardsInBattlefieldForAGame(gameId).size());
+		Assert.assertEquals(6, this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), p.getDeck().getDeckId()).size());
 
 		// We still should not have more cards that the number of cards in the
 		// deck
@@ -141,7 +147,7 @@ public class NonRegressionTest
 
 		// We should have one card on the battlefield, untapped
 		List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 		MagicCard card = this.persistenceService.getCardFromUuid(UUID
 				.fromString(allCardsInBattlefield.get(0).getUuid()));
@@ -174,7 +180,7 @@ public class NonRegressionTest
 		this.tester.executeBehavior(putToHandFromBattlefieldBehavior);
 
 		// We should have no card on the battlefield
-		allCardsInBattlefield = this.persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		allCardsInBattlefield = this.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play card again
@@ -193,7 +199,7 @@ public class NonRegressionTest
 		this.tester.executeBehavior(pcfhb);
 
 		// We should have one card on the battlefield, untapped
-		allCardsInBattlefield = this.persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		allCardsInBattlefield = this.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 	}
 
@@ -223,7 +229,7 @@ public class NonRegressionTest
 		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 		String pageDocument = this.tester.getLastResponse().getDocument().replace("<![CDATA[", "");
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
-				"nav-thumb", false);
+				"magicCard", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(6, tagTester.size());
 
@@ -232,14 +238,12 @@ public class NonRegressionTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// Is there really one card on the battlefield?
-		final HomePage hp = this.tester.startPage(new HomePage(new PageParameters().add("test",
-                "test")));
+		final HomePage hp = this.tester.startPage(new HomePage(new PageParameters()));
 		this.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument().replace("<![CDATA[", "");
-
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
+		pageDocument = this.tester.getLastResponse().getDocument();
+		System.out.println(pageDocument);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "battlefieldCardContainer", false);
 		Assert.assertNotNull(tagTester);
-
 		Assert.assertEquals(1, tagTester.size());
 
 		// Play another card

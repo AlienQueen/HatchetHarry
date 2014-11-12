@@ -926,7 +926,61 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInBattleFieldForAGame(final Long gameId)
+	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
+			final Long playerId, final Long deckId)
+	{
+		final Session session = this.magicCardDao.getSession();
+
+		final Query query = session
+				.createQuery("select mc from MagicCard mc where mc.gameId = :gameId and mc.zone = :zone and mc.deck = :deckId order by mc.battlefieldOrder");
+		query.setLong("gameId", gameId);
+		query.setParameter("zone", CardZone.BATTLEFIELD);
+		query.setLong("deckId", deckId);
+		query.setCacheable(true);
+
+//		final SQLQuery query = session
+//				.createSQLQuery("select mc.* from MagicCard mc where mc.gameId = :gameId and mc.zone = :zone and mc.card_deck = :deckId order by mc.battlefieldOrder");
+//		query.addEntity(MagicCard.class);
+//		query.setLong("gameId", gameId);
+//		query.setParameter("zone", CardZone.BATTLEFIELD.toString());
+//		query.setCacheable(true);
+
+		try
+		{
+			return query.list();
+		}
+		catch (final ObjectNotFoundException e)
+		{
+			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for game: "
+					+ gameId + " => no result found", e);
+			return null;
+		}
+//
+//
+//		final Session session = this.magicCardDao.getSession();
+//
+//		final SQLQuery query = session
+//				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.battlefieldOrder");
+//		query.addEntity(MagicCard.class);
+//		query.setLong("gameId", gameId);
+//		query.setString("zoneName", CardZone.BATTLEFIELD.toString());
+//		query.setLong("playerId", playerId);
+//		query.setLong("deckId", deckId);
+//
+//		try
+//		{
+//			return query.list();
+//		}
+//		catch (final ObjectNotFoundException e)
+//		{
+//			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+//					+ gameId + " => no result found", e);
+//			return null;
+//		}
+	}
+
+	@Transactional(readOnly = true)
+	public List<MagicCard> getAllCardsInBattlefieldForAGame(final Long gameId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
@@ -943,55 +997,6 @@ public class PersistenceService implements Serializable
 		catch (final ObjectNotFoundException e)
 		{
 			PersistenceService.LOGGER.error("Error retrieving cards in battlefield for game: "
-					+ gameId + " => no result found", e);
-			return null;
-		}
-	}
-
-	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
-			final Long playerId, final Long deckId)
-	{
-		final Session session = this.magicCardDao.getSession();
-
-		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.battlefieldOrder");
-		query.addEntity(MagicCard.class);
-		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.BATTLEFIELD.toString());
-		query.setLong("playerId", playerId);
-		query.setLong("deckId", deckId);
-
-		try
-		{
-			return query.list();
-		}
-		catch (final ObjectNotFoundException e)
-		{
-			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-					+ gameId + " => no result found", e);
-			return null;
-		}
-	}
-
-	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInBattlefieldForAGame(final Long gameId)
-	{
-		final Session session = this.magicCardDao.getSession();
-
-		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc where mc.gameId = :gameId and mc.zone = :zoneName");
-		query.addEntity(MagicCard.class);
-		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.BATTLEFIELD.toString());
-
-		try
-		{
-			return query.list();
-		}
-		catch (final ObjectNotFoundException e)
-		{
-			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
 					+ gameId + " => no result found", e);
 			return null;
 		}

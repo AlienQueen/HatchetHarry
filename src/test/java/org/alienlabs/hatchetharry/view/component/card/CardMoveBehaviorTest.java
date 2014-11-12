@@ -60,7 +60,7 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = super.persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		final MagicCard mc = allCardsInBattlefield.get(0);

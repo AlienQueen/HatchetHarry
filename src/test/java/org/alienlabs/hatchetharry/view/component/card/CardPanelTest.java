@@ -30,7 +30,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		final PersistenceService persistenceService = super.context
 				.getBean(PersistenceService.class);
 		List<MagicCard> allCardsInBattlefield = persistenceService
-				.getAllCardsInBattleFieldForAGame(gameId);
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		// Put it to graveyard
@@ -50,7 +50,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		// .assertComponentOnAjaxResponse("graveyardParent:graveyard:graveyardCardsPlaceholder:graveyardCards:0:wrapper:graveyardImagePlaceholder");
 
 		// Verify
-		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		List<MagicCard> allCardsInGraveyard = persistenceService
@@ -64,7 +64,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.getRequest().setParameter("card", allCardsInGraveyard.get(0).getUuid());
 		super.tester.executeBehavior(pcfgb);
 		// Verify
-		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(gameId);
@@ -77,7 +77,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(pthfbb);
 
 		// Verify
-		allCardsInBattlefield = persistenceService.getAllCardsInBattleFieldForAGame(gameId);
+		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		final List<MagicCard> allCardsInHand = persistenceService
