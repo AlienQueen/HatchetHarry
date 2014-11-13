@@ -3,11 +3,10 @@ package org.alienlabs.hatchetharry.serverSideTest;
 import java.util.List;
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.view.component.card.CardRotateBehavior;
 import org.alienlabs.hatchetharry.view.component.gui.ExternalImage;
 import org.alienlabs.hatchetharry.view.component.gui.HandComponent;
@@ -15,135 +14,19 @@ import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.zone.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.atmosphere.EventBus;
-import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
-import org.apache.wicket.atmosphere.config.AtmosphereTransport;
-import org.apache.wicket.atmosphere.tester.AtmosphereTester;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
-import org.apache.wicket.util.tester.WicketTester;
 import org.junit.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Non regression tests using the WicketTester.
  */
-public class NonRegressionTest
+public class NonRegressionTest extends SpringContextLoaderBaseTest
 {
-	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
-	static transient ApplicationContext context;
-	static AtmosphereTester waTester;
-	static transient WicketTester tester;
-	static HatchetHarryApplication webApp;
-	static PersistenceService persistenceService;
-	private static HatchetHarrySession session;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception
-	{
-		webApp = new HatchetHarryApplication()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void init()
-			{
-				context = CLASS_PATH_XML_APPLICATION_CONTEXT;
-				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, context, true));
-
-				this.eventBus = new EventBus(this);
-				this.eventBus.addRegistrationListener(this);
-				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
-				this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.INFO);
-
-				this.getMarkupSettings().setStripWicketTags(false);
-				this.getDebugSettings().setOutputComponentPath(true);
-			}
-		};
-
-		// start and render the test page
-		tester = new WicketTester(webApp);
-		persistenceService = context.getBean(PersistenceService.class);
-		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
-		session = HatchetHarrySession.get();
-	}
-
-	@After
-	public void tearDown()
-	{
-		webApp.newSession(tester.getRequestCycle().getRequest(), tester.getRequestCycle()
-				.getResponse());
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass()
-	{
-		persistenceService.resetDb();
-	}
-
-	public void startAGameAndPlayACard(final WicketTester _tester) throws Exception
-	{
-		// Create game
-		this.tester.startPage(new HomePage(new PageParameters()));
-		this.tester.assertRenderedPage(HomePage.class);
-
-		_tester.assertComponent("createGameLink", AjaxLink.class);
-		_tester.clickLink("createGameLink", true);
-
-		final FormTester createGameForm = _tester.newFormTester("createGameWindow:content:form");
-		createGameForm.setValue("name", "Zala");
-		createGameForm.setValue("sideInput", "1");
-		createGameForm.setValue("deckParent:decks", "1");
-		createGameForm.setValue("formats", "1");
-		createGameForm.setValue("numberOfPlayers", "2");
-		createGameForm.submit();
-
-		Player p = this.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId()).get(0);
-		p.setDeck(this.persistenceService.getDeck(p.getDeck().getDeckId()));
-		Assert.assertEquals(60, p.getDeck().getCards().size());
-
-		// Retrieve PlayCardFromHandBehavior
-		_tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
-		final ListItem playCardLink = (ListItem)_tester
-				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
-
-		// For the moment, we should have no card in the battlefield
-		final Long gameId = HatchetHarrySession.get().getGameId();
-		final List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattlefieldForAGame(gameId);
-		Assert.assertEquals(0, allCardsInBattlefield.size());
-
-		// Play a card
-		_tester.getRequest().setParameter("card",
-				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		_tester.executeBehavior(pcfhb);
-
-		// One card on the battlefield, 6 in the hand
-		Assert.assertEquals(1, this.persistenceService.getAllCardsInBattlefieldForAGame(gameId)
-				.size());
-		Assert.assertEquals(
-				6,
-				this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
-						p.getDeck().getDeckId()).size());
-
-		// We still should not have more cards that the number of cards in the
-		// deck
-		p = this.persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId()).get(
-				0);
-		Assert.assertEquals(60, p.getDeck().getCards().size());
-	}
-
 	@Test
 	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
@@ -153,7 +36,7 @@ public class NonRegressionTest
 	 */
 	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped() throws Exception
 	{
-		this.startAGameAndPlayACard(this.tester);
+		this.startAGameAndPlayACard();
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 
@@ -224,7 +107,7 @@ public class NonRegressionTest
 	public void whenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
 			throws Exception
 	{
-		this.startAGameAndPlayACard(this.tester);
+		this.startAGameAndPlayACard();
 
 		final Player p = this.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
@@ -235,7 +118,7 @@ public class NonRegressionTest
 	public void whenCreatingAGamePlayingACardAndPlayingATokenTheNumberOfCardsInTheHandMustNotChange()
 			throws Exception
 	{
-		this.startAGameAndPlayACard(this.tester);
+		this.startAGameAndPlayACard();
 
 		// 60 cards in the deck?
 		final Player p = this.persistenceService.getAllPlayersOfGame(
@@ -359,7 +242,7 @@ public class NonRegressionTest
 	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
 			throws Exception
 	{
-		this.startAGameAndPlayACard(this.tester);
+		this.startAGameAndPlayACard();
 
 		final Player player = this.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);

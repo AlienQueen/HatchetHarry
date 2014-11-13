@@ -14,7 +14,7 @@ import org.junit.Test;
 public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 {
 	@Test
-	public void testCardMoveBehavior()
+	public void testCardMoveBehavior() throws Exception
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();

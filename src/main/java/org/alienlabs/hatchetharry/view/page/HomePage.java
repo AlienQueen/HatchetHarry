@@ -150,8 +150,6 @@ import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -247,17 +245,7 @@ public class HomePage extends TestReportPage
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
 	public HomePage(final PageParameters pp) throws Exception
 	{
-		// If we put "test".equals(pp.get("test").toString()) it breaks
-		// everything!
-		if ((null != pp) && ("test".equals(pp.get("test"))))
-		{
-			this.persistenceService = this.mockPersistenceService();
-			this.session = this.mockSession();
-		}
-		else
-		{
-			this.session = HatchetHarrySession.get();
-		}
+		this.session = HatchetHarrySession.get();
 
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
@@ -3300,64 +3288,6 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getConferenceParent()
 	{
 		return this.conferenceParent;
-	}
-
-	PersistenceService mockPersistenceService() throws IOException
-	{
-		final Player p1 = new Player();
-		p1.setId(1l);
-		p1.setName("1");
-		p1.setLifePoints(20l);
-		p1.setHandDisplayed(true);
-
-		final Player p2 = new Player();
-		p2.setId(2l);
-		p2.setName("2");
-		p2.setLifePoints(20l);
-		p2.setHandDisplayed(true);
-
-		final List<Player> players = new ArrayList<Player>()
-		{
-			private static final long serialVersionUID = 1L;
-
-			{
-				this.add(p1);
-				this.add(p2);
-			}
-		};
-
-		final List<BigInteger> playerIds = new ArrayList<BigInteger>()
-		{
-			private static final long serialVersionUID = 1L;
-
-			{
-				this.add(BigInteger.valueOf(p1.getId()));
-				this.add(BigInteger.valueOf(p2.getId()));
-			}
-		};
-
-		final PersistenceService persistenceServiceMock = Mockito.mock(PersistenceService.class);
-		Mockito.when(persistenceServiceMock.getAllPlayersOfGame(Matchers.any(Long.class)))
-				.thenReturn(players);
-		Mockito.when(persistenceServiceMock.giveAllPlayersFromGame(Matchers.any(Long.class)))
-				.thenReturn(playerIds);
-		Mockito.when(persistenceServiceMock.getPlayer(Matchers.any(Long.class))).thenReturn(p1);
-		Mockito.when(persistenceServiceMock.getDeck(Matchers.any(Long.class))).thenCallRealMethod();
-		return persistenceServiceMock;
-	}
-
-	HatchetHarrySession mockSession()
-	{
-		final Player p1 = new Player();
-		p1.setId(1l);
-		p1.setName("1");
-		p1.setLifePoints(20l);
-		p1.setDeck(this.persistenceService.getDeck(1l));
-		p1.setHandDisplayed(true);
-
-		final HatchetHarrySession sessionMock = Mockito.mock(HatchetHarrySession.class);
-		Mockito.when(sessionMock.getPlayer()).thenReturn(p1);
-		return sessionMock;
 	}
 
 }

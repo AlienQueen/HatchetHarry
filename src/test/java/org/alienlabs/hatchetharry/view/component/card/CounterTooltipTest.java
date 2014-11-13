@@ -13,8 +13,7 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 {
 	@Test
     @Ignore(value = "mock the Spring context first then come back again")
-	public void testCardTooltip()
-	{
+	public void testCardTooltip() throws Exception {
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
 		super.waTester.switchOffTestMode();

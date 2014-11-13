@@ -17,14 +17,14 @@ import org.junit.Test;
 public class CardPanelTest extends SpringContextLoaderBaseTest
 {
 	@Test
-	public void testCardPanel() throws SecurityException, NoSuchMethodException
+	public void testCardPanel() throws Exception
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
 
 		// We should have one card in the battlefield
-		//		super.tester.startPage(HomePage.class);
-		//		super.tester.assertRenderedPage(HomePage.class);
+		// super.tester.startPage(HomePage.class);
+		// super.tester.assertRenderedPage(HomePage.class);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = super.context
@@ -45,7 +45,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 				.getPutToGraveyardFromBattlefieldBehavior();
 		super.tester.executeBehavior(ptgfbb);
 
-		super.pageDocument = super.tester.getLastResponse().getDocument();
+		String pageDocument = super.tester.getLastResponse().getDocument();
 		// SpringContextLoaderBaseTest.tester
 		// .assertComponentOnAjaxResponse("graveyardParent:graveyard:graveyardCardsPlaceholder:graveyardCards:0:wrapper:graveyardImagePlaceholder");
 
