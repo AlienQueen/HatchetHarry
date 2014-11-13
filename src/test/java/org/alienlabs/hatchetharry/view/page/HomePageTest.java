@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.card.CardPanel;
 import org.alienlabs.hatchetharry.view.component.gui.ChatPanel;
@@ -36,40 +37,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * Tests of basic scenarios of the HomePage using the WicketTester.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class HomePageTest
+public class HomePageTest extends SpringContextLoaderBaseTest
 {
-	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
-	public static transient ApplicationContext context;
-	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
-	protected static String pageDocument;
-	protected static PersistenceService persistenceService;
-
-	@BeforeClass
-	public static void setUpBeforeClassWithoutMocks() throws IOException
-	{
-		// Init the EventBus
-		HomePageTest.webApp = new HatchetHarryApplication()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void init()
-			{
-				HomePageTest.context = HomePageTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
-				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, HomePageTest.context, true));
-			}
-		};
-		HomePageTest.tester = new WicketTester(HomePageTest.webApp);
-		HomePageTest.persistenceService = HomePageTest.context.getBean(PersistenceService.class);
-	}
+	private static String pageDocument;
 
 	// Assert dock element is present and contains a .gif
 	private static void testDockElement(final String name)
 	{
-		final String document = HomePageTest.tester.getLastResponse().getDocument();
+		final String document = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "title", name,
 				false);
 		Assert.assertNotNull(tagTester);
@@ -87,54 +62,36 @@ public class HomePageTest
 	private static void testModalWindow(final String _window, final String linkToActivateWindow)
 	{
 		// assert modal windows are in the page
-		HomePageTest.tester.assertComponent(_window, ModalWindow.class);
-		final ModalWindow window = (ModalWindow)HomePageTest.tester
+		SpringContextLoaderBaseTest.tester.assertComponent(_window, ModalWindow.class);
+		final ModalWindow window = (ModalWindow)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(_window);
-		HomePageTest.tester.assertInvisible(window.getPageRelativePath() + ":"
+		SpringContextLoaderBaseTest.tester.assertInvisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
-		final AjaxLink<Void> link = (AjaxLink<Void>)HomePageTest.tester
+		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
-		HomePageTest.tester.clickLink(linkToActivateWindow, true);
-		HomePageTest.tester.assertVisible(window.getPageRelativePath() + ":"
+		SpringContextLoaderBaseTest.tester.clickLink(linkToActivateWindow, true);
+		SpringContextLoaderBaseTest.tester.assertVisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
-	}
-
-	@Test
-	// First test of the suite, otherwise baldu is a WebMarkupContainer
-	public void testFirstRenderBaldu() throws IOException
-	{
-		// Test the baldu and its different children
-		HomePageTest.tester.startPage(HomePage.class);
-		HomePageTest.tester.assertComponent("balduParent:baldu", CardPanel.class);
-		final CardPanel baldu = (CardPanel)HomePageTest.tester
-				.getComponentFromLastRenderedPage("balduParent:baldu");
-
-		final ExternalImage tapHandleImage = (ExternalImage)baldu
-				.get("cardHandle:side:menutoggleButton:form:cardRotate");
-		Assert.assertNotNull(tapHandleImage);
-		final ExternalImage cardImage = (ExternalImage)baldu
-				.get("cardHandle:side:menutoggleButton:form:cardImage");
-		Assert.assertNotNull(cardImage);
-		Assert.assertTrue(cardImage.getImageUrl().contains("Balduvian Horde.jpg"));
 	}
 
 	@Test
 	public void testRenderHand() throws IOException
 	{
-		HomePageTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		// assert hand is present
-		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
 
 		// assert URL of a thumbnail
-		final String document = HomePageTest.tester.getLastResponse().getDocument();
+		final String document = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
 				"magicCard", false);
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
-		Assert.assertEquals(7, tagTester.size());
+		Assert.assertEquals(8, tagTester.size());
 
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
@@ -144,7 +101,7 @@ public class HomePageTest
 	public void testRenderMyPage()
 	{
 		// assert rendered label component
-		final Label message = (Label)HomePageTest.tester
+		final Label message = (Label)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("message1");
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("version"));
 		Assert.assertTrue(message.getDefaultModelObjectAsString().contains("release"));
@@ -153,12 +110,12 @@ public class HomePageTest
 	@Test
 	public void testRenderClock() throws IOException
 	{
-		HomePageTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		// assert clock is present
-		HomePageTest.tester.assertComponent("clockPanel", ClockPanel.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("clockPanel", ClockPanel.class);
 
 		// assert clock content
-		final ClockPanel clock = (ClockPanel)HomePageTest.tester
+		final ClockPanel clock = (ClockPanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("clockPanel");
 		Assert.assertTrue(clock.getTime().getObject().contains("###"));
 	}
@@ -166,9 +123,9 @@ public class HomePageTest
 	@Test
 	public void testRenderMenuBar() throws IOException
 	{
-		HomePageTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		// Assert menubar
-		final String document = HomePageTest.tester.getLastResponse().getDocument();
+		final String document = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(document, "class",
 				"shift-bottom", false);
 		Assert.assertNotNull(tagTester);
@@ -190,15 +147,15 @@ public class HomePageTest
 	@Test
 	public void testRenderDataBox() throws IOException
 	{
-		HomePageTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		// assert DataBox is present
-		HomePageTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
 
 		// assert DataBox content
-		HomePageTest.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
 				AjaxEditableLabel.class);
-		final AjaxEditableLabel<String> lifePoints = (AjaxEditableLabel<String>)HomePageTest.tester
+		final AjaxEditableLabel<String> lifePoints = (AjaxEditableLabel<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
 		Assert.assertEquals("20", lifePoints.getDefaultModelObject().toString());
 	}
@@ -206,17 +163,19 @@ public class HomePageTest
 	@Test
 	public void testRenderChat() throws IOException
 	{
-		HomePageTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		// assert chat is present
-		HomePageTest.tester.assertComponent("chatPanel", ChatPanel.class);
-		HomePageTest.tester.assertComponent("chatPanel:chatForm:user", RequiredTextField.class);
-		HomePageTest.tester.assertComponent("chatPanel:chatForm:message", RequiredTextField.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("chatPanel", ChatPanel.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("chatPanel:chatForm:user",
+				RequiredTextField.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("chatPanel:chatForm:message",
+				RequiredTextField.class);
 	}
 
 	@Test
 	public void testRenderDock() throws IOException
 	{
-		HomePageTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		// Assert hand
 		HomePageTest.testDockElement("Hand");
 
@@ -233,23 +192,23 @@ public class HomePageTest
 		HomePageTest.testDockElement("Library");
 
 		// The first click must hide the hand
-		HomePageTest.tester.assertComponent("handLink", AjaxLink.class);
-		HomePageTest.tester.clickLink("handLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("handLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("handLink", true);
 
-		WebMarkupContainer handParent = (WebMarkupContainer)HomePageTest.tester
+		WebMarkupContainer handParent = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("galleryParent");
-		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
+		SpringContextLoaderBaseTest.tester.assertComponentOnAjaxResponse(handParent);
 		Component gallery = handParent.get("gallery");
 		Assert.assertNotNull(gallery);
 		Assert.assertFalse(gallery instanceof HandComponent);
 
 		// The second click must show the hand
-		HomePageTest.tester.assertComponent("handLink", AjaxLink.class);
-		HomePageTest.tester.clickLink("handLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("handLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("handLink", true);
 
-		handParent = (WebMarkupContainer)HomePageTest.tester
+		handParent = (WebMarkupContainer)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("galleryParent");
-		HomePageTest.tester.assertComponentOnAjaxResponse(handParent);
+		SpringContextLoaderBaseTest.tester.assertComponentOnAjaxResponse(handParent);
 		gallery = handParent.get("gallery");
 		Assert.assertNotNull(gallery);
 		Assert.assertTrue(gallery instanceof HandComponent);
@@ -257,7 +216,7 @@ public class HomePageTest
 		// The hand must be contain 7 cards again
 		Assert.assertEquals(7, ((HandComponent)gallery).getAllCards().size());
 
-		final String allMarkup = HomePageTest.tester.getLastResponseAsString();
+		final String allMarkup = SpringContextLoaderBaseTest.tester.getLastResponseAsString();
 		final String markupAfterOpeningCdata = allMarkup.split("<!\\[CDATA\\[")[1];
 		final String markupWithoutCdata = markupAfterOpeningCdata.split("<!\\[CDATA\\[")[0];
 
@@ -280,8 +239,8 @@ public class HomePageTest
 	public void testRenderModalWindows()
 	{
 		// Re-init because of testRenderModalWindowsInMobileMenu()
-		HomePageTest.tester.startPage(HomePage.class);
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		HomePageTest.testModalWindow("aboutWindow", "aboutLink");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLink");
@@ -294,8 +253,8 @@ public class HomePageTest
 	public void testRenderModalWindowsInMobileMenu()
 	{
 		// Re-init because of testRenderModalWindows()
-		HomePageTest.tester.startPage(HomePage.class);
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		HomePageTest.testModalWindow("aboutWindow", "aboutLinkResponsive");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLinkResponsive");
@@ -308,10 +267,13 @@ public class HomePageTest
 	public void testRenderToolbar()
 	{
 		// Test the toolbar at the bottom of the screen
-		HomePageTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		HomePageTest.tester.assertComponent("playCardLink", WebMarkupContainer.class);
-		HomePageTest.tester.assertComponent("endTurnPlaceholder", WebMarkupContainer.class);
-		HomePageTest.tester.assertComponent("endTurnPlaceholder:endTurnLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester
+				.assertComponent("playCardLink", WebMarkupContainer.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("endTurnPlaceholder",
+				WebMarkupContainer.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("endTurnPlaceholder:endTurnLink",
+				AjaxLink.class);
 	}
 
 	/**
@@ -331,10 +293,12 @@ public class HomePageTest
 				session.getGameId(), session.getPlayer().getId(),
 				session.getPlayer().getDeck().getDeckId()).size() > 0);
 		// assert hand is present
-		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
 
 		// assert presence of a thumbnail
-		HomePageTest.pageDocument = HomePageTest.tester.getLastResponse().getDocument();
+		HomePageTest.pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse()
+				.getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument,
 				"class", "nav-thumb", false);
 		Assert.assertNotNull(tagTester);
@@ -348,18 +312,21 @@ public class HomePageTest
 
 		final String firstCardIdBeforeDraw = tagTester.get(0).getAttribute("id");
 
-		HomePageTest.pageDocument = HomePageTest.tester.getLastResponse().getDocument();
+		HomePageTest.pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse()
+				.getDocument();
 		// Draw a card
-		HomePageTest.tester.assertComponent("drawCardLink", AjaxLink.class);
-		final AjaxLink<String> drawCardLink = (AjaxLink<String>)HomePageTest.tester
+		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
+		final AjaxLink<String> drawCardLink = (AjaxLink<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("drawCardLink");
-		HomePageTest.tester.executeAjaxEvent(drawCardLink, "onclick");
+		SpringContextLoaderBaseTest.tester.executeAjaxEvent(drawCardLink, "onclick");
 
 		// assert presence of a thumbnail
-		HomePageTest.tester.startPage(HomePage.class);
-		HomePageTest.tester.assertRenderedPage(HomePage.class);
-		HomePageTest.tester.assertComponent("galleryParent:gallery", HandComponent.class);
-		HomePageTest.pageDocument = HomePageTest.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
+		HomePageTest.pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse()
+				.getDocument();
 		tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument, "class",
 				"nav-thumb", false);
 		Assert.assertNotNull(tagTester);
