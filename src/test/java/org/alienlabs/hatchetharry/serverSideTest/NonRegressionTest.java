@@ -380,6 +380,24 @@ public class NonRegressionTest
 		Assert.assertEquals(60, player.getDeck().getCards().size());
 	}
 
+	@Test
+	public void testDeckListsShouldNotContainDuplicatesInModalWindows()
+	{
+
+	}
+
+	@Test
+	public void testBattlefieldOrdersShouldBeOKAfterCardRearrangings()
+	{
+
+	}
+
+	@Test
+	public void testPlayingTokensShouldNotGiveDuplicatesInDb()
+	{
+
+	}
+
 	private void openModalWindow(final String _window, final String linkToActivateWindow,
 			final String componentIdToCheck, final String valueToCheck)
 	{
