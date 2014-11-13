@@ -16,7 +16,6 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
@@ -83,7 +82,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play card again
-		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest.getFirstPlayCardFromHandBehavior();
+		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest
+				.getFirstPlayCardFromHandBehavior();
 		Assert.assertNotNull(pcfhb);
 
 		this.tester.getRequest().setParameter("card",
@@ -140,7 +140,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(1, tagTester.size());
 
 		// Play another card
-		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest.getFirstPlayCardFromHandBehavior();
+		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest
+				.getFirstPlayCardFromHandBehavior();
 		Assert.assertNotNull(pcfhb);
 		this.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
@@ -275,7 +276,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 			final String componentIdToCheck, final String valueToCheck)
 	{
 		final ModalWindow window = this.openModalWindow(_window, linkToActivateWindow);
-		final ExternalImage img = (ExternalImage)this.tester
+		final ExternalImage img = (ExternalImage)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(window.getPageRelativePath() + ":"
 						+ window.getContentId() + ":" + componentIdToCheck);
 		Assert.assertEquals(valueToCheck, img.getImageUrl());
@@ -284,16 +285,17 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	private ModalWindow openModalWindow(final String _window, final String linkToActivateWindow)
 	{
 		// assert modal windows are in the page
-		this.tester.assertComponent(_window, ModalWindow.class);
-		final ModalWindow window = (ModalWindow)this.tester
+		SpringContextLoaderBaseTest.tester.assertComponent(_window, ModalWindow.class);
+		final ModalWindow window = (ModalWindow)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(_window);
-		this.tester.assertInvisible(window.getPageRelativePath() + ":" + window.getContentId());
+		SpringContextLoaderBaseTest.tester.assertInvisible(window.getPageRelativePath() + ":"
+				+ window.getContentId());
 
 		@SuppressWarnings("unchecked")
-		final AjaxLink<Void> link = (AjaxLink<Void>)this.tester
+		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
-		this.tester.clickLink(linkToActivateWindow, true);
+		SpringContextLoaderBaseTest.tester.clickLink(linkToActivateWindow, true);
 
 		return window;
 	}
@@ -301,8 +303,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	private void verifyFieldsOfCountCardsModalWindow(final int field,
 			final String expectedFieldContent)
 	{
-		this.waTester.switchOffTestMode();
-		final String pageDocument = this.waTester.getPushedResponse();
+		SpringContextLoaderBaseTest.waTester.switchOffTestMode();
+		final String pageDocument = SpringContextLoaderBaseTest.waTester.getPushedResponse();
 
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"countedCards", false);

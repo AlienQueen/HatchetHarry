@@ -827,7 +827,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.deckDao.getSession();
 		final SQLQuery query = session
 				.createSQLQuery("select dd.* from Deck dd where dd.Deck_DeckArchive in (select distinct da.deckArchiveId from  Deck de, DeckArchive da where de.Deck_DeckArchive = da.deckArchiveId and da.deckName is not null) group by dd.Deck_DeckArchive, dd.deckId, dd.playerId");
-        query.addEntity(Deck.class);
+		query.addEntity(Deck.class);
 
 		return (ArrayList<Deck>)query.list();
 	}
@@ -938,12 +938,12 @@ public class PersistenceService implements Serializable
 		query.setLong("deckId", deckId);
 		query.setCacheable(true);
 
-//		final SQLQuery query = session
-//				.createSQLQuery("select mc.* from MagicCard mc where mc.gameId = :gameId and mc.zone = :zone and mc.card_deck = :deckId order by mc.battlefieldOrder");
-//		query.addEntity(MagicCard.class);
-//		query.setLong("gameId", gameId);
-//		query.setParameter("zone", CardZone.BATTLEFIELD.toString());
-//		query.setCacheable(true);
+		// final SQLQuery query = session
+		// .createSQLQuery("select mc.* from MagicCard mc where mc.gameId = :gameId and mc.zone = :zone and mc.card_deck = :deckId order by mc.battlefieldOrder");
+		// query.addEntity(MagicCard.class);
+		// query.setLong("gameId", gameId);
+		// query.setParameter("zone", CardZone.BATTLEFIELD.toString());
+		// query.setCacheable(true);
 
 		try
 		{
@@ -955,28 +955,28 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-//
-//
-//		final Session session = this.magicCardDao.getSession();
-//
-//		final SQLQuery query = session
-//				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.battlefieldOrder");
-//		query.addEntity(MagicCard.class);
-//		query.setLong("gameId", gameId);
-//		query.setString("zoneName", CardZone.BATTLEFIELD.toString());
-//		query.setLong("playerId", playerId);
-//		query.setLong("deckId", deckId);
-//
-//		try
-//		{
-//			return query.list();
-//		}
-//		catch (final ObjectNotFoundException e)
-//		{
-//			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-//					+ gameId + " => no result found", e);
-//			return null;
-//		}
+		//
+		//
+		// final Session session = this.magicCardDao.getSession();
+		//
+		// final SQLQuery query = session
+		// .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.battlefieldOrder");
+		// query.addEntity(MagicCard.class);
+		// query.setLong("gameId", gameId);
+		// query.setString("zoneName", CardZone.BATTLEFIELD.toString());
+		// query.setLong("playerId", playerId);
+		// query.setLong("deckId", deckId);
+		//
+		// try
+		// {
+		// return query.list();
+		// }
+		// catch (final ObjectNotFoundException e)
+		// {
+		// PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+		// + gameId + " => no result found", e);
+		// return null;
+		// }
 	}
 
 	@Transactional(readOnly = true)
@@ -1009,29 +1009,14 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 		final List<MagicCard> all = new ArrayList<MagicCard>();
 
+		final List<MagicCard> allMagicCards = this.getAllCardsInBattlefieldForAGameAndAPlayer(
+				gameId, playerId, deckId);
+		if (null != allMagicCards)
+		{
+			all.addAll(allMagicCards);
+		}
+
 		SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.battlefieldOrder");
-		query.addEntity(MagicCard.class);
-		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.BATTLEFIELD.toString());
-		query.setLong("playerId", playerId);
-		query.setLong("deckId", deckId);
-
-		try
-		{
-			final List<MagicCard> allMagicCards = query.list();
-			if (null != allMagicCards)
-			{
-				all.addAll(allMagicCards);
-			}
-		}
-		catch (final ObjectNotFoundException e)
-		{
-			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-					+ gameId + " => no result found", e);
-		}
-
-		query = session
 				.createSQLQuery("select t.* from Token t where t.gameId = :gameId and t.Player_Token = :playerId ");
 		query.addEntity(Token.class);
 		query.setLong("gameId", gameId);
@@ -1055,7 +1040,7 @@ public class PersistenceService implements Serializable
 		}
 		catch (final ObjectNotFoundException e)
 		{
-			PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
+			PersistenceService.LOGGER.error("Error retrieving tokens in battlefield for game: "
 					+ gameId + " => no result found", e);
 		}
 
