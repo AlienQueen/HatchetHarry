@@ -83,14 +83,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play card again
-		this.tester.startPage(new HomePage(new PageParameters()));
-		this.tester.assertRenderedPage(HomePage.class);
-
-		this.tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
-		final ListItem playCardLink = (ListItem)this.tester
-				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
+		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest.getFirstPlayCardFromHandBehavior();
 		Assert.assertNotNull(pcfhb);
 
 		this.tester.getRequest().setParameter("card",
@@ -147,11 +140,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(1, tagTester.size());
 
 		// Play another card
-		this.tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
-		final ListItem playCardLink = (ListItem)this.tester
-				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
+		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest.getFirstPlayCardFromHandBehavior();
+		Assert.assertNotNull(pcfhb);
 		this.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		this.tester.executeBehavior(pcfhb);

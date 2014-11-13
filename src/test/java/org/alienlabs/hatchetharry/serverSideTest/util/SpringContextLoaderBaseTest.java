@@ -116,13 +116,7 @@ public class SpringContextLoaderBaseTest
 				HatchetHarrySession.get().getGameId()).get(0);
 		p.setDeck(this.persistenceService.getDeck(p.getDeck().getDeckId()));
 		Assert.assertEquals(60, p.getDeck().getCards().size());
-
-		// Retrieve PlayCardFromHandBehavior
-		this.tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
-		final ListItem playCardLink = (ListItem)this.tester
-				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
-		final PlayCardFromHandBehavior pcfhb = (PlayCardFromHandBehavior)playCardLink
-				.getBehaviors().get(0);
+		final PlayCardFromHandBehavior pcfhb = getFirstPlayCardFromHandBehavior();
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -148,5 +142,16 @@ public class SpringContextLoaderBaseTest
 		p = this.persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId()).get(
 				0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
+	}
+
+	// Retrieve PlayCardFromHandBehavior
+	protected static PlayCardFromHandBehavior getFirstPlayCardFromHandBehavior()
+	{
+		tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
+		final ListItem playCardLink = (ListItem)tester
+				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
+		PlayCardFromHandBehavior b = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(0);
+		Assert.assertNotNull(b);
+		return b;
 	}
 }
