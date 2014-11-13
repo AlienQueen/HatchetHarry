@@ -709,202 +709,25 @@
       <output-path>$PROJECT_DIR$/target</output-path>
       <root id="archive" name="ROOT.war">
         <element id="artifact" artifact-name="hatchetharry:war exploded" />
-        <element id="directory" name="WEB-INF">
-          <element id="directory" name="lib">
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/ch/qos/mistletoe/mistletoe-wicket/0.3-SNAPSHOT/mistletoe-wicket-0.3-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/ch/qos/mistletoe/mistletoe-core/0.3-SNAPSHOT/mistletoe-core-0.3-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.17.0-SNAPSHOT/wicket-core-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-util/6.17.0-SNAPSHOT/wicket-util-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-request/6.17.0-SNAPSHOT/wicket-request-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-extensions/6.17.0-SNAPSHOT/wicket-extensions-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/javassist/javassist/3.18.2-GA/javassist-3.18.2-GA.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mariadb/jdbc/mariadb-java-client/1.1.7/mariadb-java-client-1.1.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna/3.3.0/jna-3.3.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna/3.3.0/jna-3.3.0-platform.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/skins/maven-default-skin/1.1/maven-default-skin-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-webapp/9.2.2.v20140723/jetty-webapp-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/9.2.2.v20140723/jetty-xml-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.2.2.v20140723/jetty-util-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-servlet/9.2.2.v20140723/jetty-servlet-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/9.2.2.v20140723/jetty-security-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.2.2.v20140723/jetty-server-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.2.2.v20140723/jetty-http-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.2.2.v20140723/jetty-io-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-validator/5.1.2.Final/hibernate-validator-5.1.2.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.2.0.Beta1/jboss-logging-3.2.0.Beta1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/fasterxml/classmate/1.0.0/classmate-1.0.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/opera/operadriver/1.5/operadriver-1.5.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/opera/operalaunchers/1.1/operalaunchers-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/guava/guava/13.0.1/guava-13.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/2.4.1/protobuf-java-2.4.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-jxpath/commons-jxpath/1.3/commons-jxpath-1.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/ini4j/ini4j/0.5.2/ini4j-0.5.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-java/2.35.0/selenium-java-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-android-driver/2.35.0/selenium-android-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-remote-driver/2.42.2/selenium-remote-driver-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/json/json/20080701/json-20080701.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-api/2.42.2/selenium-api-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.2/httpclient-4.3.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.1/httpcore-4.3.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/java/dev/jna/platform/3.4.0/platform-3.4.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-chrome-driver/2.42.2/selenium-chrome-driver-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-htmlunit-driver/2.35.0/selenium-htmlunit-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.12/htmlunit-2.12.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/xalan/2.7.1/xalan-2.7.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/serializer/2.7.1/serializer-2.7.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.2/commons-collections-3.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpmime/4.2.3/httpmime-4.2.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit-core-js/2.12/htmlunit-core-js-2.12.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/nekohtml/nekohtml/1.9.18/nekohtml-1.9.18.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/cssparser/cssparser/0.9.9/cssparser-0.9.9.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/w3c/css/sac/1.3/sac-1.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-io/commons-io/2.2/commons-io-2.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-websocket/8.1.9.v20130131/jetty-websocket-8.1.9.v20130131.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-firefox-driver/2.35.0/selenium-firefox-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-ie-driver/2.42.2/selenium-ie-driver-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-iphone-driver/2.35.0/selenium-iphone-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-safari-driver/2.35.0/selenium-safari-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/webbitserver/webbit/0.4.14/webbit-0.4.14.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/io/netty/netty/3.5.2.Final/netty-3.5.2.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-support/2.35.0/selenium-support-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sun/xml/bind/jaxb-impl/2.2.7-b41/jaxb-impl-2.2.7-b41.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-client/9.2.2.v20140723/websocket-client-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-common/9.2.2.v20140723/websocket-common-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-api/9.2.2.v20140723/websocket-api-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-annotations/1.2.0.Final/jboss-logging-annotations-1.2.0.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Draft-16/hibernate-jpa-2.1-api-1.0.0.Draft-16.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/jandex/1.2.0.Beta1/jandex-1.2.0.Beta1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.20-SNAPSHOT/wicket-atmosphere-0.20-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/webjars/jquery-atmosphere/2.1.6/jquery-atmosphere-2.1.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/de/agilecoders/wicket/webjars/wicket-webjars/0.4.2/wicket-webjars-0.4.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/reflections/reflections/0.9.8/reflections-0.9.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javassist/javassist/3.12.1.GA/javassist-3.12.1.GA.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/stephenc/findbugs/findbugs-annotations/1.3.9-1/findbugs-annotations-1.3.9-1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/aspectj/aspectjweaver/1.6.12/aspectjweaver-1.6.12.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.8.3/ehcache-2.8.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/aplombee/wicket-quickview/6.0-SNAPSHOT/wicket-quickview-6.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.8/atmosphere-runtime-native-2.1.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-jbossweb/2.0.1/atmosphere-compat-jbossweb-2.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat/2.0.1/atmosphere-compat-tomcat-2.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/mojo/jdepend-maven-plugin/2.0/jdepend-maven-plugin-2.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-plugin-api/2.2.1/maven-plugin-api-2.2.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/reporting/maven-reporting-api/2.2.1/maven-reporting-api-2.2.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-sink-api/1.1/doxia-sink-api-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-logging-api/1.1/doxia-logging-api-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-utils/3.0.15/plexus-utils-3.0.15.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/reporting/maven-reporting-impl/2.0.4.3/maven-reporting-impl-2.0.4.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-project/2.0.8/maven-project-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-settings/2.0.8/maven-settings-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-model/2.0.8/maven-model-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-profile/2.0.8/maven-profile-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-artifact-manager/2.0.8/maven-artifact-manager-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-repository-metadata/2.0.8/maven-repository-metadata-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-artifact/2.0.8/maven-artifact-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-core/1.0/doxia-core-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-site-renderer/1.0/doxia-site-renderer-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-i18n/1.0-beta-7/plexus-i18n-1.0-beta-7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-velocity/1.1.7/plexus-velocity-1.1.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/velocity/velocity/1.5/velocity-1.5.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/oro/oro/2.0.8/oro-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-decoration-model/1.0/doxia-decoration-model-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-apt/1.0/doxia-module-apt-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-fml/1.0/doxia-module-fml-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-xdoc/1.0/doxia-module-xdoc-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-xhtml/1.0/doxia-module-xhtml-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-validator/commons-validator/1.2.0/commons-validator-1.2.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-digester/commons-digester/1.6/commons-digester-1.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/shared/maven-doxia-tools/1.0.2/maven-doxia-tools-1.0.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/jdepend/jdepend/2.9.1/jdepend-2.9.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/wicketstuff/wicket-facebook/6.16.0/wicket-facebook-6.16.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-web/4.0.6.RELEASE/spring-web-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.0.6.RELEASE/spring-aop-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.6.RELEASE/spring-beans-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-core/4.0.6.RELEASE/spring-core-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-context/4.0.6.RELEASE/spring-context-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.0.6.RELEASE/spring-expression-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-spring/6.17.0-SNAPSHOT/wicket-spring-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-ioc/6.17.0-SNAPSHOT/wicket-ioc-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/cglib/cglib/2.2.2/cglib-2.2.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/asm/asm/3.3.1/asm-3.3.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/inject/javax.inject/1/javax.inject-1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.6.Final/hibernate-ehcache-4.3.6.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache-core/2.4.3/ehcache-core-2.4.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mockito/mockito-core/1.9.5/mockito-core-1.9.5.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/objenesis/objenesis/1.0/objenesis-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/zenika/wicket-component-debug/0.2/wicket-component-debug-0.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/redback/components/cache/spring-cache-ehcache/1.1/spring-cache-ehcache-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/redback/components/cache/spring-cache-api/1.1/spring-cache-api-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/common/hibernate-commons-annotations/4.0.5.Final/hibernate-commons-annotations-4.0.5.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/wicketstuff/wicketstuff-annotation/6.16.0/wicketstuff-annotation-6.16.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/mojo/emma-maven-plugin/1.0-alpha-3/emma-maven-plugin-1.0-alpha-3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/emma/emma/2.1.5320/emma-2.1.5320.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-plugin-registry/2.0.8/maven-plugin-registry-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xom/xom/1.1/xom-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/jaxen/jaxen/1.1-beta-6/jaxen-1.1-beta-6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/ninja-squad/DbSetup/1.3.0/DbSetup-1.3.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.0.6.RELEASE/spring-orm-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.0.6.RELEASE/spring-jdbc-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.0.6.RELEASE/spring-tx-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat7/2.0.1/atmosphere-compat-tomcat7-2.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-server/9.2.2.v20140723/websocket-server-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-servlet/9.2.2.v20140723/websocket-servlet-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/c3p0/c3p0/0.9.1.2/c3p0-0.9.1.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/mojo/javancss-maven-plugin/2.0/javancss-maven-plugin-2.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/jdom/jdom/1.0/jdom-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/javancss/javancss/32.53/javancss-32.53.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javancss/ccl/29.50/ccl-29.50.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javancss/jhbasic/29.50/jhbasic-29.50.jar" />
-          </element>
-        </element>
       </root>
     </artifact>
     <artifact type="exploded-war" name="hatchetharry:war exploded">
       <output-path>$PROJECT_DIR$/target/ROOT</output-path>
       <root id="root">
-        <element id="javaee-facet-resources" facet="hatchetharry/web/hatchetharry" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="hatchetharry" />
           </element>
           <element id="directory" name="lib">
             <element id="library" level="project" name="Maven: org.apache.wicket:wicket-core:6.17.0" />
-            <element id="library" level="project" name="Maven: org.apache.wicket:wicket-util:6.17.0" />
-            <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.7" />
             <element id="library" level="project" name="Maven: org.apache.wicket:wicket-request:6.17.0" />
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:4.3.6.Final" />
-            <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.2.0.Beta1" />
-            <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging-annotations:1.2.0.Final" />
-            <element id="library" level="project" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final" />
             <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
             <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
             <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Draft-16" />
-            <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.2-GA" />
-            <element id="library" level="project" name="Maven: antlr:antlr:2.7.6" />
+            <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.2.0.Beta1" />
+            <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging-annotations:1.2.0.Final" />
+            <element id="library" level="project" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final" />
             <element id="library" level="project" name="Maven: org.jboss:jandex:1.2.0.Beta1" />
             <element id="library" level="project" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.5.Final" />
             <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.7" />
@@ -914,19 +737,18 @@
             <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-server:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-util:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-io:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-servlet:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-servlet:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-security:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-server:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-http:9.2.2.v20140723" />
+            <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.2.2.v20140723" />
+            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-util:9.2.2.v20140723" />
+            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-io:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-webapp:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-xml:9.2.2.v20140723" />
+            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-server:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: ch.qos.mistletoe:mistletoe-wicket:0.3-SNAPSHOT" />
             <element id="library" level="project" name="Maven: ch.qos.mistletoe:mistletoe-core:0.3-SNAPSHOT" />
-            <element id="library" level="project" name="Maven: org.apache.wicket:wicket-extensions:6.17.0" />
             <element id="library" level="project" name="Maven: org.mariadb.jdbc:mariadb-java-client:1.1.7" />
             <element id="library" level="project" name="Maven: net.java.dev.jna:jna:3.3.0" />
             <element id="library" level="project" name="Maven: net.java.dev.jna:jna:platform:3.3.0" />
@@ -938,25 +760,44 @@
             <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.2" />
             <element id="library" level="project" name="Maven: org.wicketstuff:wicketstuff-annotation:6.17.0" />
             <element id="library" level="project" name="Maven: org.wicketstuff:wicket-facebook:6.17.0" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-core:4.0.6.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-core:4.1.1.RELEASE" />
             <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
             <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.4" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.0.6.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.0.6.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.0.6.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.0.6.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.hsqldb:hsqldb:2.3.2" />
+            <element id="library" level="project" name="Maven: antlr:antlr:2.7.6" />
             <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-compat-jbossweb:2.0.1" />
             <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-compat-tomcat:2.0.1" />
-            <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-runtime-native:2.1.8" />
+            <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-runtime-native:2.1.9" />
             <element id="library" level="project" name="Maven: com.opera:operadriver:1.5" />
             <element id="library" level="project" name="Maven: com.opera:operalaunchers:1.1" />
-            <element id="library" level="project" name="Maven: com.google.guava:guava:13.0.1" />
             <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:2.4.1" />
             <element id="library" level="project" name="Maven: commons-jxpath:commons-jxpath:1.3" />
             <element id="library" level="project" name="Maven: org.apache.commons:commons-exec:1.1" />
             <element id="library" level="project" name="Maven: org.ini4j:ini4j:0.5.2" />
             <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-java:2.35.0" />
             <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-android-driver:2.35.0" />
+            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-htmlunit-driver:2.35.0" />
+            <element id="library" level="project" name="Maven: net.sourceforge.htmlunit:htmlunit:2.12" />
+            <element id="library" level="project" name="Maven: xalan:xalan:2.7.1" />
+            <element id="library" level="project" name="Maven: xalan:serializer:2.7.1" />
+            <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.1" />
+            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.2.3" />
+            <element id="library" level="project" name="Maven: net.sourceforge.htmlunit:htmlunit-core-js:2.12" />
+            <element id="library" level="project" name="Maven: net.sourceforge.nekohtml:nekohtml:1.9.18" />
+            <element id="library" level="project" name="Maven: net.sourceforge.cssparser:cssparser:0.9.9" />
+            <element id="library" level="project" name="Maven: org.w3c.css:sac:1.3" />
+            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-websocket:8.1.9.v20130131" />
+            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-firefox-driver:2.35.0" />
+            <element id="library" level="project" name="Maven: commons-io:commons-io:2.2" />
+            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-iphone-driver:2.35.0" />
+            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-safari-driver:2.35.0" />
+            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-support:2.35.0" />
+            <element id="library" level="project" name="Maven: org.webbitserver:webbit:0.4.14" />
+            <element id="library" level="project" name="Maven: io.netty:netty:3.5.2.Final" />
+            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-chrome-driver:2.42.2" />
             <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-remote-driver:2.42.2" />
             <element id="library" level="project" name="Maven: cglib:cglib-nodep:2.1_3" />
             <element id="library" level="project" name="Maven: org.json:json:20080701" />
@@ -965,57 +806,38 @@
             <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.3.1" />
             <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1.3" />
             <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.6" />
-            <element id="library" level="project" name="Maven: net.java.dev.jna:platform:3.4.0" />
-            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-chrome-driver:2.42.2" />
-            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-htmlunit-driver:2.35.0" />
-            <element id="library" level="project" name="Maven: net.sourceforge.htmlunit:htmlunit:2.12" />
-            <element id="library" level="project" name="Maven: xalan:xalan:2.7.1" />
-            <element id="library" level="project" name="Maven: xalan:serializer:2.7.1" />
-            <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2" />
-            <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.1" />
-            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.2.3" />
-            <element id="library" level="project" name="Maven: net.sourceforge.htmlunit:htmlunit-core-js:2.12" />
-            <element id="library" level="project" name="Maven: xerces:xercesImpl:2.6.2" />
-            <element id="library" level="project" name="Maven: net.sourceforge.nekohtml:nekohtml:1.9.18" />
-            <element id="library" level="project" name="Maven: net.sourceforge.cssparser:cssparser:0.9.9" />
-            <element id="library" level="project" name="Maven: org.w3c.css:sac:1.3" />
-            <element id="library" level="project" name="Maven: commons-io:commons-io:2.2" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-websocket:8.1.9.v20130131" />
-            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-firefox-driver:2.35.0" />
             <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-ie-driver:2.42.2" />
-            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-iphone-driver:2.35.0" />
-            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-safari-driver:2.35.0" />
-            <element id="library" level="project" name="Maven: org.webbitserver:webbit:0.4.14" />
-            <element id="library" level="project" name="Maven: io.netty:netty:3.5.2.Final" />
-            <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-support:2.35.0" />
+            <element id="library" level="project" name="Maven: net.java.dev.jna:platform:3.4.0" />
+            <element id="library" level="project" name="Maven: org.apache.wicket:wicket-extensions:6.17.0" />
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-ehcache:4.3.6.Final" />
             <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.4.3" />
             <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.8.3" />
+            <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.2-GA" />
             <element id="library" level="project" name="Maven: org.apache.maven.skins:maven-default-skin:1.1" />
             <element id="library" level="project" name="Maven: com.github.stephenc.findbugs:findbugs-annotations:1.3.9-1" />
+            <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.7" />
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:5.1.2.Final" />
             <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.0.0" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-web:4.0.6.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.0.6.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.1.RELEASE" />
             <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-context:4.0.6.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.0.6.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.1.RELEASE" />
             <element id="library" level="project" name="Maven: org.codehaus.mojo:emma-maven-plugin:1.0-alpha-3" />
             <element id="library" level="project" name="Maven: emma:emma:2.1.5320" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-artifact:2.0.8" />
-            <element id="library" level="project" name="Maven: org.codehaus.plexus:plexus-utils:1.4.5" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-plugin-api:2.0" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-model:2.0.8" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-project:2.0.8" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-settings:2.0.8" />
-            <element id="library" level="project" name="Maven: org.codehaus.plexus:plexus-container-default:1.0-alpha-9-stable-1" />
-            <element id="library" level="project" name="Maven: classworlds:classworlds:1.1-alpha-2" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-profile:2.0.8" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-artifact-manager:2.0.8" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-repository-metadata:2.0.8" />
             <element id="library" level="project" name="Maven: org.apache.maven.wagon:wagon-provider-api:1.0-beta-2" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-plugin-registry:2.0.8" />
+            <element id="library" level="project" name="Maven: org.codehaus.plexus:plexus-container-default:1.0-alpha-9-stable-1" />
+            <element id="library" level="project" name="Maven: classworlds:classworlds:1.1-alpha-2" />
             <element id="library" level="project" name="Maven: org.apache.maven.doxia:doxia-site-renderer:1.0" />
             <element id="library" level="project" name="Maven: org.apache.maven.doxia:doxia-core:1.0" />
             <element id="library" level="project" name="Maven: org.apache.maven.doxia:doxia-sink-api:1.0" />
@@ -1033,199 +855,41 @@
             <element id="library" level="project" name="Maven: commons-validator:commons-validator:1.2.0" />
             <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.7.0" />
             <element id="library" level="project" name="Maven: commons-digester:commons-digester:1.6" />
+            <element id="library" level="project" name="Maven: org.codehaus.plexus:plexus-utils:1.4.5" />
             <element id="library" level="project" name="Maven: xom:xom:1.1" />
             <element id="library" level="project" name="Maven: xerces:xmlParserAPIs:2.6.2" />
-            <element id="library" level="project" name="Maven: jaxen:jaxen:1.1-beta-6" />
+            <element id="library" level="project" name="Maven: xerces:xercesImpl:2.6.2" />
             <element id="library" level="project" name="Maven: org.codehaus.mojo:javancss-maven-plugin:2.0" />
+            <element id="library" level="project" name="Maven: jaxen:jaxen:1.1-beta-6" />
             <element id="library" level="project" name="Maven: jdom:jdom:1.0" />
             <element id="library" level="project" name="Maven: org.codehaus.javancss:javancss:32.53" />
             <element id="library" level="project" name="Maven: javancss:ccl:29.50" />
             <element id="library" level="project" name="Maven: javancss:jhbasic:29.50" />
             <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.12" />
-            <element id="library" level="project" name="Maven: org.apache.wicket.experimental.wicket6:wicket-atmosphere:0.21-SNAPSHOT" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.apache.wicket.experimental.wicket6:wicket-atmosphere:0.20" />
             <element id="library" level="project" name="Maven: org.webjars:jquery-atmosphere:2.1.6" />
-            <element id="library" level="project" name="Maven: de.agilecoders.wicket.webjars:wicket-webjars:0.4.2" />
-            <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.8" />
-            <element id="library" level="project" name="Maven: javassist:javassist:3.12.1.GA" />
             <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.7-b41" />
             <element id="library" level="project" name="Maven: org.codehaus.redback.components.cache:spring-cache-ehcache:1.1" />
+            <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2" />
             <element id="library" level="project" name="Maven: org.codehaus.redback.components.cache:spring-cache-api:1.1" />
             <element id="library" level="project" name="Maven: javax.annotation:jsr250-api:1.0" />
+            <element id="library" level="project" name="Maven: com.google.guava:guava:13.0.1" />
             <element id="library" level="project" name="Maven: org.codehaus.mojo:jdepend-maven-plugin:maven-plugin:2.0" />
             <element id="library" level="project" name="Maven: jdepend:jdepend:2.9.1" />
+            <element id="library" level="project" name="Maven: org.apache.wicket:wicket-util:6.17.0" />
             <element id="library" level="project" name="Maven: com.aplombee:wicket-quickview:6.0-SNAPSHOT" />
             <element id="library" level="project" name="Maven: org.mockito:mockito-core:1.9.5" />
             <element id="library" level="project" name="Maven: org.objenesis:objenesis:1.0" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/ch/qos/mistletoe/mistletoe-wicket/0.3-SNAPSHOT/mistletoe-wicket-0.3-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/ch/qos/mistletoe/mistletoe-core/0.3-SNAPSHOT/mistletoe-core-0.3-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.17.0-SNAPSHOT/wicket-core-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-util/6.17.0-SNAPSHOT/wicket-util-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-request/6.17.0-SNAPSHOT/wicket-request-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-extensions/6.17.0-SNAPSHOT/wicket-extensions-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/javassist/javassist/3.18.2-GA/javassist-3.18.2-GA.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mariadb/jdbc/mariadb-java-client/1.1.7/mariadb-java-client-1.1.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna/3.3.0/jna-3.3.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna/3.3.0/jna-3.3.0-platform.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/skins/maven-default-skin/1.1/maven-default-skin-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-webapp/9.2.2.v20140723/jetty-webapp-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/9.2.2.v20140723/jetty-xml-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.2.2.v20140723/jetty-util-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-servlet/9.2.2.v20140723/jetty-servlet-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/9.2.2.v20140723/jetty-security-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.2.2.v20140723/jetty-server-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.2.2.v20140723/jetty-http-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.2.2.v20140723/jetty-io-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-validator/5.1.2.Final/hibernate-validator-5.1.2.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.2.0.Beta1/jboss-logging-3.2.0.Beta1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/fasterxml/classmate/1.0.0/classmate-1.0.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/opera/operadriver/1.5/operadriver-1.5.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/opera/operalaunchers/1.1/operalaunchers-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/guava/guava/13.0.1/guava-13.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/2.4.1/protobuf-java-2.4.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-jxpath/commons-jxpath/1.3/commons-jxpath-1.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/ini4j/ini4j/0.5.2/ini4j-0.5.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-java/2.35.0/selenium-java-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-android-driver/2.35.0/selenium-android-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-remote-driver/2.42.2/selenium-remote-driver-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/json/json/20080701/json-20080701.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-api/2.42.2/selenium-api-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.2/httpclient-4.3.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.1/httpcore-4.3.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/java/dev/jna/platform/3.4.0/platform-3.4.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-chrome-driver/2.42.2/selenium-chrome-driver-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-htmlunit-driver/2.35.0/selenium-htmlunit-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.12/htmlunit-2.12.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/xalan/2.7.1/xalan-2.7.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/serializer/2.7.1/serializer-2.7.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.2/commons-collections-3.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpmime/4.2.3/httpmime-4.2.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit-core-js/2.12/htmlunit-core-js-2.12.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/nekohtml/nekohtml/1.9.18/nekohtml-1.9.18.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sourceforge/cssparser/cssparser/0.9.9/cssparser-0.9.9.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/w3c/css/sac/1.3/sac-1.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-io/commons-io/2.2/commons-io-2.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-websocket/8.1.9.v20130131/jetty-websocket-8.1.9.v20130131.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-firefox-driver/2.35.0/selenium-firefox-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-ie-driver/2.42.2/selenium-ie-driver-2.42.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-iphone-driver/2.35.0/selenium-iphone-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-safari-driver/2.35.0/selenium-safari-driver-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/webbitserver/webbit/0.4.14/webbit-0.4.14.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/io/netty/netty/3.5.2.Final/netty-3.5.2.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/seleniumhq/selenium/selenium-support/2.35.0/selenium-support-2.35.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sun/xml/bind/jaxb-impl/2.2.7-b41/jaxb-impl-2.2.7-b41.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-client/9.2.2.v20140723/websocket-client-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-common/9.2.2.v20140723/websocket-common-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-api/9.2.2.v20140723/websocket-api-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-annotations/1.2.0.Final/jboss-logging-annotations-1.2.0.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Draft-16/hibernate-jpa-2.1-api-1.0.0.Draft-16.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/jandex/1.2.0.Beta1/jandex-1.2.0.Beta1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.20-SNAPSHOT/wicket-atmosphere-0.20-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/webjars/jquery-atmosphere/2.1.6/jquery-atmosphere-2.1.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/de/agilecoders/wicket/webjars/wicket-webjars/0.4.2/wicket-webjars-0.4.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/reflections/reflections/0.9.8/reflections-0.9.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javassist/javassist/3.12.1.GA/javassist-3.12.1.GA.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/stephenc/findbugs/findbugs-annotations/1.3.9-1/findbugs-annotations-1.3.9-1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/aspectj/aspectjweaver/1.6.12/aspectjweaver-1.6.12.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.8.3/ehcache-2.8.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/aplombee/wicket-quickview/6.0-SNAPSHOT/wicket-quickview-6.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.8/atmosphere-runtime-native-2.1.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-jbossweb/2.0.1/atmosphere-compat-jbossweb-2.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat/2.0.1/atmosphere-compat-tomcat-2.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/mojo/jdepend-maven-plugin/2.0/jdepend-maven-plugin-2.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-plugin-api/2.2.1/maven-plugin-api-2.2.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/reporting/maven-reporting-api/2.2.1/maven-reporting-api-2.2.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-sink-api/1.1/doxia-sink-api-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-logging-api/1.1/doxia-logging-api-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-utils/3.0.15/plexus-utils-3.0.15.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/reporting/maven-reporting-impl/2.0.4.3/maven-reporting-impl-2.0.4.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-project/2.0.8/maven-project-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-settings/2.0.8/maven-settings-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-model/2.0.8/maven-model-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-profile/2.0.8/maven-profile-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-artifact-manager/2.0.8/maven-artifact-manager-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-repository-metadata/2.0.8/maven-repository-metadata-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-artifact/2.0.8/maven-artifact-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-core/1.0/doxia-core-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-site-renderer/1.0/doxia-site-renderer-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-i18n/1.0-beta-7/plexus-i18n-1.0-beta-7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-velocity/1.1.7/plexus-velocity-1.1.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/velocity/velocity/1.5/velocity-1.5.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/oro/oro/2.0.8/oro-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-decoration-model/1.0/doxia-decoration-model-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-apt/1.0/doxia-module-apt-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-fml/1.0/doxia-module-fml-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-xdoc/1.0/doxia-module-xdoc-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/doxia/doxia-module-xhtml/1.0/doxia-module-xhtml-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-validator/commons-validator/1.2.0/commons-validator-1.2.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-digester/commons-digester/1.6/commons-digester-1.6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/shared/maven-doxia-tools/1.0.2/maven-doxia-tools-1.0.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/jdepend/jdepend/2.9.1/jdepend-2.9.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/wicketstuff/wicket-facebook/6.16.0/wicket-facebook-6.16.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-web/4.0.6.RELEASE/spring-web-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.0.6.RELEASE/spring-aop-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.6.RELEASE/spring-beans-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-core/4.0.6.RELEASE/spring-core-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-context/4.0.6.RELEASE/spring-context-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.0.6.RELEASE/spring-expression-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-spring/6.17.0-SNAPSHOT/wicket-spring-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/wicket/wicket-ioc/6.17.0-SNAPSHOT/wicket-ioc-6.17.0-SNAPSHOT.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/cglib/cglib/2.2.2/cglib-2.2.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/asm/asm/3.3.1/asm-3.3.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/inject/javax.inject/1/javax.inject-1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.6.Final/hibernate-ehcache-4.3.6.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache-core/2.4.3/ehcache-core-2.4.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mockito/mockito-core/1.9.5/mockito-core-1.9.5.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/objenesis/objenesis/1.0/objenesis-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/zenika/wicket-component-debug/0.2/wicket-component-debug-0.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/redback/components/cache/spring-cache-ehcache/1.1/spring-cache-ehcache-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/redback/components/cache/spring-cache-api/1.1/spring-cache-api-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/common/hibernate-commons-annotations/4.0.5.Final/hibernate-commons-annotations-4.0.5.Final.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/wicketstuff/wicketstuff-annotation/6.16.0/wicketstuff-annotation-6.16.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/mojo/emma-maven-plugin/1.0-alpha-3/emma-maven-plugin-1.0-alpha-3.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/emma/emma/2.1.5320/emma-2.1.5320.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-plugin-registry/2.0.8/maven-plugin-registry-2.0.8.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xom/xom/1.1/xom-1.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/jaxen/jaxen/1.1-beta-6/jaxen-1.1-beta-6.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/com/ninja-squad/DbSetup/1.3.0/DbSetup-1.3.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.0.6.RELEASE/spring-orm-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.0.6.RELEASE/spring-jdbc-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.0.6.RELEASE/spring-tx-4.0.6.RELEASE.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat7/2.0.1/atmosphere-compat-tomcat7-2.0.1.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-server/9.2.2.v20140723/websocket-server-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-servlet/9.2.2.v20140723/websocket-servlet-9.2.2.v20140723.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/c3p0/c3p0/0.9.1.2/c3p0-0.9.1.2.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/mojo/javancss-maven-plugin/2.0/javancss-maven-plugin-2.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/jdom/jdom/1.0/jdom-1.0.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/javancss/javancss/32.53/javancss-32.53.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javancss/ccl/29.50/ccl-29.50.jar" />
-            <element id="file-copy" path="$MAVEN_REPOSITORY$/javancss/jhbasic/29.50/jhbasic-29.50.jar" />
+            <element id="library" level="project" name="Maven: de.agilecoders.wicket.webjars:wicket-webjars:0.4.2" />
+            <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.8" />
+            <element id="library" level="project" name="Maven: javassist:javassist:3.12.1.GA" />
           </element>
         </element>
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/target/MANIFEST.MF" />
+        </element>
+        <element id="javaee-facet-resources" facet="hatchetharry/web/Web" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="hatchetharry:hatchetharry exploded">
@@ -1432,7 +1096,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="hatchetharry" target="1.6" />
+      <module name="hatchetharry" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="">
@@ -1504,13 +1168,6 @@
   <component name="Jenkins.Application.Settings">
     <option name="rssSettings">
       <RssSettings />
-    </option>
-  </component>
-  <component name="MavenProjectsManager">
-    <option name="originalFiles">
-      <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
-      </list>
     </option>
   </component>
   <component name="Palette2">
@@ -1642,7 +1299,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$" dialect="MySQL" />
   </component>
@@ -2545,15 +2202,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/velocity/velocity/1.5/velocity-1.5-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.apache.wicket.experimental.wicket6:wicket-atmosphere:0.21-SNAPSHOT">
+    <library name="Maven: org.apache.wicket.experimental.wicket6:wicket-atmosphere:0.20">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140923.131637-11.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.20/wicket-atmosphere-0.20.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140923.131637-11-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.20/wicket-atmosphere-0.20-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21-SNAPSHOT/wicket-atmosphere-0.21-20140923.131637-11-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.20/wicket-atmosphere-0.20-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.apache.wicket:wicket-core:6.17.0">
@@ -2666,15 +2323,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat/2.0.1/atmosphere-compat-tomcat-2.0.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.atmosphere:atmosphere-runtime-native:2.1.8">
+    <library name="Maven: org.atmosphere:atmosphere-runtime-native:2.1.9">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.8/atmosphere-runtime-native-2.1.8.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.8/atmosphere-runtime-native-2.1.8-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.8/atmosphere-runtime-native-2.1.8-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.codehaus.javancss:javancss:32.53">
@@ -3007,6 +2664,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-validator/5.1.2.Final/hibernate-validator-5.1.2.Final-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.hsqldb:hsqldb:2.3.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.ini4j:ini4j:0.5.2">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/ini4j/ini4j/0.5.2/ini4j-0.5.2.jar!/" />
@@ -3271,103 +2939,103 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-aop:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-aop:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.0.6.RELEASE/spring-aop-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.1.RELEASE/spring-aop-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.0.6.RELEASE/spring-aop-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.1.RELEASE/spring-aop-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.0.6.RELEASE/spring-aop-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.1.RELEASE/spring-aop-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-beans:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-beans:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.6.RELEASE/spring-beans-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.1.RELEASE/spring-beans-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.6.RELEASE/spring-beans-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.1.RELEASE/spring-beans-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.6.RELEASE/spring-beans-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.1.RELEASE/spring-beans-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-context:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-context:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.0.6.RELEASE/spring-context-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.1.RELEASE/spring-context-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.0.6.RELEASE/spring-context-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.1.RELEASE/spring-context-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.0.6.RELEASE/spring-context-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.1.RELEASE/spring-context-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-core:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-core:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.0.6.RELEASE/spring-core-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.1.RELEASE/spring-core-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.0.6.RELEASE/spring-core-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.1.RELEASE/spring-core-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.0.6.RELEASE/spring-core-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.1.RELEASE/spring-core-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-expression:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-expression:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.0.6.RELEASE/spring-expression-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.1.RELEASE/spring-expression-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.0.6.RELEASE/spring-expression-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.1.RELEASE/spring-expression-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.0.6.RELEASE/spring-expression-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.1.RELEASE/spring-expression-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-jdbc:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-jdbc:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.0.6.RELEASE/spring-jdbc-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.1.RELEASE/spring-jdbc-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.0.6.RELEASE/spring-jdbc-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.1.RELEASE/spring-jdbc-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.0.6.RELEASE/spring-jdbc-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.1.RELEASE/spring-jdbc-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-orm:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-orm:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.0.6.RELEASE/spring-orm-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.1.RELEASE/spring-orm-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.0.6.RELEASE/spring-orm-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.1.RELEASE/spring-orm-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.0.6.RELEASE/spring-orm-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.1.RELEASE/spring-orm-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-tx:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-tx:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.0.6.RELEASE/spring-tx-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.1.RELEASE/spring-tx-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.0.6.RELEASE/spring-tx-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.1.RELEASE/spring-tx-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.0.6.RELEASE/spring-tx-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.1.RELEASE/spring-tx-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-web:4.0.6.RELEASE">
+    <library name="Maven: org.springframework:spring-web:4.1.1.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.0.6.RELEASE/spring-web-4.0.6.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.1.RELEASE/spring-web-4.1.1.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.0.6.RELEASE/spring-web-4.0.6.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.1.RELEASE/spring-web-4.1.1.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.0.6.RELEASE/spring-web-4.0.6.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.1.RELEASE/spring-web-4.1.1.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.w3c.css:sac:1.3">
@@ -3714,4 +3382,3 @@
     </option>
   </component>
 </project>
-
