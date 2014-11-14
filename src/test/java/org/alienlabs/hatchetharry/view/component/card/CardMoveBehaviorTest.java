@@ -30,7 +30,7 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
 
-		// Retrieve the card and the CardMoveBehavior
+		// Retrieve the card and the ReorderCardInBattlefieldBehavior
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
@@ -74,7 +74,7 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(3, allCardsInBattlefield.size());
 
-		final MagicCard mc = allCardsInBattlefield.get(0);
+		final MagicCard mc = this.persistenceService.getCardFromUuid(card.getUuid());
 		Assert.assertEquals(0, mc.getBattlefieldOrder().intValue());
 
 		// Verify names

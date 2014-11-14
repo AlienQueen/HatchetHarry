@@ -37,6 +37,27 @@
 
 
 
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass" value="org.mariadb.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/hhTest?generateSimpleParameterMetadata=true"/>
+        <property name="user" value="less"/>
+        <property name="password" value="more"/>
+
+        <!-- these are C3P0 properties -->
+        <property name="acquireIncrement" value="10"/>
+        <property name="initialPoolSize" value="20"/>
+        <property name="minPoolSize" value="20"/>
+        <property name="maxPoolSize" value="500"/>
+        <property name="maxIdleTime" value="120"/>
+        <property name="maxIdleTimeExcessConnections" value="120"/>
+        <property name="idleConnectionTestPeriod" value="3000"/>
+        <property name="maxStatements" value="200"/>
+        <property name="numHelperThreads" value="20"/>
+        <property name="unreturnedConnectionTimeout" value="120"/>
+        <property name="maxConnectionAge" value="20"/>
+    </bean>
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource"/>
