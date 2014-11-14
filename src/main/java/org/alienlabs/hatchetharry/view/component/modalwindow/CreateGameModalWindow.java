@@ -208,7 +208,6 @@ public class CreateGameModalWindow extends Panel
 				deck.setPlayerId(HatchetHarrySession.get().getPlayer().getId());
 				deck.setDeckArchive(CreateGameModalWindow.this.decks.getModelObject()
 						.getDeckArchive());
-				CreateGameModalWindow.this.persistenceService.saveDeck(deck);
 
 				final List<CollectibleCard> allCollectibleCardsInDeckArchive = CreateGameModalWindow.this.persistenceService
 						.giveAllCollectibleCardsInDeckArchive(deck.getDeckArchive());
@@ -247,7 +246,7 @@ public class CreateGameModalWindow extends Panel
 					firstCards.add(aCard);
 				}
 
-				CreateGameModalWindow.this.persistenceService.updateDeck(deck);
+				CreateGameModalWindow.this.persistenceService.saveDeck(deck);
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 

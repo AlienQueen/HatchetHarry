@@ -3,7 +3,7 @@ package org.alienlabs.hatchetharry.serverSideTest;
 import java.util.List;
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.*;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
@@ -13,12 +13,13 @@ import org.alienlabs.hatchetharry.view.component.gui.HandComponent;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.zone.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.ajax.form.*;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.tester.FormTester;
-import org.apache.wicket.util.tester.TagTester;
+import org.apache.wicket.util.tester.*;
 import org.junit.*;
 
 /**
@@ -239,7 +240,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, player.getDeck().getCards().size());
 
-		// Create game
+		// Join game
 		this.tester.assertComponent("joinGameLink", AjaxLink.class);
 		this.tester.clickLink("joinGameLink", true);
 
@@ -255,9 +256,42 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
-	public void testDeckListsShouldNotContainDuplicatesInModalWindows()
-	{
+	public void testDeckListsShouldNotContainDuplicatesInModalWindows() throws Exception {
 
+		// Init
+		Assert.assertEquals(3, this.persistenceService.getAllDecksFromDeckArchives().size());
+
+		this.startAGameAndPlayACard();
+		tester.assertComponent("joinGameLink", AjaxLink.class);
+		tester.clickLink("joinGameLink", true);
+
+		this.tester.assertComponent("joinGameLink", AjaxLink.class);
+		this.tester.clickLink("joinGameLink", true);
+
+		final FormTester joinGameForm = this.tester.newFormTester("joinGameWindow:content:form");
+		joinGameForm.setValue("name", "Zala");
+		joinGameForm.setValue("sideInput", "1");
+		joinGameForm.setValue("deckParent:decks", "1");
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		joinGameForm.setValue("gameIdInput", String.valueOf(gameId));
+
+		final TextField nameTextField = (TextField)this.tester.getComponentFromLastRenderedPage("joinGameWindow:content:form:name");
+		Assert.assertNotNull(nameTextField);
+		final AjaxFormComponentUpdatingBehavior nameUpdateBehavior = nameTextField.getBehaviors(AjaxFormComponentUpdatingBehavior.class)
+				.get(0);
+		Assert.assertNotNull(nameUpdateBehavior);
+		DropDownChoice choices = (DropDownChoice)this.tester.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
+		Assert.assertEquals(3, choices.getChoices().size());
+
+		// Run
+		this.tester.executeBehavior(nameUpdateBehavior);
+		String pageDocument = this.tester.getLastResponse().getDocument();
+		System.out.println(pageDocument);
+
+		// Verify
+		choices = (DropDownChoice)this.tester.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
+		Assert.assertEquals(3, choices.getChoices().size());
+		Assert.assertEquals(3, this.persistenceService.getAllDecksFromDeckArchives().size());
 	}
 
 	@Test

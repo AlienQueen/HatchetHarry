@@ -4,7 +4,7 @@
     <groupId>org.alienlabs.hatchetharry</groupId>
     <artifactId>hatchetharry</artifactId>
     <packaging>war</packaging>
-    <version>0.21.0-SNAPSHOT</version>
+    <version>0.22.0-SNAPSHOT</version>
     <name>hatchetharry</name>
     <description>HatchetHarry is a Magic: The Gathering playing webapp.
         It is free software licensed under the terms of the GNU Affero General Public License, version 3.
@@ -39,9 +39,9 @@
         <maven>3.0.1</maven>
     </prerequisites>
     <properties>
-        <wicket.version>6.17.0</wicket.version>
+        <wicket.version>6.18.0</wicket.version>
         <quickview.version>6.0-SNAPSHOT</quickview.version>
-        <wicketstuff.version>6.17.0</wicketstuff.version>
+        <wicketstuff.version>6.18.0</wicketstuff.version>
         <wicket-atmosphere.version>0.20</wicket-atmosphere.version>
         <atmosphere.version>2.1.9</atmosphere.version>
         <jquery.atmosphere.version>2.1.6</jquery.atmosphere.version>

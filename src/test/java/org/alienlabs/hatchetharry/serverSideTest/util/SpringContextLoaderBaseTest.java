@@ -1,38 +1,22 @@
 package org.alienlabs.hatchetharry.serverSideTest.util;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.model.Deck;
-import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.service.DataGenerator;
-import org.alienlabs.hatchetharry.service.ImportDeckService;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.Page;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.atmosphere.tester.AtmosphereTester;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.spring.test.ApplicationContextMock;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.*;
@@ -41,14 +25,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringContextLoaderBaseTest
 {
-	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+	protected static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
 	protected static transient ApplicationContext context;
 	protected static AtmosphereTester waTester;
 	protected static transient WicketTester tester;
-	static HatchetHarryApplication webApp;
+	protected static HatchetHarryApplication webApp;
 	protected static PersistenceService persistenceService;
-	private static HatchetHarrySession session;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
@@ -78,7 +61,6 @@ public class SpringContextLoaderBaseTest
 		tester = new WicketTester(webApp);
 		persistenceService = context.getBean(PersistenceService.class);
 		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
-		session = HatchetHarrySession.get();
 	}
 
 	@After

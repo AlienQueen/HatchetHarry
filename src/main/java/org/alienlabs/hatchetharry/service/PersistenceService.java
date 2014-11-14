@@ -323,7 +323,7 @@ public class PersistenceService implements Serializable
 		session.saveOrUpdate(session.merge(p));
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void updatePlayer(final Player p)
 	{
 		final Session session = this.playerDao.getSession();

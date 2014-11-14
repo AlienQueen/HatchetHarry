@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
-"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealHandComponent extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(RevealHandComponent.class);
@@ -91,22 +91,22 @@ public class RevealHandComponent extends Panel
 		if (isReveal)
 		{
 			final IndicatingAjaxLink<Void> closeHand = new IndicatingAjaxLink<Void>("closeHand")
-					{
+			{
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(final AjaxRequestTarget target)
 				{
-					final String playerRevealing = RevealHandComponent.this.persistenceService.getPlayer(
-							ids[1]).getName();
+					final String playerRevealing = RevealHandComponent.this.persistenceService
+							.getPlayer(ids[1]).getName();
 					final String playerStopping = HatchetHarrySession.get().getPlayer().getName();
 
 					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-							ConsoleLogType.REVEAL_HAND, null, null, false, null, playerRevealing, null,
-							null, playerStopping, null, ids[0]);
+							ConsoleLogType.REVEAL_HAND, null, null, false, null, playerRevealing,
+							null, null, playerStopping, null, ids[0]);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.REVEAL_HAND, null, null, playerRevealing, null, null, null,
-							null, playerStopping);
+							NotifierAction.REVEAL_HAND, null, null, playerRevealing, null, null,
+							null, null, playerStopping);
 					final StopRevealingHandCometChannel rhcc = new StopRevealingHandCometChannel();
 					final List<BigInteger> allPlayersInGame = RevealHandComponent.this.persistenceService
 							.giveAllPlayersFromGame(ids[0]);
@@ -115,37 +115,37 @@ public class RevealHandComponent extends Panel
 							ncc, rhcc);
 				}
 
-					};
-					content.add(closeHand);
-					content.setMarkupId("revealedContent");
+			};
+			content.add(closeHand);
+			content.setMarkupId("revealedContent");
 
-					this.add(new Behavior()
+			this.add(new Behavior()
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void renderHead(final Component component, final IHeaderResponse response)
+				{
+					super.renderHead(component, response);
+
+					final HashMap<String, Object> variables = new HashMap<String, Object>();
+					variables.put("player", ids[1].toString());
+					final TextTemplate template = new PackageTextTemplate(HomePage.class,
+							"script/gallery/coda-slider.1.1.1.pack-for-hand-reveal.js");
+					template.interpolate(variables);
+					response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+
+					try
 					{
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void renderHead(final Component component, final IHeaderResponse response)
-						{
-							super.renderHead(component, response);
-
-							final HashMap<String, Object> variables = new HashMap<String, Object>();
-							variables.put("player", ids[1].toString());
-							final TextTemplate template = new PackageTextTemplate(HomePage.class,
-									"script/gallery/coda-slider.1.1.1.pack-for-hand-reveal.js");
-							template.interpolate(variables);
-							response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-
-							try
-							{
-								template.close();
-							}
-							catch (final IOException e)
-							{
-								RevealHandComponent.LOGGER.error(
-										"unable to close template in RevealHandComponent#renderHead()!", e);
-							}
-						}
-					});
+						template.close();
+					}
+					catch (final IOException e)
+					{
+						RevealHandComponent.LOGGER.error(
+								"unable to close template in RevealHandComponent#renderHead()!", e);
+					}
+				}
+			});
 		}
 		else
 		{
@@ -156,22 +156,16 @@ public class RevealHandComponent extends Panel
 		this.handCardsPlaceholder = new WebMarkupContainer("handCardsPlaceholder");
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 
-		RevealHandComponent.LOGGER.info("### cards: "
-				+ HatchetHarrySession.get().getPlayer().getDeck().getCards().size());
-		RevealHandComponent.LOGGER.info("### game: " + HatchetHarrySession.get().getGameId());
-		RevealHandComponent.LOGGER.info("### player: " + HatchetHarrySession.get().getPlayer().getId());
-		RevealHandComponent.LOGGER.info("### deck: "
-				+ HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
-
 		this.allCardsInHand = this.persistenceService
 				.getAllCardsInHandForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
-						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0 ? HatchetHarrySession
-								.get().getPlayer().getId() : ids[1]), (ids.length == 0 ? HatchetHarrySession.get()
-										.getPlayer().getDeck().getDeckId() : ids[2]));
+						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0
+						? HatchetHarrySession.get().getPlayer().getId()
+						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
+						.getDeck().getDeckId() : ids[2]));
 		RevealHandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)
-				{
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -192,62 +186,62 @@ public class RevealHandComponent extends Panel
 				wrapper.add(handImagePlaceholder);
 				item.add(wrapper);
 			}
-				};
-				this.allCards.setOutputMarkupId(true);
-				this.handCardsPlaceholder.setOutputMarkupId(true);
+		};
+		this.allCards.setOutputMarkupId(true);
+		this.handCardsPlaceholder.setOutputMarkupId(true);
 
-				this.handCardsPlaceholder.addOrReplace(this.allCards);
-				slider.add(this.handCardsPlaceholder);
+		this.handCardsPlaceholder.addOrReplace(this.allCards);
+		slider.add(this.handCardsPlaceholder);
 
-				this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
-				final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", this.allCardsInHand)
-						{
-					private static final long serialVersionUID = -1L;
+		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
+		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", this.allCardsInHand)
+		{
+			private static final long serialVersionUID = -1L;
 
-					@Override
-					protected void populateItem(final ListItem<MagicCard> item)
-					{
-						final MagicCard card = item.getModelObject();
+			@Override
+			protected void populateItem(final ListItem<MagicCard> item)
+			{
+				final MagicCard card = item.getModelObject();
 
-						final WebMarkupContainer crossLinkDiv = new WebMarkupContainer("crossLinkDiv");
-						crossLinkDiv.setMarkupId("cross-link-div" + item.getIndex());
-						crossLinkDiv.setOutputMarkupId(true);
+				final WebMarkupContainer crossLinkDiv = new WebMarkupContainer("crossLinkDiv");
+				crossLinkDiv.setMarkupId("cross-link-div" + item.getIndex());
+				crossLinkDiv.setOutputMarkupId(true);
 
-						final WebMarkupContainer crossLink = new WebMarkupContainer("crossLink");
-						crossLink.add(new AttributeModifier("href", "#" + (item.getIndex() + 1)));
-						crossLink.setMarkupId("cross-link" + item.getIndex());
-						crossLink.setOutputMarkupId(true);
+				final WebMarkupContainer crossLink = new WebMarkupContainer("crossLink");
+				crossLink.add(new AttributeModifier("href", "#" + (item.getIndex() + 1)));
+				crossLink.setMarkupId("cross-link" + item.getIndex());
+				crossLink.setOutputMarkupId(true);
 
-						final ExternalImage thumb = new ExternalImage("thumbPlaceholder",
-								card.getThumbnailFilename());
-						thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
-						thumb.setOutputMarkupId(true);
-						thumb.add(new AttributeModifier("name", card.getTitle()));
+				final ExternalImage thumb = new ExternalImage("thumbPlaceholder",
+						card.getThumbnailFilename());
+				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
+				thumb.setOutputMarkupId(true);
+				thumb.add(new AttributeModifier("name", card.getTitle()));
 
-						if (isReveal)
-						{
-							thumb.add(new AttributeModifier("class", "nav-thumb" + ids[1].toString()));
-						}
+				if (isReveal)
+				{
+					thumb.add(new AttributeModifier("class", "nav-thumb" + ids[1].toString()));
+				}
 
-						crossLink.add(thumb);
-						crossLinkDiv.add(crossLink);
-						item.add(crossLinkDiv);
-					}
-						};
-						thumbs.setOutputMarkupId(true);
-						this.thumbsPlaceholder.setOutputMarkupId(true);
+				crossLink.add(thumb);
+				crossLinkDiv.add(crossLink);
+				item.add(crossLinkDiv);
+			}
+		};
+		thumbs.setOutputMarkupId(true);
+		this.thumbsPlaceholder.setOutputMarkupId(true);
 
-						this.thumbsPlaceholder.addOrReplace(thumbs);
-						page_wrap.add(this.thumbsPlaceholder);
+		this.thumbsPlaceholder.addOrReplace(thumbs);
+		page_wrap.add(this.thumbsPlaceholder);
 
-						final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND,
-								this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
-										.getPlayer().getId() : ids[1])), isReveal);
-						putToZonePanel.add(new AttributeModifier("style", isReveal
-								? "position: absolute; top:25%; left: 0px;"
-										: "position: absolute; top:21%; left: 13px;"));
-						parent.add(putToZonePanel);
-						parent.add(content);
+		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel", CardZone.HAND,
+				this.persistenceService.getPlayer((ids.length == 0 ? HatchetHarrySession.get()
+						.getPlayer().getId() : ids[1])), isReveal);
+		putToZonePanel.add(new AttributeModifier("style", isReveal
+				? "position: absolute; top:25%; left: 0px;"
+				: "position: absolute; top:21%; left: 13px;"));
+		parent.add(putToZonePanel);
+		parent.add(content);
 	}
 
 	@Required

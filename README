@@ -2,7 +2,7 @@
 
 	+ mvn versions:display-dependency-updates	scans a project's dependencies and produces a report of those dependencies which have newer versions available.
 	+ mvn versions:display-plugin-updates		scans a project's plugins and produces a report of those plugins which have newer versions available.
-	+ mvn versions:display-property-updates		scans a projectand produces a report of those properties which are used to control artifact versions and which properies have newer versions available.
+	+ mvn versions:display-property-updates		scans a project and produces a report of those properties which are used to control artifact versions and which properies have newer versions available.
 	
 - in order to display a notifier pop-up: jQuery.gritter.add({ title : 'infrared', text : 'has played mountain!', image : 'image/logoh2.gif', sticky : false, time : ''});
 
@@ -19,3 +19,7 @@
 
     + annotate the PersistenceService method with  @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     + retrieve the object from its parent, remove the objet from its parent (nullify it if needed) and do saveOrUpdate(merge(blah)) on the retrieved object
+
+- For functional tests, launch the Selenium server before trying to run them:
+
+    + mvn selenium:start-server
