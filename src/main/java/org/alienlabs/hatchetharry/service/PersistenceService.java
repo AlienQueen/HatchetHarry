@@ -826,7 +826,7 @@ public class PersistenceService implements Serializable
 	{
 		final Session session = this.deckDao.getSession();
 		final SQLQuery query = session
-				.createSQLQuery("select dd.* from Deck dd where dd.Deck_DeckArchive in (select distinct da.deckArchiveId from  Deck de, DeckArchive da where de.Deck_DeckArchive = da.deckArchiveId and da.deckName is not null) group by dd.Deck_DeckArchive, dd.deckId, dd.playerId");
+				.createSQLQuery("select dd.* from Deck dd where dd.Deck_DeckArchive in (select distinct da.deckArchiveId from  Deck de, DeckArchive da where de.Deck_DeckArchive = da.deckArchiveId and da.deckName is not null) group by dd.Deck_DeckArchive");
 		query.addEntity(Deck.class);
 
 		return (ArrayList<Deck>)query.list();
