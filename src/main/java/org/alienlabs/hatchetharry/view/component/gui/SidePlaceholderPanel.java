@@ -23,7 +23,7 @@ public class SidePlaceholderPanel extends Panel
 	private final Player player;
 
 	public SidePlaceholderPanel(final String id, final String _side, final HomePage hp,
-		final UUID _uuid, final Player _player)
+			final UUID _uuid, final Player _player)
 	{
 		super(id);
 		this.setOutputMarkupId(true);
@@ -43,22 +43,22 @@ public class SidePlaceholderPanel extends Panel
 		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		sidePlaceholder.setMarkupId("sidePlaceholder" + uuidValidForJs);
 		sidePlaceholder.add(new AttributeModifier("style", "position: absolute; top: "
-			+ mySide.getY() + "px; left: " + mySide.getX() + "px;"));
+				+ mySide.getY() + "px; left: " + mySide.getX() + "px;"));
 		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
 
 		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
-			this.player));
+				this.player));
 
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setOutputMarkupId(true);
 		handleImage.setMarkupId("handleImage" + uuidValidForJs);
 
-		final String image = ("infrared".equals(this.side))
-			? "image/logobouclierrouge.png"
-			: "image/logobouclierviolet.png";
+		final String image = "infrared".equals(this.side)
+				? "image/logobouclierrouge.png"
+				: "image/logobouclierviolet.png";
 
 		final Image cardImage = new Image("sidePlaceholderImage", new PackageResourceReference(
-			HomePage.class, image));
+				HomePage.class, image));
 		cardImage.setOutputMarkupId(true);
 		cardImage.setMarkupId("side" + this.uuid.toString());
 

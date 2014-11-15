@@ -277,14 +277,13 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	}
 
 	/**
-	 * When drawing a card, it should appear at the left of the hand thumb list,
+	 * When drawing a card, it should appear at the left of the hand cards list,
 	 * hence be visible in the hand component
 	 */
 	@Test
-	@Ignore
-	public void testGenerateDrawCardLink()
+	public void testGenerateDrawCardLink() throws Exception
 	{
-		// this.startAGameAndPlayACard();
+		this.startAGameAndPlayACard();
 
 		final PersistenceService persistenceService = HomePageTest.context
 				.getBean(PersistenceService.class);
@@ -292,61 +291,62 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		Assert.assertTrue(persistenceService.getAllCardsInLibraryForDeckAndPlayer(
 				session.getGameId(), session.getPlayer().getId(),
 				session.getPlayer().getDeck().getDeckId()).size() > 0);
+
 		// assert hand is present
 		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
 				HandComponent.class);
 
-		// assert presence of a thumbnail
+		// assert presence of a hand cards
 		HomePageTest.pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse()
 				.getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument,
-				"class", "nav-thumb", false);
+				"wicket:id", "handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
+		Assert.assertFalse(tagTester.isEmpty());
 
-		// assert number of thumbnails
+		// assert number of hand cards
 		Assert.assertEquals(6, tagTester.size());
 
-		// assert id of thumbnails
+		// assert id of hand cards
 		Assert.assertNotNull(tagTester.get(0).getAttribute("id"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("id").contains("placeholder"));
 
-		final String firstCardIdBeforeDraw = tagTester.get(0).getAttribute("id");
+		final String cardNameBeforeDraw = tagTester.get(0).getAttribute("id");
 
-		HomePageTest.pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse()
-				.getDocument();
 		// Draw a card
 		SpringContextLoaderBaseTest.tester.assertComponent("drawCardLink", AjaxLink.class);
 		final AjaxLink<String> drawCardLink = (AjaxLink<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("drawCardLink");
 		SpringContextLoaderBaseTest.tester.executeAjaxEvent(drawCardLink, "onclick");
 
-		// assert presence of a thumbnail
+		// assert presence of hand cards
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
 				HandComponent.class);
 		HomePageTest.pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse()
 				.getDocument();
-		tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument, "class",
-				"nav-thumb", false);
+		tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
 
-		// assert number of thumbnails
+		// assert number of hand cards
 		Assert.assertEquals(7, tagTester.size());
 
-		// assert id of thumbnails
+		// assert id of hand cards
 		Assert.assertNotNull(tagTester.get(0).getAttribute("id"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("id").contains("placeholder"));
 
 		// Drawing card successful?
-		final String firstCardIdAfterDraw = tagTester.get(0).getAttribute("id");
-		Assert.assertFalse("The first thumb of the hand component has not changed!",
-				firstCardIdBeforeDraw.equals(firstCardIdAfterDraw));
+		// TODO ensure card is at the beginning or at the end
+		final String firstCardIdAfterDraw = tagTester.get(1).getAttribute("id");
+		Assert.assertTrue("The second thumb of the hand component has not changed!",
+				cardNameBeforeDraw.equals(firstCardIdAfterDraw));
 
 		Assert.assertNotNull(tagTester.get(1).getAttribute("id"));
 		Assert.assertTrue(tagTester.get(1).getAttribute("id").contains("placeholder"));
 		final String secondCardIdAfterDraw = tagTester.get(1).getAttribute("id");
-		Assert.assertTrue(firstCardIdBeforeDraw.equals(secondCardIdAfterDraw));
+		Assert.assertTrue(cardNameBeforeDraw.equals(secondCardIdAfterDraw));
 	}
 
 }

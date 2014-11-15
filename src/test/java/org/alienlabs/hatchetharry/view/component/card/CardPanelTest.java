@@ -11,15 +11,54 @@ import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromGraveyardBehav
 import org.alienlabs.hatchetharry.view.component.zone.PutToGraveyardFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.component.zone.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.markup.html.*;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class CardPanelTest extends SpringContextLoaderBaseTest
 {
 	@Test
-	public void testCardPanel() throws Exception
+	public void testPlayCardFromHand() throws Exception
+	{
+		// Start a game and play a card
+		super.startAGameAndPlayACard();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
+		// We should have one card in the battlefield
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final PersistenceService persistenceService = super.context
+				.getBean(PersistenceService.class);
+		List<MagicCard> allCardsInBattlefield = persistenceService
+				.getAllCardsInBattlefieldForAGame(gameId);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+		String card = allCardsInBattlefield.get(0).getTitle();
+
+		String pageDocument = this.tester.getLastResponse().getDocument();
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"cardImage", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(card));
+
+		// We should have 6 cards in hand
+		final List<MagicCard> allCardsInHand = persistenceService
+				.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
+						.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+		Assert.assertEquals(6, allCardsInHand.size());
+
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(6, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+	}
+
+	@Test
+	public void testPutCardToHandFromBattlefield() throws Exception
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
@@ -34,6 +73,14 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
+		String pageDocument = this.tester.getLastResponse().getDocument();
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"cardImage", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		String cardToVerify = tagTester.get(0).getAttribute("src");
+
 		// Put it to graveyard
 		super.tester.assertComponent("parentPlaceholder:magicCardsForSide1:1:cardPanel", CardPanel.class);
 		final CardPanel card = (CardPanel)super.tester
@@ -47,22 +94,24 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		// Verify
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		String pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = this.tester.getLastResponse().getDocument();
 
 		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard", GraveyardComponent.class);
-		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"thumbPlaceholder", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+		Assert.assertEquals(cardToVerify, tagTester.get(0).getAttribute("src").replace("Thumb", ""));
 
 		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
-		Assert.assertEquals(0, allCardsInBattlefield.size());
+		Assert.assertTrue(allCardsInBattlefield.isEmpty());
 
 		List<MagicCard> allCardsInGraveyard = persistenceService
 				.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertEquals(1, allCardsInGraveyard.size());
+		Assert.assertTrue(cardToVerify.contains(allCardsInGraveyard.get(0).getTitle()));
 
 		// Now, put it back into play
 		final PlayCardFromGraveyardBehavior pcfgb = (PlayCardFromGraveyardBehavior)super.tester
@@ -82,12 +131,13 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(1, tagTester.size());
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+		Assert.assertEquals(cardToVerify, tagTester.get(0).getAttribute("src"));
 
 		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
 		allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(gameId);
-		Assert.assertEquals(0, allCardsInGraveyard.size());
+		Assert.assertTrue(allCardsInGraveyard.isEmpty());
 
 		// Put it back to hand
 		final PutToHandFromBattlefieldBehavior pthfbb = card.getPutToHandFromBattlefieldBehavior();
@@ -104,26 +154,124 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		Assert.assertTrue(tagTester.isEmpty());
 
 		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
-		Assert.assertEquals(0, allCardsInBattlefield.size());
+		Assert.assertTrue(allCardsInBattlefield.isEmpty());
 
 		final List<MagicCard> allCardsInHand = persistenceService
 				.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
 						.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(7, allCardsInHand.size());
+
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(7, tagTester.size());
+		// TODO ensure card is at the beginning or at the end
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+		Assert.assertEquals(cardToVerify, tagTester.get(0).getAttribute("src"));
 	}
 
 	@Test
-	@Ignore
-	public void testPlayCardFromHandBehavior()
+	public void testPlayCardFromGraveyardBehavior() throws Exception
 	{
-		// For later
-	}
+		// Start a game and play a card
+		super.startAGameAndPlayACard();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-	@Test
-	@Ignore
-	public void testPlayCardFromGraveyardBehavior()
-	{
-		// For later
+		// We should have one card in the battlefield
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final PersistenceService persistenceService = super.context
+				.getBean(PersistenceService.class);
+		List<MagicCard> allCardsInBattlefield = persistenceService
+				.getAllCardsInBattlefieldForAGame(gameId);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+
+		String pageDocument = this.tester.getLastResponse().getDocument();
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"cardImage", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		String cardToVerify = tagTester.get(0).getAttribute("src");
+
+		// Put it to graveyard
+		super.tester.assertComponent("parentPlaceholder:magicCardsForSide1:1:cardPanel",
+				CardPanel.class);
+		final CardPanel card = (CardPanel)super.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:1:cardPanel");
+		Assert.assertNotNull(card);
+
+		final PutToGraveyardFromBattlefieldBehavior ptgfbb = card
+				.getPutToGraveyardFromBattlefieldBehavior();
+		super.tester.executeBehavior(ptgfbb);
+
+		// Verify
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+				GraveyardComponent.class);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
+				false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+		String cardInGraveyardImage = tagTester.get(0).getAttribute("src").replace("Thumb", "");
+		Assert.assertEquals(cardInGraveyardImage, cardToVerify);
+
+		// Play it from graveyard
+		SpringContextLoaderBaseTest.tester.assertComponent("playCardFromGraveyardLinkDesktop",
+				WebMarkupContainer.class);
+		final WebMarkupContainer wmc = (WebMarkupContainer)super.tester
+				.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop");
+		Assert.assertNotNull(wmc);
+		PlayCardFromGraveyardBehavior pcfgb = wmc.getBehaviors(PlayCardFromGraveyardBehavior.class)
+				.get(0);
+		Assert.assertNotNull(pcfgb);
+		this.tester.getRequest().setParameter("card", card.getUuid().toString());
+		super.tester.executeBehavior(pcfgb);
+
+		// Verify
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+				GraveyardComponent.class);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
+				false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertTrue(tagTester.isEmpty());
+
+		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+
+		List<MagicCard> allCardsInGraveyard = this.persistenceService
+				.getAllCardsInGraveyardForAGame(gameId);
+		Assert.assertTrue(allCardsInGraveyard.isEmpty());
+
+		// Verify that there is one card on battlefield
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
+		String cardInBattlefieldImage = tagTester.get(0).getAttribute("src");
+		Assert.assertTrue(cardInBattlefieldImage.contains(allCardsInBattlefield.get(0).getTitle()));
+
+		allCardsInBattlefield = persistenceService.getAllCardsInBattlefieldForAGame(gameId);
+		Assert.assertNotNull(allCardsInBattlefield);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+		Assert.assertTrue(cardToVerify.contains(allCardsInBattlefield.get(0).getTitle()));
+
+		// Verify that there are 6 cards in hand
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(6, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 	}
 
 }
