@@ -86,18 +86,25 @@
             <props>
                 <!--  create= provide database model at start-up by dropping tables, update= no start-up data model modification -->
                 <prop key="hibernate.hbm2ddl.auto">create</prop>
-                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
-                <prop key="jdbc.driverClassName">org.hsqldb.jdbcDriver</prop>
-                <prop key="jdbc.url">jdbc:hsqldb:mem:hhTest</prop>
-                <prop key="jdbc.username">SA</prop>
-                <prop key="jdbc.password"></prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="jdbc.driverClassName">org.mariadb.jdbc.Driver</prop>
+                <prop key="jdbc.url">jdbc:mysql://localhost:3306/hhTest?generateSimpleParameterMetadata=true</prop>
+                <prop key="jdbc.username">less</prop>
+                <prop key="jdbc.password">more</prop>
                 <prop key="hibernate.connection.pool_size">1</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
                 <prop key="validation.query">select 1</prop>
-                <!-- We tell Hibernate that we don't use any second-level cache -->
-                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.c3p0.timeout">300</prop>
+                <prop key="hibernate.c3p0.idle_test_periods">150</prop>
+                <!-- We tell Hibernate that we use EhCache as a second-level cache -->
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.use_structured_entries">true</prop>
+                <prop key="hibernate.cache.generate_statistics">true</prop>
+                <!-- <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>-->
+                <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
             </props>
         </property>
     </bean>
