@@ -8,7 +8,6 @@ import org.alienlabs.hatchetharry.view.component.card.CardPanel;
 import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
 import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		// Verify
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		String pageDocument = this.tester.getLastResponse().getDocument();
+		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		final Long gameId = HatchetHarrySession.get().getGameId();
 
 		// We should have one card in the battlefield
@@ -213,7 +212,7 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		// Verify
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		// Verify that it is in hand
 		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId,
