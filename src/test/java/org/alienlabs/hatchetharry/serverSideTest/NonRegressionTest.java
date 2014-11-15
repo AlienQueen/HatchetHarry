@@ -291,7 +291,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
-	public void testBattlefieldOrdersShouldBeOKAfterPuttingACardOutsideTheBattlefieldAndRearrangingCard() throws Exception {
+	public void testBattlefieldOrdersShouldBeOKAfterPuttingACardOutsideOfTheTheBattlefieldAndRearrangingCards() throws Exception {
 		// Start a game and play 5 cards
 		super.startAGameAndPlayACard();
 
@@ -327,9 +327,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				ReorderCardInBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(reorder);
 
-		// Get names of the three cards, ordered by position on battlefield
+		// Get names of the 5 cards, ordered by position on battlefield
 		String pageDocument = this.tester.getLastResponse().getDocument();
-
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"cardImage", false);
 		Assert.assertNotNull(tagTester);
