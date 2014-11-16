@@ -59,12 +59,12 @@ public class DataBox extends Panel
 				item.add(playerLabel);
 
 				final WebMarkupContainer playerLifePointsParent = new WebMarkupContainer(
-					"playerLifePointsParent");
+						"playerLifePointsParent");
 				playerLifePointsParent.setOutputMarkupId(true);
 				playerLifePointsParent.setMarkupId("playerLifePointsParent" + player.getId());
 				final Model<String> lifePoints = Model.of(Long.toString(player.getLifePoints()));
 				final AjaxEditableLabel<String> playerLifePoints = new AjaxEditableLabel<String>(
-					"playerLifePoints", lifePoints)
+						"playerLifePoints", lifePoints)
 				{
 					private static final long serialVersionUID = 1L;
 
@@ -76,23 +76,23 @@ public class DataBox extends Panel
 						DataBox.LOGGER.info(this.getDefaultModelObject().toString());
 
 						player.setLifePoints(Long
-							.parseLong(this.getDefaultModelObject().toString()));
+								.parseLong(this.getDefaultModelObject().toString()));
 						DataBox.this.persistenceService.updatePlayer(player);
 
 						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
-							.giveAllPlayersFromGame(_gameId);
+								.giveAllPlayersFromGame(_gameId);
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(
-							_gameId);
+								_gameId);
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-							.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
-								player.getName(), null,
-								Long.parseLong(this.getDefaultModelObject().toString()), null,
-								true, _gameId);
+								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
+										player.getName(), null,
+										Long.parseLong(this.getDefaultModelObject().toString()),
+										null, true, _gameId);
 
 						// post the DataBox update message to all players in the
 						// game
 						EventBusPostService.post(allPlayersInGame, udbcc,
-							new ConsoleLogCometChannel(logger));
+								new ConsoleLogCometChannel(logger));
 					}
 
 				};
@@ -101,7 +101,7 @@ public class DataBox extends Panel
 				item.add(playerLifePointsParent);
 
 				final AjaxLink<Player> plus = new AjaxLink<Player>("playerPlusLink",
-					Model.of(player))
+						Model.of(player))
 				{
 					private static final long serialVersionUID = 1L;
 
@@ -109,35 +109,35 @@ public class DataBox extends Panel
 					public void onClick(final AjaxRequestTarget target)
 					{
 						final Player playerToUpdate = DataBox.this.persistenceService
-							.getPlayer(this.getModelObject().getId());
+								.getPlayer(this.getModelObject().getId());
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
 						final Long g = playerToUpdate.getGame().getId();
 						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
-							.giveAllPlayersFromGame(g);
+								.giveAllPlayersFromGame(g);
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
 
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-							.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
-								playerToUpdate.getName(), null, playerToUpdate.getLifePoints(),
-								null, true, g);
+								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
+										playerToUpdate.getName(), null,
+										playerToUpdate.getLifePoints(), null, true, g);
 
 						// post the DataBox update message to all players in the
 						// game
 						EventBusPostService.post(allPlayersInGame, udbcc,
-							new ConsoleLogCometChannel(logger));
+								new ConsoleLogCometChannel(logger));
 					}
 				};
 
 				final ExternalImage playerPlus = new ExternalImage("playerPlus",
-					"image/plusLife.png");
+						"image/plusLife.png");
 				playerPlus.setOutputMarkupId(true);
 				plus.add(playerPlus);
 				item.add(plus);
 
 				final AjaxLink<Player> minus = new AjaxLink<Player>("playerMinusLink",
-					Model.of(player))
+						Model.of(player))
 				{
 					private static final long serialVersionUID = 1L;
 
@@ -145,29 +145,29 @@ public class DataBox extends Panel
 					public void onClick(final AjaxRequestTarget target)
 					{
 						final Player playerToUpdate = DataBox.this.persistenceService
-							.getPlayer(this.getModelObject().getId());
+								.getPlayer(this.getModelObject().getId());
 						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
 						final Long g = playerToUpdate.getGame().getId();
 						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
-							.giveAllPlayersFromGame(g);
+								.giveAllPlayersFromGame(g);
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(g);
 
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-							.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
-								playerToUpdate.getName(), null, playerToUpdate.getLifePoints(),
-								null, true, g);
+								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
+										playerToUpdate.getName(), null,
+										playerToUpdate.getLifePoints(), null, true, g);
 
 						// post the DataBox update message to all players in the
 						// game
 						EventBusPostService.post(allPlayersInGame, udbcc,
-							new ConsoleLogCometChannel(logger));
+								new ConsoleLogCometChannel(logger));
 					}
 				};
 
 				final ExternalImage playerMinus = new ExternalImage("playerMinus",
-					"image/minusLife.png");
+						"image/minusLife.png");
 				playerMinus.setOutputMarkupId(true);
 				minus.add(playerMinus);
 				item.add(minus);

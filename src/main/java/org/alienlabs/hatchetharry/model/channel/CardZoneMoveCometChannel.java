@@ -16,8 +16,8 @@ public class CardZoneMoveCometChannel
 	private final boolean isReveal;
 
 	public CardZoneMoveCometChannel(final CardZone _sourceZone, final CardZone _targetZone,
-		final MagicCard _card, final Long _requestingPlayerId, final Long _targetPlayerId,
-		final Long _gameId, final Deck _deck, final Side _side, final boolean _isReveal)
+			final MagicCard _card, final Long _requestingPlayerId, final Long _targetPlayerId,
+			final Long _gameId, final Deck _deck, final Side _side, final boolean _isReveal)
 	{
 		this.sourceZone = _sourceZone;
 		this.targetZone = _targetZone;

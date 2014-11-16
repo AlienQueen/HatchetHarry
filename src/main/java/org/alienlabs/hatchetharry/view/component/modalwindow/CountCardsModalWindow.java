@@ -28,7 +28,7 @@ public class CountCardsModalWindow extends Panel
 
 		final List<Player> allPlayersOfGame = this.persistenceService.getAllPlayersOfGame(gameId);
 		final ListView<Player> list = new ListView<Player>("players", allPlayersOfGame)
-				{
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -55,8 +55,8 @@ public class CountCardsModalWindow extends Panel
 				item.add(new Label("total", CountCardsModalWindow.this.persistenceService
 						.getDeck(p.getDeck().getDeckId()).getCards().size()));
 			}
-				};
-				this.add(list);
+		};
+		this.add(list);
 	}
 
 	@Required

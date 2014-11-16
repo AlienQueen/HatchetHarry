@@ -9,7 +9,7 @@ public class RevealHandConsoleLogStrategy extends ConsoleLogStrategy
 	private final String targetPlayerName;
 
 	public RevealHandConsoleLogStrategy(final Long _gameId, final String _player,
-		final String _targetPlayerName)
+			final String _targetPlayerName)
 	{
 		super();
 		this.gameId = _gameId;

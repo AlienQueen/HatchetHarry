@@ -14,8 +14,8 @@ public class PutToExileFromBattlefieldCometChannel
 	private Long deckId;
 
 	public PutToExileFromBattlefieldCometChannel(final Long _gameId, final MagicCard _mc,
-		final String _requestingPlayerName, final String _targetPlayerName,
-		final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateExile)
+			final String _requestingPlayerName, final String _targetPlayerName,
+			final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateExile)
 	{
 		this.gameId = _gameId;
 		this.mc = _mc;

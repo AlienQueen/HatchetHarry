@@ -52,14 +52,14 @@ public class RevealTopLibraryCardModalWindow extends Panel
 	PersistenceService persistenceService;
 
 	public RevealTopLibraryCardModalWindow(final String id, final ModalWindow _modal,
-		final MagicCard _card)
+			final MagicCard _card)
 	{
 		super(id);
 		this.modal = _modal;
 		this.card = _card;
 
 		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
-			"cards/topLibraryCard.jpg?" + Math.random());
+				"cards/topLibraryCard.jpg?" + Math.random());
 
 		if (null != this.card)
 		{
@@ -82,7 +82,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				if (HatchetHarrySession.get().getTopCardIndex().longValue() > 0l)
 				{
 					HatchetHarrySession.get().setTopCardIndex(
-						HatchetHarrySession.get().getTopCardIndex().longValue() - 1l);
+							HatchetHarrySession.get().getTopCardIndex().longValue() - 1l);
 				}
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
@@ -98,8 +98,8 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			{
 				final HatchetHarrySession session = HatchetHarrySession.get();
 				final List<MagicCard> allCardsInLibrary = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getAllCardsInLibraryForDeckAndPlayer(session.getGameId(), session.getPlayer()
-						.getId(), session.getPlayer().getDeck().getDeckId());
+						.getAllCardsInLibraryForDeckAndPlayer(session.getGameId(), session
+								.getPlayer().getId(), session.getPlayer().getDeck().getDeckId());
 
 				if ((null == allCardsInLibrary) || (allCardsInLibrary.isEmpty()))
 				{
@@ -108,12 +108,12 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 				session.setTopCardIndex(session.getTopCardIndex() + 1);
 				final MagicCard firstCard = allCardsInLibrary.get(session.getTopCardIndex()
-					.intValue());
+						.intValue());
 				final String topCardName = firstCard.getBigImageFilename();
 
 				final String cardPath = ResourceBundle.getBundle(
-					HatchetHarryApplication.class.getCanonicalName()).getString(
-					"SharedResourceFolder");
+						HatchetHarryApplication.class.getCanonicalName()).getString(
+						"SharedResourceFolder");
 				final String cardPathAndName = cardPath.replace("/cards", "") + topCardName;
 				final File from = new File(cardPathAndName);
 				final File to = new File(cardPath + "topLibraryCard.jpg");
@@ -125,28 +125,28 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				catch (final IOException e)
 				{
 					RevealTopLibraryCardModalWindow.LOGGER.error("could not copy from: "
-						+ cardPathAndName + " to: " + cardPath + "topLibraryCard.jpg", e);
+							+ cardPathAndName + " to: " + cardPath + "topLibraryCard.jpg", e);
 				}
 
 				final Long gameId = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getPlayer(session.getPlayer().getId()).getGame().getId();
+						.getPlayer(session.getPlayer().getId()).getGame().getId();
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(gameId);
+						.giveAllPlayersFromGame(gameId);
 				final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
-					session.getPlayer().getName(), firstCard, session.getTopCardIndex());
+						session.getPlayer().getName(), firstCard, session.getTopCardIndex());
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
-					firstCard.getTitle(), session.getPlayer().getName(), null,
-					session.getTopCardIndex() + 1l, null, false, session.getGameId());
+						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
+						firstCard.getTitle(), session.getPlayer().getName(), null,
+						session.getTopCardIndex() + 1l, null, false, session.getGameId());
 
 				EventBusPostService
-					.post(allPlayersInGame, chan, new ConsoleLogCometChannel(logger));
+						.post(allPlayersInGame, chan, new ConsoleLogCometChannel(logger));
 			}
 		};
 		next.setOutputMarkupId(true).setMarkupId("next");
 
 		final IndicatingAjaxButton putToBattlefield = new IndicatingAjaxButton(
-			"putToBattlefieldFromModalWindow", form)
+				"putToBattlefieldFromModalWindow", form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -154,37 +154,38 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				final Game game = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
+						.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
 				final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
 				game.setCurrentPlaceholderId(currentPlaceholderId);
 				RevealTopLibraryCardModalWindow.this.persistenceService.updateGame(game);
 
 				final Player p = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck().getPlayerId());
+						.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck()
+								.getPlayerId());
 				final Long gameId = game.getId();
 
 				RevealTopLibraryCardModalWindow.this.card.setZone(CardZone.BATTLEFIELD);
 				RevealTopLibraryCardModalWindow.this.card.setX(p.getSide().getX());
 				RevealTopLibraryCardModalWindow.this.card.setY(p.getSide().getY());
 				RevealTopLibraryCardModalWindow.this.persistenceService
-					.updateCard(RevealTopLibraryCardModalWindow.this.card);
+						.updateCard(RevealTopLibraryCardModalWindow.this.card);
 
 				final PlayTopLibraryCardCometChannel ptlccc = new PlayTopLibraryCardCometChannel(
-					gameId, RevealTopLibraryCardModalWindow.this.card, p.getSide());
+						gameId, RevealTopLibraryCardModalWindow.this.card, p.getSide());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.PLAY_TOP_LIBRARY_CARD_ACTION, gameId, p.getId(),
-					HatchetHarrySession.get().getPlayer().getName(), "", "",
-					RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
+						NotifierAction.PLAY_TOP_LIBRARY_CARD_ACTION, gameId, p.getId(),
+						HatchetHarrySession.get().getPlayer().getName(), "", "",
+						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(gameId);
+						.giveAllPlayersFromGame(gameId);
 
 				// post a message for all players in the game
 				EventBusPostService.post(allPlayersInGame, ptlccc, ncc);
 
 				for (final ModalWindow mw : ((HomePage)target.getPage())
-					.getAllOpenRevealTopLibraryCardWindows())
+						.getAllOpenRevealTopLibraryCardWindows())
 				{
 					mw.close(target);
 				}
@@ -193,7 +194,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		putToBattlefield.setOutputMarkupId(true).setMarkupId("putToBattlefieldFromModalWindow");
 
 		final IndicatingAjaxButton putToHand = new IndicatingAjaxButton("putToHandFromModalWindow",
-			form)
+				form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -201,40 +202,42 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				final Game game = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
+						.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
 				RevealTopLibraryCardModalWindow.this.card.setZone(CardZone.HAND);
 				RevealTopLibraryCardModalWindow.this.persistenceService
-					.updateCard(RevealTopLibraryCardModalWindow.this.card);
+						.updateCard(RevealTopLibraryCardModalWindow.this.card);
 
 				final Player p = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck().getPlayerId());
+						.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck()
+								.getPlayerId());
 				final Long gameId = game.getId();
 
 				final List<MagicCard> hand = RevealTopLibraryCardModalWindow.this.card.getDeck()
-					.reorderMagicCards(
-						RevealTopLibraryCardModalWindow.this.persistenceService
-							.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
-								RevealTopLibraryCardModalWindow.this.card.getDeck().getDeckId()));
+						.reorderMagicCards(
+								RevealTopLibraryCardModalWindow.this.persistenceService
+										.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
+												RevealTopLibraryCardModalWindow.this.card.getDeck()
+														.getDeckId()));
 				RevealTopLibraryCardModalWindow.this.persistenceService
-					.saveOrUpdateAllMagicCards(hand);
+						.saveOrUpdateAllMagicCards(hand);
 
 				final PutTopLibraryCardToHandCometChannel ptlccc = new PutTopLibraryCardToHandCometChannel(
-					gameId, p.getId(), RevealTopLibraryCardModalWindow.this.card.getDeck()
-						.getDeckId());
+						gameId, p.getId(), RevealTopLibraryCardModalWindow.this.card.getDeck()
+								.getDeckId());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION, gameId, p.getId(),
-					HatchetHarrySession.get().getPlayer().getName(), "", "",
-					RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
+						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION, gameId, p.getId(),
+						HatchetHarrySession.get().getPlayer().getName(), "", "",
+						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(gameId);
+						.giveAllPlayersFromGame(gameId);
 
 				// post a message for all players in the game
 				EventBusPostService.post(allPlayersInGame, ptlccc, ncc);
 
 				for (final ModalWindow mw : ((HomePage)target.getPage())
-					.getAllOpenRevealTopLibraryCardWindows())
+						.getAllOpenRevealTopLibraryCardWindows())
 				{
 					mw.close(target);
 				}
@@ -243,7 +246,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		putToHand.setOutputMarkupId(true).setMarkupId("putToHandFromModalWindow");
 
 		final IndicatingAjaxButton putToGraveyard = new IndicatingAjaxButton(
-			"putToGraveyardFromModalWindow", form)
+				"putToGraveyardFromModalWindow", form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -251,35 +254,37 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				final Game game = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
+						.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
 				RevealTopLibraryCardModalWindow.this.card.setZone(CardZone.GRAVEYARD);
 				RevealTopLibraryCardModalWindow.this.persistenceService
-					.updateCard(RevealTopLibraryCardModalWindow.this.card);
+						.updateCard(RevealTopLibraryCardModalWindow.this.card);
 
 				final Player p = RevealTopLibraryCardModalWindow.this.persistenceService
-					.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck().getPlayerId());
+						.getPlayer(RevealTopLibraryCardModalWindow.this.card.getDeck()
+								.getPlayerId());
 				final Deck d = RevealTopLibraryCardModalWindow.this.card.getDeck();
 				final Long gameId = game.getId();
 				final List<MagicCard> hand = d
-					.reorderMagicCards(RevealTopLibraryCardModalWindow.this.persistenceService
-						.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(), d.getDeckId()));
+						.reorderMagicCards(RevealTopLibraryCardModalWindow.this.persistenceService
+								.getAllCardsInGraveyardForAGameAndAPlayer(gameId, p.getId(),
+										d.getDeckId()));
 				RevealTopLibraryCardModalWindow.this.persistenceService
-					.saveOrUpdateAllMagicCards(hand);
+						.saveOrUpdateAllMagicCards(hand);
 
 				final PutTopLibraryCardToGraveyardCometChannel chan = new PutTopLibraryCardToGraveyardCometChannel(
-					gameId, p.getId(), d.getDeckId());
+						gameId, p.getId(), d.getDeckId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION, gameId, p.getId(),
-					HatchetHarrySession.get().getPlayer().getName(), "", "",
-					RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
+						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION, gameId, p.getId(),
+						HatchetHarrySession.get().getPlayer().getName(), "", "",
+						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(gameId);
+						.giveAllPlayersFromGame(gameId);
 
 				// post a message for all players in the game
 				EventBusPostService.post(allPlayersInGame, chan, ncc);
 
 				for (final ModalWindow mw : ((HomePage)target.getPage())
-					.getAllOpenRevealTopLibraryCardWindows())
+						.getAllOpenRevealTopLibraryCardWindows())
 				{
 					mw.close(target);
 				}

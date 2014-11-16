@@ -10,7 +10,7 @@ public class PutTopLibraryCardToHandCometChannel
 
 
 	public PutTopLibraryCardToHandCometChannel(final Long _gameId, final Long _playerId,
-		final Long _deckId)
+			final Long _deckId)
 	{
 		this.gameId = _gameId;
 		this.playerId = _playerId;

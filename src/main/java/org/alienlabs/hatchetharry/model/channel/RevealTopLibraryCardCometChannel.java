@@ -10,7 +10,7 @@ public class RevealTopLibraryCardCometChannel
 	private final Long index;
 
 	public RevealTopLibraryCardCometChannel(final String _playerName, final MagicCard _card,
-		final Long _index)
+			final Long _index)
 	{
 		this.playerName = _playerName;
 		this.card = _card;

@@ -10,7 +10,7 @@ public class PutTopLibraryCardToGraveyardCometChannel
 
 
 	public PutTopLibraryCardToGraveyardCometChannel(final Long _gameId, final Long _playerId,
-		final Long _deckId)
+			final Long _deckId)
 	{
 		this.gameId = _gameId;
 		this.playerId = _playerId;

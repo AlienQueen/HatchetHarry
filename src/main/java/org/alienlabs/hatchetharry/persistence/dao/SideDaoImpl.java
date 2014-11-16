@@ -20,7 +20,8 @@ public class SideDaoImpl implements SideDao
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session
+	 * factory into the dao.
 	 *
 	 * @param _factory
 	 *            hibernate session factory

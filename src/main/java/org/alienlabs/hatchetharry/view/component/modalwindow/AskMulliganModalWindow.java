@@ -34,15 +34,15 @@ public class AskMulliganModalWindow extends Panel
 	PersistenceService persistenceService;
 
 	public AskMulliganModalWindow(final ModalWindow window, final String id, final String player,
-		final Long numberOfCards)
+			final Long numberOfCards)
 	{
 		super(id);
 
 		final Form<String> form = new Form<String>("form");
 
 		final Label mulliganLabel = new Label("mulliganLabel", player
-			+ " asks for a mulligan. He (she) wants to draw " + numberOfCards
-			+ " cards. Do you agree?");
+				+ " asks for a mulligan. He (she) wants to draw " + numberOfCards
+				+ " cards. Do you agree?");
 
 		final AjaxButton agree = new AjaxButton("agree", form)
 		{
@@ -55,19 +55,20 @@ public class AskMulliganModalWindow extends Panel
 				window.close(target);
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.OK_FOR_MULLIGAN, null, null, null, null, HatchetHarrySession
-						.get().getPlayer().getName(), null, null, player, false, numberOfCards);
+						ConsoleLogType.OK_FOR_MULLIGAN, null, null, null, null, HatchetHarrySession
+								.get().getPlayer().getName(), null, null, player, false,
+						numberOfCards);
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.OK_FOR_MULLIGAN, numberOfCards, null, HatchetHarrySession.get()
-						.getPlayer().getName(), null, null, null, null, player);
+						NotifierAction.OK_FOR_MULLIGAN, numberOfCards, null, HatchetHarrySession
+								.get().getPlayer().getName(), null, null, null, null, player);
 				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger), ncc);
 			}
 		};
 
 		final AjaxButton oneLess = new AjaxButton("oneLess", Model.of("OK for "
-			+ (numberOfCards - 1l)), form)
+				+ (numberOfCards - 1l)), form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -78,15 +79,16 @@ public class AskMulliganModalWindow extends Panel
 				window.close(target);
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.OK_FOR_MULLIGAN_BUT_ONE_LESS, null, null, null, null,
-					HatchetHarrySession.get().getPlayer().getName(), null, null, player, false,
-					numberOfCards - 1);
+						ConsoleLogType.OK_FOR_MULLIGAN_BUT_ONE_LESS, null, null, null, null,
+						HatchetHarrySession.get().getPlayer().getName(), null, null, player, false,
+						numberOfCards - 1);
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.OK_FOR_MULLIGAN_BUT_ONE_LESS, numberOfCards - 1, null,
-					HatchetHarrySession.get().getPlayer().getName(), null, null, null, null, player);
+						NotifierAction.OK_FOR_MULLIGAN_BUT_ONE_LESS, numberOfCards - 1, null,
+						HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
+						player);
 
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger), ncc);
 			}
 		};
@@ -103,14 +105,16 @@ public class AskMulliganModalWindow extends Panel
 				window.close(target);
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.REFUSE_MULLIGAN, null, null, null, null, HatchetHarrySession
-						.get().getPlayer().getName(), null, null, player, false, numberOfCards - 1);
+						ConsoleLogType.REFUSE_MULLIGAN, null, null, null, null, HatchetHarrySession
+								.get().getPlayer().getName(), null, null, player, false,
+						numberOfCards - 1);
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.REFUSE_MULLIGAN, numberOfCards - 1, null, HatchetHarrySession
-						.get().getPlayer().getName(), null, null, null, null, player);
+						NotifierAction.REFUSE_MULLIGAN, numberOfCards - 1, null,
+						HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
+						player);
 
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
-					.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
+						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger), ncc);
 			}
 		};

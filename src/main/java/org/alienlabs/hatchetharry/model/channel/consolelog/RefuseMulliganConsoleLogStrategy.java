@@ -9,7 +9,7 @@ public class RefuseMulliganConsoleLogStrategy extends ConsoleLogStrategy
 	private final String targetPlayer;
 
 	public RefuseMulliganConsoleLogStrategy(final Long _gameId, final String _player,
-		final String _targetPlayer)
+			final String _targetPlayer)
 	{
 		super();
 		this.gameId = _gameId;
@@ -21,7 +21,7 @@ public class RefuseMulliganConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		super.logMessage(target, this.player + " disagrees for " + this.targetPlayer
-			+ " to do mulligan.", null, this.gameId);
+				+ " to do mulligan.", null, this.gameId);
 	}
 
 }

@@ -45,7 +45,8 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session
+	 * factory into the dao.
 	 *
 	 * @param _factory
 	 *            hibernate session factory
@@ -112,10 +113,10 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 	public int count()
 	{
 		return this
-			.getSession()
-			.createQuery(
-				"select distinct target.id " + " from CardCollection target order by target.id")
-			.list().size();
+				.getSession()
+				.createQuery(
+						"select distinct target.id "
+								+ " from CardCollection target order by target.id").list().size();
 	}
 
 	/**
@@ -126,10 +127,10 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 	public List<String> getUniqueLastNames()
 	{
 		return this
-			.getSession()
-			.createQuery(
-				"select distinct target.lastname "
-					+ " from CardCollection target order by target.name").list();
+				.getSession()
+				.createQuery(
+						"select distinct target.lastname "
+								+ " from CardCollection target order by target.name").list();
 	}
 
 }

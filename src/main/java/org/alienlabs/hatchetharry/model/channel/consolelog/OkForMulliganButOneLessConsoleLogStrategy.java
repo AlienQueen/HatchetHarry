@@ -9,7 +9,7 @@ public class OkForMulliganButOneLessConsoleLogStrategy extends ConsoleLogStrateg
 	private final String targetPlayer;
 
 	public OkForMulliganButOneLessConsoleLogStrategy(final Long _gameId, final String _player,
-		final String _targetPlayer)
+			final String _targetPlayer)
 	{
 		super();
 		this.gameId = _gameId;
@@ -21,7 +21,7 @@ public class OkForMulliganButOneLessConsoleLogStrategy extends ConsoleLogStrateg
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		super.logMessage(target, this.player + " agrees for mulligan with one card less. "
-			+ this.targetPlayer + " can draw " + this.gameId + " cards.", null, this.gameId);
+				+ this.targetPlayer + " can draw " + this.gameId + " cards.", null, this.gameId);
 	}
 
 }

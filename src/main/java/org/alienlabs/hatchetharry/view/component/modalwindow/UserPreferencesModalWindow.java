@@ -33,7 +33,8 @@ public class UserPreferencesModalWindow extends Panel
 		final User user;
 
 		if ((null == HatchetHarrySession.get().getUsername())
-			|| (null == this.persistenceService.getUser(HatchetHarrySession.get().getUsername())))
+				|| (null == this.persistenceService
+						.getUser(HatchetHarrySession.get().getUsername())))
 		{
 			user = new User();
 			user.setLogin("");
@@ -55,11 +56,11 @@ public class UserPreferencesModalWindow extends Panel
 
 		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
 		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
-			"privateIdentity", privateIdentityModel);
+				"privateIdentity", privateIdentityModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
 		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
-			identityModel);
+				identityModel);
 
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);

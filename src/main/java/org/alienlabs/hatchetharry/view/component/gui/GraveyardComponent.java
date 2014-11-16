@@ -43,10 +43,11 @@ public class GraveyardComponent extends Panel
 		this.graveyardCardsPlaceholder.setOutputMarkupId(true);
 
 		final List<MagicCard> allCardsInGraveyard = this.persistenceService
-			.getAllCardsInGraveyardForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
-				.getPlayer().getGame().getId() : ids[0]), (ids.length == 0 ? HatchetHarrySession
-				.get().getPlayer().getId() : ids[1]), (ids.length == 0 ? HatchetHarrySession.get()
-				.getPlayer().getDeck().getDeckId() : ids[2]));
+				.getAllCardsInGraveyardForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession
+						.get().getPlayer().getGame().getId() : ids[0]), (ids.length == 0
+						? HatchetHarrySession.get().getPlayer().getId()
+						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
+						.getDeck().getDeckId() : ids[2]));
 
 		this.allCards = new ListView<MagicCard>("graveyardCards", allCardsInGraveyard)
 		{
@@ -62,7 +63,7 @@ public class GraveyardComponent extends Panel
 				wrapper.setOutputMarkupId(true);
 
 				final ExternalImage handImagePlaceholder = new ExternalImage(
-					"graveyardImagePlaceholder", card.getBigImageFilename());
+						"graveyardImagePlaceholder", card.getBigImageFilename());
 				handImagePlaceholder.setMarkupId("placeholder" + card.getUuid().replace("-", "_"));
 				handImagePlaceholder.setOutputMarkupId(true);
 
@@ -94,7 +95,7 @@ public class GraveyardComponent extends Panel
 				crossLink.setOutputMarkupId(true);
 
 				final ExternalImage thumb = new ExternalImage("thumbPlaceholder",
-					card.getThumbnailFilename());
+						card.getThumbnailFilename());
 				thumb.setMarkupId("placeholder" + card.getUuid().replace("-", "_") + "_img");
 				thumb.setOutputMarkupId(true);
 				thumb.add(new AttributeModifier("name", card.getTitle()));
@@ -111,9 +112,9 @@ public class GraveyardComponent extends Panel
 		this.add(this.thumbsPlaceholder);
 
 		final PutToZonePanel putToZonePanel = new PutToZonePanel("putToZonePanel",
-			CardZone.GRAVEYARD, this.persistenceService.getPlayer((ids.length == 0
-				? HatchetHarrySession.get().getPlayer().getId()
-				: ids[1])), false);
+				CardZone.GRAVEYARD, this.persistenceService.getPlayer((ids.length == 0
+						? HatchetHarrySession.get().getPlayer().getId()
+						: ids[1])), false);
 		this.add(putToZonePanel);
 	}
 

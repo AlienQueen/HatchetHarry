@@ -12,7 +12,7 @@ public class PlayCardFromGraveyardCometChannel
 
 
 	public PlayCardFromGraveyardCometChannel(final MagicCard _mc, final String _playerName,
-		final Long _gameId, final Side _side)
+			final Long _gameId, final Side _side)
 	{
 		this.mc = _mc;
 		this.playerName = _playerName;

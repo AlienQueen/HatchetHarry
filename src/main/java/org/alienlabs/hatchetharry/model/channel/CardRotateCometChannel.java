@@ -10,7 +10,7 @@ public class CardRotateCometChannel
 	private final MagicCard mc;
 
 	public CardRotateCometChannel(final Long _gameId, final MagicCard _mc, final String _cardUuid,
-		final boolean _tapped)
+			final boolean _tapped)
 	{
 		this.gameId = _gameId;
 		this.mc = _mc;

@@ -45,7 +45,8 @@ public class PlayerDaoImpl implements PlayerDao
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session
+	 * factory into the dao.
 	 *
 	 * @param _factory
 	 *            hibernate session factory
@@ -115,10 +116,10 @@ public class PlayerDaoImpl implements PlayerDao
 	public List<String> getUniqueLastNames()
 	{
 		return this
-			.getSession()
-			.createQuery(
-				"select distinct target.lastname " + " from Player target order by target.lastname")
-			.list();
+				.getSession()
+				.createQuery(
+						"select distinct target.lastname "
+								+ " from Player target order by target.lastname").list();
 	}
 
 }

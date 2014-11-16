@@ -79,7 +79,7 @@ public class ImportDeckDialog extends Panel
 				ImportDeckDialog.LOGGER.info("trying to upload a deck");
 
 				if ((ImportDeckDialog.this.nameInput.getModelObject() == null)
-					|| "".equals(ImportDeckDialog.this.nameInput.getModelObject()))
+						|| "".equals(ImportDeckDialog.this.nameInput.getModelObject()))
 				{
 					ImportDeckDialog.this.setMessage(target, "Please provide a deck name");
 					return;
@@ -98,22 +98,22 @@ public class ImportDeckDialog extends Panel
 					return;
 				}
 				else if ((fupload.getClientFileName() == null)
-					|| ("".equals(fupload.getClientFileName().trim()))
-					|| (!fupload.getClientFileName().endsWith(".txt")))
+						|| ("".equals(fupload.getClientFileName().trim()))
+						|| (!fupload.getClientFileName().endsWith(".txt")))
 				{
 					ImportDeckDialog.this
-						.setMessage(target, "Please provide a deck in .txt format");
+							.setMessage(target, "Please provide a deck in .txt format");
 					return;
 				}
 
 				ImportDeckDialog.LOGGER.info("uploading deck: "
-					+ ImportDeckDialog.this.file.getFileUpload().getClientFileName());
+						+ ImportDeckDialog.this.file.getFileUpload().getClientFileName());
 
 				try
 				{
 					if (!ImportDeckDialog.this.importDeckService.importDeck(
-						new String(fupload.getBytes(), "UTF-8"),
-						ImportDeckDialog.this.nameInput.getModelObject(), false))
+							new String(fupload.getBytes(), "UTF-8"),
+							ImportDeckDialog.this.nameInput.getModelObject(), false))
 					{
 						ImportDeckDialog.this.setMessage(target, "Invalid deck format");
 						return;
@@ -122,14 +122,14 @@ public class ImportDeckDialog extends Panel
 				catch (final UnsupportedEncodingException e)
 				{
 					ImportDeckDialog.this.setMessage(target,
-						"Please provide a deck encoded with UTF-8 charset");
+							"Please provide a deck encoded with UTF-8 charset");
 					return;
 				}
 
 				ImportDeckDialog.LOGGER.info("successfully added deck: "
-					+ fupload.getClientFileName());
+						+ fupload.getClientFileName());
 				ImportDeckDialog.this
-					.setMessage(target, "Your deck has been successfully uploaded");
+						.setMessage(target, "Your deck has been successfully uploaded");
 			}
 		});
 

@@ -14,8 +14,8 @@ public class PutToHandFromBattlefieldCometChannel
 	private Long deckId;
 
 	public PutToHandFromBattlefieldCometChannel(final Long _gameId, final MagicCard _mc,
-		final String _requestingPlayerName, final String _targetPlayerName,
-		final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateHand)
+			final String _requestingPlayerName, final String _targetPlayerName,
+			final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateHand)
 	{
 		this.gameId = _gameId;
 		this.mc = _mc;

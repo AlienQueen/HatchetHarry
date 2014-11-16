@@ -10,7 +10,7 @@ public class RevealTopLibraryCardConsoleLogStrategy extends ConsoleLogStrategy
 	private final Long index;
 
 	public RevealTopLibraryCardConsoleLogStrategy(final String _player, final Long _gameId,
-		final String _cardName, final Long _index)
+			final String _cardName, final Long _index)
 	{
 		super();
 		this.player = _player;
@@ -23,7 +23,7 @@ public class RevealTopLibraryCardConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		final String message = this.player + " reveal his (her) #" + this.index.longValue()
-			+ " top library card, and it is: " + this.cardName;
+				+ " top library card, and it is: " + this.cardName;
 		super.logMessage(target, message, null, this.gameId);
 	}
 

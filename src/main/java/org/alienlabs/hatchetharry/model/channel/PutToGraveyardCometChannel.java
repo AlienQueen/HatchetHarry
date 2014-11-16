@@ -14,8 +14,8 @@ public class PutToGraveyardCometChannel
 	private final boolean shouldUpdateGraveyard;
 
 	public PutToGraveyardCometChannel(final Long _gameId, final MagicCard _mc,
-		final String _requestingPlayerName, final String _targetPlayerName,
-		final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateGraveyard)
+			final String _requestingPlayerName, final String _targetPlayerName,
+			final Long _targetPlayerId, final Long _deckId, final boolean _shouldUpdateGraveyard)
 	{
 		this.gameId = _gameId;
 		this.mc = _mc;

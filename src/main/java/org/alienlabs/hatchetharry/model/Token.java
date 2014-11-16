@@ -59,7 +59,7 @@ public class Token implements Serializable
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Counter.class, orphanRemoval = true)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
 	private Set<Counter> counters = new HashSet<Counter>();
-    @OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Player_Token")
 	private Player player = new Player();
 	@Column
@@ -72,7 +72,7 @@ public class Token implements Serializable
 	}
 
 	public Token(final String _type, final String _power, final String _toughness,
-		final String _colors, final String _description, final String _uuid, final Long _gameId)
+			final String _colors, final String _description, final String _uuid, final Long _gameId)
 	{
 		this.type = _type;
 		this.power = _power;

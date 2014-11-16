@@ -21,7 +21,7 @@ public class EventBusPostService
 			for (final BigInteger player : players)
 			{
 				final String pageUuid = HatchetHarryApplication.getCometResources().get(
-					player.longValue());
+						player.longValue());
 				EventBusPostService.LOGGER.info("pageUuid: " + pageUuid);
 				for (final Object message : messages)
 				{

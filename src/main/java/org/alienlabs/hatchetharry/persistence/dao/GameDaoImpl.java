@@ -45,7 +45,8 @@ public class GameDaoImpl implements GameDao
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session
+	 * factory into the dao.
 	 *
 	 * @param _factory
 	 *            hibernate session factory
@@ -115,10 +116,10 @@ public class GameDaoImpl implements GameDao
 	public List<String> getUniqueLastNames()
 	{
 		return this
-			.getSession()
-			.createQuery(
-				"select distinct target.lastname " + " from Game target order by target.lastname")
-			.list();
+				.getSession()
+				.createQuery(
+						"select distinct target.lastname "
+								+ " from Game target order by target.lastname").list();
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class GameDaoImpl implements GameDao
 	public int count()
 	{
 		return this.getSession()
-			.createQuery("select distinct target.id " + " from Game target order by target.id")
-			.list().size();
+				.createQuery("select distinct target.id " + " from Game target order by target.id")
+				.list().size();
 	}
 }

@@ -45,7 +45,8 @@ public class MagicCardDaoImpl implements MagicCardDao
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session
+	 * factory into the dao.
 	 *
 	 * @param factory
 	 *            hibernate session factory
@@ -115,10 +116,10 @@ public class MagicCardDaoImpl implements MagicCardDao
 	public List<String> getUniqueLastNames()
 	{
 		return this
-			.getSession()
-			.createQuery(
-				"select distinct target.lastname "
-					+ " from MagicCard target order by target.lastname").list();
+				.getSession()
+				.createQuery(
+						"select distinct target.lastname "
+								+ " from MagicCard target order by target.lastname").list();
 	}
 
 }

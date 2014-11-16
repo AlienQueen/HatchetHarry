@@ -45,7 +45,8 @@ public class CounterDaoImpl implements CounterDao
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session
+	 * factory into the dao.
 	 *
 	 * @param _factory
 	 *            hibernate session factory
@@ -111,9 +112,11 @@ public class CounterDaoImpl implements CounterDao
 	@Transactional(readOnly = true)
 	public int count()
 	{
-		return this.getSession()
-			.createQuery("select distinct target.id " + " from Counter target order by target.id")
-			.list().size();
+		return this
+				.getSession()
+				.createQuery(
+						"select distinct target.id " + " from Counter target order by target.id")
+				.list().size();
 	}
 
 	/**
@@ -124,10 +127,10 @@ public class CounterDaoImpl implements CounterDao
 	public List<String> getUniqueLastNames()
 	{
 		return this
-			.getSession()
-			.createQuery(
-				"select distinct target.counterName "
-					+ " from Counter target order by target.counterName").list();
+				.getSession()
+				.createQuery(
+						"select distinct target.counterName "
+								+ " from Counter target order by target.counterName").list();
 	}
 
 }

@@ -10,7 +10,7 @@ public class ChatCometChannel
 	private final Player player;
 
 	public ChatCometChannel(final Player _player, final String _user, final Long _gameId,
-		final String _message)
+			final String _message)
 	{
 		this.player = _player;
 		this.user = _user;

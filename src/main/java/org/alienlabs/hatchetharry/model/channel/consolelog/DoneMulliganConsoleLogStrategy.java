@@ -18,7 +18,7 @@ public class DoneMulliganConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		super.logMessage(target, this.player + " has done mulligan. He (she) has drawn "
-			+ this.gameId + " cards.", null, this.gameId);
+				+ this.gameId + " cards.", null, this.gameId);
 	}
 
 }

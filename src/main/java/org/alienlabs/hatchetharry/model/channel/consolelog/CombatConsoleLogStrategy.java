@@ -20,9 +20,9 @@ public class CombatConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		final String message = this.player
-			+ ((this.cond != null) && (this.cond.booleanValue() == true)
-				? " is declaring"
-				: " has finished") + " combat";
+				+ ((this.cond != null) && (this.cond.booleanValue() == true)
+						? " is declaring"
+						: " has finished") + " combat";
 		super.logMessage(target, message, null, this.gameId);
 	}
 

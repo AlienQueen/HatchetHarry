@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
-"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
@@ -103,24 +103,24 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		{
 			final int index = i;
 			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
-					{
+			{
 				private static final long serialVersionUID = 1L;
 
 				{
 					this.add(allPlayersInGame.get(index));
 				}
-					};
+			};
 
-					final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
-					final NotifierCometChannel _ncc = new NotifierCometChannel(
-							NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(),
-							session.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
-					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-							ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
+			final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
+			final NotifierCometChannel _ncc = new NotifierCometChannel(
+					NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(),
+					session.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
+			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
 							.getPlayer().getName(), tokenName, null, null, false, gameId);
 
-					EventBusPostService.post(playerToWhomToSend, dtcc, _ncc, new ConsoleLogCometChannel(
-							logger));
+			EventBusPostService.post(playerToWhomToSend, dtcc, _ncc, new ConsoleLogCometChannel(
+					logger));
 		}
 	}
 

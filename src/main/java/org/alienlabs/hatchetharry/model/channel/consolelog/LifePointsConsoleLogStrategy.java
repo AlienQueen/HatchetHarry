@@ -9,7 +9,7 @@ public class LifePointsConsoleLogStrategy extends ConsoleLogStrategy
 	private final Long lifePoints;
 
 	public LifePointsConsoleLogStrategy(final String _player, final Long _lifePoints,
-		final Long _gameId)
+			final Long _gameId)
 	{
 		super();
 		this.player = _player;
@@ -21,7 +21,7 @@ public class LifePointsConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		final String message = this.player + "'s life points total is now: "
-			+ this.lifePoints.longValue();
+				+ this.lifePoints.longValue();
 		super.logMessage(target, message, null, this.gameId);
 	}
 

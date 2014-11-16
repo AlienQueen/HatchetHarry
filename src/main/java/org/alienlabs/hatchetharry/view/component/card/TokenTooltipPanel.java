@@ -25,7 +25,7 @@ public class TokenTooltipPanel extends Panel
 	{
 		super(id);
 		final String ownerSide = this.persistenceService.getPlayer(token.getPlayer().getId())
-			.getSide().getSideName();
+				.getSide().getSideName();
 
 		final TokenTooltipBehavior ttb = new TokenTooltipBehavior(token.getUuid());
 		this.add(ttb);

@@ -18,7 +18,7 @@ public class MulliganConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		super.logMessage(target, this.player + " asks for a mulligan. He (she) would like to draw "
-			+ this.gameId + " cards.", null, this.gameId);
+				+ this.gameId + " cards.", null, this.gameId);
 	}
 
 }

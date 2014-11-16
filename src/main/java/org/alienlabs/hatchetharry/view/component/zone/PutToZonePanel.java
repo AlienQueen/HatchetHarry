@@ -25,7 +25,7 @@ public class PutToZonePanel extends Panel
 	private final boolean isReveal;
 
 	public PutToZonePanel(final String id, final CardZone _sourceZone, final Player _player,
-		final boolean _isReveal)
+			final boolean _isReveal)
 	{
 		super(id);
 		this.sourceZone = _sourceZone;
@@ -34,10 +34,10 @@ public class PutToZonePanel extends Panel
 
 		final Form<String> form = new Form<String>("form");
 		form.add(new AttributeModifier("class", new Model<String>("put-to-zone-for-"
-			+ this.sourceZone)));
+				+ this.sourceZone)));
 
 		final ArrayList<CardZone> allZones = new ArrayList<CardZone>(Arrays.asList(CardZone
-			.values()));
+				.values()));
 		allZones.remove(_sourceZone);
 
 		CardZone defaultZone = null;
@@ -61,18 +61,18 @@ public class PutToZonePanel extends Panel
 
 		final WebMarkupContainer submit = new WebMarkupContainer("submit");
 		submit.setOutputMarkupId(true).setMarkupId(
-			"moveToZoneSubmit" + this.sourceZone
-				+ (this.isReveal ? this.player.getId().toString() : ""));
+				"moveToZoneSubmit" + this.sourceZone
+						+ (this.isReveal ? this.player.getId().toString() : ""));
 
 		final IModel<List<? extends CardZone>> zonesModel = Model.ofList(allZones);
 		this.targetZoneInput = new DropDownChoice<CardZone>("targetZoneInput",
-			Model.of(defaultZone), zonesModel);
+				Model.of(defaultZone), zonesModel);
 		this.targetZoneInput.setOutputMarkupId(true).setMarkupId(
-			"putToZoneSelectFor" + this.sourceZone
-				+ (this.isReveal ? this.player.getId().toString() : ""));
+				"putToZoneSelectFor" + this.sourceZone
+						+ (this.isReveal ? this.player.getId().toString() : ""));
 
 		final FormComponentLabel targetZoneLabel = new FormComponentLabel("targetZoneLabel",
-			this.targetZoneInput);
+				this.targetZoneInput);
 		final WebMarkupContainer targetZoneGroup = new WebMarkupContainer("targetZoneGroup");
 		targetZoneLabel.add(targetZoneGroup);
 		targetZoneGroup.add(this.targetZoneInput);
@@ -84,7 +84,7 @@ public class PutToZonePanel extends Panel
 		this.add(form);
 
 		final PutToZoneBehavior ptzb = new PutToZoneBehavior(this.sourceZone, this.player,
-			this.isReveal);
+				this.isReveal);
 		this.add(ptzb);
 	}
 

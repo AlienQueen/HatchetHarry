@@ -10,7 +10,7 @@ public class PutTokenOnBattlefieldCometChannel
 	private final Side side;
 
 	public PutTokenOnBattlefieldCometChannel(final Long _gameId, final MagicCard _mc,
-		final Side _side)
+			final Side _side)
 	{
 		this.gameId = _gameId;
 		this.mc = _mc;

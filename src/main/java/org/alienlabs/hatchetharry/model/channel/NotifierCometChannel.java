@@ -14,9 +14,9 @@ public class NotifierCometChannel
 	private final String targetPlayerName;
 
 	public NotifierCometChannel(final NotifierAction _action, final Long _gameId,
-		final Long _playerId, final String _playerName, final String _side,
-		final String _jsessionid, final String _cardName, final Boolean _combatInProgress,
-		final String _targetPlayerName)
+			final Long _playerId, final String _playerName, final String _side,
+			final String _jsessionid, final String _cardName, final Boolean _combatInProgress,
+			final String _targetPlayerName)
 	{
 		this.action = _action;
 		this.gameId = _gameId;

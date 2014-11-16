@@ -24,8 +24,8 @@ import org.alienlabs.hatchetharry.model.Arrow;
 import org.hibernate.Session;
 
 /**
- * The implementation-independent DAO interface. Defines the operations required to be supported by
- * an implementation.
+ * The implementation-independent DAO interface. Defines the operations required
+ * to be supported by an implementation.
  *
  * @author igor
  */

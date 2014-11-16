@@ -103,7 +103,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				HatchetHarrySession.get().getPlayer().getName(), gameId);
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
-				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
 				"", card.getTitle(), null, "");
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null,

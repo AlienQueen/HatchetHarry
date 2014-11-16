@@ -39,12 +39,12 @@ public class GameNotifierBehavior extends AbstractDefaultAjaxBehavior
 		if ((!"true".equals(stop)) && (null != text))
 		{
 			final String message = ("1".equals(title)
-				? "You've created a game"
-				: "You have requested to join a game")
-				+ "§§§"
-				+ ("1".equals(text)
-					? "As soon as a player is connected, you'll be able to play."
-					: "You can start right now!") + "§§§" + request.getRequestedSessionId();
+					? "You've created a game"
+					: "You have requested to join a game")
+					+ "§§§"
+					+ ("1".equals(text)
+							? "As soon as a player is connected, you'll be able to play."
+							: "You can start right now!") + "§§§" + request.getRequestedSessionId();
 			final Meteor meteor = Meteor.build(request, new LinkedList<BroadcastFilter>(), null);
 			GameNotifierBehavior.LOGGER.info("meteor: " + meteor);
 			GameNotifierBehavior.LOGGER.info(message);

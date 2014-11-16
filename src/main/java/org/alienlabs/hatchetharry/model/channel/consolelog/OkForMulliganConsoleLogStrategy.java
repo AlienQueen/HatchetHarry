@@ -9,7 +9,7 @@ public class OkForMulliganConsoleLogStrategy extends ConsoleLogStrategy
 	private final String targetPlayer;
 
 	public OkForMulliganConsoleLogStrategy(final Long _gameId, final String _player,
-		final String _targetPlayer)
+			final String _targetPlayer)
 	{
 		super();
 		this.gameId = _gameId;
@@ -21,7 +21,7 @@ public class OkForMulliganConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		super.logMessage(target, this.player + " agrees for mulligan. " + this.targetPlayer
-			+ " can draw " + this.gameId + " cards.", null, this.gameId);
+				+ " can draw " + this.gameId + " cards.", null, this.gameId);
 	}
 
 }

@@ -10,7 +10,7 @@ public class CardZoneMoveNotifier
 	private final String requestingPlayer, ownerPlayer;
 
 	public CardZoneMoveNotifier(final CardZone _sourceZone, final CardZone _targetZone,
-		final MagicCard _card, final String _requestingPlayer, final String _ownerPlayer)
+			final MagicCard _card, final String _requestingPlayer, final String _ownerPlayer)
 	{
 		super();
 		this.sourceZone = _sourceZone;

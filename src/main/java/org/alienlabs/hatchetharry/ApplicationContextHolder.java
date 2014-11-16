@@ -26,7 +26,8 @@ public final class ApplicationContextHolder implements ApplicationContextAware
 	}
 
 	/**
-	 * Méthode de ApplicationContextAware, qui sera appellée automatiquement par le conteneur
+	 * Méthode de ApplicationContextAware, qui sera appellée automatiquement par
+	 * le conteneur
 	 */
 	@Override
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "Spring requires this for ApplicationContextHolder.getContext().getBean();")

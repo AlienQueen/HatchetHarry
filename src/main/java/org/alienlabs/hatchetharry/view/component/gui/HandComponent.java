@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
-"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class HandComponent extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(HandComponent.class);
@@ -80,8 +80,8 @@ public class HandComponent extends Panel
 				catch (final IOException e)
 				{
 					HandComponent.LOGGER
-					.error("unable to close handInBattlefieldTemplate in HandComponent#renderHead()!",
-							e);
+							.error("unable to close handInBattlefieldTemplate in HandComponent#renderHead()!",
+									e);
 				}
 			}
 		});
@@ -90,12 +90,12 @@ public class HandComponent extends Panel
 				.getAllCardsInHandForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
 						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0
 						? HatchetHarrySession.get().getPlayer().getId()
-								: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
-										.getDeck().getDeckId() : ids[2]));
+						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
+						.getDeck().getDeckId() : ids[2]));
 		HandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)
-				{
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -116,11 +116,11 @@ public class HandComponent extends Panel
 				item.add(handImagePlaceholder, play);
 				item.add(new PlayCardFromHandBehavior(card.getUuidObject()));
 			}
-				};
-				this.allCards.setOutputMarkupId(true);
-				this.add(this.allCards);
+		};
+		this.allCards.setOutputMarkupId(true);
+		this.add(this.allCards);
 
-				HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
+		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
 	}
 
 	@Required

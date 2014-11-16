@@ -11,7 +11,7 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 	private final Long gameId;
 
 	public TapUntapConsoleLogStrategy(final Boolean _cond, final String _mc, final String _player,
-		final Boolean _clearConsole, final Long _gameId)
+			final Boolean _clearConsole, final Long _gameId)
 	{
 		super();
 		this.cond = _cond;
@@ -34,7 +34,7 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 		else if ((null != this.mc) && (null == this.clearConsole) && (null != this.cond))
 		{
 			message = this.player + " has " + (this.cond ? "tapped " : "untapped ") + " permanent "
-				+ this.mc;
+					+ this.mc;
 			super.logMessage(target, message, null, this.gameId);
 		}
 	}

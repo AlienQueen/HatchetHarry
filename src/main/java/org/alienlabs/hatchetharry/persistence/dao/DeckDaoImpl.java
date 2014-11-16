@@ -48,7 +48,8 @@ public class DeckDaoImpl implements DeckDao
 	}
 
 	/**
-	 * Setter for session factory. Spring will use this to inject the session factory into the dao.
+	 * Setter for session factory. Spring will use this to inject the session
+	 * factory into the dao.
 	 *
 	 * @param _factory
 	 *            hibernate session factory
@@ -118,10 +119,10 @@ public class DeckDaoImpl implements DeckDao
 	public List<String> getUniqueLastNames()
 	{
 		return this
-			.getSession()
-			.createQuery(
-				"select distinct target.lastname " + " from Deck target order by target.lastname")
-			.list();
+				.getSession()
+				.createQuery(
+						"select distinct target.lastname "
+								+ " from Deck target order by target.lastname").list();
 	}
 
 }

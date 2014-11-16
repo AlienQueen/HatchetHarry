@@ -14,7 +14,7 @@ public class UntapAllCometChannel
 	private final List<MagicCard> cardsToUntap;
 
 	public UntapAllCometChannel(final Long _gameId, final Long _playerId, final Long _deckId,
-		final String _playerName, final List<MagicCard> _cardsToUntap)
+			final String _playerName, final List<MagicCard> _cardsToUntap)
 	{
 		this.gameId = _gameId;
 		this.playerId = _playerId;

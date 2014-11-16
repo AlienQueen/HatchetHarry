@@ -29,12 +29,11 @@ public abstract class ConsoleLogStrategy
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DE_MIGHT_IGNORE", justification = "We ignore the exception since it's a duplicate key from DB due to the fact that the same console log is persisted for each player in the game. But we only want it once in DB.")
 	protected void logMessage(final AjaxRequestTarget target, final String message,
-		final Boolean clearConsole, final Long gameId)
+			final Boolean clearConsole, final Long gameId)
 	{
 		if ((null != clearConsole) && clearConsole)
 		{
-			target
-				.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = ''; ");
+			target.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = ''; ");
 			this.persistenceService.deleteAllMessagesForAGame(gameId);
 			return;
 		}
@@ -56,8 +55,7 @@ public abstract class ConsoleLogStrategy
 			// Expected
 		}
 
-		target
-			.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"&#013;&#010;\" + \""
+		target.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"&#013;&#010;\" + \""
 				+ newDate
 				+ ": "
 				+ message

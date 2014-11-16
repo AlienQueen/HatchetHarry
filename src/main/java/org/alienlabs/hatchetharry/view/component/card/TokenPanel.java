@@ -59,8 +59,10 @@ public class TokenPanel extends Panel
 		cardHandle.setOutputMarkupId(true);
 		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
 		cardHandle.setMarkupId("tokenHandle" + uuidValidForJs);
-		cardHandle.add(new AttributeModifier("style", "position: absolute; top: "
-			+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX() + "px;"));
+		cardHandle
+				.add(new AttributeModifier("style", "position: absolute; top: "
+						+ this.owner.getSide().getY() + "px; left: " + this.owner.getSide().getX()
+						+ "px;"));
 		myToken.setX(this.owner.getSide().getX());
 		myToken.setY(this.owner.getSide().getY());
 		this.persistenceService.updateToken(myToken);
@@ -73,12 +75,12 @@ public class TokenPanel extends Panel
 		form.setOutputMarkupId(true);
 
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-			this.getHttpServletRequest().getRequestedSessionId()));
+				this.getHttpServletRequest().getRequestedSessionId()));
 		jsessionid.setMarkupId("jsessionid" + this.uuid);
 		jsessionid.setOutputMarkupId(true);
 
 		TokenPanel.LOGGER.info("jsessionid: "
-			+ this.getHttpServletRequest().getRequestedSessionId());
+				+ this.getHttpServletRequest().getRequestedSessionId());
 		TokenPanel.LOGGER.info("uuid: " + this.uuid);
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
@@ -88,7 +90,7 @@ public class TokenPanel extends Panel
 		mouseY.setOutputMarkupId(true);
 
 		final Image handleImage = new Image("handleImage", new PackageResourceReference(
-			"images/arrow.png"));
+				"images/arrow.png"));
 		handleImage.setMarkupId("handleImage" + uuidValidForJs);
 		handleImage.setOutputMarkupId(true);
 
@@ -96,7 +98,7 @@ public class TokenPanel extends Panel
 		bullet.setOutputMarkupId(true).setMarkupId("bullet" + uuidValidForJs);
 
 		final Image tapHandleImage = new Image("tapHandleImage", new PackageResourceReference(
-			"images/rightArrow.png"));
+				"images/rightArrow.png"));
 		tapHandleImage.setMarkupId("tapHandleImage" + uuidValidForJs);
 		tapHandleImage.setOutputMarkupId(true);
 
@@ -119,7 +121,7 @@ public class TokenPanel extends Panel
 		tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));
 
 		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage,
-			tokenBubbleTip);
+				tokenBubbleTip);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 
@@ -153,8 +155,8 @@ class HeadProvider extends Behavior
 	{
 		super.renderHead(component, response);
 		response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-			HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
+				HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
 		response.render(CssHeaderItem.forReference(new PackageResourceReference(HomePage.class,
-			"script/contextmenu/jquery.contextMenu.css")));
+				"script/contextmenu/jquery.contextMenu.css")));
 	}
 }

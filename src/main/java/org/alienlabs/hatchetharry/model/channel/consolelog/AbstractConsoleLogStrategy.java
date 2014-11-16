@@ -5,9 +5,9 @@ import org.alienlabs.hatchetharry.model.CardZone;
 public class AbstractConsoleLogStrategy
 {
 	public static ConsoleLogStrategy chooseStrategy(final ConsoleLogType type, final CardZone from,
-		final CardZone to, final Boolean cond, final String mc, final String player,
-		final String counterName, final Long numberOfCounters, final String targetPlayerName,
-		final Boolean clearConsole, final Long gameId)
+			final CardZone to, final Boolean cond, final String mc, final String player,
+			final String counterName, final Long numberOfCounters, final String targetPlayerName,
+			final Boolean clearConsole, final Long gameId)
 	{
 		switch (type)
 		{
@@ -19,7 +19,7 @@ public class AbstractConsoleLogStrategy
 
 			case COUNTER_ADD_REMOVE :
 				return new CounterConsoleLogStrategy(mc, player, counterName, numberOfCounters,
-					targetPlayerName, gameId);
+						targetPlayerName, gameId);
 
 			case DRAW_CARD :
 				return new DrawCardConsoleLogStrategy(player, gameId);
@@ -47,7 +47,7 @@ public class AbstractConsoleLogStrategy
 
 			case REVEAL_TOP_CARD_OF_LIBRARY :
 				return new RevealTopLibraryCardConsoleLogStrategy(player, gameId, mc,
-					numberOfCounters);
+						numberOfCounters);
 
 			case REVEAL_HAND :
 				return new RevealHandConsoleLogStrategy(gameId, player, targetPlayerName);
@@ -66,7 +66,7 @@ public class AbstractConsoleLogStrategy
 
 			case OK_FOR_MULLIGAN_BUT_ONE_LESS :
 				return new OkForMulliganButOneLessConsoleLogStrategy(gameId, player,
-					targetPlayerName);
+						targetPlayerName);
 
 			case REFUSE_MULLIGAN :
 				return new RefuseMulliganConsoleLogStrategy(gameId, player, targetPlayerName);

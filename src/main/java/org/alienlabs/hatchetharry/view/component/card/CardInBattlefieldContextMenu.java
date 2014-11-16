@@ -54,11 +54,14 @@ public class CardInBattlefieldContextMenu extends Panel
 
 		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile, destroyToken);
 
-		if (this.magicCard.getToken() != null) {
+		if (this.magicCard.getToken() != null)
+		{
 			putToHand.setVisible(false);
 			putToGraveyard.setVisible(false);
 			putToExile.setVisible(false);
-		} else {
+		}
+		else
+		{
 			destroyToken.setVisible(false);
 		}
 
@@ -86,8 +89,8 @@ public class CardInBattlefieldContextMenu extends Panel
 				catch (final IOException e)
 				{
 					CardInBattlefieldContextMenu.LOGGER
-					.error("unable to close template in CardInBattlefieldContextMenu#renderHead()!",
-							e);
+							.error("unable to close template in CardInBattlefieldContextMenu#renderHead()!",
+									e);
 				}
 			}
 		});

@@ -12,8 +12,8 @@ public class CounterConsoleLogStrategy extends ConsoleLogStrategy
 	private final Long gameId;
 
 	public CounterConsoleLogStrategy(final String _mc, final String _player,
-		final String _counterName, final Long _numberOfCounters, final String _targetPlayerName,
-		final Long _gameId)
+			final String _counterName, final Long _numberOfCounters,
+			final String _targetPlayerName, final Long _gameId)
 	{
 		super();
 		this.mc = _mc;
@@ -32,7 +32,7 @@ public class CounterConsoleLogStrategy extends ConsoleLogStrategy
 		if (this.numberOfCounters.longValue() != 0l)
 		{
 			message += "put " + this.numberOfCounters.longValue() + " '" + this.counterName
-				+ "' counter(s) ";
+					+ "' counter(s) ";
 		}
 		else
 		{
