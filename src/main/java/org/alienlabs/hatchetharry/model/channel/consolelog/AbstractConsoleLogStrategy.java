@@ -2,8 +2,13 @@ package org.alienlabs.hatchetharry.model.channel.consolelog;
 
 import org.alienlabs.hatchetharry.model.CardZone;
 
-public class AbstractConsoleLogStrategy
+public final class AbstractConsoleLogStrategy
 {
+	private AbstractConsoleLogStrategy()
+	{
+		// Just to prevent instantation
+	}
+
 	public static ConsoleLogStrategy chooseStrategy(final ConsoleLogType type, final CardZone from,
 			final CardZone to, final Boolean cond, final String mc, final String player,
 			final String counterName, final Long numberOfCounters, final String targetPlayerName,
@@ -75,4 +80,5 @@ public class AbstractConsoleLogStrategy
 				throw new UnsupportedOperationException("Not implementeted!");
 		}
 	}
+
 }

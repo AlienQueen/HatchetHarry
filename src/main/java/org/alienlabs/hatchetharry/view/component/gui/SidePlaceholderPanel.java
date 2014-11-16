@@ -16,27 +16,21 @@ public class SidePlaceholderPanel extends Panel
 	private static final long serialVersionUID = 1L;
 
 	private final UUID uuid;
-
-	private final HomePage homePage;
 	private final String side;
 
-	private final Player player;
-
 	public SidePlaceholderPanel(final String id, final String _side, final HomePage hp,
-			final UUID _uuid, final Player _player)
+			final UUID _uuid, final Player player)
 	{
 		super(id);
 		this.setOutputMarkupId(true);
 
-		this.homePage = hp;
 		this.uuid = _uuid;
 		this.side = _side;
-		this.player = _player;
 
-		final Side mySide = this.player.getSide();
+		final Side mySide = player.getSide();
 
 
-		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid, this.player));
+		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid, player));
 
 		final WebMarkupContainer sidePlaceholder = new WebMarkupContainer("sidePlaceholder");
 		sidePlaceholder.setOutputMarkupId(true);
@@ -46,8 +40,7 @@ public class SidePlaceholderPanel extends Panel
 				+ mySide.getY() + "px; left: " + mySide.getX() + "px;"));
 		sidePlaceholder.add(new AttributeModifier("class", "sidePlaceholder"));
 
-		this.add(new SidePlaceholderMoveBehavior(this, this.homePage.getSideParent(), this.uuid,
-				this.player));
+		this.add(new SidePlaceholderMoveBehavior(this, hp.getSideParent(), this.uuid, player));
 
 		final ExternalImage handleImage = new ExternalImage("handleImage", "image/arrow.png");
 		handleImage.setOutputMarkupId(true);

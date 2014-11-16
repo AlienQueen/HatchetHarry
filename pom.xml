@@ -701,6 +701,7 @@
                     <minimumPriority>0</minimumPriority>
                     <rulesets>
                         <ruleset>/home/nostromo/rulesets/basic.xml</ruleset>
+                        <ruleset>/home/nostromo/rulesets/design.xml</ruleset>
                         <ruleset>/home/nostromo/rulesets/imports.xml</ruleset>
                         <ruleset>/home/nostromo/rulesets/optimizations.xml</ruleset>
                         <ruleset>/home/nostromo/rulesets/unnecessary.xml</ruleset>
