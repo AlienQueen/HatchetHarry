@@ -1,12 +1,10 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.PlayerAndCard;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.gui.DrawModeBehavior;
 import org.alienlabs.hatchetharry.view.component.gui.ExternalImage;
@@ -25,6 +23,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.resource.PackageResourceReference;
@@ -38,9 +37,8 @@ import org.springframework.beans.factory.annotation.Required;
 public class CardPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardPanel.class);
-	final UUID uuid;
+
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
@@ -49,20 +47,10 @@ public class CardPanel extends Panel
 	@SpringBean
 	PersistenceService persistenceService;
 
-	private final Player owner;
-	private final MagicCard magicCard;
-
-	// TODO: remove all arguments, except mc
-	public CardPanel(final String id, final String image, final UUID _uuid, final Player _owner,
-			MagicCard mc)
+	public CardPanel(final String id, final IModel<PlayerAndCard> playerAndCard)
 	{
-		super(id);
+		super(id, playerAndCard);
 		Injector.get().inject(this);
-
-		this.uuid = _uuid;
-		this.owner = _owner;
-		this.magicCard = mc;
-
 		this.setOutputMarkupId(true);
 
 		this.add(new Behavior()
@@ -80,12 +68,13 @@ public class CardPanel extends Panel
 			}
 		});
 
-		final MagicCard myCard = this.magicCard != null ? this.magicCard : this.persistenceService
-				.getCardFromUuid(this.uuid);
+		final MagicCard myCard = this.persistenceService.getCardFromUuid(playerAndCard.getObject()
+				.getCard().getUuidObject());
 
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
 		cardHandle.setOutputMarkupId(true);
-		final String uuidValidForJs = this.uuid.toString().replace("-", "_");
+		final String uuidValidForJs = playerAndCard.getObject().getCard().getUuidObject()
+				.toString().replace("-", "_");
 		cardHandle.setMarkupId("cardHandle" + uuidValidForJs);
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
@@ -101,23 +90,27 @@ public class CardPanel extends Panel
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
-		this.putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(this.uuid);
+		this.putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(playerAndCard
+				.getObject().getCard().getUuidObject());
 		menutoggleButton.add(this.putToHandFromBattlefieldBehavior);
 
 		this.putToGraveyardFromBattlefieldBehavior = new PutToGraveyardFromBattlefieldBehavior(
-				this.uuid);
+				playerAndCard.getObject().getCard().getUuidObject());
 		menutoggleButton.add(this.putToGraveyardFromBattlefieldBehavior);
 
-		this.putToExileFromBattlefieldBehavior = new PutToExileFromBattlefieldBehavior(this.uuid);
+		this.putToExileFromBattlefieldBehavior = new PutToExileFromBattlefieldBehavior(
+				playerAndCard.getObject().getCard().getUuidObject());
 		menutoggleButton.add(this.putToExileFromBattlefieldBehavior);
 
-		this.destroyTokenBehavior = new DestroyTokenBehavior(this.uuid);
+		this.destroyTokenBehavior = new DestroyTokenBehavior(playerAndCard.getObject().getCard()
+				.getUuidObject());
 		menutoggleButton.add(this.destroyTokenBehavior);
 
-		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this.uuid);
+		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(playerAndCard
+				.getObject().getCard().getUuidObject());
 
-		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(this.uuid, myCard,
-				this.owner);
+		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(playerAndCard.getObject()
+				.getCard().getUuidObject(), myCard, playerAndCard.getObject().getPlayer());
 		menutoggleButton.add(cardRotateBehavior, drawModeBehavior);
 
 		final ArrowDrawBehavior arrowDrawBehavior = new ArrowDrawBehavior("cardHandle"
@@ -127,22 +120,23 @@ public class CardPanel extends Panel
 		final String requestedSessionId = this.getHttpServletRequest().getRequestedSessionId();
 		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
 				requestedSessionId));
-		jsessionid.setMarkupId("jsessionid" + this.uuid);
+		jsessionid.setMarkupId("jsessionid" + playerAndCard.getObject().getCard().getUuidObject());
 		jsessionid.setOutputMarkupId(true);
 
 		CardPanel.LOGGER.info("jsessionid: " + requestedSessionId);
-		CardPanel.LOGGER.info("uuid: " + this.uuid);
+		CardPanel.LOGGER.info("uuid: " + playerAndCard.getObject().getCard().getUuidObject());
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
-		mouseX.setMarkupId("mouseX" + this.uuid);
-		mouseY.setMarkupId("mouseY" + this.uuid);
+		mouseX.setMarkupId("mouseX" + playerAndCard.getObject().getCard().getUuidObject());
+		mouseY.setMarkupId("mouseY" + playerAndCard.getObject().getCard().getUuidObject());
 		mouseX.setOutputMarkupId(true);
 		mouseY.setOutputMarkupId(true);
 
 		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
 		bullet.setOutputMarkupId(true).setMarkupId("bullet" + uuidValidForJs);
 
-		final ExternalImage cardImage = new ExternalImage("cardImage", image);
+		final ExternalImage cardImage = new ExternalImage("cardImage", playerAndCard.getObject()
+				.getCard().getBigImageFilename());
 		cardImage.setOutputMarkupId(true);
 
 		final ExternalImage cardRotate = new ExternalImage("cardRotate", "/image/rightArrow.png");
@@ -158,13 +152,14 @@ public class CardPanel extends Panel
 			cardImage.setMarkupId("card" + uuidValidForJs);
 		}
 
-		if (null != this.owner)
+		if (null != playerAndCard.getObject().getPlayer())
 		{
-			if ("infrared".equals(this.owner.getSide().getSideName()))
+			if ("infrared".equals(playerAndCard.getObject().getPlayer().getSide().getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
 			}
-			else if ("ultraviolet".equals(this.owner.getSide().getSideName()))
+			else if ("ultraviolet".equals(playerAndCard.getObject().getPlayer().getSide()
+					.getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 			}
@@ -175,13 +170,13 @@ public class CardPanel extends Panel
 		}
 
 		final CardInBattlefieldContextMenu contextMenu = new CardInBattlefieldContextMenu(
-				"contextMenu", this.uuid, myCard);
+				"contextMenu", playerAndCard.getObject().getCard().getUuidObject(), myCard);
 
 		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
 		menutoggleButton.add(form);
 
 		final WebMarkupContainer side = new WebMarkupContainer("side");
-		if (this.owner.getSide().getSideName()
+		if (playerAndCard.getObject().getPlayer().getSide().getSideName()
 				.equals(HatchetHarrySession.get().getPlayer().getSide().getSideName()))
 		{
 			side.add(new AttributeModifier("class", "battlefieldCardsForSide1"));
@@ -195,7 +190,8 @@ public class CardPanel extends Panel
 		cardHandle.add(side);
 		this.add(cardHandle);
 
-		final CardTooltipBehavior ctb = new CardTooltipBehavior(this.uuid);
+		final CardTooltipBehavior ctb = new CardTooltipBehavior(playerAndCard.getObject().getCard()
+				.getUuidObject());
 		this.add(ctb);
 
 		if (HatchetHarrySession.get().isDisplayTooltips())
@@ -213,11 +209,6 @@ public class CardPanel extends Panel
 	{
 		final Request servletWebRequest = this.getRequest();
 		return (HttpServletRequest)servletWebRequest.getContainerRequest();
-	}
-
-	public UUID getUuid()
-	{
-		return this.uuid;
 	}
 
 	@Required

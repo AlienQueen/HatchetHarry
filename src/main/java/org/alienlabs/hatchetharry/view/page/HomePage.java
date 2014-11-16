@@ -57,6 +57,7 @@ import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.Game;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
+import org.alienlabs.hatchetharry.model.PlayerAndCard;
 import org.alienlabs.hatchetharry.model.Side;
 import org.alienlabs.hatchetharry.model.User;
 import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
@@ -325,8 +326,8 @@ public class HomePage extends TestReportPage
 					&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer()
 							.getSide().getSideName())))
 			{
-				final CardPanel baldu = new CardPanel("baldu", card.getBigImageFilename(),
-						card.getUuidObject(), this.player, card);
+				final CardPanel baldu = new CardPanel("baldu", new Model(new PlayerAndCard(
+						this.player, card)));
 				balduParent.add(baldu);
 				this.session.getAllMagicCardsInBattleField().add(card);
 			}
@@ -3156,9 +3157,8 @@ public class HomePage extends TestReportPage
 			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
-				final CardPanel cp = new CardPanel("cardPanel", mc.getBigImageFilename(),
-						mc.getUuidObject(), HomePage.this.persistenceService.getPlayer(mc.getDeck()
-								.getPlayerId()), mc);
+				final CardPanel cp = new CardPanel("cardPanel", new Model(new PlayerAndCard(
+						HomePage.this.player, mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3170,6 +3170,7 @@ public class HomePage extends TestReportPage
 		};
 		this.allCardsInBattlefieldForSide1.setOutputMarkupId(true);
 		this.parentPlaceholder.addOrReplace(this.allCardsInBattlefieldForSide1);
+		this.parentPlaceholder.add(new ReorderCardInBattlefieldBehavior());
 		return this.parentPlaceholder;
 	}
 
@@ -3197,9 +3198,8 @@ public class HomePage extends TestReportPage
 			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
-				final CardPanel cp = new CardPanel("cardPanel", mc.getBigImageFilename(),
-						mc.getUuidObject(), HomePage.this.persistenceService.getPlayer(mc.getDeck()
-								.getPlayerId()), mc);
+				final CardPanel cp = new CardPanel("cardPanel", new Model(new PlayerAndCard(
+						HomePage.this.player, mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 

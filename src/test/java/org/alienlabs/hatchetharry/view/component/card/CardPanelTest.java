@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.PlayerAndCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
@@ -233,7 +234,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		PlayCardFromGraveyardBehavior pcfgb = wmc.getBehaviors(PlayCardFromGraveyardBehavior.class)
 				.get(0);
 		Assert.assertNotNull(pcfgb);
-		this.tester.getRequest().setParameter("card", card.getUuid().toString());
+		this.tester.getRequest().setParameter("card",
+				((PlayerAndCard)card.getDefaultModelObject()).getCard().getUuidObject().toString());
 		super.tester.executeBehavior(pcfgb);
 
 		// Verify

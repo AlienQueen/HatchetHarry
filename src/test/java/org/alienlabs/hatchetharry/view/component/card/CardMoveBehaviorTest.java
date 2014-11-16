@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.PlayerAndCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.view.component.gui.ReorderCardInBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -62,7 +63,7 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		Assert.assertNotNull(card);
 
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("uuid",
-				card.getUuid().toString());
+				((PlayerAndCard)card.getDefaultModelObject()).getCard().getUuidObject().toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("index", "0");
 		SpringContextLoaderBaseTest.tester.executeBehavior(reorder);
 
@@ -75,7 +76,8 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(3, allCardsInBattlefield.size());
 
-		final MagicCard mc = this.persistenceService.getCardFromUuid(card.getUuid());
+		final MagicCard mc = this.persistenceService.getCardFromUuid(((PlayerAndCard)card
+				.getDefaultModelObject()).getCard().getUuidObject());
 		Assert.assertEquals(0, mc.getBattlefieldOrder().intValue());
 
 		// Verify names

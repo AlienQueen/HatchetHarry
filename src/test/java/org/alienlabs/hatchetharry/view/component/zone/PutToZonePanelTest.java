@@ -2,6 +2,7 @@ package org.alienlabs.hatchetharry.view.component.zone;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.PlayerAndCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.card.CardPanel;
@@ -113,7 +114,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		PutToZoneBehavior ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
-				cardToHandle.getUuid().toString());
+				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
+						.toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Graveyard");
 		SpringContextLoaderBaseTest.tester.executeBehavior(ptzb);
 
@@ -159,7 +161,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
-				cardToHandle.getUuid().toString());
+				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
+						.toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Exile");
 		SpringContextLoaderBaseTest.tester.executeBehavior(ptzb);
 
@@ -205,7 +208,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
-				cardToHandle.getUuid().toString());
+				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
+						.toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Hand");
 		SpringContextLoaderBaseTest.tester.executeBehavior(ptzb);
 
