@@ -369,7 +369,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:4:cardPanel");
 		Assert.assertNotNull(card);
 
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("uuid",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
+				"uuid",
 				((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("index", "0");

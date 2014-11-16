@@ -113,7 +113,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 				.getComponentFromLastRenderedPage("exileParent:exile:putToZonePanel");
 		PutToZoneBehavior ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
+				"card",
 				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Graveyard");
@@ -160,7 +161,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 				.getComponentFromLastRenderedPage("graveyardParent:graveyard:putToZonePanel");
 		ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
+				"card",
 				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Exile");
@@ -207,7 +209,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 				.getComponentFromLastRenderedPage("exileParent:exile:putToZonePanel");
 		ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
+				"card",
 				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
 		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Hand");
