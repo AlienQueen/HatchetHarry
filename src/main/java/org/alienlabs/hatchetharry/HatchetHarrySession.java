@@ -425,7 +425,7 @@ public class HatchetHarrySession extends WebSession
 
 	public void setLastBattlefieldOrder(Integer value)
 	{
-		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, value.intValue());
+		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, value);
 	}
 
 	public Integer getLastBattlefieldOrder()

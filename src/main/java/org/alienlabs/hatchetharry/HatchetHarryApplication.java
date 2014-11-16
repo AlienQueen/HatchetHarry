@@ -55,7 +55,7 @@ public class HatchetHarryApplication extends WebApplication
 			ResourceRegistrationListener
 {
 	// Map of playerId and Atmosphere UUID
-	protected static final Map<Long, String> cometResources = new HashMap<Long, String>();
+	private static final Map<Long, String> cometResources = new HashMap<Long, String>();
 	static final Logger LOGGER = LoggerFactory.getLogger(HatchetHarryApplication.class);
 	private static final long serialVersionUID = 1L;
 	public transient EventBus eventBus;
@@ -86,6 +86,7 @@ public class HatchetHarryApplication extends WebApplication
 		return HomePage.class;
 	}
 
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({"PATH_TRAVERSAL_IN"})
 	@Override
 	protected void init()
 	{
@@ -118,7 +119,7 @@ public class HatchetHarryApplication extends WebApplication
 		final Runnable beeper = new Runnable()
 		{
 			@Override
-			@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
+			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
 			public void run()
 			{
 				try

@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class MulliganModalWindow extends Panel
 {
@@ -78,7 +78,7 @@ public class MulliganModalWindow extends Panel
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DLS_DEAD_LOCAL_STORE", justification = "False positive on NotifierCometChannel instantiation")
+			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DLS_DEAD_LOCAL_STORE", justification = "False positive on NotifierCometChannel instantiation")
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				MulliganModalWindow.LOGGER.info("gameId: " + MulliganModalWindow.this.getGameId()

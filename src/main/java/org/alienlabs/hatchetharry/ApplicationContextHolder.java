@@ -30,7 +30,7 @@ public final class ApplicationContextHolder implements ApplicationContextAware
 	 * le conteneur
 	 */
 	@Override
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "Spring requires this for ApplicationContextHolder.getContext().getBean();")
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "Spring requires this for ApplicationContextHolder.getContext().getBean();")
 	public void setApplicationContext(final ApplicationContext ctx) throws BeansException
 	{
 		ApplicationContextHolder.context = ctx;

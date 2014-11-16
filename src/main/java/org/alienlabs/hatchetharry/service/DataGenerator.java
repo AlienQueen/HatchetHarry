@@ -129,7 +129,8 @@ public class DataGenerator implements InitializingBean, Serializable
 		this.importDeckService = _importDeckService;
 	}
 
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "the difference is in fake.setDeckArchive()")
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "PATH_TRAVERSAL_IN",
+			"PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS" }, justification = "the difference is in fake.setDeckArchive() ")
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void afterPropertiesSet() throws Exception

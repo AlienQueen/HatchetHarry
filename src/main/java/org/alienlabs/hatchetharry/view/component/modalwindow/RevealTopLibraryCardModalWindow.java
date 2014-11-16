@@ -3,6 +3,8 @@ package org.alienlabs.hatchetharry.view.component.modalwindow;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -40,7 +42,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import com.google.common.io.Files;
 
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealTopLibraryCardModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(RevealTopLibraryCardModalWindow.class);
@@ -52,14 +54,14 @@ public class RevealTopLibraryCardModalWindow extends Panel
 	PersistenceService persistenceService;
 
 	public RevealTopLibraryCardModalWindow(final String id, final ModalWindow _modal,
-			final MagicCard _card)
+			final MagicCard _card) throws NoSuchAlgorithmException
 	{
 		super(id);
 		this.modal = _modal;
 		this.card = _card;
 
 		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
-				"cards/topLibraryCard.jpg?" + Math.random());
+				"cards/topLibraryCard.jpg?" + SecureRandom.getInstanceStrong().nextLong());
 
 		if (null != this.card)
 		{
@@ -93,6 +95,8 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		{
 			private static final long serialVersionUID = 1L;
 
+			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({ "PATH_TRAVERSAL_IN",
+					"PATH_TRAVERSAL_IN" })
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{

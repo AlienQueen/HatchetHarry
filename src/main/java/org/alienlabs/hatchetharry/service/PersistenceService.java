@@ -225,7 +225,7 @@ public class PersistenceService implements Serializable
 
 
 	@Transactional(readOnly = true)
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "So you're saying I can't log the same thing in two different methods????")
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "So you're saying I can't log the same thing in two different methods????")
 	public MagicCard getCardFromUuid(final UUID uuid)
 	{
 		final Session session = this.magicCardDao.getSession();
@@ -270,7 +270,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "So you're saying I can't log the same thing in two different methods????")
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "So you're saying I can't log the same thing in two different methods????")
 	public Token getTokenFromUuid(final UUID uuid)
 	{
 		final Session session = this.tokenDao.getSession();
@@ -819,7 +819,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = " Hibernate returns ArrayList, for the moment at least")
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = " Hibernate returns ArrayList, for the moment at least")
 	public ArrayList<Deck> getAllDecksFromDeckArchives()
 	{
 		final Session session = this.deckDao.getSession();
@@ -1404,9 +1404,8 @@ public class PersistenceService implements Serializable
 		// < (and not <=) because when joining, there is only the player who
 		// have created the game
 		final Query query = session
-				.createQuery("from Game g where g.pending is true and desiredFormat = '"
-						+ desiredFormat.name()
-						+ "' and size(g.players) < :desiredPlayers and g.desiredNumberOfPlayers = :desiredPlayers and g.gameId <> :gameIdToExclude");
+				.createQuery("from Game g where g.pending is true and desiredFormat = :desiredFormat and size(g.players) < :desiredPlayers and g.desiredNumberOfPlayers = :desiredPlayers and g.gameId <> :gameIdToExclude");
+		query.setString("desiredFormat", desiredFormat.name());
 		query.setInteger("desiredPlayers", desiredPlayers);
 		query.setLong("gameIdToExclude", HatchetHarrySession.get().getGameId().longValue());
 		query.setMaxResults(1);

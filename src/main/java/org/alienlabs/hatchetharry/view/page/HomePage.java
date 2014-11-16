@@ -40,6 +40,8 @@ package org.alienlabs.hatchetharry.view.page;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -167,7 +169,7 @@ import com.google.common.io.Files;
  * @author Andrey Belyaev
  * @author Zala Goupil
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = { "SE_INNER_CLASS",
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class HomePage extends TestReportPage
 {
@@ -243,7 +245,7 @@ public class HomePage extends TestReportPage
 	private List<MagicCard> allMagicCardsInBattlefieldForSide2;
 	private Label username;
 
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
 	public HomePage(final PageParameters pp) throws Exception
 	{
 		this.session = HatchetHarrySession.get();
@@ -377,7 +379,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.22.0 (release Battlefield),");
-		final Label message2 = new Label("message2", "built on Sunday, 26th of October 2014.");
+		final Label message2 = new Label("message2", "built on Sunday, 16th of November 2014.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1799,6 +1801,7 @@ public class HomePage extends TestReportPage
 	}
 
 	private void generateRevealTopLibraryCardLink(final String id, final String idModalWindow)
+			throws NoSuchAlgorithmException
 	{
 		final ModalWindow window = new ModalWindow(idModalWindow);
 		window.setWindowClosedCallback(new WindowClosedCallback()
@@ -1847,6 +1850,8 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
+			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({ "PATH_TRAVERSAL_IN",
+					"PATH_TRAVERSAL_IN" })
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
@@ -1995,39 +2000,49 @@ public class HomePage extends TestReportPage
 					return;
 				}
 
-				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
-						.random() * allCardsInHand)).intValue() : 0);
-				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
-						.getAllCardsInHandForAGameAndAPlayer(gameId, playerWhoDiscards.getId(),
-								playerWhoDiscardsDeckId);
-				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
-						.remove(randomCardIndex);
-				playerWhoDiscards.getDeck().getCards().remove(chosenCard);
-				chosenCard.setZone(CardZone.GRAVEYARD);
-				HomePage.this.persistenceService.updateCardWithoutMerge(chosenCard);
-
-				playerWhoDiscards.setHandDisplayed(true);
-				playerWhoDiscards.setGraveyardDisplayed(true);
-
-				if (allCardsInHandForAGameAndAPlayer.isEmpty())
+				try
 				{
-					playerWhoDiscards.getDeck().getCards().clear();
+					final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math
+							.floor(SecureRandom.getInstanceStrong().nextInt(allCardsInHand)))
+							.intValue() : 0);
+					final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
+							.getAllCardsInHandForAGameAndAPlayer(gameId, playerWhoDiscards.getId(),
+									playerWhoDiscardsDeckId);
+					final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
+							.remove(randomCardIndex);
+					playerWhoDiscards.getDeck().getCards().remove(chosenCard);
+					chosenCard.setZone(CardZone.GRAVEYARD);
+					HomePage.this.persistenceService.updateCardWithoutMerge(chosenCard);
+
+					playerWhoDiscards.setHandDisplayed(true);
+					playerWhoDiscards.setGraveyardDisplayed(true);
+
+					if (allCardsInHandForAGameAndAPlayer.isEmpty())
+					{
+						playerWhoDiscards.getDeck().getCards().clear();
+					}
+
+					HomePage.this.persistenceService.updatePlayerWithoutMerge(playerWhoDiscards);
+
+					BattlefieldService.updateHand(target);
+					BattlefieldService.updateGraveyard(target);
+
+					final NotifierCometChannel ncc = new NotifierCometChannel(
+							NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
+							playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
+							null, chosenCard.getTitle(), null, "");
+					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+							ConsoleLogType.DISCARD_AT_RANDOM, null, null, null,
+							chosenCard.getTitle(), playerWhoDiscards.getName(), null, null, null,
+							false, gameId);
+
+					EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(
+							logger));
 				}
-
-				HomePage.this.persistenceService.updatePlayerWithoutMerge(playerWhoDiscards);
-
-				BattlefieldService.updateHand(target);
-				BattlefieldService.updateGraveyard(target);
-
-				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
-						playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
-						null, chosenCard.getTitle(), null, "");
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
-						playerWhoDiscards.getName(), null, null, null, false, gameId);
-
-				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
+				catch (NoSuchAlgorithmException e)
+				{
+					HomePage.LOGGER.error("error generating a random number", e);
+				}
 			}
 		};
 
@@ -2212,7 +2227,7 @@ public class HomePage extends TestReportPage
 						+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_GRAVGEYARD_FROM_BATTLEFIELD_ACTION :
+			case PUT_CARD_TO_GRAVEYARD_FROM_BATTLEFIELD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
 						+ "', text : \"has put '"
@@ -2618,7 +2633,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void revealTopLibraryCard(final AjaxRequestTarget target,
-			final RevealTopLibraryCardCometChannel event)
+			final RevealTopLibraryCardCometChannel event) throws NoSuchAlgorithmException
 	{
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");

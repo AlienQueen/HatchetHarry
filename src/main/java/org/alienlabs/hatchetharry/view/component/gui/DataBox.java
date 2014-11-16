@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * @author nostromo
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class DataBox extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
@@ -69,7 +69,7 @@ public class DataBox extends Panel
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "There's no other way round")
+					@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", justification = "There's no other way round")
 					protected void onSubmit(final AjaxRequestTarget target)
 					{
 						super.onSubmit(target);

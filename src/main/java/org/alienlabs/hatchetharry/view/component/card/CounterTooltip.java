@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CounterTooltip extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(CounterTooltip.class);
@@ -374,9 +374,10 @@ public class CounterTooltip extends Panel
 				this.action = NotifierAction.CLEAR_COUNTER_ACTION;
 				if (CounterTooltip.this.card != null)
 				{
-					final Deck d = CounterTooltip.this.card.getDeck();
-					final String counterName = this.counter.getCounterName();
-					final Long targetNumberOfCounters = this.counter.getNumberOfCounters();
+					// final Deck d = CounterTooltip.this.card.getDeck();
+					// final String counterName = this.counter.getCounterName();
+					// final Long targetNumberOfCounters =
+					// this.counter.getNumberOfCounters();
 
 					this.targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
 							CounterTooltip.this.card.getDeck().getPlayerId()).getName();
