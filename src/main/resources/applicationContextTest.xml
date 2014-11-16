@@ -85,7 +85,7 @@
         <property name="hibernateProperties">
             <props>
                 <!--  create= provide database model at start-up by dropping tables, update= no start-up data model modification -->
-                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <prop key="jdbc.driverClassName">org.mariadb.jdbc.Driver</prop>
                 <prop key="jdbc.url">jdbc:mysql://localhost:3306/hhTest?generateSimpleParameterMetadata=true</prop>
@@ -105,6 +105,7 @@
                 <prop key="hibernate.cache.generate_statistics">true</prop>
                 <!-- <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>-->
                 <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
+                <prop key="hibernate.event.merge.entity_copy_observer">allow</prop>
             </props>
         </property>
     </bean>

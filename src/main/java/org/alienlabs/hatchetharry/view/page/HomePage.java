@@ -274,6 +274,12 @@ public class HomePage extends TestReportPage
 			throw new RestartResponseException(HomePage.class);
 		}
 
+		if ((pp != null) && (pp.get("displayTooltips") != null)
+				&& ("true".equals(pp.get("displayTooltips").toString())))
+		{
+			this.session.setDisplayTooltips(true);
+		}
+
 		// Resources
 		this.addHeadResources();
 
@@ -320,7 +326,7 @@ public class HomePage extends TestReportPage
 							.getSide().getSideName())))
 			{
 				final CardPanel baldu = new CardPanel("baldu", card.getBigImageFilename(),
-						card.getUuidObject(), this.player);
+						card.getUuidObject(), this.player, card);
 				balduParent.add(baldu);
 				this.session.getAllMagicCardsInBattleField().add(card);
 			}
@@ -1526,6 +1532,7 @@ public class HomePage extends TestReportPage
 					.getDeckArchive().getDeckName()))
 			{
 				mc.setGameId(this.session.getGameId());
+				mc.setDeck(this.deck);
 				mc.getDeck().setPlayerId(this.player.getId());
 				_cards.add(mc);
 			}
@@ -1899,11 +1906,14 @@ public class HomePage extends TestReportPage
 		window.setInitialWidth(500);
 		window.setInitialHeight(510);
 
-		window.setContent(new CreateTokenModalWindow(window.getContentId(), window));
+		CreateTokenModalWindow createTokenModalWindow = new CreateTokenModalWindow(
+				window.getContentId(), window);
+		window.setContent(createTokenModalWindow);
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		window.setTitle("Create a token");
 		window.setOutputMarkupId(true);
+		this.setCreateTokenModalWindow(window);
 		this.add(window);
 
 		final AjaxLink<Void> createTokenLink = new AjaxLink<Void>(id)
@@ -3148,7 +3158,7 @@ public class HomePage extends TestReportPage
 				final MagicCard mc = item.getModelObject();
 				final CardPanel cp = new CardPanel("cardPanel", mc.getBigImageFilename(),
 						mc.getUuidObject(), HomePage.this.persistenceService.getPlayer(mc.getDeck()
-								.getPlayerId()));
+								.getPlayerId()), mc);
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3189,7 +3199,7 @@ public class HomePage extends TestReportPage
 				final MagicCard mc = item.getModelObject();
 				final CardPanel cp = new CardPanel("cardPanel", mc.getBigImageFilename(),
 						mc.getUuidObject(), HomePage.this.persistenceService.getPlayer(mc.getDeck()
-								.getPlayerId()));
+								.getPlayerId()), mc);
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3290,4 +3300,13 @@ public class HomePage extends TestReportPage
 		return this.conferenceParent;
 	}
 
+	public void setCreateTokenModalWindow(ModalWindow window)
+	{
+		this.createTokenWindow = window;
+	}
+
+	public ModalWindow getCreateTokenModalWindow()
+	{
+		return this.createTokenWindow;
+	}
 }

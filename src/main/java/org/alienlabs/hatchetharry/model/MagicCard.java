@@ -44,7 +44,7 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "magicCardId")
 	private Long id;
 	@Column(name = "VERSION", length = 20)
@@ -77,7 +77,7 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	private CardZone zone;
 	@Column
 	private Long zoneOrder = 0l;
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "card", targetEntity = Counter.class, orphanRemoval = false)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "card", targetEntity = Counter.class, orphanRemoval = true)
 	private Set<Counter> counters = new HashSet<Counter>();
 	@Column
 	private String ownerSide;
@@ -329,7 +329,8 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
@@ -337,18 +338,21 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MagicCard other = (MagicCard) obj;
-		if (uuid == null) {
+		MagicCard other = (MagicCard)obj;
+		if (uuid == null)
+		{
 			if (other.uuid != null)
 				return false;
-		} else if (!uuid.equals(other.uuid))
+		}
+		else if (!uuid.equals(other.uuid))
 			return false;
 		return true;
 	}

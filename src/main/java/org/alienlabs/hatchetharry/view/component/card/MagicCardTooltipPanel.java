@@ -29,7 +29,7 @@ public class MagicCardTooltipPanel extends Panel
 	PersistenceService persistenceService;
 
 	public MagicCardTooltipPanel(final String id, final UUID _uuid, final String _bigImage,
-		final String _ownerSide, final MagicCard _card)
+			final String _ownerSide, final MagicCard _card)
 	{
 		super(id);
 		this.uuid = _uuid;
@@ -66,7 +66,8 @@ public class MagicCardTooltipPanel extends Panel
 			bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid yellow;"));
 		}
 
-		final CounterTooltip counterPanel = new CounterTooltip("counterPanel", this.card, null);
+		final CounterTooltip counterPanel = new CounterTooltip("counterPanel", this.card,
+				this.card.getToken());
 
 		this.add(closeTooltip, bubbleTipImg1, counterPanel);
 	}

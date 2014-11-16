@@ -41,7 +41,7 @@ public class CreateTokenModalWindow extends Panel
 	final ModalWindow modal;
 
 	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
-	creatureTypesModel, descriptionModel;
+			creatureTypesModel, descriptionModel;
 
 	@SpringBean
 	PersistenceService persistenceService;
@@ -107,27 +107,28 @@ public class CreateTokenModalWindow extends Panel
 						CreateTokenModalWindow.this.descriptionModel.getObject(), uuid.toString(),
 						gameId);
 
-				final MagicCard card = new MagicCard("cards/token_small.jpg", "cards/token.jpg",
-						"", "token", "", player.getSide().getSideName(), token, HatchetHarrySession
-						.get().incrementLastBattlefieldOder());
+				MagicCard card = new MagicCard("cards/token_small.jpg", "cards/token.jpg", "",
+						"token", "", player.getSide().getSideName(), token, HatchetHarrySession
+								.get().incrementLastBattlefieldOder());
 				card.setGameId(gameId);
 
-				final Deck deck = CreateTokenModalWindow.this.persistenceService.getDeck(HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
-				card.setDeck(deck);
+				Deck deck = CreateTokenModalWindow.this.persistenceService
+						.getDeck(HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 
 				card.setToken(token);
 				card.setUuidObject(uuid);
 				card.setZone(CardZone.BATTLEFIELD);
-				card.getDeck().setPlayerId(player.getId());
 				card.setX(card.getX() == -1l ? player.getSide().getX() : card.getX());
 				card.setY(card.getY() == -1l ? player.getSide().getY() : card.getY());
+				card.setDeck(deck);
+				card.getDeck().setPlayerId(player.getId());
 				deck.getCards().add(card);
 
 				token.setCapabilities(CreateTokenModalWindow.this.capabilitiesModel.getObject());
 				token.setCreatureTypes(CreateTokenModalWindow.this.creatureTypesModel.getObject());
 				token.setPlayer(player);
 
-				CreateTokenModalWindow.this.persistenceService.mergeDeck(deck);
+				CreateTokenModalWindow.this.persistenceService.saveOrUpdateCardAndDeck(card);
 				CreateTokenModalWindow.this.persistenceService.saveToken(token);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(
@@ -175,5 +176,10 @@ public class CreateTokenModalWindow extends Panel
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	public ModalWindow getModal()
+	{
+		return this.modal;
 	}
 }

@@ -76,10 +76,12 @@ public class SpringContextLoaderBaseTest
 		persistenceService.resetDb();
 	}
 
-	public void startAGameAndPlayACard() throws Exception
+	public void startAGameAndPlayACard(String... pageParameters) throws Exception
 	{
 		// Create game
-		this.tester.startPage(new HomePage(new PageParameters()));
+		String paramName = pageParameters.length > 1 ? pageParameters[0] : "";
+		String paramValue = pageParameters.length > 1 ? pageParameters[1] : "";
+		this.tester.startPage(new HomePage(new PageParameters().add(paramName, paramValue)));
 		this.tester.assertRenderedPage(HomePage.class);
 
 		this.tester.assertComponent("createGameLink", AjaxLink.class);

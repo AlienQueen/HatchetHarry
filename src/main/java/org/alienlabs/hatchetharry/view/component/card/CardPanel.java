@@ -45,17 +45,23 @@ public class CardPanel extends Panel
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 	private final DestroyTokenBehavior destroyTokenBehavior;
+
 	@SpringBean
 	PersistenceService persistenceService;
-	private final Player owner;
 
-	public CardPanel(final String id, final String image, final UUID _uuid, final Player _owner)
+	private final Player owner;
+	private final MagicCard magicCard;
+
+	// TODO: remove all arguments, except mc
+	public CardPanel(final String id, final String image, final UUID _uuid, final Player _owner,
+			MagicCard mc)
 	{
 		super(id);
 		Injector.get().inject(this);
 
 		this.uuid = _uuid;
 		this.owner = _owner;
+		this.magicCard = mc;
 
 		this.setOutputMarkupId(true);
 
@@ -74,7 +80,8 @@ public class CardPanel extends Panel
 			}
 		});
 
-		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.uuid);
+		final MagicCard myCard = this.magicCard != null ? this.magicCard : this.persistenceService
+				.getCardFromUuid(this.uuid);
 
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
 		cardHandle.setOutputMarkupId(true);
@@ -190,6 +197,16 @@ public class CardPanel extends Panel
 
 		final CardTooltipBehavior ctb = new CardTooltipBehavior(this.uuid);
 		this.add(ctb);
+
+		if (HatchetHarrySession.get().isDisplayTooltips())
+		{
+			this.add(new MagicCardTooltipPanel("tooltip", myCard.getUuidObject(), myCard
+					.getBigImageFilename(), myCard.getOwnerSide(), myCard));
+		}
+		else
+		{
+			this.add(new WebMarkupContainer("tooltip"));
+		}
 	}
 
 	public HttpServletRequest getHttpServletRequest()

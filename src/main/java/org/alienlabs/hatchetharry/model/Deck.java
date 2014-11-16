@@ -41,7 +41,7 @@ public class Deck implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "deckId")
 	private Long deckId;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -54,7 +54,7 @@ public class Deck implements Serializable
 
 	public Deck()
 	{
-	};
+	}
 
 	/**
 	 * Shuffle the library.
