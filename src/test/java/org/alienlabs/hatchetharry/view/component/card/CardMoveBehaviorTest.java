@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;

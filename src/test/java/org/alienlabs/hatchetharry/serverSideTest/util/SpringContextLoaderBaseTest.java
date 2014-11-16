@@ -98,7 +98,6 @@ public class SpringContextLoaderBaseTest
 
 		Player p = this.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
-		p.setDeck(this.persistenceService.getDeck(p.getDeck().getDeckId()));
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 		final PlayCardFromHandBehavior pcfhb = getFirstPlayCardFromHandBehavior();
 

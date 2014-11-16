@@ -255,7 +255,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
-	public void testDeckListsShouldNotContainDuplicatesInModalWindows() throws Exception {
+	public void testDeckListsShouldNotContainDuplicatesInModalWindows() throws Exception
+	{
 		// Init
 		Assert.assertEquals(3, this.persistenceService.getAllDecksFromDeckArchives().size());
 
@@ -273,25 +274,30 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		joinGameForm.setValue("gameIdInput", String.valueOf(gameId));
 
-		final TextField nameTextField = (TextField)this.tester.getComponentFromLastRenderedPage("joinGameWindow:content:form:name");
+		final TextField nameTextField = (TextField)this.tester
+				.getComponentFromLastRenderedPage("joinGameWindow:content:form:name");
 		Assert.assertNotNull(nameTextField);
-		final AjaxFormComponentUpdatingBehavior nameUpdateBehavior = nameTextField.getBehaviors(AjaxFormComponentUpdatingBehavior.class)
-				.get(0);
+		final AjaxFormComponentUpdatingBehavior nameUpdateBehavior = nameTextField.getBehaviors(
+				AjaxFormComponentUpdatingBehavior.class).get(0);
 		Assert.assertNotNull(nameUpdateBehavior);
-		DropDownChoice choices = (DropDownChoice)this.tester.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
+		DropDownChoice choices = (DropDownChoice)this.tester
+				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
 
 		// Run
 		this.tester.executeBehavior(nameUpdateBehavior);
 
 		// Verify
-		choices = (DropDownChoice)this.tester.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
+		choices = (DropDownChoice)this.tester
+				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
 		Assert.assertEquals(3, this.persistenceService.getAllDecksFromDeckArchives().size());
 	}
 
 	@Test
-	public void testBattlefieldOrdersShouldBeOKAfterPuttingACardOutsideOfTheTheBattlefieldAndRearrangingCards() throws Exception {
+	public void testBattlefieldOrdersShouldBeOKAfterPuttingACardOutsideOfTheTheBattlefieldAndRearrangingCards()
+			throws Exception
+	{
 		// Start a game and play 5 cards
 		super.startAGameAndPlayACard();
 
@@ -345,11 +351,13 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:5:cardPanel");
 		Assert.assertNotNull(card);
-		SpringContextLoaderBaseTest.tester.executeBehavior(card.getPutToGraveyardFromBattlefieldBehavior());
+		SpringContextLoaderBaseTest.tester.executeBehavior(card
+				.getPutToGraveyardFromBattlefieldBehavior());
 
 		// Verify
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		List<MagicCard> allCardsInGraveyard = this.persistenceService.getAllCardsInGraveyardForAGame(gameId);
+		List<MagicCard> allCardsInGraveyard = this.persistenceService
+				.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertTrue(allCardsInGraveyard.size() == 1);
 		Assert.assertTrue(cardBefore5.contains(allCardsInGraveyard.get(0).getTitle()));
 

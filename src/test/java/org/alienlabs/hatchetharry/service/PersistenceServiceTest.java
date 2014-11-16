@@ -15,7 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class PersistenceServiceTest
 {
 	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-		new String[] { "applicationContext.xml", "applicationContextTest.xml" });
+			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
 	public static transient ApplicationContext context;
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
@@ -37,7 +37,7 @@ public class PersistenceServiceTest
 			{
 				PersistenceServiceTest.context = PersistenceServiceTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-					new SpringComponentInjector(this, PersistenceServiceTest.context, true));
+						new SpringComponentInjector(this, PersistenceServiceTest.context, true));
 				// We'll ask Emond to enable unit testing in EventBus
 				// this.eventBus = new EventBusMock(this);
 			}
@@ -52,7 +52,7 @@ public class PersistenceServiceTest
 		PersistenceServiceTest.tester.assertRenderedPage(HomePage.class);
 
 		PersistenceServiceTest.pageDocument = PersistenceServiceTest.tester.getLastResponse()
-			.getDocument();
+				.getDocument();
 	}
 
 	@Before

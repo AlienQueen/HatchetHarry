@@ -6,10 +6,7 @@ import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.component.card.CardRotateBehavior;
-import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
@@ -48,10 +45,15 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		super.tester.assertRenderedPage(HomePage.class);
 		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
 
-		this.tester.assertComponent("parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton", WebMarkupContainer.class);
-		final WebMarkupContainer cardButton = (WebMarkupContainer)page.get("parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton");
+		this.tester
+				.assertComponent(
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton",
+						WebMarkupContainer.class);
+		final WebMarkupContainer cardButton = (WebMarkupContainer)page
+				.get("parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton");
 		Assert.assertNotNull(cardButton);
-		CardRotateBehavior crb = (CardRotateBehavior)cardButton.getBehaviors(CardRotateBehavior.class).get(0);
+		CardRotateBehavior crb = (CardRotateBehavior)cardButton.getBehaviors(
+				CardRotateBehavior.class).get(0);
 		Assert.assertNotNull(crb);
 
 		// Card default state
@@ -74,8 +76,8 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		Assert.assertTrue(mc.isTapped());
 
 		pageDocument = this.tester.getLastResponse().getDocument();
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
-				"cardContainer tapped", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "cardContainer tapped",
+				false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 
@@ -87,8 +89,8 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		Assert.assertFalse(mc.isTapped());
 
 		pageDocument = this.tester.getLastResponse().getDocument();
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
-				"cardContainer tapped", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "cardContainer tapped",
+				false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(0, tagTester.size());
 
