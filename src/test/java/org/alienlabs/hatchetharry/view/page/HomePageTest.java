@@ -145,22 +145,6 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
-	public void testRenderDataBox() throws IOException
-	{
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		// assert DataBox is present
-		SpringContextLoaderBaseTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
-
-		// assert DataBox content
-		SpringContextLoaderBaseTest.tester.assertComponent(
-				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
-				AjaxEditableLabel.class);
-		final AjaxEditableLabel<String> lifePoints = (AjaxEditableLabel<String>)SpringContextLoaderBaseTest.tester
-				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
-		Assert.assertEquals("20", lifePoints.getDefaultModelObject().toString());
-	}
-
-	@Test
 	public void testRenderChat() throws IOException
 	{
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -340,13 +324,13 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		// Drawing card successful?
 		// TODO ensure card is at the beginning or at the end
 		final String firstCardIdAfterDraw = tagTester.get(1).getAttribute("id");
-		Assert.assertTrue("The second thumb of the hand component has not changed!",
+		Assert.assertFalse("The second thumb of the hand component has not changed!",
 				cardNameBeforeDraw.equals(firstCardIdAfterDraw));
 
 		Assert.assertNotNull(tagTester.get(1).getAttribute("id"));
 		Assert.assertTrue(tagTester.get(1).getAttribute("id").contains("placeholder"));
 		final String secondCardIdAfterDraw = tagTester.get(1).getAttribute("id");
-		Assert.assertTrue(cardNameBeforeDraw.equals(secondCardIdAfterDraw));
+		Assert.assertNotEquals(cardNameBeforeDraw, secondCardIdAfterDraw);
 	}
 
 }

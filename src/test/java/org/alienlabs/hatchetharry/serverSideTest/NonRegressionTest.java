@@ -8,6 +8,9 @@ import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
+import org.alienlabs.hatchetharry.service.DataGenerator;
+import org.alienlabs.hatchetharry.service.ImportDeckService;
+import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.card.*;
 import org.alienlabs.hatchetharry.view.component.gui.*;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
@@ -221,7 +224,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		// result: 5 cards in hand, 2 on the battlefield ( + 1 token),
 		// 53 in the library, 0 in
 		// exile & graveyard and 60 in total (beware, there's a token!)
-		this.verifyFieldsOfCountCardsModalWindow(0, "infrared");
+		this.verifyFieldsOfCountCardsModalWindow(0, "Zala");
 		this.verifyFieldsOfCountCardsModalWindow(1, "5");
 		this.verifyFieldsOfCountCardsModalWindow(2, "53");
 		this.verifyFieldsOfCountCardsModalWindow(3, "0");
@@ -259,28 +262,27 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	public void testDeckListsShouldNotContainDuplicatesInModalWindows() throws Exception
 	{
 		// Init
+		DataGenerator dataGenerator = context.getBean(DataGenerator.class);
+		dataGenerator.afterPropertiesSet();
 		Assert.assertEquals(3, this.persistenceService.getAllDecksFromDeckArchives().size());
 
 		this.startAGameAndPlayACard();
 		tester.assertComponent("joinGameLink", AjaxLink.class);
 		tester.clickLink("joinGameLink", true);
 
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
 		this.tester.assertComponent("joinGameLink", AjaxLink.class);
 		this.tester.clickLink("joinGameLink", true);
-
-		final FormTester joinGameForm = this.tester.newFormTester("joinGameWindow:content:form");
-		joinGameForm.setValue("name", "Zala");
-		joinGameForm.setValue("sideInput", "1");
-		joinGameForm.setValue("deckParent:decks", "1");
-		final Long gameId = HatchetHarrySession.get().getGameId();
-		joinGameForm.setValue("gameIdInput", String.valueOf(gameId));
-
 		final TextField nameTextField = (TextField)this.tester
 				.getComponentFromLastRenderedPage("joinGameWindow:content:form:name");
 		Assert.assertNotNull(nameTextField);
+
 		final AjaxFormComponentUpdatingBehavior nameUpdateBehavior = nameTextField.getBehaviors(
 				AjaxFormComponentUpdatingBehavior.class).get(0);
 		Assert.assertNotNull(nameUpdateBehavior);
+
 		DropDownChoice choices = (DropDownChoice)this.tester
 				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
@@ -289,6 +291,12 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		this.tester.executeBehavior(nameUpdateBehavior);
 
 		// Verify
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
+		this.tester.assertComponent("joinGameLink", AjaxLink.class);
+		this.tester.clickLink("joinGameLink", true);
+
 		choices = (DropDownChoice)this.tester
 				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
