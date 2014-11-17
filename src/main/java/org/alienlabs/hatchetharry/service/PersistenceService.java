@@ -523,7 +523,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public Player getPlayer(final Long l)
 	{
-		return this.playerDao.load(l);
+		return (Player)this.playerDao.getSession().get(Player.class, l);
 	}
 
 	@Transactional(readOnly = true)
@@ -888,13 +888,13 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = true)
 	public Game getGame(final Long _id)
 	{
-		return this.gameDao.load(_id);
+		return (Game)this.gameDao.getSession().get(Game.class, _id);
 	}
 
-	@Transactional
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void deleteMagicCard(final MagicCard mc)
 	{
-		this.magicCardDao.delete(mc.getId());
+		this.magicCardDao.getSession().delete(mc);
 	}
 
 	@Transactional(readOnly = true)
@@ -936,13 +936,6 @@ public class PersistenceService implements Serializable
 		query.setLong("deckId", deckId);
 		query.setCacheable(true);
 
-		// final SQLQuery query = session
-		// .createSQLQuery("select mc.* from MagicCard mc where mc.gameId = :gameId and mc.zone = :zone and mc.card_deck = :deckId order by mc.battlefieldOrder");
-		// query.addEntity(MagicCard.class);
-		// query.setLong("gameId", gameId);
-		// query.setParameter("zone", CardZone.BATTLEFIELD.toString());
-		// query.setCacheable(true);
-
 		try
 		{
 			return query.list();
@@ -953,28 +946,6 @@ public class PersistenceService implements Serializable
 					+ gameId + " => no result found", e);
 			return null;
 		}
-		//
-		//
-		// final Session session = this.magicCardDao.getSession();
-		//
-		// final SQLQuery query = session
-		// .createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId  and d.deckId = :deckId order by mc.battlefieldOrder");
-		// query.addEntity(MagicCard.class);
-		// query.setLong("gameId", gameId);
-		// query.setString("zoneName", CardZone.BATTLEFIELD.toString());
-		// query.setLong("playerId", playerId);
-		// query.setLong("deckId", deckId);
-		//
-		// try
-		// {
-		// return query.list();
-		// }
-		// catch (final ObjectNotFoundException e)
-		// {
-		// PersistenceService.LOGGER.error("Error retrieving cards in graveyard for game: "
-		// + gameId + " => no result found", e);
-		// return null;
-		// }
 	}
 
 	@Transactional(readOnly = true)
@@ -1180,7 +1151,7 @@ public class PersistenceService implements Serializable
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public void deleteGame(final Game oldGame)
 	{
-		this.gameDao.delete(oldGame.getId().longValue());
+		this.gameDao.getSession().delete(oldGame);
 	}
 
 	@Transactional

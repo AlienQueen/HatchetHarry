@@ -41,7 +41,6 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -541,7 +540,7 @@ public class HomePage extends TestReportPage
 		this.drawModeParent = new WebMarkupContainer("drawModeParent");
 		this.drawModeParent.setOutputMarkupId(true);
 
-		if (this.persistenceService.getGame(this.session.getGameId()).isDrawMode())
+		if (this.session.getPlayer().getGame().isDrawMode())
 		{
 			this.drawModeParent.add(new ExternalImage("drawModeOn", "image/draw_mode_on.png"));
 		}
@@ -571,7 +570,7 @@ public class HomePage extends TestReportPage
 
 	private final void generateCardPanels()
 	{
-		final Game g = this.persistenceService.getGame(this.session.getPlayer().getGame().getId());
+		final Game g = this.session.getPlayer().getGame();
 
 		boolean hasSeenFirst = false;
 		boolean hasSeenSecond = false;
@@ -760,6 +759,7 @@ public class HomePage extends TestReportPage
 				}
 
 				_player.setHandDisplayed(!isHandDisplayed);
+				HomePage.this.session.setPlayer(_player);
 				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 		};
@@ -839,6 +839,8 @@ public class HomePage extends TestReportPage
 				{
 					_player.setGraveyardDisplayed(true);
 				}
+
+				HomePage.this.session.setPlayer(_player);
 				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
@@ -894,6 +896,7 @@ public class HomePage extends TestReportPage
 					_player.setExileDisplayed(true);
 				}
 
+				HomePage.this.session.setPlayer(_player);
 				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
@@ -2000,49 +2003,40 @@ public class HomePage extends TestReportPage
 					return;
 				}
 
-				try
+				@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "PREDICTABLE_RANDOM", justification = "SecureRandom is awfully slow and we don't need strong RNG")
+				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
+						.random() * allCardsInHand)).intValue() : 0);
+				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
+						.getAllCardsInHandForAGameAndAPlayer(gameId, playerWhoDiscards.getId(),
+								playerWhoDiscardsDeckId);
+				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
+						.remove(randomCardIndex);
+				playerWhoDiscards.getDeck().getCards().remove(chosenCard);
+				chosenCard.setZone(CardZone.GRAVEYARD);
+				HomePage.this.persistenceService.updateCardWithoutMerge(chosenCard);
+
+				playerWhoDiscards.setHandDisplayed(true);
+				playerWhoDiscards.setGraveyardDisplayed(true);
+
+				if (allCardsInHandForAGameAndAPlayer.isEmpty())
 				{
-					final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math
-							.floor(SecureRandom.getInstanceStrong().nextInt(allCardsInHand)))
-							.intValue() : 0);
-					final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
-							.getAllCardsInHandForAGameAndAPlayer(gameId, playerWhoDiscards.getId(),
-									playerWhoDiscardsDeckId);
-					final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
-							.remove(randomCardIndex);
-					playerWhoDiscards.getDeck().getCards().remove(chosenCard);
-					chosenCard.setZone(CardZone.GRAVEYARD);
-					HomePage.this.persistenceService.updateCardWithoutMerge(chosenCard);
-
-					playerWhoDiscards.setHandDisplayed(true);
-					playerWhoDiscards.setGraveyardDisplayed(true);
-
-					if (allCardsInHandForAGameAndAPlayer.isEmpty())
-					{
-						playerWhoDiscards.getDeck().getCards().clear();
-					}
-
-					HomePage.this.persistenceService.updatePlayerWithoutMerge(playerWhoDiscards);
-
-					BattlefieldService.updateHand(target);
-					BattlefieldService.updateGraveyard(target);
-
-					final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
-							playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
-							null, chosenCard.getTitle(), null, "");
-					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-							ConsoleLogType.DISCARD_AT_RANDOM, null, null, null,
-							chosenCard.getTitle(), playerWhoDiscards.getName(), null, null, null,
-							false, gameId);
-
-					EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(
-							logger));
+					playerWhoDiscards.getDeck().getCards().clear();
 				}
-				catch (NoSuchAlgorithmException e)
-				{
-					HomePage.LOGGER.error("error generating a random number", e);
-				}
+
+				HomePage.this.persistenceService.updatePlayerWithoutMerge(playerWhoDiscards);
+
+				BattlefieldService.updateHand(target);
+				BattlefieldService.updateGraveyard(target);
+
+				final NotifierCometChannel ncc = new NotifierCometChannel(
+						NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
+						playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
+						null, chosenCard.getTitle(), null, "");
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
+						playerWhoDiscards.getName(), null, null, null, false, gameId);
+
+				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
 		};
 
@@ -2264,8 +2258,7 @@ public class HomePage extends TestReportPage
 				break;
 
 			case COMBAT_IN_PROGRESS_ACTION :
-				if ((null != event.isCombatInProgress())
-						&& (event.isCombatInProgress().booleanValue() == false))
+				if (Boolean.FALSE.equals(event.isCombatInProgress()))
 				{
 					target.appendJavaScript("jQuery.gritter.add({ title : '"
 							+ event.getPlayerName()
@@ -3013,9 +3006,8 @@ public class HomePage extends TestReportPage
 			}
 		}
 
-		this.generateCardListViewForSide1(allCardsInBattlefieldForPlayer1).add(
-				new ReorderCardInBattlefieldBehavior());
-		;
+		this.generateCardListViewForSide1(allCardsInBattlefieldForPlayer1);
+
 		this.generateCardListViewForSide2(allCardsInBattlefieldForPlayer2);
 		LOGGER.info("allCardsInBattlefieldForPlayer1.size(): "
 				+ allCardsInBattlefieldForPlayer1.size());

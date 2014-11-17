@@ -86,7 +86,7 @@ public class HatchetHarryApplication extends WebApplication
 		return HomePage.class;
 	}
 
-	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({"PATH_TRAVERSAL_IN"})
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({ "PATH_TRAVERSAL_IN" })
 	@Override
 	protected void init()
 	{
@@ -392,6 +392,8 @@ public class HatchetHarryApplication extends WebApplication
 				"image/contextmenu.png"));
 		this.mountResource("image/arrow48.png", new PackageResourceReference(HomePage.class,
 				"image/arrow48.png"));
+		this.mountResource("image/placeholder.png", new PackageResourceReference(HomePage.class,
+				"image/placeholder.png"));
 
 		this.getRequestCycleSettings().setTimeout(Duration.minutes(15));
 		this.getResourceSettings().setDefaultCacheDuration(Duration.hours(1));

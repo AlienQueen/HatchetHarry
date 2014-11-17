@@ -25,7 +25,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Player implements Serializable
 {
-	private static final long serialVersionUID = 7963755937946852379L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,11 +47,11 @@ public class Player implements Serializable
 	@JoinColumn(name = "deck")
 	private Deck deck;
 	@Column
-	private Boolean isHandDisplayed = true;
+	private Boolean isHandDisplayed = Boolean.TRUE;
 	@Column
-	private Boolean isGraveyardDisplayed;
+	private Boolean isGraveyardDisplayed = Boolean.FALSE;
 	@Column
-	private Boolean isExileDisplayed;
+	private Boolean isExileDisplayed = Boolean.FALSE;
 	@Column
 	private CardZone defaultTargetZoneForHand = CardZone.BATTLEFIELD;
 	@Column

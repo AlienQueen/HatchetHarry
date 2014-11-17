@@ -24,7 +24,7 @@ public class DataBoxTest extends SpringContextLoaderBaseTest
 	public void testDataBox() throws Exception
 	{
 		// Start a game and play a card
-		super.startAGameAndPlayACard();
+		super.startAGameAndPlayACard("ajaxSubmit");
 
 		// Verify that the player Zala exists and has 20 life points
 		super.tester.startPage(HomePage.class);

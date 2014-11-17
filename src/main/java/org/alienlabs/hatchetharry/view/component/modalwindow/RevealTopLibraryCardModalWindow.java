@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
@@ -53,6 +53,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 	@SpringBean
 	PersistenceService persistenceService;
 
+	@SuppressFBWarnings({ "PREDICTABLE_RANDOM" })
 	public RevealTopLibraryCardModalWindow(final String id, final ModalWindow _modal,
 			final MagicCard _card) throws NoSuchAlgorithmException
 	{
@@ -60,8 +61,9 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		this.modal = _modal;
 		this.card = _card;
 
+		@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "PREDICTABLE_RANDOM", justification = "SecureRandom is awfully slow and we don't need strong RNG")
 		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
-				"cards/topLibraryCard.jpg?" + SecureRandom.getInstanceStrong().nextLong());
+				"cards/topLibraryCard.jpg?" + Math.random());
 
 		if (null != this.card)
 		{

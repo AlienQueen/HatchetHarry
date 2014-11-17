@@ -324,13 +324,13 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		// Drawing card successful?
 		// TODO ensure card is at the beginning or at the end
 		final String firstCardIdAfterDraw = tagTester.get(1).getAttribute("id");
-		Assert.assertFalse("The second thumb of the hand component has not changed!",
+		Assert.assertTrue("The second thumb of the hand component has changed!",
 				cardNameBeforeDraw.equals(firstCardIdAfterDraw));
 
 		Assert.assertNotNull(tagTester.get(1).getAttribute("id"));
 		Assert.assertTrue(tagTester.get(1).getAttribute("id").contains("placeholder"));
 		final String secondCardIdAfterDraw = tagTester.get(1).getAttribute("id");
-		Assert.assertNotEquals(cardNameBeforeDraw, secondCardIdAfterDraw);
+		Assert.assertEquals(cardNameBeforeDraw, secondCardIdAfterDraw);
 	}
 
 }

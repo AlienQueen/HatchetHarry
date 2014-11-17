@@ -68,6 +68,11 @@ public class SpringContextLoaderBaseTest
 	{
 		webApp.newSession(tester.getRequestCycle().getRequest(), tester.getRequestCycle()
 				.getResponse());
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass()
+	{
 		persistenceService.resetDb();
 	}
 
@@ -89,7 +94,15 @@ public class SpringContextLoaderBaseTest
 		createGameForm.setValue("deckParent:decks", "1");
 		createGameForm.setValue("formats", "1");
 		createGameForm.setValue("numberOfPlayers", "2");
-		tester.executeAjaxEvent("createGameWindow:content:form:submit", "onclick");
+
+		if (pageParameters.length > 0 && pageParameters[0].equals("ajaxSubmit"))
+		{
+			tester.executeAjaxEvent("createGameWindow:content:form:submit", "onclick");
+		}
+		else
+		{
+			createGameForm.submit();
+		}
 
 		Player p = this.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);

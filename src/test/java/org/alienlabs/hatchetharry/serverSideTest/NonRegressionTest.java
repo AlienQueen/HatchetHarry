@@ -30,13 +30,13 @@ import org.junit.*;
  */
 public class NonRegressionTest extends SpringContextLoaderBaseTest
 {
-	@Test
 	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
 	 * Run: we play it again
 	 * Verify: the card should be untapped.
 	 *
 	 */
+	@Test
 	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped() throws Exception
 	{
 		this.startAGameAndPlayACard();
@@ -138,10 +138,20 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		final HomePage hp = this.tester.startPage(new HomePage(new PageParameters()));
 		this.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
-				"battlefieldCardContainer", false);
+
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final PersistenceService persistenceService = super.context
+				.getBean(PersistenceService.class);
+		List<MagicCard> allCardsInBattlefield = persistenceService
+				.getAllCardsInBattlefieldForAGame(gameId);
+		Assert.assertEquals(1, allCardsInBattlefield.size());
+
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
+
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").endsWith(".jpg"));
 
 		// Play another card
 		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest
@@ -152,9 +162,10 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		this.tester.executeBehavior(pcfhb);
 
 		// 5 cards in the hand instead of 6
-		this.tester.startPage(hp);
+		this.tester.startPage(HomePage.class);
 		this.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
+
 		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
@@ -165,14 +176,17 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
-		// Is there really one card on the battlefield? (beware of
-		// wicket-quickview)
-		this.waTester.switchOnTestMode();
+		// Are there really two cards on the battlefield?
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardPanel", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertEquals(1, tagTester.size());
+		Assert.assertEquals(2, tagTester.size());
+
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").startsWith("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").endsWith(".jpg"));
+		Assert.assertTrue(tagTester.get(1).getAttribute("src").startsWith("cards/"));
+		Assert.assertTrue(tagTester.get(1).getAttribute("src").endsWith(".jpg"));
 
 		// Verify createTokenWindow
 		this.openModalWindow("createTokenWindow", "createTokenLink", "topLibraryCard",
@@ -194,12 +208,13 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		createTokenForm.submit();
 
 		// Are there really 2 cards on the battlefield?
-		this.waTester.switchOffTestMode();
-		pageDocument = this.waTester.getPushedResponse();
+		super.tester.startPage(HomePage.class);
+		super.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
 
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "magicCard", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
-		Assert.assertEquals(1, tagTester.size());
+		Assert.assertEquals(2, tagTester.size());
 
 		// Are there still 5 cards in the hand?
 		this.tester.startPage(hp);
@@ -223,8 +238,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		// And now: does the "count cards" modal window display the right
 		// result: 5 cards in hand, 2 on the battlefield ( + 1 token),
 		// 53 in the library, 0 in
-		// exile & graveyard and 60 in total (beware, there's a token!)
-		this.verifyFieldsOfCountCardsModalWindow(0, "Zala");
+		// exile & graveyard and 60 in total (we should not count the token!)
+		this.verifyFieldsOfCountCardsModalWindow(0, "infrared");
 		this.verifyFieldsOfCountCardsModalWindow(1, "5");
 		this.verifyFieldsOfCountCardsModalWindow(2, "53");
 		this.verifyFieldsOfCountCardsModalWindow(3, "0");
@@ -417,6 +432,24 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	public void testPlayingTokensShouldNotGiveDuplicatesInDb()
 	{
 
+	}
+
+	@Test
+	@Ignore
+	public void testDiscardingAcardAtRandomShouldRemoveACardFromHand() throws Exception
+	{
+		// Start a game and play 3 cards
+		super.startAGameAndPlayACard();
+
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
+				.getFirstPlayCardFromHandBehavior());
+
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
+				.getFirstPlayCardFromHandBehavior());
 	}
 
 	private void openModalWindow(final String _window, final String linkToActivateWindow,
