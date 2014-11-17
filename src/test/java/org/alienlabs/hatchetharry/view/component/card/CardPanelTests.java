@@ -5,7 +5,7 @@ import java.util.List;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTests;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
 import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
@@ -22,15 +22,15 @@ import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class CardPanelTest extends SpringContextLoaderBaseTest
+public class CardPanelTests extends SpringContextLoaderBaseTests
 {
 	@Test
 	public void testPlayCardFromHand() throws Exception
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 
 		// We should have one card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -68,8 +68,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 
 		// We should have one card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -99,11 +99,11 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(ptgfbb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
 				false);
@@ -129,8 +129,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(pcfgb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
@@ -151,8 +151,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(pthfbb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
@@ -182,8 +182,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 
 		// We should have one card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -213,11 +213,11 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(ptgfbb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
 				false);
@@ -229,7 +229,7 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(cardInGraveyardImage, cardToVerify);
 
 		// Play it from graveyard
-		SpringContextLoaderBaseTest.tester.assertComponent("playCardFromGraveyardLinkDesktop",
+		SpringContextLoaderBaseTests.tester.assertComponent("playCardFromGraveyardLinkDesktop",
 				WebMarkupContainer.class);
 		final WebMarkupContainer wmc = (WebMarkupContainer)super.tester
 				.getComponentFromLastRenderedPage("playCardFromGraveyardLinkDesktop");
@@ -242,11 +242,11 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(pcfgb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
 				false);
@@ -286,8 +286,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 
 		// We should have one card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -317,11 +317,11 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(ptgfbb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
 				false);
@@ -345,8 +345,8 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 
 		// We should have one card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
@@ -376,11 +376,11 @@ public class CardPanelTest extends SpringContextLoaderBaseTest
 		super.tester.executeBehavior(ptefbb);
 
 		// Verify
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile",
+		SpringContextLoaderBaseTests.tester.assertComponent("exileParent:exile",
 				ExileComponent.class);
 		tagTester = TagTester
 				.createTagsByAttribute(pageDocument, "class", "exile-nav-thumb", false);

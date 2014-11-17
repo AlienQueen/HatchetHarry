@@ -1995,9 +1995,6 @@ public class HomePage extends TestReportPage
 								playerWhoDiscardsDeckId);
 				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
 						.remove(randomCardIndex);
-				// int deckIndex =
-				// playerWhoDiscards.getDeck().getCards().indexOf(chosenCard);
-				// playerWhoDiscards.getDeck().getCards().get(deckIndex).setZone(CardZone.GRAVEYARD);
 
 				chosenCard.setZone(CardZone.GRAVEYARD);
 				HomePage.this.persistenceService.updateCardWithoutMerge(chosenCard);

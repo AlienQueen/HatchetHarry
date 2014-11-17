@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class SpringContextLoaderBaseTest
+public class SpringContextLoaderBaseTests
 {
 	protected static AtmosphereTester waTester;
 	protected static transient WicketTester tester;
@@ -50,7 +50,8 @@ public class SpringContextLoaderBaseTest
 			public void init()
 			{
 				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, SpringContextLoaderBaseTest.this.context,
+						new SpringComponentInjector(this,
+								SpringContextLoaderBaseTests.this.context,
 								true));
 
 				this.eventBus = new EventBus(this);
@@ -110,8 +111,8 @@ public class SpringContextLoaderBaseTest
 			createGameForm.submit();
 		}
 
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
 
 		Player p = this.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
