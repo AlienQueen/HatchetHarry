@@ -1995,9 +1995,14 @@ public class HomePage extends TestReportPage
 								playerWhoDiscardsDeckId);
 				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
 						.remove(randomCardIndex);
-				playerWhoDiscards.getDeck().getCards().remove(chosenCard);
+				// int deckIndex =
+				// playerWhoDiscards.getDeck().getCards().indexOf(chosenCard);
+				// playerWhoDiscards.getDeck().getCards().get(deckIndex).setZone(CardZone.GRAVEYARD);
+
 				chosenCard.setZone(CardZone.GRAVEYARD);
 				HomePage.this.persistenceService.updateCardWithoutMerge(chosenCard);
+				HomePage.this.persistenceService
+						.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
 
 				playerWhoDiscards.setHandDisplayed(true);
 				playerWhoDiscards.setGraveyardDisplayed(true);
@@ -2007,7 +2012,7 @@ public class HomePage extends TestReportPage
 					playerWhoDiscards.getDeck().getCards().clear();
 				}
 
-				HomePage.this.persistenceService.updatePlayerWithoutMerge(playerWhoDiscards);
+				// HomePage.this.persistenceService.updatePlayerWithoutMerge(playerWhoDiscards);
 
 				BattlefieldService.updateHand(target);
 				BattlefieldService.updateGraveyard(target);

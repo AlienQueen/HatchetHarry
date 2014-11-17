@@ -514,13 +514,19 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 						.getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(3, allCardsInHand.size());
 
-		pageDocument = this.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(3, tagTester.size());
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+		// Verify that the deck still contains 60 cards
+		Assert.assertEquals(
+				60,
+				persistenceService.getAllCardsFromDeck(
+						HatchetHarrySession.get().getPlayer().getDeck().getDeckArchive()
+								.getDeckName()).size());
 	}
 
 	private void openModalWindow(final String _window, final String linkToActivateWindow,
