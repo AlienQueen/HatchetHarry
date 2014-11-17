@@ -124,10 +124,7 @@ public class GameService
 		LOGGER.info("_deck.cards().size(): " + _deck.getCards().size() + ", deckId: "
 				+ _deck.getDeckId());
 
-		// Remove Balduvian Horde
-		target.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
 		HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
-
 		final Set<Player> players = game.getPlayers();
 		players.add(player);
 		game.setPlayers(players);

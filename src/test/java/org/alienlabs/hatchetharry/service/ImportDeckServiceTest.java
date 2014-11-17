@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
@@ -18,62 +19,23 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Test of the ImportDeckService (it only uses the WicketTester in order to load
  * the Spring context).
  */
-public class ImportDeckServiceTest
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
+public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 {
-	public static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
-	public static transient ApplicationContext context;
-	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
-	protected static String pageDocument;
-	protected static PersistenceService persistenceService;
-	protected static AtmosphereTester waTester;
-
-	@BeforeClass
-	public static void setUpBeforeClassWithMocks() throws IOException
-	{
-		// Init the EventBus
-		ImportDeckServiceTest.webApp = new HatchetHarryApplication()
-		{
-			/**
-			 *
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void init()
-			{
-				ImportDeckServiceTest.context = ImportDeckServiceTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
-				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, ImportDeckServiceTest.context, true));
-
-				this.eventBus = new EventBus(this);
-				this.eventBus.addRegistrationListener(this);
-				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
-				this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.DEBUG);
-
-				this.getMarkupSettings().setStripWicketTags(false);
-				this.getDebugSettings().setOutputComponentPath(true);
-			}
-		};
-		ImportDeckServiceTest.tester = new WicketTester(ImportDeckServiceTest.webApp);
-		ImportDeckServiceTest.persistenceService = ImportDeckServiceTest.context
-				.getBean(PersistenceService.class);
-	}
-
 	@Test
 	public void testImportDeck() throws FileNotFoundException, IOException
 	{
 		// Init
-		final PersistenceService persistenceService = ImportDeckServiceTest.context
+		final PersistenceService persistenceService = this.context
 				.getBean(PersistenceService.class);
-		final ImportDeckService importDeckService = ImportDeckServiceTest.context
-				.getBean(ImportDeckService.class);
+		final ImportDeckService importDeckService = this.context.getBean(ImportDeckService.class);
 
 		final boolean auraBantAlreadyExists = (null != persistenceService
 				.getDeckArchiveByName("Aura Bant"));

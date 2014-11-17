@@ -260,10 +260,7 @@ public class CreateGameModalWindow extends Panel
 				CreateGameModalWindow.LOGGER.error("deck.cards().size(): " + deck.getCards().size()
 						+ ", deckId: " + deck.getDeckId());
 
-				// Remove Balduvian Horde
-				target.appendJavaScript("jQuery('#menutoggleButton249c4f0b_cad0_4606_b5ea_eaee8866a347').remove(); ");
 				HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
-
 				final StringBuilder buil = new StringBuilder(
 						"jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 

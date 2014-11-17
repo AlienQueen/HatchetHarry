@@ -20,21 +20,27 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
 public class SpringContextLoaderBaseTest
 {
-	protected static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml", "applicationContextTest.xml" });
-	protected static transient ApplicationContext context;
 	protected static AtmosphereTester waTester;
 	protected static transient WicketTester tester;
 	protected static HatchetHarryApplication webApp;
 	protected static PersistenceService persistenceService;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception
+	@Autowired
+	protected ApplicationContext context;
+
+	@Before
+	public void setUp() throws Exception
 	{
 		webApp = new HatchetHarryApplication()
 		{
@@ -43,9 +49,9 @@ public class SpringContextLoaderBaseTest
 			@Override
 			public void init()
 			{
-				context = CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, context, true));
+						new SpringComponentInjector(this, SpringContextLoaderBaseTest.this.context,
+								true));
 
 				this.eventBus = new EventBus(this);
 				this.eventBus.addRegistrationListener(this);
@@ -103,6 +109,9 @@ public class SpringContextLoaderBaseTest
 		{
 			createGameForm.submit();
 		}
+
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		Player p = this.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);

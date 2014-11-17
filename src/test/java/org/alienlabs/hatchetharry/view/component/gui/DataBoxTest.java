@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * We can not unit test with several players, nonetheless this test can be
@@ -17,6 +18,8 @@ import org.junit.Test;
  *
  * Created by nostromo on 16/11/14.
  */
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
 public class DataBoxTest extends SpringContextLoaderBaseTest
 {
 

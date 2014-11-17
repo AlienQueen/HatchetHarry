@@ -12,15 +12,17 @@ import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 
 /**
  * Created by nostromo on 15/11/14.
  */
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
 public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 {
-
 	@Test
 	public void testPutToZonePanel() throws Exception
 	{

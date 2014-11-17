@@ -78,11 +78,6 @@ public class CardPanel extends Panel
 		cardHandle.setMarkupId("cardHandle" + uuidValidForJs);
 		cardHandle.add(new AttributeModifier("name", myCard.getTitle()));
 
-		if ("baldu".equals(id))
-		{
-			cardHandle.add(new AttributeModifier("class", "baldu"));
-		}
-
 		final WebMarkupContainer menutoggleButton = new WebMarkupContainer("menutoggleButton");
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("menutoggleButton" + uuidValidForJs);
@@ -143,14 +138,7 @@ public class CardPanel extends Panel
 		cardRotate.setOutputMarkupId(true);
 		cardRotate.setMarkupId("cardRotate" + uuidValidForJs);
 
-		if ("baldu".equals(id))
-		{
-			cardImage.setMarkupId("baldu");
-		}
-		else
-		{
-			cardImage.setMarkupId("card" + uuidValidForJs);
-		}
+		cardImage.setMarkupId("card" + uuidValidForJs);
 
 		if (null != playerAndCard.getObject().getPlayer())
 		{

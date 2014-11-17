@@ -160,27 +160,6 @@ public class DataGenerator implements InitializingBean, Serializable
 			}
 		}
 
-		final UUID uuid = UUID.fromString("249c4f0b-cad0-4606-b5ea-eaee8866a347");
-		if (null == this.persistenceService.getCardFromUuid(uuid))
-		{
-			final MagicCard baldu = new MagicCard("cards/Balduvian Horde_small.jpg",
-					"cards/Balduvian Horde.jpg", "cards/Balduvian HordeThumb.jpg",
-					"Balduvian Horde", "Isn't it a spoiler?", "", null, 0);
-			baldu.setUuidObject(uuid);
-			final Deck fake = new Deck();
-			fake.setDeckArchive(null);
-			fake.setCards(null);
-			fake.setPlayerId(-1l);
-
-			baldu.setDeck(fake);
-			baldu.setGameId(-1l);
-			baldu.setX(350l);
-			baldu.setY(350l);
-			baldu.setZone(CardZone.BATTLEFIELD);
-			this.persistenceService.saveDeck(fake);
-			this.persistenceService.saveCard(baldu);
-		}
-
 		if ((this.generateData)
 				&& (null == this.persistenceService.getDeckArchiveByName("Aura Bant")))
 		{

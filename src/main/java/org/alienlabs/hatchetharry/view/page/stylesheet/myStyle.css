@@ -20,14 +20,6 @@
 	position: relative;
 	z-index: 2;
 }
-#baldu {
-	width: 300%;
-}
-.baldu {	
-	position:absolute;
-	left: 90%;
-	top: 10%;
-}
 .yui-b {
 
     z-index: 100;

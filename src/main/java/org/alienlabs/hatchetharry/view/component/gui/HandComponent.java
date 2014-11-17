@@ -30,6 +30,7 @@ public class HandComponent extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(HandComponent.class);
 	private static final long serialVersionUID = 1L;
+
 	private final ListView<MagicCard> allCards;
 	private final List<MagicCard> allCardsInHand;
 
@@ -86,12 +87,24 @@ public class HandComponent extends Panel
 			}
 		});
 
-		this.allCardsInHand = this.persistenceService
-				.getAllCardsInHandForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
-						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0
-						? HatchetHarrySession.get().getPlayer().getId()
-						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
-						.getDeck().getDeckId() : ids[2]));
+		Long gameId;
+		Long playerId;
+		Long deckId;
+
+		if (isReveal == false)
+		{
+			gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
+			playerId = HatchetHarrySession.get().getPlayer().getId();
+			deckId = HatchetHarrySession.get().getPlayer().getDeck().getDeckId();
+		}
+		else
+		{
+			gameId = ids[0];
+			playerId = ids[1];
+			deckId = ids[2];
+		}
+		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId,
+				playerId, deckId);
 		HandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)

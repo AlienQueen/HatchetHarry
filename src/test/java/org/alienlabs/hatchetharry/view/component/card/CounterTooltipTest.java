@@ -6,10 +6,11 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
-import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.test.context.ContextConfiguration;
 
-
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
 public class CounterTooltipTest extends SpringContextLoaderBaseTest
 {
 	@Test
@@ -82,12 +83,12 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 
 		// Assert token on battlefield
 		super.tester.assertComponent(
-				"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel",
+				"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel",
 				CounterTooltip.class);
 
 		// Add a poison counter to token
 		final FormTester form4 = super.tester
-				.newFormTester("parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:form");
+				.newFormTester("parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:form");
 		form4.setValue("counterAddName", "poison");
 		form4.submit("submit");
 
@@ -96,17 +97,17 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:counterName",
 						"poison");
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:numberOfCounters",
 						"1");
 
 		// Add 1 more poison counter to token
 		super.tester
 				.clickLink(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:addCounterLink",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:addCounterLink",
 						true);
 
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -115,16 +116,16 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// Assert that there are 2 poison counters on token
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:counterName",
 						"poison");
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:numberOfCounters",
 						"2");
 
 		// Put 10 poison counters on card
 		final FormTester form5 = super.tester
-				.newFormTester("parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm");
+				.newFormTester("parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm");
 		form5.setValue("setCounterButton", "10");
 		form5.submit("setCounterSubmit");
 
@@ -133,17 +134,17 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// Assert that there are 10 poison counters on token
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:counterName",
 						"poison");
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:numberOfCounters",
 						"10");
 
 		// Remove a poison counter on token
 		super.tester
 				.clickLink(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:removeCounterLink",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:removeCounterLink",
 						true);
 
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -152,16 +153,16 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// Assert that there are 9 poison counters on token
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:counterName",
 						"poison");
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:numberOfCounters",
 						"9");
 
 		// Add a blah counter to token
 		final FormTester form6 = super.tester
-				.newFormTester("parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:form");
+				.newFormTester("parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:form");
 		form6.setValue("counterAddName", "blah");
 		form6.submit("submit");
 
@@ -172,17 +173,17 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// counters appear in alphabetic order
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:counterName",
 						"blah");
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:numberOfCounters",
 						"1");
 
 		// Add 1 more blah counter to token
 		super.tester
 				.clickLink(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:addCounterLink",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:addCounterLink",
 						true);
 
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -191,11 +192,11 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// Verify that there is two blah counters on token
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:counterName",
 						"blah");
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:numberOfCounters",
 						"2");
 
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -204,31 +205,23 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 
 		// Remove all poison counters from token
 		final FormTester form7 = super.tester
-				.newFormTester("parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:1:setCounterForm");
-		form7.setValue("setCounterButton", "0");
+				.newFormTester("parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm");
+		form7.setValue("setCounterButton", "1");
 		form7.submit("setCounterSubmit");
 
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Assert that there are no more poison counters on card
-		try
-		{
-			super.tester
+		super.tester
 					.assertLabel(
-							"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:counterName",
-							"poison");
-			Assert.fail();
-		}
-		catch (final NullPointerException e)
-		{
-			// Success
-		}
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:counterName",
+						"blah");
 
 		// Remove a blah counter from card
 		super.tester
 				.clickLink(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:removeCounterLink",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:removeCounterLink",
 						true);
 
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
@@ -237,35 +230,12 @@ public class CounterTooltipTest extends SpringContextLoaderBaseTest
 		// Assert that there are 1 blah counter on card
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
 						"blah");
 		super.tester
 				.assertLabel(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
+						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:numberOfCounters",
 						"1");
-
-		// Remove another blah counter from card
-		super.tester
-				.clickLink(
-						"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:removeCounterLink",
-						true);
-
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-
-		// Assert that there are no more blah counters on card
-		try
-		{
-			super.tester
-					.assertLabel(
-							"parentPlaceholder:magicCardsForSide1:2:cardPanel:tooltip:counterPanel:counters:0:setCounterForm:counterName",
-							"blah");
-			Assert.fail();
-		}
-		catch (final NullPointerException e)
-		{
-			// Success
-		}
 	}
 
 }

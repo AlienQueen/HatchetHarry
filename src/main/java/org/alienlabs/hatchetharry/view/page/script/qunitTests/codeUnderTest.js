@@ -29,15 +29,6 @@ jQuery(function () {
 });
 
 jQuery(function () {
-    // @see: initTooltip.js
-    // TODO: re-activate Dnd + tap handle for baldu
-    jQuery("#card249c4f0b_cad0_4606_b5ea_eaee8866a347").click(
-        function (e) {
-            jQuery("#cardTooltip249c4f0b_cad0_4606_b5ea_eaee8866a347").attr('style', 'display: block');
-        });
-});
-
-jQuery(function () {
     setTimeout(function () {
         // Freebox
         var userAgent = jQuery("#qunit-userAgent").html();
@@ -197,20 +188,6 @@ jQuery(function () {
                 placement: "top",
                 trigger: 'manual',
                 content: "You can untap all your permanents at once using the toolbar button."
-            },
-            {
-                element: "#baldu",
-                title: "An example card",
-                placement: "right",
-                trigger: 'manual',
-                content: "This is a card. You can move it by drag and drop using the small, green handle on its side. If you do so, the opponent will see its move matched in her own browser. Additionaly, you can call a context menu by right-clicking on the card itself."
-            },
-            {
-                element: "#baldu",
-                title: "The card",
-                placement: "right",
-                trigger: 'manual',
-                content: "One more thing about this card: using the small green arrow on its other side, you can tap and untap it."
             },
             {
                 element: "#tour3",

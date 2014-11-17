@@ -302,10 +302,6 @@ public class HomePage extends TestReportPage
 		this.galleryRevealParent.add(this.galleryReveal);
 		this.add(this.galleryRevealParent);
 
-		final WebMarkupContainer balduParent = new WebMarkupContainer("balduParent");
-		balduParent.setOutputMarkupId(true);
-		balduParent.setMarkupId("tour_6");
-
 		this.parentPlaceholder = new WebMarkupContainer("parentPlaceholder");
 		this.parentPlaceholder.setOutputMarkupId(true);
 		this.add(this.parentPlaceholder);
@@ -322,16 +318,6 @@ public class HomePage extends TestReportPage
 			this.buildHandCards();
 			this.buildHandMarkup();
 			this.buildDataBox(this.player.getGame().getId());
-			final MagicCard card = this.persistenceService.findCardByName("Balduvian Horde");
-			if ((null != card)
-					&& (!this.session.isMySidePlaceholderInSesion(this.session.getPlayer()
-							.getSide().getSideName())))
-			{
-				final CardPanel baldu = new CardPanel("baldu", new Model(new PlayerAndCard(
-						this.player, card)));
-				balduParent.add(baldu);
-				this.session.getAllMagicCardsInBattleField().add(card);
-			}
 		}
 		else
 		{
@@ -348,9 +334,7 @@ public class HomePage extends TestReportPage
 			this.buildHandCards();
 			this.buildDataBox(this.player.getGame().getId());
 
-			balduParent.add(new WebMarkupContainer("baldu"));
 		}
-		this.add(balduParent);
 
 		// Side
 		this.sideParent = new WebMarkupContainer("sideParent");
@@ -2978,8 +2962,8 @@ public class HomePage extends TestReportPage
 		// Sessions must be cleaned up between server restarts, as it's too much
 		// difficult
 		// to manage a state recovery
-		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
-				this.session.getPlayer().getId()).isHandDisplayed();
+		Player player1 = this.persistenceService.getPlayer(this.session.getPlayer().getId());
+		final Boolean isHandDisplayed = player1.isHandDisplayed();
 		final Component galleryToUpdate = isHandDisplayed
 				? new HandComponent("gallery", false)
 				: new WebMarkupContainer("gallery");

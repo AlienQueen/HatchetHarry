@@ -29,3 +29,7 @@
     + this.getMarkupSettings().setStripWicketTags(false);
 
 Just replace the "_" by ":" in your WicketTester paths.
+
+- To avoid loading Spring application context for each test class from SpringContextLoaderBaseTest, annotate each new test classes with:
+
+    + @ContextConfiguration(locations = { "classpath:applicationContext.xml", "classpath:applicationContextTest.xml" })

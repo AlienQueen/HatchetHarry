@@ -32,11 +32,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Tests of basic scenarios of the HomePage using the WicketTester.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
 public class HomePageTest extends SpringContextLoaderBaseTest
 {
 	private static String pageDocument;
@@ -91,7 +94,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 		Assert.assertNotNull(tagTester);
 
 		// assert number of thumbnails
-		Assert.assertEquals(8, tagTester.size());
+		Assert.assertEquals(7, tagTester.size());
 
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
@@ -269,7 +272,7 @@ public class HomePageTest extends SpringContextLoaderBaseTest
 	{
 		this.startAGameAndPlayACard();
 
-		final PersistenceService persistenceService = HomePageTest.context
+		final PersistenceService persistenceService = this.context
 				.getBean(PersistenceService.class);
 		final HatchetHarrySession session = HatchetHarrySession.get();
 		Assert.assertTrue(persistenceService.getAllCardsInLibraryForDeckAndPlayer(

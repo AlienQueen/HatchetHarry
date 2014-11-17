@@ -898,17 +898,16 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
+	// TODO remove player
 	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
-		final SQLQuery query = session
-				.createSQLQuery("select mc.* from MagicCard mc, Deck d where mc.gameId = :gameId and mc.zone = :zoneName and d.playerId = :playerId and mc.card_deck = d.deckId and d.deckId = :deckId order by mc.zoneOrder");
-		query.addEntity(MagicCard.class);
+		final Query query = session
+				.createQuery("from MagicCard mc where mc.gameId = :gameId and mc.zone = :zoneName and mc.deck = :deckId order by mc.zoneOrder");
 		query.setLong("gameId", gameId);
-		query.setString("zoneName", CardZone.HAND.toString().toUpperCase(Locale.ENGLISH));
-		query.setLong("playerId", playerId);
+		query.setParameter("zoneName", CardZone.HAND);
 		query.setLong("deckId", deckId);
 
 		try

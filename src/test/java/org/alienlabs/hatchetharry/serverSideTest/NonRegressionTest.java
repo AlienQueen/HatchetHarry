@@ -24,16 +24,18 @@ import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.*;
 import org.junit.*;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Non regression tests using the WicketTester.
  */
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
 public class NonRegressionTest extends SpringContextLoaderBaseTest
 {
 	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
-	 * Run: we play it again
-	 * Verify: the card should be untapped.
+	 * Run: we play it again Verify: the card should be untapped.
 	 *
 	 */
 	@Test
@@ -239,7 +241,6 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		// result: 5 cards in hand, 2 on the battlefield ( + 1 token),
 		// 53 in the library, 0 in
 		// exile & graveyard and 60 in total (we should not count the token!)
-		this.verifyFieldsOfCountCardsModalWindow(0, "infrared");
 		this.verifyFieldsOfCountCardsModalWindow(1, "5");
 		this.verifyFieldsOfCountCardsModalWindow(2, "53");
 		this.verifyFieldsOfCountCardsModalWindow(3, "0");
@@ -435,7 +436,6 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	}
 
 	@Test
-	@Ignore
 	public void testDiscardingAcardAtRandomShouldRemoveACardFromHand() throws Exception
 	{
 		// Start a game and play 3 cards
@@ -450,6 +450,77 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
+
+		// Verify that there are 4 cards in hand
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+
+		final Long gameId = HatchetHarrySession.get().getGameId();
+		final PersistenceService persistenceService = super.context
+				.getBean(PersistenceService.class);
+
+		List<MagicCard> allCardsInHand = persistenceService.getAllCardsInHandForAGameAndAPlayer(
+				gameId, HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
+						.getPlayer().getDeck().getDeckId());
+		Assert.assertEquals(4, allCardsInHand.size());
+
+		String pageDocument = this.tester.getLastResponse().getDocument();
+		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(4, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+		// Verify that graveyard is empty
+		SpringContextLoaderBaseTest.tester.clickLink("graveyardLink", true);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+				GraveyardComponent.class);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
+				false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertTrue(tagTester.isEmpty());
+
+		// Run: discard a card at random
+		SpringContextLoaderBaseTest.tester.clickLink("discardAtRandomLink", true);
+
+		// Verify that there is a card in graveyard
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = this.tester.getLastResponse().getDocument();
+
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
+				GraveyardComponent.class);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
+				false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(1, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+
+		List<MagicCard> allCardsInGraveyard = persistenceService
+				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, HatchetHarrySession.get()
+						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
+						.getDeckId());
+		Assert.assertEquals(1, allCardsInGraveyard.size());
+
+		// Verify that there are 3 cards in hand
+		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId,
+				HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
+						.getPlayer().getDeck().getDeckId());
+		Assert.assertEquals(3, allCardsInHand.size());
+
+		pageDocument = this.tester.getLastResponse().getDocument();
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
+				"handImagePlaceholder", false);
+		Assert.assertNotNull(tagTester);
+		Assert.assertEquals(3, tagTester.size());
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 	}
 
 	private void openModalWindow(final String _window, final String linkToActivateWindow,

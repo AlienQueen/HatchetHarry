@@ -13,7 +13,10 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.test.context.ContextConfiguration;
 
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
 public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 {
 	@Test
