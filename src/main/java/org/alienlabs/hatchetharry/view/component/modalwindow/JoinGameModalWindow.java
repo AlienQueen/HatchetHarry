@@ -33,29 +33,25 @@ public class JoinGameModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	final TextField<Long> gameIdInput;
-	final WebMarkupContainer dataBoxParent;
-	final TextField<String> nameInput;
-	final DropDownChoice<String> sideInput;
-	final ModalWindow modal;
-	@SpringBean
-	PersistenceService persistenceService;
-	Player player;
-	HomePage hp;
-	WebMarkupContainer deckParent;
-	DropDownChoice<Deck> decks;
-	FeedbackPanel feedback;
+	private final TextField<Long> gameIdInput;
+	private final TextField<String> nameInput;
+	private final DropDownChoice<String> sideInput;
+	private final HomePage hp;
+	private WebMarkupContainer deckParent;
+	private DropDownChoice<Deck> decks;
+	private final FeedbackPanel feedback;
 
+	@SpringBean
+	private PersistenceService persistenceService;
+
+	// TODO remove _dataBoxParent & _player
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
-		this.modal = _modal;
 		Injector.get().inject(this);
 
-		this.player = _player;
 		this.hp = _hp;
-		this.dataBoxParent = _dataBoxParent;
 
 		final Form<String> form = new Form<String>("form");
 
@@ -157,7 +153,7 @@ public class JoinGameModalWindow extends Panel
 					return;
 				}
 
-				if (g.getPlayers().size() <= (g.getDesiredNumberOfPlayers().intValue() - 1))
+				if (g.getPlayers().size() <= (g.getDesiredNumberOfPlayers() - 1))
 				{
 					g.setPending(false);
 				}

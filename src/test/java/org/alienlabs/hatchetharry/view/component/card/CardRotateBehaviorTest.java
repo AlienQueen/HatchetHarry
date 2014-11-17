@@ -20,8 +20,9 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 
 	private void clickOnCardHandle(final CardRotateBehavior _crb, final MagicCard _mc)
 	{
-		super.tester.getRequest().setParameter("uuid", _mc.getUuid().toString());
-		super.tester.executeBehavior(_crb);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("uuid",
+				_mc.getUuid().toString());
+		SpringContextLoaderBaseTest.tester.executeBehavior(_crb);
 	}
 
 	private MagicCard giveMagicCard()
@@ -44,25 +45,24 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard();
 
 		// Retrieve the card and the CardMoveBehavior
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
-		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		final HomePage page = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
 
-		this.tester
+		SpringContextLoaderBaseTest.tester
 				.assertComponent(
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton",
 						WebMarkupContainer.class);
 		final WebMarkupContainer cardButton = (WebMarkupContainer)page
 				.get("parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton");
 		Assert.assertNotNull(cardButton);
-		CardRotateBehavior crb = (CardRotateBehavior)cardButton.getBehaviors(
-				CardRotateBehavior.class).get(0);
+		final CardRotateBehavior crb = cardButton.getBehaviors(CardRotateBehavior.class).get(0);
 		Assert.assertNotNull(crb);
 
 		// Card default state
 		MagicCard mc = this.giveMagicCard();
 		Assert.assertFalse(mc.isTapped());
-		String pageDocument = this.tester.getLastResponse().getDocument();
+		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"cardContainer tapped", false);
@@ -71,14 +71,14 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 
 		// Rotate the card
 		this.clickOnCardHandle(crb, mc);
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Verify
 		mc = this.giveMagicCard();
 		Assert.assertTrue(mc.isTapped());
 
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "cardContainer tapped",
 				false);
 		Assert.assertNotNull(tagTester);
@@ -91,7 +91,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		mc = this.giveMagicCard();
 		Assert.assertFalse(mc.isTapped());
 
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "cardContainer tapped",
 				false);
 		Assert.assertNotNull(tagTester);

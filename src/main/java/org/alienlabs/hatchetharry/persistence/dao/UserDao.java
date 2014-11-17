@@ -11,7 +11,7 @@ public interface UserDao extends Serializable
 
 	/**
 	 * Load a {@link User} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the User to load.
 	 * @return User
@@ -20,7 +20,7 @@ public interface UserDao extends Serializable
 
 	/**
 	 * Save the User to the DB
-	 *
+	 * 
 	 * @param User
 	 * @return persistent instance of User
 	 */
@@ -28,7 +28,7 @@ public interface UserDao extends Serializable
 
 	/**
 	 * Delete a {@link User} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the User to delete.
 	 */

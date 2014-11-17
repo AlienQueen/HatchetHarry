@@ -51,7 +51,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private long posY;
 
 
-	public CardMoveBehavior(final CardPanel cp, final UUID _uuid,
+	private CardMoveBehavior(final CardPanel cp, final UUID _uuid,
 			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
 			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
 			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,

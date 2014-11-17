@@ -20,7 +20,7 @@ public class CountCardsModalWindow extends Panel
 	static final Logger LOGGER = LoggerFactory.getLogger(CountCardsModalWindow.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	public CountCardsModalWindow(final String id, final Long gameId)
 	{

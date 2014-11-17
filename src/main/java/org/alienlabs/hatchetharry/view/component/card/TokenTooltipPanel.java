@@ -19,7 +19,7 @@ public class TokenTooltipPanel extends Panel
 	static final Logger LOGGER = LoggerFactory.getLogger(TokenTooltipPanel.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	public TokenTooltipPanel(final String id, final Token token)
 	{

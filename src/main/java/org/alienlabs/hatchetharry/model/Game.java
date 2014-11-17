@@ -40,9 +40,9 @@ public class Game implements Serializable
 	@Column
 	private boolean pending = false;
 	@Column
-	Integer desiredNumberOfPlayers = 0;
+	private Integer desiredNumberOfPlayers = 0;
 	@Column
-	Format desiredFormat;
+	private Format desiredFormat;
 
 
 	public Long getId()

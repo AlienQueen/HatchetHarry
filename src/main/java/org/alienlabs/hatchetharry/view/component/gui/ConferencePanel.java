@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class ConferencePanel extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(ConferencePanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConferencePanel.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	public ConferencePanel(final String id)
 	{

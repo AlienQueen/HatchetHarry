@@ -3,26 +3,34 @@ package org.alienlabs.hatchetharry.serverSideTest;
 import java.util.List;
 import java.util.UUID;
 
-import org.alienlabs.hatchetharry.*;
+import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
 import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.component.card.*;
-import org.alienlabs.hatchetharry.view.component.gui.*;
+import org.alienlabs.hatchetharry.view.component.card.CardPanel;
+import org.alienlabs.hatchetharry.view.component.card.CardRotateBehavior;
+import org.alienlabs.hatchetharry.view.component.gui.ExternalImage;
+import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
+import org.alienlabs.hatchetharry.view.component.gui.HandComponent;
+import org.alienlabs.hatchetharry.view.component.gui.ReorderCardInBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.component.zone.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.ajax.form.*;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.tester.*;
-import org.junit.*;
+import org.apache.wicket.util.tester.FormTester;
+import org.apache.wicket.util.tester.TagTester;
+import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -35,7 +43,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
 	 * Run: we play it again Verify: the card should be untapped.
-	 *
+	 * 
 	 */
 	@Test
 	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped() throws Exception
@@ -45,19 +53,19 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		final Long gameId = HatchetHarrySession.get().getGameId();
 
 		// We should have one card on the battlefield, untapped
-		List<MagicCard> allCardsInBattlefield = this.persistenceService
+		List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
-		MagicCard card = this.persistenceService.getCardFromUuid(UUID
+		MagicCard card = SpringContextLoaderBaseTest.persistenceService.getCardFromUuid(UUID
 				.fromString(allCardsInBattlefield.get(0).getUuid()));
 		Assert.assertFalse(card.isTapped());
 
 		// Tap card
-		this.tester.startPage(new HomePage(new PageParameters()));
-		this.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(new HomePage(new PageParameters()));
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
-		this.tester
+		final HomePage page = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
+		SpringContextLoaderBaseTest.tester
 				.assertComponent(
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton",
 						WebMarkupContainer.class);
@@ -68,22 +76,23 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				.get(0);
 		Assert.assertNotNull(rotateBehavior);
 
-		this.tester.getRequest().setParameter("uuid", card.getUuid());
-		this.tester.executeBehavior(rotateBehavior);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("uuid", card.getUuid());
+		SpringContextLoaderBaseTest.tester.executeBehavior(rotateBehavior);
 
 		// Assert card is tapped
-		card = this.persistenceService.getCardFromUuid(UUID.fromString(allCardsInBattlefield.get(0)
-				.getUuid()));
+		card = SpringContextLoaderBaseTest.persistenceService.getCardFromUuid(UUID
+				.fromString(allCardsInBattlefield.get(0).getUuid()));
 		Assert.assertTrue(card.isTapped());
 
 		// Put the first card back to hand
 		final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior = cardButton
 				.getBehaviors(PutToHandFromBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(putToHandFromBattlefieldBehavior);
-		this.tester.executeBehavior(putToHandFromBattlefieldBehavior);
+		SpringContextLoaderBaseTest.tester.executeBehavior(putToHandFromBattlefieldBehavior);
 
 		// We should have no card on the battlefield
-		allCardsInBattlefield = this.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
+		allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play card again
@@ -91,12 +100,13 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior();
 		Assert.assertNotNull(pcfhb);
 
-		this.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		this.tester.executeBehavior(pcfhb);
+		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
 
 		// We should have one card on the battlefield, untapped
-		allCardsInBattlefield = this.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
+		allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 		Assert.assertFalse(allCardsInBattlefield.get(0).isTapped());
 	}
@@ -107,7 +117,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	{
 		this.startAGameAndPlayACard();
 
-		final Player p = this.persistenceService.getAllPlayersOfGame(
+		final Player p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
@@ -119,13 +129,14 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		this.startAGameAndPlayACard();
 
 		// 60 cards in the deck?
-		final Player p = this.persistenceService.getAllPlayersOfGame(
+		final Player p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 		// 6 cards in the hand?
-		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
-		String pageDocument = this.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
+		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"magicCard", false);
 		Assert.assertNotNull(tagTester);
@@ -136,14 +147,15 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// Is there really one card on the battlefield?
-		final HomePage hp = this.tester.startPage(new HomePage(new PageParameters()));
-		this.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		final HomePage hp = SpringContextLoaderBaseTest.tester.startPage(new HomePage(
+				new PageParameters()));
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = super.context
 				.getBean(PersistenceService.class);
-		List<MagicCard> allCardsInBattlefield = persistenceService
+		final List<MagicCard> allCardsInBattlefield = persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
@@ -158,16 +170,17 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior();
 		Assert.assertNotNull(pcfhb);
-		this.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		this.tester.executeBehavior(pcfhb);
+		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
 
 		// 5 cards in the hand instead of 6
-		this.tester.startPage(HomePage.class);
-		this.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
-		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
@@ -178,7 +191,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// Are there really two cards on the battlefield?
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
@@ -194,10 +207,10 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				"cards/token_medium.jpg");
 
 		// open ModalWindow in order to play a token, fill fields and validate
-		this.tester.assertComponent("createTokenLink", AjaxLink.class);
-		this.tester.clickLink("createTokenLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("createTokenLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("createTokenLink", true);
 
-		final FormTester createTokenForm = this.tester
+		final FormTester createTokenForm = SpringContextLoaderBaseTest.tester
 				.newFormTester("createTokenWindow:content:form");
 		createTokenForm.setValue("type", "Creature");
 		createTokenForm.setValue("power", "7");
@@ -209,20 +222,21 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		createTokenForm.submit();
 
 		// Are there really 2 cards on the battlefield?
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(2, tagTester.size());
 
 		// Are there still 5 cards in the hand?
-		this.tester.startPage(hp);
-		this.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.tester.startPage(hp);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
-		this.tester.assertComponent("galleryParent:gallery", HandComponent.class);
+		SpringContextLoaderBaseTest.tester.assertComponent("galleryParent:gallery",
+				HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
@@ -233,8 +247,8 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// open ModalWindow
-		this.tester.assertComponent("countCardsLink", AjaxLink.class);
-		this.tester.clickLink("countCardsLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("countCardsLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("countCardsLink", true);
 
 		// And now: does the "count cards" modal window display the right
 		// result: 5 cards in hand, 2 on the battlefield ( + 1 token),
@@ -254,15 +268,16 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	{
 		this.startAGameAndPlayACard();
 
-		final Player player = this.persistenceService.getAllPlayersOfGame(
+		final Player player = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, player.getDeck().getCards().size());
 
 		// Join game
-		this.tester.assertComponent("joinGameLink", AjaxLink.class);
-		this.tester.clickLink("joinGameLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("joinGameLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("joinGameLink", true);
 
-		final FormTester joinGameForm = this.tester.newFormTester("joinGameWindow:content:form");
+		final FormTester joinGameForm = SpringContextLoaderBaseTest.tester
+				.newFormTester("joinGameWindow:content:form");
 		joinGameForm.setValue("name", "Zala");
 		joinGameForm.setValue("sideInput", "1");
 		joinGameForm.setValue("deckParent:decks", "1");
@@ -277,9 +292,10 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 	public void testDeckListsShouldNotContainDuplicatesInModalWindows() throws Exception
 	{
 		// Init
-		DataGenerator dataGenerator = context.getBean(DataGenerator.class);
+		final DataGenerator dataGenerator = this.context.getBean(DataGenerator.class);
 		dataGenerator.afterPropertiesSet();
-		Assert.assertEquals(3, this.persistenceService.getAllDecksFromDeckArchives().size());
+		Assert.assertEquals(3, SpringContextLoaderBaseTest.persistenceService
+				.getAllDecksFromDeckArchives().size());
 
 		this.startAGameAndPlayACard();
 		tester.assertComponent("joinGameLink", AjaxLink.class);
@@ -288,9 +304,9 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent("joinGameLink", AjaxLink.class);
-		this.tester.clickLink("joinGameLink", true);
-		final TextField nameTextField = (TextField)this.tester
+		SpringContextLoaderBaseTest.tester.assertComponent("joinGameLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("joinGameLink", true);
+		final TextField<String> nameTextField = (TextField<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("joinGameWindow:content:form:name");
 		Assert.assertNotNull(nameTextField);
 
@@ -298,24 +314,25 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				AjaxFormComponentUpdatingBehavior.class).get(0);
 		Assert.assertNotNull(nameUpdateBehavior);
 
-		DropDownChoice choices = (DropDownChoice)this.tester
+		DropDownChoice<Deck> choices = (DropDownChoice<Deck>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
 
 		// Run
-		this.tester.executeBehavior(nameUpdateBehavior);
+		SpringContextLoaderBaseTest.tester.executeBehavior(nameUpdateBehavior);
 
 		// Verify
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent("joinGameLink", AjaxLink.class);
-		this.tester.clickLink("joinGameLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("joinGameLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("joinGameLink", true);
 
-		choices = (DropDownChoice)this.tester
+		choices = (DropDownChoice<Deck>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
-		Assert.assertEquals(3, this.persistenceService.getAllDecksFromDeckArchives().size());
+		Assert.assertEquals(3, SpringContextLoaderBaseTest.persistenceService
+				.getAllDecksFromDeckArchives().size());
 	}
 
 	@Test
@@ -349,25 +366,26 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
-		this.tester.assertComponent("parentPlaceholder", WebMarkupContainer.class);
+		final HomePage page = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
+		SpringContextLoaderBaseTest.tester.assertComponent("parentPlaceholder",
+				WebMarkupContainer.class);
 		final WebMarkupContainer parent = (WebMarkupContainer)page.get("parentPlaceholder");
 		Assert.assertNotNull(parent);
-		ReorderCardInBattlefieldBehavior reorder = parent.getBehaviors(
+		final ReorderCardInBattlefieldBehavior reorder = parent.getBehaviors(
 				ReorderCardInBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(reorder);
 
 		// Get names of the 5 cards, ordered by position on battlefield
-		String pageDocument = this.tester.getLastResponse().getDocument();
+		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(5, tagTester.size());
-		String cardBefore1 = tagTester.get(0).getAttribute("src");
-		String cardBefore2 = tagTester.get(1).getAttribute("src");
-		String cardBefore3 = tagTester.get(2).getAttribute("src");
-		String cardBefore4 = tagTester.get(3).getAttribute("src");
-		String cardBefore5 = tagTester.get(4).getAttribute("src");
+		final String cardBefore1 = tagTester.get(0).getAttribute("src");
+		final String cardBefore2 = tagTester.get(1).getAttribute("src");
+		final String cardBefore3 = tagTester.get(2).getAttribute("src");
+		final String cardBefore4 = tagTester.get(3).getAttribute("src");
+		final String cardBefore5 = tagTester.get(4).getAttribute("src");
 
 		// Put the last played card to graveyard
 		SpringContextLoaderBaseTest.tester.assertComponent(
@@ -380,7 +398,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 
 		// Verify
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		List<MagicCard> allCardsInGraveyard = this.persistenceService
+		final List<MagicCard> allCardsInGraveyard = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertTrue(allCardsInGraveyard.size() == 1);
 		Assert.assertTrue(cardBefore5.contains(allCardsInGraveyard.get(0).getTitle()));
@@ -407,20 +425,21 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(4, allCardsInBattlefield.size());
 
-		final MagicCard mc = this.persistenceService.getCardFromUuid(((PlayerAndCard)cardToMove
-				.getDefaultModelObject()).getCard().getUuidObject());
+		final MagicCard mc = SpringContextLoaderBaseTest.persistenceService
+				.getCardFromUuid(((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard()
+						.getUuidObject());
 		Assert.assertEquals(0, mc.getBattlefieldOrder().intValue());
 
 		// Verify names
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(4, tagTester.size());
 
-		String cardAfter1 = tagTester.get(0).getAttribute("src");
-		String cardAfter2 = tagTester.get(1).getAttribute("src");
-		String cardAfter3 = tagTester.get(2).getAttribute("src");
-		String cardAfter4 = tagTester.get(3).getAttribute("src");
+		final String cardAfter1 = tagTester.get(0).getAttribute("src");
+		final String cardAfter2 = tagTester.get(1).getAttribute("src");
+		final String cardAfter3 = tagTester.get(2).getAttribute("src");
+		final String cardAfter4 = tagTester.get(3).getAttribute("src");
 
 		Assert.assertEquals(cardBefore4, cardAfter1);
 		Assert.assertEquals(cardBefore1, cardAfter2);
@@ -463,7 +482,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 						.getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(4, allCardsInHand.size());
 
-		String pageDocument = this.tester.getLastResponse().getDocument();
+		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
@@ -475,7 +494,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.clickLink("graveyardLink", true);
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
@@ -490,7 +509,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		// Verify that there is a card in graveyard
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
@@ -501,7 +520,7 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
-		List<MagicCard> allCardsInGraveyard = persistenceService
+		final List<MagicCard> allCardsInGraveyard = persistenceService
 				.getAllCardsInGraveyardForAGameAndAPlayer(gameId, HatchetHarrySession.get()
 						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
 						.getDeckId());
@@ -547,7 +566,6 @@ public class NonRegressionTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.assertInvisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
-		@SuppressWarnings("unchecked")
 		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);

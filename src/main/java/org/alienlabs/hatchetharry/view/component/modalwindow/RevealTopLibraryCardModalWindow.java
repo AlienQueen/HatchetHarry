@@ -3,11 +3,9 @@ package org.alienlabs.hatchetharry.view.component.modalwindow;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
@@ -42,20 +40,23 @@ import org.springframework.beans.factory.annotation.Required;
 
 import com.google.common.io.Files;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealTopLibraryCardModalWindow extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(RevealTopLibraryCardModalWindow.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(RevealTopLibraryCardModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	final ModalWindow modal;
-	final MagicCard card;
+	private final ModalWindow modal;
+	private final MagicCard card;
 
 	@SpringBean
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	@SuppressFBWarnings({ "PREDICTABLE_RANDOM" })
 	public RevealTopLibraryCardModalWindow(final String id, final ModalWindow _modal,
-			final MagicCard _card) throws NoSuchAlgorithmException
+			final MagicCard _card)
 	{
 		super(id);
 		this.modal = _modal;

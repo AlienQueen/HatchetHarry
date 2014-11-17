@@ -17,6 +17,7 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket.")
 public class CardInBattlefieldContextMenu extends Panel
 {
 	private static final long serialVersionUID = 1L;
@@ -25,7 +26,7 @@ public class CardInBattlefieldContextMenu extends Panel
 
 	private final UUID uuid;
 	private final String uuidAsString;
-	private MagicCard magicCard;
+	private final MagicCard magicCard;
 
 	public CardInBattlefieldContextMenu(final String id, final UUID _uuid, final MagicCard mc)
 	{
@@ -95,5 +96,4 @@ public class CardInBattlefieldContextMenu extends Panel
 			}
 		});
 	}
-
 }

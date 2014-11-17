@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-public class ReactivateTooltipsCometChannel
+class ReactivateTooltipsCometChannel
 {
 	private final Long gameId;
 

@@ -45,6 +45,7 @@ public class CardPanel extends Panel
 	private final DestroyTokenBehavior destroyTokenBehavior;
 
 	@SpringBean
+	private
 	PersistenceService persistenceService;
 
 	public CardPanel(final String id, final IModel<PlayerAndCard> playerAndCard)
@@ -178,8 +179,7 @@ public class CardPanel extends Panel
 		cardHandle.add(side);
 		this.add(cardHandle);
 
-		final CardTooltipBehavior ctb = new CardTooltipBehavior(playerAndCard.getObject().getCard()
-				.getUuidObject());
+		final CardTooltipBehavior ctb = new CardTooltipBehavior();
 		this.add(ctb);
 
 		if (HatchetHarrySession.get().isDisplayTooltips())
@@ -193,7 +193,7 @@ public class CardPanel extends Panel
 		}
 	}
 
-	public HttpServletRequest getHttpServletRequest()
+	HttpServletRequest getHttpServletRequest()
 	{
 		final Request servletWebRequest = this.getRequest();
 		return (HttpServletRequest)servletWebRequest.getContainerRequest();

@@ -26,13 +26,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BasicDatabaseTest implements Serializable
 {
-	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+	private static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml" });
 	private static final long serialVersionUID = 1L;
-	static transient WicketTester tester;
-	static HatchetHarryApplication webApp;
-	static transient ApplicationContext context;
-	static String pageDocument;
+	private static transient WicketTester tester;
+	private static HatchetHarryApplication webApp;
+	private static transient ApplicationContext context;
+
 	@SpringBean
 	private CardCollectionDao cardCollectionDao;
 	@SpringBean
@@ -74,8 +74,6 @@ public class BasicDatabaseTest implements Serializable
 
 		// assert rendered page class
 		BasicDatabaseTest.tester.assertRenderedPage(HomePage.class);
-
-		BasicDatabaseTest.pageDocument = BasicDatabaseTest.tester.getLastResponse().getDocument();
 	}
 
 	@Before

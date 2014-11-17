@@ -38,13 +38,18 @@ public class CreateTokenModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateTokenModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	final ModalWindow modal;
+	private final ModalWindow modal;
 
-	final Model<String> typeModel, powerModel, toughnessModel, colorsModel, capabilitiesModel,
-			creatureTypesModel, descriptionModel;
+	private final Model<String> typeModel;
+	private final Model<String> powerModel;
+	private final Model<String> toughnessModel;
+	private final Model<String> colorsModel;
+	private final Model<String> capabilitiesModel;
+	private final Model<String> creatureTypesModel;
+	private final Model<String> descriptionModel;
 
 	@SpringBean
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	public CreateTokenModalWindow(final String id, final ModalWindow _modal)
 	{

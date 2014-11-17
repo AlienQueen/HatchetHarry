@@ -11,7 +11,7 @@ public interface SideDao extends Serializable
 
 	/**
 	 * Load a {@link Side} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Side to load.
 	 * @return Side
@@ -20,7 +20,7 @@ public interface SideDao extends Serializable
 
 	/**
 	 * Save the Side to the DB
-	 *
+	 * 
 	 * @param Side
 	 * @return persistent instance of side
 	 */
@@ -28,7 +28,7 @@ public interface SideDao extends Serializable
 
 	/**
 	 * Delete a {@link Side} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Side to delete.
 	 */

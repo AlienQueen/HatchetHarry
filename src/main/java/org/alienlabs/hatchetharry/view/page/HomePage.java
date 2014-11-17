@@ -164,23 +164,23 @@ import com.google.common.io.Files;
 
 /**
  * HatchetHarry one and only WebPage
- *
+ * 
  * @author Andrey Belyaev
  * @author Zala Goupil
  */
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+		"SIC_INNER_SHOULD_BE_STATIC_ANON", "PREDICTABLE_RANDOM" }, justification = "SE_INNER_CLASS + SIC_INNER_SHOULD_BE_STATIC_ANON: In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. PREDICTABLE_RANDOM: SecureRandom is awfully slow and we don't need strong RNG")
 public class HomePage extends TestReportPage
 {
 	private static final long serialVersionUID = 1L;
-	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
 
-	public final HatchetHarrySession session;
-	final WebMarkupContainer galleryParent;
-	final WebMarkupContainer galleryRevealParent;
-	final Component galleryReveal;
-	final WebMarkupContainer graveyardParent;
-	final WebMarkupContainer exileParent;
+	private final HatchetHarrySession session;
+	private final WebMarkupContainer galleryParent;
+	private final WebMarkupContainer galleryRevealParent;
+	private final Component galleryReveal;
+	private final WebMarkupContainer graveyardParent;
+	private final WebMarkupContainer exileParent;
 	private final List<ModalWindow> allOpenRevealTopLibraryCardWindows;
 	private final WebMarkupContainer parentPlaceholder;
 	private final WebMarkupContainer opponentParentPlaceholder;
@@ -196,25 +196,25 @@ public class HomePage extends TestReportPage
 	private final ModalWindow askMulliganWindow;
 
 	@SpringBean
-	public PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 	@SpringBean
-	DataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
-	ModalWindow teamInfoWindow;
-	ModalWindow aboutWindow;
+	private ModalWindow teamInfoWindow;
+	private ModalWindow aboutWindow;
 	ModalWindow teamInfoWindowResponsive;
 	ModalWindow aboutWindowResponsive;
-	ModalWindow createGameWindow;
-	ModalWindow joinGameWindow;
-	ModalWindow joinGameWithoutIdWindow;
-	ImportDeckDialog importDeckDialog;
-	ModalWindow revealTopLibraryCardWindow;
-	ModalWindow createTokenWindow;
-	ModalWindow countCardsWindow;
-	ModalWindow loginWindow;
-	ModalWindow preferencesWindow;
-	Player player;
-	Deck deck;
+	private ModalWindow createGameWindow;
+	private ModalWindow joinGameWindow;
+	private ModalWindow joinGameWithoutIdWindow;
+	private final ImportDeckDialog importDeckDialog;
+	private ModalWindow revealTopLibraryCardWindow;
+	private ModalWindow createTokenWindow;
+	private final ModalWindow countCardsWindow;
+	private final ModalWindow loginWindow;
+	private final ModalWindow preferencesWindow;
+	private Player player;
+	private Deck deck;
 	List<MagicCard> hand;
 	WebMarkupContainer playCardLink;
 	// TODO remove this
@@ -222,12 +222,12 @@ public class HomePage extends TestReportPage
 	WebMarkupContainer playCardFromGraveyardLink;
 	WebMarkupContainer thumbsPlaceholder;
 	WebMarkupContainer graveyardThumbsPlaceholder;
-	WebMarkupContainer endTurnPlaceholder;
-	WebMarkupContainer inResponsePlaceholder;
-	WebMarkupContainer fineForMePlaceholder;
-	WebMarkupContainer untapAllPlaceholder;
-	WebMarkupContainer untapAndDrawPlaceholder;
-	ClockPanel clockPanel;
+	private WebMarkupContainer endTurnPlaceholder;
+	private WebMarkupContainer inResponsePlaceholder;
+	private WebMarkupContainer fineForMePlaceholder;
+	private WebMarkupContainer untapAllPlaceholder;
+	private WebMarkupContainer untapAndDrawPlaceholder;
+	private final ClockPanel clockPanel;
 	private AjaxLink<Void> endTurnLink;
 	private AjaxLink<Void> inResponseLink;
 	private AjaxLink<Void> fineForMeLink;
@@ -333,7 +333,6 @@ public class HomePage extends TestReportPage
 
 			this.buildHandCards();
 			this.buildDataBox(this.player.getGame().getId());
-
 		}
 
 		// Side
@@ -592,7 +591,6 @@ public class HomePage extends TestReportPage
 				{
 					this.generateCardListViewForSide2(allCardsInBattlefieldForAGameAndAPlayer);
 				}
-				;
 			}
 		}
 
@@ -1119,7 +1117,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
-	private void createPlayer() throws IOException
+	private void createPlayer()
 	{
 		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
@@ -1138,7 +1136,7 @@ public class HomePage extends TestReportPage
 	}
 
 	private void createPlayerAndDeck(final String _jsessionid, final String _side,
-			final String _name) throws IOException
+			final String _name)
 	{
 		Player p = new Player();
 		final Side side = new Side();
@@ -1500,7 +1498,8 @@ public class HomePage extends TestReportPage
 		this.exileParent.add(exileToUpdate);
 	}
 
-	private List<MagicCard> createFirstCards() throws IOException
+	// TODO remove me
+	private List<MagicCard> createFirstCards()
 	{
 		if (this.session.isPlayerCreated())
 		{
@@ -1788,7 +1787,6 @@ public class HomePage extends TestReportPage
 	}
 
 	private void generateRevealTopLibraryCardLink(final String id, final String idModalWindow)
-			throws NoSuchAlgorithmException
 	{
 		final ModalWindow window = new ModalWindow(idModalWindow);
 		window.setWindowClosedCallback(new WindowClosedCallback()
@@ -1899,7 +1897,7 @@ public class HomePage extends TestReportPage
 		window.setInitialWidth(500);
 		window.setInitialHeight(510);
 
-		CreateTokenModalWindow createTokenModalWindow = new CreateTokenModalWindow(
+		final CreateTokenModalWindow createTokenModalWindow = new CreateTokenModalWindow(
 				window.getContentId(), window);
 		window.setContent(createTokenModalWindow);
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
@@ -1987,7 +1985,6 @@ public class HomePage extends TestReportPage
 					return;
 				}
 
-				@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "PREDICTABLE_RANDOM", justification = "SecureRandom is awfully slow and we don't need strong RNG")
 				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
 						.random() * allCardsInHand)).intValue() : 0);
 				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
@@ -2612,7 +2609,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void revealTopLibraryCard(final AjaxRequestTarget target,
-			final RevealTopLibraryCardCometChannel event) throws NoSuchAlgorithmException
+			final RevealTopLibraryCardCometChannel event)
 	{
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -2964,7 +2961,7 @@ public class HomePage extends TestReportPage
 		// Sessions must be cleaned up between server restarts, as it's too much
 		// difficult
 		// to manage a state recovery
-		Player player1 = this.persistenceService.getPlayer(this.session.getPlayer().getId());
+		final Player player1 = this.persistenceService.getPlayer(this.session.getPlayer().getId());
 		final Boolean isHandDisplayed = player1.isHandDisplayed();
 		final Component galleryToUpdate = isHandDisplayed
 				? new HandComponent("gallery", false)
@@ -3065,7 +3062,6 @@ public class HomePage extends TestReportPage
 
 	@Required
 	public void setPersistenceService(final PersistenceService _persistenceService)
-			throws IOException
 	{
 		this.persistenceService = _persistenceService;
 	}
@@ -3150,8 +3146,8 @@ public class HomePage extends TestReportPage
 			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
-				final CardPanel cp = new CardPanel("cardPanel", new Model(new PlayerAndCard(
-						HomePage.this.player, mc)));
+				final CardPanel cp = new CardPanel("cardPanel", new Model<PlayerAndCard>(
+						new PlayerAndCard(HomePage.this.player, mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3167,7 +3163,7 @@ public class HomePage extends TestReportPage
 		return this.parentPlaceholder;
 	}
 
-	public WebMarkupContainer generateCardListViewForSide2(
+	WebMarkupContainer generateCardListViewForSide2(
 			final List<MagicCard> _allMagicCardsInBattlefieldForSide2)
 	{
 		if (null == _allMagicCardsInBattlefieldForSide2)
@@ -3191,8 +3187,8 @@ public class HomePage extends TestReportPage
 			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
-				final CardPanel cp = new CardPanel("cardPanel", new Model(new PlayerAndCard(
-						HomePage.this.player, mc)));
+				final CardPanel cp = new CardPanel("cardPanel", new Model<PlayerAndCard>(
+						new PlayerAndCard(HomePage.this.player, mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3273,7 +3269,7 @@ public class HomePage extends TestReportPage
 		return this.allPlayerSidesInGame;
 	}
 
-	public WebMarkupContainer getDrawModeParent()
+	WebMarkupContainer getDrawModeParent()
 	{
 		return this.drawModeParent;
 	}
@@ -3293,7 +3289,7 @@ public class HomePage extends TestReportPage
 		return this.conferenceParent;
 	}
 
-	public void setCreateTokenModalWindow(ModalWindow window)
+	void setCreateTokenModalWindow(final ModalWindow window)
 	{
 		this.createTokenWindow = window;
 	}

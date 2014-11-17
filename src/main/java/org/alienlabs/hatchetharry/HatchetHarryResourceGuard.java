@@ -2,7 +2,7 @@ package org.alienlabs.hatchetharry;
 
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 
-public class HatchetHarryResourceGuard extends SecurePackageResourceGuard
+class HatchetHarryResourceGuard extends SecurePackageResourceGuard
 {
 	public HatchetHarryResourceGuard()
 	{

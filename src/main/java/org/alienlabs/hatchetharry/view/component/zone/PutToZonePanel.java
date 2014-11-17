@@ -19,7 +19,7 @@ import org.apache.wicket.model.Model;
 public class PutToZonePanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
-	protected final DropDownChoice<CardZone> targetZoneInput;
+	private final DropDownChoice<CardZone> targetZoneInput;
 	private final CardZone sourceZone;
 	private final Player player;
 	private final boolean isReveal;

@@ -38,24 +38,25 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
-		this.tester.assertComponent("parentPlaceholder", WebMarkupContainer.class);
+		final HomePage page = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
+		SpringContextLoaderBaseTest.tester.assertComponent("parentPlaceholder",
+				WebMarkupContainer.class);
 		final WebMarkupContainer parent = (WebMarkupContainer)page.get("parentPlaceholder");
 		Assert.assertNotNull(parent);
-		ReorderCardInBattlefieldBehavior reorder = parent.getBehaviors(
+		final ReorderCardInBattlefieldBehavior reorder = parent.getBehaviors(
 				ReorderCardInBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(reorder);
 
 		// Get names of the three cards, ordered by position on battlefield
-		String pageDocument = this.tester.getLastResponse().getDocument();
+		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(3, tagTester.size());
-		String cardBefore1 = tagTester.get(0).getAttribute("src");
-		String cardBefore2 = tagTester.get(1).getAttribute("src");
-		String cardBefore3 = tagTester.get(2).getAttribute("src");
+		final String cardBefore1 = tagTester.get(0).getAttribute("src");
+		final String cardBefore2 = tagTester.get(1).getAttribute("src");
+		final String cardBefore3 = tagTester.get(2).getAttribute("src");
 
 		// Move the last played card
 		SpringContextLoaderBaseTest.tester.assertComponent(
@@ -78,19 +79,20 @@ public class CardMoveBehaviorTest extends SpringContextLoaderBaseTest
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(3, allCardsInBattlefield.size());
 
-		final MagicCard mc = this.persistenceService.getCardFromUuid(((PlayerAndCard)card
-				.getDefaultModelObject()).getCard().getUuidObject());
+		final MagicCard mc = SpringContextLoaderBaseTest.persistenceService
+				.getCardFromUuid(((PlayerAndCard)card.getDefaultModelObject()).getCard()
+						.getUuidObject());
 		Assert.assertEquals(0, mc.getBattlefieldOrder().intValue());
 
 		// Verify names
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(3, tagTester.size());
 
-		String cardAfter1 = tagTester.get(0).getAttribute("src");
-		String cardAfter2 = tagTester.get(1).getAttribute("src");
-		String cardAfter3 = tagTester.get(2).getAttribute("src");
+		final String cardAfter1 = tagTester.get(0).getAttribute("src");
+		final String cardAfter2 = tagTester.get(1).getAttribute("src");
+		final String cardAfter3 = tagTester.get(2).getAttribute("src");
 
 		Assert.assertEquals(cardBefore3, cardAfter1);
 		Assert.assertEquals(cardBefore1, cardAfter2);

@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.model;
 
-public interface SlideshowImage
+interface SlideshowImage
 {
 
 	String getLow();

@@ -26,7 +26,7 @@ import org.hibernate.Session;
 /**
  * The implementation-independent DAO interface. Defines the operations required
  * to be supported by an implementation.
- *
+ * 
  * @author igor
  */
 public interface ArrowDao extends Serializable
@@ -35,7 +35,7 @@ public interface ArrowDao extends Serializable
 
 	/**
 	 * Load a {@link Arrow} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Arrow to load.
 	 * @return Arrow
@@ -44,7 +44,7 @@ public interface ArrowDao extends Serializable
 
 	/**
 	 * Save the Arrow to the DB
-	 *
+	 * 
 	 * @param Arrow
 	 * @return persistent instance of Arrow
 	 */
@@ -52,7 +52,7 @@ public interface ArrowDao extends Serializable
 
 	/**
 	 * Delete a {@link Arrow} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Arrow to delete.
 	 */

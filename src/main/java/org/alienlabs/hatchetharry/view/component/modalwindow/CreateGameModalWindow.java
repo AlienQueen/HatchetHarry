@@ -45,22 +45,22 @@ import org.springframework.beans.factory.annotation.Required;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CreateGameModalWindow extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
 	private static final long serialVersionUID = -5432292812819537705L;
-	final Game game;
-	final WebMarkupContainer sidePlaceholderParent;
-	final HomePage homePage;
-	final TextField<String> nameInput;
-	final DropDownChoice<String> sideInput;
-	final ModalWindow modal;
+	private final Game game;
+	private final HomePage homePage;
+	private final TextField<String> nameInput;
+	private final DropDownChoice<String> sideInput;
+	private final ModalWindow modal;
 	@SpringBean
-	PersistenceService persistenceService;
-	Player player;
-	WebMarkupContainer deckParent;
-	DropDownChoice<Deck> decks;
-	DropDownChoice<Format> formats;
-	TextField<String> numberOfPlayers;
+	private PersistenceService persistenceService;
+	private final Player player;
+	private WebMarkupContainer deckParent;
+	private DropDownChoice<Deck> decks;
+	private final DropDownChoice<Format> formats;
+	private final TextField<String> numberOfPlayers;
 
+	// TODO remove _sidePlaceholderParent
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
 			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
 	{
@@ -69,7 +69,6 @@ public class CreateGameModalWindow extends Panel
 
 		this.modal = _modal;
 		this.player = _player;
-		this.sidePlaceholderParent = _sidePlaceholderParent;
 		this.homePage = hp;
 
 		final Form<String> form = new Form<String>("form");
@@ -161,7 +160,7 @@ public class CreateGameModalWindow extends Panel
 					return;
 				}
 
-				Integer players = 0;
+				Integer players;
 				try
 				{
 					players = Integer.parseInt(CreateGameModalWindow.this.numberOfPlayers

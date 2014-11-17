@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(PutToZoneBehavior.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PutToZoneBehavior.class);
 	private static final long serialVersionUID = 1L;
 	private final CardZone sourceZone;
 	private final Player player;

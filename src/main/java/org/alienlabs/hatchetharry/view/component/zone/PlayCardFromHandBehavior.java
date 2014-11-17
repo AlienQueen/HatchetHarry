@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PlayCardFromHandBehavior.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
 	private PersistenceService persistenceService;

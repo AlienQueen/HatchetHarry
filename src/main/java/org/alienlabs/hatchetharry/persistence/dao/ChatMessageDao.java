@@ -26,7 +26,7 @@ import org.hibernate.Session;
 /**
  * The implementation-independent DAO interface. Defines the operations required
  * to be supported by an implementation.
- *
+ * 
  * @author igor
  */
 public interface ChatMessageDao extends Serializable
@@ -35,7 +35,7 @@ public interface ChatMessageDao extends Serializable
 
 	/**
 	 * Load a {@link ChatMessage} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the ChatMessage to load.
 	 * @return ChatMessage
@@ -44,7 +44,7 @@ public interface ChatMessageDao extends Serializable
 
 	/**
 	 * Save the ChatMessage to the DB
-	 *
+	 * 
 	 * @param ChatMessage
 	 * @return persistent instance of ChatMessage
 	 */
@@ -52,7 +52,7 @@ public interface ChatMessageDao extends Serializable
 
 	/**
 	 * Delete a {@link ChatMessage} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the ChatMessage to delete.
 	 */

@@ -12,23 +12,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "We ignore the exception since it's a duplicate key from DB due to the fact that the same console log is persisted for each player in the game. But we only want it once in DB.")
+@SuppressWarnings("PMD.EmptyCatchBlock")
 public abstract class ConsoleLogStrategy
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleLogStrategy.class);
 
-	protected final Date date = new Date();
+	private final Date date = new Date();
 	@SpringBean
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
-	public ConsoleLogStrategy()
+	ConsoleLogStrategy()
 	{
 		Injector.get().inject(this);
 	}
 
 	public abstract void logToConsole(AjaxRequestTarget target);
 
-	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "We ignore the exception since it's a duplicate key from DB due to the fact that the same console log is persisted for each player in the game. But we only want it once in DB.")
-	protected void logMessage(final AjaxRequestTarget target, final String message,
+	void logMessage(final AjaxRequestTarget target, final String message,
 			final Boolean clearConsole, final Long gameId)
 	{
 		if ((null != clearConsole) && clearConsole)

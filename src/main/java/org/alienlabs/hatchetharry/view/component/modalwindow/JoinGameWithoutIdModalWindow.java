@@ -32,35 +32,30 @@ import org.springframework.beans.factory.annotation.Required;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class JoinGameWithoutIdModalWindow extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameWithoutIdModalWindow.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(JoinGameWithoutIdModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	final WebMarkupContainer dataBoxParent;
-	final TextField<String> nameInput;
-	final DropDownChoice<String> sideInput;
-	final ModalWindow modal;
-	@SpringBean
-	PersistenceService persistenceService;
-	Player player;
-	HomePage hp;
-	WebMarkupContainer deckParent;
-	DropDownChoice<Deck> decks;
-	DropDownChoice<Format> formats;
-	Long myGame;
-	FeedbackPanel feedback;
-	TextField<String> numberOfPlayers;
+	private final TextField<String> nameInput;
+	private final DropDownChoice<String> sideInput;
+	private final HomePage hp;
+	private WebMarkupContainer deckParent;
+	private DropDownChoice<Deck> decks;
+	private final DropDownChoice<Format> formats;
+	private final FeedbackPanel feedback;
+	private final TextField<String> numberOfPlayers;
 
+	@SpringBean
+	private PersistenceService persistenceService;
+
+	// TODO remove _dataBoxParent & _modal & _player
 	public JoinGameWithoutIdModalWindow(final ModalWindow _modal, final String id,
 			final Player _player, final WebMarkupContainer _dataBoxParent, final HomePage _hp)
 	{
 		super(id);
-		this.modal = _modal;
 		Injector.get().inject(this);
 
-		this.player = _player;
 		this.hp = _hp;
-		this.dataBoxParent = _dataBoxParent;
 
-		this.myGame = _player.getGame().getId();
 		final Form<String> form = new Form<String>("form");
 
 		final ArrayList<String> allSides = new ArrayList<String>();

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public class EventBusPostService
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(EventBusPostService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EventBusPostService.class);
 
 	public static void post(final List<BigInteger> players, final Object... messages)
 	{

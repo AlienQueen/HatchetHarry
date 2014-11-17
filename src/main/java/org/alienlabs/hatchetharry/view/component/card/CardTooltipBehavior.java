@@ -1,7 +1,6 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
@@ -17,14 +16,11 @@ import org.slf4j.LoggerFactory;
 public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardTooltipBehavior.class);
 
-	private final UUID uuid;
-
-	public CardTooltipBehavior(final UUID _uuid)
+	public CardTooltipBehavior()
 	{
-		this.uuid = _uuid;
+		// Nothing to do here
 	}
 
 	@Override
@@ -50,6 +46,7 @@ public class CardTooltipBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
+		// Nothing to do here
 	}
 
 }

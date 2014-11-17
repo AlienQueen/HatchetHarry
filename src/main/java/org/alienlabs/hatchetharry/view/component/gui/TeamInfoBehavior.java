@@ -19,9 +19,9 @@ public class TeamInfoBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TeamInfoBehavior.class);
-	ModalWindow modal;
+	private final ModalWindow modal;
 
-	public TeamInfoBehavior(final ModalWindow _modal)
+	private TeamInfoBehavior(final ModalWindow _modal)
 	{
 		this.modal = _modal;
 	}

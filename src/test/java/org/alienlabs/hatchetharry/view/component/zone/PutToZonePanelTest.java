@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.view.component.zone;
 
+import java.util.List;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
@@ -13,8 +15,6 @@ import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
-
-import java.util.List;
 
 /**
  * Created by nostromo on 15/11/14.
@@ -53,7 +53,7 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(1, tagTester.size());
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
-		String cardToVerify = tagTester.get(0).getAttribute("src");
+		final String cardToVerify = tagTester.get(0).getAttribute("src");
 
 		// Verify that it is not in the hand anymore
 		List<MagicCard> allCardsInHand = persistenceService.getAllCardsInHandForAGameAndAPlayer(
@@ -67,21 +67,21 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		Assert.assertEquals(6, tagTester.size());
 
 		// Put it to exile
-		super.tester.assertComponent("parentPlaceholder:magicCardsForSide1:1:cardPanel",
-				CardPanel.class);
-		final CardPanel card = (CardPanel)super.tester
+		SpringContextLoaderBaseTest.tester.assertComponent(
+				"parentPlaceholder:magicCardsForSide1:1:cardPanel", CardPanel.class);
+		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:1:cardPanel");
 		Assert.assertNotNull(card);
 
 		final PutToExileFromBattlefieldBehavior ptefbb = card
 				.getPutToExileFromBattlefieldBehavior();
 		Assert.assertNotNull(ptefbb);
-		super.tester.executeBehavior(ptefbb);
+		SpringContextLoaderBaseTest.tester.executeBehavior(ptefbb);
 
 		// Verify
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		// Verify that is in exile
 		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile",
@@ -125,7 +125,7 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		// Verify
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		// Verify that it is in graveyard
 		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
@@ -173,7 +173,7 @@ public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 		// Verify
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		pageDocument = this.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		// Verify that it is in exile
 		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile",
 				ExileComponent.class);

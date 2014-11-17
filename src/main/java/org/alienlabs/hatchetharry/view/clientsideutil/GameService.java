@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 public class GameService
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
 
 	public static void joinGame(final PersistenceService persistenceService,
 			final ModalWindow _modal, final AjaxRequestTarget target, final Long gameId,
@@ -199,5 +199,4 @@ public class GameService
 		target.appendJavaScript("document.getElementById('userName').value = '" + player.getName()
 				+ "'; ");
 	}
-
 }

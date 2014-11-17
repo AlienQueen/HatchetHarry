@@ -30,7 +30,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 	private static final Logger LOGGER = LoggerFactory.getLogger(FacebookLoginBehavior.class);
 
 	@SpringBean
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	@Override
 	protected void respond(final AjaxRequestTarget target)

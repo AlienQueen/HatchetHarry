@@ -128,7 +128,7 @@ public class HatchetHarrySession extends WebSession
 		this.setAttribute(HatchetHarrySession.FIRST_CARDS_IN_HAND, cards);
 	}
 
-	public ArrayList<MagicCard> getCardsInGraveyard()
+	ArrayList<MagicCard> getCardsInGraveyard()
 	{
 		return (ArrayList<MagicCard>)this.getAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD);
 	}

@@ -52,7 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class PersistenceService implements Serializable
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(PersistenceService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceService.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
 	private PlayerDao playerDao;
@@ -898,7 +898,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	// TODO remove player
+	// TODO remove playerId
 	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
@@ -923,6 +923,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
+	// TODO remove playerId
 	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{

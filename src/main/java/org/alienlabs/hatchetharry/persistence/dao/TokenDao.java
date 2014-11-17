@@ -26,7 +26,7 @@ import org.hibernate.Session;
 /**
  * The implementation-independent DAO interface. Defines the operations required
  * to be supported by an implementation.
- *
+ * 
  * @author igor
  */
 public interface TokenDao extends Serializable
@@ -35,7 +35,7 @@ public interface TokenDao extends Serializable
 
 	/**
 	 * Load a {@link Token} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Token to load.
 	 * @return Token
@@ -44,7 +44,7 @@ public interface TokenDao extends Serializable
 
 	/**
 	 * Save the Token to the DB
-	 *
+	 * 
 	 * @param Token
 	 * @return persistent instance of Token
 	 */
@@ -52,7 +52,7 @@ public interface TokenDao extends Serializable
 
 	/**
 	 * Delete a {@link Token} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Token to delete.
 	 */

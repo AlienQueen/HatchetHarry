@@ -37,12 +37,12 @@ public class TokenPanel extends Panel
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(TokenPanel.class);
-	final UUID uuid;
+	private final UUID uuid;
 	@SpringBean
-	PersistenceService persistenceService;
-	Player owner;
+	private PersistenceService persistenceService;
+	private final Player owner;
 
-	public TokenPanel(final String id, final UUID _uuid)
+	private TokenPanel(final String id, final UUID _uuid)
 	{
 		super(id);
 		Injector.get().inject(this);
@@ -129,7 +129,7 @@ public class TokenPanel extends Panel
 		this.add(cardHandle);
 	}
 
-	public HttpServletRequest getHttpServletRequest()
+	HttpServletRequest getHttpServletRequest()
 	{
 		final Request servletWebRequest = this.getRequest();
 		return (HttpServletRequest)servletWebRequest.getContainerRequest();

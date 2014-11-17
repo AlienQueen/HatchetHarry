@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
  * We can not unit test with several players, nonetheless this test can be
  * viewed like a non-regression test. Moreover it allowed me to refactor the
  * component under test.
- *
+ * 
  * Created by nostromo on 16/11/14.
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
@@ -30,28 +30,29 @@ public class DataBoxTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard("ajaxSubmit");
 
 		// Verify that the player Zala exists and has 20 life points
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
-		this.tester.assertComponent("dataBoxParent:dataBox:parent:box:0:playerLabel", Label.class);
-		final Label playerName = (Label)this.tester
+		SpringContextLoaderBaseTest.tester.assertComponent("dataBoxParent:dataBox", DataBox.class);
+		SpringContextLoaderBaseTest.tester.assertComponent(
+				"dataBoxParent:dataBox:parent:box:0:playerLabel", Label.class);
+		final Label playerName = (Label)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLabel");
 		Assert.assertNotNull(playerName);
 		Assert.assertEquals("Zala: ", playerName.getDefaultModelObjectAsString());
 
-		this.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label",
 				Label.class);
-		Label playerLifePoints = (Label)this.tester
+		Label playerLifePoints = (Label)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label");
 		Assert.assertEquals("20", playerLifePoints.getDefaultModelObjectAsString());
 
 		// Set life point total to 12
-		this.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
 				AjaxEditableLabel.class);
-		AjaxEditableLabel<String> ajaxLabel = (AjaxEditableLabel<String>)this.tester
+		AjaxEditableLabel<String> ajaxLabel = (AjaxEditableLabel<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
 		tester.executeAjaxEvent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label",
@@ -64,8 +65,8 @@ public class DataBoxTest extends SpringContextLoaderBaseTest
 		tester.executeBehavior((AbstractAjaxBehavior)editor.getBehaviorById(0));
 
 		// Verify
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		tester.assertInvisible("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:editor");
 		tester.assertVisible("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label");
 		tester.assertLabel(
@@ -73,43 +74,45 @@ public class DataBoxTest extends SpringContextLoaderBaseTest
 				"12");
 
 		// Decrement life points
-		this.tester.assertComponent("dataBoxParent:dataBox:parent:box:0:playerMinusLink",
-				AjaxLink.class);
-		this.tester.clickLink("dataBoxParent:dataBox:parent:box:0:playerMinusLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent(
+				"dataBoxParent:dataBox:parent:box:0:playerMinusLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink(
+				"dataBoxParent:dataBox:parent:box:0:playerMinusLink", true);
 
 		// Verify
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label",
 				Label.class);
-		playerLifePoints = (Label)this.tester
+		playerLifePoints = (Label)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label");
 		Assert.assertEquals("11", playerLifePoints.getDefaultModelObjectAsString());
 
 		// Increment life points
-		this.tester.assertComponent("dataBoxParent:dataBox:parent:box:0:playerPlusLink",
-				AjaxLink.class);
-		this.tester.clickLink("dataBoxParent:dataBox:parent:box:0:playerPlusLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent(
+				"dataBoxParent:dataBox:parent:box:0:playerPlusLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink(
+				"dataBoxParent:dataBox:parent:box:0:playerPlusLink", true);
 
 		// Verify
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label",
 				Label.class);
-		playerLifePoints = (Label)this.tester
+		playerLifePoints = (Label)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label");
 		Assert.assertEquals("12", playerLifePoints.getDefaultModelObjectAsString());
 
 
 		// Set life point total to 23
-		this.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints",
 				AjaxEditableLabel.class);
-		ajaxLabel = (AjaxEditableLabel<String>)this.tester
+		ajaxLabel = (AjaxEditableLabel<String>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints");
 		tester.executeAjaxEvent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label",
@@ -122,8 +125,8 @@ public class DataBoxTest extends SpringContextLoaderBaseTest
 		tester.executeBehavior((AbstractAjaxBehavior)editor.getBehaviorById(0));
 
 		// Verify
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		tester.assertInvisible("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:editor");
 		tester.assertVisible("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label");
 		tester.assertLabel(
@@ -131,18 +134,19 @@ public class DataBoxTest extends SpringContextLoaderBaseTest
 				"23");
 
 		// Decrement life points
-		this.tester.assertComponent("dataBoxParent:dataBox:parent:box:0:playerMinusLink",
-				AjaxLink.class);
-		this.tester.clickLink("dataBoxParent:dataBox:parent:box:0:playerMinusLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent(
+				"dataBoxParent:dataBox:parent:box:0:playerMinusLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink(
+				"dataBoxParent:dataBox:parent:box:0:playerMinusLink", true);
 
 		// Verify
-		super.tester.startPage(HomePage.class);
-		super.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label",
 				Label.class);
-		playerLifePoints = (Label)this.tester
+		playerLifePoints = (Label)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("dataBoxParent:dataBox:parent:box:0:playerLifePointsParent:playerLifePoints:label");
 		Assert.assertEquals("22", playerLifePoints.getDefaultModelObjectAsString());
 	}

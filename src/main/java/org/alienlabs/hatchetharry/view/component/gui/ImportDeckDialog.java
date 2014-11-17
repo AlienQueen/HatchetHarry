@@ -3,7 +3,6 @@ package org.alienlabs.hatchetharry.view.component.gui;
 import java.io.UnsupportedEncodingException;
 
 import org.alienlabs.hatchetharry.service.ImportDeckService;
-import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -27,15 +26,15 @@ import org.springframework.beans.factory.annotation.Required;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class ImportDeckDialog extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckDialog.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckDialog.class);
 	private static final long serialVersionUID = 1L;
-	final FileUploadField file;
+	private final FileUploadField file;
 	private final WebMarkupContainer parent;
+
 	@SpringBean
-	PersistenceService persistenceService;
-	@SpringBean
-	ImportDeckService importDeckService;
-	TextField<String> nameInput;
+	private ImportDeckService importDeckService;
+
+	private final TextField<String> nameInput;
 
 	public ImportDeckDialog(final String id)
 	{
@@ -149,11 +148,6 @@ public class ImportDeckDialog extends Panel
 		target.add(this.parent);
 	}
 
-	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
-	{
-		this.persistenceService = _persistenceService;
-	}
 
 	@Required
 	public void setImportDeckService(final ImportDeckService _importDeckService)

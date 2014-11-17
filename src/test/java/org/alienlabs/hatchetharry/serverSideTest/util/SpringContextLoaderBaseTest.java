@@ -19,7 +19,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +36,7 @@ public class SpringContextLoaderBaseTest
 {
 	protected static AtmosphereTester waTester;
 	protected static transient WicketTester tester;
-	protected static HatchetHarryApplication webApp;
+	private static HatchetHarryApplication webApp;
 	protected static PersistenceService persistenceService;
 
 	@Autowired
@@ -50,8 +53,7 @@ public class SpringContextLoaderBaseTest
 			public void init()
 			{
 				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this,
- SpringContextLoaderBaseTest.this.context,
+						new SpringComponentInjector(this, SpringContextLoaderBaseTest.this.context,
 								true));
 
 				this.eventBus = new EventBus(this);
@@ -66,7 +68,7 @@ public class SpringContextLoaderBaseTest
 
 		// start and render the test page
 		tester = new WicketTester(webApp);
-		persistenceService = context.getBean(PersistenceService.class);
+		persistenceService = this.context.getBean(PersistenceService.class);
 		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
 	}
 
@@ -83,18 +85,19 @@ public class SpringContextLoaderBaseTest
 		persistenceService.resetDb();
 	}
 
-	public void startAGameAndPlayACard(String... pageParameters) throws Exception
+	public void startAGameAndPlayACard(final String... pageParameters) throws Exception
 	{
 		// Create game
-		String paramName = pageParameters.length > 1 ? pageParameters[0] : "";
-		String paramValue = pageParameters.length > 1 ? pageParameters[1] : "";
-		this.tester.startPage(new HomePage(new PageParameters().add(paramName, paramValue)));
-		this.tester.assertRenderedPage(HomePage.class);
+		final String paramName = pageParameters.length > 1 ? pageParameters[0] : "";
+		final String paramValue = pageParameters.length > 1 ? pageParameters[1] : "";
+		SpringContextLoaderBaseTest.tester.startPage(new HomePage(new PageParameters().add(
+				paramName, paramValue)));
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		this.tester.assertComponent("createGameLink", AjaxLink.class);
-		this.tester.clickLink("createGameLink", true);
+		SpringContextLoaderBaseTest.tester.assertComponent("createGameLink", AjaxLink.class);
+		SpringContextLoaderBaseTest.tester.clickLink("createGameLink", true);
 
-		final FormTester createGameForm = this.tester
+		final FormTester createGameForm = SpringContextLoaderBaseTest.tester
 				.newFormTester("createGameWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "1");
@@ -102,9 +105,10 @@ public class SpringContextLoaderBaseTest
 		createGameForm.setValue("formats", "1");
 		createGameForm.setValue("numberOfPlayers", "2");
 
-		if (pageParameters.length > 0 && pageParameters[0].equals("ajaxSubmit"))
+		if ((pageParameters.length > 0) && pageParameters[0].equals("ajaxSubmit"))
 		{
-			tester.executeAjaxEvent("createGameWindow:content:form:submit", "onclick");
+			SpringContextLoaderBaseTest.tester.executeAjaxEvent(
+					"createGameWindow:content:form:submit", "onclick");
 		}
 		else
 		{
@@ -114,34 +118,33 @@ public class SpringContextLoaderBaseTest
 		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
 		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		Player p = this.persistenceService.getAllPlayersOfGame(
+		Player p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 		final PlayCardFromHandBehavior pcfhb = getFirstPlayCardFromHandBehavior();
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final List<MagicCard> allCardsInBattlefield = this.persistenceService
+		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card
-		this.tester.getRequest().setParameter("card",
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		this.tester.executeBehavior(pcfhb);
+		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
 
 		// One card on the battlefield, 6 in the hand
-		Assert.assertEquals(1, this.persistenceService.getAllCardsInBattlefieldForAGame(gameId)
+		Assert.assertEquals(1, SpringContextLoaderBaseTest.persistenceService
+				.getAllCardsInBattlefieldForAGame(gameId).size());
+		Assert.assertEquals(6, SpringContextLoaderBaseTest.persistenceService
+				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), p.getDeck().getDeckId())
 				.size());
-		Assert.assertEquals(
-				6,
-				this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
-						p.getDeck().getDeckId()).size());
 
 		// We still should not have more cards that the number of cards in the
 		// deck
-		p = this.persistenceService.getAllPlayersOfGame(HatchetHarrySession.get().getGameId()).get(
-				0);
+		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 
@@ -149,9 +152,10 @@ public class SpringContextLoaderBaseTest
 	protected static PlayCardFromHandBehavior getFirstPlayCardFromHandBehavior()
 	{
 		tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
-		final ListItem playCardLink = (ListItem)tester
+		final ListItem<MagicCard> playCardLink = (ListItem<MagicCard>)tester
 				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
-		PlayCardFromHandBehavior b = (PlayCardFromHandBehavior)playCardLink.getBehaviors().get(0);
+		final PlayCardFromHandBehavior b = (PlayCardFromHandBehavior)playCardLink.getBehaviors()
+				.get(0);
 		Assert.assertNotNull(b);
 		return b;
 	}

@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class ImportDeckService implements Serializable
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckService.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
 	private PersistenceService persistenceService;

@@ -55,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataGenerator implements InitializingBean, Serializable
 {
 	private static final long serialVersionUID = 1L;
-	static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
 
 	private static final String[] TITLES1 = { "Goblin Guide", "Goblin Guide", "Goblin Guide",
 			"Goblin Guide", "Vampire Lacerator", "Vampire Lacerator", "Vampire Lacerator",
