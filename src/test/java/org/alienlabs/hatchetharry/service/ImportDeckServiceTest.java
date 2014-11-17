@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTests;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class ImportDeckServiceTests extends SpringContextLoaderBaseTests
+public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
 {
 	@Test
 	public void testImportDeck() throws FileNotFoundException, IOException

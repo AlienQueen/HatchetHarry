@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.view.component.gui;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTests;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
@@ -20,7 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class DataBoxTests extends SpringContextLoaderBaseTests
+public class DataBoxTest extends SpringContextLoaderBaseTest
 {
 
 	@Test

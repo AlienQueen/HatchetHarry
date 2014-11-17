@@ -3,7 +3,7 @@ package org.alienlabs.hatchetharry.view.component.zone;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTests;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.card.CardPanel;
 import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class PutToZonePanelTests extends SpringContextLoaderBaseTests
+public class PutToZonePanelTest extends SpringContextLoaderBaseTest
 {
 	@Test
 	public void testPutToZonePanel() throws Exception
@@ -29,16 +29,16 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		// Start a game and play a card
 		super.startAGameAndPlayACard();
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		final CardPanel cardToHandle = (CardPanel)SpringContextLoaderBaseTests.tester
+		final CardPanel cardToHandle = (CardPanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:1:cardPanel");
 
 		// Verify
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		String pageDocument = SpringContextLoaderBaseTests.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 		final Long gameId = HatchetHarrySession.get().getGameId();
 
 		// We should have one card in the battlefield
@@ -79,12 +79,12 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		super.tester.executeBehavior(ptefbb);
 
 		// Verify
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
 		// Verify that is in exile
-		SpringContextLoaderBaseTests.tester.assertComponent("exileParent:exile",
+		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile",
 				ExileComponent.class);
 		tagTester = TagTester
 				.createTagsByAttribute(pageDocument, "class", "exile-nav-thumb", false);
@@ -109,26 +109,26 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(tagTester.isEmpty());
 
 		// Put it to graveyard
-		SpringContextLoaderBaseTests.tester.assertComponent("exileParent:exile:putToZonePanel",
+		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile:putToZonePanel",
 				PutToZonePanel.class);
-		PutToZonePanel putToZonePanel = (PutToZonePanel)SpringContextLoaderBaseTests.tester
+		PutToZonePanel putToZonePanel = (PutToZonePanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("exileParent:exile:putToZonePanel");
 		PutToZoneBehavior ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter(
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
 				"card",
 				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter("targetZone", "Graveyard");
-		SpringContextLoaderBaseTests.tester.executeBehavior(ptzb);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Graveyard");
+		SpringContextLoaderBaseTest.tester.executeBehavior(ptzb);
 
 		// Verify
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
 		// Verify that it is in graveyard
-		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
 				false);
@@ -144,7 +144,7 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(cardToVerify.contains(allCardsInGraveyard.get(0).getTitle()));
 
 		// Verify that it is not in exile anymore
-		SpringContextLoaderBaseTests.tester.assertComponent("exileParent:exile",
+		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile",
 				ExileComponent.class);
 		tagTester = TagTester
 				.createTagsByAttribute(pageDocument, "class", "exile-nav-thumb", false);
@@ -157,25 +157,25 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(allCardsInExile.isEmpty());
 
 		// Put it back to exile
-		SpringContextLoaderBaseTests.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"graveyardParent:graveyard:putToZonePanel", PutToZonePanel.class);
-		putToZonePanel = (PutToZonePanel)SpringContextLoaderBaseTests.tester
+		putToZonePanel = (PutToZonePanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("graveyardParent:graveyard:putToZonePanel");
 		ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter(
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
 				"card",
 				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter("targetZone", "Exile");
-		SpringContextLoaderBaseTests.tester.executeBehavior(ptzb);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Exile");
+		SpringContextLoaderBaseTest.tester.executeBehavior(ptzb);
 
 		// Verify
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 		// Verify that it is in exile
-		SpringContextLoaderBaseTests.tester.assertComponent("exileParent:exile",
+		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile",
 				ExileComponent.class);
 		tagTester = TagTester
 				.createTagsByAttribute(pageDocument, "class", "exile-nav-thumb", false);
@@ -197,7 +197,7 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertTrue(allCardsInGraveyard.isEmpty());
 
-		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "graveyard-cross-link",
 				false);
@@ -205,23 +205,23 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(tagTester.isEmpty());
 
 		// Put it back to hand
-		SpringContextLoaderBaseTests.tester.assertComponent("exileParent:exile:putToZonePanel",
+		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile:putToZonePanel",
 				PutToZonePanel.class);
-		putToZonePanel = (PutToZonePanel)SpringContextLoaderBaseTests.tester
+		putToZonePanel = (PutToZonePanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("exileParent:exile:putToZonePanel");
 		ptzb = (PutToZoneBehavior)putToZonePanel.getBehaviors().get(0);
 		Assert.assertNotNull(ptzb);
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter(
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
 				"card",
 				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter("targetZone", "Hand");
-		SpringContextLoaderBaseTests.tester.executeBehavior(ptzb);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("targetZone", "Hand");
+		SpringContextLoaderBaseTest.tester.executeBehavior(ptzb);
 
 		// Verify
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		pageDocument = SpringContextLoaderBaseTests.tester.getLastResponse().getDocument();
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
 
 		// Verify that it is in hand
 		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId,
@@ -238,7 +238,7 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		Assert.assertEquals(cardToVerify, tagTester.get(0).getAttribute("src"));
 
 		// Verify that it is not in exile anymore
-		SpringContextLoaderBaseTests.tester.assertComponent("exileParent:exile",
+		SpringContextLoaderBaseTest.tester.assertComponent("exileParent:exile",
 				ExileComponent.class);
 		tagTester = TagTester
 				.createTagsByAttribute(pageDocument, "class", "exile-nav-thumb", false);
@@ -254,7 +254,7 @@ public class PutToZonePanelTests extends SpringContextLoaderBaseTests
 		allCardsInGraveyard = persistenceService.getAllCardsInGraveyardForAGame(gameId);
 		Assert.assertTrue(allCardsInGraveyard.isEmpty());
 
-		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "graveyard-cross-link",
 				false);

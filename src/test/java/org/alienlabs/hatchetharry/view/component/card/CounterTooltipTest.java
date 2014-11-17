@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTests;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -11,15 +11,15 @@ import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class CounterTooltipTests extends SpringContextLoaderBaseTests
+public class CounterTooltipTest extends SpringContextLoaderBaseTest
 {
 	@Test
 	public void testCardTooltip() throws Exception
 	{
 		// Start a game and play a card
 		super.startAGameAndPlayACard("displayTooltips", "true");
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Assert it's a card and not a token
 		super.tester.assertComponent("parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip",
@@ -31,8 +31,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 		form1.setValue("counterAddName", "blah");
 		form1.submit("submit");
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		super.tester
 				.assertLabel(
@@ -49,8 +49,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 		form2.setValue("counterAddName", "charge");
 		form2.submit("submit");
 
-		HomePage hp = SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		HomePage hp = SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		super.tester
 				.assertLabel(
@@ -67,7 +67,7 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 
 		tester.assertComponentOnAjaxResponse(hp.getCreateTokenModalWindow());
 		final ModalWindow window = hp.getCreateTokenModalWindow();
-		SpringContextLoaderBaseTests.tester.assertVisible(window.getPageRelativePath() + ":"
+		SpringContextLoaderBaseTest.tester.assertVisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
 		super.tester.assertComponent(window.getPageRelativePath() + ":" + window.getContentId()
@@ -78,8 +78,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 		form3.setValue("creatureTypes", "rat");
 		form3.submit("createToken");
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Assert token on battlefield
 		super.tester.assertComponent(
@@ -92,8 +92,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 		form4.setValue("counterAddName", "poison");
 		form4.submit("submit");
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		super.tester
 				.assertLabel(
@@ -110,8 +110,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:addCounterLink",
 						true);
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Assert that there are 2 poison counters on token
 		super.tester
@@ -129,8 +129,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 		form5.setValue("setCounterButton", "10");
 		form5.submit("setCounterSubmit");
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		// Assert that there are 10 poison counters on token
 		super.tester
 				.assertLabel(
@@ -147,8 +147,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:2:setCounterForm:removeCounterLink",
 						true);
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Assert that there are 9 poison counters on token
 		super.tester
@@ -166,8 +166,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 		form6.setValue("counterAddName", "blah");
 		form6.submit("submit");
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Verify that there is one blah counter on token, don't forget that the
 		// counters appear in alphabetic order
@@ -186,8 +186,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:addCounterLink",
 						true);
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Verify that there is two blah counters on token
 		super.tester
@@ -199,8 +199,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:numberOfCounters",
 						"2");
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 
 		// Remove all poison counters from token
@@ -209,8 +209,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 		form7.setValue("setCounterButton", "1");
 		form7.submit("setCounterSubmit");
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Assert that there are no more poison counters on card
 		super.tester
@@ -224,8 +224,8 @@ public class CounterTooltipTests extends SpringContextLoaderBaseTests
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:tooltip:counterPanel:counters:1:setCounterForm:removeCounterLink",
 						true);
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		// Assert that there are 1 blah counter on card
 		super.tester

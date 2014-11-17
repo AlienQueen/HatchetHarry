@@ -7,7 +7,7 @@ import org.alienlabs.hatchetharry.*;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTests;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.card.*;
@@ -30,7 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class NonRegressionTests extends SpringContextLoaderBaseTests
+public class NonRegressionTest extends SpringContextLoaderBaseTest
 {
 	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
@@ -87,7 +87,7 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play card again
-		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTests
+		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior();
 		Assert.assertNotNull(pcfhb);
 
@@ -155,7 +155,7 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").endsWith(".jpg"));
 
 		// Play another card
-		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTests
+		final PlayCardFromHandBehavior pcfhb = SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior();
 		Assert.assertNotNull(pcfhb);
 		this.tester.getRequest().setParameter("card",
@@ -285,8 +285,8 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		tester.assertComponent("joinGameLink", AjaxLink.class);
 		tester.clickLink("joinGameLink", true);
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		this.tester.assertComponent("joinGameLink", AjaxLink.class);
 		this.tester.clickLink("joinGameLink", true);
@@ -306,8 +306,8 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		this.tester.executeBehavior(nameUpdateBehavior);
 
 		// Verify
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		this.tester.assertComponent("joinGameLink", AjaxLink.class);
 		this.tester.clickLink("joinGameLink", true);
@@ -325,29 +325,29 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		// Start a game and play 5 cards
 		super.startAGameAndPlayACard();
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.executeBehavior(SpringContextLoaderBaseTests
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.executeBehavior(SpringContextLoaderBaseTests
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.executeBehavior(SpringContextLoaderBaseTests
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.executeBehavior(SpringContextLoaderBaseTests
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
 
 		// Retrieve the card and the ReorderCardInBattlefieldBehavior
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		final HomePage page = (HomePage)this.tester.getLastRenderedPage();
 		this.tester.assertComponent("parentPlaceholder", WebMarkupContainer.class);
@@ -370,12 +370,12 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		String cardBefore5 = tagTester.get(4).getAttribute("src");
 
 		// Put the last played card to graveyard
-		SpringContextLoaderBaseTests.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"parentPlaceholder:magicCardsForSide1:5:cardPanel", CardPanel.class);
-		final CardPanel card = (CardPanel)SpringContextLoaderBaseTests.tester
+		final CardPanel card = (CardPanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:5:cardPanel");
 		Assert.assertNotNull(card);
-		SpringContextLoaderBaseTests.tester.executeBehavior(card
+		SpringContextLoaderBaseTest.tester.executeBehavior(card
 				.getPutToGraveyardFromBattlefieldBehavior());
 
 		// Verify
@@ -386,24 +386,24 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(cardBefore5.contains(allCardsInGraveyard.get(0).getTitle()));
 
 		// Put the 4th card in first position
-		SpringContextLoaderBaseTests.tester.assertComponent(
+		SpringContextLoaderBaseTest.tester.assertComponent(
 				"parentPlaceholder:magicCardsForSide1:4:cardPanel", CardPanel.class);
-		final CardPanel cardToMove = (CardPanel)SpringContextLoaderBaseTests.tester
+		final CardPanel cardToMove = (CardPanel)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:4:cardPanel");
 		Assert.assertNotNull(card);
 
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter(
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter(
 				"uuid",
 				((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
-		SpringContextLoaderBaseTests.tester.getRequest().setParameter("index", "0");
-		SpringContextLoaderBaseTests.tester.executeBehavior(reorder);
+		SpringContextLoaderBaseTest.tester.getRequest().setParameter("index", "0");
+		SpringContextLoaderBaseTest.tester.executeBehavior(reorder);
 
 		// Verify
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
-		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTests.persistenceService
+		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(4, allCardsInBattlefield.size());
 
@@ -440,19 +440,19 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		// Start a game and play 3 cards
 		super.startAGameAndPlayACard();
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.executeBehavior(SpringContextLoaderBaseTests
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
 
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.executeBehavior(SpringContextLoaderBaseTests
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.executeBehavior(SpringContextLoaderBaseTest
 				.getFirstPlayCardFromHandBehavior());
 
 		// Verify that there are 4 cards in hand
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final PersistenceService persistenceService = super.context
@@ -472,12 +472,12 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// Verify that graveyard is empty
-		SpringContextLoaderBaseTests.tester.clickLink("graveyardLink", true);
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.clickLink("graveyardLink", true);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
 				false);
@@ -485,14 +485,14 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 		Assert.assertTrue(tagTester.isEmpty());
 
 		// Run: discard a card at random
-		SpringContextLoaderBaseTests.tester.clickLink("discardAtRandomLink", true);
+		SpringContextLoaderBaseTest.tester.clickLink("discardAtRandomLink", true);
 
 		// Verify that there is a card in graveyard
-		SpringContextLoaderBaseTests.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTests.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
+		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
 		pageDocument = this.tester.getLastResponse().getDocument();
 
-		SpringContextLoaderBaseTests.tester.assertComponent("graveyardParent:graveyard",
+		SpringContextLoaderBaseTest.tester.assertComponent("graveyardParent:graveyard",
 				GraveyardComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "thumbPlaceholder",
 				false);
@@ -532,7 +532,7 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 			final String componentIdToCheck, final String valueToCheck)
 	{
 		final ModalWindow window = this.openModalWindow(_window, linkToActivateWindow);
-		final ExternalImage img = (ExternalImage)SpringContextLoaderBaseTests.tester
+		final ExternalImage img = (ExternalImage)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(window.getPageRelativePath() + ":"
 						+ window.getContentId() + ":" + componentIdToCheck);
 		Assert.assertEquals(valueToCheck, img.getImageUrl());
@@ -541,17 +541,17 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 	private ModalWindow openModalWindow(final String _window, final String linkToActivateWindow)
 	{
 		// assert modal windows are in the page
-		SpringContextLoaderBaseTests.tester.assertComponent(_window, ModalWindow.class);
-		final ModalWindow window = (ModalWindow)SpringContextLoaderBaseTests.tester
+		SpringContextLoaderBaseTest.tester.assertComponent(_window, ModalWindow.class);
+		final ModalWindow window = (ModalWindow)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(_window);
-		SpringContextLoaderBaseTests.tester.assertInvisible(window.getPageRelativePath() + ":"
+		SpringContextLoaderBaseTest.tester.assertInvisible(window.getPageRelativePath() + ":"
 				+ window.getContentId());
 
 		@SuppressWarnings("unchecked")
-		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTests.tester
+		final AjaxLink<Void> link = (AjaxLink<Void>)SpringContextLoaderBaseTest.tester
 				.getComponentFromLastRenderedPage(linkToActivateWindow);
 		Assert.assertNotNull(link);
-		SpringContextLoaderBaseTests.tester.clickLink(linkToActivateWindow, true);
+		SpringContextLoaderBaseTest.tester.clickLink(linkToActivateWindow, true);
 
 		return window;
 	}
@@ -559,8 +559,8 @@ public class NonRegressionTests extends SpringContextLoaderBaseTests
 	private void verifyFieldsOfCountCardsModalWindow(final int field,
 			final String expectedFieldContent)
 	{
-		SpringContextLoaderBaseTests.waTester.switchOffTestMode();
-		final String pageDocument = SpringContextLoaderBaseTests.waTester.getPushedResponse();
+		SpringContextLoaderBaseTest.waTester.switchOffTestMode();
+		final String pageDocument = SpringContextLoaderBaseTest.waTester.getPushedResponse();
 
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"countedCards", false);

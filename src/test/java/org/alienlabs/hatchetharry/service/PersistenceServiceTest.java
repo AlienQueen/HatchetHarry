@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.service;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTests;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class PersistenceServiceTests extends SpringContextLoaderBaseTests
+public class PersistenceServiceTest extends SpringContextLoaderBaseTest
 {
 	@Test
 	@Ignore("implement some tests, men!!!")
