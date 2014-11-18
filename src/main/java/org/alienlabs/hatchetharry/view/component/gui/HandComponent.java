@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Required;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class HandComponent extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(HandComponent.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(HandComponent.class);
 	private static final long serialVersionUID = 1L;
 
 	private final ListView<MagicCard> allCards;
@@ -133,7 +133,7 @@ public class HandComponent extends Panel
 		this.allCards.setOutputMarkupId(true);
 		this.add(this.allCards);
 
-		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(true);
+		HatchetHarrySession.get().setHandCardsHaveBeenBuilt(Boolean.TRUE);
 	}
 
 	@Required

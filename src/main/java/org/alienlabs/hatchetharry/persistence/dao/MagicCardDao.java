@@ -27,7 +27,7 @@ import org.hibernate.Session;
 /**
  * The implementation-independent DAO interface. Defines the operations required
  * to be supported by an implementation.
- *
+ * 
  * @author igor
  */
 public interface MagicCardDao extends Serializable
@@ -36,7 +36,7 @@ public interface MagicCardDao extends Serializable
 
 	/**
 	 * Load a {@link MagicCard} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Contact to load.
 	 * @return MagicCard
@@ -45,7 +45,7 @@ public interface MagicCardDao extends Serializable
 
 	/**
 	 * Save the MagicCard to the DB
-	 *
+	 * 
 	 * @param MagicCard
 	 * @return persistent instance of contact
 	 */
@@ -53,7 +53,7 @@ public interface MagicCardDao extends Serializable
 
 	/**
 	 * Delete a {@link MagicCard} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the MagicCard to delete.
 	 */
@@ -61,7 +61,7 @@ public interface MagicCardDao extends Serializable
 
 	/**
 	 * Returns the list of all unique last names in the database
-	 *
+	 * 
 	 * @return the list of all unique last names in the database
 	 */
 	List<String> getUniqueLastNames();

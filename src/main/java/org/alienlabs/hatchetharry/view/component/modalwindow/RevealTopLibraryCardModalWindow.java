@@ -45,14 +45,13 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealTopLibraryCardModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(RevealTopLibraryCardModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(RevealTopLibraryCardModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	private final ModalWindow modal;
-	private final MagicCard card;
+	final ModalWindow modal;
+	final MagicCard card;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	@SuppressFBWarnings({ "PREDICTABLE_RANDOM" })
 	public RevealTopLibraryCardModalWindow(final String id, final ModalWindow _modal,
@@ -86,8 +85,10 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			{
 				if (HatchetHarrySession.get().getTopCardIndex().longValue() > 0l)
 				{
-					HatchetHarrySession.get().setTopCardIndex(
-							HatchetHarrySession.get().getTopCardIndex().longValue() - 1l);
+					HatchetHarrySession.get()
+							.setTopCardIndex(
+									Long.valueOf(HatchetHarrySession.get().getTopCardIndex()
+											.longValue() - 1l));
 				}
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
@@ -113,7 +114,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 					return;
 				}
 
-				session.setTopCardIndex(session.getTopCardIndex() + 1);
+				session.setTopCardIndex(Long.valueOf(session.getTopCardIndex().longValue() + 1l));
 				final MagicCard firstCard = allCardsInLibrary.get(session.getTopCardIndex()
 						.intValue());
 				final String topCardName = firstCard.getBigImageFilename();
@@ -141,10 +142,11 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						.giveAllPlayersFromGame(gameId);
 				final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
 						session.getPlayer().getName(), firstCard, session.getTopCardIndex());
+				@SuppressWarnings("boxing")
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
 						firstCard.getTitle(), session.getPlayer().getName(), null,
-						session.getTopCardIndex() + 1l, null, false, session.getGameId());
+						session.getTopCardIndex() + 1l, null, Boolean.FALSE, session.getGameId());
 
 				EventBusPostService
 						.post(allPlayersInGame, chan, new ConsoleLogCometChannel(logger));
@@ -162,7 +164,8 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			{
 				final Game game = RevealTopLibraryCardModalWindow.this.persistenceService
 						.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
-				final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
+				final Long currentPlaceholderId = Long.valueOf(game.getCurrentPlaceholderId()
+						.longValue() + 1);
 				game.setCurrentPlaceholderId(currentPlaceholderId);
 				RevealTopLibraryCardModalWindow.this.persistenceService.updateGame(game);
 

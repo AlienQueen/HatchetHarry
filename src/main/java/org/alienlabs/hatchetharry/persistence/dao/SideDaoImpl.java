@@ -22,7 +22,7 @@ public class SideDaoImpl implements SideDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -34,7 +34,7 @@ public class SideDaoImpl implements SideDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -45,7 +45,7 @@ public class SideDaoImpl implements SideDao
 
 	/**
 	 * Load a {@link Side} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Side to load.
 	 * @return Side
@@ -59,7 +59,7 @@ public class SideDaoImpl implements SideDao
 
 	/**
 	 * Save the Side to the DB
-	 *
+	 * 
 	 * @param side
 	 * @return persistent instance of Side
 	 */
@@ -72,7 +72,7 @@ public class SideDaoImpl implements SideDao
 
 	/**
 	 * Delete a {@link Side} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Side to delete.
 	 */

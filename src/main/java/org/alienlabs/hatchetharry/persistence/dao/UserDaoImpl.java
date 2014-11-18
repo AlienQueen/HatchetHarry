@@ -22,7 +22,7 @@ public class UserDaoImpl implements UserDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -45,7 +45,7 @@ public class UserDaoImpl implements UserDao
 
 	/**
 	 * Load a {@link User} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the User to load.
 	 * @return User
@@ -59,7 +59,7 @@ public class UserDaoImpl implements UserDao
 
 	/**
 	 * Save the User to the DB
-	 *
+	 * 
 	 * @param User
 	 * @return persistent instance of User
 	 */
@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao
 
 	/**
 	 * Delete a {@link User} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the User to delete.
 	 */

@@ -67,16 +67,16 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
 	@Column
-	private Long x = -1l; // x coordinate
+	private Long x = Long.valueOf(-1l); // x coordinate
 	@Column
-	private Long y = -1l; // y coordinate
+	private Long y = Long.valueOf(-1l); // y coordinate
 	@Column
 	private boolean tapped = false;
 	@Column
 	@Enumerated(value = EnumType.STRING)
 	private CardZone zone;
 	@Column
-	private Long zoneOrder = 0l;
+	private Long zoneOrder = Long.valueOf(0l);
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "card", targetEntity = Counter.class, orphanRemoval = true)
 	private Set<Counter> counters = new HashSet<Counter>();
 	@Column
@@ -317,9 +317,9 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 		return this.battlefieldOrder;
 	}
 
-	public void setBattlefieldOrder(final Integer battlefieldOrder)
+	public void setBattlefieldOrder(final Integer _battlefieldOrder)
 	{
-		this.battlefieldOrder = battlefieldOrder;
+		this.battlefieldOrder = _battlefieldOrder;
 	}
 
 	@Override
@@ -333,26 +333,26 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (this.getClass() != obj.getClass())
 			return false;
-		MagicCard other = (MagicCard)obj;
-		if (uuid == null)
+		final MagicCard other = (MagicCard)obj;
+		if (this.uuid == null)
 		{
 			if (other.uuid != null)
 				return false;
 		}
-		else if (!uuid.equals(other.uuid))
+		else if (!this.uuid.equals(other.uuid))
 			return false;
 		return true;
 	}

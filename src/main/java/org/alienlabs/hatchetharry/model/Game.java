@@ -34,13 +34,13 @@ public class Game implements Serializable
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
 	private Set<Player> players = new HashSet<Player>();
 	@Column
-	private Long currentPlaceholderId = 0L;
+	private Long currentPlaceholderId = Long.valueOf(0L);
 	@Column
-	private Boolean isDrawMode = false;
+	private Boolean isDrawMode = Boolean.FALSE;
 	@Column
 	private boolean pending = false;
 	@Column
-	private Integer desiredNumberOfPlayers = 0;
+	private Integer desiredNumberOfPlayers = Integer.valueOf(0);
 	@Column
 	private Format desiredFormat;
 

@@ -36,7 +36,7 @@ public class ConferencePanel extends Panel
 			user.setPassword("");
 			user.setPlayer(null);
 			user.setIdentity("");
-			user.setFacebook(true);
+			user.setFacebook(Boolean.TRUE);
 			user.setUsername("");
 			user.setRealm("");
 		}
@@ -52,7 +52,7 @@ public class ConferencePanel extends Panel
 				user.setPassword("");
 				user.setPlayer(null);
 				user.setIdentity("");
-				user.setFacebook(true);
+				user.setFacebook(Boolean.TRUE);
 				user.setUsername("");
 				user.setRealm("");
 			}
@@ -66,7 +66,7 @@ public class ConferencePanel extends Panel
 			user.setPassword("");
 			user.setPlayer(null);
 			user.setIdentity("");
-			user.setFacebook(true);
+			user.setFacebook(Boolean.TRUE);
 			user.setUsername("");
 			user.setRealm("");
 		}

@@ -27,11 +27,11 @@ import org.springframework.beans.factory.annotation.Required;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class AskMulliganModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AskMulliganModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(AskMulliganModalWindow.class);
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	public AskMulliganModalWindow(final ModalWindow window, final String id, final String player,
 			final Long numberOfCards)
@@ -56,7 +56,7 @@ public class AskMulliganModalWindow extends Panel
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.OK_FOR_MULLIGAN, null, null, null, null, HatchetHarrySession
-								.get().getPlayer().getName(), null, null, player, false,
+								.get().getPlayer().getName(), null, null, player, Boolean.FALSE,
 						numberOfCards);
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
@@ -68,7 +68,7 @@ public class AskMulliganModalWindow extends Panel
 		};
 
 		final AjaxButton oneLess = new AjaxButton("oneLess", Model.of("OK for "
-				+ (numberOfCards - 1l)), form)
+				+ (Long.valueOf(numberOfCards.longValue() - 1l))), form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -80,19 +80,19 @@ public class AskMulliganModalWindow extends Panel
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.OK_FOR_MULLIGAN_BUT_ONE_LESS, null, null, null, null,
-						HatchetHarrySession.get().getPlayer().getName(), null, null, player, false,
-						numberOfCards - 1);
+						HatchetHarrySession.get().getPlayer().getName(), null, null, player,
+						Boolean.FALSE, Long.valueOf(numberOfCards.longValue() - 1));
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.OK_FOR_MULLIGAN_BUT_ONE_LESS, numberOfCards - 1, null,
-						HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
-						player);
+						NotifierAction.OK_FOR_MULLIGAN_BUT_ONE_LESS, Long.valueOf(numberOfCards
+								.longValue() - 1), null, HatchetHarrySession.get().getPlayer()
+								.getName(), null, null, null, null, player);
 
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger), ncc);
 			}
 		};
-		oneLess.setVisible(numberOfCards > 1);
+		oneLess.setVisible(numberOfCards.longValue() > 1l);
 
 		final AjaxButton disagree = new AjaxButton("disagree", form)
 		{
@@ -106,12 +106,12 @@ public class AskMulliganModalWindow extends Panel
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REFUSE_MULLIGAN, null, null, null, null, HatchetHarrySession
-								.get().getPlayer().getName(), null, null, player, false,
-						numberOfCards - 1);
+								.get().getPlayer().getName(), null, null, player, Boolean.FALSE,
+						Long.valueOf(numberOfCards.longValue() - 1));
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.REFUSE_MULLIGAN, numberOfCards - 1, null,
-						HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
-						player);
+						NotifierAction.REFUSE_MULLIGAN,
+						Long.valueOf(numberOfCards.longValue() - 1), null, HatchetHarrySession
+								.get().getPlayer().getName(), null, null, null, null, player);
 
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());

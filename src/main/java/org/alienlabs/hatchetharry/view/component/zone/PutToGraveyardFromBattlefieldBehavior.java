@@ -129,7 +129,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
-				targetPlayer.setGraveyardDisplayed(true);
+				targetPlayer.setGraveyardDisplayed(Boolean.TRUE);
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
 

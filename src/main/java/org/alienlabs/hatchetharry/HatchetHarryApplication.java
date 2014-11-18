@@ -56,7 +56,7 @@ public class HatchetHarryApplication extends WebApplication
 {
 	// Map of playerId and Atmosphere UUID
 	private static final Map<Long, String> cometResources = new HashMap<Long, String>();
-	private static final Logger LOGGER = LoggerFactory.getLogger(HatchetHarryApplication.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(HatchetHarryApplication.class);
 	private static final long serialVersionUID = 1L;
 	public transient EventBus eventBus;
 
@@ -481,10 +481,7 @@ public class HatchetHarryApplication extends WebApplication
 			{
 				return null;
 			}
-			else
-			{
-				return super.mapHandler(requestHandler);
-			}
+			return super.mapHandler(requestHandler);
 		}
 	}
 

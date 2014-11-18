@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link GameDao}.
- *
+ * 
  * @author igor
  */
 public class GameDaoImpl implements GameDao
@@ -47,7 +47,7 @@ public class GameDaoImpl implements GameDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -59,7 +59,7 @@ public class GameDaoImpl implements GameDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class GameDaoImpl implements GameDao
 
 	/**
 	 * Load a {@link Game} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Game to load.
 	 * @return Game
@@ -84,7 +84,7 @@ public class GameDaoImpl implements GameDao
 
 	/**
 	 * Save the Game to the DB
-	 *
+	 * 
 	 * @param game
 	 * @return persistent instance of Game
 	 */
@@ -97,7 +97,7 @@ public class GameDaoImpl implements GameDao
 
 	/**
 	 * Delete a {@link Game} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Game to delete.
 	 */
@@ -124,7 +124,7 @@ public class GameDaoImpl implements GameDao
 
 	/**
 	 * Return the number of Games in the DB.
-	 *
+	 * 
 	 * @return count
 	 */
 	@Override

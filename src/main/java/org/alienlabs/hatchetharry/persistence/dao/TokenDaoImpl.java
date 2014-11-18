@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link TokenDao}.
- *
+ * 
  * @author igor
  */
 public class TokenDaoImpl implements TokenDao
@@ -45,7 +45,7 @@ public class TokenDaoImpl implements TokenDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -57,7 +57,7 @@ public class TokenDaoImpl implements TokenDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class TokenDaoImpl implements TokenDao
 
 	/**
 	 * Load a {@link Token} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Token to load.
 	 * @return Token
@@ -82,7 +82,7 @@ public class TokenDaoImpl implements TokenDao
 
 	/**
 	 * Save the Token to the DB
-	 *
+	 * 
 	 * @param Token
 	 * @return persistent instance of Token
 	 */
@@ -95,7 +95,7 @@ public class TokenDaoImpl implements TokenDao
 
 	/**
 	 * Delete a {@link Token} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Token to delete.
 	 */

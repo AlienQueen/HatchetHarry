@@ -7,7 +7,7 @@ import org.apache.wicket.model.Model;
 
 /**
  * Creates external image
- *
+ * 
  * @author sergej.sizov
  */
 public class ExternalImage extends WebComponent
@@ -15,12 +15,12 @@ public class ExternalImage extends WebComponent
 	private static final long serialVersionUID = 1L;
 	private final String imageUrl;
 
-	public ExternalImage(final String id, final String imageUrl)
+	public ExternalImage(final String id, final String _imageUrl)
 	{
 		super(id);
-		this.imageUrl = imageUrl;
+		this.imageUrl = _imageUrl;
 		this.add(AttributeModifier.replace("src", new Model<String>(this.imageUrl)));
-		this.setVisible(!((imageUrl == null) || "".equals(imageUrl)));
+		this.setVisible(!((this.imageUrl == null) || "".equals(this.imageUrl)));
 	}
 
 	@Override

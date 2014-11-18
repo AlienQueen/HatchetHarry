@@ -136,7 +136,7 @@ public class Player implements Serializable
 		return this.isHandDisplayed;
 	}
 
-	public void setHandDisplayed(final boolean _isHandDisplayed)
+	public void setHandDisplayed(final Boolean _isHandDisplayed)
 	{
 		this.isHandDisplayed = _isHandDisplayed;
 	}
@@ -146,7 +146,7 @@ public class Player implements Serializable
 		return this.isGraveyardDisplayed;
 	}
 
-	public void setGraveyardDisplayed(final boolean _isGraveyardDisplayed)
+	public void setGraveyardDisplayed(final Boolean _isGraveyardDisplayed)
 	{
 		this.isGraveyardDisplayed = _isGraveyardDisplayed;
 	}
@@ -156,7 +156,7 @@ public class Player implements Serializable
 		return this.isExileDisplayed;
 	}
 
-	public void setExileDisplayed(final boolean _isExileDisplayed)
+	public void setExileDisplayed(final Boolean _isExileDisplayed)
 	{
 		this.isExileDisplayed = _isExileDisplayed;
 	}

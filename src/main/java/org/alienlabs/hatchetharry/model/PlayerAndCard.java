@@ -3,12 +3,12 @@ package org.alienlabs.hatchetharry.model;
 import java.io.Serializable;
 
 /**
- *
+ * 
  * This object is useful in order to instantiate CardPanel and various behaviors
  * with a model containing it.
- *
+ * 
  * Created by nostromo on 16/11/14.
- *
+ * 
  */
 public class PlayerAndCard implements Serializable
 {

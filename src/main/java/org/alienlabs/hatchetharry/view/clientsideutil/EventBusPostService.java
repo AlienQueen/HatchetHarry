@@ -21,7 +21,7 @@ public class EventBusPostService
 			for (final BigInteger player : players)
 			{
 				final String pageUuid = HatchetHarryApplication.getCometResources().get(
-						player.longValue());
+						Long.valueOf(player.longValue()));
 				EventBusPostService.LOGGER.info("pageUuid: " + pageUuid);
 
 				for (final Object message : messages)
@@ -30,7 +30,7 @@ public class EventBusPostService
 					{
 						HatchetHarryApplication.get().getEventBus().post(message, pageUuid);
 					}
-					catch (Exception e1)
+					catch (final Exception e1)
 					{
 						LOGGER.error("Error posting " + message + " to bus", e1);
 
@@ -38,7 +38,7 @@ public class EventBusPostService
 						{
 							Thread.sleep(500);
 						}
-						catch (InterruptedException e2)
+						catch (final InterruptedException e2)
 						{
 							LOGGER.error("Interrupted thread in EventBusPostService#post()", e2);
 						}
@@ -47,7 +47,7 @@ public class EventBusPostService
 						{
 							HatchetHarryApplication.get().getEventBus().post(message, pageUuid);
 						}
-						catch (Exception e3)
+						catch (final Exception e3)
 						{
 							LOGGER.error("Fatal error posting " + message + " to bus", e3);
 						}

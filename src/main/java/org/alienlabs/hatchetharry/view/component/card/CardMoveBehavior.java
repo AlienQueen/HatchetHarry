@@ -111,8 +111,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 			}
 
 			gameId = mc.getGameId();
-			mc.setX(this.posX);
-			mc.setY(this.posY);
+			mc.setX(Long.valueOf(this.posX));
+			mc.setY(Long.valueOf(this.posY));
 			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + this.posX + ", posY: "
 					+ this.posY);
 			this.persistenceService.updateCard(mc);
@@ -149,8 +149,8 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("graveyardUrl", this.putToGraveyardFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("exileUrl", this.putToExileFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("destroyUrl", this.destroyTokenBehavior.getCallbackUrl());
-		variables.put("posX", this.posX);
-		variables.put("posY", this.posY);
+		variables.put("posX", Long.valueOf(this.posX));
+		variables.put("posY", Long.valueOf(this.posY));
 
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior

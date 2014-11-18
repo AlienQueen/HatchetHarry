@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link CounterDao}.
- *
+ * 
  * @author igor
  */
 public class CounterDaoImpl implements CounterDao
@@ -47,7 +47,7 @@ public class CounterDaoImpl implements CounterDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -59,7 +59,7 @@ public class CounterDaoImpl implements CounterDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class CounterDaoImpl implements CounterDao
 
 	/**
 	 * Load a {@link Counter} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Counter to load.
 	 * @return Counter
@@ -84,7 +84,7 @@ public class CounterDaoImpl implements CounterDao
 
 	/**
 	 * Save the Counter to the DB
-	 *
+	 * 
 	 * @param Counter
 	 * @return persistent instance of Counter
 	 */
@@ -97,7 +97,7 @@ public class CounterDaoImpl implements CounterDao
 
 	/**
 	 * Delete a {@link Counter} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Counter to delete.
 	 */

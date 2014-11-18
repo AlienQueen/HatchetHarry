@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link PlayerDao}.
- *
+ * 
  * @author igor
  */
 public class PlayerDaoImpl implements PlayerDao
@@ -47,7 +47,7 @@ public class PlayerDaoImpl implements PlayerDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -59,7 +59,7 @@ public class PlayerDaoImpl implements PlayerDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class PlayerDaoImpl implements PlayerDao
 
 	/**
 	 * Load a {@link Player} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Player to load.
 	 * @return Player
@@ -84,7 +84,7 @@ public class PlayerDaoImpl implements PlayerDao
 
 	/**
 	 * Save the Player to the DB
-	 *
+	 * 
 	 * @param Player
 	 * @return persistent instance of Player
 	 */
@@ -97,7 +97,7 @@ public class PlayerDaoImpl implements PlayerDao
 
 	/**
 	 * Delete a {@link Player} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Player to delete.
 	 */

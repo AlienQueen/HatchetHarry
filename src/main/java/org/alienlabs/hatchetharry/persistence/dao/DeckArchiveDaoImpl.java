@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link DeckArchiveDao}.
- *
+ * 
  * @author igor
  */
 public class DeckArchiveDaoImpl implements DeckArchiveDao
@@ -45,7 +45,7 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -57,7 +57,7 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao
 
 	/**
 	 * Load a {@link DeckArchive} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the DeckArchive to load.
 	 * @return DeckArchive
@@ -82,7 +82,7 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao
 
 	/**
 	 * Save the DeckArchive to the DB
-	 *
+	 * 
 	 * @param deckArchive
 	 * @return persistent instance of DeckArchive
 	 */
@@ -95,7 +95,7 @@ public class DeckArchiveDaoImpl implements DeckArchiveDao
 
 	/**
 	 * Delete a {@link DeckArchive} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the DeckArchive to delete.
 	 */

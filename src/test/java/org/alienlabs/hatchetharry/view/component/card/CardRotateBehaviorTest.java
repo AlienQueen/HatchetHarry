@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
-import org.alienlabs.hatchetharry.service.PersistenceService;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.tester.TagTester;
@@ -15,20 +14,17 @@ import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
+public class CardRotateBehaviorTest extends SpringContextLoaderBase
 {
 
 	private void clickOnCardHandle(final CardRotateBehavior _crb, final MagicCard _mc)
 	{
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("uuid",
-				_mc.getUuid().toString());
-		SpringContextLoaderBaseTest.tester.executeBehavior(_crb);
+		SpringContextLoaderBase.tester.getRequest().setParameter("uuid", _mc.getUuid().toString());
+		SpringContextLoaderBase.tester.executeBehavior(_crb);
 	}
 
 	private MagicCard giveMagicCard()
 	{
-		final PersistenceService persistenceService = super.context
-				.getBean(PersistenceService.class);
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId);
@@ -45,11 +41,11 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		super.startAGameAndPlayACard();
 
 		// Retrieve the card and the CardMoveBehavior
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
-		final HomePage page = (HomePage)SpringContextLoaderBaseTest.tester.getLastRenderedPage();
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		final HomePage page = (HomePage)SpringContextLoaderBase.tester.getLastRenderedPage();
 
-		SpringContextLoaderBaseTest.tester
+		SpringContextLoaderBase.tester
 				.assertComponent(
 						"parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton",
 						WebMarkupContainer.class);
@@ -62,7 +58,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		// Card default state
 		MagicCard mc = this.giveMagicCard();
 		Assert.assertFalse(mc.isTapped());
-		String pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
+		String pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"cardContainer tapped", false);
@@ -71,14 +67,14 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 
 		// Rotate the card
 		this.clickOnCardHandle(crb, mc);
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
 		// Verify
 		mc = this.giveMagicCard();
 		Assert.assertTrue(mc.isTapped());
 
-		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "cardContainer tapped",
 				false);
 		Assert.assertNotNull(tagTester);
@@ -91,7 +87,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBaseTest
 		mc = this.giveMagicCard();
 		Assert.assertFalse(mc.isTapped());
 
-		pageDocument = SpringContextLoaderBaseTest.tester.getLastResponse().getDocument();
+		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "class", "cardContainer tapped",
 				false);
 		Assert.assertNotNull(tagTester);

@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link ConsoleLogMessageDao}.
- *
+ * 
  * @author igor
  */
 public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao
@@ -45,7 +45,7 @@ public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -57,7 +57,7 @@ public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao
 
 	/**
 	 * Load a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the ConsoleLogMessage to load.
 	 * @return ConsoleLogMessage
@@ -82,7 +82,7 @@ public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao
 
 	/**
 	 * Save the ConsoleLogMessage to the DB
-	 *
+	 * 
 	 * @param ConsoleLogMessage
 	 * @return persistent instance of ConsoleLogMessage
 	 */
@@ -95,7 +95,7 @@ public class ConsoleLogMessageDaoImpl implements ConsoleLogMessageDao
 
 	/**
 	 * Delete a {@link ConsoleLogMessage} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the ConsoleLogMessage to delete.
 	 */

@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link CardCollectionDao}.
- *
+ * 
  * @author igor
  */
 public class CardCollectionDaoImpl implements CardCollectionDao
@@ -47,7 +47,7 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -59,7 +59,7 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 
 	/**
 	 * Load a {@link CardCollection} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the CardCollection to load.
 	 * @return CardCollection
@@ -84,7 +84,7 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 
 	/**
 	 * Save the CardCollection to the DB
-	 *
+	 * 
 	 * @param CardCollection
 	 * @return persistent instance of CardCollection
 	 */
@@ -97,7 +97,7 @@ public class CardCollectionDaoImpl implements CardCollectionDao
 
 	/**
 	 * Delete a {@link CardCollection} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the CardCollection to delete.
 	 */

@@ -40,7 +40,6 @@ package org.alienlabs.hatchetharry.view.page;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -173,14 +172,14 @@ import com.google.common.io.Files;
 public class HomePage extends TestReportPage
 {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
 
-	private final HatchetHarrySession session;
-	private final WebMarkupContainer galleryParent;
+	final HatchetHarrySession session;
+	final WebMarkupContainer galleryParent;
 	private final WebMarkupContainer galleryRevealParent;
 	private final Component galleryReveal;
-	private final WebMarkupContainer graveyardParent;
-	private final WebMarkupContainer exileParent;
+	final WebMarkupContainer graveyardParent;
+	final WebMarkupContainer exileParent;
 	private final List<ModalWindow> allOpenRevealTopLibraryCardWindows;
 	private final WebMarkupContainer parentPlaceholder;
 	private final WebMarkupContainer opponentParentPlaceholder;
@@ -196,7 +195,7 @@ public class HomePage extends TestReportPage
 	private final ModalWindow askMulliganWindow;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 	@SpringBean
 	private DataGenerator dataGenerator;
 
@@ -209,11 +208,11 @@ public class HomePage extends TestReportPage
 	private ModalWindow joinGameWithoutIdWindow;
 	private final ImportDeckDialog importDeckDialog;
 	private ModalWindow revealTopLibraryCardWindow;
-	private ModalWindow createTokenWindow;
+	ModalWindow createTokenWindow;
 	private final ModalWindow countCardsWindow;
-	private final ModalWindow loginWindow;
-	private final ModalWindow preferencesWindow;
-	private Player player;
+	final ModalWindow loginWindow;
+	final ModalWindow preferencesWindow;
+	Player player;
 	private Deck deck;
 	List<MagicCard> hand;
 	WebMarkupContainer playCardLink;
@@ -260,7 +259,7 @@ public class HomePage extends TestReportPage
 
 			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 					ConsoleLogType.GAME, null, null, null, null,
-					this.session.getPlayer().getName(), null, null, null, false,
+					this.session.getPlayer().getName(), null, null, null, Boolean.FALSE,
 					this.session.getGameId());
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.END_GAME_ACTION, null, null, this.session.getPlayer().getName(),
@@ -279,7 +278,7 @@ public class HomePage extends TestReportPage
 		if ((pp != null) && (pp.get("displayTooltips") != null)
 				&& ("true".equals(pp.get("displayTooltips").toString())))
 		{
-			this.session.setDisplayTooltips(true);
+			this.session.setDisplayTooltips(Boolean.TRUE);
 		}
 
 		// Resources
@@ -310,14 +309,14 @@ public class HomePage extends TestReportPage
 		this.opponentParentPlaceholder.setOutputMarkupId(true);
 		this.add(this.opponentParentPlaceholder);
 
-		if (!this.session.isGameCreated())
+		if (!this.session.isGameCreated().booleanValue())
 		{
 			this.dataGenerator.afterPropertiesSet();
 			this.createPlayer();
 
 			this.buildHandCards();
 			this.buildHandMarkup();
-			this.buildDataBox(this.player.getGame().getId());
+			this.buildDataBox(this.player.getGame().getId().longValue());
 		}
 		else
 		{
@@ -332,7 +331,7 @@ public class HomePage extends TestReportPage
 			this.player = this.session.getPlayer();
 
 			this.buildHandCards();
-			this.buildDataBox(this.player.getGame().getId());
+			this.buildDataBox(this.player.getGame().getId().longValue());
 		}
 
 		// Side
@@ -340,7 +339,7 @@ public class HomePage extends TestReportPage
 		this.sideParent.setOutputMarkupId(true);
 
 		this.allPlayerSidesInGame = this.persistenceService.getAllPlayersOfGame(this.session
-				.getGameId());
+				.getGameId().longValue());
 		final ListDataProvider<Player> data = new ListDataProvider<Player>(
 				this.allPlayerSidesInGame);
 
@@ -523,7 +522,7 @@ public class HomePage extends TestReportPage
 		this.drawModeParent = new WebMarkupContainer("drawModeParent");
 		this.drawModeParent.setOutputMarkupId(true);
 
-		if (this.session.getPlayer().getGame().isDrawMode())
+		if (this.session.getPlayer().getGame().isDrawMode().booleanValue())
 		{
 			this.drawModeParent.add(new ExternalImage("drawModeOn", "image/draw_mode_on.png"));
 		}
@@ -534,7 +533,7 @@ public class HomePage extends TestReportPage
 
 		this.add(this.drawModeParent);
 
-		if (this.session.isLoggedIn())
+		if (this.session.isLoggedIn().booleanValue())
 		{
 			this.username = new Label("username", "Logged in as " + this.session.getUsername());
 			this.username.setOutputMarkupId(true);
@@ -676,7 +675,7 @@ public class HomePage extends TestReportPage
 								.getName(), "", "", "", null, "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_HAND, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, false, gameId);
+								.getPlayer().getName(), null, null, null, Boolean.FALSE, gameId);
 				final RevealHandCometChannel rhcc = new RevealHandCometChannel(gameId,
 						HomePage.this.session.getPlayer().getId(), HomePage.this.session
 								.getPlayer().getDeck().getDeckId());
@@ -691,7 +690,8 @@ public class HomePage extends TestReportPage
 					private static final long serialVersionUID = 1L;
 
 					{
-						this.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()));
+						this.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()
+								.longValue()));
 					}
 				};
 				EventBusPostService.post(playerToWhomToSend, ncc,
@@ -722,12 +722,13 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("boxing")
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
 				final Player _player = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId());
-				final boolean isHandDisplayed = _player.isHandDisplayed();
+				final Boolean isHandDisplayed = _player.isHandDisplayed();
 
 				if (isHandDisplayed)
 				{
@@ -753,6 +754,7 @@ public class HomePage extends TestReportPage
 			private static final long serialVersionUID = 1L;
 
 			@Override
+			@SuppressWarnings("boxing")
 			public void onClick(final AjaxRequestTarget target)
 			{
 				final Game g = HomePage.this.persistenceService.getGame(HomePage.this.session
@@ -767,8 +769,8 @@ public class HomePage extends TestReportPage
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(HomePage.this.session.getGameId());
-				EventBusPostService.post(allPlayersInGame,
-						new SwitchDrawModeCometChannel(g.isDrawMode()));
+				EventBusPostService.post(allPlayersInGame, new SwitchDrawModeCometChannel(g
+						.isDrawMode().booleanValue()));
 			}
 
 			@Override
@@ -802,7 +804,7 @@ public class HomePage extends TestReportPage
 						.getPlayer(HomePage.this.session.getPlayer().getId());
 				final Boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
 
-				if ((isGraveyardDisplayed != null) && isGraveyardDisplayed)
+				if ((isGraveyardDisplayed != null) && isGraveyardDisplayed.booleanValue())
 				{
 					HomePage.this.graveyardParent.addOrReplace(new WebMarkupContainer("graveyard"));
 					target.add(HomePage.this.graveyardParent);
@@ -815,11 +817,11 @@ public class HomePage extends TestReportPage
 
 				if ((isGraveyardDisplayed != null) && (isGraveyardDisplayed.booleanValue() == true))
 				{
-					_player.setGraveyardDisplayed(false);
+					_player.setGraveyardDisplayed(Boolean.FALSE);
 				}
 				else
 				{
-					_player.setGraveyardDisplayed(true);
+					_player.setGraveyardDisplayed(Boolean.TRUE);
 				}
 
 				HomePage.this.session.setPlayer(_player);
@@ -857,7 +859,7 @@ public class HomePage extends TestReportPage
 						.getPlayer(HomePage.this.session.getPlayer().getId());
 				final Boolean isExileDisplayed = _player.isExileDisplayed();
 
-				if ((isExileDisplayed != null) && isExileDisplayed)
+				if ((isExileDisplayed != null) && isExileDisplayed.booleanValue())
 				{
 					HomePage.this.exileParent.addOrReplace(new WebMarkupContainer("exile"));
 					target.add(HomePage.this.exileParent);
@@ -871,11 +873,11 @@ public class HomePage extends TestReportPage
 
 				if ((isExileDisplayed != null) && (isExileDisplayed.booleanValue() == true))
 				{
-					_player.setExileDisplayed(false);
+					_player.setExileDisplayed(Boolean.FALSE);
 				}
 				else
 				{
-					_player.setExileDisplayed(true);
+					_player.setExileDisplayed(Boolean.TRUE);
 				}
 
 				HomePage.this.session.setPlayer(_player);
@@ -921,7 +923,7 @@ public class HomePage extends TestReportPage
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.END_OF_TURN, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, false,
+								.getPlayer().getName(), null, null, null, Boolean.FALSE,
 						HomePage.this.session.getGameId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
@@ -1047,7 +1049,7 @@ public class HomePage extends TestReportPage
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.TAP_UNTAP, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, false, gameId);
+								.getPlayer().getName(), null, null, null, Boolean.FALSE, gameId);
 				final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
 						HomePage.this.session.getPlayer().getId(), HomePage.this.session
 								.getPlayer().getDeck().getDeckId(), HomePage.this.session
@@ -1105,9 +1107,9 @@ public class HomePage extends TestReportPage
 		HomePage.LOGGER.info("building DataBox with gameId= " + _gameId);
 	}
 
-	private void buildHandCards() throws IOException
+	private void buildHandCards()
 	{
-		if (this.session.isHandHasBeenCreated())
+		if (this.session.isHandHasBeenCreated().booleanValue())
 		{
 			this.hand = this.session.getFirstCardsInHand();
 		}
@@ -1144,7 +1146,7 @@ public class HomePage extends TestReportPage
 		p.setSide(side);
 		p.setName(_name);
 		p.setJsessionid(_jsessionid);
-		p.setLifePoints(20l);
+		p.setLifePoints(Long.valueOf(20l));
 
 		Game game = new Game();
 		game = this.persistenceService.createGameAndPlayer(game, p);
@@ -1214,7 +1216,7 @@ public class HomePage extends TestReportPage
 			{
 				HomePage.LOGGER.info("clicked on declare combat");
 				HomePage.this.session.setCombatInProgress(!HomePage.this.session
-						.isCombatInProgress());
+						.isCombatInProgress().booleanValue());
 				final Long gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
@@ -1226,7 +1228,7 @@ public class HomePage extends TestReportPage
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.COMBAT, null, null, HomePage.this.session
 								.isCombatInProgress(), null, HomePage.this.session.getPlayer()
-								.getName(), null, null, null, false, gameId);
+								.getName(), null, null, null, Boolean.FALSE, gameId);
 
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
@@ -1258,7 +1260,8 @@ public class HomePage extends TestReportPage
 					final MagicCard card = cards.get(0);
 
 					final Deck _deck = HomePage.this.persistenceService
-							.getDeck(HomePage.this.session.getPlayer().getDeck().getDeckId());
+							.getDeck(HomePage.this.session.getPlayer().getDeck().getDeckId()
+									.longValue());
 					_deck.getCards().remove(card);
 					HomePage.this.persistenceService.saveOrUpdateDeck(_deck);
 
@@ -1463,9 +1466,9 @@ public class HomePage extends TestReportPage
 	private void buildHandMarkup()
 	{
 		final Component galleryToUpdate;
-		final boolean isHandDisplayed = this.persistenceService.getPlayer(
+		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isHandDisplayed();
-		galleryToUpdate = isHandDisplayed
+		galleryToUpdate = isHandDisplayed.booleanValue()
 				? new HandComponent("gallery", false)
 				: new WebMarkupContainer("gallery");
 
@@ -1478,7 +1481,7 @@ public class HomePage extends TestReportPage
 		final Component graveyardToUpdate;
 		final Boolean isGraveyardDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isGraveyardDisplayed();
-		graveyardToUpdate = ((isGraveyardDisplayed != null) && isGraveyardDisplayed)
+		graveyardToUpdate = ((isGraveyardDisplayed != null) && isGraveyardDisplayed.booleanValue())
 				? new GraveyardComponent("graveyard")
 				: new WebMarkupContainer("graveyard");
 
@@ -1491,8 +1494,9 @@ public class HomePage extends TestReportPage
 		final Component exileToUpdate;
 		final Boolean isExileDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isExileDisplayed();
-		exileToUpdate = ((isExileDisplayed != null) && isExileDisplayed) ? new ExileComponent(
-				"exile") : new WebMarkupContainer("exile");
+		exileToUpdate = ((isExileDisplayed != null) && isExileDisplayed.booleanValue())
+				? new ExileComponent("exile")
+				: new WebMarkupContainer("exile");
 
 		exileToUpdate.setOutputMarkupId(true);
 		this.exileParent.add(exileToUpdate);
@@ -1501,10 +1505,11 @@ public class HomePage extends TestReportPage
 	// TODO remove me
 	private List<MagicCard> createFirstCards()
 	{
-		if (this.session.isPlayerCreated())
+		if (this.session.isPlayerCreated().booleanValue())
 		{
 			this.player = this.session.getPlayer();
-			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
+			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId()
+					.longValue());
 
 			if ((this.deck == null) || (this.deck.getCards() == null)
 					|| (this.deck.getCards().isEmpty()))
@@ -1528,7 +1533,7 @@ public class HomePage extends TestReportPage
 			this.player.getDeck().setCards(_cards);
 
 			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
-			if (!this.session.isHandCardsHaveBeenBuilt())
+			if (!this.session.isHandCardsHaveBeenBuilt().booleanValue())
 			{
 				this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
 			}
@@ -1556,28 +1561,25 @@ public class HomePage extends TestReportPage
 			this.hand = cards;
 			return cards;
 		}
-		else
+		this.createPlayer();
+		this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId().longValue());
+		final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+
+		for (int i = 0; i < this.deck.getCards().size(); i++)
 		{
-			this.createPlayer();
-			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId());
-			final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+			final MagicCard mc = this.deck.getCards().get(i);
 
-			for (int i = 0; i < this.deck.getCards().size(); i++)
+			if (CardZone.HAND.equals(mc.getZone()))
 			{
-				final MagicCard mc = this.deck.getCards().get(i);
-
-				if (CardZone.HAND.equals(mc.getZone()))
-				{
-					cards.add(i, mc);
-				}
+				cards.add(i, mc);
 			}
-
-			this.session.setFirstCardsInHand(cards);
-			this.session.setHandHasBeenCreated();
-			this.hand = cards;
-
-			return this.session.getPlayer().getDeck().getCards();
 		}
+
+		this.session.setFirstCardsInHand(cards);
+		this.session.setHandHasBeenCreated();
+		this.hand = cards;
+
+		return this.session.getPlayer().getDeck().getCards();
 
 	}
 
@@ -1798,8 +1800,8 @@ public class HomePage extends TestReportPage
 			{
 				if (HomePage.this.session.getTopCardIndex().longValue() > 0l)
 				{
-					HomePage.this.session.setTopCardIndex(HomePage.this.session.getTopCardIndex()
-							.longValue() - 1l);
+					HomePage.this.session.setTopCardIndex(Long.valueOf(HomePage.this.session
+							.getTopCardIndex().longValue() - 1l));
 				}
 
 			}
@@ -1835,6 +1837,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("boxing")
 			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({ "PATH_TRAVERSAL_IN",
 					"PATH_TRAVERSAL_IN" })
 			@Override
@@ -1878,7 +1881,7 @@ public class HomePage extends TestReportPage
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
 						_firstCard.getTitle(), HomePage.this.session.getPlayer().getName(), null,
-						HomePage.this.session.getTopCardIndex() + 1l, null, false,
+						HomePage.this.session.getTopCardIndex() + 1l, null, Boolean.FALSE,
 						HomePage.this.session.getGameId());
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
@@ -1978,13 +1981,14 @@ public class HomePage extends TestReportPage
 				final Long playerWhoDiscardsDeckId = playerWhoDiscards.getDeck().getDeckId();
 				final int allCardsInHand = HomePage.this.persistenceService
 						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.HAND, gameId,
-								playerWhoDiscardsDeckId);
+								playerWhoDiscardsDeckId).intValue();
 
 				if (allCardsInHand == 0)
 				{
 					return;
 				}
 
+				@SuppressWarnings("boxing")
 				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
 						.random() * allCardsInHand)).intValue() : 0);
 				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
@@ -1998,8 +2002,8 @@ public class HomePage extends TestReportPage
 				HomePage.this.persistenceService
 						.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
 
-				playerWhoDiscards.setHandDisplayed(true);
-				playerWhoDiscards.setGraveyardDisplayed(true);
+				playerWhoDiscards.setHandDisplayed(Boolean.TRUE);
+				playerWhoDiscards.setGraveyardDisplayed(Boolean.TRUE);
 
 				if (allCardsInHandForAGameAndAPlayer.isEmpty())
 				{
@@ -2017,7 +2021,7 @@ public class HomePage extends TestReportPage
 						null, chosenCard.getTitle(), null, "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
-						playerWhoDiscards.getName(), null, null, null, false, gameId);
+						playerWhoDiscards.getName(), null, null, null, Boolean.FALSE, gameId);
 
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
@@ -2427,7 +2431,7 @@ public class HomePage extends TestReportPage
 	@Subscribe
 	public void updateDataBox(final AjaxRequestTarget target, final UpdateDataBoxCometChannel event)
 	{
-		final DataBox db = new DataBox("dataBox", event.getGameId());
+		final DataBox db = new DataBox("dataBox", event.getGameId().longValue());
 		this.getDataBoxParent().addOrReplace(db);
 		db.setOutputMarkupId(true);
 		target.add(this.getDataBoxParent());
@@ -2467,8 +2471,8 @@ public class HomePage extends TestReportPage
 	{
 		final MagicCard mc = event.getMc();
 
-		mc.setX(Long.parseLong(event.getMouseX()));
-		mc.setY(Long.parseLong(event.getMouseY()));
+		mc.setX(Long.valueOf(Long.parseLong(event.getMouseX())));
+		mc.setY(Long.valueOf(Long.parseLong(event.getMouseY())));
 
 		target.appendJavaScript("var card = jQuery('#cardHandle"
 				+ event.getUniqueid().replace("-", "_") + "');"
@@ -2577,7 +2581,7 @@ public class HomePage extends TestReportPage
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
 		{
 			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
-			p.setHandDisplayed(true);
+			p.setHandDisplayed(Boolean.TRUE);
 			this.persistenceService.mergePlayer(p);
 			BattlefieldService.updateHand(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
@@ -2591,7 +2595,7 @@ public class HomePage extends TestReportPage
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
 		{
 			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
-			p.setGraveyardDisplayed(true);
+			p.setGraveyardDisplayed(Boolean.TRUE);
 			this.persistenceService.mergePlayer(p);
 			BattlefieldService.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
 					event.getDeckId());
@@ -2963,9 +2967,8 @@ public class HomePage extends TestReportPage
 		// to manage a state recovery
 		final Player player1 = this.persistenceService.getPlayer(this.session.getPlayer().getId());
 		final Boolean isHandDisplayed = player1.isHandDisplayed();
-		final Component galleryToUpdate = isHandDisplayed
-				? new HandComponent("gallery", false)
-				: new WebMarkupContainer("gallery");
+		final Component galleryToUpdate = isHandDisplayed.booleanValue() ? new HandComponent(
+				"gallery", false) : new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.addOrReplace(galleryToUpdate);

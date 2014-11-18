@@ -192,7 +192,7 @@ public class FunctionalTests
 	}
 
 	@AfterClass
-	public static void tearDown() throws InterruptedException
+	public static void tearDown()
 	{
 		if (null != FunctionalTests.chromeDriver1)
 		{

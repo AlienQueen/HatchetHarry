@@ -41,9 +41,9 @@ public class Side implements Serializable
 	@Cascade(CascadeType.ALL)
 	private Game game;
 	@Column
-	private Long x = 64l; // x coordinate
+	private Long x = Long.valueOf(64l); // x coordinate
 	@Column
-	private Long y = 64l; // y coordinate
+	private Long y = Long.valueOf(64l); // y coordinate
 
 	public Long getSideId()
 	{

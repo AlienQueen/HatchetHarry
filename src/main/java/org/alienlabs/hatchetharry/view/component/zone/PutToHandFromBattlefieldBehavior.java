@@ -94,7 +94,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 
 		final Deck myDeck = this.persistenceService.getDeck(session.getPlayer().getDeck()
-				.getDeckId());
+				.getDeckId().longValue());
 
 		final List<MagicCard> hand = myDeck.reorderMagicCards(this.persistenceService
 				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), myDeck.getDeckId()));
@@ -153,7 +153,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
-				targetPlayer.setHandDisplayed(true);
+				targetPlayer.setHandDisplayed(Boolean.TRUE);
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
 
@@ -161,9 +161,9 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 					logger));
 		}
 
-		final boolean isHandDisplayed = this.persistenceService.getPlayer(
+		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
 				session.getPlayer().getId()).isHandDisplayed();
-		if (isHandDisplayed)
+		if (isHandDisplayed.booleanValue())
 		{
 			BattlefieldService.updateHand(target);
 		}

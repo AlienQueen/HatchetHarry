@@ -82,13 +82,13 @@ public class BattlefieldService
 
 					for (final Counter count : mc.getCounters())
 					{
-						count.setNumberOfCounters(0l);
+						count.setNumberOfCounters(Long.valueOf(0l));
 						persistenceService.updateCounter(count);
 						BattlefieldService.LOGGER.info("clear");
 					}
 
 					if ((mc.equals(targetCard))
-							|| (mc.getToken() != null && targetCard.getToken() != null && mc
+							|| ((mc.getToken() != null) && (targetCard.getToken() != null) && mc
 									.getToken().equals(targetCard.getToken())))
 					{
 						homePage.getAllMagicCardsInBattlefieldForSide1().remove(mc);
@@ -106,13 +106,13 @@ public class BattlefieldService
 
 					for (final Counter count : mc.getCounters())
 					{
-						count.setNumberOfCounters(0l);
+						count.setNumberOfCounters(Long.valueOf(0l));
 						persistenceService.updateCounter(count);
 						BattlefieldService.LOGGER.info("clear");
 					}
 
 					if ((mc.equals(targetCard))
-							|| (mc.getToken() != null && targetCard.getToken() != null && mc
+							|| ((mc.getToken() != null) && (targetCard.getToken() != null) && mc
 									.getToken().equals(targetCard.getToken())))
 					{
 						homePage.getAllMagicCardsInBattlefieldForSide2().remove(mc);
@@ -285,10 +285,10 @@ public class BattlefieldService
 	{
 		Collections.sort(allCardsInBattlefieldForPlayer);
 
-		for (int index = removedCardIndex; index < allCardsInBattlefieldForPlayer.size(); index++)
+		for (int index = removedCardIndex.intValue(); index < allCardsInBattlefieldForPlayer.size(); index++)
 		{
 			final MagicCard magicCard = allCardsInBattlefieldForPlayer.get(index);
-			magicCard.setBattlefieldOrder(index);
+			magicCard.setBattlefieldOrder(Integer.valueOf(index));
 
 			LOGGER.info("&&& mc: " + magicCard.getTitle() + ", order: "
 					+ magicCard.getBattlefieldOrder().intValue());

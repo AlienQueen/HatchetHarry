@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link ArrowDao}.
- *
+ * 
  * @author igor
  */
 public class ArrowDaoImpl implements ArrowDao
@@ -45,7 +45,7 @@ public class ArrowDaoImpl implements ArrowDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -57,7 +57,7 @@ public class ArrowDaoImpl implements ArrowDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class ArrowDaoImpl implements ArrowDao
 
 	/**
 	 * Load a {@link Arrow} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Arrow to load.
 	 * @return Arrow
@@ -82,7 +82,7 @@ public class ArrowDaoImpl implements ArrowDao
 
 	/**
 	 * Save the Arrow to the DB
-	 *
+	 * 
 	 * @param Arrow
 	 * @return persistent instance of Arrow
 	 */
@@ -95,7 +95,7 @@ public class ArrowDaoImpl implements ArrowDao
 
 	/**
 	 * Delete a {@link Arrow} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Arrow to delete.
 	 */

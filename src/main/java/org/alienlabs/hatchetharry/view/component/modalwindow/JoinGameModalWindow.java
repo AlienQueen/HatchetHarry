@@ -33,16 +33,16 @@ public class JoinGameModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	private final TextField<Long> gameIdInput;
-	private final TextField<String> nameInput;
-	private final DropDownChoice<String> sideInput;
-	private final HomePage hp;
-	private WebMarkupContainer deckParent;
-	private DropDownChoice<Deck> decks;
-	private final FeedbackPanel feedback;
+	final TextField<Long> gameIdInput;
+	final TextField<String> nameInput;
+	final DropDownChoice<String> sideInput;
+	final HomePage hp;
+	WebMarkupContainer deckParent;
+	DropDownChoice<Deck> decks;
+	final FeedbackPanel feedback;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	// TODO remove _dataBoxParent & _player
 	public JoinGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
@@ -105,7 +105,7 @@ public class JoinGameModalWindow extends Panel
 
 		final Label gameIdLabel = new Label("gameIdLabel",
 				"Please provide the game id given by your opponent: ");
-		final Model<Long> gameId = new Model<Long>(0l);
+		final Model<Long> gameId = new Model<Long>(Long.valueOf(0l));
 		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
 		this.gameIdInput.setOutputMarkupId(true).setMarkupId("gameIdInput");
 
@@ -153,7 +153,7 @@ public class JoinGameModalWindow extends Panel
 					return;
 				}
 
-				if (g.getPlayers().size() <= (g.getDesiredNumberOfPlayers() - 1))
+				if (g.getPlayers().size() <= (g.getDesiredNumberOfPlayers().intValue() - 1))
 				{
 					g.setPending(false);
 				}

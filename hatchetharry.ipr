@@ -8,35 +8,9 @@
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
         <option name="myLocal" value="false" />
-        <coding_rule class="AM_CREATES_EMPTY_JAR_FILE_ENTRY" level="MAJOR" enabled="true" />
-        <coding_rule class="AM_CREATES_EMPTY_ZIP_FILE_ENTRY" level="MAJOR" enabled="true" />
-        <coding_rule class="AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION" level="CRITICAL" enabled="false" />
         <coding_rule class="AndroidCallSuperFirst" level="MAJOR" enabled="false" />
         <coding_rule class="AndroidCallSuperLast" level="MAJOR" enabled="false" />
         <coding_rule class="AndroidDoNotHardCodeSDCard" level="MAJOR" enabled="false" />
-        <coding_rule class="BAC_BAD_APPLET_CONSTRUCTOR" level="MAJOR" enabled="false" />
-        <coding_rule class="BC_BAD_CAST_TO_ABSTRACT_COLLECTION" level="MAJOR" enabled="true" />
-        <coding_rule class="BC_BAD_CAST_TO_CONCRETE_COLLECTION" level="CRITICAL" enabled="true" />
-        <coding_rule class="BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS" level="CRITICAL" enabled="true" />
-        <coding_rule class="BC_IMPOSSIBLE_CAST" level="BLOCKER" enabled="true" />
-        <coding_rule class="BC_IMPOSSIBLE_DOWNCAST" level="MAJOR" enabled="false" />
-        <coding_rule class="BC_IMPOSSIBLE_DOWNCAST_OF_TOARRAY" level="MAJOR" enabled="false" />
-        <coding_rule class="BC_IMPOSSIBLE_INSTANCEOF" level="CRITICAL" enabled="true" />
-        <coding_rule class="BC_UNCONFIRMED_CAST" level="CRITICAL" enabled="true" />
-        <coding_rule class="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" level="CRITICAL" enabled="false" />
-        <coding_rule class="BC_VACUOUS_INSTANCEOF" level="CRITICAL" enabled="true" />
-        <coding_rule class="BIT_ADD_OF_SIGNED_BYTE" level="CRITICAL" enabled="true" />
-        <coding_rule class="BIT_AND" level="CRITICAL" enabled="true" />
-        <coding_rule class="BIT_AND_ZZ" level="CRITICAL" enabled="true" />
-        <coding_rule class="BIT_IOR" level="CRITICAL" enabled="true" />
-        <coding_rule class="BIT_IOR_OF_SIGNED_BYTE" level="CRITICAL" enabled="true" />
-        <coding_rule class="BIT_SIGNED_CHECK" level="CRITICAL" enabled="true" />
-        <coding_rule class="BIT_SIGNED_CHECK_HIGH_BIT" level="CRITICAL" enabled="true" />
-        <coding_rule class="BOA_BADLY_OVERRIDDEN_ADAPTER" level="CRITICAL" enabled="true" />
-        <coding_rule class="BX_BOXING_IMMEDIATELY_UNBOXED" level="MAJOR" enabled="true" />
-        <coding_rule class="BX_BOXING_IMMEDIATELY_UNBOXED_TO_PERFORM_COERCION" level="MAJOR" enabled="true" />
-        <coding_rule class="BX_UNBOXED_AND_COERCED_FOR_TERNARY_OPERATOR" level="MAJOR" enabled="true" />
-        <coding_rule class="BX_UNBOXING_IMMEDIATELY_REBOXED" level="CRITICAL" enabled="false" />
         <coding_rule class="BasicAvoidBranchingStatementAsLastInLoop" level="MAJOR" enabled="false" />
         <coding_rule class="BasicAvoidDecimalLiteralsInBigDecimalConstructor" level="MAJOR" enabled="true" />
         <coding_rule class="BasicAvoidMultipleUnaryOperators" level="MAJOR" enabled="false" />
@@ -72,14 +46,6 @@
         <coding_rule class="BracesIfElseStmtsMustUseBraces" level="MAJOR" enabled="true" />
         <coding_rule class="BracesIfStmtsMustUseBraces" level="MAJOR" enabled="true" />
         <coding_rule class="BracesWhileLoopsMustUseBraces" level="MAJOR" enabled="true" />
-        <coding_rule class="CD_CIRCULAR_DEPENDENCY" level="MAJOR" enabled="false" />
-        <coding_rule class="CI_CONFUSED_INHERITANCE" level="MINOR" enabled="true" />
-        <coding_rule class="CN_IDIOM" level="MAJOR" enabled="true" />
-        <coding_rule class="CN_IDIOM_NO_SUPER_CALL" level="MAJOR" enabled="true" />
-        <coding_rule class="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE" level="MAJOR" enabled="true" />
-        <coding_rule class="CO_ABSTRACT_SELF" level="MAJOR" enabled="true" />
-        <coding_rule class="CO_COMPARETO_RESULTS_MIN_VALUE" level="CRITICAL" enabled="false" />
-        <coding_rule class="CO_SELF_NO_OBJECT" level="MAJOR" enabled="true" />
         <coding_rule class="CloneImplementationCloneMethodMustImplementCloneable" level="MAJOR" enabled="false" />
         <coding_rule class="CloneImplementationCloneThrowsCloneNotSupportedException" level="MAJOR" enabled="true" />
         <coding_rule class="CloneImplementationProperCloneImplementation" level="CRITICAL" enabled="false" />
@@ -122,66 +88,6 @@
         <coding_rule class="CouplingLawOfDemeter" level="MAJOR" enabled="false" />
         <coding_rule class="CouplingLooseCoupling" level="MAJOR" enabled="true" />
         <coding_rule class="CouplingLoosePackageCoupling" level="MAJOR" enabled="false" />
-        <coding_rule class="DB_DUPLICATE_BRANCHES" level="CRITICAL" enabled="true" />
-        <coding_rule class="DB_DUPLICATE_SWITCH_CLAUSES" level="CRITICAL" enabled="true" />
-        <coding_rule class="DC_DOUBLECHECK" level="MAJOR" enabled="true" />
-        <coding_rule class="DE_MIGHT_DROP" level="MAJOR" enabled="true" />
-        <coding_rule class="DE_MIGHT_IGNORE" level="MAJOR" enabled="true" />
-        <coding_rule class="DLS_DEAD_LOCAL_STORE" level="CRITICAL" enabled="true" />
-        <coding_rule class="DLS_DEAD_LOCAL_STORE_IN_RETURN" level="CRITICAL" enabled="true" />
-        <coding_rule class="DLS_DEAD_LOCAL_STORE_OF_NULL" level="CRITICAL" enabled="true" />
-        <coding_rule class="DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD" level="CRITICAL" enabled="false" />
-        <coding_rule class="DLS_DEAD_STORE_OF_CLASS_LITERAL" level="CRITICAL" enabled="true" />
-        <coding_rule class="DLS_OVERWRITTEN_INCREMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="DL_SYNCHRONIZATION_ON_BOOLEAN" level="CRITICAL" enabled="true" />
-        <coding_rule class="DL_SYNCHRONIZATION_ON_BOXED_PRIMITIVE" level="CRITICAL" enabled="true" />
-        <coding_rule class="DL_SYNCHRONIZATION_ON_SHARED_CONSTANT" level="CRITICAL" enabled="true" />
-        <coding_rule class="DL_SYNCHRONIZATION_ON_UNSHARED_BOXED_PRIMITIVE" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_ANNOTATION_IS_NOT_VISIBLE_TO_REFLECTION" level="MAJOR" enabled="true" />
-        <coding_rule class="DMI_ARGUMENTS_WRONG_ORDER" level="CRITICAL" enabled="false" />
-        <coding_rule class="DMI_BAD_MONTH" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE" level="CRITICAL" enabled="false" />
-        <coding_rule class="DMI_BLOCKING_METHODS_ON_URL" level="BLOCKER" enabled="true" />
-        <coding_rule class="DMI_CALLING_NEXT_FROM_HASNEXT" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_COLLECTIONS_SHOULD_NOT_CONTAIN_THEMSELVES" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_COLLECTION_OF_URLS" level="BLOCKER" enabled="true" />
-        <coding_rule class="DMI_CONSTANT_DB_PASSWORD" level="BLOCKER" enabled="true" />
-        <coding_rule class="DMI_DOH" level="CRITICAL" enabled="false" />
-        <coding_rule class="DMI_EMPTY_DB_PASSWORD" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS" level="CRITICAL" enabled="false" />
-        <coding_rule class="DMI_FUTILE_ATTEMPT_TO_CHANGE_MAXPOOL_SIZE_OF_SCHEDULED_THREAD_POOL_EXECUTOR" level="MINOR" enabled="true" />
-        <coding_rule class="DMI_HARDCODED_ABSOLUTE_FILENAME" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_INVOKING_HASHCODE_ON_ARRAY" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_INVOKING_TOSTRING_ON_ANONYMOUS_ARRAY" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_INVOKING_TOSTRING_ON_ARRAY" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_NONSERIALIZABLE_OBJECT_WRITTEN" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_RANDOM_USED_ONLY_ONCE" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_SCHEDULED_THREAD_POOL_EXECUTOR_WITH_ZERO_CORE_THREADS" level="MINOR" enabled="true" />
-        <coding_rule class="DMI_THREAD_PASSED_WHERE_RUNNABLE_EXPECTED" level="MAJOR" enabled="true" />
-        <coding_rule class="DMI_UNSUPPORTED_METHOD" level="MAJOR" enabled="true" />
-        <coding_rule class="DMI_USELESS_SUBSTRING" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_USING_REMOVEALL_TO_CLEAR_COLLECTION" level="CRITICAL" enabled="true" />
-        <coding_rule class="DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD" level="MINOR" enabled="true" />
-        <coding_rule class="DMI_VACUOUS_SELF_COLLECTION_CALL" level="CRITICAL" enabled="true" />
-        <coding_rule class="DM_BOOLEAN_CTOR" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_BOXED_PRIMITIVE_TOSTRING" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_CONVERT_CASE" level="INFO" enabled="true" />
-        <coding_rule class="DM_DEFAULT_ENCODING" level="CRITICAL" enabled="false" />
-        <coding_rule class="DM_EXIT" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_FP_NUMBER_CTOR" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_GC" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_MONITOR_WAIT_ON_CONDITION" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_NEW_FOR_GETCLASS" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_NEXTINT_VIA_NEXTDOUBLE" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_NUMBER_CTOR" level="CRITICAL" enabled="true" />
-        <coding_rule class="DM_RUN_FINALIZERS_ON_EXIT" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_STRING_CTOR" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_STRING_TOSTRING" level="INFO" enabled="true" />
-        <coding_rule class="DM_STRING_VOID_CTOR" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_USELESS_THREAD" level="MAJOR" enabled="true" />
-        <coding_rule class="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED" level="MAJOR" enabled="true" />
-        <coding_rule class="DP_DO_INSIDE_DO_PRIVILEGED" level="MAJOR" enabled="true" />
         <coding_rule class="DesignAbstractClassWithoutAbstractMethod" level="MAJOR" enabled="false" />
         <coding_rule class="DesignAbstractClassWithoutAnyMethod" level="MAJOR" enabled="false" />
         <coding_rule class="DesignAccessorClassGeneration" level="MAJOR" enabled="false" />
@@ -234,35 +140,6 @@
         <coding_rule class="DesignUseNotifyAllInsteadOfNotify" level="MAJOR" enabled="false" />
         <coding_rule class="DesignUseSingleton" level="MAJOR" enabled="false" />
         <coding_rule class="DesignUseVarargs" level="MAJOR" enabled="false" />
-        <coding_rule class="EC_ARRAY_AND_NONARRAY" level="CRITICAL" enabled="true" />
-        <coding_rule class="EC_BAD_ARRAY_COMPARE" level="CRITICAL" enabled="true" />
-        <coding_rule class="EC_INCOMPATIBLE_ARRAY_COMPARE" level="MAJOR" enabled="false" />
-        <coding_rule class="EC_NULL_ARG" level="CRITICAL" enabled="true" />
-        <coding_rule class="EC_UNRELATED_CLASS_AND_INTERFACE" level="CRITICAL" enabled="true" />
-        <coding_rule class="EC_UNRELATED_INTERFACES" level="CRITICAL" enabled="true" />
-        <coding_rule class="EC_UNRELATED_TYPES" level="CRITICAL" enabled="true" />
-        <coding_rule class="EC_UNRELATED_TYPES_USING_POINTER_EQUALITY" level="CRITICAL" enabled="true" />
-        <coding_rule class="EI_EXPOSE_REP" level="MAJOR" enabled="true" />
-        <coding_rule class="EI_EXPOSE_REP2" level="MAJOR" enabled="true" />
-        <coding_rule class="EI_EXPOSE_STATIC_REP2" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_ABSTRACT_SELF" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_ALWAYS_FALSE" level="BLOCKER" enabled="true" />
-        <coding_rule class="EQ_ALWAYS_TRUE" level="BLOCKER" enabled="true" />
-        <coding_rule class="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_COMPARETO_USE_OBJECT_EQUALS" level="CRITICAL" enabled="true" />
-        <coding_rule class="EQ_COMPARING_CLASS_NAMES" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_DOESNT_OVERRIDE_EQUALS" level="MAJOR" enabled="false" />
-        <coding_rule class="EQ_DONT_DEFINE_EQUALS_FOR_ENUM" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_GETCLASS_AND_CLASS_CONSTANT" level="CRITICAL" enabled="true" />
-        <coding_rule class="EQ_OTHER_NO_OBJECT" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_OTHER_USE_OBJECT" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_SELF_NO_OBJECT" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_SELF_USE_OBJECT" level="MAJOR" enabled="true" />
-        <coding_rule class="EQ_UNUSUAL" level="MINOR" enabled="true" />
-        <coding_rule class="ES_COMPARING_PARAMETER_STRING_WITH_EQ" level="MAJOR" enabled="true" />
-        <coding_rule class="ES_COMPARING_STRINGS_WITH_EQ" level="MAJOR" enabled="true" />
-        <coding_rule class="ESync_EMPTY_SYNC" level="MAJOR" enabled="true" />
         <coding_rule class="EmptyCodeEmptyCatchBlock" level="CRITICAL" enabled="false" />
         <coding_rule class="EmptyCodeEmptyFinallyBlock" level="CRITICAL" enabled="true" />
         <coding_rule class="EmptyCodeEmptyIfStmt" level="CRITICAL" enabled="true" />
@@ -274,74 +151,12 @@
         <coding_rule class="EmptyCodeEmptySynchronizedBlock" level="CRITICAL" enabled="true" />
         <coding_rule class="EmptyCodeEmptyTryBlock" level="MAJOR" enabled="true" />
         <coding_rule class="EmptyCodeEmptyWhileStmt" level="CRITICAL" enabled="true" />
-        <coding_rule class="FB_MISSING_EXPECTED_WARNING" level="CRITICAL" enabled="false" />
-        <coding_rule class="FB_UNEXPECTED_WARNING" level="CRITICAL" enabled="false" />
-        <coding_rule class="FE_FLOATING_POINT_EQUALITY" level="CRITICAL" enabled="true" />
-        <coding_rule class="FE_TEST_IF_EQUAL_TO_NOT_A_NUMBER" level="CRITICAL" enabled="true" />
-        <coding_rule class="FI_EMPTY" level="MAJOR" enabled="true" />
-        <coding_rule class="FI_EXPLICIT_INVOCATION" level="MAJOR" enabled="true" />
-        <coding_rule class="FI_FINALIZER_NULLS_FIELDS" level="MAJOR" enabled="true" />
-        <coding_rule class="FI_FINALIZER_ONLY_NULLS_FIELDS" level="MAJOR" enabled="true" />
-        <coding_rule class="FI_MISSING_SUPER_CALL" level="MAJOR" enabled="true" />
-        <coding_rule class="FI_NULLIFY_SUPER" level="CRITICAL" enabled="true" />
-        <coding_rule class="FI_PUBLIC_SHOULD_BE_PROTECTED" level="MAJOR" enabled="true" />
-        <coding_rule class="FI_USELESS" level="MINOR" enabled="true" />
-        <coding_rule class="FL_MATH_USING_FLOAT_PRECISION" level="CRITICAL" enabled="true" />
         <coding_rule class="FinalizerAvoidCallingFinalize" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerEmptyFinalizer" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerFinalizeDoesNotCallSuperFinalize" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerFinalizeOnlyCallsSuperFinalize" level="MAJOR" enabled="false" />
         <coding_rule class="FinalizerFinalizeOverloaded" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerFinalizeShouldBeProtected" level="MAJOR" enabled="false" />
-        <coding_rule class="GC_UNCHECKED_TYPE_IN_GENERIC_CALL" level="CRITICAL" enabled="true" />
-        <coding_rule class="GC_UNRELATED_TYPES" level="CRITICAL" enabled="true" />
-        <coding_rule class="HE_EQUALS_NO_HASHCODE" level="MAJOR" enabled="true" />
-        <coding_rule class="HE_EQUALS_USE_HASHCODE" level="CRITICAL" enabled="true" />
-        <coding_rule class="HE_HASHCODE_NO_EQUALS" level="CRITICAL" enabled="true" />
-        <coding_rule class="HE_HASHCODE_USE_OBJECT_EQUALS" level="CRITICAL" enabled="true" />
-        <coding_rule class="HE_INHERITS_EQUALS_USE_HASHCODE" level="CRITICAL" enabled="true" />
-        <coding_rule class="HE_SIGNATURE_DECLARES_HASHING_OF_UNHASHABLE_CLASS" level="CRITICAL" enabled="true" />
-        <coding_rule class="HE_USE_OF_UNHASHABLE_CLASS" level="CRITICAL" enabled="true" />
-        <coding_rule class="HRS_REQUEST_PARAMETER_TO_COOKIE" level="MAJOR" enabled="true" />
-        <coding_rule class="HRS_REQUEST_PARAMETER_TO_HTTP_HEADER" level="MAJOR" enabled="true" />
-        <coding_rule class="HSC_HUGE_SHARED_STRING_CONSTANT" level="CRITICAL" enabled="true" />
-        <coding_rule class="IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD" level="MAJOR" enabled="true" />
-        <coding_rule class="ICAST_BAD_SHIFT_AMOUNT" level="CRITICAL" enabled="true" />
-        <coding_rule class="ICAST_IDIV_CAST_TO_DOUBLE" level="CRITICAL" enabled="true" />
-        <coding_rule class="ICAST_INTEGER_MULTIPLY_CAST_TO_LONG" level="CRITICAL" enabled="true" />
-        <coding_rule class="ICAST_INT_2_LONG_AS_INSTANT" level="CRITICAL" enabled="false" />
-        <coding_rule class="ICAST_INT_CAST_TO_DOUBLE_PASSED_TO_CEIL" level="CRITICAL" enabled="true" />
-        <coding_rule class="ICAST_INT_CAST_TO_FLOAT_PASSED_TO_ROUND" level="CRITICAL" enabled="true" />
-        <coding_rule class="ICAST_QUESTIONABLE_UNSIGNED_RIGHT_SHIFT" level="CRITICAL" enabled="true" />
-        <coding_rule class="IC_INIT_CIRCULARITY" level="CRITICAL" enabled="true" />
-        <coding_rule class="IC_SUPERCLASS_USES_SUBCLASS_DURING_INITIALIZATION" level="MAJOR" enabled="true" />
-        <coding_rule class="IJU_ASSERT_METHOD_INVOKED_FROM_RUN_METHOD" level="CRITICAL" enabled="true" />
-        <coding_rule class="IJU_BAD_SUITE_METHOD" level="CRITICAL" enabled="true" />
-        <coding_rule class="IJU_NO_TESTS" level="CRITICAL" enabled="true" />
-        <coding_rule class="IJU_SETUP_NO_SUPER" level="CRITICAL" enabled="true" />
-        <coding_rule class="IJU_SUITE_NOT_STATIC" level="CRITICAL" enabled="true" />
-        <coding_rule class="IJU_TEARDOWN_NO_SUPER" level="CRITICAL" enabled="true" />
-        <coding_rule class="IL_CONTAINER_ADDED_TO_ITSELF" level="CRITICAL" enabled="true" />
-        <coding_rule class="IL_INFINITE_LOOP" level="CRITICAL" enabled="true" />
-        <coding_rule class="IL_INFINITE_RECURSIVE_LOOP" level="CRITICAL" enabled="true" />
-        <coding_rule class="IMA_INEFFICIENT_MEMBER_ACCESS" level="MAJOR" enabled="false" />
-        <coding_rule class="IMSE_DONT_CATCH_IMSE" level="MAJOR" enabled="true" />
-        <coding_rule class="IM_AVERAGE_COMPUTATION_COULD_OVERFLOW" level="CRITICAL" enabled="true" />
-        <coding_rule class="IM_BAD_CHECK_FOR_ODD" level="CRITICAL" enabled="true" />
-        <coding_rule class="IM_MULTIPLYING_RESULT_OF_IREM" level="CRITICAL" enabled="true" />
-        <coding_rule class="INT_BAD_COMPARISON_WITH_INT_VALUE" level="CRITICAL" enabled="false" />
-        <coding_rule class="INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE" level="CRITICAL" enabled="true" />
-        <coding_rule class="INT_BAD_COMPARISON_WITH_SIGNED_BYTE" level="CRITICAL" enabled="true" />
-        <coding_rule class="INT_BAD_REM_BY_1" level="CRITICAL" enabled="true" />
-        <coding_rule class="INT_VACUOUS_BIT_OPERATION" level="CRITICAL" enabled="true" />
-        <coding_rule class="INT_VACUOUS_COMPARISON" level="CRITICAL" enabled="true" />
-        <coding_rule class="IO_APPENDING_TO_OBJECT_OUTPUT_STREAM" level="CRITICAL" enabled="true" />
-        <coding_rule class="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN" level="CRITICAL" enabled="true" />
-        <coding_rule class="IS2_INCONSISTENT_SYNC" level="CRITICAL" enabled="true" />
-        <coding_rule class="ISC_INSTANTIATE_STATIC_CLASS" level="MAJOR" enabled="true" />
-        <coding_rule class="IS_FIELD_NOT_GUARDED" level="CRITICAL" enabled="true" />
-        <coding_rule class="ITA_INEFFICIENT_TO_ARRAY" level="CRITICAL" enabled="true" />
-        <coding_rule class="IT_NO_SUCH_ELEMENT" level="MINOR" enabled="true" />
         <coding_rule class="ImportStatementsDontImportJavaLang" level="MINOR" enabled="true" />
         <coding_rule class="ImportStatementsDuplicateImports" level="MINOR" enabled="true" />
         <coding_rule class="ImportStatementsImportFromSamePackage" level="MINOR" enabled="false" />
@@ -356,11 +171,6 @@
         <coding_rule class="J2EERemoteSessionInterfaceNamingConvention" level="MAJOR" enabled="false" />
         <coding_rule class="J2EEStaticEJBFieldShouldBeFinal" level="MAJOR" enabled="false" />
         <coding_rule class="J2EEUseProperClassLoader" level="CRITICAL" enabled="false" />
-        <coding_rule class="J2EE_STORE_OF_NON_SERIALIZABLE_OBJECT_INTO_SESSION" level="CRITICAL" enabled="true" />
-        <coding_rule class="JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS" level="MINOR" enabled="true" />
-        <coding_rule class="JLM_JSR166_LOCK_MONITORENTER" level="CRITICAL" enabled="true" />
-        <coding_rule class="JLM_JSR166_UTILCONCURRENT_MONITORENTER" level="CRITICAL" enabled="false" />
-        <coding_rule class="JML_JSR166_CALLING_WAIT_RATHER_THAN_AWAIT" level="CRITICAL" enabled="false" />
         <coding_rule class="JUnitJUnitAssertionsShouldIncludeMessage" level="MAJOR" enabled="false" />
         <coding_rule class="JUnitJUnitSpelling" level="MAJOR" enabled="false" />
         <coding_rule class="JUnitJUnitStaticSuite" level="MAJOR" enabled="false" />
@@ -382,27 +192,6 @@
         <coding_rule class="JavaLoggingLoggerIsNotStaticFinal" level="MAJOR" enabled="false" />
         <coding_rule class="JavaLoggingMoreThanOneLogger" level="MAJOR" enabled="false" />
         <coding_rule class="JavaLoggingSystemPrintln" level="MAJOR" enabled="true" />
-        <coding_rule class="LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE" level="MAJOR" enabled="false" />
-        <coding_rule class="LI_LAZY_INIT_STATIC" level="CRITICAL" enabled="true" />
-        <coding_rule class="LI_LAZY_INIT_UPDATE_STATIC" level="CRITICAL" enabled="true" />
-        <coding_rule class="MF_CLASS_MASKS_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="MF_METHOD_MASKS_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="ML_SYNC_ON_FIELD_TO_GUARD_CHANGING_THAT_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="ML_SYNC_ON_UPDATED_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="MSF_MUTABLE_SERVLET_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_CANNOT_BE_FINAL" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_EXPOSE_REP" level="CRITICAL" enabled="true" />
-        <coding_rule class="MS_FINAL_PKGPROTECT" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_MUTABLE_ARRAY" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_MUTABLE_HASHTABLE" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_OOI_PKGPROTECT" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_PKGPROTECT" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_SHOULD_BE_FINAL" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_SHOULD_BE_REFACTORED_TO_BE_FINAL" level="CRITICAL" enabled="false" />
-        <coding_rule class="MTIA_SUSPECT_SERVLET_INSTANCE_FIELD" level="CRITICAL" enabled="true" />
-        <coding_rule class="MTIA_SUSPECT_STRUTS_INSTANCE_FIELD" level="CRITICAL" enabled="true" />
-        <coding_rule class="MWN_MISMATCHED_NOTIFY" level="CRITICAL" enabled="true" />
-        <coding_rule class="MWN_MISMATCHED_WAIT" level="CRITICAL" enabled="true" />
         <coding_rule class="MigrationAvoidAssertAsIdentifier" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationAvoidEnumAsIdentifier" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationByteInstantiation" level="MAJOR" enabled="false" />
@@ -417,60 +206,6 @@
         <coding_rule class="MigrationReplaceHashtableWithMap" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationReplaceVectorWithList" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationShortInstantiation" level="MAJOR" enabled="false" />
-        <coding_rule class="NM_BAD_EQUAL" level="MAJOR" enabled="false" />
-        <coding_rule class="NM_CLASS_NAMING_CONVENTION" level="MAJOR" enabled="false" />
-        <coding_rule class="NM_CLASS_NOT_EXCEPTION" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_CONFUSING" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_FIELD_NAMING_CONVENTION" level="MAJOR" enabled="false" />
-        <coding_rule class="NM_FUTURE_KEYWORD_USED_AS_IDENTIFIER" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_FUTURE_KEYWORD_USED_AS_MEMBER_IDENTIFIER" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_LCASE_HASHCODE" level="MAJOR" enabled="false" />
-        <coding_rule class="NM_LCASE_TOSTRING" level="MAJOR" enabled="false" />
-        <coding_rule class="NM_METHOD_CONSTRUCTOR_CONFUSION" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_METHOD_NAMING_CONVENTION" level="MAJOR" enabled="false" />
-        <coding_rule class="NM_SAME_SIMPLE_NAME_AS_INTERFACE" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_VERY_CONFUSING" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_VERY_CONFUSING_INTENTIONAL" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_WRONG_PACKAGE" level="MAJOR" enabled="true" />
-        <coding_rule class="NM_WRONG_PACKAGE_INTENTIONAL" level="MAJOR" enabled="true" />
-        <coding_rule class="NN_NAKED_NOTIFY" level="CRITICAL" enabled="true" />
-        <coding_rule class="NOISE_FIELD_REFERENCE" level="MAJOR" enabled="false" />
-        <coding_rule class="NOISE_METHOD_CALL" level="MAJOR" enabled="false" />
-        <coding_rule class="NOISE_NULL_DEREFERENCE" level="MAJOR" enabled="false" />
-        <coding_rule class="NOISE_OPERATION" level="MAJOR" enabled="false" />
-        <coding_rule class="NO_NOTIFY_NOT_NOTIFYALL" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_ALWAYS_NULL" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_ALWAYS_NULL_EXCEPTION" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_ARGUMENT_MIGHT_BE_NULL" level="MAJOR" enabled="true" />
-        <coding_rule class="NP_BOOLEAN_RETURN_NULL" level="MAJOR" enabled="true" />
-        <coding_rule class="NP_CLONE_COULD_RETURN_NULL" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_CLOSING_NULL" level="MAJOR" enabled="false" />
-        <coding_rule class="NP_DEREFERENCE_OF_READLINE_VALUE" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_GUARANTEED_DEREF" level="BLOCKER" enabled="true" />
-        <coding_rule class="NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_IMMEDIATE_DEREFERENCE_OF_READLINE" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_LOAD_OF_KNOWN_NULL_VALUE" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" level="CRITICAL" enabled="false" />
-        <coding_rule class="NP_NONNULL_PARAM_VIOLATION" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NONNULL_RETURN_VIOLATION" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NULL_INSTANCEOF" level="BLOCKER" enabled="true" />
-        <coding_rule class="NP_NULL_ON_SOME_PATH" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NULL_ON_SOME_PATH_EXCEPTION" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NULL_PARAM_DEREF" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_NULL_PARAM_DEREF_NONVIRTUAL" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_STORE_INTO_NONNULL_FIELD" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_SYNC_AND_NULL_CHECK_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="NP_TOSTRING_COULD_RETURN_NULL" level="CRITICAL" enabled="true" />
-        <coding_rule class="NP_UNWRITTEN_FIELD" level="MAJOR" enabled="false" />
-        <coding_rule class="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" level="CRITICAL" enabled="false" />
-        <coding_rule class="NS_DANGEROUS_NON_SHORT_CIRCUIT" level="CRITICAL" enabled="true" />
-        <coding_rule class="NS_NON_SHORT_CIRCUIT" level="MAJOR" enabled="true" />
         <coding_rule class="NamingAbstractNaming" level="MAJOR" enabled="false" />
         <coding_rule class="NamingAvoidDollarSigns" level="MINOR" enabled="true" />
         <coding_rule class="NamingAvoidFieldNameMatchingMethodName" level="MAJOR" enabled="false" />
@@ -491,12 +226,6 @@
         <coding_rule class="NamingSuspiciousEqualsMethodName" level="CRITICAL" enabled="true" />
         <coding_rule class="NamingSuspiciousHashcodeMethodName" level="MAJOR" enabled="true" />
         <coding_rule class="NamingVariableNamingConventions" level="MAJOR" enabled="false" />
-        <coding_rule class="OBL_UNSATISFIED_OBLIGATION" level="CRITICAL" enabled="false" />
-        <coding_rule class="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE" level="CRITICAL" enabled="false" />
-        <coding_rule class="ODR_OPEN_DATABASE_RESOURCE" level="CRITICAL" enabled="true" />
-        <coding_rule class="ODR_OPEN_DATABASE_RESOURCE_EXCEPTION_PATH" level="CRITICAL" enabled="true" />
-        <coding_rule class="OS_OPEN_STREAM" level="CRITICAL" enabled="true" />
-        <coding_rule class="OS_OPEN_STREAM_EXCEPTION_PATH" level="CRITICAL" enabled="true" />
         <coding_rule class="OptimizationAddEmptyString" level="MAJOR" enabled="false" />
         <coding_rule class="OptimizationAvoidArrayLoops" level="MAJOR" enabled="true" />
         <coding_rule class="OptimizationAvoidInstantiatingObjectsInLoops" level="MINOR" enabled="false" />
@@ -509,98 +238,6 @@
         <coding_rule class="OptimizationUseArrayListInsteadOfVector" level="MAJOR" enabled="true" />
         <coding_rule class="OptimizationUseArraysAsList" level="MAJOR" enabled="true" />
         <coding_rule class="OptimizationUseStringBufferForStringAppends" level="MAJOR" enabled="false" />
-        <coding_rule class="PS_PUBLIC_SEMAPHORES" level="CRITICAL" enabled="true" />
-        <coding_rule class="PT_ABSOLUTE_PATH_TRAVERSAL" level="CRITICAL" enabled="false" />
-        <coding_rule class="PT_RELATIVE_PATH_TRAVERSAL" level="CRITICAL" enabled="false" />
-        <coding_rule class="PZLA_PREFER_ZERO_LENGTH_ARRAYS" level="MAJOR" enabled="true" />
-        <coding_rule class="PZ_DONT_REUSE_ENTRY_OBJECTS_IN_ITERATORS" level="CRITICAL" enabled="false" />
-        <coding_rule class="QBA_QUESTIONABLE_BOOLEAN_ASSIGNMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="QF_QUESTIONABLE_FOR_LOOP" level="CRITICAL" enabled="true" />
-        <coding_rule class="RCN_REDUNDANT_COMPARISON_OF_NULL_AND_NONNULL_VALUE" level="CRITICAL" enabled="true" />
-        <coding_rule class="RCN_REDUNDANT_COMPARISON_TWO_NULL_VALUES" level="CRITICAL" enabled="true" />
-        <coding_rule class="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" level="CRITICAL" enabled="true" />
-        <coding_rule class="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" level="CRITICAL" enabled="true" />
-        <coding_rule class="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" level="CRITICAL" enabled="true" />
-        <coding_rule class="RC_REF_COMPARISON" level="CRITICAL" enabled="true" />
-        <coding_rule class="RC_REF_COMPARISON_BAD_PRACTICE" level="MAJOR" enabled="false" />
-        <coding_rule class="RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN" level="MAJOR" enabled="false" />
-        <coding_rule class="REC_CATCH_EXCEPTION" level="MAJOR" enabled="true" />
-        <coding_rule class="RE_BAD_SYNTAX_FOR_REGULAR_EXPRESSION" level="CRITICAL" enabled="true" />
-        <coding_rule class="RE_CANT_USE_FILE_SEPARATOR_AS_REGULAR_EXPRESSION" level="CRITICAL" enabled="true" />
-        <coding_rule class="RE_POSSIBLE_UNINTENDED_PATTERN" level="CRITICAL" enabled="true" />
-        <coding_rule class="RI_REDUNDANT_INTERFACES" level="MAJOR" enabled="true" />
-        <coding_rule class="RR_NOT_CHECKED" level="MAJOR" enabled="true" />
-        <coding_rule class="RS_READOBJECT_SYNC" level="CRITICAL" enabled="true" />
-        <coding_rule class="RU_INVOKE_RUN" level="MAJOR" enabled="true" />
-        <coding_rule class="RV_01_TO_INT" level="MAJOR" enabled="true" />
-        <coding_rule class="RV_ABSOLUTE_VALUE_OF_HASHCODE" level="CRITICAL" enabled="true" />
-        <coding_rule class="RV_ABSOLUTE_VALUE_OF_RANDOM_INT" level="CRITICAL" enabled="true" />
-        <coding_rule class="RV_CHECK_COMPARETO_FOR_SPECIFIC_RETURN_VALUE" level="CRITICAL" enabled="false" />
-        <coding_rule class="RV_CHECK_FOR_POSITIVE_INDEXOF" level="MINOR" enabled="true" />
-        <coding_rule class="RV_DONT_JUST_NULL_CHECK_READLINE" level="MAJOR" enabled="true" />
-        <coding_rule class="RV_EXCEPTION_NOT_THROWN" level="CRITICAL" enabled="true" />
-        <coding_rule class="RV_NEGATING_RESULT_OF_COMPARETO" level="CRITICAL" enabled="false" />
-        <coding_rule class="RV_REM_OF_HASHCODE" level="CRITICAL" enabled="true" />
-        <coding_rule class="RV_REM_OF_RANDOM_INT" level="CRITICAL" enabled="true" />
-        <coding_rule class="RV_RETURN_VALUE_IGNORED" level="MINOR" enabled="true" />
-        <coding_rule class="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" level="MAJOR" enabled="true" />
-        <coding_rule class="RV_RETURN_VALUE_IGNORED_INFERRED" level="CRITICAL" enabled="false" />
-        <coding_rule class="RV_RETURN_VALUE_OF_PUTIFABSENT_IGNORED" level="MAJOR" enabled="false" />
-        <coding_rule class="RpC_REPEATED_CONDITIONAL_TEST" level="MAJOR" enabled="true" />
-        <coding_rule class="SA_FIELD_DOUBLE_ASSIGNMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="SA_FIELD_SELF_ASSIGNMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="SA_FIELD_SELF_COMPARISON" level="CRITICAL" enabled="true" />
-        <coding_rule class="SA_FIELD_SELF_COMPUTATION" level="CRITICAL" enabled="true" />
-        <coding_rule class="SA_LOCAL_DOUBLE_ASSIGNMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="SA_LOCAL_SELF_ASSIGNMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="SA_LOCAL_SELF_ASSIGNMENT_INSTEAD_OF_FIELD" level="CRITICAL" enabled="false" />
-        <coding_rule class="SA_LOCAL_SELF_COMPARISON" level="CRITICAL" enabled="true" />
-        <coding_rule class="SA_LOCAL_SELF_COMPUTATION" level="CRITICAL" enabled="true" />
-        <coding_rule class="SBSC_USE_STRINGBUFFER_CONCATENATION" level="CRITICAL" enabled="true" />
-        <coding_rule class="SC_START_IN_CTOR" level="CRITICAL" enabled="true" />
-        <coding_rule class="SE_BAD_FIELD" level="MINOR" enabled="false" />
-        <coding_rule class="SE_BAD_FIELD_INNER_CLASS" level="MINOR" enabled="true" />
-        <coding_rule class="SE_BAD_FIELD_STORE" level="CRITICAL" enabled="true" />
-        <coding_rule class="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_INNER_CLASS" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_METHOD_MUST_BE_PRIVATE" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_NONFINAL_SERIALVERSIONID" level="CRITICAL" enabled="true" />
-        <coding_rule class="SE_NONLONG_SERIALVERSIONID" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_NONSTATIC_SERIALVERSIONID" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_NO_SERIALVERSIONID" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_NO_SUITABLE_CONSTRUCTOR" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_NO_SUITABLE_CONSTRUCTOR_FOR_EXTERNALIZATION" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_PRIVATE_READ_RESOLVE_NOT_INHERITED" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_READ_RESOLVE_IS_STATIC" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_READ_RESOLVE_MUST_RETURN_OBJECT" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_TRANSIENT_FIELD_NOT_RESTORED" level="MAJOR" enabled="true" />
-        <coding_rule class="SE_TRANSIENT_FIELD_OF_NONSERIALIZABLE_CLASS" level="MAJOR" enabled="true" />
-        <coding_rule class="SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH" level="MAJOR" enabled="false" />
-        <coding_rule class="SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW" level="MAJOR" enabled="false" />
-        <coding_rule class="SF_SWITCH_FALLTHROUGH" level="MAJOR" enabled="false" />
-        <coding_rule class="SF_SWITCH_NO_DEFAULT" level="MAJOR" enabled="false" />
-        <coding_rule class="SIC_INNER_SHOULD_BE_STATIC" level="MAJOR" enabled="true" />
-        <coding_rule class="SIC_INNER_SHOULD_BE_STATIC_ANON" level="MAJOR" enabled="true" />
-        <coding_rule class="SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS" level="MAJOR" enabled="true" />
-        <coding_rule class="SIC_THREADLOCAL_DEADLY_EMBRACE" level="MAJOR" enabled="false" />
-        <coding_rule class="SIO_SUPERFLUOUS_INSTANCEOF" level="CRITICAL" enabled="true" />
-        <coding_rule class="SI_INSTANCE_BEFORE_FINALS_ASSIGNED" level="CRITICAL" enabled="true" />
-        <coding_rule class="SP_SPIN_ON_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="SQL_BAD_PREPARED_STATEMENT_ACCESS" level="CRITICAL" enabled="true" />
-        <coding_rule class="SQL_BAD_RESULTSET_ACCESS" level="CRITICAL" enabled="true" />
-        <coding_rule class="SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE" level="CRITICAL" enabled="true" />
-        <coding_rule class="SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING" level="CRITICAL" enabled="true" />
-        <coding_rule class="SR_NOT_CHECKED" level="MAJOR" enabled="true" />
-        <coding_rule class="SS_SHOULD_BE_STATIC" level="MAJOR" enabled="true" />
-        <coding_rule class="STCAL_INVOKE_ON_STATIC_CALENDAR_INSTANCE" level="CRITICAL" enabled="true" />
-        <coding_rule class="STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE" level="CRITICAL" enabled="true" />
-        <coding_rule class="STCAL_STATIC_CALENDAR_INSTANCE" level="CRITICAL" enabled="true" />
-        <coding_rule class="STCAL_STATIC_SIMPLE_DATE_FORMAT_INSTANCE" level="CRITICAL" enabled="true" />
-        <coding_rule class="STI_INTERRUPTED_ON_CURRENTTHREAD" level="CRITICAL" enabled="true" />
-        <coding_rule class="STI_INTERRUPTED_ON_UNKNOWNTHREAD" level="CRITICAL" enabled="true" />
-        <coding_rule class="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" level="CRITICAL" enabled="true" />
-        <coding_rule class="SWL_SLEEP_WITH_LOCK_HELD" level="CRITICAL" enabled="true" />
-        <coding_rule class="SW_SWING_METHODS_INVOKED_IN_SWING_THREAD" level="MAJOR" enabled="true" />
         <coding_rule class="SecurityCodeGuidelinesArrayIsStoredDirectly" level="CRITICAL" enabled="true" />
         <coding_rule class="SecurityCodeGuidelinesMethodReturnsInternalArray" level="CRITICAL" enabled="false" />
         <coding_rule class="StrictExceptionsAvoidCatchingGenericException" level="MAJOR" enabled="false" />
@@ -630,41 +267,10 @@
         <coding_rule class="StringandStringBufferUseIndexOfChar" level="MAJOR" enabled="true" />
         <coding_rule class="StringandStringBufferUseStringBufferLength" level="MINOR" enabled="true" />
         <coding_rule class="StringandStringBufferUselessStringValueOf" level="MINOR" enabled="true" />
-        <coding_rule class="TLW_TWO_LOCK_WAIT" level="MAJOR" enabled="true" />
-        <coding_rule class="TQ_ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED" level="CRITICAL" enabled="true" />
-        <coding_rule class="TQ_COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS" level="CRITICAL" enabled="false" />
-        <coding_rule class="TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK" level="CRITICAL" enabled="true" />
-        <coding_rule class="TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK" level="CRITICAL" enabled="true" />
-        <coding_rule class="TQ_MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK" level="CRITICAL" enabled="true" />
-        <coding_rule class="TQ_MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK" level="CRITICAL" enabled="true" />
-        <coding_rule class="TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED" level="CRITICAL" enabled="true" />
-        <coding_rule class="TQ_UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED" level="CRITICAL" enabled="false" />
         <coding_rule class="TypeResolutionCloneMethodMustImplementCloneable" level="MAJOR" enabled="false" />
         <coding_rule class="TypeResolutionLooseCoupling" level="MAJOR" enabled="true" />
         <coding_rule class="TypeResolutionSignatureDeclareThrowsException" level="MAJOR" enabled="true" />
         <coding_rule class="TypeResolutionUnusedImports" level="INFO" enabled="false" />
-        <coding_rule class="UCF_USELESS_CONTROL_FLOW" level="CRITICAL" enabled="true" />
-        <coding_rule class="UCF_USELESS_CONTROL_FLOW_NEXT_LINE" level="CRITICAL" enabled="true" />
-        <coding_rule class="UG_SYNC_SET_UNSYNC_GET" level="MAJOR" enabled="true" />
-        <coding_rule class="UI_INHERITANCE_UNSAFE_GETRESOURCE" level="MAJOR" enabled="true" />
-        <coding_rule class="UL_UNRELEASED_LOCK" level="CRITICAL" enabled="true" />
-        <coding_rule class="UL_UNRELEASED_LOCK_EXCEPTION_PATH" level="CRITICAL" enabled="true" />
-        <coding_rule class="UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS" level="CRITICAL" enabled="true" />
-        <coding_rule class="UM_UNNECESSARY_MATH" level="CRITICAL" enabled="true" />
-        <coding_rule class="UPM_UNCALLED_PRIVATE_METHOD" level="CRITICAL" enabled="true" />
-        <coding_rule class="URF_UNREAD_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" level="CRITICAL" enabled="false" />
-        <coding_rule class="UR_UNINIT_READ" level="MAJOR" enabled="true" />
-        <coding_rule class="UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR" level="MAJOR" enabled="false" />
-        <coding_rule class="USM_USELESS_ABSTRACT_METHOD" level="MAJOR" enabled="false" />
-        <coding_rule class="USM_USELESS_SUBCLASS_METHOD" level="MAJOR" enabled="false" />
-        <coding_rule class="UUF_UNUSED_FIELD" level="MAJOR" enabled="true" />
-        <coding_rule class="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD" level="CRITICAL" enabled="false" />
-        <coding_rule class="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" level="MAJOR" enabled="false" />
-        <coding_rule class="UWF_NULL_FIELD" level="CRITICAL" enabled="true" />
-        <coding_rule class="UWF_UNWRITTEN_FIELD" level="MAJOR" enabled="false" />
-        <coding_rule class="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" level="CRITICAL" enabled="false" />
-        <coding_rule class="UW_UNCOND_WAIT" level="MAJOR" enabled="true" />
         <coding_rule class="UnnecessaryUnnecessaryConversionTemporary" level="MAJOR" enabled="false" />
         <coding_rule class="UnnecessaryUnnecessaryFinalModifier" level="INFO" enabled="false" />
         <coding_rule class="UnnecessaryUnnecessaryReturn" level="MINOR" enabled="false" />
@@ -677,29 +283,6 @@
         <coding_rule class="UnusedCodeUnusedModifier" level="MAJOR" enabled="true" />
         <coding_rule class="UnusedCodeUnusedPrivateField" level="MAJOR" enabled="true" />
         <coding_rule class="UnusedCodeUnusedPrivateMethod" level="MAJOR" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_BAD_ARGUMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_BAD_CONVERSION" level="CRITICAL" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_BAD_CONVERSION_FROM_ARRAY" level="MAJOR" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_BAD_CONVERSION_TO_BOOLEAN" level="MAJOR" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_EXPECTED_MESSAGE_FORMAT_SUPPLIED" level="MAJOR" enabled="false" />
-        <coding_rule class="VA_FORMAT_STRING_EXTRA_ARGUMENTS_PASSED" level="MAJOR" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_ILLEGAL" level="CRITICAL" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_MISSING_ARGUMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_NO_PREVIOUS_ARGUMENT" level="CRITICAL" enabled="true" />
-        <coding_rule class="VA_FORMAT_STRING_USES_NEWLINE" level="CRITICAL" enabled="false" />
-        <coding_rule class="VA_PRIMITIVE_ARRAY_PASSED_TO_OBJECT_VARARG" level="CRITICAL" enabled="true" />
-        <coding_rule class="VO_VOLATILE_INCREMENT" level="CRITICAL" enabled="false" />
-        <coding_rule class="VO_VOLATILE_REFERENCE_TO_ARRAY" level="MAJOR" enabled="true" />
-        <coding_rule class="VR_UNRESOLVABLE_REFERENCE" level="MAJOR" enabled="false" />
-        <coding_rule class="WA_AWAIT_NOT_IN_LOOP" level="CRITICAL" enabled="true" />
-        <coding_rule class="WA_NOT_IN_LOOP" level="CRITICAL" enabled="true" />
-        <coding_rule class="WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL" level="CRITICAL" enabled="true" />
-        <coding_rule class="WMI_WRONG_MAP_ITERATOR" level="CRITICAL" enabled="true" />
-        <coding_rule class="WS_WRITEOBJECT_SYNC" level="CRITICAL" enabled="true" />
-        <coding_rule class="XFB_XML_FACTORY_BYPASS" level="CRITICAL" enabled="true" />
-        <coding_rule class="XSS_REQUEST_PARAMETER_TO_JSP_WRITER" level="CRITICAL" enabled="true" />
-        <coding_rule class="XSS_REQUEST_PARAMETER_TO_SEND_ERROR" level="CRITICAL" enabled="true" />
-        <coding_rule class="XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER" level="CRITICAL" enabled="true" />
       </profile>
     </profiles>
     <list size="0" />
@@ -721,7 +304,7 @@
           <element id="directory" name="lib">
             <element id="library" level="project" name="Maven: org.apache.wicket:wicket-core:6.18.0" />
             <element id="library" level="project" name="Maven: org.apache.wicket:wicket-request:6.18.0" />
-            <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:4.3.6.Final" />
+            <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:4.3.7.Final" />
             <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
             <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
             <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Draft-16" />
@@ -760,12 +343,13 @@
             <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.2" />
             <element id="library" level="project" name="Maven: org.wicketstuff:wicketstuff-annotation:6.18.0" />
             <element id="library" level="project" name="Maven: org.wicketstuff:wicket-facebook:6.18.0" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-core:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-core:4.1.2.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-test:4.1.2.RELEASE" />
             <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
             <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.4" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.1.1.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.1.1.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.1.2.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.1.2.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.2.RELEASE" />
             <element id="library" level="project" name="Maven: org.hsqldb:hsqldb:2.3.2" />
             <element id="library" level="project" name="Maven: antlr:antlr:2.7.6" />
             <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-compat-jbossweb:2.0.1" />
@@ -809,9 +393,10 @@
             <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-ie-driver:2.42.2" />
             <element id="library" level="project" name="Maven: net.java.dev.jna:platform:3.4.0" />
             <element id="library" level="project" name="Maven: org.apache.wicket:wicket-extensions:6.18.0" />
-            <element id="library" level="project" name="Maven: org.hibernate:hibernate-ehcache:4.3.6.Final" />
+            <element id="library" level="project" name="Maven: com.google.code.findbugs:annotations:3.0.0" />
+            <element id="library" level="project" name="Maven: org.hibernate:hibernate-ehcache:4.3.7.Final" />
             <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.4.3" />
-            <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.8.3" />
+            <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.9.0" />
             <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.2-GA" />
             <element id="library" level="project" name="Maven: org.apache.maven.skins:maven-default-skin:1.1" />
             <element id="library" level="project" name="Maven: com.github.stephenc.findbugs:findbugs-annotations:1.3.9-1" />
@@ -819,11 +404,11 @@
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:5.1.2.Final" />
             <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.0.0" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.1.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.2.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.2.RELEASE" />
             <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.1.RELEASE" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.2.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.2.RELEASE" />
             <element id="library" level="project" name="Maven: org.codehaus.mojo:emma-maven-plugin:1.0-alpha-3" />
             <element id="library" level="project" name="Maven: emma:emma:2.1.5320" />
             <element id="library" level="project" name="Maven: org.apache.maven:maven-artifact:2.0.8" />
@@ -866,7 +451,7 @@
             <element id="library" level="project" name="Maven: javancss:ccl:29.50" />
             <element id="library" level="project" name="Maven: javancss:jhbasic:29.50" />
             <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.12" />
-            <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.2.RELEASE" />
             <element id="library" level="project" name="Maven: org.apache.wicket.experimental.wicket6:wicket-atmosphere:0.20" />
             <element id="library" level="project" name="Maven: org.webjars:jquery-atmosphere:2.1.6" />
             <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.7-b41" />
@@ -1346,6 +931,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/github/stephenc/findbugs/findbugs-annotations/1.3.9-1/findbugs-annotations-1.3.9-1-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: com.google.code.findbugs:annotations:3.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/annotations/3.0.0/annotations-3.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/annotations/3.0.0/annotations-3.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/annotations/3.0.0/annotations-3.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: com.google.guava:guava:13.0.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/13.0.1/guava-13.0.1.jar!/" />
@@ -1742,15 +1338,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache-core/2.4.3/ehcache-core-2.4.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: net.sf.ehcache:ehcache:2.8.3">
+    <library name="Maven: net.sf.ehcache:ehcache:2.9.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.8.3/ehcache-2.8.3.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.9.0/ehcache-2.9.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.8.3/ehcache-2.8.3-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.9.0/ehcache-2.9.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.8.3/ehcache-2.8.3-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.9.0/ehcache-2.9.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: net.sourceforge.cssparser:cssparser:0.9.9">
@@ -2534,26 +2130,26 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Draft-16/hibernate-jpa-2.1-api-1.0.0.Draft-16-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.hibernate:hibernate-core:4.3.6.Final">
+    <library name="Maven: org.hibernate:hibernate-core:4.3.7.Final">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.hibernate:hibernate-ehcache:4.3.6.Final">
+    <library name="Maven: org.hibernate:hibernate-ehcache:4.3.7.Final">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.6.Final/hibernate-ehcache-4.3.6.Final.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.7.Final/hibernate-ehcache-4.3.7.Final.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.6.Final/hibernate-ehcache-4.3.6.Final-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.7.Final/hibernate-ehcache-4.3.7.Final-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.6.Final/hibernate-ehcache-4.3.6.Final-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/4.3.7.Final/hibernate-ehcache-4.3.7.Final-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.hibernate:hibernate-validator:5.1.2.Final">
@@ -2842,103 +2438,114 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-aop:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-aop:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.1.RELEASE/spring-aop-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.2.RELEASE/spring-aop-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.1.RELEASE/spring-aop-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.2.RELEASE/spring-aop-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.1.RELEASE/spring-aop-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.2.RELEASE/spring-aop-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-beans:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-beans:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.1.RELEASE/spring-beans-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.2.RELEASE/spring-beans-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.1.RELEASE/spring-beans-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.2.RELEASE/spring-beans-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.1.RELEASE/spring-beans-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.2.RELEASE/spring-beans-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-context:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-context:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.1.RELEASE/spring-context-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.2.RELEASE/spring-context-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.1.RELEASE/spring-context-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.2.RELEASE/spring-context-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.1.RELEASE/spring-context-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.2.RELEASE/spring-context-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-core:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-core:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.1.RELEASE/spring-core-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.2.RELEASE/spring-core-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.1.RELEASE/spring-core-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.2.RELEASE/spring-core-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.1.RELEASE/spring-core-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.2.RELEASE/spring-core-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-expression:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-expression:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.1.RELEASE/spring-expression-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.2.RELEASE/spring-expression-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.1.RELEASE/spring-expression-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.2.RELEASE/spring-expression-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.1.RELEASE/spring-expression-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.2.RELEASE/spring-expression-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-jdbc:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-jdbc:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.1.RELEASE/spring-jdbc-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.2.RELEASE/spring-jdbc-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.1.RELEASE/spring-jdbc-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.2.RELEASE/spring-jdbc-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.1.RELEASE/spring-jdbc-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.2.RELEASE/spring-jdbc-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-orm:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-orm:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.1.RELEASE/spring-orm-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.2.RELEASE/spring-orm-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.1.RELEASE/spring-orm-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.2.RELEASE/spring-orm-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.1.RELEASE/spring-orm-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/4.1.2.RELEASE/spring-orm-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-tx:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-test:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.1.RELEASE/spring-tx-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-test/4.1.2.RELEASE/spring-test-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.1.RELEASE/spring-tx-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-test/4.1.2.RELEASE/spring-test-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.1.RELEASE/spring-tx-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-test/4.1.2.RELEASE/spring-test-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.springframework:spring-web:4.1.1.RELEASE">
+    <library name="Maven: org.springframework:spring-tx:4.1.2.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.1.RELEASE/spring-web-4.1.1.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.2.RELEASE/spring-tx-4.1.2.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.1.RELEASE/spring-web-4.1.1.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.2.RELEASE/spring-tx-4.1.2.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.1.RELEASE/spring-web-4.1.1.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.2.RELEASE/spring-tx-4.1.2.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework:spring-web:4.1.2.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.2.RELEASE/spring-web-4.1.2.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.2.RELEASE/spring-web-4.1.2.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.2.RELEASE/spring-web-4.1.2.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.w3c.css:sac:1.3">
@@ -3096,7 +2703,7 @@
         <entry key="property.exportBaseDir" value="" />
         <entry key="property.exportCreateArchiveDir" value="false" />
         <entry key="property.exportOpenBrowser" value="true" />
-        <entry key="property.minPriorityToReport" value="Medium" />
+        <entry key="property.minPriorityToReport" value="Low" />
         <entry key="property.runAnalysisInBackground" value="false" />
         <entry key="property.showHiddenDetectors" value="false" />
         <entry key="property.toolWindowToFront" value="true" />
@@ -3107,6 +2714,7 @@
         <entry key="AppendingToAnObjectOutputStream" value="true" />
         <entry key="AtomicityProblem" value="true" />
         <entry key="BadAppletConstructor" value="false" />
+        <entry key="BadHexadecimalConversionDetector" value="true" />
         <entry key="BadResultSetAccess" value="true" />
         <entry key="BadSyntaxForRegularExpression" value="true" />
         <entry key="BadUseOfReturnValue" value="true" />
@@ -3120,12 +2728,17 @@
         <entry key="CheckExpectedWarnings" value="false" />
         <entry key="CheckImmutableAnnotation" value="true" />
         <entry key="CheckTypeQualifiers" value="true" />
+        <entry key="CipherWithNoIntegrityDetector" value="true" />
         <entry key="CloneIdiom" value="true" />
+        <entry key="CommandInjectionDetector" value="true" />
         <entry key="ComparatorIdiom" value="true" />
         <entry key="ConfusedInheritance" value="true" />
         <entry key="ConfusionBetweenInheritedAndOuterMethod" value="true" />
+        <entry key="CookieDetector" value="true" />
         <entry key="CrossSiteScripting" value="true" />
+        <entry key="CustomMessageDigestDetector" value="true" />
         <entry key="DefaultEncodingDetector" value="true" />
+        <entry key="DesUsageDetector" value="true" />
         <entry key="DoInsideDoPrivileged" value="true" />
         <entry key="DontCatchIllegalMonitorStateException" value="true" />
         <entry key="DontIgnoreResultOfPutIfAbsent" value="true" />
@@ -3136,8 +2749,10 @@
         <entry key="DuplicateBranches" value="true" />
         <entry key="EmptyZipFileEntry" value="true" />
         <entry key="EqualsOperandShouldHaveClassCompatibleWithThis" value="true" />
+        <entry key="EsapiEncryptorDetector" value="true" />
         <entry key="ExplicitSerialization" value="true" />
         <entry key="FieldItemSummary" value="true" />
+        <entry key="FileUploadFilenameDetector" value="true" />
         <entry key="FinalizerNullsFields" value="true" />
         <entry key="FindBadCast2" value="true" />
         <entry key="FindBadForLoop" value="true" />
@@ -3184,6 +2799,8 @@
         <entry key="FindUselessControlFlow" value="true" />
         <entry key="FormatStringChecker" value="true" />
         <entry key="FunctionsThatMightBeMistakenForProcedures" value="true" />
+        <entry key="GoogleApiKeyDetector" value="true" />
+        <entry key="HazelcastSymmetricEncryptionDetector" value="true" />
         <entry key="HugeSharedStringConstants" value="true" />
         <entry key="IDivResultCastToDouble" value="true" />
         <entry key="IncompatMask" value="true" />
@@ -3196,10 +2813,17 @@
         <entry key="InitializationChain" value="true" />
         <entry key="InitializeNonnullFieldsInConstructor" value="true" />
         <entry key="InstantiateStaticClass" value="true" />
+        <entry key="InsufficientKeySizeBlowfishDetector" value="true" />
+        <entry key="InsufficientKeySizeRsaDetector" value="true" />
         <entry key="IntCast2LongAsInstant" value="true" />
         <entry key="InvalidJUnitTest" value="true" />
         <entry key="IteratorIdioms" value="true" />
+        <entry key="JaxRsEndpointDetector" value="true" />
+        <entry key="JaxWsEndpointDetector" value="true" />
+        <entry key="JndiCredentialsDetector" value="true" />
+        <entry key="JspXssDetector" value="true" />
         <entry key="LazyInit" value="true" />
+        <entry key="LdapInjectionDetector" value="true" />
         <entry key="LoadOfKnownNullValue" value="true" />
         <entry key="LostLoggerDueToWeakReference" value="true" />
         <entry key="MethodReturnCheck" value="true" />
@@ -3218,22 +2842,37 @@
         <entry key="NoteNonnullReturnValues" value="true" />
         <entry key="NoteSuppressedWarnings" value="true" />
         <entry key="NoteUnconditionalParamDerefs" value="true" />
+        <entry key="NullCipherDetector" value="true" />
         <entry key="NumberConstructor" value="true" />
         <entry key="OverridingEqualsNotSymmetrical" value="true" />
+        <entry key="PathTraversalDetector" value="true" />
+        <entry key="PredictableRandomDetector" value="true" />
         <entry key="PreferZeroLengthArrays" value="true" />
         <entry key="PublicSemaphores" value="false" />
         <entry key="QuestionableBooleanAssignment" value="true" />
+        <entry key="ReDosDetector" value="true" />
         <entry key="ReadOfInstanceFieldInMethodInvokedByConstructorInSuperclass" value="true" />
         <entry key="ReadReturnShouldBeChecked" value="true" />
         <entry key="RedundantInterfaces" value="true" />
         <entry key="ReflectiveClasses" value="true" />
         <entry key="RepeatedConditionals" value="true" />
         <entry key="ResolveAllReferences" value="false" />
+        <entry key="RsaNoPaddingDetector" value="true" />
         <entry key="RuntimeExceptionCapture" value="true" />
+        <entry key="SaxParserXxeDetector" value="true" />
+        <entry key="ScriptEngineInjectionDetector" value="true" />
         <entry key="SerializableIdiom" value="true" />
+        <entry key="ServletEndpointDetector" value="true" />
+        <entry key="SpelInjectionDetector" value="true" />
+        <entry key="SpringMvcEndpointDetector" value="true" />
+        <entry key="SqlInjectionDetector" value="true" />
         <entry key="StartInConstructor" value="true" />
         <entry key="StaticCalendarDetector" value="true" />
+        <entry key="StaticIvDetector" value="true" />
         <entry key="StringConcatenation" value="true" />
+        <entry key="Struts1EndpointDetector" value="true" />
+        <entry key="Struts2EndpointDetector" value="true" />
+        <entry key="StrutsValidatorFormDetector" value="true" />
         <entry key="SuperfluousInstanceOf" value="true" />
         <entry key="SuspiciousThreadInterrupted" value="true" />
         <entry key="SwitchFallthrough" value="true" />
@@ -3241,6 +2880,7 @@
         <entry key="SynchronizeAndNullCheckField" value="true" />
         <entry key="SynchronizeOnClassLiteralNotGetClass" value="true" />
         <entry key="SynchronizingOnContentsOfFieldToProtectField" value="true" />
+        <entry key="TapestryEndpointDetector" value="true" />
         <entry key="TestASM" value="false" />
         <entry key="TestDataflowAnalysis" value="false" />
         <entry key="TestingGround" value="false" />
@@ -3251,14 +2891,24 @@
         <entry key="TrainUnconditionalDerefParams" value="true" />
         <entry key="URLProblems" value="true" />
         <entry key="UncallableMethodOfAnonymousClass" value="true" />
+        <entry key="UnencryptedSocketDetector" value="true" />
         <entry key="UnnecessaryMath" value="true" />
         <entry key="UnreadFields" value="true" />
+        <entry key="UnvalidatedRedirectDetector" value="true" />
         <entry key="UselessSubclassMethod" value="false" />
         <entry key="VarArgsProblems" value="true" />
         <entry key="VolatileUsage" value="true" />
         <entry key="WaitInLoop" value="true" />
+        <entry key="WeakFilenameUtilsMethodDetector" value="true" />
+        <entry key="WeakMessageDigestDetector" value="true" />
+        <entry key="WeakTrustManagerDetector" value="true" />
+        <entry key="WicketEndpointDetector" value="true" />
         <entry key="WrongMapIterator" value="true" />
         <entry key="XMLFactoryBypass" value="true" />
+        <entry key="XPathInjectionApacheXPathApiDetector" value="true" />
+        <entry key="XPathInjectionJavaxDetector" value="true" />
+        <entry key="XSSRequestWrapperDetector" value="true" />
+        <entry key="XmlDecoderDetector" value="true" />
       </map>
     </option>
     <option name="_reportCategories">
@@ -3273,6 +2923,16 @@
         <entry key="SECURITY" value="true" />
         <entry key="STYLE" value="true" />
       </map>
+    </option>
+    <option name="_enabledBundledPluginIds">
+      <set>
+        <option value="com.h3xstream.findsecbugs" />
+      </set>
+    </option>
+    <option name="_disabledBundledPluginIds">
+      <set>
+        <option value="com.mebigfatguy.fbcontrib" />
+      </set>
     </option>
     <option name="_annotationTypeSettings">
       <map>

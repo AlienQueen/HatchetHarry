@@ -45,20 +45,20 @@ import org.springframework.beans.factory.annotation.Required;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CreateGameModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
-	private static final long serialVersionUID = -5432292812819537705L;
-	private final Game game;
-	private final HomePage homePage;
-	private final TextField<String> nameInput;
-	private final DropDownChoice<String> sideInput;
-	private final ModalWindow modal;
+	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
+	private static final long serialVersionUID = 1L;
+	final Game game;
+	final HomePage homePage;
+	final TextField<String> nameInput;
+	final DropDownChoice<String> sideInput;
+	final ModalWindow modal;
 	@SpringBean
-	private PersistenceService persistenceService;
-	private final Player player;
-	private WebMarkupContainer deckParent;
-	private DropDownChoice<Deck> decks;
-	private final DropDownChoice<Format> formats;
-	private final TextField<String> numberOfPlayers;
+	PersistenceService persistenceService;
+	final Player player;
+	WebMarkupContainer deckParent;
+	DropDownChoice<Deck> decks;
+	final DropDownChoice<Format> formats;
+	final TextField<String> numberOfPlayers;
 
 	// TODO remove _sidePlaceholderParent
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
@@ -163,7 +163,7 @@ public class CreateGameModalWindow extends Panel
 				Integer players;
 				try
 				{
-					players = Integer.parseInt(CreateGameModalWindow.this.numberOfPlayers
+					players = Integer.valueOf(CreateGameModalWindow.this.numberOfPlayers
 							.getDefaultModelObjectAsString());
 				}
 				catch (final NumberFormatException e)
@@ -221,7 +221,7 @@ public class CreateGameModalWindow extends Panel
 							"cards/" + cc.getTitle() + ".jpg", "cards/" + cc.getTitle()
 									+ "Thumb.jpg", cc.getTitle(), "",
 							CreateGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),
-							null, 0);
+							null, Integer.valueOf(0));
 					card.setGameId(g.getId());
 					card.setDeck(deck);
 					card.setUuidObject(UUID.randomUUID());
@@ -282,9 +282,9 @@ public class CreateGameModalWindow extends Panel
 				final Side s = CreateGameModalWindow.this.player.getSide();
 				s.setUuid(UUID.randomUUID().toString());
 				s.setX(Long.valueOf(posX));
-				s.setY(500l);
+				s.setY(Long.valueOf(500l));
 
-				final DataBox db = new DataBox("dataBox", g.getId());
+				final DataBox db = new DataBox("dataBox", g.getId().longValue());
 				CreateGameModalWindow.this.homePage.getDataBoxParent().addOrReplace(db);
 				db.setOutputMarkupId(true);
 				target.add(CreateGameModalWindow.this.homePage.getDataBoxParent());
@@ -295,7 +295,7 @@ public class CreateGameModalWindow extends Panel
 				BattlefieldService.updateHand(target);
 
 				if ((CreateGameModalWindow.this.player.isGraveyardDisplayed() != null)
-						&& CreateGameModalWindow.this.player.isGraveyardDisplayed())
+						&& CreateGameModalWindow.this.player.isGraveyardDisplayed().booleanValue())
 				{
 					BattlefieldService.updateGraveyard(target);
 				}
@@ -308,15 +308,17 @@ public class CreateGameModalWindow extends Panel
 				final AddSideCometChannel ascc = new AddSideCometChannel(
 						CreateGameModalWindow.this.player);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.GAME, null, null, true, null, HatchetHarrySession.get()
-								.getPlayer().getName(), null, g.getId(), null, null, g.getId());
+						ConsoleLogType.GAME, null, null, Boolean.TRUE, null, HatchetHarrySession
+								.get().getPlayer().getName(), null, g.getId(), null, null,
+						g.getId());
 
 				final List<BigInteger> allPlayersInGame = new ArrayList<BigInteger>()
 				{
 					private static final long serialVersionUID = 1L;
 
 					{
-						this.add(BigInteger.valueOf(CreateGameModalWindow.this.player.getId()));
+						this.add(BigInteger.valueOf(CreateGameModalWindow.this.player.getId()
+								.longValue()));
 					}
 				};
 				EventBusPostService

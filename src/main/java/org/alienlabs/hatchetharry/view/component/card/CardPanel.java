@@ -45,8 +45,7 @@ public class CardPanel extends Panel
 	private final DestroyTokenBehavior destroyTokenBehavior;
 
 	@SpringBean
-	private
-	PersistenceService persistenceService;
+	private PersistenceService persistenceService;
 
 	public CardPanel(final String id, final IModel<PlayerAndCard> playerAndCard)
 	{
@@ -182,7 +181,7 @@ public class CardPanel extends Panel
 		final CardTooltipBehavior ctb = new CardTooltipBehavior();
 		this.add(ctb);
 
-		if (HatchetHarrySession.get().isDisplayTooltips())
+		if (HatchetHarrySession.get().isDisplayTooltips().booleanValue())
 		{
 			this.add(new MagicCardTooltipPanel("tooltip", myCard.getUuidObject(), myCard
 					.getBigImageFilename(), myCard.getOwnerSide(), myCard));

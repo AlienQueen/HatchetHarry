@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link MagicCardDao}.
- *
+ * 
  * @author igor
  */
 public class MagicCardDaoImpl implements MagicCardDao
@@ -47,7 +47,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param factory
 	 *            hibernate session factory
 	 */
@@ -59,7 +59,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 
 	/**
 	 * Load a {@link MagicCard} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the MagicCard to load.
 	 * @return MagicCard
@@ -84,7 +84,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 
 	/**
 	 * Save the MagicCard to the DB
-	 *
+	 * 
 	 * @param MagicCard
 	 * @return persistent instance of MagicCard
 	 */
@@ -97,7 +97,7 @@ public class MagicCardDaoImpl implements MagicCardDao
 
 	/**
 	 * Delete a {@link MagicCard} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the MagicCard to delete.
 	 */

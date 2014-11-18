@@ -191,7 +191,7 @@ public class DataGenerator implements InitializingBean, Serializable
 				da1.setDeckName("aggro-combo Red / Black");
 				this.persistenceService.saveOrUpdateDeckArchive(da1);
 				deck1 = new Deck();
-				deck1.setPlayerId(1l);
+				deck1.setPlayerId(Long.valueOf(1l));
 				deck1.setDeckArchive(da1);
 			}
 			else
@@ -206,7 +206,7 @@ public class DataGenerator implements InitializingBean, Serializable
 				da2.setDeckName("burn mono-Red");
 				this.persistenceService.saveOrUpdateDeckArchive(da2);
 				deck2 = new Deck();
-				deck2.setPlayerId(2l);
+				deck2.setPlayerId(Long.valueOf(2l));
 				deck2.setDeckArchive(da2);
 			}
 			else
@@ -244,7 +244,7 @@ public class DataGenerator implements InitializingBean, Serializable
 									"cards/" + DataGenerator.TITLES1[i] + "_small.jpg", "cards/"
 											+ DataGenerator.TITLES1[i] + ".jpg", "cards/"
 											+ DataGenerator.TITLES1[i] + "Thumb.jpg",
-									DataGenerator.TITLES1[i], "", "", null, 0);
+									DataGenerator.TITLES1[i], "", "", null, Integer.valueOf(0));
 							card.setDeck(deck1);
 						}
 						else
@@ -253,14 +253,14 @@ public class DataGenerator implements InitializingBean, Serializable
 									"cards/" + DataGenerator.TITLES2[i] + "_small.jpg", "cards/"
 											+ DataGenerator.TITLES2[i] + ".jpg", "cards/"
 											+ DataGenerator.TITLES2[i] + "Thumb.jpg",
-									DataGenerator.TITLES2[i], "", "", null, 0);
+									DataGenerator.TITLES2[i], "", "", null, Integer.valueOf(0));
 							card.setDeck(deck2);
 						}
 
-						card.setGameId(-1l);
+						card.setGameId(Long.valueOf(-1l));
 						card.setUuidObject(UUID.randomUUID());
-						card.setX(16l);
-						card.setY(16l);
+						card.setX(Long.valueOf(16l));
+						card.setY(Long.valueOf(16l));
 						card.setZone(CardZone.LIBRARY);
 
 						if (j == 1)

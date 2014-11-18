@@ -51,9 +51,9 @@ public class Token implements Serializable
 	@Column
 	private Long gameId;
 	@Column
-	private Long x = -1l; // x coordinate
+	private Long x = Long.valueOf(-1l); // x coordinate
 	@Column
-	private Long y = -1l; // y coordinate
+	private Long y = Long.valueOf(-1l); // y coordinate
 	@Column
 	private boolean tapped = false;
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Counter.class, orphanRemoval = true)

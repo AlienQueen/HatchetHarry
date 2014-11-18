@@ -27,7 +27,7 @@ import org.hibernate.Session;
 /**
  * The implementation-independent DAO interface. Defines the operations required
  * to be supported by an implementation.
- *
+ * 
  * @author igor
  */
 public interface CardCollectionDao extends Serializable
@@ -36,7 +36,7 @@ public interface CardCollectionDao extends Serializable
 
 	/**
 	 * Load a {@link CardCollection} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Contact to load.
 	 * @return CardCollection
@@ -45,7 +45,7 @@ public interface CardCollectionDao extends Serializable
 
 	/**
 	 * Save the CardCollection to the DB
-	 *
+	 * 
 	 * @param CardCollection
 	 * @return persistent instance of contact
 	 */
@@ -53,7 +53,7 @@ public interface CardCollectionDao extends Serializable
 
 	/**
 	 * Delete a {@link CardCollection} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the CardCollection to delete.
 	 */
@@ -61,14 +61,14 @@ public interface CardCollectionDao extends Serializable
 
 	/**
 	 * Return the number of CardCollections in the DB.
-	 *
+	 * 
 	 * @return count
 	 */
 	int count();
 
 	/**
 	 * Returns the list of all unique last names in the database
-	 *
+	 * 
 	 * @return the list of all unique last names in the database
 	 */
 	List<String> getUniqueLastNames();

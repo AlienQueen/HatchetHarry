@@ -40,11 +40,11 @@ public class CounterTooltip extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(CounterTooltip.class);
 	private static final long serialVersionUID = 1L;
-	private final MagicCard card;
-	private Token token;
+	final MagicCard card;
+	Token token;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	public CounterTooltip(final String id, final MagicCard _card, final Token _token)
 	{
@@ -68,7 +68,7 @@ public class CounterTooltip extends Panel
 				final String _counterName = counterAddName.getDefaultModelObjectAsString();
 				final Counter counter = new Counter();
 				counter.setCounterName(_counterName);
-				counter.setNumberOfCounters(1l);
+				counter.setNumberOfCounters(Long.valueOf(1l));
 				final Set<Counter> counters;
 				final Player targetPlayer;
 				final ConsoleLogStrategy logger;
@@ -157,7 +157,8 @@ public class CounterTooltip extends Panel
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
-						counter.setNumberOfCounters(counter.getNumberOfCounters() + 1);
+						counter.setNumberOfCounters(Long.valueOf(counter.getNumberOfCounters()
+								.longValue() + 1l));
 						CounterTooltip.this.persistenceService.updateCounter(counter);
 
 						final Game game = CounterTooltip.this.persistenceService
@@ -212,7 +213,8 @@ public class CounterTooltip extends Panel
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
-						counter.setNumberOfCounters(counter.getNumberOfCounters() - 1);
+						counter.setNumberOfCounters(Long.valueOf(counter.getNumberOfCounters()
+								.longValue() - 1));
 						CounterTooltip.this.persistenceService.updateCounter(counter);
 
 						final String targetPlayerName = "";
@@ -246,8 +248,8 @@ public class CounterTooltip extends Panel
 					@Override
 					protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 					{
-						final Long targetNumberOfCounters = Long.parseLong((String)_form.get(
-								"setCounterButton").getDefaultModelObject());
+						final Long targetNumberOfCounters = Long.valueOf(Long.parseLong(_form.get(
+								"setCounterButton").getDefaultModelObjectAsString()));
 						counter.setNumberOfCounters(targetNumberOfCounters);
 						final String targetPlayerName = "";
 
@@ -270,7 +272,7 @@ public class CounterTooltip extends Panel
 				setCounterForm.setOutputMarkupPlaceholderTag(false);
 				item.add(setCounterForm);
 
-				if (counter.getNumberOfCounters() == 0)
+				if (counter.getNumberOfCounters().longValue() == 0l)
 				{
 					item.setVisible(false);
 				}
@@ -279,14 +281,14 @@ public class CounterTooltip extends Panel
 		this.add(form, counters);
 	}
 
-	void removeOrChangeCounters(String targetPlayerName, final Game game,
+	void removeOrChangeCounters(final String _targetPlayerName, final Game game,
 			final List<BigInteger> allPlayersInGame, final Counter counter)
 	{
 		ConsoleLogStrategy logger;
-		final RemoveCounter removeCounter = new RemoveCounter(targetPlayerName, game, counter)
+		final RemoveCounter removeCounter = new RemoveCounter(_targetPlayerName, game, counter)
 				.removeCounterIfNeeded();
 		final NotifierAction action = removeCounter.getAction();
-		targetPlayerName = removeCounter.getTargetPlayerName();
+		final String targetPlayerName = removeCounter.getTargetPlayerName();
 		logger = removeCounter.getLogger();
 
 		this.changeNumberOfCounters(targetPlayerName, game, allPlayersInGame, logger, action,
@@ -341,11 +343,12 @@ public class CounterTooltip extends Panel
 		private final Counter counter;
 		private ConsoleLogStrategy logger;
 
-		public RemoveCounter(final String targetPlayerName, final Game game, final Counter counter)
+		public RemoveCounter(final String _targetPlayerName, final Game _game,
+				final Counter _counter)
 		{
-			this.targetPlayerName = targetPlayerName;
-			this.game = game;
-			this.counter = counter;
+			this.targetPlayerName = _targetPlayerName;
+			this.game = _game;
+			this.counter = _counter;
 		}
 
 		public NotifierAction getAction()
@@ -378,7 +381,7 @@ public class CounterTooltip extends Panel
 				this.logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 						CounterTooltip.this.card.getTitle(), HatchetHarrySession.get().getPlayer()
-								.getName(), this.counter.getCounterName(), 0l,
+								.getName(), this.counter.getCounterName(), Long.valueOf(0l),
 						this.targetPlayerName, null, this.game.getId());
 			}
 			else

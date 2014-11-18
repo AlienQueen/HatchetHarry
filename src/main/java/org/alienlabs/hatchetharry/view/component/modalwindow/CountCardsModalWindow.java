@@ -20,13 +20,14 @@ public class CountCardsModalWindow extends Panel
 	static final Logger LOGGER = LoggerFactory.getLogger(CountCardsModalWindow.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	public CountCardsModalWindow(final String id, final Long gameId)
 	{
 		super(id);
 
-		final List<Player> allPlayersOfGame = this.persistenceService.getAllPlayersOfGame(gameId);
+		final List<Player> allPlayersOfGame = this.persistenceService.getAllPlayersOfGame(gameId
+				.longValue());
 		final ListView<Player> list = new ListView<Player>("players", allPlayersOfGame)
 		{
 			private static final long serialVersionUID = 1L;
@@ -52,8 +53,9 @@ public class CountCardsModalWindow extends Panel
 				item.add(new Label("battlefield", CountCardsModalWindow.this.persistenceService
 						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.BATTLEFIELD,
 								gameId, p.getDeck().getDeckId())));
-				item.add(new Label("total", CountCardsModalWindow.this.persistenceService
-						.getDeck(p.getDeck().getDeckId()).getCards().size()));
+				item.add(new Label("total", Integer
+						.valueOf(CountCardsModalWindow.this.persistenceService
+								.getDeck(p.getDeck().getDeckId().longValue()).getCards().size())));
 			}
 		};
 		this.add(list);

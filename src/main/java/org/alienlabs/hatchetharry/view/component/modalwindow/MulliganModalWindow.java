@@ -36,11 +36,11 @@ import org.springframework.beans.factory.annotation.Required;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class MulliganModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MulliganModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(MulliganModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	private final DropDownChoice<String> mulliganInput;
+	final DropDownChoice<String> mulliganInput;
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	public MulliganModalWindow(final ModalWindow window, final String id)
 	{
@@ -85,14 +85,15 @@ public class MulliganModalWindow extends Panel
 
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.ASK_FOR_MULLIGAN, null, null, null, null,
-						MulliganModalWindow.this.getPlayer().getName(), null, null, null, false,
-						Long.parseLong(MulliganModalWindow.this.mulliganInput
-								.getDefaultModelObjectAsString()));
+						MulliganModalWindow.this.getPlayer().getName(), null, null, null,
+						Boolean.FALSE, Long.valueOf(Long
+								.parseLong(MulliganModalWindow.this.mulliganInput
+										.getDefaultModelObjectAsString())));
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.ASK_FOR_MULLIGAN,
-						Long.parseLong(MulliganModalWindow.this.mulliganInput
-								.getDefaultModelObjectAsString()), null, MulliganModalWindow.this
-								.getPlayer().getName(), null, null, null, null, "");
+						NotifierAction.ASK_FOR_MULLIGAN, Long.valueOf(Long
+								.parseLong(MulliganModalWindow.this.mulliganInput
+										.getDefaultModelObjectAsString())), null,
+						MulliganModalWindow.this.getPlayer().getName(), null, null, null, null, "");
 
 				final List<BigInteger> allPlayersInGame = MulliganModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(MulliganModalWindow.this.getGameId());
@@ -105,8 +106,8 @@ public class MulliganModalWindow extends Panel
 						allPlayersInGameExceptMe,
 						ncc,
 						new AskMulliganCometChannel(MulliganModalWindow.this.getPlayer().getName(),
-								Long.parseLong(MulliganModalWindow.this.mulliganInput
-										.getDefaultModelObjectAsString())));
+								Long.valueOf(Long.parseLong(MulliganModalWindow.this.mulliganInput
+										.getDefaultModelObjectAsString()))));
 				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger));
 			}
 		};
@@ -119,9 +120,9 @@ public class MulliganModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				MulliganModalWindow.this.drawCards(MulliganModalWindow.this.getGameId(),
-						MulliganModalWindow.this.getPlayer(), Long
+						MulliganModalWindow.this.getPlayer(), Long.valueOf(Long
 								.parseLong(MulliganModalWindow.this.mulliganInput
-										.getDefaultModelObjectAsString()), target);
+										.getDefaultModelObjectAsString())), target);
 			}
 		};
 
@@ -133,9 +134,9 @@ public class MulliganModalWindow extends Panel
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
 				MulliganModalWindow.this.drawCards(MulliganModalWindow.this.getGameId(),
-						MulliganModalWindow.this.getPlayer(), Long
+						MulliganModalWindow.this.getPlayer(), Long.valueOf(Long
 								.parseLong(MulliganModalWindow.this.mulliganInput
-										.getDefaultModelObjectAsString()) - 1, target);
+										.getDefaultModelObjectAsString()) - 1), target);
 			}
 		};
 
@@ -160,7 +161,7 @@ public class MulliganModalWindow extends Panel
 		this.persistenceService = _persistenceService;
 	}
 
-	private void drawCards(final Long gameId, final Player me, final Long numberOfCards,
+	void drawCards(final Long gameId, final Player me, final Long numberOfCards,
 			final AjaxRequestTarget target)
 	{
 		final List<MagicCard> hand = HatchetHarrySession.get().getFirstCardsInHand();
@@ -177,7 +178,7 @@ public class MulliganModalWindow extends Panel
 		Collections.shuffle(deck);
 		Collections.shuffle(deck);
 
-		for (int i = 0; i < numberOfCards; i++)
+		for (int i = 0; i < numberOfCards.longValue(); i++)
 		{
 			deck.get(i).setZone(CardZone.HAND);
 			newHand.add(deck.get(i));
@@ -189,7 +190,7 @@ public class MulliganModalWindow extends Panel
 
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.DONE_MULLIGAN, null, null, null, null, me.getName(), null, null,
-				null, false, numberOfCards);
+				null, Boolean.FALSE, numberOfCards);
 		final NotifierCometChannel ncc = new NotifierCometChannel(NotifierAction.DONE_MULLIGAN,
 				numberOfCards, null, me.getName(), null, null, null, null, "");
 		final List<BigInteger> allPlayersInGame = MulliganModalWindow.this.persistenceService

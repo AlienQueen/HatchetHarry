@@ -56,7 +56,7 @@ public class GameService
 			p.setGame(null);
 			final Deck d = p.getDeck();
 			p.setDeck(null);
-			d.setPlayerId(-1l);
+			d.setPlayerId(Long.valueOf(-1l));
 			persistenceService.updatePlayer(p);
 		}
 
@@ -88,7 +88,7 @@ public class GameService
 		{
 			final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg", "cards/"
 					+ cc.getTitle() + ".jpg", "cards/" + cc.getTitle() + "Thumb.jpg",
-					cc.getTitle(), "", side, null, 0);
+					cc.getTitle(), "", side, null, Integer.valueOf(0));
 			card.setGameId(gameId);
 			card.setDeck(_deck);
 			card.setUuidObject(UUID.randomUUID());
@@ -129,7 +129,7 @@ public class GameService
 		players.add(player);
 		game.setPlayers(players);
 
-		if (player.isHandDisplayed())
+		if (player.isHandDisplayed().booleanValue())
 		{
 			BattlefieldService.updateHand(target);
 		}
@@ -146,7 +146,7 @@ public class GameService
 		final Side s = player.getSide();
 		s.setUuid(UUID.randomUUID().toString());
 		s.setX(Long.valueOf(posX));
-		s.setY(500l);
+		s.setY(Long.valueOf(500l));
 
 		persistenceService.updateGame(game);
 
@@ -173,8 +173,8 @@ public class GameService
 
 		final AddSideCometChannel ascc = new AddSideCometChannel(player);
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-				ConsoleLogType.GAME, null, null, false, null, HatchetHarrySession.get().getPlayer()
-						.getName(), null, _gameId, null, null, _gameId);
+				ConsoleLogType.GAME, null, null, Boolean.FALSE, null, HatchetHarrySession.get()
+						.getPlayer().getName(), null, _gameId, null, null, _gameId);
 
 		// post the DataBox update message to all players in the game,
 		// except me
@@ -191,7 +191,7 @@ public class GameService
 
 		session.resetCardsInGraveyard();
 
-		if ((player.isGraveyardDisplayed() != null) && player.isGraveyardDisplayed())
+		if ((player.isGraveyardDisplayed() != null) && player.isGraveyardDisplayed().booleanValue())
 		{
 			BattlefieldService.updateGraveyard(target);
 		}

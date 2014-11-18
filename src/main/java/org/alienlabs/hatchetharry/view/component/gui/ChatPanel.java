@@ -61,16 +61,16 @@ import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Simple panel.
- *
+ * 
  * @author Andrey Belyaev
  */
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class ChatPanel extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ChatPanel.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(ChatPanel.class);
 	private static final long serialVersionUID = 1L;
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	public ChatPanel(final String id)
 	{

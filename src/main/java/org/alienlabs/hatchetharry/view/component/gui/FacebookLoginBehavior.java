@@ -47,7 +47,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 			final Label usernameLabel = new Label("username", "Logged in as " + username);
 			usernameLabel.setOutputMarkupId(true);
 			HatchetHarrySession.get().setUsername(username);
-			HatchetHarrySession.get().setLoggedIn(true);
+			HatchetHarrySession.get().setLoggedIn(Boolean.TRUE);
 
 			final WebMarkupContainer usernameParent = ((HomePage)target.getPage())
 					.getUsernameParent();
@@ -59,7 +59,7 @@ public class FacebookLoginBehavior extends AbstractDefaultAjaxBehavior
 			{
 				final User user = new User();
 				user.setUsername(username);
-				user.setFacebook(true);
+				user.setFacebook(Boolean.TRUE);
 				user.setPlayer(HatchetHarrySession.get().getPlayer());
 				this.persistenceService.saveOrUpdateUser(user);
 			}

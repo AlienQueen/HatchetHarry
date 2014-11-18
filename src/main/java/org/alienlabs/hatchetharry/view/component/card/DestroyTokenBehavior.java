@@ -78,7 +78,8 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		final HatchetHarrySession session = HatchetHarrySession.get();
 		if (mc.getBattlefieldOrder().intValue() >= (session.getLastBattlefieldOrder().intValue() - 1))
 		{
-			session.setLastBattlefieldOrder(session.getLastBattlefieldOrder().intValue() - 1);
+			session.setLastBattlefieldOrder(Integer.valueOf(session.getLastBattlefieldOrder()
+					.intValue() - 1));
 		}
 
 		DestroyTokenBehavior.LOGGER.info("playerId in respond(): " + session.getPlayer().getId());
@@ -92,7 +93,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		final Deck d = p.getDeck();
 		List<MagicCard> allCards = this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
-		allCards = BattlefieldService.reorderCards(allCards, allCards.indexOf(mc));
+		allCards = BattlefieldService.reorderCards(allCards, Integer.valueOf(allCards.indexOf(mc)));
 		allCards.remove(mc);
 		this.persistenceService.deleteCardAndToken(mc);
 
@@ -116,8 +117,8 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 					NotifierAction.DESTROY_TOKEN_ACTION, gameId, session.getPlayer().getId(),
 					session.getPlayer().getName(), "", "", tokenName, null, targetPlayer.getName());
 			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, false, null, session
-							.getPlayer().getName(), tokenName, null, null, false, gameId);
+					ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, Boolean.FALSE, null,
+					session.getPlayer().getName(), tokenName, null, null, Boolean.FALSE, gameId);
 
 			EventBusPostService.post(playerToWhomToSend, dtcc, _ncc, new ConsoleLogCometChannel(
 					logger));

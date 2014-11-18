@@ -27,7 +27,7 @@ import org.hibernate.Session;
 /**
  * The implementation-independent DAO interface. Defines the operations required
  * to be supported by an implementation.
- *
+ * 
  * @author igor
  */
 public interface CounterDao extends Serializable
@@ -36,7 +36,7 @@ public interface CounterDao extends Serializable
 
 	/**
 	 * Load a {@link Counter} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Contact to load.
 	 * @return Counter
@@ -45,7 +45,7 @@ public interface CounterDao extends Serializable
 
 	/**
 	 * Save the Counter to the DB
-	 *
+	 * 
 	 * @param Counter
 	 * @return persistent instance of counter
 	 */
@@ -53,7 +53,7 @@ public interface CounterDao extends Serializable
 
 	/**
 	 * Delete a {@link Counter} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Counter to delete.
 	 */
@@ -61,14 +61,14 @@ public interface CounterDao extends Serializable
 
 	/**
 	 * Return the number of Counters in the DB.
-	 *
+	 * 
 	 * @return count
 	 */
 	int count();
 
 	/**
 	 * Returns the list of all unique last names in the database
-	 *
+	 * 
 	 * @return the list of all unique last names in the database
 	 */
 	List<String> getUniqueLastNames();

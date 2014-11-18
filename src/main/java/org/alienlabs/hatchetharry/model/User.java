@@ -39,7 +39,7 @@ public class User implements Serializable
 	@Column
 	private String password; // TODO passwords in plain-text
 	@Column
-	private Boolean isFacebook = false;
+	private Boolean isFacebook = Boolean.FALSE;
 	@Column
 	private String realm;
 

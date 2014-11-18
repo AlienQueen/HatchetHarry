@@ -18,8 +18,8 @@ import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -97,7 +97,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.saveOrUpdateAllMagicCards(graveyard);
 
 		final Game game = this.persistenceService.getGame(gameId);
-		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
+		final Long currentPlaceholderId = Long
+				.valueOf(game.getCurrentPlaceholderId().longValue() + 1);
 		game.setCurrentPlaceholderId(currentPlaceholderId);
 		this.persistenceService.updateGame(game);
 

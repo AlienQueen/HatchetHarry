@@ -78,7 +78,7 @@ public class ExileComponent extends Panel
 		this.thumbsPlaceholder = new WebMarkupContainer("thumbsPlaceholder");
 		final ListView<MagicCard> thumbs = new ListView<MagicCard>("thumbs", allCardsInExile)
 		{
-			private static final long serialVersionUID = -787466183866875L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(final ListItem<MagicCard> item)

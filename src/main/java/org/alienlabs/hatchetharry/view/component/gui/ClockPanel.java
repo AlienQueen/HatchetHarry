@@ -43,7 +43,7 @@ import org.apache.wicket.model.IModel;
 
 /**
  * Simple panel.
- *
+ * 
  * @author Andrey Belyaev
  */
 public class ClockPanel extends Panel

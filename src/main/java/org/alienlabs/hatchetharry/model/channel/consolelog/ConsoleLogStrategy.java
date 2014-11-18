@@ -32,7 +32,7 @@ public abstract class ConsoleLogStrategy
 	void logMessage(final AjaxRequestTarget target, final String message,
 			final Boolean clearConsole, final Long gameId)
 	{
-		if ((null != clearConsole) && clearConsole)
+		if ((null != clearConsole) && clearConsole.booleanValue())
 		{
 			target.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = ''; ");
 			this.persistenceService.deleteAllMessagesForAGame(gameId);

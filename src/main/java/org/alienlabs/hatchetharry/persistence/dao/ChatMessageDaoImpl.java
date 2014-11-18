@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link ChatMessageDao}.
- *
+ * 
  * @author igor
  */
 public class ChatMessageDaoImpl implements ChatMessageDao
@@ -45,7 +45,7 @@ public class ChatMessageDaoImpl implements ChatMessageDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -57,7 +57,7 @@ public class ChatMessageDaoImpl implements ChatMessageDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class ChatMessageDaoImpl implements ChatMessageDao
 
 	/**
 	 * Load a {@link ChatMessage} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the ChatMessage to load.
 	 * @return ChatMessage
@@ -82,7 +82,7 @@ public class ChatMessageDaoImpl implements ChatMessageDao
 
 	/**
 	 * Save the ChatMessage to the DB
-	 *
+	 * 
 	 * @param ChatMessage
 	 * @return persistent instance of ChatMessage
 	 */
@@ -95,7 +95,7 @@ public class ChatMessageDaoImpl implements ChatMessageDao
 
 	/**
 	 * Delete a {@link ChatMessage} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the ChatMessage to delete.
 	 */

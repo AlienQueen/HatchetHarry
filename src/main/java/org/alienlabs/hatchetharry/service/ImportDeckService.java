@@ -40,9 +40,9 @@ public class ImportDeckService implements Serializable
 		deckArchive = this.persistenceService.saveOrUpdateDeckArchive(deckArchive);
 
 		Deck deck = new Deck();
-		deck.setPlayerId(1l);
+		deck.setPlayerId(Long.valueOf(1l));
 		deck.setDeckArchive(deckArchive);
-		deck.setDeckId(-1l);
+		deck.setDeckId(Long.valueOf(-1l));
 
 		deck = this.persistenceService.saveDeck(deck);
 
@@ -81,11 +81,11 @@ public class ImportDeckService implements Serializable
 
 				final MagicCard card = new MagicCard("cards/" + cardName + "_small.jpg", "cards/"
 						+ cardName + ".jpg", "cards/" + cardName + "Thumb.jpg", cardName, "", "",
-						null, 0);
-				card.setGameId(-1l);
+						null, Integer.valueOf(0));
+				card.setGameId(Long.valueOf(-1l));
 				card.setUuidObject(UUID.randomUUID());
-				card.setX(16l);
-				card.setY(16l);
+				card.setX(Long.valueOf(16l));
+				card.setY(Long.valueOf(16l));
 				card.setDeck(deck);
 				card.setZone(CardZone.LIBRARY);
 

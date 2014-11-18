@@ -58,7 +58,7 @@ public class Deck implements Serializable
 
 	/**
 	 * Shuffle the library.
-	 *
+	 * 
 	 * @param _cards
 	 *            all cards in the player's library
 	 * @return the same cards in another order
@@ -75,7 +75,7 @@ public class Deck implements Serializable
 
 	/**
 	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone.
-	 *
+	 * 
 	 * @param _cards
 	 *            all cards of a player in a certain zone
 	 * @return the same cards, in the same order, in the same zone but with
@@ -88,7 +88,7 @@ public class Deck implements Serializable
 		for (int i = 0; i < _cards.size(); i++)
 		{
 			orderedCards.add(_cards.get(i));
-			orderedCards.get(i).setZoneOrder((long)i);
+			orderedCards.get(i).setZoneOrder(Long.valueOf(i));
 		}
 
 		return orderedCards;
@@ -98,7 +98,7 @@ public class Deck implements Serializable
 	 * Re-order the zone indexes (zoneOrder) of MagicCards in the same zone and
 	 * increment it, the goal being to be able to put a MagicCard in front of
 	 * the list.
-	 *
+	 * 
 	 * @param _cards
 	 *            all cards of a player in a certain zone
 	 * @return the same cards, in the same order, in the same zone but with
@@ -111,7 +111,7 @@ public class Deck implements Serializable
 		for (int i = 0; i < _cards.size(); i++)
 		{
 			orderedCards.add(i, _cards.get(i));
-			orderedCards.get(i).setZoneOrder((long)i + 1);
+			orderedCards.get(i).setZoneOrder(Long.valueOf(i + 1l));
 		}
 
 		return orderedCards;

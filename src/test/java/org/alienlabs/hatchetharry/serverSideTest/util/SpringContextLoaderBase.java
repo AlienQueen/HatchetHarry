@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class SpringContextLoaderBaseTest
+public class SpringContextLoaderBase
 {
 	protected static AtmosphereTester waTester;
 	protected static transient WicketTester tester;
@@ -53,7 +53,7 @@ public class SpringContextLoaderBaseTest
 			public void init()
 			{
 				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, SpringContextLoaderBaseTest.this.context,
+						new SpringComponentInjector(this, SpringContextLoaderBase.this.context,
 								true));
 
 				this.eventBus = new EventBus(this);
@@ -90,14 +90,14 @@ public class SpringContextLoaderBaseTest
 		// Create game
 		final String paramName = pageParameters.length > 1 ? pageParameters[0] : "";
 		final String paramValue = pageParameters.length > 1 ? pageParameters[1] : "";
-		SpringContextLoaderBaseTest.tester.startPage(new HomePage(new PageParameters().add(
-				paramName, paramValue)));
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBase.tester.startPage(new HomePage(new PageParameters().add(paramName,
+				paramValue)));
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
-		SpringContextLoaderBaseTest.tester.assertComponent("createGameLink", AjaxLink.class);
-		SpringContextLoaderBaseTest.tester.clickLink("createGameLink", true);
+		SpringContextLoaderBase.tester.assertComponent("createGameLink", AjaxLink.class);
+		SpringContextLoaderBase.tester.clickLink("createGameLink", true);
 
-		final FormTester createGameForm = SpringContextLoaderBaseTest.tester
+		final FormTester createGameForm = SpringContextLoaderBase.tester
 				.newFormTester("createGameWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "1");
@@ -107,44 +107,44 @@ public class SpringContextLoaderBaseTest
 
 		if ((pageParameters.length > 0) && pageParameters[0].equals("ajaxSubmit"))
 		{
-			SpringContextLoaderBaseTest.tester.executeAjaxEvent(
-					"createGameWindow:content:form:submit", "onclick");
+			SpringContextLoaderBase.tester.executeAjaxEvent("createGameWindow:content:form:submit",
+					"onclick");
 		}
 		else
 		{
 			createGameForm.submit();
 		}
 
-		SpringContextLoaderBaseTest.tester.startPage(HomePage.class);
-		SpringContextLoaderBaseTest.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
-		Player p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId()).get(0);
+		Player p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId().longValue()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 		final PlayCardFromHandBehavior pcfhb = getFirstPlayCardFromHandBehavior();
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
-		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBaseTest.persistenceService
+		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBase.persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card
-		SpringContextLoaderBaseTest.tester.getRequest().setParameter("card",
+		SpringContextLoaderBase.tester.getRequest().setParameter("card",
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
-		SpringContextLoaderBaseTest.tester.executeBehavior(pcfhb);
+		SpringContextLoaderBase.tester.executeBehavior(pcfhb);
 
 		// One card on the battlefield, 6 in the hand
-		Assert.assertEquals(1, SpringContextLoaderBaseTest.persistenceService
+		Assert.assertEquals(1, SpringContextLoaderBase.persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId).size());
-		Assert.assertEquals(6, SpringContextLoaderBaseTest.persistenceService
+		Assert.assertEquals(6, SpringContextLoaderBase.persistenceService
 				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), p.getDeck().getDeckId())
 				.size());
 
 		// We still should not have more cards that the number of cards in the
 		// deck
-		p = SpringContextLoaderBaseTest.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId()).get(0);
+		p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId().longValue()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 

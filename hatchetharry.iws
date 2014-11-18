@@ -1,19 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYSIS_IN_BACKGROUND" value="true" />
+  </component>
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java" />
     <bookmark url="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/gallery/handInBattlefield.js" line="7" />
-    <bookmark url="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltipTest.java" />
     <bookmark url="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DrawModeBehavior.java" line="33" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53d66d2c-c1ab-4ba4-a372-63c0f71212f3" name="Default" comment="- REFACTORED imports&#10;- ADDED tests&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/AbstractConsoleLogStrategy.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/AbstractConsoleLogStrategy.java" />
+    <list default="true" id="53d66d2c-c1ab-4ba4-a372-63c0f71212f3" name="Default" comment="- ADDED test&#10;- raised Hibernate &amp; ehcache versions">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBaseTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/ArrowDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/ArrowDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/AskMulliganModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/AskMulliganModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/clientSideTest/BasicDatabaseTest.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/clientSideTest/BasicDatabaseTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/BattlefieldService.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/BattlefieldService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CardCollectionDao.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CardCollectionDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CardCollectionDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CardCollectionDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardInBattlefieldContextMenu.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardInBattlefieldContextMenu.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardMoveBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardMoveBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardMoveBehaviorTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardMoveBehaviorTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardPanel.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardPanelTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardPanelTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardRotateBehaviorTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardRotateBehaviorTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/ChatMessageDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/ChatMessageDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ChatPanel.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ChatPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ClockPanel.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ClockPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CollectibleCardDao.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CollectibleCardDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CollectibleCardDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CollectibleCardDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ConferencePanel.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ConferencePanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/ConsoleLogMessageDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/ConsoleLogMessageDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/ConsoleLogStrategy.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/ConsoleLogStrategy.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CountCardsModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CountCardsModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Counter.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Counter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CounterDao.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CounterDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CounterDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/CounterDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltip.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltip.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltipTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltipTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateGameModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateGameModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateTokenModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateTokenModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DataBox.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DataBox.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/gui/DataBoxTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/gui/DataBoxTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Deck.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Deck.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/DeckArchiveDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/DeckArchiveDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/DeckDao.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/DeckDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/DeckDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/DeckDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/DestroyTokenBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/DestroyTokenBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/EventBusPostService.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/EventBusPostService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ExileComponent.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ExileComponent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ExternalImage.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ExternalImage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/FacebookLoginBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/FacebookLoginBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/integrationTest/FunctionalTests.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/integrationTest/FunctionalTests.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Game.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Game.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/GameDao.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/GameDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/GameDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/GameDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/GameService.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/GameService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarrySession.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarrySession.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/page/HomePageTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/page/HomePageTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ImportDeckDialog.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ImportDeckDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/ImportDeckService.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/ImportDeckService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/service/ImportDeckServiceTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/service/ImportDeckServiceTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/JoinGameModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/JoinGameModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/JoinGameWithoutIdModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/JoinGameWithoutIdModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/MagicCard.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/MagicCard.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/MagicCardDao.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/MagicCardDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/MagicCardDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/MagicCardDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/MulliganModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/MulliganModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/NonRegressionTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/NonRegressionTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/service/PersistenceServiceTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/service/PersistenceServiceTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromGraveyardBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromGraveyardBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromHandBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromHandBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Player.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Player.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/PlayerAndCard.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/PlayerAndCard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/SidePlaceholderPanel.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/SidePlaceholderPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/StopRevealingHandCometChannel.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/StopRevealingHandCometChannel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/PlayerDao.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/PlayerDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/PlayerDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/PlayerDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToExileFromBattlefieldBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToExileFromBattlefieldBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToGraveyardFromBattlefieldBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToGraveyardFromBattlefieldBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToHandFromBattlefieldBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToHandFromBattlefieldBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToZoneBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToZoneBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/zone/PutToZonePanelTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/zone/PutToZonePanelTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ReorderCardInBattlefieldBehavior.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ReorderCardInBattlefieldBehavior.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/RevealHandComponent.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/RevealHandComponent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/RevealTopLibraryCardModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/RevealTopLibraryCardModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Side.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Side.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/SideDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/SideDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/TapUntapConsoleLogStrategy.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/TapUntapConsoleLogStrategy.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Token.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Token.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/TokenDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/TokenDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/User.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/User.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/UserDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/persistence/dao/UserDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/UserPreferencesModalWindow.java" afterPath="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/UserPreferencesModalWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hatchetharry.ipr" afterPath="$PROJECT_DIR$/hatchetharry.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hatchetharry.iws" afterPath="$PROJECT_DIR$/hatchetharry.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
     </list>
     <ignored path="hatchetharry.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,10 +116,19 @@
     <splitter proportion="0.5" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/hatchetharry$LaunchAllServerSideTests.coverage" NAME="LaunchAllServerSideTests Coverage Results" MODIFIED="1416162936329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/hatchetharry$LaunchAllServerSideTests.coverage" NAME="LaunchAllServerSideTests Coverage Results" MODIFIED="1416344390783" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>org.alienlabs.hatchetharry.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/hatchetharry$CounterTooltipTest_testCardTooltip.coverage" NAME="CounterTooltipTest.testCardTooltip Coverage Results" MODIFIED="1416335760127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.alienlabs.hatchetharry.view.component.card.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/hatchetharry$Tomcat_7.coverage" NAME="Tomcat 7 Coverage Results" MODIFIED="1374952001811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/hatchetharry$CounterTooltipTest.coverage" NAME="CounterTooltipTest Coverage Results" MODIFIED="1416246041394" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.alienlabs.hatchetharry.view.component.card.*</FILTER>
+    </SUITE>
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="0" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -229,98 +321,62 @@
     <EjbView showMembers="false" autoscrollToSource="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="ExportToHTMLSettings">
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$" />
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="hatchetharry" />
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CardPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardPanel.java">
+      <file leaf-file-name="HomePage.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="350" max-vertical-offset="4338">
-              <caret line="44" column="24" selection-start-line="44" selection-start-column="24" selection-end-line="44" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.44848484" vertical-offset="10848" max-vertical-offset="56736">
+              <caret line="773" column="13" selection-start-line="773" selection-start-column="13" selection-end-line="773" selection-end-column="13" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <marker date="1416345826510" expanded="true" signature="29772:29873" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DestroyTokenBehavior.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/DestroyTokenBehavior.java">
+      <file leaf-file-name="Deck.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Deck.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2358">
-              <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1340" max-vertical-offset="3078">
+              <caret line="113" column="64" selection-start-line="113" selection-start-column="64" selection-end-line="113" selection-end-column="64" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PutToGraveyardFromBattlefieldBehavior.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToGraveyardFromBattlefieldBehavior.java">
+      <file leaf-file-name="SpringContextLoaderBase.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2772">
-              <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1966" max-vertical-offset="2538">
+              <caret line="120" column="69" selection-start-line="120" selection-start-column="69" selection-end-line="120" selection-end-column="69" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DrawModeBehavior.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DrawModeBehavior.java">
+      <file leaf-file-name="NonRegressionTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/NonRegressionTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="113" max-vertical-offset="1368">
-              <caret line="34" column="11" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="7348" max-vertical-offset="10080">
+              <caret line="464" column="74" selection-start-line="464" selection-start-column="74" selection-end-line="464" selection-end-column="74" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StopRevealingHandCometChannel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/StopRevealingHandCometChannel.java">
+      <file leaf-file-name="LaunchAllServerSideTests.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/LaunchAllServerSideTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractConsoleLogStrategy.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/AbstractConsoleLogStrategy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1620">
-              <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SidePlaceholderPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/SidePlaceholderPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="386" max-vertical-offset="1242">
-              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PutToExileFromBattlefieldBehavior.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToExileFromBattlefieldBehavior.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2826">
-              <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerAndCard.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/PlayerAndCard.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18925233" vertical-offset="0" max-vertical-offset="856">
-              <caret line="9" column="2" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="342">
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -344,51 +400,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardRotateBehaviorTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ReorderCardInBattlefieldBehavior.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/lazyApplicationContext.xml" />
-        <option value="$PROJECT_DIR$/README" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/TesterEventBus.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.java" />
-        <option value="$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21/wicket-atmosphere-0.21-sources.jar!/org/apache/wicket/atmosphere/tester/TesterBroadcasterFactory.java" />
-        <option value="$MAVEN_REPOSITORY$/org/apache/wicket/experimental/wicket6/wicket-atmosphere/0.21/wicket-atmosphere-0.21-sources.jar!/org/apache/wicket/atmosphere/EventBus.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/page/HomePageTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/contextmenu/cardInBattlefieldContextMenu.js" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/LaunchAllServerSideTests.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarrySession.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardPanel.html" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Deck.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/AbstractConsoleLogStrategy.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/PlayerAndCard.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/ConsoleLogType.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/gui/ClockPanelTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/ApplicationContextHolder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/NotifierAction.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromGraveyardBehaviorTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DrawModeBehavior.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/RedrawArrowsBehavior.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Player.java" />
         <option value="$PROJECT_DIR$/src/main/resources/applicationContext.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/applicationContextTest.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/MagicCardTooltipPanel.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltipTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltip.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/BattlefieldService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DrawModeBehavior.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/MagicCard.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/cards.css" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/EventBusPostService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/jquery-ui dialog.css" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/ImportDeckService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateTokenModalWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/stylesheet/myStyle.css" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/GameService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToHandFromBattlefieldBehavior.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/RevealTopLibraryCardModalWindow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/RevealHandComponent.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromHandBehavior.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateGameModalWindow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBaseTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardPanel.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardPanelTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/zone/PutToZonePanelTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/NonRegressionTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/qunitTests/codeUnderTest.js" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/service/PersistenceServiceTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardMoveBehaviorTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/StopRevealingHandCometChannel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/SidePlaceholderPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/AbstractConsoleLogStrategy.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardPanelTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardRotateBehaviorTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/gui/DataBoxTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/zone/PutToZonePanelTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/service/ImportDeckServiceTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/page/HomePageTest.java" />
+        <option value="$PROJECT_DIR$/README" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBaseTests.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/PlayerAndCard.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltipTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/JoinGameModalWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/RevealTopLibraryCardModalWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/AskMulliganModalWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/CardConstants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardInBattlefieldContextMenu.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateGameModalWindow.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/NonRegressionTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CountCardsModalWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltip.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBaseTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarrySession.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/LaunchAllServerSideTests.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Deck.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java" />
       </list>
     </option>
   </component>
@@ -512,8 +574,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="1280" />
     <option name="y" value="24" />
-    <option name="width" value="1912" />
-    <option name="height" value="1027" />
+    <option name="width" value="1920" />
+    <option name="height" value="1031" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -529,15 +591,26 @@
             <id>Code style issues</id>
           </State>
           <State>
+            <id>FindBugs IDEA</id>
+          </State>
+          <State>
             <id>JUnit issues</id>
           </State>
           <State>
             <id>Probable bugs</id>
           </State>
           <State>
+            <id>Spelling</id>
+          </State>
+          <State>
             <id>Visibility issues</id>
           </State>
         </expanded-state>
+        <selected-state>
+          <State>
+            <id>FindBugsIDEA</id>
+          </State>
+        </selected-state>
       </profile-state>
     </entry>
   </component>
@@ -567,32 +640,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
-      <pane id="Scope">
-        <subPane subId="All">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="hatchetharry">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="Problems" />
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -711,19 +758,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.apache.wicket:wicket-core:6.18.0" />
+              <option name="myItemId" value="Maven: com.google.code.findbugs:annotations:3.0.0" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="wicket-core-6.18.0.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wicket" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
+              <option name="myItemId" value="annotations-3.0.0.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -737,179 +776,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.apache.wicket:wicket-core:6.18.0" />
+              <option name="myItemId" value="Maven: com.google.code.findbugs:annotations:3.0.0" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="wicket-core-6.18.0.jar" />
+              <option name="myItemId" value="annotations-3.0.0.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="wicket" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ajax" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.apache.wicket:wicket-core:6.18.0" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wicket-core-6.18.0.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wicket" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ajax" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="html" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: junit:junit:4.11" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit-4.11.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: junit:junit:4.11" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit-4.11.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: junit:junit:4.11" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit-4.11.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="internal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: junit:junit:4.11" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit-4.11.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="internal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="runners" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: junit:junit:4.11" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit-4.11.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="internal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="runners" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
+              <option name="myItemId" value="annotations" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -976,6 +851,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="page" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1051,7 +930,75 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="gui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="component" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="card" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1099,7 +1046,63 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serverSideTest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hatchetharry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1298,6 +1301,10 @@
               <option name="myItemId" value="component" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modalwindow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1416,38 +1423,8 @@
               <option name="myItemId" value="view" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hatchetharry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
+              <option name="myItemId" value="clientsideutil" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1481,11 +1458,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="channel" />
+              <option name="myItemId" value="service" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1520,18 +1493,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="channel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="consolelog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="hatchetharry">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Problems" />
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane />
       </pane>
     </panes>
   </component>
@@ -1554,7 +1545,7 @@
     <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../wicket.github/wicket-experimental/wicket-atmosphere" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="234" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1143" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1143" />
@@ -1572,7 +1563,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="preferences.sourceCode.Java" />
+    <property name="options.lastSelected" value="org.twodividedbyzero.idea.findbugs" />
     <property name="project.structure.side.proportion" value="0.20000002" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="dynamic.classpath" value="false" />
@@ -1595,7 +1586,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.LaunchAllServerSideTests">
+  <component name="RunManager" selected="Tomcat Server.Tomcat 7">
     <configuration default="false" name="LaunchAllServerSideTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1627,57 +1618,25 @@
         <option name="LOCAL" value="true" />
       </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
+      <RunnerSettings RunnerId="Run with VisualVM" />
       <ConfigurationWrapper RunnerId="Cover" />
       <ConfigurationWrapper RunnerId="JRebel Debug" />
       <ConfigurationWrapper RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run with VisualVM" />
       <method />
     </configuration>
-    <configuration default="false" name="CounterTooltipTest.testCardTooltip" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="SpringContextLoaderBase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
-          <option name="PATTERN" value="org.alienlabs.hatchetharry.view.component.card.*" />
+          <option name="PATTERN" value="org.alienlabs.hatchetharry.serverSideTest.util.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <module name="hatchetharry" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.view.component.card" />
-      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.view.component.card.CounterTooltipTest" />
-      <option name="METHOD_NAME" value="testCardTooltip" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="CardMoveBehaviorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="org.alienlabs.hatchetharry.view.component.card.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="hatchetharry" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.view.component.card" />
-      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.view.component.card.CardMoveBehaviorTest" />
+      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.serverSideTest.util" />
+      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -1690,35 +1649,59 @@
       </option>
       <envs />
       <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JRebel Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="JRebel Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="HomePageTest.testGenerateDrawCardLink" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="CounterTooltip" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
-          <option name="PATTERN" value="org.alienlabs.hatchetharry.*" />
+          <option name="PATTERN" value="org.alienlabs.hatchetharry.view.component.card.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <module name="hatchetharry" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.view.page" />
-      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.view.page.HomePageTest" />
-      <option name="METHOD_NAME" value="testGenerateDrawCardLink" />
+      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.view.component.card" />
+      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.view.component.card.CounterTooltip" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Cover" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Cover" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="CounterTooltip.testCardTooltip" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="org.alienlabs.hatchetharry.view.component.card.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="hatchetharry" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.view.component.card" />
+      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.view.component.card.CounterTooltip" />
+      <option name="METHOD_NAME" value="testCardTooltip" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -1730,11 +1713,13 @@
       </option>
       <envs />
       <patterns />
+      <RunnerSettings RunnerId="Cover" />
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Cover" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="CardPanelTest.testPlayCardFromGraveyardBehavior" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="HomePage.testGenerateDrawCardLink" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="org.alienlabs.hatchetharry.*" />
@@ -1744,9 +1729,9 @@
       <module name="hatchetharry" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.view.component.card" />
-      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.view.component.card.CardPanelTest" />
-      <option name="METHOD_NAME" value="testPlayCardFromGraveyardBehavior" />
+      <option name="PACKAGE_NAME" value="org.alienlabs.hatchetharry.view.page" />
+      <option name="MAIN_CLASS_NAME" value="org.alienlabs.hatchetharry.view.page.HomePage" />
+      <option name="METHOD_NAME" value="testGenerateDrawCardLink" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -2388,18 +2373,18 @@
       <item index="0" class="java.lang.String" itemvalue="Tomcat Server.Tomcat 7" />
       <item index="1" class="java.lang.String" itemvalue="Tomcat Server.Tomcat 8.0.15" />
       <item index="2" class="java.lang.String" itemvalue="JUnit.LaunchAllServerSideTests" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.CounterTooltipTest.testCardTooltip" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.CardMoveBehaviorTest" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.HomePageTest.testGenerateDrawCardLink" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.CardPanelTest.testPlayCardFromGraveyardBehavior" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.SpringContextLoaderBase" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.CounterTooltip" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.CounterTooltip.testCardTooltip" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.HomePage.testGenerateDrawCardLink" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="JUnit.LaunchAllServerSideTests" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.CardPanelTest.testPlayCardFromGraveyardBehavior" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.HomePageTest.testGenerateDrawCardLink" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.CardMoveBehaviorTest" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.CounterTooltipTest.testCardTooltip" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.CounterTooltip.testCardTooltip" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.HomePage.testGenerateDrawCardLink" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.CounterTooltip" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.SpringContextLoaderBase" />
       </list>
     </recent_temporary>
   </component>
@@ -2444,7 +2429,18 @@
       <workItem from="1415914248268" duration="10797000" />
       <workItem from="1415927886258" duration="29123000" />
       <workItem from="1416061232881" duration="15452000" />
-      <workItem from="1416087953919" duration="42789000" />
+      <workItem from="1416087953919" duration="52543000" />
+      <workItem from="1416173387856" duration="2632000" />
+      <workItem from="1416176059913" duration="6798000" />
+      <workItem from="1416182950947" duration="586000" />
+      <workItem from="1416183563083" duration="37227000" />
+      <workItem from="1416231381150" duration="10000" />
+      <workItem from="1416233070951" duration="204000" />
+      <workItem from="1416233430763" duration="16532000" />
+      <workItem from="1416251464190" duration="3211000" />
+      <workItem from="1416260145690" duration="456000" />
+      <workItem from="1416334562226" duration="2381000" />
+      <workItem from="1416338283925" duration="3988000" />
     </task>
     <task id="LOCAL-00001" summary="- FIXED performance problems thanks to &quot;@Transactional(readOnly=true)&quot; on PersistenceService's methods that are... read-only&#10;- FIXED bug occurring when dragging and dropping a card several times over the hand or the graveyard zones by means of hiding the card's HTML when droppable is taken into account">
       <created>1374753426598</created>
@@ -2704,11 +2700,77 @@
       <option name="project" value="LOCAL" />
       <updated>1416161685124</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="PMD">
+      <created>1416163334477</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1416163334477</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Intellij analysis">
+      <created>1416165089636</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1416165089636</updated>
+    </task>
+    <task id="LOCAL-00046" summary="- ADDED test&#10;- raised Hibernate &amp; ehcache versions">
+      <created>1416173182755</created>
+      <option name="number" value="00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1416173182755</updated>
+    </task>
+    <task id="LOCAL-00047" summary="REMOVED impossible test">
+      <created>1416175081482</created>
+      <option name="number" value="00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1416175081483</updated>
+    </task>
+    <task id="LOCAL-00048" summary="PMD + Findbugs + inspections">
+      <created>1416181979662</created>
+      <option name="number" value="00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1416181979662</updated>
+    </task>
+    <task id="LOCAL-00049" summary="- raised versions of Hibernate &amp; Ehcache&#10;- got rid of SecureRandom as it is awfully slow and we don't need strong RNG&#10;- Drag and drop placeholder styled&#10;- in EventBusPostService, there's an experimental error recovery">
+      <created>1416200706255</created>
+      <option name="number" value="00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1416200706255</updated>
+    </task>
+    <task id="LOCAL-00050" summary="- speeded up tests thanks to @ContextConfiguration(locations = { &quot;classpath:applicationContext.xml&quot;, &quot;classpath:applicationContextTest.xml&quot; })&#10;&#10;- REMOVED: baldu">
+      <created>1416215405294</created>
+      <option name="number" value="00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1416215405294</updated>
+    </task>
+    <task id="LOCAL-00051" summary="FIXED discard a card at random">
+      <created>1416219198389</created>
+      <option name="number" value="00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1416219198389</updated>
+    </task>
+    <task id="LOCAL-00052" summary="FIX for Maven">
+      <created>1416220049653</created>
+      <option name="number" value="00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1416220049653</updated>
+    </task>
+    <task id="LOCAL-00053" summary="FIX for Maven, bis">
+      <created>1416230707557</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1416230707557</updated>
+    </task>
+    <task id="LOCAL-00054" summary="- ADDED test&#10;- cpde clean-up">
+      <created>1416255648974</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1416255648974</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204785000" />
+    <option name="totallyTimeSpent" value="288564000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2731,10 +2793,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1280" y="24" width="1912" height="1027" extended-state="0" />
+    <frame x="1280" y="24" width="1920" height="1031" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884398" sideWeight="0.5" order="20" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32976446" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Gerrit" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="21" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -2743,46 +2806,45 @@
       <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="23" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32976446" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24892934" sideWeight="0.57191396" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24866879" sideWeight="0.57191396" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.37261504" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="419" y="0" width="861" height="605" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32842582" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43601358" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884398" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43546578" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="24" side_tool="false" content_ui="tabs" />
-      <window_info id="PMD" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="26" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32842582" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.2570146" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="604" width="1280" height="420" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922912" sideWeight="0.6784897" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="PMD" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884398" sideWeight="0.5" order="26" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39955106" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32772166" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.2570146" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="604" width="1280" height="419" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.6784897" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32842582" sideWeight="0.5" order="25" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32842582" sideWeight="0.5" order="27" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3097643" sideWeight="0.5" order="27" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24892934" sideWeight="0.42695355" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.23588924" sideWeight="0.68421054" order="0" side_tool="false" content_ui="combo" x="108" y="0" width="311" height="606" />
+      <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32976446" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="JRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Analysis" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="28" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32842582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32772166" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32976446" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="20" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette " active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.68421054" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="hatchetharry" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30804077" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Jenkins" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951945" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Aspects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -2802,17 +2864,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="FIXED hide all tooltips" />
-    <MESSAGE value="FIXED tooltips again" />
-    <MESSAGE value="It all looks good on Freebox, now!" />
-    <MESSAGE value="optimized DAOs" />
-    <MESSAGE value="Optimized DB requests again:&#10;&#10;- setCacheable(true) on one more request&#10;- got rid of 3 (!) useless calls to getCardFromUuid when playing a card&#10;" />
-    <MESSAGE value="PMD" />
-    <MESSAGE value="IN-PROGRESS: still reactivating the unit tests&#10;" />
-    <MESSAGE value="tests&#10;" />
-    <MESSAGE value="DONE: refactoring tests&#10;" />
-    <MESSAGE value="REFACTORED: tests&#10;" />
-    <MESSAGE value="IN-PROGRESS: more tests&#10;" />
     <MESSAGE value="FIXED: decks duplication" />
     <MESSAGE value="- FIXED: card rearranging after a card is put to graveyard + non-regression tests&#10;- Reactivated MariaDB for tests since HSQLDB syntax is far from being compliant with MySQL syntax&#10;" />
     <MESSAGE value="RENAMED test&#10;" />
@@ -2827,7 +2878,18 @@
     <MESSAGE value="Code clean-up&#10;" />
     <MESSAGE value="IN-PROGRESS: refactoring components to introduce models&#10;" />
     <MESSAGE value="code clean-up&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="code clean-up&#10;" />
+    <MESSAGE value="PMD" />
+    <MESSAGE value="Intellij analysis" />
+    <MESSAGE value="- ADDED test&#10;- raised Hibernate &amp; ehcache versions" />
+    <MESSAGE value="REMOVED impossible test" />
+    <MESSAGE value="PMD + Findbugs + inspections" />
+    <MESSAGE value="- raised versions of Hibernate &amp; Ehcache&#10;- got rid of SecureRandom as it is awfully slow and we don't need strong RNG&#10;- Drag and drop placeholder styled&#10;- in EventBusPostService, there's an experimental error recovery" />
+    <MESSAGE value="- speeded up tests thanks to @ContextConfiguration(locations = { &quot;classpath:applicationContext.xml&quot;, &quot;classpath:applicationContextTest.xml&quot; })&#10;&#10;- REMOVED: baldu" />
+    <MESSAGE value="FIXED discard a card at random" />
+    <MESSAGE value="FIX for Maven" />
+    <MESSAGE value="FIX for Maven, bis" />
+    <MESSAGE value="- ADDED test&#10;- cpde clean-up" />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADDED test&#10;- cpde clean-up" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -2885,18 +2947,56 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/BattlefieldService.java</url>
+          <line>217</line>
+          <properties />
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/GraveyardComponent.java</url>
+          <line>51</line>
+          <properties />
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java</url>
+          <line>2017</line>
+          <properties />
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java</url>
+          <line>105</line>
+          <properties />
+          <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltip.java</url>
+          <line>106</line>
+          <properties />
+          <option name="timeStamp" value="107" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="64" />
+      <option name="time" value="108" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
-        <watch expression="pp.get(&quot;displayTooltips&quot;)" />
+        <watch expression="this.allCardsInHand" />
+        <watch expression="playerWhoDiscards" />
+        <watch expression="allCardsInHandForAGameAndAPlayer" />
+        <watch expression="HatchetHarrySession&#10;&#9;&#9;&#9;&#9;&#9;&#9;.get().getPlayer().getGame().getId()" />
+        <watch expression="HatchetHarrySession.get().getPlayer().getId()" />
+        <watch expression="HatchetHarrySession.get().getPlayer()&#10;&#9;&#9;&#9;&#9;&#9;&#9;.getDeck().getDeckId()" />
+        <watch expression="playerWhoDiscardsDeckId" />
       </configuration>
       <configuration name="JUnit">
-        <watch expression="myCard.getPlayer()" />
-        <watch expression="this.session.getPlayer()" />
+        <watch expression="CounterTooltip.this.card" />
+        <watch expression="CounterTooltip.this.card.getDeck()" />
       </configuration>
     </watches-manager>
   </component>
@@ -2905,473 +3005,358 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltipTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-122.0" vertical-offset="0" max-vertical-offset="4986">
-          <caret line="183" column="4" selection-start-line="183" selection-start-column="4" selection-end-line="183" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/infinitest.filters">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="856">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="7275" max-vertical-offset="8118">
-          <caret line="426" column="92" selection-start-line="426" selection-start-column="92" selection-end-line="426" selection-end-column="92" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/gallery/handInBattlefield.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
-          <caret line="1" column="54" selection-start-line="1" selection-start-column="42" selection-end-line="1" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/draggableHandle/cardTooltip.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="198">
-          <caret line="2" column="29" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.888889" vertical-offset="4593" max-vertical-offset="7254">
-          <caret line="267" column="57" selection-start-line="267" selection-start-column="45" selection-end-line="267" selection-end-column="69" />
-          <folding />
+        <state vertical-scroll-proportion="56.0" vertical-offset="4338" max-vertical-offset="7200">
+          <caret line="157" column="25" selection-start-line="157" selection-start-column="25" selection-end-line="157" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/qunitTests/codeUnderTest.js">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6390">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/playCard/reorderCard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="684">
-          <caret line="11" column="69" selection-start-line="11" selection-start-column="69" selection-end-line="11" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ReorderCardInBattlefieldBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.5864486" vertical-offset="1610" max-vertical-offset="2466">
-          <caret line="42" column="11" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/model/Model.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33294392" vertical-offset="39" max-vertical-offset="4050">
-          <caret line="45" column="56" selection-start-line="45" selection-start-column="56" selection-end-line="45" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/model/IModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03821656" vertical-offset="0" max-vertical-offset="1152">
-          <caret line="16" column="31" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Deck.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="131" max-vertical-offset="3078">
-          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-          <folding />
+        <state vertical-scroll-proportion="0.5416667" vertical-offset="5364" max-vertical-offset="6228">
+          <caret line="324" column="0" selection-start-line="324" selection-start-column="0" selection-end-line="324" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.148149" vertical-offset="4118" max-vertical-offset="5598">
-          <caret line="275" column="83" selection-start-line="275" selection-start-column="83" selection-end-line="275" selection-end-column="83" />
-          <folding>
-            <element signature="e#0#11812#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="1.1643356" vertical-offset="1440" max-vertical-offset="4932">
+          <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/ImportDeckService.java">
+    <entry file="file://$PROJECT_DIR$/README">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1067" max-vertical-offset="1818">
-          <caret line="83" column="37" selection-start-line="83" selection-start-column="37" selection-end-line="83" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.71915394" vertical-offset="0" max-vertical-offset="851">
+          <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DrawModeBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="134" max-vertical-offset="1386">
+          <caret line="55" column="12" selection-start-line="55" selection-start-column="12" selection-end-line="55" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/MagicCardTooltipPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/GraveyardComponent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="1350">
-          <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1502" max-vertical-offset="2160">
+          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/GameService.java">
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/ClassLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="833" max-vertical-offset="3330">
-          <caret line="90" column="91" selection-start-line="90" selection-start-column="91" selection-end-line="90" selection-end-column="91" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="7550" max-vertical-offset="38754">
+          <caret line="487" column="0" selection-start-line="487" selection-start-column="0" selection-end-line="487" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardInBattlefieldContextMenu.java">
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/System.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="1566">
-          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5084" max-vertical-offset="22266">
+          <caret line="333" column="0" selection-start-line="333" selection-start-column="0" selection-end-line="333" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateTokenModalWindow.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/ajax/markup/html/AjaxLink.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28706998" vertical-offset="1198" max-vertical-offset="2880">
-          <caret line="111" column="108" selection-start-line="111" selection-start-column="108" selection-end-line="111" selection-end-column="108" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="944" max-vertical-offset="2700">
+          <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/BattlefieldService.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-request/6.18.0/wicket-request-6.18.0-sources.jar!/org/apache/wicket/request/RequestHandlerStack.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="133" max-vertical-offset="5166">
-          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1142" max-vertical-offset="3888">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9.jar!/org/atmosphere/cpr/AsynchronousProcessor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33272395" vertical-offset="448" max-vertical-offset="8496">
+          <caret line="67" column="18" selection-start-line="67" selection-start-column="18" selection-end-line="67" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9.jar!/org/atmosphere/handler/ReflectorServletProcessor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32541132" vertical-offset="1586" max-vertical-offset="4194">
+          <caret line="126" column="16" selection-start-line="126" selection-start-column="16" selection-end-line="126" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9.jar!/org/atmosphere/util/AtmosphereFilterChain.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="416" max-vertical-offset="2430">
+          <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/protocol/http/WicketFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33989266" vertical-offset="4220" max-vertical-offset="14868">
+          <caret line="282" column="0" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/request/cycle/RequestCycle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33216783" vertical-offset="4238" max-vertical-offset="15048">
+          <caret line="294" column="0" selection-start-line="294" selection-start-column="0" selection-end-line="294" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/core/request/handler/ListenerInterfaceRequestHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33216783" vertical-offset="3536" max-vertical-offset="4698">
+          <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/RequestListenerInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33216783" vertical-offset="3626" max-vertical-offset="5778">
+          <caret line="241" column="0" selection-start-line="241" selection-start-column="0" selection-end-line="241" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/ajax/AbstractDefaultAjaxBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5402504" vertical-offset="10318" max-vertical-offset="10890">
+          <caret line="633" column="0" selection-start-line="633" selection-start-column="0" selection-end-line="633" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/ajax/AjaxEventBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4965035" vertical-offset="1606" max-vertical-offset="2178">
+          <caret line="124" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39699075" vertical-offset="557" max-vertical-offset="14724">
+          <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/EventBusPostService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.2199074" vertical-offset="44" max-vertical-offset="1098">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2199074" vertical-offset="1304" max-vertical-offset="2412">
+          <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateTokenModalWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.5555553" vertical-offset="417" max-vertical-offset="2880">
+          <caret line="64" column="27" selection-start-line="64" selection-start-column="27" selection-end-line="64" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/util/tester/BaseWicketTester.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="25056" max-vertical-offset="50004">
+          <caret line="1539" column="21" selection-start-line="1539" selection-start-column="21" selection-end-line="1539" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/wicket/wicket-core/6.18.0/wicket-core-6.18.0-sources.jar!/org/apache/wicket/util/tester/WicketTester.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.375" vertical-offset="7974" max-vertical-offset="14706">
+          <caret line="508" column="37" selection-start-line="508" selection-start-column="37" selection-end-line="508" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1505" max-vertical-offset="2664">
+          <caret line="109" column="19" selection-start-line="109" selection-start-column="19" selection-end-line="109" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/JoinGameModalWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3114">
-          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2265" max-vertical-offset="3132">
+          <caret line="160" column="64" selection-start-line="160" selection-start-column="64" selection-end-line="160" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/RevealTopLibraryCardModalWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="159" max-vertical-offset="5004">
+          <caret line="59" column="5" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/AskMulliganModalWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2106">
+          <caret line="29" column="32" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15639" max-vertical-offset="24282">
+          <caret line="926" column="27" selection-start-line="926" selection-start-column="27" selection-end-line="926" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/CardConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.070866145" vertical-offset="0" max-vertical-offset="508">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/annotations/3.0.0/annotations-3.0.0.jar!/edu/umd/cs/findbugs/annotations/SuppressFBWarnings.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23076923" vertical-offset="0" max-vertical-offset="546">
+          <caret line="11" column="18" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/FacebookLoginBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="1512">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/GameNotifierBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="188" max-vertical-offset="900">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/ArrowDrawBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="314" max-vertical-offset="1530">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1322" max-vertical-offset="3564">
+          <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/MagicCard.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/BattlefieldService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1281" max-vertical-offset="6714">
-          <caret line="95" column="11" selection-start-line="95" selection-start-column="11" selection-end-line="95" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4260" max-vertical-offset="5166">
+          <caret line="265" column="0" selection-start-line="265" selection-start-column="0" selection-end-line="265" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardInBattlefieldContextMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1620">
+          <caret line="20" column="55" selection-start-line="20" selection-start-column="55" selection-end-line="20" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateGameModalWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2010" max-vertical-offset="5706">
+          <caret line="163" column="19" selection-start-line="163" selection-start-column="19" selection-end-line="163" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CountCardsModalWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="278" max-vertical-offset="1152">
+          <caret line="43" column="57" selection-start-line="43" selection-start-column="57" selection-end-line="43" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Counter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="414" max-vertical-offset="2772">
+          <caret line="54" column="16" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CounterTooltip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17597087" vertical-offset="3779" max-vertical-offset="6768">
+          <caret line="251" column="65" selection-start-line="251" selection-start-column="65" selection-end-line="251" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarrySession.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16666667" vertical-offset="4540" max-vertical-offset="8190">
+          <caret line="257" column="0" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1049" max-vertical-offset="2160">
-          <caret line="92" column="35" selection-start-line="92" selection-start-column="35" selection-end-line="92" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/RevealTopLibraryCardModalWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3106" max-vertical-offset="4878">
-          <caret line="219" column="57" selection-start-line="219" selection-start-column="57" selection-end-line="219" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/RevealHandComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2075" max-vertical-offset="4086">
-          <caret line="164" column="33" selection-start-line="164" selection-start-column="33" selection-end-line="164" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromHandBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="707" max-vertical-offset="2232">
-          <caret line="82" column="77" selection-start-line="82" selection-start-column="77" selection-end-line="82" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4194">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateGameModalWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.074074" vertical-offset="3472" max-vertical-offset="5778">
-          <caret line="248" column="71" selection-start-line="248" selection-start-column="71" selection-end-line="248" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1198102" vertical-offset="7747" max-vertical-offset="24822">
-          <caret line="484" column="13" selection-start-line="484" selection-start-column="13" selection-end-line="484" selection-end-column="13" />
-          <folding>
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete t.* f..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete cc.* ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select da.* ..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select da.* ..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select d.* f..DeckArchive..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select d.* f..DeckArchive..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select da.* ..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select da.* ..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select dd.* ..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select disti..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select dd.* ..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select disti..Deck..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select t.* f..Token..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select mc.* ..MagicCard..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select playe..Player_Game..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select p.* f..Player..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="select playe..Player_Game..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1416157723526" expanded="true" signature="-1:-1" placeholder="update Count..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/util/SpringContextLoaderBaseTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68457943" vertical-offset="1394" max-vertical-offset="2250">
-          <caret line="131" column="5" selection-start-line="131" selection-start-column="5" selection-end-line="131" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1516" max-vertical-offset="2538">
+          <caret line="120" column="69" selection-start-line="120" selection-start-column="69" selection-end-line="120" selection-end-column="69" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/LaunchAllServerSideTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="342">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="856">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardRotateBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="77" max-vertical-offset="1602">
-          <caret line="40" column="11" selection-start-line="40" selection-start-column="11" selection-end-line="40" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/ArrowDrawBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="77" max-vertical-offset="1530">
-          <caret line="31" column="40" selection-start-line="31" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardPanelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3533" max-vertical-offset="7002">
-          <caret line="237" column="54" selection-start-line="237" selection-start-column="60" selection-end-line="238" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/zone/PutToZonePanelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3749" max-vertical-offset="4842">
-          <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serverSideTest/NonRegressionTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6503" max-vertical-offset="7920">
-          <caret line="390" column="0" selection-start-line="390" selection-start-column="0" selection-end-line="390" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="7348" max-vertical-offset="10080">
+          <caret line="464" column="74" selection-start-line="464" selection-start-column="74" selection-end-line="464" selection-end-column="74" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardMoveBehaviorTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/Deck.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="800" max-vertical-offset="1638">
-          <caret line="80" column="68" selection-start-line="80" selection-start-column="68" selection-end-line="80" selection-end-column="68" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1340" max-vertical-offset="3078">
+          <caret line="113" column="64" selection-start-line="113" selection-start-column="64" selection-end-line="113" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.555555" vertical-offset="56046" max-vertical-offset="59076">
-          <caret line="3173" column="38" selection-start-line="3173" selection-start-column="38" selection-end-line="3173" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.44848484" vertical-offset="10848" max-vertical-offset="56736">
+          <caret line="773" column="13" selection-start-line="773" selection-start-column="13" selection-end-line="773" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <marker date="1416345826510" expanded="true" signature="29772:29873" placeholder="{...}" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToHandFromBattlefieldBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3168">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToGraveyardFromBattlefieldBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2772">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToExileFromBattlefieldBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2826">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="350" max-vertical-offset="4338">
-          <caret line="44" column="24" selection-start-line="44" selection-start-column="24" selection-end-line="44" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/DestroyTokenBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2358">
-          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/DrawModeBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="113" max-vertical-offset="1368">
-          <caret line="34" column="11" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/StopRevealingHandCometChannel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/SidePlaceholderPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="386" max-vertical-offset="1242">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28106153" vertical-offset="12439" max-vertical-offset="14526">
-          <caret line="704" column="63" selection-start-line="704" selection-start-column="63" selection-end-line="704" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/consolelog/AbstractConsoleLogStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1620">
-          <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/PlayerAndCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18925233" vertical-offset="0" max-vertical-offset="856">
-          <caret line="9" column="2" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>

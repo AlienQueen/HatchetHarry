@@ -32,10 +32,10 @@ import org.springframework.beans.factory.annotation.Required;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class DataBox extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 	private static final long serialVersionUID = -9102861929848438800L;
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 
 	public DataBox(final String id, final long _gameId)
@@ -62,7 +62,8 @@ public class DataBox extends Panel
 						"playerLifePointsParent");
 				playerLifePointsParent.setOutputMarkupId(true);
 				playerLifePointsParent.setMarkupId("playerLifePointsParent" + player.getId());
-				final Model<String> lifePoints = Model.of(Long.toString(player.getLifePoints()));
+				final Model<String> lifePoints = Model.of(Long.toString(player.getLifePoints()
+						.longValue()));
 				final AjaxEditableLabel<String> playerLifePoints = new AjaxEditableLabel<String>(
 						"playerLifePoints", lifePoints)
 				{
@@ -75,19 +76,19 @@ public class DataBox extends Panel
 						super.onSubmit(target);
 						DataBox.LOGGER.info(this.getDefaultModelObject().toString());
 
-						player.setLifePoints(Long
-								.parseLong(this.getDefaultModelObject().toString()));
+						player.setLifePoints(Long.valueOf(Long.parseLong(this
+								.getDefaultModelObject().toString())));
 						DataBox.this.persistenceService.updatePlayer(player);
 
 						final List<BigInteger> allPlayersInGame = DataBox.this.persistenceService
-								.giveAllPlayersFromGame(_gameId);
+								.giveAllPlayersFromGame(Long.valueOf(_gameId));
 						final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(
-								_gameId);
+								Long.valueOf(_gameId));
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
 								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
-										player.getName(), null,
-										Long.parseLong(this.getDefaultModelObject().toString()),
-										null, true, _gameId);
+										player.getName(), null, Long.valueOf(Long.parseLong(this
+												.getDefaultModelObject().toString())), null,
+										Boolean.TRUE, Long.valueOf(_gameId));
 
 						// post the DataBox update message to all players in the
 						// game
@@ -110,7 +111,8 @@ public class DataBox extends Panel
 					{
 						final Player playerToUpdate = DataBox.this.persistenceService
 								.getPlayer(this.getModelObject().getId());
-						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1);
+						playerToUpdate.setLifePoints(Long.valueOf(playerToUpdate.getLifePoints()
+								.longValue() + 1l));
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
 						final Long g = playerToUpdate.getGame().getId();
@@ -121,7 +123,7 @@ public class DataBox extends Panel
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
 								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
 										playerToUpdate.getName(), null,
-										playerToUpdate.getLifePoints(), null, true, g);
+										playerToUpdate.getLifePoints(), null, Boolean.TRUE, g);
 
 						// post the DataBox update message to all players in the
 						// game
@@ -146,7 +148,8 @@ public class DataBox extends Panel
 					{
 						final Player playerToUpdate = DataBox.this.persistenceService
 								.getPlayer(this.getModelObject().getId());
-						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() - 1);
+						playerToUpdate.setLifePoints(Long.valueOf(playerToUpdate.getLifePoints()
+								.longValue() - 1));
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
 						final Long g = playerToUpdate.getGame().getId();
@@ -157,7 +160,7 @@ public class DataBox extends Panel
 						final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
 								.chooseStrategy(ConsoleLogType.LIFE_POINTS, null, null, null, null,
 										playerToUpdate.getName(), null,
-										playerToUpdate.getLifePoints(), null, true, g);
+										playerToUpdate.getLifePoints(), null, Boolean.TRUE, g);
 
 						// post the DataBox update message to all players in the
 						// game

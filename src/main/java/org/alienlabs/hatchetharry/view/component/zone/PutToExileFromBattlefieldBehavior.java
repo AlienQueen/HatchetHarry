@@ -93,7 +93,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 		final Long gameId = session.getPlayer().getGame().getId();
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 		final Deck mydeck = this.persistenceService.getDeck(session.getPlayer().getDeck()
-				.getDeckId());
+				.getDeckId().longValue());
 
 		final List<MagicCard> exile = mydeck.reorderMagicCards(this.persistenceService
 				.getAllCardsInExileForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
@@ -144,7 +144,7 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{
-				targetPlayer.setExileDisplayed(true);
+				targetPlayer.setExileDisplayed(Boolean.TRUE);
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
 		}

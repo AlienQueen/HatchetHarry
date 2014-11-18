@@ -43,14 +43,14 @@ import org.springframework.beans.factory.annotation.Required;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealHandComponent extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(RevealHandComponent.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(RevealHandComponent.class);
 	private static final long serialVersionUID = 1L;
 	private final WebMarkupContainer handCardsPlaceholder;
 	private final ListView<MagicCard> allCards;
 	private final WebMarkupContainer thumbsPlaceholder;
 	private final List<MagicCard> allCardsInHand;
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	/**
 	 * @param id
@@ -102,8 +102,8 @@ public class RevealHandComponent extends Panel
 					final String playerStopping = HatchetHarrySession.get().getPlayer().getName();
 
 					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-							ConsoleLogType.REVEAL_HAND, null, null, false, null, playerRevealing,
-							null, null, playerStopping, null, ids[0]);
+							ConsoleLogType.REVEAL_HAND, null, null, Boolean.FALSE, null,
+							playerRevealing, null, null, playerStopping, null, ids[0]);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.REVEAL_HAND, null, null, playerRevealing, null, null,
 							null, null, playerStopping);

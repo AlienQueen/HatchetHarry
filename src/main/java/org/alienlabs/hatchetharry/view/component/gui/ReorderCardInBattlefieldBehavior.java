@@ -60,7 +60,7 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		final String newIndexAsString = request.getParameter("index");
 		ReorderCardInBattlefieldBehavior.LOGGER.info("newIndex: " + newIndexAsString);
 
-		final Integer newIndex = Integer.parseInt(newIndexAsString);
+		final Integer newIndex = Integer.valueOf(Integer.parseInt(newIndexAsString));
 		final UUID uuid = UUID.fromString(uuidAsString);
 		MagicCard card = this.persistenceService.getCardFromUuid(uuid);
 		final HatchetHarrySession session = HatchetHarrySession.get();
@@ -79,12 +79,12 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			startIndex = newIndex.intValue();
 			endIndex = oldIndex.intValue();
 
-			card = allCardsInBattlefieldForPlayer.get(oldIndex);
+			card = allCardsInBattlefieldForPlayer.get(oldIndex.intValue());
 
 			for (int index = endIndex - 1; index >= startIndex; index--)
 			{
 				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
-				mc.setBattlefieldOrder(index + 1);
+				mc.setBattlefieldOrder(Integer.valueOf(index + 1));
 			}
 			card.setBattlefieldOrder(newIndex);
 		}
@@ -93,12 +93,12 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			startIndex = oldIndex.intValue();
 			endIndex = newIndex.intValue();
 
-			card = allCardsInBattlefieldForPlayer.get(oldIndex);
+			card = allCardsInBattlefieldForPlayer.get(oldIndex.intValue());
 
 			for (int index = startIndex + 1; index < (endIndex + 1); index++)
 			{
 				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
-				mc.setBattlefieldOrder(index - 1);
+				mc.setBattlefieldOrder(Integer.valueOf(index - 1));
 			}
 			card.setBattlefieldOrder(newIndex);
 		}

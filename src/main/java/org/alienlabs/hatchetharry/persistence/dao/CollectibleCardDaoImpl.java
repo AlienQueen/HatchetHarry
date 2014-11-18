@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link CollectibleCardDao}.
- *
+ * 
  * @author igor
  */
 public class CollectibleCardDaoImpl implements CollectibleCardDao
@@ -47,7 +47,7 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -59,7 +59,7 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 
 	/**
 	 * Load a {@link CollectibleCard} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the CollectibleCard to load.
 	 * @return CollectibleCard
@@ -84,7 +84,7 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 
 	/**
 	 * Save the CollectibleCard to the DB
-	 *
+	 * 
 	 * @param CollectibleCard
 	 * @return persistent instance of CollectibleCard
 	 */
@@ -97,7 +97,7 @@ public class CollectibleCardDaoImpl implements CollectibleCardDao
 
 	/**
 	 * Delete a {@link CollectibleCard} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the CollectibleCard to delete.
 	 */

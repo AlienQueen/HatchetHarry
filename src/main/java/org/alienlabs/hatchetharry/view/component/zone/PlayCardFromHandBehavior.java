@@ -20,8 +20,8 @@ import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStr
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
-import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
+import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -72,7 +72,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 
 		final Game game = this.persistenceService.getGame(gameId);
 
-		final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1;
+		final Long currentPlaceholderId = Long
+				.valueOf(game.getCurrentPlaceholderId().longValue() + 1);
 		game.setCurrentPlaceholderId(currentPlaceholderId);
 
 		this.persistenceService.updateGame(game);

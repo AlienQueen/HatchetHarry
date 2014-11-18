@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * implements {@link DeckDao}.
- *
+ * 
  * @author igor
  */
 // TODO remove all non-used methods in all DAOs: find(), uniqueNames(),
@@ -50,7 +50,7 @@ public class DeckDaoImpl implements DeckDao
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 *
+	 * 
 	 * @param _factory
 	 *            hibernate session factory
 	 */
@@ -62,7 +62,7 @@ public class DeckDaoImpl implements DeckDao
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 *
+	 * 
 	 * @return hibernate session
 	 */
 	@Override
@@ -73,7 +73,7 @@ public class DeckDaoImpl implements DeckDao
 
 	/**
 	 * Load a {@link Deck} from the DB, given it's <tt>id</tt> .
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Deck to load.
 	 * @return Deck
@@ -87,7 +87,7 @@ public class DeckDaoImpl implements DeckDao
 
 	/**
 	 * Save the Deck to the DB
-	 *
+	 * 
 	 * @param Deck
 	 * @return persistent instance of Deck
 	 */
@@ -100,7 +100,7 @@ public class DeckDaoImpl implements DeckDao
 
 	/**
 	 * Delete a {@link Deck} from the DB, given it's <tt>id</tt>.
-	 *
+	 * 
 	 * @param id
 	 *            The id of the Deck to delete.
 	 */

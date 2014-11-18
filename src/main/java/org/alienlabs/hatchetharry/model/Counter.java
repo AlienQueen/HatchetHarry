@@ -32,7 +32,7 @@ public class Counter implements Serializable, Comparable<Counter>
 	@Column
 	private String counterName;
 	@Column
-	private Long numberOfCounters = 0l;
+	private Long numberOfCounters = Long.valueOf(0l);
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = MagicCard.class)
 	@JoinColumn(name = "card")

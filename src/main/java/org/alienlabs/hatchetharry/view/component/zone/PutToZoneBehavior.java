@@ -127,15 +127,15 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		switch (this.targetZone)
 		{
 			case HAND :
-				ownerPlayer.setHandDisplayed(true);
+				ownerPlayer.setHandDisplayed(Boolean.TRUE);
 				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case GRAVEYARD :
-				ownerPlayer.setGraveyardDisplayed(true);
+				ownerPlayer.setGraveyardDisplayed(Boolean.TRUE);
 				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case EXILE :
-				ownerPlayer.setExileDisplayed(true);
+				ownerPlayer.setExileDisplayed(Boolean.TRUE);
 				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case BATTLEFIELD :

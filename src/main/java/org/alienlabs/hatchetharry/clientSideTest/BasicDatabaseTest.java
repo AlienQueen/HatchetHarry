@@ -26,12 +26,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BasicDatabaseTest implements Serializable
 {
-	private static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
+	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml" });
 	private static final long serialVersionUID = 1L;
 	private static transient WicketTester tester;
 	private static HatchetHarryApplication webApp;
-	private static transient ApplicationContext context;
+	static transient ApplicationContext context;
 
 	@SpringBean
 	private CardCollectionDao cardCollectionDao;

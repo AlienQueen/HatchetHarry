@@ -32,20 +32,19 @@ import org.springframework.beans.factory.annotation.Required;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class JoinGameWithoutIdModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(JoinGameWithoutIdModalWindow.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(JoinGameWithoutIdModalWindow.class);
 	private static final long serialVersionUID = 1L;
-	private final TextField<String> nameInput;
-	private final DropDownChoice<String> sideInput;
-	private final HomePage hp;
-	private WebMarkupContainer deckParent;
-	private DropDownChoice<Deck> decks;
-	private final DropDownChoice<Format> formats;
-	private final FeedbackPanel feedback;
-	private final TextField<String> numberOfPlayers;
+	final TextField<String> nameInput;
+	final DropDownChoice<String> sideInput;
+	final HomePage hp;
+	WebMarkupContainer deckParent;
+	DropDownChoice<Deck> decks;
+	final DropDownChoice<Format> formats;
+	final FeedbackPanel feedback;
+	final TextField<String> numberOfPlayers;
 
 	@SpringBean
-	private PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
 	// TODO remove _dataBoxParent & _modal & _player
 	public JoinGameWithoutIdModalWindow(final ModalWindow _modal, final String id,

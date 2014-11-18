@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBaseTest;
+import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,14 +17,12 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
 		"classpath:applicationContextTest.xml" })
-public class ImportDeckServiceTest extends SpringContextLoaderBaseTest
+public class ImportDeckServiceTest extends SpringContextLoaderBase
 {
 	@Test
 	public void testImportDeck() throws FileNotFoundException, IOException
 	{
 		// Init
-		final PersistenceService persistenceService = this.context
-				.getBean(PersistenceService.class);
 		final ImportDeckService importDeckService = this.context.getBean(ImportDeckService.class);
 
 		final boolean auraBantAlreadyExists = (null != persistenceService
