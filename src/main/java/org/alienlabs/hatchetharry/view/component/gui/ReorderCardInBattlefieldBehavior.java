@@ -83,7 +83,7 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			for (int index = endIndex - 1; index >= startIndex; index--)
 			{
 				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
-				mc.setBattlefieldOrder(Integer.valueOf(newIndex + 1));
+				mc.setBattlefieldOrder(Integer.valueOf(index + 1));
 			}
 			card.setBattlefieldOrder(newIndex);
 		}
@@ -92,14 +92,15 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			startIndex = oldIndex.intValue();
 			endIndex = newIndex.intValue();
 
-			for (int index = startIndex + 1; index <= endIndex; index++)
+			card = allCardsInBattlefieldForPlayer.remove(startIndex);
+
+			for (int index = startIndex; index < endIndex; index++)
 			{
 				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
-				mc.setBattlefieldOrder(Integer.valueOf(index - 1));
+				mc.setBattlefieldOrder(Integer.valueOf(index));
 			}
 			card.setBattlefieldOrder(newIndex);
-			allCardsInBattlefieldForPlayer.remove(card);
-			allCardsInBattlefieldForPlayer.add(card);
+			allCardsInBattlefieldForPlayer.add(newIndex, card);
 		}
 
 		Collections.sort(allCardsInBattlefieldForPlayer);

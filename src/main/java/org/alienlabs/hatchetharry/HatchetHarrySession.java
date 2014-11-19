@@ -427,6 +427,15 @@ public class HatchetHarrySession extends WebSession
 		return Integer.valueOf(myBattlefieldOrder - 1);
 	}
 
+	public Integer decrementLastBattlefieldOder()
+	{
+		final int myBattlefieldOrder = ((Integer)this
+				.getAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER)).intValue() - 1;
+		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER,
+				Integer.valueOf(myBattlefieldOrder));
+		return Integer.valueOf(myBattlefieldOrder);
+	}
+
 	public void setLastBattlefieldOrder(final Integer value)
 	{
 		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, value);

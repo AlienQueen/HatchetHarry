@@ -103,6 +103,8 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 						p.getId(), mydeck.getDeckId()), mc.getBattlefieldOrder());
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
+		HatchetHarrySession.get().decrementLastBattlefieldOder();
+
 		final List<BigInteger> allPlayersInGame = PutToExileFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 

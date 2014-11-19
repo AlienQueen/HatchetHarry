@@ -2937,7 +2937,6 @@ public class HomePage extends TestReportPage
 				+ this.session.getPlayer().getSide().getSideName());
 		final WebMarkupContainer listViewForSide2 = this
 				.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
-		listViewForSide2.add(new ReorderCardInBattlefieldBehavior());
 		target.add(listViewForSide2);
 	}
 
