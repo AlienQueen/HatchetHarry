@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry.serverSideTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -333,6 +334,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 	}
 
 	@Test
+	// TODO: test card reordering by dragging a card to the right + multiple reorderings
 	public void testBattlefieldOrdersShouldBeOKAfterPuttingACardOutsideOfTheTheBattlefieldAndRearrangingCards()
 			throws Exception
 	{
@@ -417,6 +419,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		// Verify
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 
 		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBase.persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId);
@@ -428,7 +431,6 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertEquals(0, mc.getBattlefieldOrder().intValue());
 
 		// Verify names
-		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(4, tagTester.size());
@@ -442,10 +444,23 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertEquals(cardBefore1, cardAfter2);
 		Assert.assertEquals(cardBefore2, cardAfter3);
 		Assert.assertEquals(cardBefore3, cardAfter4);
+
+		List<MagicCard> cards = SpringContextLoaderBase.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
+		Collections.sort(cards);
+		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(0).getBigImageFilename());
+		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(1).getBigImageFilename());
+		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(2).getBigImageFilename());
+		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(3).getBigImageFilename());
 	}
 
 	@Test
 	public void testPlayingTokensShouldNotGiveDuplicatesInDb()
+	{
+
+	}
+
+	@Test
+	public void testPlayingATokenShouldNotImpactTheNumberOfCountedCards()
 	{
 
 	}

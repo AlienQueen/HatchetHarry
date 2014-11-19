@@ -163,7 +163,7 @@ import com.google.common.io.Files;
 
 /**
  * HatchetHarry one and only WebPage
- * 
+ *
  * @author Andrey Belyaev
  * @author Zala Goupil
  */
@@ -550,57 +550,30 @@ public class HomePage extends TestReportPage
 		this.add(this.usernameParent);
 	}
 
+	// TODO: mutualize with restoreBattlefieldState
 	private final void generateCardPanels()
 	{
 		final Game g = this.session.getPlayer().getGame();
+		final List<MagicCard> allCardsInBattlefield = this.persistenceService
+				.getAllCardsInBattlefieldForAGame(this.session.getGameId());
+		LOGGER.info("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
+		final List<MagicCard> allCardsInBattlefieldForPlayer1 = new ArrayList<MagicCard>();
+		final List<MagicCard> allCardsInBattlefieldForPlayer2 = new ArrayList<MagicCard>();
 
-		boolean hasSeenFirst = false;
-		boolean hasSeenSecond = false;
-
-		for (final Player p : g.getPlayers())
+		for (final MagicCard mc : allCardsInBattlefield)
 		{
-			final List<MagicCard> allCardsInBattlefieldForAGameAndAPlayer = this.persistenceService
-					.getAllCardsInBattlefieldForAGameAndAPlayer(p.getGame().getId(), p.getId(), p
-							.getDeck().getDeckId());
-			Collections.sort(allCardsInBattlefieldForAGameAndAPlayer);
-
-			if (p.getSide().getSideName().equals(this.session.getPlayer().getSide().getSideName()))
+			if (mc.getDeck().getDeckId().longValue() == this.session.getPlayer().getDeck().getDeckId().longValue())
 			{
-				hasSeenFirst = true;
-
-				if (allCardsInBattlefieldForAGameAndAPlayer.isEmpty())
-				{
-					this.generateCardListViewForSide1(new ArrayList<MagicCard>());
-				}
-				else
-				{
-					this.generateCardListViewForSide1(allCardsInBattlefieldForAGameAndAPlayer).add(
-							new ReorderCardInBattlefieldBehavior());
-				}
+				allCardsInBattlefieldForPlayer1.add(mc);
 			}
 			else
 			{
-				hasSeenSecond = true;
-
-				if (allCardsInBattlefieldForAGameAndAPlayer.isEmpty())
-				{
-					this.generateCardListViewForSide2(new ArrayList<MagicCard>());
-				}
-				else
-				{
-					this.generateCardListViewForSide2(allCardsInBattlefieldForAGameAndAPlayer);
-				}
+				allCardsInBattlefieldForPlayer2.add(mc);
 			}
 		}
 
-		if (!hasSeenFirst)
-		{
-			this.generateCardListViewForSide1(new ArrayList<MagicCard>());
-		}
-		if (!hasSeenSecond)
-		{
-			this.generateCardListViewForSide2(new ArrayList<MagicCard>());
-		}
+		this.generateCardListViewForSide1(allCardsInBattlefieldForPlayer1);
+		this.generateCardListViewForSide2(allCardsInBattlefieldForPlayer2);
 	}
 
 	private void generateHideAllTooltipsLink(final String id)
@@ -672,13 +645,13 @@ public class HomePage extends TestReportPage
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.REVEAL_HAND, null, null, HomePage.this.session.getPlayer()
-								.getName(), "", "", "", null, "");
+						.getName(), "", "", "", null, "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_HAND, null, null, null, null, HomePage.this.session
 								.getPlayer().getName(), null, null, null, Boolean.FALSE, gameId);
 				final RevealHandCometChannel rhcc = new RevealHandCometChannel(gameId,
 						HomePage.this.session.getPlayer().getId(), HomePage.this.session
-								.getPlayer().getDeck().getDeckId());
+						.getPlayer().getDeck().getDeckId());
 				EventBusPostService.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(
 						logger), rhcc);
 
@@ -774,6 +747,7 @@ public class HomePage extends TestReportPage
 			}
 
 			@Override
+			// TODE:remove me
 			protected void onComponentTag(final ComponentTag tag)
 			{
 				super.onComponentTag(tag);
@@ -829,6 +803,7 @@ public class HomePage extends TestReportPage
 			}
 
 			@Override
+			// TODE:remove me
 			protected void onComponentTag(final ComponentTag tag)
 			{
 				super.onComponentTag(tag);
@@ -884,6 +859,7 @@ public class HomePage extends TestReportPage
 				HomePage.this.persistenceService.updatePlayer(_player);
 			}
 
+			// TODE:remove me
 			@Override
 			protected void onComponentTag(final ComponentTag tag)
 			{
@@ -927,7 +903,7 @@ public class HomePage extends TestReportPage
 						HomePage.this.session.getGameId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, null, "");
+						.getSide().getSideName(), null, null, null, "");
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(gameId);
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
@@ -1052,8 +1028,8 @@ public class HomePage extends TestReportPage
 								.getPlayer().getName(), null, null, null, Boolean.FALSE, gameId);
 				final UntapAllCometChannel uacc = new UntapAllCometChannel(gameId,
 						HomePage.this.session.getPlayer().getId(), HomePage.this.session
-								.getPlayer().getDeck().getDeckId(), HomePage.this.session
-								.getPlayer().getName(), allCards);
+						.getPlayer().getDeck().getDeckId(), HomePage.this.session
+						.getPlayer().getName(), allCards);
 				EventBusPostService
 						.post(allPlayersInGame, uacc, new ConsoleLogCometChannel(logger));
 			}
@@ -1138,7 +1114,7 @@ public class HomePage extends TestReportPage
 	}
 
 	private void createPlayerAndDeck(final String _jsessionid, final String _side,
-			final String _name)
+									 final String _name)
 	{
 		Player p = new Player();
 		final Side side = new Side();
@@ -1223,7 +1199,7 @@ public class HomePage extends TestReportPage
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null, HomePage.this.session
-								.getPlayer().getName(), "", "", "",
+						.getPlayer().getName(), "", "", "",
 						HomePage.this.session.isCombatInProgress(), "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.COMBAT, null, null, HomePage.this.session
@@ -1252,7 +1228,7 @@ public class HomePage extends TestReportPage
 			{
 				final List<MagicCard> cards = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getPlayer()
-								.getGame().getId(), HomePage.this.session.getPlayer().getId(),
+										.getGame().getId(), HomePage.this.session.getPlayer().getId(),
 								HomePage.this.session.getPlayer().getDeck().getDeckId());
 
 				if ((cards != null) && (!cards.isEmpty()))
@@ -1295,7 +1271,7 @@ public class HomePage extends TestReportPage
 									.getPlayer().getName(), null, null, null, null, gameId);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
-									.getSide().getSideName(), null, null, null, "");
+							.getSide().getSideName(), null, null, null, "");
 
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(gameId);
@@ -1671,7 +1647,7 @@ public class HomePage extends TestReportPage
 	}
 
 	private ModalWindow generateCreateGameModalWindow(final String id, final Player _player,
-			final WebMarkupContainer sidePlaceholderParent, final ModalWindow window)
+													  final WebMarkupContainer sidePlaceholderParent, final ModalWindow window)
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(550);
@@ -1704,7 +1680,7 @@ public class HomePage extends TestReportPage
 	}
 
 	private ModalWindow generateJoinGameModalWindow(final String id, final Player _player,
-			final ModalWindow window)
+													final ModalWindow window)
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(430);
@@ -1737,7 +1713,7 @@ public class HomePage extends TestReportPage
 	}
 
 	private ModalWindow generateJoinGameWithoutIdModalWindow(final String id, final Player _player,
-			final ModalWindow window)
+															 final ModalWindow window)
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(500);
@@ -2145,7 +2121,7 @@ public class HomePage extends TestReportPage
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, null, "");
+						.getSide().getSideName(), null, null, null, "");
 
 				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
@@ -2215,8 +2191,8 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "' to "
 						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
+						? "his (her)"
+						: event.getTargetPlayerName() + "'s")
 						+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
@@ -2227,8 +2203,8 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "' to "
 						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
+						? "his (her)"
+						: event.getTargetPlayerName() + "'s")
 						+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
@@ -2239,8 +2215,8 @@ public class HomePage extends TestReportPage
 						+ event.getCardName()
 						+ "' to "
 						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
+						? "his (her)"
+						: event.getTargetPlayerName() + "'s")
 						+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
@@ -2264,8 +2240,8 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : \"has played the top card of "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "library, which is: "
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ") + "library, which is: "
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
@@ -2274,12 +2250,12 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : \"has put the top card of "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ")
 						+ "library in "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
@@ -2288,12 +2264,12 @@ public class HomePage extends TestReportPage
 						+ event.getPlayerName()
 						+ "', text : \"has put the top card of "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ")
 						+ "library in "
 						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
 						+ event.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
@@ -2423,7 +2399,7 @@ public class HomePage extends TestReportPage
 	 */
 	@Subscribe
 	public void displayJoinGameMessage(final AjaxRequestTarget target,
-			final JoinGameNotificationCometChannel event)
+									   final JoinGameNotificationCometChannel event)
 	{
 		target.appendJavaScript("jQuery.gritter.add({ title : 'A player joined in!', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
@@ -2439,7 +2415,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void removeCardFromBattlefield(final AjaxRequestTarget target,
-			final PutToGraveyardCometChannel event)
+										  final PutToGraveyardCometChannel event)
 	{
 		if (event.isShouldUpdateGraveyard())
 		{
@@ -2453,7 +2429,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void exileCardFromBattlefield(final AjaxRequestTarget target,
-			final PutToExileFromBattlefieldCometChannel event)
+										 final PutToExileFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateExile())
 		{
@@ -2529,7 +2505,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void putToHandFromBattlefield(final AjaxRequestTarget target,
-			final PutToHandFromBattlefieldCometChannel event)
+										 final PutToHandFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateHand())
 		{
@@ -2543,7 +2519,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void playCardFromHand(final AjaxRequestTarget target,
-			final PlayCardFromHandCometChannel event)
+								 final PlayCardFromHandCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
 
@@ -2554,7 +2530,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void playTopLibraryCard(final AjaxRequestTarget target,
-			final PlayTopLibraryCardCometChannel event)
+								   final PlayTopLibraryCardCometChannel event)
 	{
 		final MagicCard mc = event.getCard();
 
@@ -2564,7 +2540,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void putTokenOnBattlefield(final AjaxRequestTarget target,
-			final PutTokenOnBattlefieldCometChannel event)
+									  final PutTokenOnBattlefieldCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
 		mc.setX(event.getSide().getX());
@@ -2576,7 +2552,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void putTopLibraryCardToHand(final AjaxRequestTarget target,
-			final PutTopLibraryCardToHandCometChannel event)
+										final PutTopLibraryCardToHandCometChannel event)
 	{
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
 		{
@@ -2590,7 +2566,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void putTopLibraryCardToGraveyard(final AjaxRequestTarget target,
-			final PutTopLibraryCardToGraveyardCometChannel event)
+											 final PutTopLibraryCardToGraveyardCometChannel event)
 	{
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
 		{
@@ -2604,7 +2580,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void playCardFromGraveyard(final AjaxRequestTarget target,
-			final PlayCardFromGraveyardCometChannel event)
+									  final PlayCardFromGraveyardCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
@@ -2613,7 +2589,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void revealTopLibraryCard(final AjaxRequestTarget target,
-			final RevealTopLibraryCardCometChannel event)
+									 final RevealTopLibraryCardCometChannel event)
 	{
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -2745,7 +2721,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void cardZoneChangeNotify(final AjaxRequestTarget target,
-			final CardZoneMoveNotifier event)
+									 final CardZoneMoveNotifier event)
 	{
 		if (event.getTargetZone().equals(CardZone.LIBRARY))
 		{
@@ -2755,7 +2731,7 @@ public class HomePage extends TestReportPage
 				+ event.getRequestingPlayer()
 				+ "', text : \"has moved "
 				+ (event.getOwnerPlayer().equals(event.getRequestingPlayer()) ? "his (her)" : event
-						.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle()
+				.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle()
 				+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
 				+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
@@ -2777,7 +2753,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void addSideFromOtherBrowsers(final AjaxRequestTarget target,
-			final AddSidesFromOtherBrowsersCometChannel event)
+										 final AddSidesFromOtherBrowsersCometChannel event)
 	{
 		HomePage.LOGGER.info("addSideFromOtherBrowsers");
 
@@ -2826,7 +2802,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void switchDrawMode(final AjaxRequestTarget target,
-			final SwitchDrawModeCometChannel event)
+							   final SwitchDrawModeCometChannel event)
 	{
 		if (event.isDrawMode())
 		{
@@ -2921,7 +2897,7 @@ public class HomePage extends TestReportPage
 		this.askMulliganWindow
 				.setContent(new AskMulliganModalWindow(this.askMulliganWindow,
 						this.askMulliganWindow.getContentId(), event.getPlayer(), event
-								.getNumberOfCards()));
+						.getNumberOfCards()));
 
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -2930,7 +2906,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void reorderCardsInBattlefield(final AjaxRequestTarget target,
-			final ReorderCardCometChannel event)
+										  final ReorderCardCometChannel event)
 	{
 		HomePage.LOGGER.info("reorderCardsInBattlefield");
 
@@ -2960,6 +2936,7 @@ public class HomePage extends TestReportPage
 		super.configureResponse(response);
 	}
 
+	// TODO: mutualize with generateCardPanels
 	private final void restoreBattlefieldState()
 	{
 		// Sessions must be cleaned up between server restarts, as it's too much
@@ -2982,7 +2959,7 @@ public class HomePage extends TestReportPage
 
 		for (final MagicCard mc : allCardsInBattlefield)
 		{
-			if (mc.getOwnerSide().equals(this.session.getPlayer().getSide().getSideName()))
+			if (mc.getDeck().getDeckId().longValue() == this.session.getPlayer().getDeck().getDeckId().longValue())
 			{
 				allCardsInBattlefieldForPlayer1.add(mc);
 			}
@@ -3130,14 +3107,14 @@ public class HomePage extends TestReportPage
 	{
 		if (null == _allMagicCardsInBattlefieldForSide1)
 		{
-			final List<MagicCard> newCards = new ArrayList<MagicCard>();
-			this.allMagicCardsInBattlefieldForSide1 = newCards;
+			this.allMagicCardsInBattlefieldForSide1 = new ArrayList<MagicCard>();
 		}
 		else
 		{
 			this.allMagicCardsInBattlefieldForSide1 = _allMagicCardsInBattlefieldForSide1;
 		}
 
+		Collections.sort(this.allMagicCardsInBattlefieldForSide1);
 		final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
 				this.allMagicCardsInBattlefieldForSide1);
 
@@ -3171,14 +3148,14 @@ public class HomePage extends TestReportPage
 	{
 		if (null == _allMagicCardsInBattlefieldForSide2)
 		{
-			final List<MagicCard> newCards = new ArrayList<MagicCard>();
-			this.allMagicCardsInBattlefieldForSide2 = newCards;
+			this.allMagicCardsInBattlefieldForSide2 = new ArrayList<MagicCard>();
 		}
 		else
 		{
 			this.allMagicCardsInBattlefieldForSide2 = _allMagicCardsInBattlefieldForSide2;
 		}
 
+		Collections.sort(this.allMagicCardsInBattlefieldForSide2);
 		final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
 				this.allMagicCardsInBattlefieldForSide2);
 

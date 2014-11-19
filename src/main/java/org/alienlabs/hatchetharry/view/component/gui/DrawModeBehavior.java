@@ -52,6 +52,7 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 		variables.put("posY", this.mc.getY());
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 
+		// TODO: aGame can be null
 		final Game aGame = this.player.getGame();
 		final Game game = this.persistenceService.getGame(aGame.getId());
 		final Boolean drawMode = game == null ? Boolean.FALSE : (game.isDrawMode() == null

@@ -1,14 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.gui;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.ReorderCardCometChannel;
@@ -29,6 +20,14 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -84,7 +83,7 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			for (int index = endIndex - 1; index >= startIndex; index--)
 			{
 				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
-				mc.setBattlefieldOrder(Integer.valueOf(index + 1));
+				mc.setBattlefieldOrder(Integer.valueOf(newIndex + 1));
 			}
 			card.setBattlefieldOrder(newIndex);
 		}
@@ -93,14 +92,14 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 			startIndex = oldIndex.intValue();
 			endIndex = newIndex.intValue();
 
-			card = allCardsInBattlefieldForPlayer.get(oldIndex.intValue());
-
-			for (int index = startIndex + 1; index < (endIndex + 1); index++)
+			for (int index = startIndex + 1; index <= endIndex; index++)
 			{
 				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
 				mc.setBattlefieldOrder(Integer.valueOf(index - 1));
 			}
 			card.setBattlefieldOrder(newIndex);
+			allCardsInBattlefieldForPlayer.remove(card);
+			allCardsInBattlefieldForPlayer.add(card);
 		}
 
 		Collections.sort(allCardsInBattlefieldForPlayer);
@@ -122,7 +121,6 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 
 		final WebMarkupContainer listViewForSide1 = ((HomePage)target.getPage())
 				.generateCardListViewForSide1(allCardsInBattlefieldForPlayer);
-		listViewForSide1.add(new ReorderCardInBattlefieldBehavior());
 		target.add(listViewForSide1);
 	}
 
