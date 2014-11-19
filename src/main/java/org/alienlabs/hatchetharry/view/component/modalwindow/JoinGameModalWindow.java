@@ -105,9 +105,9 @@ public class JoinGameModalWindow extends Panel
 
 		final Label gameIdLabel = new Label("gameIdLabel",
 				"Please provide the game id given by your opponent: ");
-		final Model<Long> gameId = new Model<Long>(Long.valueOf(0l));
+		final Model<Long> gameId = new Model<Long>(null);
 		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
-		this.gameIdInput.setOutputMarkupId(true).setMarkupId("gameIdInput");
+		this.gameIdInput.setRequired(true).setOutputMarkupId(true).setMarkupId("gameIdInput");
 
 		this.feedback = new FeedbackPanel("feedback");
 		this.feedback.setOutputMarkupId(true);

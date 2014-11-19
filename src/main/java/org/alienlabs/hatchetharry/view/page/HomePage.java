@@ -3167,6 +3167,11 @@ public class HomePage extends TestReportPage
 			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
+
+				if (HomePage.this.player.getGame() == null) {
+					HomePage.this.player.setGame(HomePage.this.persistenceService.getGame(HomePage.this.allMagicCardsInBattlefieldForSide2.get(0).getGameId()));
+				}
+
 				final CardPanel cp = new CardPanel("cardPanel", new Model<PlayerAndCard>(
 						new PlayerAndCard(HomePage.this.player, mc)));
 				cp.setOutputMarkupId(true);
