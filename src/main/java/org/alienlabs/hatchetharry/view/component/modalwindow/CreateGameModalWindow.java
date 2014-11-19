@@ -300,6 +300,13 @@ public class CreateGameModalWindow extends Panel
 					BattlefieldService.updateGraveyard(target);
 				}
 
+				Label gameIdLabel = new Label("gameId", "Game id: " + CreateGameModalWindow.this.game.getId().longValue());
+				gameIdLabel.setOutputMarkupId(true);
+				final WebMarkupContainer gameIdParent = ((HomePage)target.getPage())
+						.getGameIdParent();
+				gameIdParent.addOrReplace(gameIdLabel);
+				target.add(gameIdParent);
+
 				CreateGameModalWindow.this.player.setSideUuid(s.getUuid());
 				CreateGameModalWindow.this.persistenceService.updateSide(s);
 				CreateGameModalWindow.this.persistenceService

@@ -163,6 +163,13 @@ public class JoinGameModalWindow extends Panel
 				}
 				JoinGameModalWindow.this.persistenceService.updateGame(g);
 
+				Label gameIdLabel = new Label("gameId", "Game id: " + g.getId().longValue());
+				gameIdLabel.setOutputMarkupId(true);
+				final WebMarkupContainer gameIdParent = ((HomePage)target.getPage())
+						.getGameIdParent();
+				gameIdParent.addOrReplace(gameIdLabel);
+				target.add(gameIdParent);
+
 				GameService.joinGame(JoinGameModalWindow.this.persistenceService, _modal, target,
 						_id, JoinGameModalWindow.this.decks.getModelObject(),
 						JoinGameModalWindow.this.sideInput.getDefaultModelObjectAsString(),

@@ -190,6 +190,8 @@ public class HomePage extends TestReportPage
 	private final List<Player> allPlayerSidesInGame;
 	private final WebMarkupContainer drawModeParent;
 	private final WebMarkupContainer usernameParent;
+	private final WebMarkupContainer gameIdParent;
+
 	private final WebMarkupContainer conferenceParent;
 	private final ModalWindow mulliganWindow;
 	private final ModalWindow askMulliganWindow;
@@ -242,6 +244,7 @@ public class HomePage extends TestReportPage
 	private QuickView<MagicCard> allCardsInBattlefieldForSide2;
 	private List<MagicCard> allMagicCardsInBattlefieldForSide2;
 	private Label username;
+	private Label gameId;
 
 	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
 	public HomePage(final PageParameters pp) throws Exception
@@ -287,6 +290,22 @@ public class HomePage extends TestReportPage
 		final FacebookSdk fsdk = new FacebookSdk("fb-root", "1398596203720626");
 		fsdk.setFbAdmins("goupilpierre@wanadoo.fr");
 		this.add(fsdk);
+
+		if (this.session.isGameCreated().booleanValue())
+		{
+			this.gameId = new Label("gameId", "Game id: " + this.session.getGameId().longValue());
+			this.gameId.setOutputMarkupId(true);
+		}
+		else
+		{
+			this.gameId = new Label("gameId", "No game at the moment");
+			this.gameId.setOutputMarkupId(true);
+		}
+
+		this.gameIdParent = new WebMarkupContainer("gameIdParent");
+		this.gameIdParent.setOutputMarkupId(true);
+		this.gameIdParent.add(this.gameId);
+		this.add(this.gameIdParent);
 
 		this.galleryParent = new WebMarkupContainer("galleryParent");
 		this.galleryParent.setMarkupId("galleryParent");
@@ -3267,6 +3286,10 @@ public class HomePage extends TestReportPage
 	public WebMarkupContainer getUsernameParent()
 	{
 		return this.usernameParent;
+	}
+
+	public WebMarkupContainer getGameIdParent() {
+		return this.gameIdParent;
 	}
 
 	public WebMarkupContainer getConferenceParent()
