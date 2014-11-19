@@ -144,7 +144,7 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		catch (final IOException e)
 		{
 			ReorderCardInBattlefieldBehavior.LOGGER.error(
-					"unable to close template in CardRotateBehavior#renderHead()!", e);
+					"unable to close template in ReorderCardInBattlefieldBehavior#renderHead()!", e);
 		}
 	}
 
