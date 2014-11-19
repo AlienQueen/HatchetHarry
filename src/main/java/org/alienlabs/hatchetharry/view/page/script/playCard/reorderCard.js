@@ -30,4 +30,4 @@ window.setTimeout(function() {
 		}
 	}
 	jQuery('.magicCard').unbind('click').click(tooltips);
-}, 1000);
+}, 1500);

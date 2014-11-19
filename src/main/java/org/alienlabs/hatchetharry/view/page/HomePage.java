@@ -572,7 +572,6 @@ public class HomePage extends TestReportPage
 	// TODO: mutualize with restoreBattlefieldState
 	private final void generateCardPanels()
 	{
-		final Game g = this.session.getPlayer().getGame();
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
 				.getAllCardsInBattlefieldForAGame(this.session.getGameId());
 		LOGGER.info("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
@@ -3153,6 +3152,8 @@ public class HomePage extends TestReportPage
 				{
 					item.add(new AttributeAppender("class", new Model<String>("tapped"), " "));
 				}
+
+				HomePage.this.getParentPlaceholder().add(new ReorderCardInBattlefieldBehavior());
 			}
 		};
 		this.allCardsInBattlefieldForSide1.setOutputMarkupId(true);
