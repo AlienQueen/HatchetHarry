@@ -8,11 +8,11 @@
 
 - never use: blahDao.save(blah) but blahDao.getSession().save(blah) otherwise you'll get strange bugs due to data duplication. Think about it in the PersistenceService!!!
 
-- mvn3.0.3 install:install-file -Dfile=src/main/resources/wicket-atmosphere-0.9.jar -Dsources=src/main/resources/wicket-atmosphere-0.9-sources.jar -Djavadoc=src/main/resources/wicket-atmosphere-0.9-javadoc.jar -DgroupId=org.apache.wicket -DartifactId=wicket-atmosphere -Dversion=0.9 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
-
 - For the error messages "Deadlock found when trying to get lock; try restarting transaction" or equivalent:
 
     + there's a parameter to provide to MySQL / MariaDB: http://dba.stackexchange.com/questions/58459/mysql-error-impossible-to-write-to-binary-log      http://www.yellowfinbi.com/YFForum-Time-out-Error-BINLOG-FORMAT-in-log-file-?thread=105422
+    => You will need to edit the MySql my.cnf file and add a line at the bottom : binlog_format=ROW
+
     + and an annotation to provide to the problematic method of the PersistenceService: @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation=Isolation.SERIALIZABLE) (http://stackoverflow.com/questions/7947582/spring-transactional-deadlock)
 
 - In case of cascading object graph not working:
@@ -33,3 +33,5 @@ Just replace the "_" by ":" in your WicketTester paths.
 - To avoid loading Spring application context for each test class from SpringContextLoaderBaseTest, annotate each new test classes with:
 
     + @ContextConfiguration(locations = { "classpath:applicationContext.xml", "classpath:applicationContextTest.xml" })
+
+- To configure Jacoco : http://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/

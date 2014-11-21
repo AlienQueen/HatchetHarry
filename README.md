@@ -3,9 +3,9 @@
 </p>
 ### Welcome to HatchetHarry, the free Magic: The Gathering playing webapp.
 
-HatchetHarry was started out of a need to play the Magic cards using Linux & FreeBSD. It is free software licensed under the terms of the GNU Affero General Public License, version 3. You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license.
+HatchetHarry was started out of a need to play the Magic cards using Linux and FreeBSD. It is free software licensed under the terms of the GNU Affero General Public License, version 3. You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license.
 
-The supported browsers are Internet Explorer 11+, Mozilla Firefox 4+, Opera 11+, Google Chrome 35+ and all the HTML5 compliant browsers. The hardware and software platforms known to run the application successfully are Windows, Linux, FreeBSD, MacOS X, Android tablets, iPad and the Freebox (the modem and media player from the French ISP Free).
+The supported browsers are Internet Explorer 11+, Mozilla Firefox 4+, Opera 11+, Google Chrome 31+ and all the HTML5 compliant browsers. The hardware and software platforms known to run the application successfully are Windows, Linux, FreeBSD, MacOS X, Android tablets, iPad and the Freebox (the modem and media player from the French ISP Free).
 
 If you find any bugs, feel free to report them as we are looking forward for your feedback.
 
@@ -15,7 +15,7 @@ Please note that the card images are not provided since they are not free of rig
 
 Go to: [HH official web application](http://hatchetharry.net).
 
-### Technical informations
+### Technical information
 
 The technology stack used in HH consists of:
 
@@ -27,7 +27,7 @@ The technology stack used in HH consists of:
 
 The project is built with Maven 3.
 
-The following dependencies of this project are in my Github account:
+The following dependencies of this project are on Github only:
 
     - [wicket-quickview 6.0-SNAPSHOT](https://github.com/vineetsemwal/quickview): a wicket component (RepeatingView) that lets you add or remove the rows without the need to re-render the whole repeater again in Ajax
     - [mistletoe 0.3-SNAPSHOT](https://github.com/): my own version of this small test tool
