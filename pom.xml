@@ -642,8 +642,18 @@
                 </dependencies>
                 <configuration>
                     <forkCount>1</forkCount>
-                    <reuseForks>true</reuseForks>
+                    <reuseForks>false</reuseForks>
                     <includes>
+                        <include>**/HomePageTest.java</include>
+                        <include>**/CounterTooltipTest.java</include>
+                        <include>**/ImportDeckServiceTest.java</include>
+                        <include>**/CardPanelTest.java</include>
+                        <include>**/CardMoveBehaviorTest.java</include>
+                        <include>**/CardRotateBehaviorTest.java</include>
+                        <include>**/NonRegressionTest.java</include>
+                        <include>**/DataBoxTest.java</include>
+                        <include>**/PutToZonePanelTest.java</include>
+                        <!--<include>**/PersistenceServiceTest.java</include>-->
                         <include>**/integrationTest/*Tests.java</include>
                     </includes>
                 </configuration>
@@ -725,6 +735,7 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${project.build.directory}/jacoco-integration-tests-reports</outputDirectory>
                             <includes>
                                 <include>**/org/alienlabs/hatchetharry/**</include>
                             </includes>

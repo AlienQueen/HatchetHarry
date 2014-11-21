@@ -69,6 +69,7 @@ public class SpringContextLoaderBase
 		// start and render the test page
 		tester = new WicketTester(webApp);
 		persistenceService = this.context.getBean(PersistenceService.class);
+		Assert.assertNotNull(persistenceService);
 		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
 	}
 
