@@ -43,6 +43,8 @@ There are file paths to change in order to match your own setup, in the followin
     - the PMD ruleset paths in the pom.xml (not strictly necessary)
     - src/main/resources/rebel.xml => [JRebel](http://zeroturnaround.com/software/jrebel/) configuration file, not strictly necessary
 
+Some of the projects used are under the [Apache License Version 2.0]()
+
 Magic: The Gathering is a registered trademark of Wizards of the Coast, Inc., a subsidiary of Hasbro, Inc.
 
 HatchetHarry (c) 2011-2014 Zala Pierre GOUPIL (goupilpierre@gmail.com)

@@ -737,7 +737,7 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/jacoco-integration-tests-reports</outputDirectory>
                             <includes>
-                                <include>**/org/alienlabs/hatchetharry/**</include>
+                                <include>**/org/alienlabs/hatchetharry/**/*.java</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -749,7 +749,7 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/jacoco-reports</outputDirectory>
                             <includes>
-                                <include>**/org/alienlabs/hatchetharry/**</include>
+                                <include>**/org/alienlabs/hatchetharry/**/*.java</include>
                             </includes>
                             <rules>
                                 <rule>

@@ -27,6 +27,7 @@
 - In unit tests, a recurring challenge is to find the paths of the components to check. To simplify it, just use this in your Application class:
 
     + this.getMarkupSettings().setStripWicketTags(false);
+    + this.getDebugSettings().setOutputComponentPath(true);
 
 Just replace the "_" by ":" in your WicketTester paths.
 
