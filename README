@@ -30,8 +30,11 @@
 
 Just replace the "_" by ":" in your WicketTester paths.
 
-- To avoid loading Spring application context for each test class from SpringContextLoaderBaseTest, annotate each new test classes with:
+- To avoid loading Spring application context for each test class, annotate each new test classes with:
 
     + @ContextConfiguration(locations = { "classpath:applicationContext.xml", "classpath:applicationContextTest.xml" })
 
-- To configure Jacoco : http://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/
+- To configure Jacoco :
+
+    + http://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/
+    + http://www.ffbit.com/blog/2014/05/21/skipping-jacoco-execution-due-to-missing-execution-data-file/
