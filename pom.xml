@@ -748,6 +748,15 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/jacoco-reports</outputDirectory>
+                            <excludes>
+                                <exclude>**/*.css</exclude>
+                                <exclude>**/*.js</exclude>
+                                <exclude>**/*.html</exclude>
+                                <exclude>**/*.png</exclude>
+                                <exclude>**/*.gif</exclude>
+                                <exclude>**/*.ico</exclude>
+                                <exclude>**/*.jpg</exclude>
+                            </excludes>
                             <includes>
                                 <include>**/org/alienlabs/hatchetharry/**/*.java</include>
                             </includes>
