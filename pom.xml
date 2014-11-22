@@ -810,11 +810,11 @@
                     <threshold>Low</threshold>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
 			    <groupId>org.codehaus.sonar</groupId>
 			    <artifactId>sonar-maven3-plugin</artifactId>
 			    <version>4.5.1</version>
-			</plugin>
+			</plugin>-->
             <plugin>
                 <groupId>gr.abiss.mvn.plugins</groupId>
                 <artifactId>maven-jstools-plugin</artifactId>
