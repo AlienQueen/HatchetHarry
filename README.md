@@ -29,19 +29,19 @@ The project is built with Maven 3.
 
 The following dependencies of this project are on Github only:
 
-     [wicket-quickview 6.0-SNAPSHOT](https://github.com/vineetsemwal/quickview): a wicket component (RepeatingView) that lets you add or remove the rows without the need to re-render the whole repeater again in Ajax
-     [mistletoe 0.3-SNAPSHOT](https://github.com/): my own version of this small test tool
+    - wicket-quickview 6.0-SNAPSHOT: a wicket component (RepeatingView) from that lets you add or remove the rows without the need to re-render the whole repeater again in Ajax. https://github.com/vineetsemwal/quickview
+    - mistletoe 0.3-SNAPSHOT: my own version of this small test tool
 
 Every other dependency is available through Maven Central.
 
 There are file paths to change in order to match your own setup, in the following files:
 
-src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.properties
-src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.properties
-src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.properties
-src/test/java/org/alienlabs/hatchetharry/integrationTest/FunctionalTests.java line 179 => you have to provide the Selenium Chrome driver for your platform (the one provided in src/main/resources/chromedriver is for Linux)
-the PMD ruleset paths in the pom.xml (not strictly necessary)
-src/main/resources/rebel.xml => [JRebel](http://zeroturnaround.com/software/jrebel) configuration file, not strictly necessary
+    - src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.properties
+    - src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.properties
+    - src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.properties
+    - src/test/java/org/alienlabs/hatchetharry/integrationTest/FunctionalTests.java line 179 => you have to provide the Selenium Chrome driver for your platform (the one provided in src/main/resources/chromedriver is for Linux)
+    - the PMD ruleset paths in the pom.xml (not strictly necessary)
+    - src/main/resources/rebel.xml => JRebel configuration file, not strictly necessary. http://zeroturnaround.com/software/jrebel
 
 Some of the software products used are under the [Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).
 
