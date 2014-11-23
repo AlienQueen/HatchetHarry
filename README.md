@@ -1,5 +1,5 @@
 <p align="center">
-<img src="http://atmosphere.github.io/atmosphere/images/atmosphere.png" alt="LOGO"/>
+<img src="https://raw.githubusercontent.com/AlienQueen/HatchetHarry/master/src/main/java/org/alienlabs/hatchetharry/view/page/image/logo.png" alt="LOGO"/>
 </p>
 ### Welcome to HatchetHarry, the free Magic: The Gathering playing webapp.
 
