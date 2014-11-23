@@ -3,7 +3,7 @@
 </p>
 ### Welcome to HatchetHarry, the free Magic: The Gathering playing webapp.
 
-HatchetHarry was started out of a need to play the Magic cards using Linux and FreeBSD. It is free software licensed under the terms of the GNU Affero General Public License, version 3. You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license.
+HatchetHarry was started out of a need to play the Magic cards using Linux and FreeBSD. It is free software licensed under the terms of the [GNU Affero General Public License, version 3](http://www.gnu.org/licenses/agpl.txt). You are free to modify any part of its source code (client-side or server-side), provided that the changes keep this license.
 
 The supported browsers are Internet Explorer 11+, Mozilla Firefox 4+, Opera 11+, Google Chrome 31+ and all the HTML5 compliant browsers. The hardware and software platforms known to run the application successfully are Windows, Linux, FreeBSD, MacOS X, Android tablets, iPad and the Freebox (the modem and media player from the French ISP Free).
 
@@ -41,9 +41,9 @@ There are file paths to change in order to match your own setup, in the followin
 	- src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.properties
     - src/test/java/org/alienlabs/hatchetharry/integrationTest/FunctionalTests.java line 179 => you have to provide the Selenium Chrome driver for your platform (the one provided in src/main/resources/chromedriver is for Linux)
     - the PMD ruleset paths in the pom.xml (not strictly necessary)
-    - src/main/resources/rebel.xml => [JRebel](http://zeroturnaround.com/software/jrebel/) configuration file, not strictly necessary
+    - src/main/resources/rebel.xml => [JRebel](http://zeroturnaround.com/software/jrebel) configuration file, not strictly necessary
 
-Some of the projects used are under the [Apache License Version 2.0]()
+Some of the software products used are under the [Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).
 
 Magic: The Gathering is a registered trademark of Wizards of the Coast, Inc., a subsidiary of Hasbro, Inc.
 
