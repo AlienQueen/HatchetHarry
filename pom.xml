@@ -56,6 +56,10 @@
         <hibernate.version>4.3.7.Final</hibernate.version>
         <jetty.version>9.2.2.v20140723</jetty.version>
         <ehcache.version>2.9.0</ehcache.version>
+        <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8</sonar.jdbc.url>
+        <sonar.jdbc.username>sonarbuilder</sonar.jdbc.username>
+        <sonar.jdbc.password>fromagepoiuytreza</sonar.jdbc.password>
+        <sonar.host.url>http://hatchetharry.net:9092</sonar.host.url>
     </properties>
 
     <dependencies>
@@ -825,7 +829,7 @@
             <plugin>
 			    <groupId>org.codehaus.sonar</groupId>
 			    <artifactId>sonar-maven-plugin</artifactId>
-			    <version>2.11</version>
+			    <version>4.5.1</version>
 			</plugin>
             <plugin>
                 <groupId>gr.abiss.mvn.plugins</groupId>
