@@ -12,8 +12,8 @@
         this license.
     </description>
     <scm>
-        <developerConnection>scm:git:git://hatchetharry.net:/home/git/repositories/hatchetharry.git
-        </developerConnection>
+        <connection>scm:git:git@github.com:AlienQueen/HatchetHarry.git</connection>
+        <developerConnection>AlienQueen</developerConnection>
     </scm>
     <organization>
         <name>AlienLabs</name>
