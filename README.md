@@ -29,7 +29,7 @@ The project is built with Maven 3.
 
 The following dependencies of this project are on Github only:
 
-    - wicket-quickview 6.0-SNAPSHOT: a wicket component (RepeatingView) from that lets you add or remove the rows without the need to re-render the whole repeater again in Ajax. https://github.com/vineetsemwal/quickview
+    - wicket-quickview 6.0-SNAPSHOT: a wicket component (RepeatingView) that lets you add or remove the rows without the need to re-render the whole repeater again in Ajax. https://github.com/vineetsemwal/quickview
     - mistletoe 0.3-SNAPSHOT: my own version of this small test tool
 
 Every other dependency is available through Maven Central.
