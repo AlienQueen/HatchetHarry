@@ -47,3 +47,5 @@ Just replace the "_" by ":" in your WicketTester paths.
 - Maven, Jenkins, Sonar:
 
     + http://stackoverflow.com/questions/18779450/sonarrunner-cant-find-sonar-projectkey-sonar-projectname-sonar-projectversion/18779516
+    + http://docs.codehaus.org/display/SONAR/Analyzing+with+SonarQube+Runner
+    + http://stackoverflow.com/questions/21204350/sonar-setup-undefined-mandatory-properties
