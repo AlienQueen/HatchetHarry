@@ -156,7 +156,7 @@ public class DataGenerator implements InitializingBean, Serializable
 			}
 			catch (final JAXBException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Error while generating card collection!", e);
 			}
 		}
 
