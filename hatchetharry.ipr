@@ -450,6 +450,11 @@
             <element id="library" level="project" name="Maven: org.codehaus.javancss:javancss:32.53" />
             <element id="library" level="project" name="Maven: javancss:ccl:29.50" />
             <element id="library" level="project" name="Maven: javancss:jhbasic:29.50" />
+            <element id="library" level="project" name="Maven: org.codehaus.sonar:sonar-maven-plugin:4.5.1" />
+            <element id="library" level="project" name="Maven: org.apache.maven.shared:maven-dependency-tree:2.1" />
+            <element id="library" level="project" name="Maven: org.codehaus.plexus:plexus-component-annotations:1.5.5" />
+            <element id="library" level="project" name="Maven: org.eclipse.aether:aether-util:0.9.0.M2" />
+            <element id="library" level="project" name="Maven: org.codehaus.sonar.runner:sonar-runner-api:2.4" />
             <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.12" />
             <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.2.RELEASE" />
             <element id="library" level="project" name="Maven: org.apache.wicket.experimental.wicket6:wicket-atmosphere:0.20" />
@@ -939,12 +944,37 @@
             <set />
           </value>
         </entry>
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/README">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/README.md">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/sonar-project.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/ArrowDrawBehavior.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java">
           <value>
             <set />
           </value>
@@ -1712,6 +1742,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/maven/reporting/maven-reporting-impl/2.0.4.2/maven-reporting-impl-2.0.4.2-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.apache.maven.shared:maven-dependency-tree:2.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/maven/shared/maven-dependency-tree/2.1/maven-dependency-tree-2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/maven/shared/maven-dependency-tree/2.1/maven-dependency-tree-2.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/maven/shared/maven-dependency-tree/2.1/maven-dependency-tree-2.1-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.apache.maven.skins:maven-default-skin:1.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/maven/skins/maven-default-skin/1.1/maven-default-skin-1.1.jar!/" />
@@ -2009,6 +2050,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/mojo/javancss-maven-plugin/2.0/javancss-maven-plugin-2.0-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.codehaus.plexus:plexus-component-annotations:1.5.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.codehaus.plexus:plexus-container-default:1.0-alpha-9-stable-1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar!/" />
@@ -2073,6 +2125,39 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/redback/components/cache/spring-cache-ehcache/1.1/spring-cache-ehcache-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.codehaus.sonar.runner:sonar-runner-api:2.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/runner/sonar-runner-api/2.4/sonar-runner-api-2.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/runner/sonar-runner-api/2.4/sonar-runner-api-2.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/runner/sonar-runner-api/2.4/sonar-runner-api-2.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.codehaus.sonar:sonar-maven-plugin:4.5.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-maven-plugin/4.5.1/sonar-maven-plugin-4.5.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-maven-plugin/4.5.1/sonar-maven-plugin-4.5.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-maven-plugin/4.5.1/sonar-maven-plugin-4.5.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.aether:aether-util:0.9.0.M2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/aether/aether-util/0.9.0.M2/aether-util-0.9.0.M2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/aether/aether-util/0.9.0.M2/aether-util-0.9.0.M2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/aether/aether-util/0.9.0.M2/aether-util-0.9.0.M2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.eclipse.jetty.websocket:websocket-api:9.2.2.v20140723">

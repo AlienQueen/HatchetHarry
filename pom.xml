@@ -803,11 +803,11 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-            <dependency>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.5</version>
-            </dependency>
+            </plugin>
         </plugins>
     </reporting>
     <inceptionYear>2011</inceptionYear>
