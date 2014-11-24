@@ -43,3 +43,7 @@ Just replace the "_" by ":" in your WicketTester paths.
 - Cobertura for Java 8:
 
     + http://www.befreeman.com/2014/09/getting-cobertura-code-coverage-with.html
+
+- Maven, Jenkins, Sonar:
+
+    + http://stackoverflow.com/questions/18779450/sonarrunner-cant-find-sonar-projectkey-sonar-projectname-sonar-projectversion/18779516
