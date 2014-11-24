@@ -216,7 +216,7 @@ public class BattlefieldService
 	public static void updateHand(final AjaxRequestTarget target)
 	{
 		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
-				new HandComponent("gallery", false));
+				new HandComponent("gallery"));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
@@ -226,7 +226,7 @@ public class BattlefieldService
 			final Long playerId, final Long deckId)
 	{
 		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
-				new HandComponent("gallery", false, gameId, playerId, deckId));
+				new HandComponent("gallery"));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT.replaceAll(

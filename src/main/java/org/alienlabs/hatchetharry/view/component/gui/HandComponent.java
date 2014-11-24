@@ -43,7 +43,7 @@ public class HandComponent extends Panel
 	 * @param ids
 	 *            gameId, playerId, deckId
 	 */
-	public HandComponent(final String id, final boolean isReveal, final Long... ids)
+	public HandComponent(final String id)
 	{
 		super(id);
 		Injector.get().inject(this);
@@ -87,22 +87,10 @@ public class HandComponent extends Panel
 			}
 		});
 
-		Long gameId;
-		Long playerId;
-		Long deckId;
+		Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
+		Long playerId = HatchetHarrySession.get().getPlayer().getId();
+		Long deckId = HatchetHarrySession.get().getPlayer().getDeck().getDeckId();
 
-		if (isReveal == false)
-		{
-			gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
-			playerId = HatchetHarrySession.get().getPlayer().getId();
-			deckId = HatchetHarrySession.get().getPlayer().getDeck().getDeckId();
-		}
-		else
-		{
-			gameId = ids[0];
-			playerId = ids[1];
-			deckId = ids[2];
-		}
 		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId,
 				playerId, deckId);
 		HandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());

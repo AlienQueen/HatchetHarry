@@ -1463,7 +1463,7 @@ public class HomePage extends TestReportPage
 		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
 				this.session.getPlayer().getId()).isHandDisplayed();
 		galleryToUpdate = isHandDisplayed.booleanValue()
-				? new HandComponent("gallery", false)
+				? new HandComponent("gallery")
 				: new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
@@ -2962,7 +2962,7 @@ public class HomePage extends TestReportPage
 		final Player player1 = this.persistenceService.getPlayer(this.session.getPlayer().getId());
 		final Boolean isHandDisplayed = player1.isHandDisplayed();
 		final Component galleryToUpdate = isHandDisplayed.booleanValue() ? new HandComponent(
-				"gallery", false) : new WebMarkupContainer("gallery");
+				"gallery") : new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.addOrReplace(galleryToUpdate);

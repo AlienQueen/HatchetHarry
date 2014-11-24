@@ -163,11 +163,11 @@ public class JoinGameModalWindow extends Panel
 				}
 				JoinGameModalWindow.this.persistenceService.updateGame(g);
 
-				Label gameIdLabel = new Label("gameId", "Game id: " + g.getId().longValue());
-				gameIdLabel.setOutputMarkupId(true);
+				Label _gameIdLabel = new Label("gameId", "Game id: " + g.getId().longValue());
+				_gameIdLabel.setOutputMarkupId(true);
 				final WebMarkupContainer gameIdParent = ((HomePage)target.getPage())
 						.getGameIdParent();
-				gameIdParent.addOrReplace(gameIdLabel);
+				gameIdParent.addOrReplace(_gameIdLabel);
 				target.add(gameIdParent);
 
 				GameService.joinGame(JoinGameModalWindow.this.persistenceService, _modal, target,
