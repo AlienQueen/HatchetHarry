@@ -91,7 +91,6 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		this.persistenceService.updateCard(mc);
 
 		final Long gameId = session.getGameId();
-		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 
 		final Deck myDeck = this.persistenceService.getDeck(session.getPlayer().getDeck()
 				.getDeckId().longValue());

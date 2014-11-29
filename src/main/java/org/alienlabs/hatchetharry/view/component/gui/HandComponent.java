@@ -88,7 +88,6 @@ public class HandComponent extends Panel
 		});
 
 		Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
-		Long playerId = HatchetHarrySession.get().getPlayer().getId();
 		Long deckId = HatchetHarrySession.get().getPlayer().getDeck().getDeckId();
 
 		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndADeck(gameId, deckId);
