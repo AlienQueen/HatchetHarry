@@ -222,8 +222,7 @@ public class BattlefieldService
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	public static void updateHand(final AjaxRequestTarget target, final Long gameId,
-			final Long playerId, final Long deckId)
+	public static void updateHand(final AjaxRequestTarget target, final Long playerId)
 	{
 		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
 				new HandComponent("gallery"));

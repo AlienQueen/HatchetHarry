@@ -2525,8 +2525,7 @@ public class HomePage extends TestReportPage
 	{
 		if (event.isShouldUpdateHand())
 		{
-			BattlefieldService.updateHand(target, event.getGameId(), event.getTargetPlayerId(),
-					event.getDeckId());
+			BattlefieldService.updateHand(target, event.getTargetPlayerId());
 		}
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMc(), false);
@@ -2575,8 +2574,7 @@ public class HomePage extends TestReportPage
 			final Player p = this.persistenceService.getPlayer(event.getPlayerId());
 			p.setHandDisplayed(Boolean.TRUE);
 			this.persistenceService.mergePlayer(p);
-			BattlefieldService.updateHand(target, event.getGameId(), event.getPlayerId(),
-					event.getDeckId());
+			BattlefieldService.updateHand(target, event.getPlayerId());
 		}
 	}
 
@@ -2670,8 +2668,7 @@ public class HomePage extends TestReportPage
 			case HAND :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					BattlefieldService.updateHand(target, event.getGameId(),
-							event.getTargetPlayerId(), d.getDeckId());
+					BattlefieldService.updateHand(target,event.getTargetPlayerId());
 				}
 				break;
 			case GRAVEYARD :
@@ -2702,8 +2699,7 @@ public class HomePage extends TestReportPage
 			case HAND :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					BattlefieldService.updateHand(target, event.getGameId(),
-							event.getTargetPlayerId(), d.getDeckId());
+					BattlefieldService.updateHand(target, d.getDeckId());
 				}
 				if (event.isReveal() && isCurrentPlayerSameThanRequestingPlayer)
 				{
