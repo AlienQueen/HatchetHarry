@@ -225,7 +225,6 @@ public class DataGenerator implements InitializingBean, Serializable
 						// A CollectibleCard can be duplicated: lands, normal
 						// cards
 						//
-						System.out.print(".");
 						MagicCard card = null;
 
 						final CollectibleCard cc = new CollectibleCard();
@@ -293,7 +292,6 @@ public class DataGenerator implements InitializingBean, Serializable
 					}
 				}
 
-				System.out.println("");
 				if (j == 1)
 				{
 					this.persistenceService.saveOrUpdateDeck(deck1);

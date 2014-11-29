@@ -58,7 +58,7 @@ public class HatchetHarryApplication extends WebApplication
 	private static final Map<Long, String> cometResources = new HashMap<Long, String>();
 	static final Logger LOGGER = LoggerFactory.getLogger(HatchetHarryApplication.class);
 	private static final long serialVersionUID = 1L;
-	public transient EventBus eventBus;
+	protected transient EventBus eventBus;
 
 	/**
 	 * Constructor

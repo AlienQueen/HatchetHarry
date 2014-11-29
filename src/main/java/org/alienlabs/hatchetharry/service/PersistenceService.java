@@ -898,9 +898,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	// TODO remove playerId
-	public List<MagicCard> getAllCardsInHandForAGameAndAPlayer(final Long gameId,
-			final Long playerId, final Long deckId)
+	public List<MagicCard> getAllCardsInHandForAGameAndADeck(final Long gameId, final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
@@ -923,9 +921,7 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	// TODO remove playerId
-	public List<MagicCard> getAllCardsInBattlefieldForAGameAndAPlayer(final Long gameId,
-			final Long playerId, final Long deckId)
+	public List<MagicCard> getAllCardsInBattlefieldForAGameAndADeck(final Long gameId, final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
@@ -979,8 +975,7 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 		final List<MagicCard> all = new ArrayList<MagicCard>();
 
-		final List<MagicCard> allMagicCards = this.getAllCardsInBattlefieldForAGameAndAPlayer(
-				gameId, playerId, deckId);
+		final List<MagicCard> allMagicCards = this.getAllCardsInBattlefieldForAGameAndADeck(gameId, deckId);
 		if (null != allMagicCards)
 		{
 			all.addAll(allMagicCards);

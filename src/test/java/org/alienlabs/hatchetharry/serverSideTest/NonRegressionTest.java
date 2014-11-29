@@ -722,8 +722,8 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		final Long gameId = HatchetHarrySession.get().getGameId();
 
-		List<MagicCard> allCardsInHand = persistenceService.getAllCardsInHandForAGameAndAPlayer(
-				gameId, HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
+		List<MagicCard> allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(
+				gameId, HatchetHarrySession.get()
 						.getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(4, allCardsInHand.size());
 
@@ -772,9 +772,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertEquals(1, allCardsInGraveyard.size());
 
 		// Verify that there are 3 cards in hand
-		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId,
-				HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get()
-						.getPlayer().getDeck().getDeckId());
+		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(gameId, HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(3, allCardsInHand.size());
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",

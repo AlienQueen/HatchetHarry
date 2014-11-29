@@ -157,10 +157,8 @@ public class RevealHandComponent extends Panel
 		this.handCardsPlaceholder.setOutputMarkupId(true);
 
 		this.allCardsInHand = this.persistenceService
-				.getAllCardsInHandForAGameAndAPlayer((ids.length == 0 ? HatchetHarrySession.get()
-						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0
-						? HatchetHarrySession.get().getPlayer().getId()
-						: ids[1]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
+				.getAllCardsInHandForAGameAndADeck((ids.length == 0 ? HatchetHarrySession.get()
+						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
 						.getDeck().getDeckId() : ids[2]));
 		RevealHandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 

@@ -91,8 +91,7 @@ public class HandComponent extends Panel
 		Long playerId = HatchetHarrySession.get().getPlayer().getId();
 		Long deckId = HatchetHarrySession.get().getPlayer().getDeck().getDeckId();
 
-		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(gameId,
-				playerId, deckId);
+		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndADeck(gameId, deckId);
 		HandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)

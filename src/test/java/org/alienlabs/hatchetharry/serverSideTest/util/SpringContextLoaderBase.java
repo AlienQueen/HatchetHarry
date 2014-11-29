@@ -106,7 +106,7 @@ public class SpringContextLoaderBase
 		createGameForm.setValue("formats", "1");
 		createGameForm.setValue("numberOfPlayers", "2");
 
-		if ((pageParameters.length > 0) && pageParameters[0].equals("ajaxSubmit"))
+		if ((pageParameters.length > 0) && ("ajaxSubmit".equals(pageParameters[0])))
 		{
 			SpringContextLoaderBase.tester.executeAjaxEvent("createGameWindow:content:form:submit",
 					"onclick");
@@ -139,7 +139,7 @@ public class SpringContextLoaderBase
 		Assert.assertEquals(1, SpringContextLoaderBase.persistenceService
 				.getAllCardsInBattlefieldForAGame(gameId).size());
 		Assert.assertEquals(6, SpringContextLoaderBase.persistenceService
-				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), p.getDeck().getDeckId())
+				.getAllCardsInHandForAGameAndADeck(gameId, p.getDeck().getDeckId())
 				.size());
 
 		// We still should not have more cards that the number of cards in the

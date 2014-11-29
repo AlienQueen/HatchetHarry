@@ -225,9 +225,8 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				final List<MagicCard> hand = RevealTopLibraryCardModalWindow.this.card.getDeck()
 						.reorderMagicCards(
 								RevealTopLibraryCardModalWindow.this.persistenceService
-										.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(),
-												RevealTopLibraryCardModalWindow.this.card.getDeck()
-														.getDeckId()));
+										.getAllCardsInHandForAGameAndADeck(gameId, RevealTopLibraryCardModalWindow.this.card.getDeck()
+												.getDeckId()));
 				RevealTopLibraryCardModalWindow.this.persistenceService
 						.saveOrUpdateAllMagicCards(hand);
 

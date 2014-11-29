@@ -92,7 +92,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 		final Deck d = p.getDeck();
 		List<MagicCard> allCards = this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndADeck(gameId, d.getDeckId());
 		allCards = BattlefieldService.reorderCards(allCards, Integer.valueOf(allCards.indexOf(mc)));
 		allCards.remove(mc);
 		this.persistenceService.deleteCardAndToken(mc);

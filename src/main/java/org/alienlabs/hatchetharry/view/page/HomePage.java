@@ -1275,8 +1275,7 @@ public class HomePage extends TestReportPage
 					final Deck d = me.getDeck();
 					final List<MagicCard> _hand = d
 							.reorderMagicCards(HomePage.this.persistenceService
-									.getAllCardsInHandForAGameAndAPlayer(gameId, me.getId(),
-											d.getDeckId()));
+									.getAllCardsInHandForAGameAndADeck(gameId, d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(_hand);
 					final List<MagicCard> library = d
 							.reorderMagicCards(HomePage.this.persistenceService
@@ -1986,8 +1985,7 @@ public class HomePage extends TestReportPage
 				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
 						.random() * allCardsInHand)).intValue() : 0);
 				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
-						.getAllCardsInHandForAGameAndAPlayer(gameId, playerWhoDiscards.getId(),
-								playerWhoDiscardsDeckId);
+						.getAllCardsInHandForAGameAndADeck(gameId, playerWhoDiscardsDeckId);
 				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
 						.remove(randomCardIndex);
 

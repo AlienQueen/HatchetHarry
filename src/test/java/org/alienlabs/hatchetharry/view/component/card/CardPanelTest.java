@@ -48,8 +48,7 @@ public class CardPanelTest extends SpringContextLoaderBase
 
 		// We should have 6 cards in hand
 		final List<MagicCard> allCardsInHand = persistenceService
-				.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
-						.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+				.getAllCardsInHandForAGameAndADeck(gameId, HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(6, allCardsInHand.size());
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
@@ -159,8 +158,7 @@ public class CardPanelTest extends SpringContextLoaderBase
 		Assert.assertTrue(allCardsInBattlefield.isEmpty());
 
 		final List<MagicCard> allCardsInHand = persistenceService
-				.getAllCardsInHandForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer()
-						.getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+				.getAllCardsInHandForAGameAndADeck(gameId, HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(7, allCardsInHand.size());
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",

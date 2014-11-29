@@ -97,11 +97,11 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 				.getDeckId().longValue());
 
 		final List<MagicCard> hand = myDeck.reorderMagicCards(this.persistenceService
-				.getAllCardsInHandForAGameAndAPlayer(gameId, p.getId(), myDeck.getDeckId()));
+				.getAllCardsInHandForAGameAndADeck(gameId, myDeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(hand);
 
 		final List<MagicCard> allCardsInBattlefieldForAGameAndAPlayer = this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), myDeck.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndADeck(gameId, myDeck.getDeckId());
 		for (final MagicCard m : allCardsInBattlefieldForAGameAndAPlayer)
 		{
 			LOGGER.info("||| mc: " + m.getTitle() + ", order: "

@@ -81,8 +81,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final Player p = HatchetHarrySession.get().getPlayer();
 		final Deck d = p.getDeck();
 
-		final List<MagicCard> hand = this.persistenceService.getAllCardsInHandForAGameAndAPlayer(
-				gameId, p.getId(), d.getDeckId());
+		final List<MagicCard> hand = this.persistenceService.getAllCardsInHandForAGameAndADeck(gameId, d.getDeckId());
 		PlayCardFromHandBehavior.LOGGER.info("remove? " + hand.remove(card));
 		card.setZone(CardZone.BATTLEFIELD);
 		d.reorderMagicCards(hand);
@@ -93,7 +92,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateCard(card);
 
 		final List<MagicCard> battlefield = this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), d.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndADeck(gameId, d.getDeckId());
 		d.reorderMagicCards(battlefield);
 		PlayCardFromHandBehavior.LOGGER.info("In battlefield: " + battlefield.size());
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);

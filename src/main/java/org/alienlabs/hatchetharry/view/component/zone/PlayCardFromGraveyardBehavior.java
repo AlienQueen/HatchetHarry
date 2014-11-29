@@ -103,7 +103,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 		this.persistenceService.updateGame(game);
 
 		List<MagicCard> battlefield = this.persistenceService
-				.getAllCardsInBattlefieldForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId());
+				.getAllCardsInBattlefieldForAGameAndADeck(gameId, mydeck.getDeckId());
 		battlefield.add(card);
 		card.setZone(CardZone.BATTLEFIELD);
 		battlefield = mydeck.reorderMagicCards(battlefield);
