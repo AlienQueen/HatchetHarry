@@ -1048,7 +1048,8 @@ public class PersistenceService implements Serializable
 
 	// Maybe it will be public one day
 	@Transactional(readOnly = true)
-	private List<MagicCard> getAllCardsInZoneForAGameAndAPlayer(final CardZone zone, final Long gameId, final Long playerId, final Long deckId) {
+	private List<MagicCard> getAllCardsInZoneForAGameAndAPlayer(final CardZone zone, final Long gameId, final Long playerId, final Long deckId)
+	{
 		final Session session = this.magicCardDao.getSession();
 
 		final SQLQuery query = session
