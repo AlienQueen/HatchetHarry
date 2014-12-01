@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +22,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -36,85 +36,61 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardMoveBehavior.class);
-	private final CardPanel panel;
+	private final Model<CardPanel> panel;
 
-	private final UUID uuid;
+	private final String uuidValidForJs;
 	private final PutToHandFromBattlefieldBehavior putToHandFromBattlefieldBehavior;
 	private final PutToGraveyardFromBattlefieldBehavior putToGraveyardFromBattlefieldBehavior;
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 	private final DestroyTokenBehavior destroyTokenBehavior;
-	private String uuidValidForJs;
+
 	@SpringBean
 	private PersistenceService persistenceService;
 
-	private long posX;
-	private long posY;
-
-
-	private CardMoveBehavior(final CardPanel cp, final UUID _uuid,
+	private CardMoveBehavior(final Model<CardPanel> cp,
 			final PutToGraveyardFromBattlefieldBehavior _putToGraveyardBehavior,
 			final PutToHandFromBattlefieldBehavior _putToHandFromBattlefieldBehavior,
 			final PutToExileFromBattlefieldBehavior _putToExileFromBattlefieldBehavior,
-			final DestroyTokenBehavior _destroyTokenBehavior, final long _posX, final long _posY)
+			final DestroyTokenBehavior _destroyTokenBehavior)
 	{
 		Injector.get().inject(this);
 
 		this.panel = cp;
-		this.uuid = _uuid;
+		this.uuidValidForJs = this.panel.getObject().getPlayerAndCard().getCard().getUuidObject()
+				.toString().replaceAll("-", "_");
+		;
 		this.putToGraveyardFromBattlefieldBehavior = _putToGraveyardBehavior;
 		this.putToHandFromBattlefieldBehavior = _putToHandFromBattlefieldBehavior;
 		this.putToExileFromBattlefieldBehavior = _putToExileFromBattlefieldBehavior;
 		this.destroyTokenBehavior = _destroyTokenBehavior;
-
-		this.posX = _posX;
-		this.posY = _posY;
 	}
 
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
 		CardMoveBehavior.LOGGER.info("respond");
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getRequest();
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.panel.getObject()
+				.getRequest();
 		final HttpServletRequest request = servletWebRequest.getContainerRequest();
 
-		final String _mouseX = request.getParameter("posX");
-		final String _mouseY = request.getParameter("posY");
-		final String uniqueid = this.uuid.toString();
-		CardMoveBehavior.LOGGER.info("uuid: " + uniqueid);
-
-		try
-		{
-			final String roundedX = _mouseX.substring(0,
-					(_mouseX.contains(".")) ? _mouseX.indexOf('.') : _mouseX.length());
-			final String roundedY = _mouseY.substring(0,
-					(_mouseY.contains(".")) ? _mouseY.indexOf('.') : _mouseY.length());
-			final long _x = Long.parseLong(roundedX);
-			final long _y = Long.parseLong(roundedY);
-			this.posX = _x <= -300 ? -300 : _x;
-			this.posY = _y <= -150 ? -150 : _y;
-		}
-		catch (final NumberFormatException e)
-		{
-			CardMoveBehavior.LOGGER.error("error parsing coordinates of moved card", e);
-			return;
-		}
+		request.getParameter("posX");
+		request.getParameter("posY");
+		CardMoveBehavior.LOGGER.info("uuid: " + this.uuidValidForJs);
 
 		final MagicCard mc;
 		final Long gameId;
 
 		try
 		{
-			mc = this.persistenceService.getCardFromUuid(UUID.fromString(uniqueid));
+			mc = this.persistenceService.getCardFromUuid(this.panel.getObject().getPlayerAndCard()
+					.getCard().getUuidObject());
 			if (null == mc)
 			{
 				return;
 			}
 
 			gameId = mc.getGameId();
-			mc.setX(Long.valueOf(this.posX));
-			mc.setY(Long.valueOf(this.posY));
-			CardMoveBehavior.LOGGER.info("uuid: " + uniqueid + ", posX: " + this.posX + ", posY: "
-					+ this.posY);
+			CardMoveBehavior.LOGGER.info("uuid: " + this.uuidValidForJs);
 			this.persistenceService.updateCard(mc);
 		}
 		catch (final IllegalArgumentException e)
@@ -131,7 +107,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		final List<BigInteger> allPlayersInGame = CardMoveBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 		final CardMoveCometChannel cardMoveCometChannel = new CardMoveCometChannel(gameId, mc,
-				Long.toString(this.posX), Long.toString(this.posY), uniqueid, playerId);
+				this.uuidValidForJs, playerId);
 		EventBusPostService.post(allPlayersInGame, cardMoveCometChannel);
 	}
 
@@ -144,13 +120,11 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		final HashMap<String, Object> variables = new HashMap<String, Object>();
 		variables.put("url", this.getCallbackUrl());
-		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
+		variables.put("uuidValidForJs", this.uuidValidForJs);
 		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("graveyardUrl", this.putToGraveyardFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("exileUrl", this.putToExileFromBattlefieldBehavior.getCallbackUrl());
 		variables.put("destroyUrl", this.destroyTokenBehavior.getCallbackUrl());
-		variables.put("posX", Long.valueOf(this.posX));
-		variables.put("posY", Long.valueOf(this.posY));
 
 		// TODO in reality, cardMove.js configures the context menu: move it in
 		// its own Behavior
@@ -203,11 +177,6 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
-	}
-
-	public UUID getUuid()
-	{
-		return this.uuid;
 	}
 
 	public String getUuidValidForJs()

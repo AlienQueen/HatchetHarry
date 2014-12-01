@@ -31,8 +31,6 @@ import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -380,10 +378,10 @@ public class NonRegressionTest extends SpringContextLoaderBase
 				"cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(5, tagTester.size());
-		String cardBefore1 = tagTester.get(0).getAttribute("src");
-		String cardBefore2 = tagTester.get(1).getAttribute("src");
-		String cardBefore3 = tagTester.get(2).getAttribute("src");
-		String cardBefore4 = tagTester.get(3).getAttribute("src");
+		final String cardBefore1 = tagTester.get(0).getAttribute("src");
+		final String cardBefore2 = tagTester.get(1).getAttribute("src");
+		final String cardBefore3 = tagTester.get(2).getAttribute("src");
+		final String cardBefore4 = tagTester.get(3).getAttribute("src");
 		String cardBefore5 = tagTester.get(4).getAttribute("src");
 
 		// Put the last played card to graveyard
@@ -455,12 +453,17 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertEquals(cardBefore2, cardAfter3);
 		Assert.assertEquals(cardBefore3, cardAfter4);
 
-		List<MagicCard> cards = SpringContextLoaderBase.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
+		List<MagicCard> cards = SpringContextLoaderBase.persistenceService
+				.getAllCardsInBattlefieldForAGame(gameId);
 		Collections.sort(cards);
-		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(0).getBigImageFilename());
-		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(1).getBigImageFilename());
-		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(2).getBigImageFilename());
-		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(3).getBigImageFilename());
+		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(0)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(1)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(2)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(3)
+				.getBigImageFilename());
 
 		// Put the 2nd card in fourth position
 		SpringContextLoaderBase.tester.assertComponent(
@@ -481,13 +484,14 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 
 		allCardsInBattlefield = SpringContextLoaderBase.persistenceService
-				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId, HatchetHarrySession.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(gameId, HatchetHarrySession
+						.get().getPlayer().getId(), HatchetHarrySession.get().getPlayer().getDeck()
+						.getDeckId());
 		Collections.sort(allCardsInBattlefield);
 		Assert.assertEquals(4, allCardsInBattlefield.size());
 
-		mc = SpringContextLoaderBase.persistenceService
-				.getCardFromUuid(((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard()
-						.getUuidObject());
+		mc = SpringContextLoaderBase.persistenceService.getCardFromUuid(((PlayerAndCard)cardToMove
+				.getDefaultModelObject()).getCard().getUuidObject());
 		Assert.assertEquals(3, mc.getBattlefieldOrder().intValue());
 
 		// Verify names
@@ -512,10 +516,14 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		cards = SpringContextLoaderBase.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Collections.sort(cards);
-		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(0).getBigImageFilename());
-		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(1).getBigImageFilename());
-		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(2).getBigImageFilename());
-		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(3).getBigImageFilename());
+		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(0)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(1)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(2)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(3)
+				.getBigImageFilename());
 
 		// Put another card in the battlefield
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
@@ -531,13 +539,11 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.assertComponent("parentPlaceholder",
 				WebMarkupContainer.class);
 		parent = (WebMarkupContainer)page.get("parentPlaceholder");
-		reorder = parent.getBehaviors(
-				ReorderCardInBattlefieldBehavior.class).get(0);
+		reorder = parent.getBehaviors(ReorderCardInBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(reorder);
 
 		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
-		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
-				"cardImage", false);
+		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id", "cardImage", false);
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(5, tagTester.size());
 
@@ -552,9 +558,8 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		final CardPanel card5 = (CardPanel)SpringContextLoaderBase.tester
 				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:5:cardPanel");
 
-		mc = SpringContextLoaderBase.persistenceService
-				.getCardFromUuid(((PlayerAndCard)card5.getDefaultModelObject()).getCard()
-						.getUuidObject());
+		mc = SpringContextLoaderBase.persistenceService.getCardFromUuid(((PlayerAndCard)card5
+				.getDefaultModelObject()).getCard().getUuidObject());
 		Assert.assertEquals(4, mc.getBattlefieldOrder().intValue());
 
 		// Verify names
@@ -597,9 +602,8 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Collections.sort(cards);
 		Assert.assertEquals(5, cards.size());
 
-		mc = SpringContextLoaderBase.persistenceService
-				.getCardFromUuid(((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard()
-						.getUuidObject());
+		mc = SpringContextLoaderBase.persistenceService.getCardFromUuid(((PlayerAndCard)cardToMove
+				.getDefaultModelObject()).getCard().getUuidObject());
 		Assert.assertEquals(3, mc.getBattlefieldOrder().intValue());
 
 		// Verify names
@@ -621,11 +625,16 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		cards = SpringContextLoaderBase.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Collections.sort(cards);
-		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(0).getBigImageFilename());
-		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(1).getBigImageFilename());
-		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(2).getBigImageFilename());
-		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(3).getBigImageFilename());
-		Assert.assertEquals(cardBefore5.replaceAll("cards/ ", ""), cards.get(4).getBigImageFilename());
+		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(0)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(1)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(2)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(3)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore5.replaceAll("cards/ ", ""), cards.get(4)
+				.getBigImageFilename());
 
 		// Put the 4th card in second position
 		SpringContextLoaderBase.tester.assertComponent(
@@ -637,8 +646,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.assertComponent("parentPlaceholder",
 				WebMarkupContainer.class);
 		parent = (WebMarkupContainer)page.get("parentPlaceholder");
-		reorder = parent.getBehaviors(
-				ReorderCardInBattlefieldBehavior.class).get(0);
+		reorder = parent.getBehaviors(ReorderCardInBattlefieldBehavior.class).get(0);
 		Assert.assertNotNull(reorder);
 
 		SpringContextLoaderBase.tester.getRequest().setParameter(
@@ -657,9 +665,8 @@ public class NonRegressionTest extends SpringContextLoaderBase
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(5, allCardsInBattlefield.size());
 
-		mc = SpringContextLoaderBase.persistenceService
-				.getCardFromUuid(((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard()
-						.getUuidObject());
+		mc = SpringContextLoaderBase.persistenceService.getCardFromUuid(((PlayerAndCard)cardToMove
+				.getDefaultModelObject()).getCard().getUuidObject());
 		Assert.assertEquals(1, mc.getBattlefieldOrder().intValue());
 
 		// Verify names
@@ -681,11 +688,16 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		cards = SpringContextLoaderBase.persistenceService.getAllCardsInBattlefieldForAGame(gameId);
 		Collections.sort(cards);
-		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(0).getBigImageFilename());
-		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(1).getBigImageFilename());
-		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(2).getBigImageFilename());
-		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(3).getBigImageFilename());
-		Assert.assertEquals(cardBefore5.replaceAll("cards/ ", ""), cards.get(4).getBigImageFilename());
+		Assert.assertEquals(cardBefore2.replaceAll("cards/ ", ""), cards.get(0)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore4.replaceAll("cards/ ", ""), cards.get(1)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore3.replaceAll("cards/ ", ""), cards.get(2)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore1.replaceAll("cards/ ", ""), cards.get(3)
+				.getBigImageFilename());
+		Assert.assertEquals(cardBefore5.replaceAll("cards/ ", ""), cards.get(4)
+				.getBigImageFilename());
 	}
 
 	@Test
@@ -723,8 +735,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		final Long gameId = HatchetHarrySession.get().getGameId();
 
 		List<MagicCard> allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(
-				gameId, HatchetHarrySession.get()
-						.getPlayer().getDeck().getDeckId());
+				gameId, HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(4, allCardsInHand.size());
 
 		String pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
@@ -772,7 +783,8 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertEquals(1, allCardsInGraveyard.size());
 
 		// Verify that there are 3 cards in hand
-		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(gameId, HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(gameId,
+				HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(3, allCardsInHand.size());
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",

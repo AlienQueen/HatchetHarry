@@ -47,22 +47,24 @@ public class CreateGameModalWindow extends Panel
 {
 	static final Logger LOGGER = LoggerFactory.getLogger(CreateGameModalWindow.class);
 	private static final long serialVersionUID = 1L;
+
 	final Game game;
 	final HomePage homePage;
 	final TextField<String> nameInput;
 	final DropDownChoice<String> sideInput;
 	final ModalWindow modal;
-	@SpringBean
-	PersistenceService persistenceService;
+
 	final Player player;
 	WebMarkupContainer deckParent;
 	DropDownChoice<Deck> decks;
 	final DropDownChoice<Format> formats;
 	final TextField<String> numberOfPlayers;
 
-	// TODO remove _sidePlaceholderParent
+	@SpringBean
+	PersistenceService persistenceService;
+
 	public CreateGameModalWindow(final ModalWindow _modal, final String id, final Player _player,
-			final WebMarkupContainer _sidePlaceholderParent, final HomePage hp)
+			final HomePage hp)
 	{
 		super(id);
 		Injector.get().inject(this);
@@ -300,7 +302,8 @@ public class CreateGameModalWindow extends Panel
 					BattlefieldService.updateGraveyard(target);
 				}
 
-				Label gameIdLabel = new Label("gameId", "Game id: " + CreateGameModalWindow.this.game.getId().longValue());
+				final Label gameIdLabel = new Label("gameId", "Game id: "
+						+ CreateGameModalWindow.this.game.getId().longValue());
 				gameIdLabel.setOutputMarkupId(true);
 				final WebMarkupContainer gameIdParent = ((HomePage)target.getPage())
 						.getGameIdParent();

@@ -794,7 +794,7 @@ public class PersistenceService implements Serializable
 				.createQuery("select card0_ from MagicCard card0_ , Deck deck0_ where card0_.deck  = deck0_.deckId  and deck0_.deckId = :deck");
 		query.setLong("deck", deckId);
 
-		return (List<MagicCard>)query.list();
+		return query.list();
 	}
 
 	@Transactional(readOnly = true)
@@ -918,7 +918,8 @@ public class PersistenceService implements Serializable
 	}
 
 	@Transactional(readOnly = true)
-	public List<MagicCard> getAllCardsInBattlefieldForAGameAndADeck(final Long gameId, final Long deckId)
+	public List<MagicCard> getAllCardsInBattlefieldForAGameAndADeck(final Long gameId,
+			final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
 
@@ -972,7 +973,8 @@ public class PersistenceService implements Serializable
 		final Session session = this.magicCardDao.getSession();
 		final List<MagicCard> all = new ArrayList<MagicCard>();
 
-		final List<MagicCard> allMagicCards = this.getAllCardsInBattlefieldForAGameAndADeck(gameId, deckId);
+		final List<MagicCard> allMagicCards = this.getAllCardsInBattlefieldForAGameAndADeck(gameId,
+				deckId);
 		if (null != allMagicCards)
 		{
 			all.addAll(allMagicCards);
@@ -1043,12 +1045,14 @@ public class PersistenceService implements Serializable
 	public List<MagicCard> getAllCardsInGraveyardForAGameAndAPlayer(final Long gameId,
 			final Long playerId, final Long deckId)
 	{
-		return this.getAllCardsInZoneForAGameAndAPlayer(CardZone.GRAVEYARD, gameId, playerId, deckId);
+		return this.getAllCardsInZoneForAGameAndAPlayer(CardZone.GRAVEYARD, gameId, playerId,
+				deckId);
 	}
 
 	// Maybe it will be public one day
 	@Transactional(readOnly = true)
-	private List<MagicCard> getAllCardsInZoneForAGameAndAPlayer(final CardZone zone, final Long gameId, final Long playerId, final Long deckId)
+	private List<MagicCard> getAllCardsInZoneForAGameAndAPlayer(final CardZone zone,
+			final Long gameId, final Long playerId, final Long deckId)
 	{
 		final Session session = this.magicCardDao.getSession();
 

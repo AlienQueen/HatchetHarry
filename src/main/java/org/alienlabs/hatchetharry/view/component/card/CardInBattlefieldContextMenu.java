@@ -2,7 +2,6 @@ package org.alienlabs.hatchetharry.view.component.card;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -12,6 +11,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
@@ -23,38 +23,32 @@ public class CardInBattlefieldContextMenu extends Panel
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(CardInBattlefieldContextMenu.class);
 
-	private final UUID uuid;
-	final String uuidAsString;
-	private final MagicCard magicCard;
-
-	public CardInBattlefieldContextMenu(final String id, final UUID _uuid, final MagicCard mc)
+	public CardInBattlefieldContextMenu(final String id, final Model<MagicCard> mc)
 	{
-		super(id);
-		this.uuid = _uuid;
-		this.uuidAsString = this.uuid.toString().replaceAll("-", "_");
-		this.magicCard = mc;
+		super(id, mc);
+		final String uuidAsString = mc.getObject().getUuidObject().toString().replaceAll("-", "_");
 
 		final WebMarkupContainer cardInBattlefieldContextMenu = new WebMarkupContainer(
 				"cardInBattlefieldContextMenu");
 		cardInBattlefieldContextMenu.setOutputMarkupId(true).setMarkupId(
-				"cardInBattlefieldContextMenu" + this.uuidAsString);
+				"cardInBattlefieldContextMenu" + uuidAsString);
 		this.add(cardInBattlefieldContextMenu);
 
 		final WebMarkupContainer putToHand = new WebMarkupContainer("putToHand");
-		putToHand.setOutputMarkupId(true).setMarkupId("putToHand" + this.uuidAsString);
+		putToHand.setOutputMarkupId(true).setMarkupId("putToHand" + uuidAsString);
 
 		final WebMarkupContainer putToGraveyard = new WebMarkupContainer("putToGraveyard");
-		putToGraveyard.setOutputMarkupId(true).setMarkupId("putToGraveyard" + this.uuidAsString);
+		putToGraveyard.setOutputMarkupId(true).setMarkupId("putToGraveyard" + uuidAsString);
 
 		final WebMarkupContainer putToExile = new WebMarkupContainer("putToExile");
-		putToExile.setOutputMarkupId(true).setMarkupId("putToExile" + this.uuidAsString);
+		putToExile.setOutputMarkupId(true).setMarkupId("putToExile" + uuidAsString);
 
 		final WebMarkupContainer destroyToken = new WebMarkupContainer("destroyToken");
-		destroyToken.setOutputMarkupId(true).setMarkupId("destroyToken" + this.uuidAsString);
+		destroyToken.setOutputMarkupId(true).setMarkupId("destroyToken" + uuidAsString);
 
 		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile, destroyToken);
 
-		if (this.magicCard.getToken() != null)
+		if (mc.getObject().getToken() != null)
 		{
 			putToHand.setVisible(false);
 			putToGraveyard.setVisible(false);
@@ -75,7 +69,7 @@ public class CardInBattlefieldContextMenu extends Panel
 				super.renderHead(component, response);
 
 				final HashMap<String, Object> variables = new HashMap<String, Object>();
-				variables.put("uuidValidForJs", CardInBattlefieldContextMenu.this.uuidAsString);
+				variables.put("uuidValidForJs", uuidAsString);
 
 				final TextTemplate template = new PackageTextTemplate(HomePage.class,
 						"script/contextmenu/cardInBattlefieldContextMenu.js");
