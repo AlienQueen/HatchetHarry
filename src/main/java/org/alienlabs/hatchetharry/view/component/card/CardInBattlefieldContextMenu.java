@@ -17,7 +17,7 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket.")
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS", " SIC_INNER_SHOULD_BE_STATIC_ANON"}, justification = "1) In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. 2) Such inner class is common Wicket idiom.")
 public class CardInBattlefieldContextMenu extends Panel
 {
 	private static final long serialVersionUID = 1L;
@@ -89,4 +89,5 @@ public class CardInBattlefieldContextMenu extends Panel
 			}
 		});
 	}
+
 }
