@@ -17,14 +17,12 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS", " SIC_INNER_SHOULD_BE_STATIC_ANON"}, justification = "1) In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. 2) Such inner class is common Wicket idiom.")
-public class CardInBattlefieldContextMenu extends Panel
-{
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket.")
+public class CardInBattlefieldContextMenu extends Panel {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(CardInBattlefieldContextMenu.class);
 
-	public CardInBattlefieldContextMenu(final String id, final Model<MagicCard> mc)
-	{
+	public CardInBattlefieldContextMenu(final String id, final Model<MagicCard> mc) {
 		super(id, mc);
 		final String uuidAsString = mc.getObject().getUuidObject().toString().replaceAll("-", "_");
 
@@ -48,46 +46,49 @@ public class CardInBattlefieldContextMenu extends Panel
 
 		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile, destroyToken);
 
-		if (mc.getObject().getToken() != null)
-		{
+		if (mc.getObject().getToken() != null) {
 			putToHand.setVisible(false);
 			putToGraveyard.setVisible(false);
 			putToExile.setVisible(false);
-		}
-		else
-		{
+		} else {
 			destroyToken.setVisible(false);
 		}
 
-		this.add(new Behavior()
+		this.add(new CardInBattlefieldContextMenuHeaderBehavior(uuidAsString));
+	}
+
+	static class CardInBattlefieldContextMenuHeaderBehavior extends Behavior {
+		private static final long serialVersionUID = 1L;
+		private final String uuidAsString;
+
+		public CardInBattlefieldContextMenuHeaderBehavior(String _uuidAsString)
 		{
-			private static final long serialVersionUID = 1L;
+			this.uuidAsString = _uuidAsString;
+		}
 
-			@Override
-			public void renderHead(final Component component, final IHeaderResponse response)
+		@Override
+		public void renderHead(final Component component, final IHeaderResponse response)
+		{
+			super.renderHead(component, response);
+
+			final HashMap<String, Object> variables = new HashMap<String, Object>();
+			variables.put("uuidValidForJs", this.uuidAsString);
+
+			final TextTemplate template = new PackageTextTemplate(HomePage.class,
+					"script/contextmenu/cardInBattlefieldContextMenu.js");
+			template.interpolate(variables);
+
+			response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+			try
 			{
-				super.renderHead(component, response);
-
-				final HashMap<String, Object> variables = new HashMap<String, Object>();
-				variables.put("uuidValidForJs", uuidAsString);
-
-				final TextTemplate template = new PackageTextTemplate(HomePage.class,
-						"script/contextmenu/cardInBattlefieldContextMenu.js");
-				template.interpolate(variables);
-
-				response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
-				try
-				{
-					template.close();
-				}
-				catch (final IOException e)
-				{
-					CardInBattlefieldContextMenu.LOGGER
-							.error("unable to close template in CardInBattlefieldContextMenu#renderHead()!",
-									e);
-				}
+				template.close();
+			} catch (final IOException e)
+			{
+				CardInBattlefieldContextMenu.LOGGER
+						.error("unable to close template in CardInBattlefieldContextMenu.CardInBattlefieldContextMenuHeaderBehavior#renderHead()!",
+								e);
 			}
-		});
+		}
 	}
 
 }
