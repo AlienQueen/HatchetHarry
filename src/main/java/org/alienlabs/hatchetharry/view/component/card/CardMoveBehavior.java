@@ -58,7 +58,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 		this.panel = cp;
 		this.uuidValidForJs = this.panel.getObject().getPlayerAndCard().getCard().getUuidObject()
 				.toString().replaceAll("-", "_");
-		;
+
 		this.putToGraveyardFromBattlefieldBehavior = _putToGraveyardBehavior;
 		this.putToHandFromBattlefieldBehavior = _putToHandFromBattlefieldBehavior;
 		this.putToExileFromBattlefieldBehavior = _putToExileFromBattlefieldBehavior;

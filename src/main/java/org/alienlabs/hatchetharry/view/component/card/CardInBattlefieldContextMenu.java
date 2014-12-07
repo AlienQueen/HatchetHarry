@@ -18,7 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket.")
-public class CardInBattlefieldContextMenu extends Panel {
+public class CardInBattlefieldContextMenu extends Panel
+{
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(CardInBattlefieldContextMenu.class);
 
@@ -46,18 +47,21 @@ public class CardInBattlefieldContextMenu extends Panel {
 
 		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile, destroyToken);
 
-		if (mc.getObject().getToken() != null) {
+		if (mc.getObject().getToken() != null)
+		{
 			putToHand.setVisible(false);
 			putToGraveyard.setVisible(false);
 			putToExile.setVisible(false);
-		} else {
+		} else
+		{
 			destroyToken.setVisible(false);
 		}
 
 		this.add(new CardInBattlefieldContextMenuHeaderBehavior(uuidAsString));
 	}
 
-	static class CardInBattlefieldContextMenuHeaderBehavior extends Behavior {
+	static class CardInBattlefieldContextMenuHeaderBehavior extends Behavior
+	{
 		private static final long serialVersionUID = 1L;
 		private final String uuidAsString;
 
