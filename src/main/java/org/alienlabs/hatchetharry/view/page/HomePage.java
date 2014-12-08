@@ -1999,8 +1999,6 @@ public class HomePage extends TestReportPage
 					playerWhoDiscards.getDeck().getCards().clear();
 				}
 
-				// HomePage.this.persistenceService.updatePlayerWithoutMerge(playerWhoDiscards);
-
 				BattlefieldService.updateHand(target);
 				BattlefieldService.updateGraveyard(target);
 
@@ -2806,32 +2804,6 @@ public class HomePage extends TestReportPage
 			buil.append("arrows = new Array(); drawMode = false; ");
 			buil.append("jQuery('.clickableCard').unbind('click'); jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
-			/*
-			 * for (final MagicCard mc :
-			 * this.getAllMagicCardsInBattlefieldForSide1()) { final String
-			 * uuidValidForJs = mc.getUuid().replace("-", "_");
-			 * 
-			 * buil.append("jQuery('#card" + uuidValidForJs +
-			 * "').click(function(e) {  jQuery('#cardTooltip" + uuidValidForJs +
-			 * "').attr('style', 'display: block; position: absolute; left: " +
-			 * (mc.getX() + 127) + "px; top: " + (mc.getY() + 56) +
-			 * "px; z-index: 1;'); jQuery('#cardTooltip" + uuidValidForJs +
-			 * " > span').attr('style', 'display: block;'); }); ");
-			 * 
-			 * // For mobile buil.append("var hammertime" + uuidValidForJs +
-			 * " = jQuery('#card" + uuidValidForJs + "').hammer(); ");
-			 * buil.append("hammertime" + uuidValidForJs +
-			 * ".on('tap', function(ev) { "); buil.append("jQuery('#cardTooltip"
-			 * + uuidValidForJs +
-			 * "').attr('style', 'display: block; position: absolute; left: " +
-			 * (mc.getX() + 127) + "px; top: " + (mc.getY() + 56) +
-			 * "px; z-index: 1;'); jQuery('#cardTooltip" + uuidValidForJs +
-			 * " > span').attr('style', 'display: block;'); }); ");
-			 * 
-			 * buil.append("jQuery('#cardTooltip" + uuidValidForJs +
-			 * "').hide(); "); }
-			 */
-
 			target.appendJavaScript(buil.toString());
 
 			final WebMarkupContainer img = new WebMarkupContainer("drawModeOn");
@@ -3182,16 +3154,6 @@ public class HomePage extends TestReportPage
 	{
 		return this.allMagicCardsInBattlefieldForSide2;
 	}
-
-	/*
-	 * public final QuickView<MagicCard> getAllTooltips() { return
-	 * this.allTooltips; }
-	 */
-
-	/*
-	 * public final List<MagicCard> getAllTooltipsInBattlefield() { return
-	 * this.allTooltipsInBattlefield; }
-	 */
 
 	public WebMarkupContainer getSideParent()
 	{

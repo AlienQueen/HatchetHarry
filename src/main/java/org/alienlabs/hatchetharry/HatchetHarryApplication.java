@@ -99,16 +99,6 @@ public class HatchetHarryApplication extends WebApplication
 
 		this.getFilterFactoryManager().add(new XForwardedRequestWrapperFactory());
 
-		// this.getComponentPostOnBeforeRenderListeners().add(new
-		// WicketDebugListener());
-
-		// CSS & JS minification
-		// Bootstrap.install(Application.get(), new BootstrapSettings());
-		// this.getResourceSettings().setJavaScriptCompressor(
-		// new
-		// GoogleClosureJavaScriptCompressor(CompilationLevel.WHITESPACE_ONLY));
-		// this.getResourceSettings().setCssCompressor(new YuiCssCompressor());
-
 		this.eventBus = new EventBus(this);
 		this.eventBus.addRegistrationListener(this);
 		this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
@@ -120,7 +110,7 @@ public class HatchetHarryApplication extends WebApplication
 		final Runnable beeper = new Runnable()
 		{
 			@Override
-			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it put the mess in the logs")
+			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Nothing to do with the exception and it puts the mess in the logs")
 			public void run()
 			{
 				try
