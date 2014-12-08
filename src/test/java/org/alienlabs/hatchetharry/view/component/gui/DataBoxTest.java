@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.view.component.gui;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
+import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
+import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.tester.TagTester;

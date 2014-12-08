@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
+import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.view.component.gui.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.gui.ClockPanel;
 import org.alienlabs.hatchetharry.view.component.gui.HandComponent;

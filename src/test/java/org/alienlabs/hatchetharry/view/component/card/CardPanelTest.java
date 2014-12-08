@@ -5,7 +5,7 @@ import java.util.List;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
+import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
 import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromGraveyardBehavior;

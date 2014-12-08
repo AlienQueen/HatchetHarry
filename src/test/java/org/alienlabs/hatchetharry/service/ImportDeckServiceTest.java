@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
+import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;

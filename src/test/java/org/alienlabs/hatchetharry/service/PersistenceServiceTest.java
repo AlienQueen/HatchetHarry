@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.service;
 
-import org.alienlabs.hatchetharry.serverSideTest.util.SpringContextLoaderBase;
+import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

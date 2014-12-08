@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry;
 
-import org.alienlabs.hatchetharry.serverSideTest.NonRegressionTest;
+import org.alienlabs.hatchetharry.serversidetest.NonRegressionTest;
 import org.alienlabs.hatchetharry.service.ImportDeckServiceTest;
 import org.alienlabs.hatchetharry.service.PersistenceServiceTest;
 import org.alienlabs.hatchetharry.view.component.card.CardMoveBehaviorTest;
