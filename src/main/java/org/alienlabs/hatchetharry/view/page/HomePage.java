@@ -1139,7 +1139,7 @@ public class HomePage extends TestReportPage
 		p.setSide(side);
 		p.setName(_name);
 		p.setJsessionid(_jsessionid);
-		p.setLifePoints(Long.valueOf(20l));
+		p.setLifePoints(20L);
 
 		Game game = new Game();
 		game = this.persistenceService.createGameAndPlayer(game, p);
@@ -1789,10 +1789,9 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClose(final AjaxRequestTarget target)
 			{
-				if (HomePage.this.session.getTopCardIndex().longValue() > 0l)
+				if (HomePage.this.session.getTopCardIndex() > 0L)
 				{
-					HomePage.this.session.setTopCardIndex(Long.valueOf(HomePage.this.session
-							.getTopCardIndex().longValue() - 1l));
+					HomePage.this.session.setTopCardIndex(Long.valueOf(HomePage.this.session.getTopCardIndex() - 1L));
 				}
 
 			}
@@ -1872,7 +1871,7 @@ public class HomePage extends TestReportPage
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
 						_firstCard.getTitle(), HomePage.this.session.getPlayer().getName(), null,
-						HomePage.this.session.getTopCardIndex() + 1l, null, Boolean.FALSE, _gameId);
+						HomePage.this.session.getTopCardIndex() + 1L, null, Boolean.FALSE, _gameId);
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
 
@@ -2565,7 +2564,7 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
 		this.revealTopLibraryCardWindow.setTitle("This is the top card #"
-				+ (event.getIndex().longValue() + 1l) + " of " + event.getPlayerName()
+				+ (event.getIndex() + 1L) + " of " + event.getPlayerName()
 				+ "'s library: ");
 		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
 				this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow,
