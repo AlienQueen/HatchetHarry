@@ -1,8 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import java.io.IOException;
-import java.util.HashMap;
-
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -13,6 +10,9 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 public class TokenTooltipBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -58,6 +58,7 @@ public class TokenTooltipBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
+		// TODO have trhis work again
 	}
 
 }

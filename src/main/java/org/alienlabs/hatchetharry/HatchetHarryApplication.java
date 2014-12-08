@@ -55,7 +55,7 @@ public class HatchetHarryApplication extends WebApplication
 			ResourceRegistrationListener
 {
 	// Map of playerId and Atmosphere UUID
-	private static final Map<Long, String> cometResources = new HashMap<Long, String>();
+	private static final Map<Long, String> COMET_RESOURCES = new HashMap<Long, String>();
 	static final Logger LOGGER = LoggerFactory.getLogger(HatchetHarryApplication.class);
 	private static final long serialVersionUID = 1L;
 	protected transient EventBus eventBus;
@@ -74,7 +74,7 @@ public class HatchetHarryApplication extends WebApplication
 
 	public static Map<Long, String> getCometResources()
 	{
-		return HatchetHarryApplication.cometResources;
+		return HatchetHarryApplication.COMET_RESOURCES;
 	}
 
 	/**
@@ -420,7 +420,7 @@ public class HatchetHarryApplication extends WebApplication
 	{
 		final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 		HatchetHarryApplication.LOGGER.info("uuid added: " + uuid + ", for playerId: " + playerId);
-		HatchetHarryApplication.cometResources.put(playerId, uuid);
+		HatchetHarryApplication.COMET_RESOURCES.put(playerId, uuid);
 	}
 
 	@Override
@@ -431,7 +431,7 @@ public class HatchetHarryApplication extends WebApplication
 			final Long playerId = HatchetHarrySession.get().getPlayer().getId();
 			HatchetHarryApplication.LOGGER.info("uuid removed: " + uuid + ", for playerId: "
 					+ playerId);
-			HatchetHarryApplication.cometResources.remove(playerId);
+			HatchetHarryApplication.COMET_RESOURCES.remove(playerId);
 		}
 		catch (final Exception e)
 		{

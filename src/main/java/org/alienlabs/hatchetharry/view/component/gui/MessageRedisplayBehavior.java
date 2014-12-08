@@ -39,6 +39,7 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
+		// All is done in MessageRedisplayBehavior#renderHead()
 	}
 
 	@Override

@@ -33,6 +33,10 @@ public class GameService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
 
+	private GameService()
+	{
+	}
+
 	public static void joinGame(final PersistenceService persistenceService,
 			final ModalWindow _modal, final AjaxRequestTarget target, final Long gameId,
 			final Deck deck, final String side, final String playerName, final HomePage hp)
@@ -56,7 +60,7 @@ public class GameService
 			p.setGame(null);
 			final Deck d = p.getDeck();
 			p.setDeck(null);
-			d.setPlayerId(Long.valueOf(-1l));
+			d.setPlayerId(-1L);
 			persistenceService.updatePlayer(p);
 		}
 
@@ -146,7 +150,7 @@ public class GameService
 		final Side s = player.getSide();
 		s.setUuid(UUID.randomUUID().toString());
 		s.setX(Long.valueOf(posX));
-		s.setY(Long.valueOf(500l));
+		s.setY(500L);
 
 		persistenceService.updateGame(game);
 

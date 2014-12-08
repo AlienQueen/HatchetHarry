@@ -83,12 +83,10 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
-				if (HatchetHarrySession.get().getTopCardIndex().longValue() > 0l)
+				if (HatchetHarrySession.get().getTopCardIndex() > 0L)
 				{
-					HatchetHarrySession.get()
-							.setTopCardIndex(
-									Long.valueOf(HatchetHarrySession.get().getTopCardIndex()
-											.longValue() - 1l));
+					HatchetHarrySession.get().setTopCardIndex(
+							Long.valueOf(HatchetHarrySession.get().getTopCardIndex() - 1L));
 				}
 				RevealTopLibraryCardModalWindow.this.modal.close(target);
 			}
@@ -114,7 +112,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 					return;
 				}
 
-				session.setTopCardIndex(Long.valueOf(session.getTopCardIndex().longValue() + 1l));
+				session.setTopCardIndex(Long.valueOf(session.getTopCardIndex() + 1L));
 				final MagicCard firstCard = allCardsInLibrary.get(session.getTopCardIndex()
 						.intValue());
 				final String topCardName = firstCard.getBigImageFilename();
@@ -146,7 +144,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
 						firstCard.getTitle(), session.getPlayer().getName(), null,
-						session.getTopCardIndex() + 1l, null, Boolean.FALSE, session.getGameId());
+						session.getTopCardIndex() + 1L, null, Boolean.FALSE, session.getGameId());
 
 				EventBusPostService
 						.post(allPlayersInGame, chan, new ConsoleLogCometChannel(logger));
@@ -164,8 +162,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 			{
 				final Game game = RevealTopLibraryCardModalWindow.this.persistenceService
 						.getGame(RevealTopLibraryCardModalWindow.this.card.getGameId());
-				final Long currentPlaceholderId = Long.valueOf(game.getCurrentPlaceholderId()
-						.longValue() + 1);
+				final Long currentPlaceholderId = game.getCurrentPlaceholderId() + 1L;
 				game.setCurrentPlaceholderId(currentPlaceholderId);
 				RevealTopLibraryCardModalWindow.this.persistenceService.updateGame(game);
 
@@ -225,8 +222,9 @@ public class RevealTopLibraryCardModalWindow extends Panel
 				final List<MagicCard> hand = RevealTopLibraryCardModalWindow.this.card.getDeck()
 						.reorderMagicCards(
 								RevealTopLibraryCardModalWindow.this.persistenceService
-										.getAllCardsInHandForAGameAndADeck(gameId, RevealTopLibraryCardModalWindow.this.card.getDeck()
-												.getDeckId()));
+										.getAllCardsInHandForAGameAndADeck(gameId,
+												RevealTopLibraryCardModalWindow.this.card.getDeck()
+														.getDeckId()));
 				RevealTopLibraryCardModalWindow.this.persistenceService
 						.saveOrUpdateAllMagicCards(hand);
 

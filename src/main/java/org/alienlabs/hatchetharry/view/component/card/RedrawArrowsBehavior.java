@@ -38,6 +38,7 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
+		// TODO have this work again
 	}
 
 	@Override

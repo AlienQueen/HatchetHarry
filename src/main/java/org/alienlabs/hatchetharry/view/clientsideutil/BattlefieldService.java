@@ -82,7 +82,7 @@ public class BattlefieldService
 
 					for (final Counter count : mc.getCounters())
 					{
-						count.setNumberOfCounters(Long.valueOf(0l));
+						count.setNumberOfCounters(0L);
 						persistenceService.updateCounter(count);
 						BattlefieldService.LOGGER.info("clear");
 					}
@@ -106,7 +106,7 @@ public class BattlefieldService
 
 					for (final Counter count : mc.getCounters())
 					{
-						count.setNumberOfCounters(Long.valueOf(0l));
+						count.setNumberOfCounters(0L);
 						persistenceService.updateCounter(count);
 						BattlefieldService.LOGGER.info("clear");
 					}
@@ -215,8 +215,7 @@ public class BattlefieldService
 
 	public static void updateHand(final AjaxRequestTarget target)
 	{
-		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
-				new HandComponent("gallery"));
+		((HomePage)target.getPage()).getGalleryParent().addOrReplace(new HandComponent("gallery"));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
@@ -224,8 +223,7 @@ public class BattlefieldService
 
 	public static void updateHand(final AjaxRequestTarget target, final Long playerId)
 	{
-		((HomePage)target.getPage()).getGalleryParent().addOrReplace(
-				new HandComponent("gallery"));
+		((HomePage)target.getPage()).getGalleryParent().addOrReplace(new HandComponent("gallery"));
 		target.add(((HomePage)target.getPage()).getGalleryParent());
 
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT.replaceAll(

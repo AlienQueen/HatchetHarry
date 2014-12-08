@@ -261,9 +261,9 @@ public class HomePageTest extends SpringContextLoaderBase
 		this.startAGameAndPlayACard();
 
 		final HatchetHarrySession session = HatchetHarrySession.get();
-		Assert.assertTrue(persistenceService.getAllCardsInLibraryForDeckAndPlayer(
+		Assert.assertFalse(persistenceService.getAllCardsInLibraryForDeckAndPlayer(
 				session.getGameId(), session.getPlayer().getId(),
-				session.getPlayer().getDeck().getDeckId()).size() > 0);
+				session.getPlayer().getDeck().getDeckId()).isEmpty());
 
 		// assert hand is present
 		SpringContextLoaderBase.tester

@@ -284,7 +284,7 @@ public class CreateGameModalWindow extends Panel
 				final Side s = CreateGameModalWindow.this.player.getSide();
 				s.setUuid(UUID.randomUUID().toString());
 				s.setX(Long.valueOf(posX));
-				s.setY(Long.valueOf(500l));
+				s.setY(500L);
 
 				final DataBox db = new DataBox("dataBox", g.getId().longValue());
 				CreateGameModalWindow.this.homePage.getDataBoxParent().addOrReplace(db);
@@ -322,15 +322,9 @@ public class CreateGameModalWindow extends Panel
 								.get().getPlayer().getName(), null, g.getId(), null, null,
 						g.getId());
 
-				final List<BigInteger> allPlayersInGame = new ArrayList<BigInteger>()
-				{
-					private static final long serialVersionUID = 1L;
-
-					{
-						this.add(BigInteger.valueOf(CreateGameModalWindow.this.player.getId()
-								.longValue()));
-					}
-				};
+				final List<BigInteger> allPlayersInGame = new ArrayList<BigInteger>();
+				allPlayersInGame.add(BigInteger.valueOf(CreateGameModalWindow.this.player.getId()
+						.longValue()));
 				EventBusPostService
 						.post(allPlayersInGame, ascc, new ConsoleLogCometChannel(logger));
 

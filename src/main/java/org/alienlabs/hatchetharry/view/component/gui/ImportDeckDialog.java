@@ -62,6 +62,7 @@ public class ImportDeckDialog extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{
+				// Nothing more to do on close event
 			}
 		};
 		close.setMarkupId("closeImportDeck").setOutputMarkupId(true);

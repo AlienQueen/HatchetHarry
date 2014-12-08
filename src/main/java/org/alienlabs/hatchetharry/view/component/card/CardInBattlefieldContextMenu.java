@@ -23,7 +23,8 @@ public class CardInBattlefieldContextMenu extends Panel
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(CardInBattlefieldContextMenu.class);
 
-	public CardInBattlefieldContextMenu(final String id, final Model<MagicCard> mc) {
+	public CardInBattlefieldContextMenu(final String id, final Model<MagicCard> mc)
+	{
 		super(id, mc);
 		final String uuidAsString = mc.getObject().getUuidObject().toString().replaceAll("-", "_");
 
@@ -52,7 +53,8 @@ public class CardInBattlefieldContextMenu extends Panel
 			putToHand.setVisible(false);
 			putToGraveyard.setVisible(false);
 			putToExile.setVisible(false);
-		} else
+		}
+		else
 		{
 			destroyToken.setVisible(false);
 		}
@@ -86,7 +88,8 @@ public class CardInBattlefieldContextMenu extends Panel
 			try
 			{
 				template.close();
-			} catch (final IOException e)
+			}
+			catch (final IOException e)
 			{
 				CardInBattlefieldContextMenu.LOGGER
 						.error("unable to close template in CardInBattlefieldContextMenu.CardInBattlefieldContextMenuHeaderBehavior#renderHead()!",

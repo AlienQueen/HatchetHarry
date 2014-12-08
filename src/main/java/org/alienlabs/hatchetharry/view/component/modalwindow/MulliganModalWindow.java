@@ -47,20 +47,14 @@ public class MulliganModalWindow extends Panel
 		super(id);
 		final Form<String> form = new Form<String>("form");
 
-		final ArrayList<String> mulligan = new ArrayList<String>()
-		{
-			private static final long serialVersionUID = 1L;
-
-			{
-				this.add("1");
-				this.add("2");
-				this.add("3");
-				this.add("4");
-				this.add("5");
-				this.add("6");
-				this.add("7");
-			}
-		};
+		final ArrayList<String> mulligan = new ArrayList<String>();
+		mulligan.add("1");
+		mulligan.add("2");
+		mulligan.add("3");
+		mulligan.add("4");
+		mulligan.add("5");
+		mulligan.add("6");
+		mulligan.add("7");
 
 		final Model<ArrayList<String>> mulliganModel = new Model<ArrayList<String>>(mulligan);
 		final Label mulliganLabel = new Label("mulliganLabel",

@@ -191,7 +191,7 @@ public class DataGenerator implements InitializingBean, Serializable
 				da1.setDeckName("aggro-combo Red / Black");
 				this.persistenceService.saveOrUpdateDeckArchive(da1);
 				deck1 = new Deck();
-				deck1.setPlayerId(Long.valueOf(1l));
+				deck1.setPlayerId(1L);
 				deck1.setDeckArchive(da1);
 			}
 			else
@@ -206,7 +206,7 @@ public class DataGenerator implements InitializingBean, Serializable
 				da2.setDeckName("burn mono-Red");
 				this.persistenceService.saveOrUpdateDeckArchive(da2);
 				deck2 = new Deck();
-				deck2.setPlayerId(Long.valueOf(2l));
+				deck2.setPlayerId(2L);
 				deck2.setDeckArchive(da2);
 			}
 			else
@@ -256,10 +256,10 @@ public class DataGenerator implements InitializingBean, Serializable
 							card.setDeck(deck2);
 						}
 
-						card.setGameId(Long.valueOf(-1l));
+						card.setGameId(-1L);
 						card.setUuidObject(UUID.randomUUID());
-						card.setX(Long.valueOf(16l));
-						card.setY(Long.valueOf(16l));
+						card.setX(16L);
+						card.setY(16L);
 						card.setZone(CardZone.LIBRARY);
 
 						if (j == 1)

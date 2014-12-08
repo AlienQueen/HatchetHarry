@@ -103,14 +103,8 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final int index = i;
-			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
-			{
-				private static final long serialVersionUID = 1L;
-
-				{
-					this.add(allPlayersInGame.get(index));
-				}
-			};
+			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>();
+			playerToWhomToSend.add(allPlayersInGame.get(index));
 
 			final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
 			final NotifierCometChannel _ncc = new NotifierCometChannel(

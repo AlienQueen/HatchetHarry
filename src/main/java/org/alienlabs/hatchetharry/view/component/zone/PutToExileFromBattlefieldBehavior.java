@@ -99,7 +99,8 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 				.getAllCardsInExileForAGameAndAPlayer(gameId, p.getId(), mydeck.getDeckId()));
 		this.persistenceService.saveOrUpdateAllMagicCards(exile);
 		final List<MagicCard> battlefield = BattlefieldService.reorderCards(
-				this.persistenceService.getAllCardsInBattlefieldForAGameAndADeck(gameId, mydeck.getDeckId()), mc.getBattlefieldOrder());
+				this.persistenceService.getAllCardsInBattlefieldForAGameAndADeck(gameId,
+						mydeck.getDeckId()), mc.getBattlefieldOrder());
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
 		HatchetHarrySession.get().decrementLastBattlefieldOder();
@@ -115,17 +116,8 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final int index = i;
-			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
-			{
-				/**
-				 *
-				 */
-				private static final long serialVersionUID = 1L;
-
-				{
-					this.add(allPlayersInGame.get(index));
-				}
-			};
+			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>();
+			playerToWhomToSend.add(allPlayersInGame.get(index));
 
 			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
 					.getPlayerId());

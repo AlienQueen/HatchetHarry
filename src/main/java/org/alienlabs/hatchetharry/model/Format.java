@@ -1,22 +1,21 @@
 package org.alienlabs.hatchetharry.model;
 
 public enum Format {
-
 	STANDARD("Standard"), MODERN("Modern"), COMMANDER("Commander"), TWO_HEADED_GIANT(
 			"Two-headed giant"), LEGACY("Legacy"), VINTAGE("Vintage");
 
-	private final String format;
+	private final String formatName;
 
-	private Format(final String _format)
+	Format(final String _formatName)
 	{
-		this.format = _format;
+		this.formatName = _formatName;
 
 	}
 
 	@Override
 	public String toString()
 	{
-		return this.format;
+		return this.formatName;
 	}
 
 }

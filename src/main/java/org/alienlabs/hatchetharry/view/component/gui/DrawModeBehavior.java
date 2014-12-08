@@ -80,6 +80,7 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 	@Override
 	protected void respond(final AjaxRequestTarget target)
 	{
+		// The Ajax behavior is in HomePage.java, we just use need the callback URL
 	}
 
 	@Required

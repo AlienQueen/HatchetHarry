@@ -16,7 +16,8 @@ public class CardMoveCometChannel
 	 * @param _uniqueid
 	 * @param _playerId
 	 */
-	public CardMoveCometChannel(final Long _gameId, final MagicCard _mc, final String _uniqueid, final Long _playerId)
+	public CardMoveCometChannel(final Long _gameId, final MagicCard _mc, final String _uniqueid,
+			final Long _playerId)
 	{
 		this.gameId = _gameId;
 		this.mc = _mc;

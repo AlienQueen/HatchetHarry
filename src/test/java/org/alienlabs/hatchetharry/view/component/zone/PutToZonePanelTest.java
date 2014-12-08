@@ -53,8 +53,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBase
 		final String cardToVerify = tagTester.get(0).getAttribute("src");
 
 		// Verify that it is not in the hand anymore
-		List<MagicCard> allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(gameId, HatchetHarrySession.get()
-				.getPlayer().getDeck().getDeckId());
+		List<MagicCard> allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(
+				gameId, HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(6, allCardsInHand.size());
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
@@ -217,8 +217,8 @@ public class PutToZonePanelTest extends SpringContextLoaderBase
 		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 
 		// Verify that it is in hand
-		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(gameId, HatchetHarrySession.get()
-						.getPlayer().getDeck().getDeckId());
+		allCardsInHand = persistenceService.getAllCardsInHandForAGameAndADeck(gameId,
+				HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
 		Assert.assertEquals(7, allCardsInHand.size());
 
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",

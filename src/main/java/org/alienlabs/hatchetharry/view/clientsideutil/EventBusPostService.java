@@ -1,11 +1,11 @@
 package org.alienlabs.hatchetharry.view.clientsideutil;
 
-import java.math.BigInteger;
-import java.util.List;
-
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by nostromo on 21/08/14.
@@ -13,6 +13,10 @@ import org.slf4j.LoggerFactory;
 public class EventBusPostService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EventBusPostService.class);
+
+	private EventBusPostService()
+	{
+	}
 
 	public static void post(final List<BigInteger> players, final Object... messages)
 	{

@@ -158,8 +158,9 @@ public class RevealHandComponent extends Panel
 
 		this.allCardsInHand = this.persistenceService
 				.getAllCardsInHandForAGameAndADeck((ids.length == 0 ? HatchetHarrySession.get()
-						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0 ? HatchetHarrySession.get().getPlayer()
-						.getDeck().getDeckId() : ids[2]));
+						.getPlayer().getGame().getId() : ids[0]), (ids.length == 0
+						? HatchetHarrySession.get().getPlayer().getDeck().getDeckId()
+						: ids[2]));
 		RevealHandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)

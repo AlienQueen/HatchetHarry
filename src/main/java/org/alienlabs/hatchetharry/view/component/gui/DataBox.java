@@ -111,8 +111,7 @@ public class DataBox extends Panel
 					{
 						final Player playerToUpdate = DataBox.this.persistenceService
 								.getPlayer(this.getModelObject().getId());
-						playerToUpdate.setLifePoints(Long.valueOf(playerToUpdate.getLifePoints()
-								.longValue() + 1l));
+						playerToUpdate.setLifePoints(playerToUpdate.getLifePoints() + 1L);
 						DataBox.this.persistenceService.updatePlayer(playerToUpdate);
 
 						final Long g = playerToUpdate.getGame().getId();

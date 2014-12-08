@@ -68,7 +68,7 @@ public class CounterTooltip extends Panel
 				final String _counterName = counterAddName.getDefaultModelObjectAsString();
 				final Counter counter = new Counter();
 				counter.setCounterName(_counterName);
-				counter.setNumberOfCounters(Long.valueOf(1l));
+				counter.setNumberOfCounters(1L);
 				final Set<Counter> counters;
 				final Player targetPlayer;
 				final ConsoleLogStrategy logger;
@@ -157,8 +157,7 @@ public class CounterTooltip extends Panel
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
-						counter.setNumberOfCounters(Long.valueOf(counter.getNumberOfCounters()
-								.longValue() + 1l));
+						counter.setNumberOfCounters(counter.getNumberOfCounters() + 1L);
 						CounterTooltip.this.persistenceService.updateCounter(counter);
 
 						final Game game = CounterTooltip.this.persistenceService
@@ -213,8 +212,7 @@ public class CounterTooltip extends Panel
 					@Override
 					public void onClick(final AjaxRequestTarget target)
 					{
-						counter.setNumberOfCounters(Long.valueOf(counter.getNumberOfCounters()
-								.longValue() - 1));
+						counter.setNumberOfCounters(counter.getNumberOfCounters() - 1L);
 						CounterTooltip.this.persistenceService.updateCounter(counter);
 
 						final String targetPlayerName = "";
@@ -272,7 +270,7 @@ public class CounterTooltip extends Panel
 				setCounterForm.setOutputMarkupPlaceholderTag(false);
 				item.add(setCounterForm);
 
-				if (counter.getNumberOfCounters().longValue() == 0l)
+				if (counter.getNumberOfCounters() == 0L)
 				{
 					item.setVisible(false);
 				}
@@ -371,7 +369,7 @@ public class CounterTooltip extends Panel
 			this.targetPlayerName = CounterTooltip.this.persistenceService.getPlayer(
 					CounterTooltip.this.card.getDeck().getPlayerId()).getName();
 
-			if (this.counter.getNumberOfCounters().longValue() == 0)
+			if (this.counter.getNumberOfCounters() == 0L)
 			{
 
 				this.action = NotifierAction.CLEAR_COUNTER_ACTION;
@@ -381,7 +379,7 @@ public class CounterTooltip extends Panel
 				this.logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.COUNTER_ADD_REMOVE, null, null, null,
 						CounterTooltip.this.card.getTitle(), HatchetHarrySession.get().getPlayer()
-								.getName(), this.counter.getCounterName(), Long.valueOf(0l),
+								.getName(), this.counter.getCounterName(), 0L,
 						this.targetPlayerName, null, this.game.getId());
 			}
 			else

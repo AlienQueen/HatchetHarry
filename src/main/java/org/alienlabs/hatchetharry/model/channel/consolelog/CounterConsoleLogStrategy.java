@@ -29,7 +29,7 @@ public class CounterConsoleLogStrategy extends ConsoleLogStrategy
 	{
 		String message = this.player + " has ";
 
-		if (this.numberOfCounters.longValue() != 0l)
+		if (this.numberOfCounters != 0L)
 		{
 			message += "put " + this.numberOfCounters.longValue() + " '" + this.counterName
 					+ "' counter(s) ";

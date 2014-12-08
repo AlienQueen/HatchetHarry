@@ -75,14 +75,14 @@ public class HatchetHarrySession extends WebSession
 				new ArrayList<CardPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PANELS, new ArrayList<SidePlaceholderPanel>());
 		this.setAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER, new ArrayList<String>());
-		this.setAttribute(HatchetHarrySession.MY_GAME, Long.valueOf(0l));
+		this.setAttribute(HatchetHarrySession.MY_GAME, 0L);
 		this.setAttribute(HatchetHarrySession.IS_COMBAT_IN_PROGRESS, Boolean.FALSE);
 		this.setAttribute(HatchetHarrySession.CARDS_IN_GRAVEYARD, new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_CARDS_WHICH_HAVE_BEEN_TO_GRAVEYARD,
 				new ArrayList<MagicCard>());
 		this.setAttribute(HatchetHarrySession.ALL_MAGIC_CARDS_IN_BATTLEFIELD,
 				new ArrayList<MagicCard>());
-		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, Long.valueOf(0l));
+		this.setAttribute(HatchetHarrySession.TOP_CARD_INDEX, 0L);
 		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, Integer.valueOf(0));
 		this.setAttribute(HatchetHarrySession.DISPLAY_TOOLTIPS, Boolean.FALSE);
 	}

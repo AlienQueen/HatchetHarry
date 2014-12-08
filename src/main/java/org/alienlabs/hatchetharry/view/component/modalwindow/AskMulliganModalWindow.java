@@ -68,7 +68,7 @@ public class AskMulliganModalWindow extends Panel
 		};
 
 		final AjaxButton oneLess = new AjaxButton("oneLess", Model.of("OK for "
-				+ (Long.valueOf(numberOfCards.longValue() - 1l))), form)
+				+ (numberOfCards - 1L)), form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -81,7 +81,7 @@ public class AskMulliganModalWindow extends Panel
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.OK_FOR_MULLIGAN_BUT_ONE_LESS, null, null, null, null,
 						HatchetHarrySession.get().getPlayer().getName(), null, null, player,
-						Boolean.FALSE, Long.valueOf(numberOfCards.longValue() - 1));
+						Boolean.FALSE, numberOfCards - 1L);
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.OK_FOR_MULLIGAN_BUT_ONE_LESS, Long.valueOf(numberOfCards
 								.longValue() - 1), null, HatchetHarrySession.get().getPlayer()

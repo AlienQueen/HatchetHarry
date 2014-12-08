@@ -67,16 +67,16 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
 	@Column
-	private Long x = Long.valueOf(-1l); // x coordinate
+	private Long x = -1L; // x coordinate
 	@Column
-	private Long y = Long.valueOf(-1l); // y coordinate
+	private Long y = -1L; // y coordinate
 	@Column
-	private boolean tapped = false;
+	private boolean tapped;
 	@Column
 	@Enumerated(value = EnumType.STRING)
 	private CardZone zone;
 	@Column
-	private Long zoneOrder = Long.valueOf(0l);
+	private Long zoneOrder = 0L;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "card", targetEntity = Counter.class, orphanRemoval = true)
 	private Set<Counter> counters = new HashSet<Counter>();
 	@Column
@@ -341,11 +341,17 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	public boolean equals(final Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (this.getClass() != obj.getClass())
+		{
 			return false;
+		}
 		final MagicCard other = (MagicCard)obj;
 		if (this.uuid == null)
 		{
@@ -353,8 +359,9 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 				return false;
 		}
 		else if (!this.uuid.equals(other.uuid))
+		{
 			return false;
+		}
 		return true;
 	}
-
 }

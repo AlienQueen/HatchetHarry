@@ -1,7 +1,11 @@
 package org.alienlabs.hatchetharry.model;
 
-public class CardConstants
+public final class CardConstants
 {
+	private CardConstants()
+	{
+	}
+
 	public static final int CARD_WIDTH = 226;
 	public static final int CARD_HEIGHT = 320;
 	public static final int BATTLEFIELD_WIDTH = 45;

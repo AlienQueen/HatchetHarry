@@ -672,18 +672,9 @@ public class HomePage extends TestReportPage
 				EventBusPostService.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(
 						logger), rhcc);
 
-				final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>()
-				{
-					/**
-					 *
-					 */
-					private static final long serialVersionUID = 1L;
-
-					{
-						this.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()
-								.longValue()));
-					}
-				};
+				final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>();
+				playerToWhomToSend.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()
+						.longValue()));
 				EventBusPostService.post(playerToWhomToSend, ncc,
 						new ConsoleLogCometChannel(logger));
 			}
@@ -1791,7 +1782,8 @@ public class HomePage extends TestReportPage
 			{
 				if (HomePage.this.session.getTopCardIndex() > 0L)
 				{
-					HomePage.this.session.setTopCardIndex(Long.valueOf(HomePage.this.session.getTopCardIndex() - 1L));
+					HomePage.this.session.setTopCardIndex(Long.valueOf(HomePage.this.session
+							.getTopCardIndex() - 1L));
 				}
 
 			}
@@ -2563,9 +2555,8 @@ public class HomePage extends TestReportPage
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
-		this.revealTopLibraryCardWindow.setTitle("This is the top card #"
-				+ (event.getIndex() + 1L) + " of " + event.getPlayerName()
-				+ "'s library: ");
+		this.revealTopLibraryCardWindow.setTitle("This is the top card #" + (event.getIndex() + 1L)
+				+ " of " + event.getPlayerName() + "'s library: ");
 		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
 				this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow,
 				event.getCard()));

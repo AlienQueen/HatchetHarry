@@ -111,7 +111,7 @@ public class Deck implements Serializable
 		for (int i = 0; i < _cards.size(); i++)
 		{
 			orderedCards.add(i, _cards.get(i));
-			orderedCards.get(i).setZoneOrder(Long.valueOf(i + 1l));
+			orderedCards.get(i).setZoneOrder(i + 1L);
 		}
 
 		return orderedCards;

@@ -81,7 +81,8 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 		final Player p = HatchetHarrySession.get().getPlayer();
 		final Deck d = p.getDeck();
 
-		final List<MagicCard> hand = this.persistenceService.getAllCardsInHandForAGameAndADeck(gameId, d.getDeckId());
+		final List<MagicCard> hand = this.persistenceService.getAllCardsInHandForAGameAndADeck(
+				gameId, d.getDeckId());
 		PlayCardFromHandBehavior.LOGGER.info("remove? " + hand.remove(card));
 		card.setZone(CardZone.BATTLEFIELD);
 		d.reorderMagicCards(hand);
