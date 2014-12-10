@@ -30,6 +30,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -701,15 +702,17 @@ public class NonRegressionTest extends SpringContextLoaderBase
 	}
 
 	@Test
+	@Ignore("TBD")
 	public void testPlayingTokensShouldNotGiveDuplicatesInDb()
 	{
-
+		// TBD
 	}
 
 	@Test
+	@Ignore("TBD")
 	public void testPlayingATokenShouldNotImpactTheNumberOfCountedCards()
 	{
-
+		// TBD
 	}
 
 	@Test
