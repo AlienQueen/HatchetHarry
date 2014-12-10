@@ -356,7 +356,9 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 		if (this.uuid == null)
 		{
 			if (other.uuid != null)
+			{
 				return false;
+			}
 		}
 		else if (!this.uuid.equals(other.uuid))
 		{

@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.model;
 
-public enum Format {
+public enum Format
+{
 	STANDARD("Standard"), MODERN("Modern"), COMMANDER("Commander"), TWO_HEADED_GIANT(
 			"Two-headed giant"), LEGACY("Legacy"), VINTAGE("Vintage");
 

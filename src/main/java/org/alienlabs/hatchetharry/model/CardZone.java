@@ -1,7 +1,7 @@
 package org.alienlabs.hatchetharry.model;
 
-public enum CardZone {
-
+public enum CardZone
+{
 	BATTLEFIELD("Battlefield"), GRAVEYARD("Graveyard"), HAND("Hand"), EXILE("Exile"), LIBRARY(
 			"Library");
 
