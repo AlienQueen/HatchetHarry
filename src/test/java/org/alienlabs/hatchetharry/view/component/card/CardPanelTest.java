@@ -168,9 +168,9 @@ public class CardPanelTest extends SpringContextLoaderBase
 		Assert.assertNotNull(tagTester);
 		Assert.assertEquals(7, tagTester.size());
 		// TODO ensure card is at the beginning or at the end
-		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains("cards/"));
-		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
-		Assert.assertEquals(cardToVerify, tagTester.get(0).getAttribute("src"));
+		Assert.assertTrue(tagTester.get(6).getAttribute("src").contains("cards/"));
+		Assert.assertTrue(tagTester.get(6).getAttribute("src").contains(".jpg"));
+		Assert.assertEquals(cardToVerify, tagTester.get(6).getAttribute("src"));
 	}
 
 	@Test
