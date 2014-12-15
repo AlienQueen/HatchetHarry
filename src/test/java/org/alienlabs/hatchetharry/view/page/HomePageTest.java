@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
+import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.view.component.gui.ChatPanel;
 import org.alienlabs.hatchetharry.view.component.gui.ClockPanel;
@@ -261,9 +262,10 @@ public class HomePageTest extends SpringContextLoaderBase
 		this.startAGameAndPlayACard();
 
 		final HatchetHarrySession session = HatchetHarrySession.get();
-		Assert.assertFalse(persistenceService.getAllCardsInLibraryForDeckAndPlayer(
-				session.getGameId(), session.getPlayer().getId(),
-				session.getPlayer().getDeck().getDeckId()).isEmpty());
+		List<MagicCard> allCardsInLibrary = persistenceService
+				.getAllCardsInLibraryForDeckAndPlayer(session.getGameId(), session.getPlayer()
+						.getId(), session.getPlayer().getDeck().getDeckId());
+		Assert.assertFalse(allCardsInLibrary.isEmpty());
 
 		// assert hand is present
 		SpringContextLoaderBase.tester
@@ -279,11 +281,8 @@ public class HomePageTest extends SpringContextLoaderBase
 		// assert number of hand cards
 		Assert.assertEquals(6, tagTester.size());
 
-		// assert id of hand cards
-		Assert.assertNotNull(tagTester.get(0).getAttribute("id"));
-		Assert.assertTrue(tagTester.get(0).getAttribute("id").contains("placeholder"));
-
-		final String cardNameBeforeDraw = tagTester.get(0).getAttribute("id");
+		// get name of card to draw
+		String cardToDraw = allCardsInLibrary.get(0).getTitle();
 
 		// Draw a card
 		SpringContextLoaderBase.tester.assertComponent("drawCardLink", AjaxLink.class);
@@ -304,20 +303,14 @@ public class HomePageTest extends SpringContextLoaderBase
 		// assert number of hand cards
 		Assert.assertEquals(7, tagTester.size());
 
-		// assert id of hand cards
-		Assert.assertNotNull(tagTester.get(0).getAttribute("id"));
-		Assert.assertTrue(tagTester.get(0).getAttribute("id").contains("placeholder"));
+		// assert src of hand card
+		final String drawnCardSrc = tagTester.get(6).getAttribute("src");
+
+		Assert.assertNotNull(drawnCardSrc);
+		Assert.assertTrue(drawnCardSrc.contains("cards/"));
 
 		// Drawing card successful?
-		// TODO ensure card is at the beginning or at the end
-		final String firstCardIdAfterDraw = tagTester.get(1).getAttribute("id");
-		Assert.assertTrue("The second thumb of the hand component has changed!",
-				cardNameBeforeDraw.equals(firstCardIdAfterDraw));
-
-		Assert.assertNotNull(tagTester.get(1).getAttribute("id"));
-		Assert.assertTrue(tagTester.get(1).getAttribute("id").contains("placeholder"));
-		final String secondCardIdAfterDraw = tagTester.get(1).getAttribute("id");
-		Assert.assertEquals(cardNameBeforeDraw, secondCardIdAfterDraw);
+		Assert.assertTrue(drawnCardSrc.contains(cardToDraw));
 	}
 
 }

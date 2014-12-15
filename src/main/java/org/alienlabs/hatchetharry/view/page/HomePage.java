@@ -1234,22 +1234,31 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
+				Long gameId = HomePage.this.session.getPlayer().getGame().getId();
+				Long deckId = HomePage.this.session.getPlayer().getDeck().getDeckId();
+
 				final List<MagicCard> cards = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getPlayer()
-								.getGame().getId(), HomePage.this.session.getPlayer().getId(),
-								HomePage.this.session.getPlayer().getDeck().getDeckId());
+						.getAllCardsInLibraryForDeckAndPlayer(gameId, HomePage.this.session
+								.getPlayer().getId(), deckId);
 
 				if ((cards != null) && (!cards.isEmpty()))
 				{
 					final MagicCard card = cards.get(0);
 
-					final Deck _deck = HomePage.this.persistenceService
-							.getDeck(HomePage.this.session.getPlayer().getDeck().getDeckId()
-									.longValue());
+					final Deck _deck = HomePage.this.persistenceService.getDeck(deckId.longValue());
 					_deck.getCards().remove(card);
 					HomePage.this.persistenceService.saveOrUpdateDeck(_deck);
 
 					card.setZone(CardZone.HAND);
+
+					List<MagicCard> allCardsInHand = HomePage.this.persistenceService
+							.getAllCardsInHandForAGameAndADeck(gameId, deckId);
+					if (!allCardsInHand.isEmpty())
+					{
+						card.setZoneOrder(allCardsInHand.get(allCardsInHand.size() - 1)
+								.getZoneOrder() + 1L);
+					}
+
 					HomePage.this.persistenceService.updateCard(card);
 
 					final ArrayList<MagicCard> list = HomePage.this.session.getFirstCardsInHand();

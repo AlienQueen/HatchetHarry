@@ -87,6 +87,14 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 				+ session.getPlayer().getId());
 
 		mc.setZone(CardZone.HAND);
+
+		List<MagicCard> allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndADeck(
+				session.getGameId(), session.getPlayer().getDeck().getDeckId());
+		if (!allCardsInHand.isEmpty())
+		{
+			mc.setZoneOrder(allCardsInHand.get(allCardsInHand.size() - 1).getZoneOrder() + 1L);
+		}
+
 		mc.setTapped(false);
 		this.persistenceService.updateCard(mc);
 

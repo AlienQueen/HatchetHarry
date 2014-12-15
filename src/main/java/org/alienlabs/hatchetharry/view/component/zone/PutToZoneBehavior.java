@@ -127,6 +127,15 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 		switch (this.targetZone)
 		{
 			case HAND :
+				List<MagicCard> allCardsInHand = this.persistenceService
+						.getAllCardsInHandForAGameAndADeck(HatchetHarrySession.get().getGameId(),
+								HatchetHarrySession.get().getPlayer().getDeck().getDeckId());
+				if (!allCardsInHand.isEmpty())
+				{
+					card.setZoneOrder(allCardsInHand.get(allCardsInHand.size() - 1).getZoneOrder() + 1L);
+				}
+				this.persistenceService.updateCard(card);
+
 				ownerPlayer.setHandDisplayed(Boolean.TRUE);
 				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
