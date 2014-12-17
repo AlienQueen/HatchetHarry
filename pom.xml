@@ -42,9 +42,9 @@
         <wicket.version>6.18.0</wicket.version>
         <quickview.version>6.0-SNAPSHOT</quickview.version>
         <wicketstuff.version>6.18.0</wicketstuff.version>
-        <wicket-atmosphere.version>0.20</wicket-atmosphere.version>
-        <atmosphere.version>2.1.9</atmosphere.version>
-        <jquery.atmosphere.version>2.1.6</jquery.atmosphere.version>
+        <wicket-atmosphere.version>0.21</wicket-atmosphere.version>
+        <atmosphere.version>2.2.2</atmosphere.version>
+        <jquery.atmosphere.version>2.2.3</jquery.atmosphere.version>
         <atmosphere-compat.version>2.0.1</atmosphere-compat.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <slf4j.version>1.7.7</slf4j.version>
@@ -125,41 +125,41 @@
         </dependency>
 
         <!-- To write basic websockets against -->
-        <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-api</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
-        <!-- To run websockets in embedded server -->
-        <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-server</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
-        <!-- To run websockets client -->
-        <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-client</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.eclipse.jetty.websocket</groupId> -->
+<!--             <artifactId>websocket-api</artifactId> -->
+<!--             <version>${jetty.version}</version> -->
+<!--         </dependency> -->
+<!--         To run websockets in embedded server -->
+<!--         <dependency> -->
+<!--             <groupId>org.eclipse.jetty.websocket</groupId> -->
+<!--             <artifactId>websocket-server</artifactId> -->
+<!--             <version>${jetty.version}</version> -->
+<!--         </dependency> -->
+<!--         To run websockets client -->
+<!--         <dependency> -->
+<!--             <groupId>org.eclipse.jetty.websocket</groupId> -->
+<!--             <artifactId>websocket-client</artifactId> -->
+<!--             <version>${jetty.version}</version> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>org.eclipse.jetty</groupId> -->
+<!--             <artifactId>jetty-webapp</artifactId> -->
+<!--             <version>${jetty.version}</version> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>org.eclipse.jetty</groupId> -->
+<!--             <artifactId>jetty-server</artifactId> -->
+<!--             <version>${jetty.version}</version> -->
+<!--         </dependency> -->
 
 
-        <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-compat-tomcat7</artifactId>
-            <version>${atmosphere-compat.version}</version>
-            <scope>test</scope>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.atmosphere</groupId> -->
+<!--             <artifactId>atmosphere-compat-tomcat7</artifactId> -->
+<!--             <version>${atmosphere-compat.version}</version> -->
+<!--             <scope>test</scope> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -269,17 +269,17 @@
             <artifactId>atmosphere-compat-tomcat</artifactId>
             <version>2.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-runtime-native</artifactId>
-            <version>${atmosphere.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.atmosphere</groupId>
-                    <artifactId>atmosphere-compat-tomcat7</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.atmosphere</groupId> -->
+<!--             <artifactId>atmosphere-runtime-native</artifactId> -->
+<!--             <version>${atmosphere.version}</version> -->
+<!--             <exclusions> -->
+<!--                 <exclusion> -->
+<!--                     <groupId>org.atmosphere</groupId> -->
+<!--                     <artifactId>atmosphere-compat-tomcat7</artifactId> -->
+<!--                 </exclusion> -->
+<!--             </exclusions> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-servlet_3.0_spec</artifactId>
@@ -408,20 +408,20 @@
             <groupId>org.apache.wicket.experimental.wicket6</groupId>
             <artifactId>wicket-atmosphere</artifactId>
             <version>${wicket-atmosphere.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.atmosphere</groupId>
-                    <artifactId>atmosphere</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.atmosphere</groupId>
-                    <artifactId>atmosphere-runtime</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.atmosphere</groupId>
-                    <artifactId>atmosphere-compat-tomcat7</artifactId>
-                </exclusion>
-            </exclusions>
+<!--             <exclusions> -->
+<!--                 <exclusion> -->
+<!--                     <groupId>org.atmosphere</groupId> -->
+<!--                     <artifactId>atmosphere</artifactId> -->
+<!--                 </exclusion> -->
+<!--                 <exclusion> -->
+<!--                     <groupId>org.atmosphere</groupId> -->
+<!--                     <artifactId>atmosphere-runtime</artifactId> -->
+<!--                 </exclusion> -->
+<!--                 <exclusion> -->
+<!--                     <groupId>org.atmosphere</groupId> -->
+<!--                     <artifactId>atmosphere-compat-tomcat7</artifactId> -->
+<!--                 </exclusion> -->
+<!--             </exclusions> -->
         </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
