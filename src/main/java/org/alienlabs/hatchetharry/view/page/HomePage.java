@@ -3068,7 +3068,8 @@ public class HomePage extends TestReportPage
 			{
 				final MagicCard mc = item.getModelObject();
 				final CardPanel cp = new CardPanel("cardPanel", new Model<PlayerAndCard>(
-						new PlayerAndCard(HomePage.this.player, mc)));
+						new PlayerAndCard(HomePage.this.persistenceService.getPlayer(mc.getDeck()
+								.getPlayerId()), mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3119,7 +3120,8 @@ public class HomePage extends TestReportPage
 				}
 
 				final CardPanel cp = new CardPanel("cardPanel", new Model<PlayerAndCard>(
-						new PlayerAndCard(HomePage.this.player, mc)));
+						new PlayerAndCard(HomePage.this.persistenceService.getPlayer(mc.getDeck()
+								.getPlayerId()), mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
