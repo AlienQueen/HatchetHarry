@@ -2857,9 +2857,19 @@ public class HomePage extends TestReportPage
 
 		HomePage.LOGGER.info("requesting side: " + event.getPlayerSide() + ", this side: "
 				+ this.session.getPlayer().getSide().getSideName());
-		final WebMarkupContainer listViewForSide2 = this
-				.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
-		target.add(listViewForSide2);
+
+		if (event.getPlayerSide().equals(this.session.getPlayer().getSide().getSideName()))
+		{
+			final WebMarkupContainer listViewForSide1 = this
+					.generateCardListViewForSide1(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
+			target.add(listViewForSide1);
+		}
+		else
+		{
+			final WebMarkupContainer listViewForSide2 = this
+					.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
+			target.add(listViewForSide2);
+		}
 	}
 
 	@Override

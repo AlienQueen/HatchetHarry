@@ -78,11 +78,6 @@ public class SpringContextLoaderBase
 	{
 		webApp.newSession(tester.getRequestCycle().getRequest(), tester.getRequestCycle()
 				.getResponse());
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass()
-	{
 		persistenceService.resetDb();
 	}
 

@@ -17,15 +17,15 @@ Go to: [HH official web application](http://hatchetharry.net).
 
 ### Technical information
 
-The technology stack used in HH consists of:
+HatchetHarry is a Java webapp, the used technology stack consists of:
 
     - jQuery 1.11.1
-    - Atmosphere 2.19
+    - Atmosphere 2.1.9
     - Wicket 6.18.0
     - Spring 4.1.2
     - Hibernate 4.3.7
 
-The project is built with Maven 3.
+The project is built with Maven 3, you should deploy it witout any problem in Tomcat 7 / 8 and Jetty. The used RDBMS is MariaDB 10.1.2 / MySQL 5.5.
 
 The following dependencies of this project are on Github only:
 
@@ -47,4 +47,4 @@ Some of the software products used are under the [Apache License Version 2.0](ht
 
 Magic: The Gathering is a registered trademark of Wizards of the Coast, Inc., a subsidiary of Hasbro, Inc.
 
-HatchetHarry (c) 2011-2014 [Zala Pierre GOUPIL](mailto:goupilpierre@gmail.com)
+HatchetHarry (c) 2011-2015 [Zala Pierre GOUPIL](mailto:goupilpierre@gmail.com)
