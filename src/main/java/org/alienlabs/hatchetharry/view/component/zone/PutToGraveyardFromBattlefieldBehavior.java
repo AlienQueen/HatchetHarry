@@ -99,7 +99,7 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 						d.getDeckId()), mc.getBattlefieldOrder());
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 
-		HatchetHarrySession.get().decrementLastBattlefieldOder();
+		session.decrementLastBattlefieldOrder();
 
 		final List<BigInteger> allPlayersInGame = PutToGraveyardFromBattlefieldBehavior.this.persistenceService
 				.giveAllPlayersFromGame(gameId);

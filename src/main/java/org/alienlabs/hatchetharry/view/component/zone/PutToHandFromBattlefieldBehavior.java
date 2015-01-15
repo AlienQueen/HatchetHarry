@@ -118,7 +118,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		final List<MagicCard> battlefield = BattlefieldService.reorderCards(
 				allCardsInBattlefieldForAGameAndAPlayer, mc.getBattlefieldOrder());
 
-		HatchetHarrySession.get().decrementLastBattlefieldOder();
+		HatchetHarrySession.get().decrementLastBattlefieldOrder();
 
 		this.persistenceService.saveOrUpdateAllMagicCards(battlefield);
 		LOGGER.info("reordered magic cards: " + battlefield.size());

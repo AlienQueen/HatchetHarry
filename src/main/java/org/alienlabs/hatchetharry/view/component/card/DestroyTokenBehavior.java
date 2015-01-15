@@ -1,12 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Deck;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -34,6 +27,13 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
@@ -76,25 +76,21 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		}
 
 		final HatchetHarrySession session = HatchetHarrySession.get();
-		if (mc.getBattlefieldOrder().intValue() >= (session.getLastBattlefieldOrder().intValue() - 1))
-		{
-			session.setLastBattlefieldOrder(Integer.valueOf(session.getLastBattlefieldOrder()
-					.intValue() - 1));
-		}
 
 		DestroyTokenBehavior.LOGGER.info("playerId in respond(): " + session.getPlayer().getId());
 		DestroyTokenBehavior.LOGGER.info("mc.getTitle(): " + mc.getTitle());
 
 		final String tokenName = mc.getToken().getCreatureTypes();
 		final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck().getPlayerId());
-
 		final Long gameId = session.getPlayer().getGame().getId();
 		final Player p = this.persistenceService.getPlayer(session.getPlayer().getId());
 		final Deck d = p.getDeck();
+
 		List<MagicCard> allCards = this.persistenceService
 				.getAllCardsInBattlefieldForAGameAndADeck(gameId, d.getDeckId());
-		allCards = BattlefieldService.reorderCards(allCards, Integer.valueOf(allCards.indexOf(mc)));
 		allCards.remove(mc);
+		allCards = BattlefieldService.reorderCards(allCards, mc.getBattlefieldOrder());
+		this.persistenceService.updateAllMagicCards(allCards);
 		this.persistenceService.deleteCardAndToken(mc);
 
 		final List<BigInteger> allPlayersInGame = DestroyTokenBehavior.this.persistenceService

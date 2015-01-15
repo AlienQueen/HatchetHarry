@@ -69,7 +69,9 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 						.getPlayer().getId(), session.getPlayer().getDeck().getDeckId());
 		LOGGER.info("allCardsInBattlefieldForPlayer.size(): "
 				+ allCardsInBattlefieldForPlayer.size());
-		final Integer oldIndex = card.getBattlefieldOrder();
+		final Integer oldIndex = card.getBattlefieldOrder().intValue() > allCardsInBattlefieldForPlayer
+				.size() - 1 ? Integer.valueOf(allCardsInBattlefieldForPlayer.size() - 1) : card
+				.getBattlefieldOrder();
 
 		int startIndex, endIndex;
 		Collections.sort(allCardsInBattlefieldForPlayer);

@@ -13,11 +13,13 @@ import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.service.DataGenerator;
 import org.alienlabs.hatchetharry.view.component.card.CardPanel;
 import org.alienlabs.hatchetharry.view.component.card.CardRotateBehavior;
+import org.alienlabs.hatchetharry.view.component.card.DestroyTokenBehavior;
 import org.alienlabs.hatchetharry.view.component.gui.ExternalImage;
 import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
 import org.alienlabs.hatchetharry.view.component.gui.HandComponent;
 import org.alienlabs.hatchetharry.view.component.gui.ReorderCardInBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
+import org.alienlabs.hatchetharry.view.component.zone.PutToGraveyardFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.component.zone.PutToHandFromBattlefieldBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -113,7 +115,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 	}
 
 	@Test
-	public void whenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
+	public void testWhenCreatingAGameAndPlayingACardTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
 			throws Exception
 	{
 		this.startAGameAndPlayACard();
@@ -124,7 +126,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 	}
 
 	@Test
-	public void whenCreatingAGamePlayingACardAndPlayingATokenTheNumberOfCardsInTheHandMustNotChange()
+	public void testWhenCreatingAGamePlayingACardAndPlayingATokenTheNumberOfCardsInTheHandMustNotChange()
 			throws Exception
 	{
 		this.startAGameAndPlayACard();
@@ -257,7 +259,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 	}
 
 	@Test
-	public void whenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
+	public void testWhenCreatingAndJoiningAGameTheTotalNumberOfCardsInAllZonesMustBeTheNumberOfCardsInTheDeck()
 			throws Exception
 	{
 		this.startAGameAndPlayACard();
@@ -697,6 +699,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 	}
 
 	@Test
+	// HAHA-102
 	public void testPlayingATokenAndDragNDroppingItShouldNotGiveDuplicatesInDbNorInTheBattlefield()
 			throws Exception
 	{
@@ -848,6 +851,159 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		// Do they still look OK?
 		Assert.assertNotNull(tagTester.get(0).getAttribute("src"));
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
+	}
+
+	@Test
+	// HAHA-108
+	public void testRemovingACardOrATokenFromBattlefieldThenReorderingCardsShouldNotThrowException()
+			throws Exception
+	{
+		// Start a game and play 3 cards
+		super.startAGameAndPlayACard();
+
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBase.tester.executeBehavior(SpringContextLoaderBase
+				.getFirstPlayCardFromHandBehavior());
+
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBase.tester.executeBehavior(SpringContextLoaderBase
+				.getFirstPlayCardFromHandBehavior());
+
+		// Get 3rd card name
+		final Player p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
+				HatchetHarrySession.get().getGameId().longValue()).get(0);
+		List<MagicCard> cardsOnBattlefield = SpringContextLoaderBase.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(p.getGame().getId(),
+						p.getId(), p.getDeck().getDeckId());
+		Assert.assertEquals(3, cardsOnBattlefield.size());
+		String cardAt2 = cardsOnBattlefield.get(2).getTitle();
+
+		// Get PutToGraveyardFromBattlefieldBehavior
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		CardPanel cp = (CardPanel)SpringContextLoaderBase.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:1:cardPanel");
+		PutToGraveyardFromBattlefieldBehavior graveyard = cp
+				.getPutToGraveyardFromBattlefieldBehavior();
+		Assert.assertNotNull(graveyard);
+
+		// Put 2nd card to graveyard
+		SpringContextLoaderBase.tester.executeBehavior(graveyard);
+
+		// OK?
+		cardsOnBattlefield = SpringContextLoaderBase.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(p.getGame().getId(),
+						p.getId(), p.getDeck().getDeckId());
+		Assert.assertEquals(2, cardsOnBattlefield.size());
+		Assert.assertEquals(cardAt2, cardsOnBattlefield.get(1).getTitle());
+
+		// Play another card
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		SpringContextLoaderBase.tester.executeBehavior(SpringContextLoaderBase
+				.getFirstPlayCardFromHandBehavior());
+
+		// OK?
+		cardsOnBattlefield = SpringContextLoaderBase.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(p.getGame().getId(),
+						p.getId(), p.getDeck().getDeckId());
+		Assert.assertEquals(3, cardsOnBattlefield.size());
+		Assert.assertEquals(cardAt2, cardsOnBattlefield.get(1).getTitle());
+
+		// Verify createTokenWindow
+		this.openModalWindow("createTokenWindow", "createTokenLink", "topLibraryCard",
+				"cards/token_medium.jpg");
+
+		// open ModalWindow in order to play a token, fill fields and validate
+		SpringContextLoaderBase.tester.assertComponent("createTokenLink", AjaxLink.class);
+		SpringContextLoaderBase.tester.clickLink("createTokenLink", true);
+
+		final FormTester createTokenForm = SpringContextLoaderBase.tester
+				.newFormTester("createTokenWindow:content:form");
+		createTokenForm.setValue("type", "Creature");
+		createTokenForm.setValue("power", "7");
+		createTokenForm.setValue("toughness", "7");
+		createTokenForm.setValue("colors", "Green");
+		createTokenForm.setValue("capabilities", "It kills you in three turns");
+		createTokenForm.setValue("creatureTypes", "Lurghoyf");
+		createTokenForm.setValue("description", "Help!!!");
+		createTokenForm.submit("createToken");
+
+		// OK?
+		cardsOnBattlefield = SpringContextLoaderBase.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(p.getGame().getId(),
+						p.getId(), p.getDeck().getDeckId());
+		Assert.assertEquals(4, cardsOnBattlefield.size());
+		Assert.assertEquals(cardAt2, cardsOnBattlefield.get(1).getTitle());
+
+		// Get ReorderCardInBattlefieldBehavior
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		HomePage page = (HomePage)SpringContextLoaderBase.tester.getLastRenderedPage();
+
+		SpringContextLoaderBase.tester.assertComponent("parentPlaceholder",
+				WebMarkupContainer.class);
+		WebMarkupContainer parent = (WebMarkupContainer)page.get("parentPlaceholder");
+		ReorderCardInBattlefieldBehavior reorder = parent.getBehaviors(
+				ReorderCardInBattlefieldBehavior.class).get(0);
+		Assert.assertNotNull(reorder);
+
+		// Reorder cards
+		SpringContextLoaderBase.tester.getRequest().setParameter("uuid",
+				cardsOnBattlefield.get(3).getUuid().toString());
+		SpringContextLoaderBase.tester.getRequest().setParameter("index", "0");
+		SpringContextLoaderBase.tester.executeBehavior(reorder);
+
+		// OK?
+		cardsOnBattlefield = SpringContextLoaderBase.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(p.getGame().getId(),
+						p.getId(), p.getDeck().getDeckId());
+		Assert.assertEquals(4, cardsOnBattlefield.size());
+		Assert.assertEquals(cardAt2, cardsOnBattlefield.get(2).getTitle());
+
+		// Get DestroyTokenBehavior
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		WebMarkupContainer wmc = (WebMarkupContainer)SpringContextLoaderBase.tester
+				.getComponentFromLastRenderedPage("parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton");
+		DestroyTokenBehavior destroy = wmc.getBehaviors(DestroyTokenBehavior.class).get(0);
+		Assert.assertNotNull(destroy);
+
+		// Destroy token
+		SpringContextLoaderBase.tester.executeBehavior(destroy);
+
+		// OK?
+		cardsOnBattlefield = SpringContextLoaderBase.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(p.getGame().getId(),
+						p.getId(), p.getDeck().getDeckId());
+		Assert.assertEquals(3, cardsOnBattlefield.size());
+		Assert.assertEquals(cardAt2, cardsOnBattlefield.get(1).getTitle());
+
+		// Get ReorderCardInBattlefieldBehavior
+		SpringContextLoaderBase.tester.startPage(HomePage.class);
+		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
+		page = (HomePage)SpringContextLoaderBase.tester.getLastRenderedPage();
+
+		SpringContextLoaderBase.tester.assertComponent("parentPlaceholder",
+				WebMarkupContainer.class);
+		parent = (WebMarkupContainer)page.get("parentPlaceholder");
+		reorder = parent.getBehaviors(ReorderCardInBattlefieldBehavior.class).get(0);
+		Assert.assertNotNull(reorder);
+
+		// Reorder cards
+		SpringContextLoaderBase.tester.getRequest().setParameter("uuid",
+				cardsOnBattlefield.get(2).getUuid().toString());
+		SpringContextLoaderBase.tester.getRequest().setParameter("index", "0");
+		SpringContextLoaderBase.tester.executeBehavior(reorder);
+
+		// OK?
+		cardsOnBattlefield = SpringContextLoaderBase.persistenceService
+				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(p.getGame().getId(),
+						p.getId(), p.getDeck().getDeckId());
+		Assert.assertEquals(3, cardsOnBattlefield.size());
+		Assert.assertEquals(cardAt2, cardsOnBattlefield.get(2).getTitle());
 	}
 
 	@Test
