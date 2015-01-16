@@ -50,6 +50,7 @@
         <slf4j.version>1.7.7</slf4j.version>
         <log4j.version>1.2.16</log4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <targetJdk>1.8</targetJdk>
         <project.build.finalName>ROOT</project.build.finalName>
         <selenium.version>2.44.0</selenium.version>
@@ -457,29 +458,6 @@
             <type>jar</type>
         </dependency>
 
-        <!-- These two are for CSS & JS minification
-        <dependency>
-            <groupId>de.agilecoders.wicket</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>0.7.6</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.wicket</groupId>
-                    <artifactId>wicket-request</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>de.agilecoders.wicket</groupId>
-            <artifactId>bootstrap-extensions</artifactId>
-            <version>0.7.6</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.wicket</groupId>
-                    <artifactId>wicket-request</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
         <!-- For refreshing ListView with Ajax -->
         <dependency>
             <groupId>com.aplombee</groupId>
@@ -492,23 +470,11 @@
             <version>1.3.0</version>
             <scope>test</scope>
         </dependency>
-     <!--   <dependency>
-            <groupId>com.zenika</groupId>
-            <artifactId>wicket-component-debug</artifactId>
-            <version>0.2</version>
-        </dependency> -->
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>1.9.5</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>de.agilecoders.wicket.webjars</groupId>
-            <artifactId>wicket-webjars</artifactId>
-            <version>0.4.2</version>
         </dependency>
 
     </dependencies>
@@ -586,6 +552,59 @@
         </testResources>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>selenium-maven-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start-server</goal>
+                        </goals>
+                        <configuration>
+                            <background>true</background>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop-server</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <reportsDirectory>${basedir}/target/surefire-reports</reportsDirectory>
+                    <includes>
+                        <include>**/functionaltest/*Test.java</include>
+                    </includes>
+                    <systemPropertyVariables>
+                        <jetty.port>${jetty.port}</jetty.port>
+                        <jetty.context>${project.artifactId}</jetty.context>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
@@ -657,8 +676,7 @@
                         <include>**/NonRegressionTest.java</include>
                         <include>**/DataBoxTest.java</include>
                         <include>**/PutToZonePanelTest.java</include>
-                        <!--<include>**/PersistenceServiceTest.java</include>-->
-                        <include>**/integrationTest/*Tests.java</include>
+                        <include>**/PersistenceServiceTest.java</include>
                     </includes>
                 </configuration>
                 <executions>
@@ -668,24 +686,6 @@
                         <goals>
                             <goal>test</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18</version>
-                <executions>
-                    <execution>
-                        <id>integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <argLine>${failsafeArgLine}</argLine>
-                            <skipTests>false</skipTests>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

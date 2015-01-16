@@ -20,9 +20,11 @@
     + annotate the PersistenceService method with  @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     + retrieve the object from its parent, remove the objet from its parent (nullify it if needed) and do saveOrUpdate(merge(blah)) on the retrieved object
 
-- For functional tests, launch the Selenium server before trying to run them:
+- For functional tests:
 
-    + mvn selenium:start-server
+    + launch the Selenium server before trying to run them in IDE: mvn selenium:start-server
+    + in order to have the Selenium server not to fork in background, you can go in the POM, find selenium-maven-plugin and put: <background>false</background>
+    + to launch the functional tests in Maven: mvn verify
 
 - In unit tests, a recurring challenge is to find the paths of the components to check. To simplify it, just use this in your Application class:
 
