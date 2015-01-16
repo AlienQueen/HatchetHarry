@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.integrationtest;
+package org.alienlabs.hatchetharry.functionaltest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -181,19 +181,15 @@ public class FunctionalTests
 
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		FunctionalTests.chromeDriver1 = new ChromeDriver();
-		FunctionalTests.chromeDriver1.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		FunctionalTests.chromeDriver1.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		FunctionalTests.chromeDriver2 = new ChromeDriver();
-		FunctionalTests.chromeDriver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-		Thread.sleep(5000);
+		FunctionalTests.chromeDriver2.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		FunctionalTests.chromeDriver1.get("http://" + FunctionalTests.HOST + ":"
 				+ FunctionalTests.PORT + "/");
 		FunctionalTests.chromeDriver2.get("http://" + FunctionalTests.HOST + ":"
 				+ FunctionalTests.PORT + "/");
-
-		Thread.sleep(15000);
 	}
 
 	@AfterClass
@@ -802,18 +798,20 @@ public class FunctionalTests
 	}
 
 	@Test
-	@Ignore("Just to be able to push to Github")
 	public void testMistletoe() throws InterruptedException
 	{
+		// Sleep in order for the page scrolling up (because of the qunit tests) not to disturb us
+		Thread.sleep(12000);
 		// TODO vérifier qu'il y a bien 3 decks de disponibles
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 				.executeScript(FunctionalTests.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		FunctionalTests.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
-		Thread.sleep(20000);
-
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
 				.executeScript(FunctionalTests.SCROLL_DOWN);
+
+		// Sleep in order to wait for the results to appear
+		Thread.sleep(12000);
 
 		final String chromeTotal = FunctionalTests.chromeDriver1.findElement(By.id("runsSummary"))
 				.getText();

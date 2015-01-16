@@ -52,7 +52,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
         <project.build.finalName>ROOT</project.build.finalName>
-        <selenium.version>2.42.2</selenium.version>
+        <selenium.version>2.44.0</selenium.version>
         <hibernate.version>4.3.7.Final</hibernate.version>
         <jetty.version>9.2.2.v20140723</jetty.version>
         <ehcache.version>2.9.0</ehcache.version>
@@ -158,13 +158,6 @@
             <scope>test</scope>
         </dependency>
 
-
-<!--         <dependency> -->
-<!--             <groupId>org.atmosphere</groupId> -->
-<!--             <artifactId>atmosphere-compat-tomcat7</artifactId> -->
-<!--             <version>${atmosphere-compat.version}</version> -->
-        <!--             <scope>test</scope> -->
-<!--         </dependency> -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -291,27 +284,19 @@
             <version>1.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.opera</groupId>
             <artifactId>operadriver</artifactId>
             <version>1.5</version>
-        </dependency>
+        </dependency>-->
+
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
+            <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-ie-driver</artifactId>
-            <version>${selenium.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-extensions</artifactId>
