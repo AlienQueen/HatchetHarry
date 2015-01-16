@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public class CardInBattlefieldContextMenu extends Panel
 {
 	private static final long serialVersionUID = 1L;
-	static final Logger LOGGER = LoggerFactory.getLogger(CardInBattlefieldContextMenu.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CardInBattlefieldContextMenu.class);
 
 	public CardInBattlefieldContextMenu(final String id, final Model<MagicCard> mc)
 	{

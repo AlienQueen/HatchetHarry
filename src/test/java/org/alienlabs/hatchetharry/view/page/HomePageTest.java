@@ -27,7 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
-		"classpath:applicationContextTest.xml" })
+"classpath:applicationContextTest.xml" })
 public class HomePageTest extends SpringContextLoaderBase
 {
 	private static String pageDocument;
@@ -67,14 +67,13 @@ public class HomePageTest extends SpringContextLoaderBase
 				+ window.getContentId());
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testRenderHand() throws IOException
 	{
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		// assert hand is present
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 
 		// assert URL of a thumbnail
 		final String document = SpringContextLoaderBase.tester.getLastResponse().getDocument();
@@ -112,7 +111,6 @@ public class HomePageTest extends SpringContextLoaderBase
 		Assert.assertTrue(clock.getTime().getObject().contains("###"));
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testRenderMenuBar() throws IOException
 	{
@@ -269,7 +267,7 @@ public class HomePageTest extends SpringContextLoaderBase
 
 		// assert hand is present
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 
 		// assert presence of a hand cards
 		HomePageTest.pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
@@ -294,7 +292,7 @@ public class HomePageTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 		HomePageTest.pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 		tagTester = TagTester.createTagsByAttribute(HomePageTest.pageDocument, "wicket:id",
 				"handImagePlaceholder", false);

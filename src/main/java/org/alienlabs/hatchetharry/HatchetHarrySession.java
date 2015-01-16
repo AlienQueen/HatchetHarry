@@ -258,9 +258,8 @@ public class HatchetHarrySession extends WebSession
 
 	public List<CardPanel> getAllCardsToRemove()
 	{
-		final List<CardPanel> cards = (ArrayList<CardPanel>)this
+		return (ArrayList<CardPanel>) this
 				.getAttribute(HatchetHarrySession.TO_REMOVE);
-		return cards;
 	}
 
 	public List<SidePlaceholderPanel> getMySidePlaceholder()

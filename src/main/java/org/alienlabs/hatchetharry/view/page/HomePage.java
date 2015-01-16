@@ -171,7 +171,7 @@ import com.google.common.io.Files;
 public class HomePage extends TestReportPage
 {
 	private static final long serialVersionUID = 1L;
-	static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
 
 	final HatchetHarrySession session;
 	final WebMarkupContainer galleryParent;
@@ -797,7 +797,7 @@ public class HomePage extends TestReportPage
 
 								}
 
-								if ((isGraveyardDisplayed != null) && (isGraveyardDisplayed.booleanValue() == true))
+								if ((isGraveyardDisplayed != null) && (isGraveyardDisplayed))
 								{
 									_player.setGraveyardDisplayed(Boolean.FALSE);
 								}
@@ -854,7 +854,7 @@ public class HomePage extends TestReportPage
 
 										}
 
-										if ((isExileDisplayed != null) && (isExileDisplayed.booleanValue() == true))
+										if ((isExileDisplayed != null) && (isExileDisplayed))
 										{
 											_player.setExileDisplayed(Boolean.FALSE);
 										}
@@ -1234,11 +1234,11 @@ public class HomePage extends TestReportPage
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
-				Long gameId = HomePage.this.session.getPlayer().getGame().getId();
+				Long _gameId = HomePage.this.session.getPlayer().getGame().getId();
 				Long deckId = HomePage.this.session.getPlayer().getDeck().getDeckId();
 
 				final List<MagicCard> cards = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(gameId, HomePage.this.session
+						.getAllCardsInLibraryForDeckAndPlayer(_gameId, HomePage.this.session
 								.getPlayer().getId(), deckId);
 
 				if ((cards != null) && (!cards.isEmpty()))
@@ -1252,7 +1252,7 @@ public class HomePage extends TestReportPage
 					card.setZone(CardZone.HAND);
 
 					List<MagicCard> allCardsInHand = HomePage.this.persistenceService
-							.getAllCardsInHandForAGameAndADeck(gameId, deckId);
+							.getAllCardsInHandForAGameAndADeck(_gameId, deckId);
 					if (!allCardsInHand.isEmpty())
 					{
 						card.setZoneOrder(allCardsInHand.get(allCardsInHand.size() - 1)
@@ -1268,29 +1268,29 @@ public class HomePage extends TestReportPage
 					BattlefieldService.updateHand(target);
 
 					final Player me = HomePage.this.session.getPlayer();
-					final Long _gameId = HomePage.this.persistenceService
+					final Long __gameId = HomePage.this.persistenceService
 							.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
 					final Deck d = me.getDeck();
 					final List<MagicCard> _hand = d
 							.reorderMagicCards(HomePage.this.persistenceService
-									.getAllCardsInHandForAGameAndADeck(_gameId, d.getDeckId()));
+									.getAllCardsInHandForAGameAndADeck(__gameId, d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(_hand);
 					final List<MagicCard> library = d
 							.reorderMagicCards(HomePage.this.persistenceService
-									.getAllCardsInLibraryForDeckAndPlayer(_gameId, me.getId(),
+									.getAllCardsInLibraryForDeckAndPlayer(__gameId, me.getId(),
 											d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(library);
 
 					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 							ConsoleLogType.DRAW_CARD, null, null, null, null, HomePage.this.session
-							.getPlayer().getName(), null, null, null, null, _gameId);
+							.getPlayer().getName(), null, null, null, null, __gameId);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
 							.getSide().getSideName(), null, null, null, "");
 
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-							.giveAllPlayersFromGame(_gameId);
+							.giveAllPlayersFromGame(__gameId);
 					EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(
 							logger));
 				}

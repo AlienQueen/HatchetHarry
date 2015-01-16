@@ -40,13 +40,13 @@ import org.springframework.test.context.ContextConfiguration;
  * Non regression tests using the WicketTester.
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
-		"classpath:applicationContextTest.xml" })
+"classpath:applicationContextTest.xml" })
 public class NonRegressionTest extends SpringContextLoaderBase
 {
 	/**
 	 * Init: we create a game, we play a card, we tap it, we put it back to hand
 	 * Run: we play it again Verify: the card should be untapped.
-	 * 
+	 *
 	 */
 	@Test
 	public void testWhenACardIsPlayedAndPutBackToHandAndPlayedAgainItIsUntapped() throws Exception
@@ -69,9 +69,9 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		final HomePage page = (HomePage)SpringContextLoaderBase.tester.getLastRenderedPage();
 		SpringContextLoaderBase.tester
-				.assertComponent(
-						"parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton",
-						WebMarkupContainer.class);
+		.assertComponent(
+				"parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton",
+				WebMarkupContainer.class);
 		final WebMarkupContainer cardButton = (WebMarkupContainer)page
 				.get("parentPlaceholder:magicCardsForSide1:1:cardPanel:cardHandle:side:menutoggleButton");
 		Assert.assertNotNull(cardButton);
@@ -138,7 +138,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		// 6 cards in the hand?
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 		String pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"magicCard", false);
@@ -181,7 +181,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
@@ -232,7 +232,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
@@ -243,13 +243,13 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// open ModalWindow
-		ModalWindow window = this.openModalWindow("countCardsWindow", "countCardsLink");
+		//ModalWindow window = this.openModalWindow("countCardsWindow", "countCardsLink");
 
 		// And now: does the "count cards" modal window display the right
 		// result: 5 cards in hand, 2 on the battlefield + 1 token,
 		// 53 in the library, 0 in
 		// exile & graveyard and 60 in total (we should not count the token!)
-		String windowPath = window.getPageRelativePath();
+		//		String windowPath = window.getPageRelativePath();
 		// this.verifyFieldsOfCountCardsModalWindow(windowPath, 1, "5");
 		// this.verifyFieldsOfCountCardsModalWindow(windowPath, 2, "53");
 		// this.verifyFieldsOfCountCardsModalWindow(windowPath, 3, "0");
@@ -418,7 +418,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.getRequest().setParameter(
 				"uuid",
 				((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard().getUuidObject()
-						.toString());
+				.toString());
 		SpringContextLoaderBase.tester.getRequest().setParameter("index", "0");
 		SpringContextLoaderBase.tester.executeBehavior(reorder);
 
@@ -472,7 +472,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.getRequest().setParameter(
 				"uuid",
 				((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard().getUuidObject()
-						.toString());
+				.toString());
 		SpringContextLoaderBase.tester.getRequest().setParameter("index", "3");
 		SpringContextLoaderBase.tester.executeBehavior(reorder);
 
@@ -587,7 +587,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.getRequest().setParameter(
 				"uuid",
 				((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard().getUuidObject()
-						.toString());
+				.toString());
 		SpringContextLoaderBase.tester.getRequest().setParameter("index", "3");
 		SpringContextLoaderBase.tester.executeBehavior(reorder);
 
@@ -650,7 +650,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.getRequest().setParameter(
 				"uuid",
 				((PlayerAndCard)cardToMove.getDefaultModelObject()).getCard().getUuidObject()
-						.toString());
+				.toString());
 		SpringContextLoaderBase.tester.getRequest().setParameter("index", "1");
 		SpringContextLoaderBase.tester.executeBehavior(reorder);
 
@@ -712,7 +712,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		// 6 cards in the hand?
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 		String pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 		List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"magicCard", false);
@@ -724,8 +724,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertTrue(tagTester.get(0).getAttribute("src").contains(".jpg"));
 
 		// Is there really one card on the battlefield?
-		final HomePage hp = SpringContextLoaderBase.tester.startPage(new HomePage(
-				new PageParameters()));
+		SpringContextLoaderBase.tester.startPage(new HomePage(new PageParameters()));
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 		pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument();
 
@@ -794,7 +793,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		// Are there still 6 cards in the hand?
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
@@ -842,7 +841,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 
 		// Are there still 6 cards in the hand?
 		SpringContextLoaderBase.tester
-				.assertComponent("galleryParent:gallery", HandComponent.class);
+		.assertComponent("galleryParent:gallery", HandComponent.class);
 		tagTester = TagTester.createTagsByAttribute(pageDocument, "wicket:id",
 				"handImagePlaceholder", false);
 		Assert.assertNotNull(tagTester);
@@ -1100,7 +1099,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 				60,
 				persistenceService.getAllCardsFromDeck(
 						HatchetHarrySession.get().getPlayer().getDeck().getDeckArchive()
-								.getDeckName()).size());
+						.getDeckName()).size());
 	}
 
 	private void openModalWindow(final String _window, final String linkToActivateWindow,
@@ -1138,7 +1137,6 @@ public class NonRegressionTest extends SpringContextLoaderBase
 	{
 		SpringContextLoaderBase.waTester.switchOffTestMode();
 		final String pageDocument = SpringContextLoaderBase.waTester.getPushedResponse();
-		System.out.println(pageDocument);
 
 		final List<TagTester> tagTester = TagTester.createTagsByAttribute(pageDocument, "class",
 				"countedCards", false);

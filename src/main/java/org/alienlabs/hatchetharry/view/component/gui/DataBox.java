@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Required;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class DataBox extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataBox.class);
 	private static final long serialVersionUID = -9102861929848438800L;
 	@SpringBean
 	PersistenceService persistenceService;

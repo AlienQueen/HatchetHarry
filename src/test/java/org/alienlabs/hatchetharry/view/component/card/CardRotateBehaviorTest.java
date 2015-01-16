@@ -30,8 +30,7 @@ public class CardRotateBehaviorTest extends SpringContextLoaderBase
 				.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(1, allCardsInBattlefield.size());
 
-		final MagicCard mc = allCardsInBattlefield.get(0);
-		return mc;
+		return allCardsInBattlefield.get(0);
 	}
 
 	@Test

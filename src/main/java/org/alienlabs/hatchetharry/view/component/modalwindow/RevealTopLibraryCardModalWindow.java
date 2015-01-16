@@ -45,7 +45,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealTopLibraryCardModalWindow extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(RevealTopLibraryCardModalWindow.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RevealTopLibraryCardModalWindow.class);
 	private static final long serialVersionUID = 1L;
 	final ModalWindow modal;
 	final MagicCard card;

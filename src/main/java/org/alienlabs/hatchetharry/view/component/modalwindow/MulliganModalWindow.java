@@ -36,7 +36,7 @@ import org.springframework.beans.factory.annotation.Required;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class MulliganModalWindow extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(MulliganModalWindow.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MulliganModalWindow.class);
 	private static final long serialVersionUID = 1L;
 	final DropDownChoice<String> mulliganInput;
 	@SpringBean

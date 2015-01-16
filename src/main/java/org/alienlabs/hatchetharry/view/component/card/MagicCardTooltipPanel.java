@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class MagicCardTooltipPanel extends Panel
 {
-	static final Logger LOGGER = LoggerFactory.getLogger(MagicCardTooltipPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MagicCardTooltipPanel.class);
 	private static final long serialVersionUID = 1L;
 	private final String bigImage;
 	private final String ownerSide;

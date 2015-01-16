@@ -25,7 +25,7 @@ public class GameConsoleLogStrategy extends ConsoleLogStrategy
 		{
 			action = "put an end to ";
 		}
-		else if (this.created.booleanValue() == true)
+		else if (this.created)
 		{
 			action = "created ";
 		}

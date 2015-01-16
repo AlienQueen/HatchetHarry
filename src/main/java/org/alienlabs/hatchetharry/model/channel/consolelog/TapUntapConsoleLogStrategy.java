@@ -27,7 +27,7 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 		String message = "";
 
 		if ((null == this.mc) && (null != this.clearConsole)
-				&& (false == this.clearConsole.booleanValue()))
+				&& (!this.clearConsole))
 		{
 			message = this.player + " has untapped all his (her) permanents";
 			super.logMessage(target, message, Boolean.FALSE, this.gameId);
