@@ -800,7 +800,8 @@ public class FunctionalTests
 	@Test
 	public void testMistletoe() throws InterruptedException
 	{
-		// Sleep in order for the page scrolling up (because of the qunit tests) not to disturb us
+		// Sleep in order for the page scrolling up (because of the qunit tests)
+		// not to disturb us
 		Thread.sleep(12000);
 		// TODO vérifier qu'il y a bien 3 decks de disponibles
 		((JavascriptExecutor)FunctionalTests.chromeDriver1)
@@ -811,7 +812,7 @@ public class FunctionalTests
 				.executeScript(FunctionalTests.SCROLL_DOWN);
 
 		// Sleep in order to wait for the results to appear
-		Thread.sleep(12000);
+		Thread.sleep(30000);
 
 		final String chromeTotal = FunctionalTests.chromeDriver1.findElement(By.id("runsSummary"))
 				.getText();

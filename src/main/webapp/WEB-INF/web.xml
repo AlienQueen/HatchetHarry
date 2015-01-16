@@ -48,14 +48,6 @@
             <param-name>applicationClassName</param-name>
             <param-value>org.alienlabs.hatchetharry.HatchetHarryApplication</param-value>
         </init-param>
-<!--         <init-param> -->
-<!--             <param-name>org.atmosphere.useWebSocket</param-name> -->
-<!--             <param-value>true</param-value> -->
-<!--         </init-param> -->
-<!--         <init-param> -->
-<!--             <param-name>org.atmosphere.useNative</param-name> -->
-<!--             <param-value>false</param-value> -->
-<!--         </init-param> -->
         <init-param>
             <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
             <param-value>30000</param-value>
@@ -82,12 +74,8 @@
         </init-param>
         <init-param>
             <param-name>defaultTestSuite</param-name>
-            <param-value>org.alienlabs.hatchetharry.clientSideTest.AllMistletoeTests</param-value>
+            <param-value>org.alienlabs.hatchetharry.clientsidetest.AllMistletoeTests</param-value>
         </init-param>
-<!--         <init-param> -->
-<!--             <param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name> -->
-<!--             <param-value>org.atmosphere.client.TrackMessageSizeFilter</param-value> -->
-<!--         </init-param> -->
         <init-param>
 		   	<param-name>org.atmosphere.cpr.BroadcasterCache.strategy</param-name>
    			<param-value>beforeFilter</param-value>
@@ -108,10 +96,6 @@
             <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
             <param-value>org.atmosphere.util.SimpleBroadcaster</param-value>
         </init-param>
-<!--         <init-param> -->
-<!--             <param-name>org.atmosphere.useWebSocketAndServlet3</param-name> -->
-<!--             <param-value>false</param-value> -->
-<!--         </init-param> -->
         <init-param>
             <param-name>org.atmosphere.cpr.AtmosphereInterceptor</param-name>
             <param-value>org.atmosphere.client.TrackMessageSizeInterceptor</param-value>
