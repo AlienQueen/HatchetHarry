@@ -317,19 +317,9 @@
             <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
             <element id="library" level="project" name="Maven: junit:junit:4.11" />
             <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.3" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-server:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-servlet:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-servlet:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-security:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-http:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-util:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-io:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-webapp:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-xml:9.2.2.v20140723" />
-            <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-server:9.2.2.v20140723" />
             <element id="library" level="project" name="Maven: ch.qos.mistletoe:mistletoe-wicket:0.3-SNAPSHOT" />
             <element id="library" level="project" name="Maven: ch.qos.mistletoe:mistletoe-core:0.3-SNAPSHOT" />
             <element id="library" level="project" name="Maven: org.mariadb.jdbc:mariadb-java-client:1.1.7" />
@@ -352,9 +342,7 @@
             <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.2.RELEASE" />
             <element id="library" level="project" name="Maven: org.hsqldb:hsqldb:2.3.2" />
             <element id="library" level="project" name="Maven: antlr:antlr:2.7.6" />
-            <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-compat-jbossweb:2.0.1" />
-            <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-compat-tomcat:2.0.1" />
-            <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-runtime-native:2.1.9" />
+            <element id="library" level="project" name="Maven: org.atmosphere:atmosphere-runtime:2.1.9" />
             <element id="library" level="project" name="Maven: com.opera:operadriver:1.5" />
             <element id="library" level="project" name="Maven: com.opera:operalaunchers:1.1" />
             <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:2.4.1" />
@@ -959,11 +947,6 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/README">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/README.md">
           <value>
             <set />
@@ -974,52 +957,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/sonar-project.properties">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarryApplication.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/CardConstants.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/model/channel/CardMoveCometChannel.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/DataGenerator.java">
+        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/HatchetHarrySession.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/service/PersistenceService.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/clientsideutil/BattlefieldService.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/ArrowDrawBehavior.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardInBattlefieldContextMenu.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/card/CardMoveBehavior.java">
           <value>
             <set />
           </value>
@@ -1034,32 +977,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/HandComponent.java">
+        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/ReorderCardInBattlefieldBehavior.java">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/gui/RevealHandComponent.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/RevealTopLibraryCardModalWindow.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromGraveyardBehavior.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PlayCardFromHandBehavior.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToExileFromBattlefieldBehavior.java">
+        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/modalwindow/CreateTokenModalWindow.java">
           <value>
             <set />
           </value>
@@ -1069,17 +992,7 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/component/zone/PutToHandFromBattlefieldBehavior.java">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/HomePage.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/org/alienlabs/hatchetharry/view/page/script/draggableHandle/cardMove.js">
           <value>
             <set />
           </value>
@@ -1094,12 +1007,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/card/CardPanelTest.java">
+        <entry key="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serversidetest/NonRegressionTest.java">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/view/component/zone/PutToZonePanelTest.java">
+        <entry key="$PROJECT_DIR$/src/test/java/org/alienlabs/hatchetharry/serversidetest/util/SpringContextLoaderBase.java">
           <value>
             <set />
           </value>
@@ -2120,48 +2033,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/aspectj/aspectjweaver/1.6.12/aspectjweaver-1.6.12-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.atmosphere:atmosphere-compat-jbossweb:2.0.1">
+    <library name="Maven: org.atmosphere:atmosphere-runtime:2.1.9">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-jbossweb/2.0.1/atmosphere-compat-jbossweb-2.0.1.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime/2.1.9/atmosphere-runtime-2.1.9.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-jbossweb/2.0.1/atmosphere-compat-jbossweb-2.0.1-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime/2.1.9/atmosphere-runtime-2.1.9-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-jbossweb/2.0.1/atmosphere-compat-jbossweb-2.0.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.atmosphere:atmosphere-compat-tomcat7:2.0.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat7/2.0.1/atmosphere-compat-tomcat7-2.0.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat7/2.0.1/atmosphere-compat-tomcat7-2.0.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat7/2.0.1/atmosphere-compat-tomcat7-2.0.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.atmosphere:atmosphere-compat-tomcat:2.0.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat/2.0.1/atmosphere-compat-tomcat-2.0.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat/2.0.1/atmosphere-compat-tomcat-2.0.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-compat-tomcat/2.0.1/atmosphere-compat-tomcat-2.0.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.atmosphere:atmosphere-runtime-native:2.1.9">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime-native/2.1.9/atmosphere-runtime-native-2.1.9-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime/2.1.9/atmosphere-runtime-2.1.9-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.codehaus.javancss:javancss:33.54">
