@@ -78,7 +78,7 @@ import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChanne
 import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToExileFromBattlefieldCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutToGraveyardFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTokenOnBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
@@ -2426,9 +2426,9 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void removeCardFromBattlefield(final AjaxRequestTarget target,
-			final PutToGraveyardCometChannel event)
+			final PutToGraveyardFromBattlefieldCometChannel event)
 	{
-		if (event.isShouldUpdateGraveyard())
+		if (event.isShouldUpdateZone())
 		{
 			BattlefieldService.updateGraveyard(target, event.getGameId(),
 					event.getTargetPlayerId(), event.getDeckId());
@@ -2442,14 +2442,14 @@ public class HomePage extends TestReportPage
 	public void exileCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToExileFromBattlefieldCometChannel event)
 	{
-		if (event.isShouldUpdateExile())
+		if (event.isShouldUpdateZone())
 		{
 			BattlefieldService.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
 					event.getDeckId());
 		}
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), event.getMc(), false);
+				event.getGameId(), event.getMagicCard(), false);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
@@ -2479,12 +2479,12 @@ public class HomePage extends TestReportPage
 	public void putToHandFromBattlefield(final AjaxRequestTarget target,
 			final PutToHandFromBattlefieldCometChannel event)
 	{
-		if (event.isShouldUpdateHand())
+		if (event.isShouldUpdateZone())
 		{
 			BattlefieldService.updateHand(target, event.getTargetPlayerId());
 		}
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), event.getMc(), false);
+				event.getGameId(), event.getMagicCard(), false);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 

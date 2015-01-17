@@ -15,7 +15,7 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
 import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutToGraveyardCometChannel;
+import org.alienlabs.hatchetharry.model.channel.PutToGraveyardFromBattlefieldCometChannel;
 import org.alienlabs.hatchetharry.model.consolelogstrategy.AbstractConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.consolelogstrategy.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.consolelogstrategy.ConsoleLogType;
@@ -126,8 +126,8 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
 
-			final PutToGraveyardCometChannel _ptgcc = new PutToGraveyardCometChannel(gameId, mc,
-					session.getPlayer().getName(), targetPlayerName, targetPlayer.getId(),
+			final PutToGraveyardFromBattlefieldCometChannel _ptgcc = new PutToGraveyardFromBattlefieldCometChannel(gameId, mc,
+					session.getPlayer().getName(), targetPlayer.getId(),
 					targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
 							.longValue()));
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
