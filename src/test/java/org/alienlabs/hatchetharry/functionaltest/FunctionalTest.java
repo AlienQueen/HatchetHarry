@@ -271,7 +271,7 @@ public class FunctionalTest
 		assertTrue(FunctionalTest.chromeDriver1.findElements(
 				By.cssSelector(".battlefieldCardContainer")).isEmpty());
 
-		// Verify that the hands contains 7 cards
+		// Verify that the hands contain 7 cards
 		assertEquals(7,
 				FunctionalTest.chromeDriver2
 						.findElements(By.cssSelector(".gallery .cardContainer")).size());
