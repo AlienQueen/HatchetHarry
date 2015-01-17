@@ -2477,7 +2477,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void putToHandFromBattlefield(final AjaxRequestTarget target,
-			final PutToHandFromBattlefieldCometChannel event)
+										 final PutToHandFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
 		{

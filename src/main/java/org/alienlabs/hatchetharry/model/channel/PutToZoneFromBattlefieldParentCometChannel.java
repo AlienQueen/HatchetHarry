@@ -26,7 +26,6 @@ public class PutToZoneFromBattlefieldParentCometChannel
 		this.shouldUpdateZone = _shouldUpdateZone;
 	}
 
-
 	public Long getGameId()
 	{
 		return this.gameId;

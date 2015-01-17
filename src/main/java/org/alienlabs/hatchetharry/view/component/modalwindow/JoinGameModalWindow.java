@@ -55,7 +55,6 @@ public class JoinGameModalWindow extends Panel
 
 		final Form<String> form = new Form<String>("form");
 
-
 		final ArrayList<String> allSides = new ArrayList<String>();
 		allSides.add("infrared");
 		allSides.add("ultraviolet");
