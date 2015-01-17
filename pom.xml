@@ -11,6 +11,7 @@
         You are free to modify any part of its source code (client-side or server-side), provided that the changes keep
         this license.
     </description>
+    <inceptionYear>2011</inceptionYear>
     <scm>
         <connection>scm:git:git@github.com:AlienQueen/HatchetHarry.git</connection>
         <developerConnection>AlienQueen</developerConnection>
@@ -40,27 +41,27 @@
     </prerequisites>
     <properties>
         <wicket.version>6.18.0</wicket.version>
-        <quickview.version>6.0-SNAPSHOT</quickview.version>
         <wicketstuff.version>6.18.0</wicketstuff.version>
         <wicket-atmosphere.version>0.20</wicket-atmosphere.version>
         <atmosphere.version>2.1.9</atmosphere.version>
-        <jquery.atmosphere.version>2.1.6</jquery.atmosphere.version>
         <atmosphere-compat.version>2.0.1</atmosphere-compat.version>
+        <jquery.atmosphere.version>2.1.6</jquery.atmosphere.version>
+        <quickview.version>6.0-SNAPSHOT</quickview.version>
         <spring.version>4.1.2.RELEASE</spring.version>
-        <slf4j.version>1.7.7</slf4j.version>
-        <log4j.version>1.2.16</log4j.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <targetJdk>1.8</targetJdk>
-        <project.build.finalName>ROOT</project.build.finalName>
-        <selenium.version>2.44.0</selenium.version>
         <hibernate.version>4.3.7.Final</hibernate.version>
+        <selenium.version>2.44.0</selenium.version>
         <jetty.version>9.2.2.v20140723</jetty.version>
         <ehcache.version>2.9.0</ehcache.version>
+        <slf4j.version>1.7.7</slf4j.version>
+        <log4j.version>1.2.16</log4j.version>
+        <targetJdk>1.8</targetJdk>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true</sonar.jdbc.url>
         <sonar.jdbc.username>sonar</sonar.jdbc.username>
         <sonar.jdbc.password>sonar</sonar.jdbc.password>
         <sonar.host.url>http://hatchetharry.net:9092</sonar.host.url>
+        <project.build.finalName>ROOT</project.build.finalName>
     </properties>
 
     <dependencies>
@@ -111,10 +112,15 @@
             <artifactId>hibernate-commons-annotations</artifactId>
             <version>4.0.5.Final</version>
         </dependency>
-        <!-- LOGGING DEPENDENCIES - LOG4J -->
+        <!-- LOGGING DEPENDENCIES -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
 
@@ -249,25 +255,10 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.3.2</version>
-        </dependency>
-        <dependency>
             <groupId>antlr</groupId>
             <artifactId>antlr</artifactId>
             <version>2.7.6</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-compat-jbossweb</artifactId>
-            <version>2.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-compat-tomcat</artifactId>
-            <version>2.0.1</version>
-        </dependency>-->
          <dependency>
              <groupId>org.atmosphere</groupId>
              <artifactId>atmosphere-runtime</artifactId>
@@ -285,11 +276,6 @@
             <version>1.0</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>com.opera</groupId>
-            <artifactId>operadriver</artifactId>
-            <version>1.5</version>
-        </dependency>-->
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -297,6 +283,12 @@
             <version>${selenium.version}</version>
             <scope>test</scope>
         </dependency>
+        <!--<dependency>
+            <groupId>com.opera</groupId>
+            <artifactId>operadriver</artifactId>
+            <version>1.5</version>
+            <scope>test</scope>
+        </dependency>-->
 
         <dependency>
             <groupId>org.apache.wicket</groupId>
@@ -335,11 +327,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>5.1.2.Final</version>
@@ -348,17 +335,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>emma-maven-plugin</artifactId>
-            <version>1.0-alpha-3</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-lang</artifactId>
-                    <groupId>commons-lang</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.codehaus.mojo</groupId>
@@ -376,16 +352,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>4.5.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.6.12</version>
@@ -399,20 +365,6 @@
             <groupId>org.apache.wicket.experimental.wicket6</groupId>
             <artifactId>wicket-atmosphere</artifactId>
             <version>${wicket-atmosphere.version}</version>
-<!--             <exclusions> -->
-<!--                 <exclusion> -->
-<!--                     <groupId>org.atmosphere</groupId> -->
-<!--                     <artifactId>atmosphere</artifactId> -->
-<!--                 </exclusion> -->
-<!--                 <exclusion> -->
-<!--                     <groupId>org.atmosphere</groupId> -->
-<!--                     <artifactId>atmosphere-runtime</artifactId> -->
-<!--                 </exclusion> -->
-<!--                 <exclusion> -->
-<!--                     <groupId>org.atmosphere</groupId> -->
-<!--                     <artifactId>atmosphere-compat-tomcat7</artifactId> -->
-<!--                 </exclusion> -->
-<!--             </exclusions> -->
         </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -789,16 +741,6 @@
                 </configuration>
             </plugin>
             <plugin>
-			    <groupId>org.codehaus.sonar</groupId>
-			    <artifactId>sonar-maven-plugin</artifactId>
-			    <version>4.5.1</version>
-			</plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>2.4</version>
-            </plugin>
-            <plugin>
                 <groupId>gr.abiss.mvn.plugins</groupId>
                 <artifactId>maven-jstools-plugin</artifactId>
                 <version>0.7</version>
@@ -831,5 +773,4 @@
             </plugin>
         </plugins>
     </reporting>
-    <inceptionYear>2011</inceptionYear>
 </project>
