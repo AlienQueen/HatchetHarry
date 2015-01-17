@@ -1,6 +1,6 @@
 package org.alienlabs.hatchetharry.model.channel;
 
-import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.consolelogstrategy.ConsoleLogStrategy;
 
 public class ConsoleLogCometChannel
 {

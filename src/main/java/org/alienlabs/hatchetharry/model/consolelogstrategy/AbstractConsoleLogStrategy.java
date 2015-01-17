@@ -1,4 +1,4 @@
-package org.alienlabs.hatchetharry.model.channel.consolelog;
+package org.alienlabs.hatchetharry.model.consolelogstrategy;
 
 import org.alienlabs.hatchetharry.model.CardZone;
 

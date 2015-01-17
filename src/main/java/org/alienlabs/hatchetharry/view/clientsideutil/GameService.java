@@ -19,9 +19,9 @@ import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometCh
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
 import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
-import org.alienlabs.hatchetharry.model.channel.consolelog.AbstractConsoleLogStrategy;
-import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogStrategy;
-import org.alienlabs.hatchetharry.model.channel.consolelog.ConsoleLogType;
+import org.alienlabs.hatchetharry.model.consolelogstrategy.AbstractConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.consolelogstrategy.ConsoleLogStrategy;
+import org.alienlabs.hatchetharry.model.consolelogstrategy.ConsoleLogType;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
