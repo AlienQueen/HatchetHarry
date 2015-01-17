@@ -1,13 +1,11 @@
 package org.alienlabs.hatchetharry.functionaltest;
 
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -268,9 +266,9 @@ public class FunctionalTest
 
 		// Assert that no card is present on battlefield
 		Thread.sleep(3000);
-		Assert.assertTrue(FunctionalTest.chromeDriver2.findElements(
+		assertTrue(FunctionalTest.chromeDriver2.findElements(
 				By.cssSelector(".battlefieldCardContainer")).isEmpty());
-		Assert.assertTrue(FunctionalTest.chromeDriver1.findElements(
+		assertTrue(FunctionalTest.chromeDriver1.findElements(
 				By.cssSelector(".battlefieldCardContainer")).isEmpty());
 
 		// Verify that the hands contains 7 cards

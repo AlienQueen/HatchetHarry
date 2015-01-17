@@ -42,10 +42,11 @@ import com.google.common.io.Files;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+@SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class RevealTopLibraryCardModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(RevealTopLibraryCardModalWindow.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(RevealTopLibraryCardModalWindow.class);
 	private static final long serialVersionUID = 1L;
 	final ModalWindow modal;
 	final MagicCard card;
@@ -61,7 +62,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		this.modal = _modal;
 		this.card = _card;
 
-		@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "PREDICTABLE_RANDOM", justification = "SecureRandom is awfully slow and we don't need strong RNG")
+		@SuppressFBWarnings(value = "PREDICTABLE_RANDOM", justification = "SecureRandom is awfully slow and we don't need strong RNG")
 		final ExternalImage topLibraryCard = new ExternalImage("topLibraryCard",
 				"cards/topLibraryCard.jpg?" + Math.random());
 
@@ -97,8 +98,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		{
 			private static final long serialVersionUID = 1L;
 
-			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({ "PATH_TRAVERSAL_IN",
-					"PATH_TRAVERSAL_IN" })
+			@SuppressFBWarnings({ "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN" })
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> _form)
 			{

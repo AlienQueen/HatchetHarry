@@ -378,7 +378,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.24.0 (release Battlefield),");
-		final Label message2 = new Label("message2", "built on Friday, 16th of January 2015.");
+		final Label message2 = new Label("message2", "built on Saturday, 17th of January 2015.");
 		this.add(message1, message2);
 
 		// Comet clock channel
