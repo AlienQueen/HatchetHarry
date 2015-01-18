@@ -2865,7 +2865,7 @@ public class HomePage extends TestReportPage
 		}
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				this.session.getGameId(), null, false);
+				event.getGameId(), null, false);
 	}
 
 	@Override
