@@ -273,6 +273,14 @@ public class HomePage extends TestReportPage
 			EventBusPostService.post(allPlayersInGameExceptMe, new ConsoleLogCometChannel(logger),
 					ncc);
 
+			List<MagicCard> all = this.persistenceService
+					.getAllCardsInBattlefieldForAGame(this.session.getGameId());
+			for (MagicCard mc : all)
+			{
+				mc.setZone(CardZone.LIBRARY);
+			}
+			this.persistenceService.updateAllMagicCards(all);
+
 			this.session.invalidate();
 			throw new RestartResponseException(HomePage.class);
 		}
@@ -567,7 +575,6 @@ public class HomePage extends TestReportPage
 		this.add(this.usernameParent);
 	}
 
-	// TODO: mutualize with restoreBattlefieldState
 	private final void generateCardPanels()
 	{
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
@@ -2477,7 +2484,7 @@ public class HomePage extends TestReportPage
 
 	@Subscribe
 	public void putToHandFromBattlefield(final AjaxRequestTarget target,
-										 final PutToHandFromBattlefieldCometChannel event)
+			final PutToHandFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
 		{
@@ -2886,7 +2893,6 @@ public class HomePage extends TestReportPage
 		super.configureResponse(response);
 	}
 
-	// TODO: mutualize with generateCardPanels
 	private final void restoreBattlefieldState()
 	{
 		// Sessions must be cleaned up between server restarts, as it's too much
@@ -2901,32 +2907,7 @@ public class HomePage extends TestReportPage
 		this.galleryParent.addOrReplace(galleryToUpdate);
 
 		LOGGER.info("this.session.getGameId(): " + this.session.getGameId());
-		final List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattlefieldForAGame(this.session.getGameId());
-		LOGGER.info("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
-		final List<MagicCard> allCardsInBattlefieldForPlayer1 = new ArrayList<MagicCard>();
-		final List<MagicCard> allCardsInBattlefieldForPlayer2 = new ArrayList<MagicCard>();
-
-		for (final MagicCard mc : allCardsInBattlefield)
-		{
-			if (mc.getDeck().getDeckId().longValue() == this.session.getPlayer().getDeck()
-					.getDeckId().longValue())
-			{
-				allCardsInBattlefieldForPlayer1.add(mc);
-			}
-			else
-			{
-				allCardsInBattlefieldForPlayer2.add(mc);
-			}
-		}
-
-		this.generateCardListViewForSide1(allCardsInBattlefieldForPlayer1);
-
-		this.generateCardListViewForSide2(allCardsInBattlefieldForPlayer2);
-		LOGGER.info("allCardsInBattlefieldForPlayer1.size(): "
-				+ allCardsInBattlefieldForPlayer1.size());
-		LOGGER.info("allCardsInBattlefieldForPlayer2.size(): "
-				+ allCardsInBattlefieldForPlayer2.size());
+		this.generateCardPanels();
 
 		this.add(new Behavior()
 		{

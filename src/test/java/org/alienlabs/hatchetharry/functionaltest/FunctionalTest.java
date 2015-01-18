@@ -699,7 +699,7 @@ public class FunctionalTest
 				.executeScript(FunctionalTest.SCROLL_DOWN);
 
 		// Sleep in order to wait for the results to appear
-		Thread.sleep(30000);
+		Thread.sleep(35000);
 
 		final String chromeTotal = FunctionalTest.chromeDriver1.findElement(By.id("runsSummary"))
 				.getText();
