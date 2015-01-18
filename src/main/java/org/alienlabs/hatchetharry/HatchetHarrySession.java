@@ -258,8 +258,7 @@ public class HatchetHarrySession extends WebSession
 
 	public List<CardPanel> getAllCardsToRemove()
 	{
-		return (ArrayList<CardPanel>) this
-				.getAttribute(HatchetHarrySession.TO_REMOVE);
+		return (ArrayList<CardPanel>)this.getAttribute(HatchetHarrySession.TO_REMOVE);
 	}
 
 	public List<SidePlaceholderPanel> getMySidePlaceholder()
@@ -428,10 +427,18 @@ public class HatchetHarrySession extends WebSession
 
 	public Integer decrementLastBattlefieldOrder()
 	{
-		final int myBattlefieldOrder = ((Integer)this
+		int myBattlefieldOrder = ((Integer)this
 				.getAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER)).intValue() - 1;
-		this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER,
-				Integer.valueOf(myBattlefieldOrder));
+		if (myBattlefieldOrder < 0)
+		{
+			myBattlefieldOrder = 0;
+			this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER, 0);
+		}
+		else
+		{
+			this.setAttribute(HatchetHarrySession.LAST_BATTLEFIELD_ORDER,
+					Integer.valueOf(myBattlefieldOrder));
+		}
 		return Integer.valueOf(myBattlefieldOrder);
 	}
 

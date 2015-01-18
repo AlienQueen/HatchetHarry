@@ -121,11 +121,6 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 				session.getPlayer().getId(), session.getPlayer().getDeck().getDeckId(), session
 						.getPlayer().getSide().getSideName());
 		EventBusPostService.post(giveAllPlayersFromGame, reorder);
-
-		// final WebMarkupContainer listViewForSide1 =
-		// ((HomePage)target.getPage())
-		// .generateCardListViewForSide1(allCardsInBattlefieldForPlayer);
-		// target.add(listViewForSide1);
 	}
 
 	@Override
