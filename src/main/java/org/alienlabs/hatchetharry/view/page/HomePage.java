@@ -2125,7 +2125,7 @@ public class HomePage extends TestReportPage
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(), me
-						.getSide().getSideName(), null, null, "");
+								.getSide().getSideName(), null, null, "");
 
 				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
@@ -2863,6 +2863,9 @@ public class HomePage extends TestReportPage
 					.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
 			target.add(listViewForSide2);
 		}
+
+		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+				this.session.getGameId(), null, false);
 	}
 
 	@Override

@@ -115,16 +115,17 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		}
 		this.persistenceService.updateAllMagicCards(allCardsInBattlefieldForPlayer);
 
-		final List<BigInteger> giveAllPlayersFromGameExceptMe = this.persistenceService
-				.giveAllPlayersFromGameExceptMe(session.getGameId(), session.getPlayer().getId());
+		final List<BigInteger> giveAllPlayersFromGame = this.persistenceService
+				.giveAllPlayersFromGame(session.getGameId());
 		final ReorderCardCometChannel reorder = new ReorderCardCometChannel(session.getGameId(),
 				session.getPlayer().getId(), session.getPlayer().getDeck().getDeckId(), session
 						.getPlayer().getSide().getSideName());
-		EventBusPostService.post(giveAllPlayersFromGameExceptMe, reorder);
+		EventBusPostService.post(giveAllPlayersFromGame, reorder);
 
-		final WebMarkupContainer listViewForSide1 = ((HomePage)target.getPage())
-				.generateCardListViewForSide1(allCardsInBattlefieldForPlayer);
-		target.add(listViewForSide1);
+		// final WebMarkupContainer listViewForSide1 =
+		// ((HomePage)target.getPage())
+		// .generateCardListViewForSide1(allCardsInBattlefieldForPlayer);
+		// target.add(listViewForSide1);
 	}
 
 	@Override
