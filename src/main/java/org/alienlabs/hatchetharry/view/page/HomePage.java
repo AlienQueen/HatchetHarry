@@ -50,6 +50,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
@@ -166,8 +167,8 @@ import com.google.common.io.Files;
  * @author Andrey Belyaev
  * @author Zala Goupil
  */
-@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON", "PREDICTABLE_RANDOM" }, justification = "SE_INNER_CLASS + SIC_INNER_SHOULD_BE_STATIC_ANON: In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. PREDICTABLE_RANDOM: SecureRandom is awfully slow and we don't need strong RNG")
+@SuppressFBWarnings(value = { "SE_INNER_CLASS", "SIC_INNER_SHOULD_BE_STATIC_ANON",
+		"PREDICTABLE_RANDOM" }, justification = "SE_INNER_CLASS + SIC_INNER_SHOULD_BE_STATIC_ANON: In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. PREDICTABLE_RANDOM: SecureRandom is awfully slow and we don't need strong RNG")
 public class HomePage extends TestReportPage
 {
 	private static final long serialVersionUID = 1L;
@@ -245,7 +246,7 @@ public class HomePage extends TestReportPage
 	private Label username;
 	private Label gameId;
 
-	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
+	@SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
 	public HomePage(final PageParameters pp) throws Exception
 	{
 		this.session = HatchetHarrySession.get();
@@ -386,7 +387,7 @@ public class HomePage extends TestReportPage
 
 		// Welcome message
 		final Label message1 = new Label("message1", "version 0.24.0 (release Battlefield),");
-		final Label message2 = new Label("message2", "built on Saturday, 17th of January 2015.");
+		final Label message2 = new Label("message2", "built on Sunday, 18th of January 2015.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -1836,8 +1837,7 @@ public class HomePage extends TestReportPage
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("boxing")
-			@edu.umd.cs.findbugs.annotations.SuppressFBWarnings({ "PATH_TRAVERSAL_IN",
-					"PATH_TRAVERSAL_IN" })
+			@SuppressFBWarnings({ "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN" })
 			@Override
 			public void onClick(final AjaxRequestTarget target)
 			{
