@@ -266,7 +266,7 @@ public class HomePage extends TestReportPage
 					this.session.getGameId());
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.END_GAME_ACTION, null, null, this.session.getPlayer().getName(),
-					null, null, null, null, "");
+					null, null, null, "");
 
 			final List<BigInteger> allPlayersInGameExceptMe = this.persistenceService
 					.giveAllPlayersFromGameExceptMe(this.session.getGameId(), this.session
@@ -662,7 +662,7 @@ public class HomePage extends TestReportPage
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.REVEAL_HAND, null, null, HomePage.this.session.getPlayer()
-								.getName(), "", "", "", null, "");
+								.getName(), "", "", null, "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.REVEAL_HAND, null, null, null, null, HomePage.this.session
 								.getPlayer().getName(), null, null, null, Boolean.FALSE, _gameId);
@@ -911,7 +911,7 @@ public class HomePage extends TestReportPage
 						HomePage.this.session.getGameId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, null, "");
+								.getSide().getSideName(), null, null, "");
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
@@ -945,7 +945,7 @@ public class HomePage extends TestReportPage
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.IN_RESPONSE_ACTION, null, null, me.getName(), null, null,
-						null, null, "");
+						null, "");
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(game.getId());
@@ -979,7 +979,7 @@ public class HomePage extends TestReportPage
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.FINE_FOR_ME_ACTION, null, null, me.getName(), null, null,
-						null, null, "");
+						null, "");
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(game.getId());
@@ -1105,31 +1105,25 @@ public class HomePage extends TestReportPage
 
 	private void createPlayer()
 	{
-		final ServletWebRequest servletWebRequest = (ServletWebRequest)this.getPage().getRequest();
-		final HttpServletRequest request = servletWebRequest.getContainerRequest();
-		final String jsessionid = request.getRequestedSessionId();
-
 		this.session.setGameCreated();
 
 		if (this.persistenceService.getFirstPlayer() == null)
 		{
-			this.createPlayerAndDeck(jsessionid, "infrared", "infrared");
+			this.createPlayerAndDeck("infrared", "infrared");
 		}
 		else
 		{
-			this.createPlayerAndDeck(jsessionid, "ultraviolet", "ultraviolet");
+			this.createPlayerAndDeck("ultraviolet", "ultraviolet");
 		}
 	}
 
-	private void createPlayerAndDeck(final String _jsessionid, final String _side,
-			final String _name)
+	private void createPlayerAndDeck(final String _side, final String _name)
 	{
 		Player p = new Player();
 		final Side side = new Side();
 		side.setSideName(_side);
 		p.setSide(side);
 		p.setName(_name);
-		p.setJsessionid(_jsessionid);
 		p.setLifePoints(20L);
 
 		Game game = new Game();
@@ -1207,7 +1201,7 @@ public class HomePage extends TestReportPage
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null, HomePage.this.session
-								.getPlayer().getName(), "", "", "",
+								.getPlayer().getName(), "", "",
 						HomePage.this.session.isCombatInProgress(), "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.COMBAT, null, null, HomePage.this.session
@@ -1287,7 +1281,7 @@ public class HomePage extends TestReportPage
 									.getPlayer().getName(), null, null, null, null, __gameId);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
-									.getSide().getSideName(), null, null, null, "");
+									.getSide().getSideName(), null, null, "");
 
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(__gameId);
@@ -2004,7 +1998,7 @@ public class HomePage extends TestReportPage
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
 						playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
-						null, chosenCard.getTitle(), null, "");
+						chosenCard.getTitle(), null, "");
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
 						playerWhoDiscards.getName(), null, null, null, Boolean.FALSE, _gameId);
@@ -2131,7 +2125,7 @@ public class HomePage extends TestReportPage
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, null, "");
+						.getSide().getSideName(), null, null, "");
 
 				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),

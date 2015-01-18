@@ -129,8 +129,8 @@ public class PutToExileFromBattlefieldBehavior extends AbstractDefaultAjaxBehavi
 					(allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()));
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION, gameId, session
-							.getPlayer().getId(), session.getPlayer().getName(), "", "",
-					mc.getTitle(), null, targetPlayerName);
+					.getPlayer().getId(), session.getPlayer().getName(), "", mc.getTitle(),
+					null, targetPlayerName);
 			EventBusPostService.post(playerToWhomToSend, ptefbcc, ncc, new ConsoleLogCometChannel(
 					logger));
 

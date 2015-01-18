@@ -182,7 +182,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PLAY_TOP_LIBRARY_CARD_ACTION, gameId, p.getId(),
-						HatchetHarrySession.get().getPlayer().getName(), "", "",
+						HatchetHarrySession.get().getPlayer().getName(), "",
 						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
@@ -234,7 +234,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION, gameId, p.getId(),
-						HatchetHarrySession.get().getPlayer().getName(), "", "",
+						HatchetHarrySession.get().getPlayer().getName(), "",
 						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
@@ -282,7 +282,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 						gameId, p.getId(), d.getDeckId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION, gameId, p.getId(),
-						HatchetHarrySession.get().getPlayer().getName(), "", "",
+						HatchetHarrySession.get().getPlayer().getName(), "",
 						RevealTopLibraryCardModalWindow.this.card.getTitle(), null, p.getName());
 				final List<BigInteger> allPlayersInGame = RevealTopLibraryCardModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(gameId);

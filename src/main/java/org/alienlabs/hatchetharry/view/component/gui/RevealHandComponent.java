@@ -106,7 +106,7 @@ public class RevealHandComponent extends Panel
 							playerRevealing, null, null, playerStopping, null, ids[0]);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
 							NotifierAction.REVEAL_HAND, null, null, playerRevealing, null, null,
-							null, null, playerStopping);
+							null, playerStopping);
 					final StopRevealingHandCometChannel rhcc = new StopRevealingHandCometChannel();
 					final List<BigInteger> allPlayersInGame = RevealHandComponent.this.persistenceService
 							.giveAllPlayersFromGame(ids[0]);

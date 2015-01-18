@@ -1,8 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.modalwindow;
 
-import java.math.BigInteger;
-import java.util.List;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
 import org.alienlabs.hatchetharry.model.channel.NotifierAction;
@@ -23,6 +20,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.math.BigInteger;
+import java.util.List;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class AskMulliganModalWindow extends Panel
@@ -62,7 +62,7 @@ public class AskMulliganModalWindow extends Panel
 						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.OK_FOR_MULLIGAN, numberOfCards, null, HatchetHarrySession
-								.get().getPlayer().getName(), null, null, null, null, player);
+								.get().getPlayer().getName(), null, null, null, player);
 				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger), ncc);
 			}
 		};
@@ -85,7 +85,7 @@ public class AskMulliganModalWindow extends Panel
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.OK_FOR_MULLIGAN_BUT_ONE_LESS, Long.valueOf(numberOfCards
 								.longValue() - 1), null, HatchetHarrySession.get().getPlayer()
-								.getName(), null, null, null, null, player);
+								.getName(), null, null, null, player);
 
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());
@@ -110,8 +110,7 @@ public class AskMulliganModalWindow extends Panel
 						numberOfCards - 1L);
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.REFUSE_MULLIGAN, numberOfCards - 1L, null,
-						HatchetHarrySession.get().getPlayer().getName(), null, null, null, null,
-						player);
+						HatchetHarrySession.get().getPlayer().getName(), null, null, null, player);
 
 				final List<BigInteger> allPlayersInGame = AskMulliganModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(HatchetHarrySession.get().getGameId());

@@ -150,8 +150,8 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 					(allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()));
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION, gameId, session
-							.getPlayer().getId(), session.getPlayer().getName(), "", "",
-					mc.getTitle(), null, targetPlayerName);
+							.getPlayer().getId(), session.getPlayer().getName(), "", mc.getTitle(),
+					null, targetPlayerName);
 
 			if (allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue())
 			{

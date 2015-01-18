@@ -1,10 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.modalwindow;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -31,6 +26,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
@@ -87,7 +87,7 @@ public class MulliganModalWindow extends Panel
 						NotifierAction.ASK_FOR_MULLIGAN, Long.valueOf(Long
 								.parseLong(MulliganModalWindow.this.mulliganInput
 										.getDefaultModelObjectAsString())), null,
-						MulliganModalWindow.this.getPlayer().getName(), null, null, null, null, "");
+						MulliganModalWindow.this.getPlayer().getName(), null, null, null, "");
 
 				final List<BigInteger> allPlayersInGame = MulliganModalWindow.this.persistenceService
 						.giveAllPlayersFromGame(MulliganModalWindow.this.getGameId());
@@ -186,7 +186,7 @@ public class MulliganModalWindow extends Panel
 				ConsoleLogType.DONE_MULLIGAN, null, null, null, null, me.getName(), null, null,
 				null, Boolean.FALSE, numberOfCards);
 		final NotifierCometChannel ncc = new NotifierCometChannel(NotifierAction.DONE_MULLIGAN,
-				numberOfCards, null, me.getName(), null, null, null, null, "");
+				numberOfCards, null, me.getName(), null, null, null, "");
 		final List<BigInteger> allPlayersInGame = MulliganModalWindow.this.persistenceService
 				.giveAllPlayersFromGame(gameId);
 		MulliganModalWindow.LOGGER.info("players: " + allPlayersInGame.size());

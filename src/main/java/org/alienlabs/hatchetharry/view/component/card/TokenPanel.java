@@ -1,9 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.model.Token;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -22,12 +18,13 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.Request;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.UUID;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = {
 		"PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS", "SE_INNER_CLASS",
@@ -75,13 +72,6 @@ public class TokenPanel extends Panel
 		final Form<String> form = new Form<String>("form");
 		form.setOutputMarkupId(true);
 
-		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-				this.getHttpServletRequest().getRequestedSessionId()));
-		jsessionid.setMarkupId("jsessionid" + this.uuid);
-		jsessionid.setOutputMarkupId(true);
-
-		TokenPanel.LOGGER.info("jsessionid: "
-				+ this.getHttpServletRequest().getRequestedSessionId());
 		TokenPanel.LOGGER.info("uuid: " + this.uuid);
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
@@ -121,18 +111,11 @@ public class TokenPanel extends Panel
 		tokenBubbleTip.setMarkupId("tokenTooltip" + uuidValidForJs);
 		tokenBubbleTip.add(new AttributeModifier("style", "display: none;"));
 
-		form.add(jsessionid, mouseX, mouseY, handleImage, tokenImage, tapHandleImage,
-				tokenBubbleTip);
+		form.add(mouseX, mouseY, handleImage, tokenImage, tapHandleImage, tokenBubbleTip);
 		menutoggleButton.add(form);
 		cardHandle.add(menutoggleButton);
 
 		this.add(cardHandle);
-	}
-
-	HttpServletRequest getHttpServletRequest()
-	{
-		final Request servletWebRequest = this.getRequest();
-		return (HttpServletRequest)servletWebRequest.getContainerRequest();
 	}
 
 	public UUID getUuid()

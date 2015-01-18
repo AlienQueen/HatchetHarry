@@ -113,8 +113,8 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 				card, HatchetHarrySession.get().getPlayer().getName(), gameId, p.getSide());
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_GRAVEYARD_ACTION, gameId, HatchetHarrySession.get()
-						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
-				"", card.getTitle(), null, "");
+				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+				card.getTitle(), null, "");
 
 		BattlefieldService.updateGraveyard(target);
 

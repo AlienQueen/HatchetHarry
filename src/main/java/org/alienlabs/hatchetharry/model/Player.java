@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.model;
 
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -15,9 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Player", indexes = { @Index(columnList = "Player_Side"), @Index(columnList = "deck") })
@@ -39,8 +38,6 @@ public class Player implements Serializable
 	private Side side = new Side();
 	@Column
 	private String name;
-	@Column
-	private String jsessionid;
 	@Column
 	private Long lifePoints;
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Deck.class, cascade = CascadeType.ALL)
@@ -89,16 +86,6 @@ public class Player implements Serializable
 	public void setName(final String _name)
 	{
 		this.name = _name;
-	}
-
-	public String getJsessionid()
-	{
-		return this.jsessionid;
-	}
-
-	public void setJsessionid(final String _jsessionid)
-	{
-		this.jsessionid = _jsessionid;
 	}
 
 	public Long getLifePoints()

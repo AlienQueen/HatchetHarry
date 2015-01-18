@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.PlayerAndCard;
@@ -25,7 +23,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.Request;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -116,14 +113,6 @@ public class CardPanel extends Panel
 				+ uuidValidForJs);
 		menutoggleButton.add(arrowDrawBehavior);
 
-		final String requestedSessionId = this.getHttpServletRequest().getRequestedSessionId();
-		final TextField<String> jsessionid = new TextField<String>("jsessionid", new Model<String>(
-				requestedSessionId));
-		jsessionid.setMarkupId("jsessionid"
-				+ this.playerAndCard.getObject().getCard().getUuidObject());
-		jsessionid.setOutputMarkupId(true);
-
-		CardPanel.LOGGER.info("jsessionid: " + requestedSessionId);
 		CardPanel.LOGGER.info("uuid: " + this.playerAndCard.getObject().getCard().getUuidObject());
 		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
 		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
@@ -166,7 +155,7 @@ public class CardPanel extends Panel
 		final CardInBattlefieldContextMenu contextMenu = new CardInBattlefieldContextMenu(
 				"contextMenu", new Model<>(myCard));
 
-		form.add(jsessionid, mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
+		form.add(mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
 		menutoggleButton.add(form);
 
 		final WebMarkupContainer side = new WebMarkupContainer("side");
@@ -216,12 +205,6 @@ public class CardPanel extends Panel
 	public PutToExileFromBattlefieldBehavior getPutToExileFromBattlefieldBehavior()
 	{
 		return this.putToExileFromBattlefieldBehavior;
-	}
-
-	HttpServletRequest getHttpServletRequest()
-	{
-		final Request servletWebRequest = this.getRequest();
-		return (HttpServletRequest)servletWebRequest.getContainerRequest();
 	}
 
 	@Required

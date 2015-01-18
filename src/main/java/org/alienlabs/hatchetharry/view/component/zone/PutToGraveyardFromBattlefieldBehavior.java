@@ -1,12 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.zone;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
@@ -35,6 +28,13 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
 		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
@@ -126,14 +126,13 @@ public class PutToGraveyardFromBattlefieldBehavior extends AbstractDefaultAjaxBe
 				this.persistenceService.mergePlayer(targetPlayer);
 			}
 
-			final PutToGraveyardFromBattlefieldCometChannel _ptgcc = new PutToGraveyardFromBattlefieldCometChannel(gameId, mc,
-					session.getPlayer().getName(), targetPlayer.getId(),
-					targetDeckId, (allPlayersInGame.get(i).longValue() == targetPlayer.getId()
-							.longValue()));
+			final PutToGraveyardFromBattlefieldCometChannel _ptgcc = new PutToGraveyardFromBattlefieldCometChannel(
+					gameId, mc, session.getPlayer().getName(), targetPlayer.getId(), targetDeckId,
+					(allPlayersInGame.get(i).longValue() == targetPlayer.getId().longValue()));
 			final NotifierCometChannel _ncc = new NotifierCometChannel(
 					NotifierAction.PUT_CARD_TO_GRAVEYARD_FROM_BATTLEFIELD_ACTION, gameId, session
-							.getPlayer().getId(), session.getPlayer().getName(), "", "",
-					mc.getTitle(), null, targetPlayerName);
+					.getPlayer().getId(), session.getPlayer().getName(), "", mc.getTitle(),
+					null, targetPlayerName);
 
 			EventBusPostService.post(playerToWhomToSend, _ptgcc, _ncc, new ConsoleLogCometChannel(
 					logger));

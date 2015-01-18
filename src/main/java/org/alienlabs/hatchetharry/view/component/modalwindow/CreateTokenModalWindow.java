@@ -1,9 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.modalwindow;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.UUID;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
@@ -32,6 +28,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.UUID;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CreateTokenModalWindow extends Panel
@@ -140,7 +140,7 @@ public class CreateTokenModalWindow extends Panel
 						gameId, card, player.getSide());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
 						NotifierAction.PUT_TOKEN_ON_BATTLEFIELD_ACTION, gameId, player.getId(),
-						player.getName(), "", "",
+						player.getName(), "",
 						CreateTokenModalWindow.this.creatureTypesModel.getObject(), null, null);
 				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 						ConsoleLogType.TOKEN_CREATION_DESTRUCTION, null, null, Boolean.TRUE, null,

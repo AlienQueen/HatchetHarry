@@ -517,17 +517,6 @@ public class PersistenceService implements Serializable {
     }
 
     @Transactional(readOnly = true)
-    public boolean getPlayerByJsessionId(final String jsessionid) {
-        final Session session = this.playerDao.getSession();
-
-        final Query query = session
-                .createQuery("from Player player0_ where player0_.jsessionid=:jsessionid");
-        query.setString("jsessionid", jsessionid);
-
-        return !query.list().isEmpty();
-    }
-
-    @Transactional(readOnly = true)
     public boolean doesCollectibleCardAlreadyExistsInDb(final String title) {
         final Session session = this.collectibleCardDao.getSession();
 
