@@ -274,15 +274,7 @@ public class HomePage extends TestReportPage
 			EventBusPostService.post(allPlayersInGameExceptMe, new ConsoleLogCometChannel(logger),
 					ncc);
 
-			List<MagicCard> all = this.persistenceService
-					.getAllCardsInBattlefieldForAGame(this.session.getGameId());
-			for (MagicCard mc : all)
-			{
-				mc.setZone(CardZone.LIBRARY);
-			}
-			this.persistenceService.updateAllMagicCards(all);
-
-			this.session.invalidate();
+			request.getSession(false).invalidate();
 			throw new RestartResponseException(HomePage.class);
 		}
 
