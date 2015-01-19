@@ -1,5 +1,14 @@
 package org.alienlabs.hatchetharry.view.component.gui;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.channel.ReorderCardCometChannel;
@@ -12,7 +21,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -20,14 +28,6 @@ import org.apache.wicket.util.template.TextTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -70,57 +70,57 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 				+ allCardsInBattlefieldForPlayer.size());
 		final Integer oldIndex = card.getBattlefieldOrder().intValue() > allCardsInBattlefieldForPlayer
 				.size() - 1 ? Integer.valueOf(allCardsInBattlefieldForPlayer.size() - 1) : card
-				.getBattlefieldOrder();
+						.getBattlefieldOrder();
 
-		int startIndex, endIndex;
-		Collections.sort(allCardsInBattlefieldForPlayer);
+				int startIndex, endIndex;
+				Collections.sort(allCardsInBattlefieldForPlayer);
 
-		if (newIndex.longValue() < oldIndex.intValue())
-		{
-			startIndex = newIndex.intValue() < 0 ? 0 : newIndex.intValue();
-			endIndex = oldIndex.intValue();
+				if (newIndex.longValue() < oldIndex.intValue())
+				{
+					startIndex = newIndex.intValue() < 0 ? 0 : newIndex.intValue();
+					endIndex = oldIndex.intValue();
 
-			card = allCardsInBattlefieldForPlayer.get(oldIndex.intValue());
+					card = allCardsInBattlefieldForPlayer.get(oldIndex.intValue());
 
-			for (int index = endIndex - 1; index >= startIndex; index--)
-			{
-				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
-				mc.setBattlefieldOrder(Integer.valueOf(index + 1));
-			}
-			card.setBattlefieldOrder(newIndex);
-		}
-		else if (oldIndex.longValue() < newIndex.longValue())
-		{
-			startIndex = oldIndex.intValue() < 0 ? 0 : oldIndex.intValue();
-			endIndex = newIndex.intValue();
+					for (int index = endIndex - 1; index >= startIndex; index--)
+					{
+						final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
+						mc.setBattlefieldOrder(Integer.valueOf(index + 1));
+					}
+					card.setBattlefieldOrder(newIndex);
+				}
+				else if (oldIndex.longValue() < newIndex.longValue())
+				{
+					startIndex = oldIndex.intValue() < 0 ? 0 : oldIndex.intValue();
+					endIndex = newIndex.intValue();
 
-			card = allCardsInBattlefieldForPlayer.remove(startIndex);
+					card = allCardsInBattlefieldForPlayer.remove(startIndex);
 
-			for (int index = startIndex; index < endIndex; index++)
-			{
-				final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
-				mc.setBattlefieldOrder(Integer.valueOf(index));
-			}
-			card.setBattlefieldOrder(newIndex);
-			allCardsInBattlefieldForPlayer.add(newIndex.intValue(), card);
-		}
+					for (int index = startIndex; index < endIndex; index++)
+					{
+						final MagicCard mc = allCardsInBattlefieldForPlayer.get(index);
+						mc.setBattlefieldOrder(Integer.valueOf(index));
+					}
+					card.setBattlefieldOrder(newIndex);
+					allCardsInBattlefieldForPlayer.add(newIndex.intValue(), card);
+				}
 
-		Collections.sort(allCardsInBattlefieldForPlayer);
+				Collections.sort(allCardsInBattlefieldForPlayer);
 
-		for (int i = 0; i < allCardsInBattlefieldForPlayer.size(); i++)
-		{
-			ReorderCardInBattlefieldBehavior.LOGGER.info("index: " + i + ", card: "
-					+ allCardsInBattlefieldForPlayer.get(i).getTitle() + ", order: "
-					+ allCardsInBattlefieldForPlayer.get(i).getBattlefieldOrder());
-		}
-		this.persistenceService.updateAllMagicCards(allCardsInBattlefieldForPlayer);
+				for (int i = 0; i < allCardsInBattlefieldForPlayer.size(); i++)
+				{
+					ReorderCardInBattlefieldBehavior.LOGGER.info("index: " + i + ", card: "
+							+ allCardsInBattlefieldForPlayer.get(i).getTitle() + ", order: "
+							+ allCardsInBattlefieldForPlayer.get(i).getBattlefieldOrder());
+				}
+				this.persistenceService.updateAllMagicCards(allCardsInBattlefieldForPlayer);
 
-		final List<BigInteger> giveAllPlayersFromGame = this.persistenceService
-				.giveAllPlayersFromGame(session.getGameId());
-		final ReorderCardCometChannel reorder = new ReorderCardCometChannel(session.getGameId(),
-				session.getPlayer().getId(), session.getPlayer().getDeck().getDeckId(), session
+				final List<BigInteger> giveAllPlayersFromGame = this.persistenceService
+						.giveAllPlayersFromGame(session.getGameId());
+				final ReorderCardCometChannel reorder = new ReorderCardCometChannel(session.getGameId(),
+						session.getPlayer().getId(), session.getPlayer().getDeck().getDeckId(), session
 						.getPlayer().getSide().getSideName());
-		EventBusPostService.post(giveAllPlayersFromGame, reorder);
+				EventBusPostService.post(giveAllPlayersFromGame, reorder);
 	}
 
 	@Override
@@ -143,8 +143,8 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		catch (final IOException e)
 		{
 			ReorderCardInBattlefieldBehavior.LOGGER
-					.error("unable to close template in ReorderCardInBattlefieldBehavior#renderHead()!",
-							e);
+			.error("unable to close template in ReorderCardInBattlefieldBehavior#renderHead()!",
+					e);
 		}
 	}
 

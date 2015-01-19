@@ -265,6 +265,11 @@ div.wicket-modal h3.w_captionText {
 
 .console {
     float: left;
+    display: block;
+	overflow: scroll;
+	width: 756px;
+	height: 226px;
+	background-color: black;
 }
 
 .drawModeParent {

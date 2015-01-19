@@ -25,9 +25,9 @@ public class ZoneMoveConsoleLogStrategy extends ConsoleLogStrategy
 	@Override
 	public void logToConsole(final AjaxRequestTarget target)
 	{
-		final String message = this.player + " has put " + this.mc + " from "
+		final String message = this.player + " has put &&& from "
 				+ this.from.toString() + " to " + this.to.toString();
-		super.logMessage(target, message, null, this.gameId);
+		super.logMessage(target, message, null, this.gameId, this.mc);
 	}
 
 }

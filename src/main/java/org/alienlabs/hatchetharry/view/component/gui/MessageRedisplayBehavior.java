@@ -54,9 +54,10 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 				.loadAllConsoleLogMessagesForAGame(this.gameId);
 		for (final ConsoleLogMessage msg : allConsoleLogMessages)
 		{
-			buil.append("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"&#013;&#010;\" + \"");
+			buil.append("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"<br/>\" + \"");
 			buil.append(msg.getMessage());
-			buil.append("\" + \"&#013;&#010;\"; ");
+			buil.append("\" + \"<br/>\"; ");
+			MessageRedisplayBehavior.LOGGER.info("message: " + msg.getMessage());
 		}
 
 		final List<ChatMessage> allChatMessages = this.persistenceService

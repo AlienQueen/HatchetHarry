@@ -59,7 +59,14 @@ jQuery(function () {
 
 // The tooltips
 jQuery(function () {
-    jQuery('[title]').tipsy({gravity: 's'});
+    	window.setTimeout(function() {
+    		jQuery('[title]').tipsy({gravity: 's'});
+			jQuery('.consoleCard[title]').tipsy({html: true, gravity: 'n'});
+			jQuery('.consoleCard[original-title]').tipsy({html: true, gravity: 'n'});
+			jQuery(".consoleCard").click(function() {
+				return false;
+			});
+    	}, 1000);
 });
 
 // For cards drag + hand, graveyard & exile drop

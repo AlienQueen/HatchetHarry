@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
-		"classpath:applicationContextTest.xml" })
+"classpath:applicationContextTest.xml" })
 public class SpringContextLoaderBase
 {
 	protected static AtmosphereTester waTester;
@@ -110,13 +110,13 @@ public class SpringContextLoaderBase
 			createGameForm.submit();
 		}
 
+		final PlayCardFromHandBehavior pcfhb = getFirstPlayCardFromHandBehavior();
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
 		Player p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
 				HatchetHarrySession.get().getGameId().longValue()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
-		final PlayCardFromHandBehavior pcfhb = getFirstPlayCardFromHandBehavior();
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();

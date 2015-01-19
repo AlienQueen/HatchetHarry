@@ -43,6 +43,7 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	@SpringBean
 	private PersistenceService persistenceService;
 	private final UUID uuidToLookFor;
+	private ConsoleLogStrategy logger;
 
 	public PlayCardFromHandBehavior(final UUID _uuidToLookFor)
 	{
@@ -104,16 +105,16 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 				HatchetHarrySession.get().getPlayer().getName(), gameId);
 		final NotifierCometChannel ncc = new NotifierCometChannel(
 				NotifierAction.PLAY_CARD_FROM_HAND_ACTION, gameId, HatchetHarrySession.get()
-						.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
+				.getPlayer().getId(), HatchetHarrySession.get().getPlayer().getName(), "",
 				card.getTitle(), null, "");
-		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+		this.logger = AbstractConsoleLogStrategy.chooseStrategy(
 				ConsoleLogType.ZONE_MOVE, CardZone.HAND, CardZone.BATTLEFIELD, null,
 				card.getTitle(), p.getName(), null, null, null, null, gameId);
 
 		// post a message for all players in the game
 		final List<BigInteger> allPlayersInGame = this.persistenceService
 				.giveAllPlayersFromGame(gameId);
-		EventBusPostService.post(allPlayersInGame, pcfhcc, ncc, new ConsoleLogCometChannel(logger));
+		EventBusPostService.post(allPlayersInGame, pcfhcc, ncc, new ConsoleLogCometChannel(this.logger));
 
 		BattlefieldService.updateHand(target);
 	}
@@ -148,6 +149,11 @@ public class PlayCardFromHandBehavior extends AbstractDefaultAjaxBehavior
 	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
+	}
+
+	public ConsoleLogStrategy getLogger()
+	{
+		return this.logger;
 	}
 
 }

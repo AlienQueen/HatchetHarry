@@ -1,5 +1,6 @@
 package org.alienlabs.hatchetharry;
 
+import org.alienlabs.hatchetharry.model.consolelogstrategy.ZoneMoveConsoleLogStrategyTest;
 import org.alienlabs.hatchetharry.serversidetest.NonRegressionTest;
 import org.alienlabs.hatchetharry.service.ImportDeckServiceTest;
 import org.alienlabs.hatchetharry.service.PersistenceServiceTest;
@@ -15,9 +16,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ HomePageTest.class, CounterTooltipTest.class, ImportDeckServiceTest.class,
-		CardPanelTest.class, CardMoveBehaviorTest.class, CardRotateBehaviorTest.class,
-		NonRegressionTest.class, DataBoxTest.class, PutToZonePanelTest.class,
-		PersistenceServiceTest.class })
+	CardPanelTest.class, CardMoveBehaviorTest.class, CardRotateBehaviorTest.class,
+	NonRegressionTest.class, DataBoxTest.class, PutToZonePanelTest.class,
+	PersistenceServiceTest.class, ZoneMoveConsoleLogStrategyTest.class })
 public class LaunchAllServerSideTests
 {
 	// Just a helper class to launch all WicketTester tests at once, in an IDE
