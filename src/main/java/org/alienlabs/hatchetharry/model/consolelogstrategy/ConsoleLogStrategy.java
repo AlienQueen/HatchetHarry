@@ -48,8 +48,10 @@ public abstract class ConsoleLogStrategy implements Serializable
 
 		for (String card : cardNames)
 		{
-			String _card = card.replaceAll("'", "\\&apos;");
-			__message = __message.replaceFirst("&&&",  "<a class='consoleCard' href='#' title=\\\\\"<img src='cards/" + _card + ".jpg'></img>\\\\\">" + _card + "</a>");
+			String _card = card.replaceAll("'", "&apos;");
+			__message = __message.replaceFirst("&&&",
+					"<a class='consoleCard' style='color: white;' href='#' title='<img src=\\\\\"cards/"
+							+ _card + ".jpg\\\\\"></img>'>" + _card + "</a>");
 		}
 
 		target.appendJavaScript("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"<br/>\" + \""
@@ -59,9 +61,7 @@ public abstract class ConsoleLogStrategy implements Serializable
 				+ "\" + \"<br/>\"; consolePanel.scrollTop = consolePanel.scrollHeight; document.activeElement.blur();  "
 				+ "jQuery('.consoleCard[title]').tipsy({html: true, gravity: 'n'});  "
 				+ "jQuery('.consoleCard[original-title]').tipsy({html: true, gravity: 'n'});  "
-				+ "jQuery('.consoleCard').click(function() { "
-				+ "return false;  "
-				+ "});");
+				+ "jQuery('.consoleCard').click(function() { " + "return false;  " + "});");
 
 		final ConsoleLogMessage msg = new ConsoleLogMessage();
 		msg.setMessage(newDate + ": " + __message);
