@@ -38,25 +38,13 @@
 
 
 
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          destroy-method="close">
-        <property name="driverClass" value="org.mariadb.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/hhTest?generateSimpleParameterMetadata=true"/>
-        <property name="user" value="less"/>
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="shutdown">
+        <!--<property name="dataSourceClassName" value="org.mariadb.jdbc.MySQLDataSource"/>-->
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+        <property name="connectionTestQuery" value="SELECT 1"/>
+        <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/hh"/>
+        <property name="username" value="less"/>
         <property name="password" value="more"/>
-
-        <!-- these are C3P0 properties -->
-        <property name="acquireIncrement" value="10"/>
-        <property name="initialPoolSize" value="20"/>
-        <property name="minPoolSize" value="20"/>
-        <property name="maxPoolSize" value="500"/>
-        <property name="maxIdleTime" value="120"/>
-        <property name="maxIdleTimeExcessConnections" value="120"/>
-        <property name="idleConnectionTestPeriod" value="3000"/>
-        <property name="maxStatements" value="200"/>
-        <property name="numHelperThreads" value="20"/>
-        <property name="unreturnedConnectionTimeout" value="120"/>
-        <property name="maxConnectionAge" value="20"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -85,27 +73,27 @@
 
         <property name="hibernateProperties">
             <props>
-                <!--  create= provide database model at start-up by dropping tables, update= no start-up data model modification -->
+                <!--  create-drop= provide database model at start-up by dropping tables, update= no start-up data model modification -->
                 <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
                 <prop key="jdbc.driverClassName">org.mariadb.jdbc.Driver</prop>
-                <prop key="jdbc.url">jdbc:mysql://localhost:3306/hhTest?generateSimpleParameterMetadata=true</prop>
-                <prop key="jdbc.username">less</prop>
-                <prop key="jdbc.password">more</prop>
-                <prop key="hibernate.connection.pool_size">1</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
-                <prop key="validation.query">select 1</prop>
-                <prop key="hibernate.c3p0.timeout">300</prop>
-                <prop key="hibernate.c3p0.idle_test_periods">150</prop>
+                <prop key="hibernate.hikari.dataSource.cachePrepStmts">true</prop>
+                <prop key="hibernate.hikari.dataSource.prepStmtCacheSize">250</prop>
+                <prop key="hibernate.hikari.dataSource.prepStmtCacheSqlLimit">2048</prop>
+                <prop key="hibernate.hikari.dataSource.useServerPrepStmts">true</prop>
                 <!-- We tell Hibernate that we use EhCache as a second-level cache -->
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
-                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
                 <prop key="hibernate.cache.use_structured_entries">true</prop>
                 <prop key="hibernate.cache.generate_statistics">true</prop>
-                <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
-                <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
+                <!-- To avoid "Deadlock found when trying to get lock; try restarting transaction" -->
+                <prop key="hibernate.jdbc.batch_size">100</prop>
+                <prop key="hibernate.order_inserts">true</prop>
+                <prop key="hibernate.order_updates">true</prop>
                 <prop key="hibernate.event.merge.entity_copy_observer">allow</prop>
             </props>
         </property>

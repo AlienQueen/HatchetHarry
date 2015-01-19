@@ -41,7 +41,7 @@ public class ZoneMoveConsoleLogStrategyTest extends SpringContextLoaderBase
 
 		String message = behavior.getLogger().getMessage();
 		assertTrue(message
-				.contains("Zala has put <a class='consoleCard' href='#' title='<img src=\\\"cards/"));
+				.contains("Zala has put <a class='consoleCard' style='color: white;' href='#' title='<img src=\\\"cards/"));
 		assertTrue(message.contains(".jpg\\\"></img>'>"));
 		assertTrue(message.contains("</a> from Hand to Battlefield"));
 	}
