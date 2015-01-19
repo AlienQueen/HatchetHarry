@@ -59,9 +59,12 @@ public abstract class ConsoleLogStrategy implements Serializable
 				+ ": "
 				+ __message
 				+ "\" + \"<br/>\"; consolePanel.scrollTop = consolePanel.scrollHeight; document.activeElement.blur();  "
-				+ "jQuery('.consoleCard[title]').tipsy({html: true, gravity: 'n'});  "
+				+ "window.setTimeout(function() { jQuery('.consoleCard[title]').tipsy({html: true, gravity: 'n'});  "
 				+ "jQuery('.consoleCard[original-title]').tipsy({html: true, gravity: 'n'});  "
-				+ "jQuery('.consoleCard').click(function() { " + "return false;  " + "});");
+				+ "jQuery('.consoleCard').click(function() { "
+				+ "return false;  "
+				+ "});"
+				+ "}, 500); ");
 
 		final ConsoleLogMessage msg = new ConsoleLogMessage();
 		msg.setMessage(newDate + ": " + __message);

@@ -57,6 +57,12 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 			buil.append("var consolePanel = document.getElementById('console'); consolePanel.innerHTML = consolePanel.innerHTML + \"<br/>\" + \"");
 			buil.append(msg.getMessage());
 			buil.append("\" + \"<br/>\"; ");
+			buil.append("window.setTimeout(function() { jQuery('.consoleCard[title]').tipsy({html: true, gravity: 'n'});  ");
+			buil.append("jQuery('.consoleCard[original-title]').tipsy({html: true, gravity: 'n'});  ");
+			buil.append("jQuery('.consoleCard').click(function() { ");
+			buil.append("return false;  ");
+			buil.append("}); ");
+			buil.append("}, 500); ");
 			MessageRedisplayBehavior.LOGGER.info("message: " + msg.getMessage());
 		}
 
