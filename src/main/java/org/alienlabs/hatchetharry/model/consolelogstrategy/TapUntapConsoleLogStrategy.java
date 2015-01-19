@@ -4,6 +4,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 {
+	private static final long serialVersionUID = 1L;
+
 	private final Boolean cond;
 	private final String mc;
 	private final String player;

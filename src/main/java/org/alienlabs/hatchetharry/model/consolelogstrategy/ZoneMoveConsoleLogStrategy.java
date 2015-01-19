@@ -5,6 +5,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public class ZoneMoveConsoleLogStrategy extends ConsoleLogStrategy
 {
+	private static final long serialVersionUID = 1L;
+
 	private final CardZone from;
 	private final CardZone to;
 	private final String mc;

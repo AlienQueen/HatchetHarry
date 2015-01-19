@@ -84,6 +84,9 @@
                 <prop key="hibernate.hikari.dataSource.prepStmtCacheSize">250</prop>
                 <prop key="hibernate.hikari.dataSource.prepStmtCacheSqlLimit">2048</prop>
                 <prop key="hibernate.hikari.dataSource.useServerPrepStmts">true</prop>
+                <prop key="hibernate.hikari.minimumPoolSize">5</prop>
+                <prop key="hibernate.hikari.maximumPoolSize">5</prop>
+                <prop key=" hibernate.hikari.idleTimeout">30000</prop>
                 <!-- We tell Hibernate that we use EhCache as a second-level cache -->
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>

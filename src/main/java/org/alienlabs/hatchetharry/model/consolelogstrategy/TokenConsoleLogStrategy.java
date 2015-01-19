@@ -4,6 +4,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public class TokenConsoleLogStrategy extends ConsoleLogStrategy
 {
+	private static final long serialVersionUID = 1L;
+
 	private final String player;
 	private final Boolean cond;
 	private final String counterName;
