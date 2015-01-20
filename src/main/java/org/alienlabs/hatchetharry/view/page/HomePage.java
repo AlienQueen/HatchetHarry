@@ -2280,7 +2280,7 @@ public class HomePage extends TestReportPage {
         BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
                 event.getGameId(), mc, true);
         target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
-        target.appendJavaScript("jQuery('#" + me.getMarkupId() + "').fadeIn(750);");
+        target.appendJavaScript("jQuery('#" + me.getMarkupId() + "').fadeIn(750); jQuery('#cardInBattlefieldContextMenu" + mc.getUuidObject().toString().replace("-", "_") + "').popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); ");
     }
 
     @Subscribe
@@ -2625,7 +2625,7 @@ public class HomePage extends TestReportPage {
         BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
                 event.getGameId(), null, false);
 
-        target.appendJavaScript("jQuery('#" + me.getMarkupId() + "').fadeIn(1000);");
+        target.appendJavaScript("jQuery('#" + me.getMarkupId() + "').fadeIn(1000); jQuery('.cardInBattlefieldContextMenu').each(function(index, value) { jQuery(this).popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); }); ");
     }
 
     @Override
