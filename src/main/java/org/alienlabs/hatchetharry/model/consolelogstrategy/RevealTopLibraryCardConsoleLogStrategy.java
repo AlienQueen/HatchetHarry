@@ -25,8 +25,8 @@ public class RevealTopLibraryCardConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		final String message = this.player + " reveal his (her) #" + this.index.longValue()
-				+ " top library card, and it is: " + this.cardName;
-		super.logMessage(target, message, null, this.gameId);
+				+ " top library card, and it is: &&&";
+		super.logMessage(target, message, null, this.gameId, this.cardName);
 	}
 
 }

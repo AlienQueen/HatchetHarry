@@ -37,8 +37,8 @@ public class TapUntapConsoleLogStrategy extends ConsoleLogStrategy
 		else if ((null != this.mc) && (null == this.clearConsole) && (null != this.cond))
 		{
 			message = this.player + " has " + (this.cond.booleanValue() ? "tapped " : "untapped ")
-					+ " permanent " + this.mc;
-			super.logMessage(target, message, null, this.gameId);
+					+ " permanent &&&";
+			super.logMessage(target, message, null, this.gameId, this.mc);
 		}
 	}
 

@@ -23,8 +23,8 @@ public class DiscardAtRandomConsoleLogStrategy extends ConsoleLogStrategy
 	public void logToConsole(final AjaxRequestTarget target)
 	{
 		super.logMessage(target, this.player
-				+ " discards a card at random from his (her) hand, and it is: "
-				+ this.discardedCardName, null, this.gameId);
+				+ " discards a card at random from his (her) hand, and it is: &&&"
+				, null, this.gameId, this.discardedCardName);
 	}
 
 }
