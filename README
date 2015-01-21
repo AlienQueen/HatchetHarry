@@ -54,3 +54,7 @@ Just replace the "_" by ":" in your WicketTester paths.
     
 - Atmsophere + Tomcat 8:
 	+ https://issues.apache.org/jira/browse/WICKET-5761
+
+- Microbenchmarks:
+
+    + http://antoniogoncalves.org/2015/01/15/micro-benchmarking-with-jmh-measure-dont-guess/
