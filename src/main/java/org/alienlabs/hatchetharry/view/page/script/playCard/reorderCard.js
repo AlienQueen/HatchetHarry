@@ -3,7 +3,7 @@ window.setTimeout(function() {
 		$('.battlefieldCardsForSide1.cards').sortable('destroy');
 	}
 	jQuery('.battlefieldCardsForSide1.cards').sortable(
-			{
+		{
 				placeholder: "ui-state-highlight",
 				update: function(e, ui) {
 					// ui.item.sortable is the model but it is not updated until after update
@@ -21,13 +21,10 @@ window.setTimeout(function() {
 						Wicket.Ajax.get({'u': '${url}&uuid=' + uuid + '&index=' + $(this).data("new_position")});
 					}
 				}
-			});
-	var dontZoom = false;
+		});
 
-	function tooltips() {
-		if ((typeof dontZoom === 'undefined') || (!dontZoom)) {
-			$(this).parents('.cardContainer').toggleClass('details');
-		}
-	}
-	jQuery('.magicCard').unbind('click').click(tooltips);
+	jQuery('.gallery .magicCard').click(function() {
+		jQuery(this).parents('.cardContainer').toggleClass('details');
+	});
+
 }, 1500);

@@ -20,12 +20,14 @@
     margin: 2px;
     flex: 1;
 }
+.battlefieldCardContainer .magicCard {
+    z-index: 90;
+}
 .cardContainer .magicCard{
     display:block;
     margin:auto;
     width:70%;
     height:100%;
-    z-index:1;
     transition: 0.8s all cubic-bezier(0.8,-0.3,0.2,1.3);
 }
 .cardContainer .cardActions{
@@ -59,8 +61,32 @@
 	transform: scale(-1, 1);
 }
 .cardContainer.details .magicCard {
-	transform: scale(2); 
+    transform: scale(2);
 }
 .cardContainer.details.tapped .magicCard {
     transform: scale(2) rotate(0deg);
+}
+.battlefieldCardsForSide1 .maximize {
+    transform: rotate(0deg) translate(0);
+    z-index: 90;
+}
+battlefieldCardsForSide2 .maximize {
+    transform: rotate(0deg) translate(0);
+    z-index: 100;
+}
+.maximize.details {
+    transform: translate(240px);
+}
+.maximize.details.tapped {
+    transform: rotate(0deg);
+}
+.maximize {
+    display:block;
+    position:absolute;
+    height:15%;
+    width: 15%;
+    transition: 0.8s all cubic-bezier(0.8,-0.3,0.2,1.3);
+    bottom: 65%;
+    left: 90%;
+    cursor: pointer;
 }

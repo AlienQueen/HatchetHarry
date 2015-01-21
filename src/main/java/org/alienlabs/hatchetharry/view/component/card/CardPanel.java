@@ -19,7 +19,6 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -114,12 +113,6 @@ public class CardPanel extends Panel
 		menutoggleButton.add(arrowDrawBehavior);
 
 		CardPanel.LOGGER.info("uuid: " + this.playerAndCard.getObject().getCard().getUuidObject());
-		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
-		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
-		mouseX.setMarkupId("mouseX" + this.playerAndCard.getObject().getCard().getUuidObject());
-		mouseY.setMarkupId("mouseY" + this.playerAndCard.getObject().getCard().getUuidObject());
-		mouseX.setOutputMarkupId(true);
-		mouseY.setOutputMarkupId(true);
 
 		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
 		bullet.setOutputMarkupId(true).setMarkupId("bullet" + uuidValidForJs);
@@ -155,7 +148,7 @@ public class CardPanel extends Panel
 		final CardInBattlefieldContextMenu contextMenu = new CardInBattlefieldContextMenu(
 				"contextMenu", new Model<>(myCard));
 
-		form.add(mouseX, mouseY, bullet, cardImage, cardRotate, contextMenu);
+		form.add(bullet, cardImage, cardRotate, contextMenu);
 		menutoggleButton.add(form);
 
 		final WebMarkupContainer side = new WebMarkupContainer("side");

@@ -65,20 +65,19 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 			for (final Arrow arrow : allArrows)
 			{
 				content.append("var e0 = jsPlumb.addEndpoint(");
-				content.append(arrow.getSource());
+				content.append("jQuery('#" + arrow.getSource() + "').parent().parent().parent() ");
 				content.append(" ); ");
 				content.append("var e1 = jsPlumb.addEndpoint(");
-				content.append(arrow.getTarget());
+				content.append("jQuery('#" + arrow.getTarget() + "').parent().parent().parent() ");
 				content.append("); ");
 				content.append(" arrows.push({ 'source' : ");
-				content.append(arrow.getSource());
+				content.append("jQuery('#" + arrow.getSource() + "').parent().parent().parent() ");
 				content.append(", 'target' : ");
-				content.append(arrow.getTarget());
+				content.append("jQuery('#" + arrow.getTarget() + "').parent().parent().parent() ");
 				content.append(" }); ");
 				content.append("	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ ");
 				content.append("					['Label', {location:0.7, id:'label', events:{ ");
-				content.append("							} }], ['Arrow', { ");
-				content.append("						cssClass:'l1arrow',  location:0.5, width:40,length:40 }]] }); ");
+				content.append("							} }]] }); ");
 			}
 		}
 		content.append("}; ");

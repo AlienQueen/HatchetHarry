@@ -332,3 +332,15 @@ jQuery(function () {
 			}
 		});        
 });
+
+jQuery(function () {
+    jQuery('.maximize').click(function() {
+        jQuery(this).toggleClass('details');
+        $(this).parents('.cardContainer').toggleClass('details');
+    });
+    window.setTimeout(function () {
+        jQuery('.gallery .magicCard').unbind('click').click(function() {
+            $(this).parents('.cardContainer').toggleClass('details');
+        });
+    }, 1000);
+});

@@ -1,3 +1,9 @@
+._jsPlumb_connector {
+    z-index: 100;
+}
+path {
+    stroke-width: 4;
+}
 .scroller {
 	position: fixed;
 	right: 55%;
