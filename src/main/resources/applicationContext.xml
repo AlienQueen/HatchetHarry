@@ -43,6 +43,9 @@
         <property name="username" value="less"/>
         <property name="password" value="more"/>
     </bean>
+	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate">
+    	<property name="dataSource" ref="dataSource"/>
+	</bean>
 
 
 
@@ -97,7 +100,7 @@
 
 
     <!-- setup hibernate session factory -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" depends-on="flyway">
         <property name="dataSource">
             <ref bean="dataSource"/>
         </property>
@@ -124,7 +127,7 @@
         <property name="hibernateProperties">
             <props>
                 <!--  create-drop= provide database model at start-up by dropping tables, update= no start-up data model modification -->
-                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
                 <prop key="jdbc.driverClassName">org.mariadb.jdbc.Driver</prop>
