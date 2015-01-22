@@ -69,12 +69,12 @@ public class TokenPanel extends Panel
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("menutoggleButton" + uuidValidForJs);
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 		form.setOutputMarkupId(true);
 
 		TokenPanel.LOGGER.info("uuid: " + this.uuid);
-		final TextField<String> mouseX = new TextField<String>("mouseX", new Model<String>("0"));
-		final TextField<String> mouseY = new TextField<String>("mouseY", new Model<String>("0"));
+		final TextField<String> mouseX = new TextField<>("mouseX", new Model<>("0"));
+		final TextField<String> mouseY = new TextField<>("mouseY", new Model<>("0"));
 		mouseX.setMarkupId("mouseX" + this.uuid);
 		mouseY.setMarkupId("mouseY" + this.uuid);
 		mouseX.setOutputMarkupId(true);

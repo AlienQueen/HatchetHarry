@@ -36,7 +36,7 @@ public class ZoneMoveBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("component", this.zone.getMarkupId());
 		variables.put("handle", "handle" + this.zone.getMarkupId());
 

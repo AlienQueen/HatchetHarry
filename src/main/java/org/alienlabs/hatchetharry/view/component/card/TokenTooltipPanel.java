@@ -8,16 +8,14 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class TokenTooltipPanel extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(TokenTooltipPanel.class);
 	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private PersistenceService persistenceService;
 
@@ -31,7 +29,7 @@ public class TokenTooltipPanel extends Panel
 		this.add(ttb);
 
 		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -39,32 +37,32 @@ public class TokenTooltipPanel extends Panel
 			{
 				target.appendJavaScript("jQuery('.cardTooltip').attr('style', 'display: none;'); ");
 			}
-		};
+				};
 
-		if ("infrared".equals(ownerSide))
-		{
-			this.add(new AttributeModifier("style", "border: 1px solid red;"));
-		}
-		else if ("ultraviolet".equals(ownerSide))
-		{
-			this.add(new AttributeModifier("style", "border: 1px solid purple;"));
-		}
-		else
-		{
-			this.add(new AttributeModifier("style", "border: 1px solid yellow;"));
-		}
-		this.add(closeTooltip);
+				if ("infrared".equals(ownerSide))
+				{
+					this.add(new AttributeModifier("style", "border: 1px solid red;"));
+				}
+				else if ("ultraviolet".equals(ownerSide))
+				{
+					this.add(new AttributeModifier("style", "border: 1px solid purple;"));
+				}
+				else
+				{
+					this.add(new AttributeModifier("style", "border: 1px solid yellow;"));
+				}
+				this.add(closeTooltip);
 
-		this.add(new Label("type", token.getType()).setOutputMarkupId(true));
-		this.add(new Label("power", token.getPower()).setOutputMarkupId(true));
-		this.add(new Label("toughness", token.getToughness()).setOutputMarkupId(true));
-		this.add(new Label("colors", token.getColors()).setOutputMarkupId(true));
-		this.add(new Label("capabilities", token.getCapabilities()).setOutputMarkupId(true));
-		this.add(new Label("creatureTypes", token.getCreatureTypes()).setOutputMarkupId(true));
-		this.add(new Label("description", token.getDescription()).setOutputMarkupId(true));
+				this.add(new Label("type", token.getType()).setOutputMarkupId(true));
+				this.add(new Label("power", token.getPower()).setOutputMarkupId(true));
+				this.add(new Label("toughness", token.getToughness()).setOutputMarkupId(true));
+				this.add(new Label("colors", token.getColors()).setOutputMarkupId(true));
+				this.add(new Label("capabilities", token.getCapabilities()).setOutputMarkupId(true));
+				this.add(new Label("creatureTypes", token.getCreatureTypes()).setOutputMarkupId(true));
+				this.add(new Label("description", token.getDescription()).setOutputMarkupId(true));
 
-		final CounterTooltip counterPanel = new CounterTooltip("counterPanel", null, token);
-		this.add(counterPanel);
+				final CounterTooltip counterPanel = new CounterTooltip("counterPanel", null, token);
+				this.add(counterPanel);
 	}
 
 	@Required

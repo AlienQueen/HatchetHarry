@@ -51,7 +51,7 @@ public class ImportDeckService implements Serializable
 			return false;
 		}
 
-		final List<MagicCard> allCards = new ArrayList<MagicCard>();
+		final List<MagicCard> allCards = new ArrayList<>();
 
 		for (final String line : fileContent.split("\n"))
 		{

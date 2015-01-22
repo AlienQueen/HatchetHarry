@@ -75,7 +75,7 @@ public class RevealTopLibraryCardModalWindow extends Panel
 		this.add(topLibraryCard);
 
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
 		final IndicatingAjaxButton doNothing = new IndicatingAjaxButton("doNothing", form)
 		{

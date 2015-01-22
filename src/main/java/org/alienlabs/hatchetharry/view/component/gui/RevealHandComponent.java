@@ -128,7 +128,7 @@ public class RevealHandComponent extends Panel
 				{
 					super.renderHead(component, response);
 
-					final HashMap<String, Object> variables = new HashMap<String, Object>();
+					final HashMap<String, Object> variables = new HashMap<>();
 					variables.put("player", ids[1].toString());
 					final TextTemplate template = new PackageTextTemplate(HomePage.class,
 							"script/gallery/coda-slider.1.1.1.pack-for-hand-reveal.js");

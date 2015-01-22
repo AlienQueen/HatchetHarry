@@ -77,15 +77,15 @@ public class ChatPanel extends Panel
 		super(id);
 		Injector.get().inject(this);
 
-		final Form<String> form = new Form<String>("chatForm");
+		final Form<String> form = new Form<>("chatForm");
 
-		final RequiredTextField<String> user = new RequiredTextField<String>("user",
-				new Model<String>(""));
+		final RequiredTextField<String> user = new RequiredTextField<>("user",
+				new Model<>(""));
 		user.setMarkupId("userName");
 		user.setOutputMarkupId(true);
 		form.add(user);
-		final RequiredTextField<String> message = new RequiredTextField<String>("message",
-				new Model<String>(""));
+		final RequiredTextField<String> message = new RequiredTextField<>("message",
+				new Model<>(""));
 		message.setOutputMarkupId(true).setMarkupId("message");
 		form.add(message);
 

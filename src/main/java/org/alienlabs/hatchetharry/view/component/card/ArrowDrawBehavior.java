@@ -75,7 +75,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("arrowDrawUrl", this.getCallbackUrl());
 		variables.put("uuidValidForJs", this.markupId);
 

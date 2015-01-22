@@ -1,5 +1,7 @@
 package org.alienlabs.hatchetharry.view.component.modalwindow;
 
+import java.util.List;
+
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.MagicCard;
 import org.alienlabs.hatchetharry.model.Player;
@@ -9,17 +11,13 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.util.List;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CountCardsModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CountCardsModalWindow.class);
 	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	PersistenceService persistenceService;
 
@@ -30,7 +28,7 @@ public class CountCardsModalWindow extends Panel
 		final List<Player> allPlayersOfGame = this.persistenceService.getAllPlayersOfGame(gameId
 				.longValue());
 		final ListView<Player> list = new ListView<Player>("players", allPlayersOfGame)
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -69,8 +67,8 @@ public class CountCardsModalWindow extends Panel
 
 				item.add(new Label("total", numberOfNonTokenCards));
 			}
-		};
-		this.add(list);
+				};
+				this.add(list);
 	}
 
 	@Required

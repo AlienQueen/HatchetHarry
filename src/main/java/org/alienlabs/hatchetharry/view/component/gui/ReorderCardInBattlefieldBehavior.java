@@ -128,7 +128,7 @@ public class ReorderCardInBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("url", this.getCallbackUrl());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,

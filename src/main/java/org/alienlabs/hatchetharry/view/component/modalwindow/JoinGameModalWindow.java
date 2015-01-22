@@ -23,15 +23,12 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class JoinGameModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(JoinGameModalWindow.class);
 	private static final long serialVersionUID = 1L;
 	final TextField<Long> gameIdInput;
 	final TextField<String> nameInput;
@@ -53,19 +50,19 @@ public class JoinGameModalWindow extends Panel
 
 		this.hp = _hp;
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
-		final ArrayList<String> allSides = new ArrayList<String>();
+		final ArrayList<String> allSides = new ArrayList<>();
 		allSides.add("infrared");
 		allSides.add("ultraviolet");
-		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
+		final Model<ArrayList<String>> sidesModel = new Model<>(allSides);
 		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
-		this.sideInput = new DropDownChoice<String>("sideInput", new Model<String>(), sidesModel);
+		this.sideInput = new DropDownChoice<>("sideInput", new Model<String>(), sidesModel);
 		this.sideInput.setOutputMarkupId(true).setMarkupId("sideInput");
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
-		final Model<String> nameModel = new Model<String>("");
-		this.nameInput = new TextField<String>("name", nameModel);
+		final Model<String> nameModel = new Model<>("");
+		this.nameInput = new TextField<>("name", nameModel);
 		this.nameInput.setOutputMarkupId(true).setMarkupId("name");
 
 		this.nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
@@ -79,13 +76,13 @@ public class JoinGameModalWindow extends Panel
 				{
 					final ArrayList<Deck> _allDecks = JoinGameModalWindow.this.persistenceService
 							.getAllDecksFromDeckArchives();
-					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
-					JoinGameModalWindow.this.decks = new DropDownChoice<Deck>("decks",
+					final Model<ArrayList<Deck>> _decksModel = new Model<>(_allDecks);
+					JoinGameModalWindow.this.decks = new DropDownChoice<>("decks",
 							new Model<Deck>(), _decksModel);
 					JoinGameModalWindow.this.decks.setOutputMarkupId(true).setMarkupId("decks");
 
 					JoinGameModalWindow.this.deckParent
-							.addOrReplace(JoinGameModalWindow.this.decks);
+					.addOrReplace(JoinGameModalWindow.this.decks);
 					target.add(JoinGameModalWindow.this.deckParent);
 				}
 			}
@@ -94,18 +91,18 @@ public class JoinGameModalWindow extends Panel
 		final Label chooseDeck = new Label("chooseDeck", "Choose a deck: ");
 
 		final ArrayList<Deck> allDecks = this.persistenceService.getAllDecksFromDeckArchives();
-		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
+		final Model<ArrayList<Deck>> decksModel = new Model<>(allDecks);
 
 		this.deckParent = new WebMarkupContainer("deckParent");
 		this.deckParent.setOutputMarkupId(true);
-		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
+		this.decks = new DropDownChoice<>("decks", new Model<Deck>(), decksModel);
 		this.decks.setOutputMarkupId(true).setMarkupId("decks");
 		this.deckParent.add(this.decks);
 
 		final Label gameIdLabel = new Label("gameIdLabel",
 				"Please provide the game id given by your opponent: ");
-		final Model<Long> gameId = new Model<Long>(null);
-		this.gameIdInput = new TextField<Long>("gameIdInput", gameId);
+		final Model<Long> gameId = new Model<>(null);
+		this.gameIdInput = new TextField<>("gameIdInput", gameId);
 		this.gameIdInput.setRequired(true).setOutputMarkupId(true).setMarkupId("gameIdInput");
 
 		this.feedback = new FeedbackPanel("feedback");
@@ -122,7 +119,7 @@ public class JoinGameModalWindow extends Panel
 						|| ("".equals(JoinGameModalWindow.this.nameInput.getModelObject().trim()))
 						|| (null == JoinGameModalWindow.this.decks.getModelObject())
 						|| (null == JoinGameModalWindow.this.sideInput
-								.getDefaultModelObjectAsString()))
+						.getDefaultModelObjectAsString()))
 				{
 					return;
 				}

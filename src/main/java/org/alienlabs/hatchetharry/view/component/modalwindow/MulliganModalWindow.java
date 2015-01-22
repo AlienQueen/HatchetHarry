@@ -45,9 +45,9 @@ public class MulliganModalWindow extends Panel
 	public MulliganModalWindow(final ModalWindow window, final String id)
 	{
 		super(id);
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
-		final ArrayList<String> mulligan = new ArrayList<String>();
+		final ArrayList<String> mulligan = new ArrayList<>();
 		mulligan.add("1");
 		mulligan.add("2");
 		mulligan.add("3");
@@ -56,10 +56,10 @@ public class MulliganModalWindow extends Panel
 		mulligan.add("6");
 		mulligan.add("7");
 
-		final Model<ArrayList<String>> mulliganModel = new Model<ArrayList<String>>(mulligan);
+		final Model<ArrayList<String>> mulliganModel = new Model<>(mulligan);
 		final Label mulliganLabel = new Label("mulliganLabel",
 				"Choose the number of cards you'd like to draw: ");
-		this.mulliganInput = new DropDownChoice<String>("mulliganInput", new Model<String>(),
+		this.mulliganInput = new DropDownChoice<>("mulliganInput", new Model<String>(),
 				mulliganModel);
 		this.mulliganInput.setOutputMarkupId(true);
 
@@ -164,7 +164,7 @@ public class MulliganModalWindow extends Panel
 			card.setZone(CardZone.LIBRARY);
 		}
 
-		final ArrayList<MagicCard> newHand = new ArrayList<MagicCard>();
+		final ArrayList<MagicCard> newHand = new ArrayList<>();
 		HatchetHarrySession.get().setFirstCardsInHand(newHand);
 
 		final List<MagicCard> deck = HatchetHarrySession.get().getPlayer().getDeck().getCards();

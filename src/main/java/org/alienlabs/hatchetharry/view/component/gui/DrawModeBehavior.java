@@ -46,7 +46,7 @@ public class DrawModeBehavior extends AbstractDefaultAjaxBehavior
 
 		StringBuilder js = new StringBuilder();
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("arrowDrawUrl", this.getCallbackUrl());
 		variables.put("posX", this.mc.getX());
 		variables.put("posY", this.mc.getY());

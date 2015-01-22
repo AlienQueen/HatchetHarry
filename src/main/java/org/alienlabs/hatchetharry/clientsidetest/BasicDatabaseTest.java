@@ -34,21 +34,21 @@ public class BasicDatabaseTest implements Serializable
 	static transient ApplicationContext context;
 
 	@SpringBean
-	private CardCollectionDao cardCollectionDao;
+	private transient CardCollectionDao cardCollectionDao;
 	@SpringBean
-	private CollectibleCardDao collectibleCardDao;
+	private transient CollectibleCardDao collectibleCardDao;
 	@SpringBean
-	private DeckArchiveDao deckArchiveDao;
+	private transient DeckArchiveDao deckArchiveDao;
 	@SpringBean
-	private DeckDao deckDao;
+	private transient DeckDao deckDao;
 	@SpringBean
-	private GameDao gameDao;
+	private transient GameDao gameDao;
 	@SpringBean
-	private MagicCardDao magicCardDao;
+	private transient MagicCardDao magicCardDao;
 	@SpringBean
-	private PlayerDao playerDao;
+	private transient PlayerDao playerDao;
 	@SpringBean
-	private SideDao sideDao;
+	private transient SideDao sideDao;
 
 	@BeforeClass
 	public static void setUpBeforeClass()

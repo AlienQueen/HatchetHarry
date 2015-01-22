@@ -347,7 +347,7 @@ public class HomePage extends TestReportPage {
 
         this.allPlayerSidesInGame = this.persistenceService.getAllPlayersOfGame(this.session
                 .getGameId().longValue());
-        final ListDataProvider<Player> data = new ListDataProvider<Player>(
+        final ListDataProvider<Player> data = new ListDataProvider<>(
                 this.allPlayerSidesInGame);
 
         this.allSidesInGame = this.populateSides(data);
@@ -474,7 +474,7 @@ public class HomePage extends TestReportPage {
         this.generateImportDeckLink("importDeckLink");
         this.generateImportDeckLink("importDeckLinkResponsive");
 
-        this.allOpenRevealTopLibraryCardWindows = new ArrayList<ModalWindow>();
+        this.allOpenRevealTopLibraryCardWindows = new ArrayList<>();
         this.generateRevealTopLibraryCardLink("revealTopLibraryCardLink",
                 "revealTopLibraryCardWindow");
         this.generateRevealTopLibraryCardLink("revealTopLibraryCardLinkResponsive",
@@ -553,8 +553,8 @@ public class HomePage extends TestReportPage {
         final List<MagicCard> allCardsInBattlefield = this.persistenceService
                 .getAllCardsInBattlefieldForAGame(this.session.getGameId());
         LOGGER.info("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
-        final List<MagicCard> allCardsInBattlefieldForPlayer1 = new ArrayList<MagicCard>();
-        final List<MagicCard> allCardsInBattlefieldForPlayer2 = new ArrayList<MagicCard>();
+        final List<MagicCard> allCardsInBattlefieldForPlayer1 = new ArrayList<>();
+        final List<MagicCard> allCardsInBattlefieldForPlayer2 = new ArrayList<>();
 
         for (final MagicCard mc : allCardsInBattlefield) {
             if (mc.getDeck().getDeckId().longValue() == this.session.getPlayer().getDeck()
@@ -637,7 +637,7 @@ public class HomePage extends TestReportPage {
                 EventBusPostService.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(
                         logger), rhcc);
 
-                final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>();
+                final List<BigInteger> playerToWhomToSend = new ArrayList<>();
                 playerToWhomToSend.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()
                         .longValue()));
                 EventBusPostService.post(playerToWhomToSend, ncc,
@@ -1373,7 +1373,7 @@ public class HomePage extends TestReportPage {
                 this.player.setDeck(this.deck);
             }
 
-            final ArrayList<MagicCard> _cards = new ArrayList<MagicCard>();
+            final ArrayList<MagicCard> _cards = new ArrayList<>();
 
             for (final MagicCard mc : this.persistenceService.getAllCardsFromDeck(this.deck
                     .getDeckArchive().getDeckName())) {
@@ -1384,7 +1384,7 @@ public class HomePage extends TestReportPage {
             }
             this.player.getDeck().setCards(_cards);
 
-            final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+            final ArrayList<MagicCard> cards = new ArrayList<>();
             if (!this.session.isHandCardsHaveBeenBuilt().booleanValue()) {
                 this.deck.setCards(this.deck.shuffleLibrary(this.deck.getCards()));
             }
@@ -1412,7 +1412,7 @@ public class HomePage extends TestReportPage {
         }
         this.createPlayer();
         this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId().longValue());
-        final ArrayList<MagicCard> cards = new ArrayList<MagicCard>();
+        final ArrayList<MagicCard> cards = new ArrayList<>();
 
         for (int i = 0; i < this.deck.getCards().size(); i++) {
             final MagicCard mc = this.deck.getCards().get(i);
@@ -2756,13 +2756,13 @@ public class HomePage extends TestReportPage {
     public WebMarkupContainer generateCardListViewForSide1(
             final List<MagicCard> _allMagicCardsInBattlefieldForSide1) {
         if (null == _allMagicCardsInBattlefieldForSide1) {
-            this.allMagicCardsInBattlefieldForSide1 = new ArrayList<MagicCard>();
+            this.allMagicCardsInBattlefieldForSide1 = new ArrayList<>();
         } else {
             this.allMagicCardsInBattlefieldForSide1 = _allMagicCardsInBattlefieldForSide1;
         }
 
         Collections.sort(this.allMagicCardsInBattlefieldForSide1);
-        final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
+        final ListDataProvider<MagicCard> data = new ListDataProvider<>(
                 this.allMagicCardsInBattlefieldForSide1);
 
         this.allCardsInBattlefieldForSide1 = new QuickView<MagicCard>("magicCardsForSide1", data) {
@@ -2771,14 +2771,14 @@ public class HomePage extends TestReportPage {
             @Override
             protected void populate(final Item<MagicCard> item) {
                 final MagicCard mc = item.getModelObject();
-                final CardPanel cp = new CardPanel("cardPanel", new Model<PlayerAndCard>(
+                final CardPanel cp = new CardPanel("cardPanel", new Model<>(
                         new PlayerAndCard(HomePage.this.persistenceService.getPlayer(mc.getDeck()
                                 .getPlayerId()), mc)));
                 cp.setOutputMarkupId(true);
                 item.add(cp);
 
                 if (mc.isTapped()) {
-                    item.add(new AttributeAppender("class", new Model<String>("tapped"), " "));
+                    item.add(new AttributeAppender("class", new Model<>("tapped"), " "));
                 }
 
                 HomePage.this.getParentPlaceholder().add(new ReorderCardInBattlefieldBehavior());
@@ -2793,13 +2793,13 @@ public class HomePage extends TestReportPage {
     WebMarkupContainer generateCardListViewForSide2(
             final List<MagicCard> _allMagicCardsInBattlefieldForSide2) {
         if (null == _allMagicCardsInBattlefieldForSide2) {
-            this.allMagicCardsInBattlefieldForSide2 = new ArrayList<MagicCard>();
+            this.allMagicCardsInBattlefieldForSide2 = new ArrayList<>();
         } else {
             this.allMagicCardsInBattlefieldForSide2 = _allMagicCardsInBattlefieldForSide2;
         }
 
         Collections.sort(this.allMagicCardsInBattlefieldForSide2);
-        final ListDataProvider<MagicCard> data = new ListDataProvider<MagicCard>(
+        final ListDataProvider<MagicCard> data = new ListDataProvider<>(
                 this.allMagicCardsInBattlefieldForSide2);
 
         this.allCardsInBattlefieldForSide2 = new QuickView<MagicCard>("magicCardsForSide2", data) {
@@ -2815,14 +2815,14 @@ public class HomePage extends TestReportPage {
                                     .getGameId()));
                 }
 
-                final CardPanel cp = new CardPanel("cardPanel", new Model<PlayerAndCard>(
+                final CardPanel cp = new CardPanel("cardPanel", new Model<>(
                         new PlayerAndCard(HomePage.this.persistenceService.getPlayer(mc.getDeck()
                                 .getPlayerId()), mc)));
                 cp.setOutputMarkupId(true);
                 item.add(cp);
 
                 if (mc.isTapped()) {
-                    item.add(new AttributeAppender("class", new Model<String>("tapped"), " "));
+                    item.add(new AttributeAppender("class", new Model<>("tapped"), " "));
                 }
             }
         };

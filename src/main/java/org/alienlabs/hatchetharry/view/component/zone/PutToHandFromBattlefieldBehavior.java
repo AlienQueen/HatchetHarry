@@ -137,7 +137,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final int index = i;
-			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>();
+			final List<BigInteger> playerToWhomToSend = new ArrayList<>();
 			playerToWhomToSend.add(allPlayersInGame.get(index));
 
 			final Player targetPlayer = this.persistenceService.getPlayer(mc.getDeck()
@@ -176,7 +176,7 @@ public class PutToHandFromBattlefieldBehavior extends AbstractDefaultAjaxBehavio
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("uuidValidForJs", this.uuid.toString().replaceAll("-", "_"));
 		variables.put("url", this.getCallbackUrl());
 

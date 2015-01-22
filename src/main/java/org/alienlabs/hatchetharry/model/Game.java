@@ -32,7 +32,7 @@ public class Game implements Serializable
 	private String version;
 	@OneToMany(fetch = FetchType.EAGER, targetEntity = Player.class)
 	@JoinTable(name = "Player_Game", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "playerId"))
-	private Set<Player> players = new HashSet<Player>();
+	private Set<Player> players = new HashSet<>();
 	@Column
 	private Long currentPlaceholderId = Long.valueOf(0L);
 	@Column

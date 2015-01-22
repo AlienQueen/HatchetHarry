@@ -129,7 +129,7 @@ public class PlayCardFromGraveyardBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("side", this.side);
 

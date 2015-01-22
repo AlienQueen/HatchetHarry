@@ -58,7 +58,7 @@ public class Token implements Serializable
 	private boolean tapped;
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Counter.class, orphanRemoval = true)
 	@JoinTable(name = "Card_Counter", joinColumns = @JoinColumn(name = "uuid"), inverseJoinColumns = @JoinColumn(name = "counterId"))
-	private Set<Counter> counters = new HashSet<Counter>();
+	private Set<Counter> counters = new HashSet<>();
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Player_Token")
 	private Player player = new Player();

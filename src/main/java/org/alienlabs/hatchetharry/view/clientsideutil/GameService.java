@@ -86,7 +86,7 @@ public class GameService
 		LOGGER.info("allCollectibleCardsInDeckArchive.size(): "
 				+ allCollectibleCardsInDeckArchive.size());
 
-		final List<MagicCard> allMagicCards = new ArrayList<MagicCard>();
+		final List<MagicCard> allMagicCards = new ArrayList<>();
 
 		for (final CollectibleCard cc : allCollectibleCardsInDeckArchive)
 		{
@@ -104,7 +104,7 @@ public class GameService
 		LOGGER.info("deck.cards().size(): " + _deck.getCards().size() + ", deckId: "
 				+ deck.getDeckId());
 
-		final ArrayList<MagicCard> firstCards = new ArrayList<MagicCard>();
+		final ArrayList<MagicCard> firstCards = new ArrayList<>();
 
 		for (int i = 0; i < 7; i++)
 		{

@@ -32,11 +32,11 @@ public class PutToZonePanel extends Panel
 		this.player = _player;
 		this.isReveal = _isReveal;
 
-		final Form<String> form = new Form<String>("form");
-		form.add(new AttributeModifier("class", new Model<String>("put-to-zone-for-"
+		final Form<String> form = new Form<>("form");
+		form.add(new AttributeModifier("class", new Model<>("put-to-zone-for-"
 				+ this.sourceZone)));
 
-		final ArrayList<CardZone> allZones = new ArrayList<CardZone>(Arrays.asList(CardZone
+		final ArrayList<CardZone> allZones = new ArrayList<>(Arrays.asList(CardZone
 				.values()));
 		allZones.remove(_sourceZone);
 
@@ -65,7 +65,7 @@ public class PutToZonePanel extends Panel
 						+ (this.isReveal ? this.player.getId().toString() : ""));
 
 		final IModel<List<? extends CardZone>> zonesModel = Model.ofList(allZones);
-		this.targetZoneInput = new DropDownChoice<CardZone>("targetZoneInput",
+		this.targetZoneInput = new DropDownChoice<>("targetZoneInput",
 				Model.of(defaultZone), zonesModel);
 		this.targetZoneInput.setOutputMarkupId(true).setMarkupId(
 				"putToZoneSelectFor" + this.sourceZone

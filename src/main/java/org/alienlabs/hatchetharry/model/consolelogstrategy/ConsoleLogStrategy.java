@@ -18,13 +18,13 @@ import org.springframework.beans.factory.annotation.Required;
 public abstract class ConsoleLogStrategy implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleLogStrategy.class);
 
 	private final Date date = new Date();
-	@SpringBean
-	private PersistenceService persistenceService;
 	private String message;
+
+	@SpringBean
+	private transient PersistenceService persistenceService;
 
 	ConsoleLogStrategy()
 	{

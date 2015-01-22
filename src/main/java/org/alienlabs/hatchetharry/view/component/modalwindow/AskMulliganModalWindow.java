@@ -38,7 +38,7 @@ public class AskMulliganModalWindow extends Panel
 	{
 		super(id);
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
 		final Label mulliganLabel = new Label("mulliganLabel", player
 				+ " asks for a mulligan. He (she) wants to draw " + numberOfCards

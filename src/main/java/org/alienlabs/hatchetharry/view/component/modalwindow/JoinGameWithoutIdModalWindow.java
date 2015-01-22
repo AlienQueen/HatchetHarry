@@ -56,19 +56,19 @@ public class JoinGameWithoutIdModalWindow extends Panel
 
 		this.hp = _hp;
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
-		final ArrayList<String> allSides = new ArrayList<String>();
+		final ArrayList<String> allSides = new ArrayList<>();
 		allSides.add("infrared");
 		allSides.add("ultraviolet");
-		final Model<ArrayList<String>> sidesModel = new Model<ArrayList<String>>(allSides);
+		final Model<ArrayList<String>> sidesModel = new Model<>(allSides);
 		final Label sideLabel = new Label("sideLabel", "Choose your side: ");
-		this.sideInput = new DropDownChoice<String>("sideInput", new Model<String>(), sidesModel);
+		this.sideInput = new DropDownChoice<>("sideInput", new Model<String>(), sidesModel);
 		this.sideInput.setOutputMarkupId(true).setMarkupId("sideInput");
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name: ");
-		final Model<String> nameModel = new Model<String>("");
-		this.nameInput = new TextField<String>("name", nameModel);
+		final Model<String> nameModel = new Model<>("");
+		this.nameInput = new TextField<>("name", nameModel);
 		this.nameInput.setOutputMarkupId(true).setMarkupId("name");
 
 		this.nameInput.add(new AjaxFormComponentUpdatingBehavior("onfocus")
@@ -83,8 +83,8 @@ public class JoinGameWithoutIdModalWindow extends Panel
 				{
 					final ArrayList<Deck> _allDecks = JoinGameWithoutIdModalWindow.this.persistenceService
 							.getAllDecksFromDeckArchives();
-					final Model<ArrayList<Deck>> _decksModel = new Model<ArrayList<Deck>>(_allDecks);
-					JoinGameWithoutIdModalWindow.this.decks = new DropDownChoice<Deck>("decks",
+					final Model<ArrayList<Deck>> _decksModel = new Model<>(_allDecks);
+					JoinGameWithoutIdModalWindow.this.decks = new DropDownChoice<>("decks",
 							new Model<Deck>(), _decksModel);
 					JoinGameWithoutIdModalWindow.this.decks.setOutputMarkupId(true).setMarkupId(
 							"decks");
@@ -99,24 +99,24 @@ public class JoinGameWithoutIdModalWindow extends Panel
 		final Label chooseDeck = new Label("chooseDeck", "Choose a deck: ");
 
 		final ArrayList<Deck> allDecks = this.persistenceService.getAllDecksFromDeckArchives();
-		final Model<ArrayList<Deck>> decksModel = new Model<ArrayList<Deck>>(allDecks);
+		final Model<ArrayList<Deck>> decksModel = new Model<>(allDecks);
 
 		this.deckParent = new WebMarkupContainer("deckParent");
 		this.deckParent.setOutputMarkupId(true);
-		this.decks = new DropDownChoice<Deck>("decks", new Model<Deck>(), decksModel);
+		this.decks = new DropDownChoice<>("decks", new Model<Deck>(), decksModel);
 		this.decks.setOutputMarkupId(true).setMarkupId("decks");
 		this.deckParent.add(this.decks);
 
-		final ArrayList<Format> allFormats = new ArrayList<Format>();
+		final ArrayList<Format> allFormats = new ArrayList<>();
 		allFormats.addAll(Arrays.asList(Format.values()));
-		final Model<ArrayList<Format>> formatsModel = new Model<ArrayList<Format>>(allFormats);
-		this.formats = new DropDownChoice<Format>("formats", new Model<Format>(), formatsModel);
+		final Model<ArrayList<Format>> formatsModel = new Model<>(allFormats);
+		this.formats = new DropDownChoice<>("formats", new Model<Format>(), formatsModel);
 
 		this.feedback = new FeedbackPanel("feedback");
 		this.feedback.setOutputMarkupId(true);
 
-		final Model<String> numberOfPlayersModel = new Model<String>("");
-		this.numberOfPlayers = new TextField<String>("numberOfPlayers", numberOfPlayersModel);
+		final Model<String> numberOfPlayersModel = new Model<>("");
+		this.numberOfPlayers = new TextField<>("numberOfPlayers", numberOfPlayersModel);
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{

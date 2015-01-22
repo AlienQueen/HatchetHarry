@@ -77,7 +77,7 @@ public class CardInBattlefieldContextMenu extends Panel
 		{
 			super.renderHead(component, response);
 
-			final HashMap<String, Object> variables = new HashMap<String, Object>();
+			final HashMap<String, Object> variables = new HashMap<>();
 			variables.put("uuidValidForJs", this.uuidAsString);
 
 			final TextTemplate template = new PackageTextTemplate(HomePage.class,

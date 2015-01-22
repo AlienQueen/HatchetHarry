@@ -246,7 +246,7 @@ public class HatchetHarrySession extends WebSession
 
 		if (this.getAttribute(HatchetHarrySession.TO_REMOVE) == null)
 		{
-			cards = new ArrayList<CardPanel>();
+			cards = new ArrayList<>();
 		}
 		else
 		{
@@ -276,7 +276,7 @@ public class HatchetHarrySession extends WebSession
 
 	public boolean isMySidePlaceholderInSesion(final String side)
 	{
-		return ((List<String>)this.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER))
+		return ((List)this.getAttribute(HatchetHarrySession.MY_SIDE_PLACEHOLDER))
 				.contains(side);
 	}
 

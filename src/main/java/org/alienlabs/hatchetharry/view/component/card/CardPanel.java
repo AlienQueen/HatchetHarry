@@ -81,7 +81,7 @@ public class CardPanel extends Panel
 		menutoggleButton.setOutputMarkupId(true);
 		menutoggleButton.setMarkupId("menutoggleButton" + uuidValidForJs);
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 		form.setOutputMarkupId(true);
 
 		this.putToHandFromBattlefieldBehavior = new PutToHandFromBattlefieldBehavior(

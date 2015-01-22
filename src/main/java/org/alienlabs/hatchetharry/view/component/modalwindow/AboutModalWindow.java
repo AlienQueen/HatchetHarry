@@ -25,23 +25,23 @@ public class AboutModalWindow extends Panel
 		final Image img1 = new Image("img1", new PackageResourceReference(HomePage.class,
 				"image/logo.png"));
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
-		final Label text1 = new Label("text1", new Model<String>(
+		final Label text1 = new Label("text1", new Model<>(
 				"HatchetHarry is a Magic: the Gathering playing webapp."));
 
 		final Label text2 = new Label(
 				"text2",
-				new Model<String>(
+				new Model<>(
 						"It is free software licensed under the terms of the GNU Affero General Public License, version 3."));
 
 		final Label text3 = new Label(
 				"text3",
-				new Model<String>(
+				new Model<>(
 						"You are free to modify any part of its source code (client-side or server-side), as long as the changes keep this license."));
 
 		final Label text4 = new Label("text4",
-				new Model<String>("(c) 2011-2014 Zala Pierre GOUPIL"));
+				new Model<>("(c) 2011-2014 Zala Pierre GOUPIL"));
 
 		final ExternalLink link = new ExternalLink("link", "http://www.gnu.org/licenses/agpl.html");
 		final ExternalLink whyLink = new ExternalLink("whyLink",

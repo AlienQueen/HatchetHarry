@@ -118,7 +118,7 @@ public class CardMoveBehavior extends AbstractDefaultAjaxBehavior
 
 		StringBuilder js = new StringBuilder();
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuidValidForJs", this.uuidValidForJs);
 		variables.put("handUrl", this.putToHandFromBattlefieldBehavior.getCallbackUrl());

@@ -8,14 +8,11 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class MagicCardTooltipPanel extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MagicCardTooltipPanel.class);
 	private static final long serialVersionUID = 1L;
 	private final String bigImage;
 	private final String ownerSide;
@@ -34,7 +31,7 @@ public class MagicCardTooltipPanel extends Panel
 		this.add(ctb);
 
 		final AjaxLink<Void> closeTooltip = new AjaxLink<Void>("closeTooltip")
-		{
+				{
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -42,27 +39,27 @@ public class MagicCardTooltipPanel extends Panel
 			{
 				target.appendJavaScript("jQuery('.tooltip').hide(); ");
 			}
-		};
+				};
 
-		final ExternalImage bubbleTipImg1 = new ExternalImage("bubbleTipImg1", this.bigImage);
+				final ExternalImage bubbleTipImg1 = new ExternalImage("bubbleTipImg1", this.bigImage);
 
-		if ("infrared".equals(this.ownerSide))
-		{
-			bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid red;"));
-		}
-		else if ("ultraviolet".equals(this.ownerSide))
-		{
-			bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid purple;"));
-		}
-		else
-		{
-			bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid yellow;"));
-		}
+				if ("infrared".equals(this.ownerSide))
+				{
+					bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid red;"));
+				}
+				else if ("ultraviolet".equals(this.ownerSide))
+				{
+					bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid purple;"));
+				}
+				else
+				{
+					bubbleTipImg1.add(new AttributeModifier("style", "border: 1px solid yellow;"));
+				}
 
-		final CounterTooltip counterPanel = new CounterTooltip("counterPanel", this.card,
-				this.card.getToken());
+				final CounterTooltip counterPanel = new CounterTooltip("counterPanel", this.card,
+						this.card.getToken());
 
-		this.add(closeTooltip, bubbleTipImg1, counterPanel);
+				this.add(closeTooltip, bubbleTipImg1, counterPanel);
 	}
 
 }

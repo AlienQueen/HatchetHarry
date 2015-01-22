@@ -78,7 +78,7 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	@Column
 	private Long zoneOrder = 0L;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "card", targetEntity = Counter.class, orphanRemoval = true)
-	private Set<Counter> counters = new HashSet<Counter>();
+	private Set<Counter> counters = new HashSet<>();
 	@Column
 	private String ownerSide;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -157,7 +157,7 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 
 	public Model<String> getModel()
 	{
-		return new Model<String>(this.smallImageFilename);
+		return new Model<>(this.smallImageFilename);
 	}
 
 	public String getUuid()

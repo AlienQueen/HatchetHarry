@@ -28,7 +28,7 @@ public class UserPreferencesModalWindow extends Panel
 	{
 		super(id);
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
 		final User user;
 
@@ -52,21 +52,21 @@ public class UserPreferencesModalWindow extends Panel
 		}
 
 		final Model<String> loginModel = Model.of(user.getLogin());
-		final RequiredTextField<String> login = new RequiredTextField<String>("login", loginModel);
+		final RequiredTextField<String> login = new RequiredTextField<>("login", loginModel);
 
 		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
-		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
+		final RequiredTextField<String> privateIdentity = new RequiredTextField<>(
 				"privateIdentity", privateIdentityModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
-		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
+		final RequiredTextField<String> identity = new RequiredTextField<>("identity",
 				identityModel);
 
 		final Model<String> passwordModel = Model.of(user.getPassword());
 		final PasswordTextField password = new PasswordTextField("password", passwordModel);
 
 		final Model<String> realmModel = Model.of(user.getRealm());
-		final RequiredTextField<String> realm = new RequiredTextField<String>("realm", realmModel);
+		final RequiredTextField<String> realm = new RequiredTextField<>("realm", realmModel);
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{

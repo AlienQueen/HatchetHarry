@@ -81,7 +81,7 @@ public class CardRotateBehavior extends AbstractDefaultAjaxBehavior
 		super.renderHead(component, response);
 
 		final String uuidAsString = this.uuid.toString();
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("url", this.getCallbackUrl());
 		variables.put("uuidValidForJs", uuidAsString.replace("-", "_"));
 

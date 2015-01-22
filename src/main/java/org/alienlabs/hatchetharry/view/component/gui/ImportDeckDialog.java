@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
+"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class ImportDeckDialog extends Panel
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImportDeckDialog.class);
@@ -41,12 +41,12 @@ public class ImportDeckDialog extends Panel
 		super(id);
 		Injector.get().inject(this);
 
-		final Form<Void> form = new Form<Void>("form");
+		final Form<Void> form = new Form<>("form");
 		this.file = new FileUploadField("deckFile");
 
 		final Label nameLabel = new Label("nameLabel", "Choose a name for the deck: ");
-		final Model<String> nameModel = new Model<String>("");
-		this.nameInput = new TextField<String>("name", nameModel);
+		final Model<String> nameModel = new Model<>("");
+		this.nameInput = new TextField<>("name", nameModel);
 
 		form.setMarkupId("inputForm").setOutputMarkupId(true);
 		form.setMaxSize(Bytes.kilobytes(5));
@@ -102,7 +102,7 @@ public class ImportDeckDialog extends Panel
 						|| (!fupload.getClientFileName().endsWith(".txt")))
 				{
 					ImportDeckDialog.this
-							.setMessage(target, "Please provide a deck in .txt format");
+					.setMessage(target, "Please provide a deck in .txt format");
 					return;
 				}
 
@@ -129,7 +129,7 @@ public class ImportDeckDialog extends Panel
 				ImportDeckDialog.LOGGER.info("successfully added deck: "
 						+ fupload.getClientFileName());
 				ImportDeckDialog.this
-						.setMessage(target, "Your deck has been successfully uploaded");
+				.setMessage(target, "Your deck has been successfully uploaded");
 			}
 		});
 

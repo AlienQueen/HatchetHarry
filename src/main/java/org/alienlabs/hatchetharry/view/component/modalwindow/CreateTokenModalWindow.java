@@ -1,5 +1,9 @@
 package org.alienlabs.hatchetharry.view.component.modalwindow;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.UUID;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.Deck;
@@ -25,18 +29,11 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.math.BigInteger;
-import java.util.List;
-import java.util.UUID;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CreateTokenModalWindow extends Panel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CreateTokenModalWindow.class);
 	private static final long serialVersionUID = 1L;
 	final ModalWindow modal;
 
@@ -67,30 +64,30 @@ public class CreateTokenModalWindow extends Panel
 		this.powerModel = Model.of("");
 		this.toughnessModel = Model.of("");
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
 		final Label typeLabel = new Label("typeLabel", "Type: ");
-		final TextField<String> type = new TextField<String>("type", this.typeModel);
+		final TextField<String> type = new TextField<>("type", this.typeModel);
 
 		final Label powerLabel = new Label("powerLabel", "Power: ");
-		final TextField<String> power = new TextField<String>("power", this.powerModel);
+		final TextField<String> power = new TextField<>("power", this.powerModel);
 
 		final Label thoughnessLabel = new Label("toughnessLabel", "Toughness: ");
-		final TextField<String> thoughness = new TextField<String>("toughness", this.toughnessModel);
+		final TextField<String> thoughness = new TextField<>("toughness", this.toughnessModel);
 
 		final Label colorsLabel = new Label("colorsLabel", "Colors: ");
-		final TextField<String> colors = new TextField<String>("colors", this.colorsModel);
+		final TextField<String> colors = new TextField<>("colors", this.colorsModel);
 
 		final Label capabilitiesLabel = new Label("capabilitiesLabel", "Capabilities: ");
-		final TextField<String> capabilities = new TextField<String>("capabilities",
+		final TextField<String> capabilities = new TextField<>("capabilities",
 				this.capabilitiesModel);
 
 		final Label creatureTypesLabel = new Label("creatureTypesLabel", "Creature types: ");
-		final TextField<String> creatureTypes = new TextField<String>("creatureTypes",
+		final TextField<String> creatureTypes = new TextField<>("creatureTypes",
 				this.creatureTypesModel);
 
 		final Label descriptionLabel = new Label("descriptionLabel", "Description: ");
-		final TextField<String> description = new TextField<String>("description",
+		final TextField<String> description = new TextField<>("description",
 				this.descriptionModel);
 
 		final IndicatingAjaxButton createTokenButton = new IndicatingAjaxButton("createToken", form)
@@ -114,7 +111,7 @@ public class CreateTokenModalWindow extends Panel
 
 				final MagicCard card = new MagicCard("cards/token_small.jpg", "cards/token.jpg",
 						"", "token", "", player.getSide().getSideName(), token, HatchetHarrySession
-								.get().incrementLastBattlefieldOder());
+						.get().incrementLastBattlefieldOder());
 				card.setGameId(gameId);
 
 				final Deck deck = CreateTokenModalWindow.this.persistenceService

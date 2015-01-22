@@ -99,7 +99,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 		for (int i = 0; i < allPlayersInGame.size(); i++)
 		{
 			final int index = i;
-			final List<BigInteger> playerToWhomToSend = new ArrayList<BigInteger>();
+			final List<BigInteger> playerToWhomToSend = new ArrayList<>();
 			playerToWhomToSend.add(allPlayersInGame.get(index));
 
 			final DestroyTokenCometChannel dtcc = new DestroyTokenCometChannel(mc, gameId);
@@ -120,7 +120,7 @@ public class DestroyTokenBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		variables.put("uuidValidForJs", this.uuid.toString().replace("-", "_"));
 		variables.put("destroyTokenUrl", this.getCallbackUrl());
 

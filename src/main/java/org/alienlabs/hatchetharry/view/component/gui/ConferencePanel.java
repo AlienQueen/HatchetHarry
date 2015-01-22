@@ -72,14 +72,14 @@ public class ConferencePanel extends Panel
 		}
 
 		final Model<String> loginModel = Model.of(user.getLogin());
-		final RequiredTextField<String> login = new RequiredTextField<String>("login", loginModel);
+		final RequiredTextField<String> login = new RequiredTextField<>("login", loginModel);
 
 		final Model<String> privateIdentityModel = Model.of(user.getPrivateIdentity());
-		final RequiredTextField<String> privateIdentity = new RequiredTextField<String>(
+		final RequiredTextField<String> privateIdentity = new RequiredTextField<>(
 				"privateIdentity", privateIdentityModel);
 
 		final Model<String> identityModel = Model.of(user.getIdentity());
-		final RequiredTextField<String> identity = new RequiredTextField<String>("identity",
+		final RequiredTextField<String> identity = new RequiredTextField<>("identity",
 				identityModel);
 
 		final Model<String> passwordModel = Model.of(user.getPassword());
@@ -87,7 +87,7 @@ public class ConferencePanel extends Panel
 		password.setResetPassword(false);
 
 		final Model<String> realmModel = Model.of(user.getRealm());
-		final RequiredTextField<String> realm = new RequiredTextField<String>("realm", realmModel);
+		final RequiredTextField<String> realm = new RequiredTextField<>("realm", realmModel);
 
 		this.add(login, privateIdentity, identity, password, realm);
 	}

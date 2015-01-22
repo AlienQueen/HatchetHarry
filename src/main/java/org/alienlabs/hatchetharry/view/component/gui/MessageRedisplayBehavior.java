@@ -47,7 +47,7 @@ public class MessageRedisplayBehavior extends AbstractDefaultAjaxBehavior
 	{
 		super.renderHead(component, response);
 
-		final HashMap<String, Object> variables = new HashMap<String, Object>();
+		final HashMap<String, Object> variables = new HashMap<>();
 		final StringBuilder buil = new StringBuilder();
 
 		final List<ConsoleLogMessage> allConsoleLogMessages = this.persistenceService

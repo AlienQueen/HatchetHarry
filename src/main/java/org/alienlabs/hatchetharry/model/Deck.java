@@ -50,7 +50,7 @@ public class Deck implements Serializable
 	@Column
 	private Long playerId;
 	@OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = MagicCard.class)
-	private List<MagicCard> cards = new ArrayList<MagicCard>();
+	private List<MagicCard> cards = new ArrayList<>();
 
 	public Deck()
 	{
@@ -83,7 +83,7 @@ public class Deck implements Serializable
 	 */
 	public List<MagicCard> reorderMagicCards(final List<MagicCard> _cards)
 	{
-		final List<MagicCard> orderedCards = new ArrayList<MagicCard>();
+		final List<MagicCard> orderedCards = new ArrayList<>();
 
 		for (int i = 0; i < _cards.size(); i++)
 		{
@@ -106,7 +106,7 @@ public class Deck implements Serializable
 	 */
 	public ArrayList<MagicCard> reorderAndIncrementMagicCards(final List<MagicCard> _cards)
 	{
-		final ArrayList<MagicCard> orderedCards = new ArrayList<MagicCard>(_cards.size() + 1);
+		final ArrayList<MagicCard> orderedCards = new ArrayList<>(_cards.size() + 1);
 
 		for (int i = 0; i < _cards.size(); i++)
 		{

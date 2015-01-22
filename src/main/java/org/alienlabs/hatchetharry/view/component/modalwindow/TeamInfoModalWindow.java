@@ -25,21 +25,21 @@ public class TeamInfoModalWindow extends Panel
 		final Image img1 = new Image("img1", new PackageResourceReference(HomePage.class,
 				"image/logo.png"));
 
-		final Form<String> form = new Form<String>("form");
+		final Form<String> form = new Form<>("form");
 
-		final Label founder = new Label("founder", new Model<String>(
+		final Label founder = new Label("founder", new Model<>(
 				"Founder: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
-		final Label lead = new Label("lead", new Model<String>(
+		final Label lead = new Label("lead", new Model<>(
 				"Lead developer: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
-		final Label dev1 = new Label("dev1", new Model<String>(
+		final Label dev1 = new Label("dev1", new Model<>(
 				"Developer: Florian Benedetto (florian.benedetto@gmail.com)"));
-		final Label webdesign = new Label("webdesign", new Model<String>(
+		final Label webdesign = new Label("webdesign", new Model<>(
 				"Web design: Millicent Billette (millicent.billette@gmail.com)"));
-		final Label gfx = new Label("gfx", new Model<String>(
+		final Label gfx = new Label("gfx", new Model<>(
 				"GFX: Marie-Antoinette Navarro (mariea33@gmail.com)"));
-		final Label tester1 = new Label("tester1", new Model<String>(
+		final Label tester1 = new Label("tester1", new Model<>(
 				"Tester: Jean Leherle (jean.ravnica@hotmail.fr)"));
-		final Label tester2 = new Label("tester2", new Model<String>(
+		final Label tester2 = new Label("tester2", new Model<>(
 				"Tester: Benoît Bouchery (benoit.bouchery@laposte.net)"));
 
 		final AjaxButton submit = new AjaxButton("submit", form)
