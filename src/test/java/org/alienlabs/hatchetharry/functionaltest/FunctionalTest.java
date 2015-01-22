@@ -180,11 +180,10 @@ public class FunctionalTest
 		System.setProperty("webdriver.chrome.driver", "/home/nostromo/chromedriver");
 		FunctionalTest.chromeDriver1 = new ChromeDriver();
 		FunctionalTest.executor1 = (JavascriptExecutor)FunctionalTest.chromeDriver1;
-
 		FunctionalTest.chromeDriver1.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		FunctionalTest.executor2 = (JavascriptExecutor)FunctionalTest.chromeDriver2;
 
 		FunctionalTest.chromeDriver2 = new ChromeDriver();
+		FunctionalTest.executor2 = (JavascriptExecutor)FunctionalTest.chromeDriver2;
 		FunctionalTest.chromeDriver2.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		FunctionalTest.chromeDriver1.get("http://" + FunctionalTest.HOST + ":"
@@ -221,7 +220,7 @@ public class FunctionalTest
 	public void testFullAppTraversal() throws InterruptedException
 	{
 		// Create a game in Chrome 1
-		executor1.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		FunctionalTest.executor1.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
 		FunctionalTest.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
 		new WebDriverWait(FunctionalTest.chromeDriver1, 10).until(ExpectedConditions
@@ -243,12 +242,12 @@ public class FunctionalTest
 		Thread.sleep(3000);
 
 		// Join a game in chrome
-		executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		FunctionalTest.executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		Thread.sleep(1000);
 
-		executor2
+		FunctionalTest.executor2
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.elementToBeClickable(By.id("joinGameLinkResponsive")));
@@ -288,7 +287,7 @@ public class FunctionalTest
 				.getAttribute("src");
 
 		// Play a card in chrome2
-		executor2.executeScript(FunctionalTest.CLICK_PLAY_CARD_LINK);
+		FunctionalTest.executor2.executeScript(FunctionalTest.CLICK_PLAY_CARD_LINK);
 		Thread.sleep(2000);
 
 		// Verify that the hand contains only 6 cards, now
@@ -349,12 +348,12 @@ public class FunctionalTest
 		Thread.sleep(1500);
 
 		// Play card from graveyard
-		executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		FunctionalTest.executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		Thread.sleep(1000);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 
-		executor2
+		FunctionalTest.executor2
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
@@ -397,11 +396,11 @@ public class FunctionalTest
 				.findElements(By.cssSelector(".gallery .cardContainer")).size());
 
 		// Reveal top card of library
-		executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		FunctionalTest.executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		Thread.sleep(1500);
-		executor2
+		FunctionalTest.executor2
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.id("revealTopLibraryCardLinkResponsive")));
@@ -431,7 +430,7 @@ public class FunctionalTest
 		Thread.sleep(2000);
 
 		// Reveal again
-		executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		FunctionalTest.executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
@@ -449,11 +448,11 @@ public class FunctionalTest
 				.getAttribute("name"));
 
 		// Put to battlefield
-		executor2
+		FunctionalTest.executor2
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
-		executor1
+		FunctionalTest.executor1
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.elementToBeClickable(By.id("putToBattlefieldFromModalWindow")));
@@ -488,7 +487,7 @@ public class FunctionalTest
 						.getAttribute("name"));
 
 		// Reveal top card of library
-		executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		FunctionalTest.executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		FunctionalTest.chromeDriver2.findElement(By.id("revealTopLibraryCardLinkResponsive"))
@@ -496,11 +495,11 @@ public class FunctionalTest
 		Thread.sleep(1500);
 
 		// Put to hand
-		executor2
+		FunctionalTest.executor2
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
-		executor1
+		FunctionalTest.executor1
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		new WebDriverWait(FunctionalTest.chromeDriver1, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
@@ -531,7 +530,7 @@ public class FunctionalTest
 						By.cssSelector(".battlefieldCardContainer")).size());
 
 		// Reveal again
-		executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
+		FunctionalTest.executor2.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
@@ -547,11 +546,11 @@ public class FunctionalTest
 				By.id("topLibraryCard")).getAttribute("name");
 
 		// Put to graveyard
-		executor2
+		FunctionalTest.executor2
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
-		executor1
+		FunctionalTest.executor1
 		.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_MODAL_WINDOW_BUTTONS);
 		new WebDriverWait(FunctionalTest.chromeDriver1, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.cssSelector(".dropdownmenu")));
@@ -688,10 +687,10 @@ public class FunctionalTest
 		// not to disturb us
 		Thread.sleep(12000);
 		// TODO vérifier qu'il y a bien 3 decks de disponibles
-		executor1.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
+		FunctionalTest.executor1.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RUN_BUTTON);
 		FunctionalTest.chromeDriver1.findElement(By.id("runMistletoe")).click();
 
-		executor1.executeScript(FunctionalTest.SCROLL_DOWN);
+		FunctionalTest.executor1.executeScript(FunctionalTest.SCROLL_DOWN);
 
 		// Sleep in order to wait for the results to appear
 		Thread.sleep(35000);

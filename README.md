@@ -43,6 +43,17 @@ There are file paths to change in order to match your own setup, in the followin
     - the PMD ruleset paths in the pom.xml (not strictly necessary)
     - src/main/resources/rebel.xml => JRebel configuration file, not strictly necessary. http://zeroturnaround.com/software/jrebel
 
+You will need a database schema called hh in order to run the webapp, and a schema called hhTest in order to run the tests. Please see the files:
+
+	- src/main/resources/applicationContext.xml
+	- src/test/resources/applicationContextTest.xml
+	
+for the username & password.
+
+Some tips & tricks can be found in the README file.
+
+Have a lot of fun!
+
 Some of the software products used are under the [Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).
 
 Magic: The Gathering is a registered trademark of Wizards of the Coast, Inc., a subsidiary of Hasbro, Inc.

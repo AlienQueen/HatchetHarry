@@ -33,6 +33,10 @@
 
 Just replace the "_" by ":" in your WicketTester paths.
 
+To log the current page in a WicketTester test, do:
+
+	+ String pageDocument = SpringContextLoaderBase.tester.getLastResponse().getDocument(); system.out.println(document);
+
 - To avoid loading Spring application context for each test class, annotate each new test classes with:
 
     + @ContextConfiguration(locations = { "classpath:applicationContext.xml", "classpath:applicationContextTest.xml" })
@@ -61,4 +65,8 @@ Just replace the "_" by ":" in your WicketTester paths.
     
 - Database migrations:
 
-	+ http://flywaydb.org/ On first run, please drop all tables from schema "hh". Then let it do the magic. Not used in the tests, no need to drop hhTest.
+	+ http://flywaydb.org/
+	
+On first run, please drop all tables from schema "hh". Then let it do the magic. Not used in the tests, no need to drop hhTest.
+
+To produce a SQL migration file: mysqldiff (MySQL official distro).
