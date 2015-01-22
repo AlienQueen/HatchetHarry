@@ -2,7 +2,7 @@
 	position:absolute;
 	bottom:7%; /* 7% and 15 % from codeUnderTest.js responsiveCards() */
 	top: 15%;
-	display:flex;
+    display:flex;
 	flex-direction: column;
 	width: 100%;
 }
@@ -13,15 +13,14 @@
     list-style: none;
     display:flex;
 }
-.ui-state-highlight{ max-width:200px; }
+.ui-state-highlight {
+    max-width:200px;
+}
 .cardContainer, .ui-state-highlight {
     display: block;
     position: relative;
-    margin: 2px;
+    margin: 20px;
     flex: 1;
-}
-.battlefieldCardContainer .magicCard {
-    z-index: 90;
 }
 .cardContainer .magicCard{
     display:block;
@@ -66,19 +65,8 @@
 .cardContainer.details.tapped .magicCard {
     transform: scale(2) rotate(0deg);
 }
-.battlefieldCardsForSide1 .maximize {
-    transform: rotate(0deg) translate(0);
-    z-index: 90;
-}
-battlefieldCardsForSide2 .maximize {
-    transform: rotate(0deg) translate(0);
-    z-index: 100;
-}
 .maximize.details {
     transform: translate(240px);
-}
-.maximize.details.tapped {
-    transform: rotate(0deg);
 }
 .maximize {
     display:block;
@@ -89,4 +77,5 @@ battlefieldCardsForSide2 .maximize {
     bottom: 65%;
     left: 90%;
     cursor: pointer;
+    z-index: 1000;
 }

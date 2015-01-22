@@ -8,7 +8,7 @@ div#floatingbar {
     color: #gray;
     font-family: Arial;
     font-weight: bold;
-    z-index: 5;
+    z-index: 1500;
     background-image: url('/image/tui.png');
 
 }

@@ -23,7 +23,22 @@ window.setTimeout(function() {
 				}
 		});
 
-	jQuery('.gallery .magicCard').click(function() {
+	jQuery('.maximize').click(function() {
+		var me = $(this).prevAll('.magicCard');
+		if (me.hasClass('details')) {
+			me.css('z-index', '');
+		} else {
+			me.css('z-index', ++zIndex);
+		};
+		$(this).parents('.cardContainer').toggleClass('details');
+	});
+
+	jQuery('.gallery .magicCard').unbind('click').click(function() {
+		if ($(this).hasClass('details')) {
+			$(this).css('z-index', '');
+		} else {
+			$(this).css('z-index', ++zIndex);
+		};
 		jQuery(this).parents('.cardContainer').toggleClass('details');
 	});
 

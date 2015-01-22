@@ -2272,13 +2272,13 @@ public class HomePage extends TestReportPage {
         }
 
         me.add(new DisplayNoneBehavior());
-        target.prependJavaScript("notify|jQuery('#" + me.getMarkupId() + "').fadeOut(750, notify);");
+        target.prependJavaScript("notify|jQuery('#" + me.getMarkupId() + "').fadeOut(500, notify);");
 
         BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
                 event.getGameId(), mc, true);
         target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
         target.appendJavaScript("jQuery('#" + me.getMarkupId()
-                + "').fadeIn(750); jQuery('#cardInBattlefieldContextMenu"
+                + "').fadeIn(500); jQuery('#cardInBattlefieldContextMenu"
                 + mc.getUuidObject().toString().replace("-", "_")
                 + "').popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); ");
     }
@@ -2502,7 +2502,7 @@ public class HomePage extends TestReportPage {
     public void displayArrow(final AjaxRequestTarget target, final ArrowDrawCometChannel event) {
         HomePage.LOGGER.info("Source: " + event.getSource() + ", target: " + event.getTarget());
         if (!event.getSource().equals(event.getTarget())) {
-            target.appendJavaScript("jQuery('._jsPlumb_endpoint_full').remove(); "
+            target.appendJavaScript("window.setTimeout(function() { jQuery('._jsPlumb_endpoint_full').remove(); "
                     + "arrows.push({ 'source' : "
                     + "jQuery('#" + event.getSource() + "').parent().parent().parent() "
                     + ", 'target' : "
@@ -2511,7 +2511,7 @@ public class HomePage extends TestReportPage {
                     + "	jsPlumb.connect({ source: jQuery('#" + event.getSource() + "').parent().parent().parent()," +
                     "                  target: jQuery('#" + event.getTarget() + "').parent().parent().parent()," +
                     "                  connector:['Bezier', { curviness:70 }], overlays : [['Label', {location:0.7, id:'label'," +
-                    "                    events:{     }}]]}); ");
+                    "                    events:{     }}]]}); }, 1000); ");
         }
     }
 
@@ -2604,7 +2604,7 @@ public class HomePage extends TestReportPage {
             me = this.parentPlaceholder;
             me.add(new DisplayNoneBehavior());
             target.prependJavaScript("notify|jQuery('#" + me.getMarkupId()
-                    + "').fadeOut(750, notify);");
+                    + "').fadeOut(500, notify);");
             target.add(listViewForSide1);
         } else {
             final WebMarkupContainer listViewForSide2 = this
@@ -2612,7 +2612,7 @@ public class HomePage extends TestReportPage {
             me = this.opponentParentPlaceholder;
             me.add(new DisplayNoneBehavior());
             target.prependJavaScript("notify|jQuery('#" + me.getMarkupId()
-                    + "').fadeOut(750, notify);");
+                    + "').fadeOut(500, notify);");
             target.add(listViewForSide2);
         }
 
@@ -2621,7 +2621,7 @@ public class HomePage extends TestReportPage {
 
         target.appendJavaScript("jQuery('#"
                 + me.getMarkupId()
-                + "').fadeIn(1000); jQuery('.cardInBattlefieldContextMenu').each(function(index, value) { jQuery(this).popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); }); ");
+                + "').fadeIn(500); jQuery('.cardInBattlefieldContextMenu').each(function(index, value) { jQuery(this).popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); }); ");
     }
 
     @Override

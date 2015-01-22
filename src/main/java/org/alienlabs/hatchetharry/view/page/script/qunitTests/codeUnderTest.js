@@ -318,7 +318,7 @@ function domSingleton(tag,id,content){
 		jQuery('body').append('<'+tag+' id="'+id+'">'+content+'</'+tag+'>');
 	}
 }
-jQuery(window).on('load resize',responsiveCards);
+jQuery(window).on('load resize', responsiveCards);
 
 jQuery(function () {
 		jQuery('.scroller').click(function() {
@@ -335,12 +335,25 @@ jQuery(function () {
 
 jQuery(function () {
     jQuery('.maximize').click(function() {
-        jQuery(this).toggleClass('details');
+        var me = $(this).prevAll('.magicCard');
+        if (me.hasClass('details')) {
+            me.css('z-index', '');
+        } else {
+            me.css('z-index', ++zIndex);
+        };
         $(this).parents('.cardContainer').toggleClass('details');
     });
     window.setTimeout(function () {
         jQuery('.gallery .magicCard').unbind('click').click(function() {
+            if ($(this).hasClass('details')) {
+                $(this).css('z-index', '');
+            } else {
+                $(this).css('z-index', ++zIndex);
+            };
+
             $(this).parents('.cardContainer').toggleClass('details');
         });
     }, 1000);
 });
+
+var zIndex = 100;

@@ -1,5 +1,5 @@
 jQuery(function () {
     window.setTimeout(function () {
-        jQuery("#${uuidValidForJs}").data("arrowDrawUrl", "${arrowDrawUrl}");
-    }, 150);
+        jQuery('#${uuidValidForJs}').data('arrowDrawUrl', '${arrowDrawUrl}');
+    }, 1000);
 });

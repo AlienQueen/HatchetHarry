@@ -1,3 +1,6 @@
+#cssmenu {
+    z-index: 1500;
+}
 ._jsPlumb_connector {
     z-index: 100;
 }
@@ -6,7 +9,7 @@ path {
 }
 .scroller {
 	position: fixed;
-	right: 55%;
+    right: 55%;
     top: 30px;
 	background-image: url(/image/arrow48.png);
 	background-repeat: no-repeat;

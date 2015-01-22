@@ -1,12 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
@@ -27,6 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+
 public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
@@ -40,6 +39,7 @@ public class ArrowDrawBehavior extends AbstractDefaultAjaxBehavior
 	{
 		this.markupId = _markupId;
 		Injector.get().inject(this);
+		ArrowDrawBehavior.LOGGER.info("_markupId: " + _markupId);
 	}
 
 	@Override

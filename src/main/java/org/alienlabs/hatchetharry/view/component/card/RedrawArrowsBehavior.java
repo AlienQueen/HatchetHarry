@@ -81,7 +81,7 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 			}
 		}
 		content.append("}; ");
-		content.append("window.setTimeout(redraw, 500); ");
+		content.append("window.setTimeout(redraw, 1500); ");
 		variables.put("content", content.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
