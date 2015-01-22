@@ -58,3 +58,7 @@ Just replace the "_" by ":" in your WicketTester paths.
 - Microbenchmarks:
 
     + http://antoniogoncalves.org/2015/01/15/micro-benchmarking-with-jmh-measure-dont-guess/
+    
+- Database migrations:
+
+	+ http://flywaydb.org/ On first run, please drop all tables from schema "hh". Then let it do the magic. Not used in the tests, no need to drop hhTest.
