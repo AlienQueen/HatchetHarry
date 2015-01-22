@@ -26,29 +26,31 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BasicDatabaseTest implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml" });
-	private static final long serialVersionUID = 1L;
+
 	private static transient WicketTester tester;
 	private static HatchetHarryApplication webApp;
 	static transient ApplicationContext context;
 
 	@SpringBean
-	private transient CardCollectionDao cardCollectionDao;
+	private CardCollectionDao cardCollectionDao;
 	@SpringBean
-	private transient CollectibleCardDao collectibleCardDao;
+	private CollectibleCardDao collectibleCardDao;
 	@SpringBean
-	private transient DeckArchiveDao deckArchiveDao;
+	private DeckArchiveDao deckArchiveDao;
 	@SpringBean
-	private transient DeckDao deckDao;
+	private DeckDao deckDao;
 	@SpringBean
-	private transient GameDao gameDao;
+	private GameDao gameDao;
 	@SpringBean
-	private transient MagicCardDao magicCardDao;
+	private MagicCardDao magicCardDao;
 	@SpringBean
-	private transient PlayerDao playerDao;
+	private PlayerDao playerDao;
 	@SpringBean
-	private transient SideDao sideDao;
+	private SideDao sideDao;
 
 	@BeforeClass
 	public static void setUpBeforeClass()
