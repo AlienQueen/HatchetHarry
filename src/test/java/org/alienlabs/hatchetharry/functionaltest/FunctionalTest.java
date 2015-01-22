@@ -18,11 +18,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 
 public class FunctionalTest
 {
@@ -169,6 +169,7 @@ public class FunctionalTest
 		final WebAppContext webapp = new WebAppContext();
 		webapp.setContextPath("/");
 		webapp.setWar("src/main/webapp");
+		webapp.setExtraClasspath("src/test/resources");
 		FunctionalTest.SERVER.setHandler(webapp);
 		FunctionalTest.SERVER.start();
 
