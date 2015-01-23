@@ -645,6 +645,8 @@ public class FunctionalTest
 		// Put card from graveyard to exile
 		new Select(FunctionalTest.chromeDriver2.findElement(By.id("putToZoneSelectForGraveyard")))
 				.getOptions().get(2).click();
+		FunctionalTest.executor2
+				.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_PUT_TO_ZONE_SUMBIT_BUTTON_FOR_GRAVEYARD);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.elementToBeClickable(By.id("moveToZoneSubmitGraveyard")));
 		FunctionalTest.chromeDriver2.findElement(By.id("moveToZoneSubmitGraveyard")).click();
