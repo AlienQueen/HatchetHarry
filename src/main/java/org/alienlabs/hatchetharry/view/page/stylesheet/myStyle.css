@@ -20,14 +20,19 @@ path {
 .scroller.up {
 	transform: scale(-1);
 }
-#dataScreen{height:37px;}
+#dataScreen{
+    height:37px;
+}
 .graveyard-cross-link {
 	position: relative;
-	z-index: 2;
+	z-index: 1000;
 }
 .exile-cross-link {
 	position: relative;
-	z-index: 2;
+    z-index: 2;
+}
+.cardInBattlefieldContextMenu ul {
+    z-index: 1500;
 }
 .yui-b {
 
@@ -178,7 +183,7 @@ span.btn:hover {
 .dropdownmenu {
     position: fixed;
     cursor: pointer;
-    z-index: 200;
+    z-index: 2000;
 }
 
 a, a:visited {

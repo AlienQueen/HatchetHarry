@@ -45,10 +45,12 @@ a {
     left: 261px;
     min-height: 420px;
     background: url(/image/tombe1.png) top center;
+    z-index: 1000;
 }
 
 .put-to-zone-for-Graveyard {
     margin: 25px auto;
+    z-index: 1000;
 }
 
 #exile-page-wrap {
@@ -59,10 +61,12 @@ a {
     left: 522px;
     min-height: 420px;
     background: url(/image/exile.png) top center;
+    z-index: 1000;
 }
 
 .put-to-zone-for-Exile {
     margin: 25px auto;
+    z-index: 1000;
 }
 
 /*
