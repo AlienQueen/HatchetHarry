@@ -1,4 +1,4 @@
 org\.alienlabs\.hatchetharry\.clientsidetest\..*
-org\.alienlabs\.hatchetharry\.integrationtest\..*
+org\.alienlabs\.hatchetharry\.functionaltest\..*
 org\.alienlabs\.hatchetharry\.LaunchAllServerSideTests
 org\.alienlabs\.hatchetharry\.serversidetest\.util\..*
