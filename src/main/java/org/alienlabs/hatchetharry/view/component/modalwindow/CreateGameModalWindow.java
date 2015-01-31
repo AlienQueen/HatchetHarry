@@ -1,5 +1,11 @@
 package org.alienlabs.hatchetharry.view.component.modalwindow;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.CardZone;
 import org.alienlabs.hatchetharry.model.CollectibleCard;
@@ -35,12 +41,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "SE_INNER_CLASS", justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
 public class CreateGameModalWindow extends Panel
@@ -265,7 +265,7 @@ public class CreateGameModalWindow extends Panel
 
 				HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
 				final StringBuilder buil = new StringBuilder(
-						"jQuery.gritter.add({title : \"You've created a game\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
+						"jQuery.gritter.add({title : \"You've created a match\", text : \"As soon as a player is connected, you'll be able to play.\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 
 				CreateGameModalWindow.LOGGER.info("close!");
 				final HatchetHarrySession session = HatchetHarrySession.get();
@@ -304,7 +304,7 @@ public class CreateGameModalWindow extends Panel
 					BattlefieldService.updateGraveyard(target);
 				}
 
-				final Label gameIdLabel = new Label("gameId", "Game id: "
+				final Label gameIdLabel = new Label("matchId", "Match id: "
 						+ CreateGameModalWindow.this.game.getId().longValue());
 				gameIdLabel.setOutputMarkupId(true);
 				final WebMarkupContainer gameIdParent = ((HomePage)target.getPage())

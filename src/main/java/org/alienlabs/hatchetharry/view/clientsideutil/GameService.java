@@ -44,7 +44,7 @@ public class GameService
 		final Game game = persistenceService.getGame(gameId);
 		if (null == game)
 		{
-			target.appendJavaScript("alert('The selected game (id= " + gameId.toString()
+			target.appendJavaScript("alert('The selected match (id= " + gameId.toString()
 					+ ") does not exist!');");
 			return;
 		}
@@ -139,7 +139,7 @@ public class GameService
 		}
 
 		final StringBuilder buil = new StringBuilder(
-				"jQuery.gritter.add({title : \"You have requested to join a game\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
+				"jQuery.gritter.add({title : \"You have requested to join a match\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 		LOGGER.info("close!");
 
 		final int posX = ("infrared".equals(side)) ? 300 : 900;
