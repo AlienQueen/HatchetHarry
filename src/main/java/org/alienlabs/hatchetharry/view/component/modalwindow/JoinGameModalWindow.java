@@ -131,21 +131,21 @@ public class JoinGameModalWindow extends Panel
 				if ((null == g))
 				{
 					target.add(JoinGameModalWindow.this.feedback);
-					this.error("No pending game with this ID.");
+					this.error("No pending match with this ID.");
 					return;
 				}
 
 				if (_id.longValue() == HatchetHarrySession.get().getGameId().longValue())
 				{
 					target.add(JoinGameModalWindow.this.feedback);
-					this.error("You can not join your own game! If you want to play alone, just create a game with one player.");
+                    this.error("You can not join your own match! If you want to play alone, just create a match with only one player.");
 					return;
 				}
 
 				if (!g.isPending())
 				{
 					target.add(JoinGameModalWindow.this.feedback);
-					this.error("No pending game with this ID.");
+					this.error("No pending match with this ID.");
 					return;
 				}
 
