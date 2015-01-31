@@ -249,7 +249,7 @@ public class FunctionalTest
 		// Create a game in Chrome 1
 		FunctionalTest.executor1.executeScript(FunctionalTest.SHOW_AND_OPEN_MOBILE_MENUBAR);
 
-		FunctionalTest.chromeDriver1.findElement(By.id("createGameLinkResponsive")).click();
+		FunctionalTest.chromeDriver1.findElement(By.id("createMatchLinkResponsive")).click();
 		new WebDriverWait(FunctionalTest.chromeDriver1, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.id("name")));
 
@@ -277,8 +277,8 @@ public class FunctionalTest
 		FunctionalTest.executor2
 				.executeScript(FunctionalTest.JAVA_SCRIPT_TO_CENTER_VIEWPORT_AROUND_RESPONSIVE_MENU);
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
-				.elementToBeClickable(By.id("joinGameLinkResponsive")));
-		FunctionalTest.chromeDriver2.findElement(By.id("joinGameLinkResponsive")).click();
+				.elementToBeClickable(By.id("joinMatchLinkResponsive")));
+		FunctionalTest.chromeDriver2.findElement(By.id("joinMatchLinkResponsive")).click();
 
 		new WebDriverWait(FunctionalTest.chromeDriver2, 10).until(ExpectedConditions
 				.presenceOfElementLocated(By.id("name")));
@@ -732,7 +732,7 @@ public class FunctionalTest
 		final String chromeTotal = FunctionalTest.chromeDriver1.findElement(By.id("runsSummary"))
 				.getText();
 		final String chromeFailed = FunctionalTest.chromeDriver1
-				.findElement(By.id("errorsSummary")).getText();
+                .findElement(By.id("errorsSummary")).getText();
 
 		assertEquals(FunctionalTest.MISTLETOE_TOTAL_TESTS, chromeTotal);
 		assertEquals(FunctionalTest.MISTLETOE_FAILED_TESTS, chromeFailed);
