@@ -258,8 +258,8 @@ public class HomePage extends TestReportPage
 
 		if ((req != null) && req.contains("endMatch=true"))
 		{
-			HomePage.LOGGER.info("restart game for player: " + this.session.getPlayer().getId()
-					+ " & game: " + this.session.getGameId());
+			HomePage.LOGGER.info("restart match for player: " + this.session.getPlayer().getId()
+					+ " & match: " + this.session.getGameId());
 
 			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
 					ConsoleLogType.GAME, null, null, null, null,
@@ -294,16 +294,16 @@ public class HomePage extends TestReportPage
 
 		if (this.session.isGameCreated().booleanValue())
 		{
-			this.gameId = new Label("gameId", "Game id: " + this.session.getGameId().longValue());
+			this.gameId = new Label("matchId", "Match id: " + this.session.getGameId().longValue());
 			this.gameId.setOutputMarkupId(true);
 		}
 		else
 		{
-			this.gameId = new Label("gameId", "No game at the moment");
+            this.gameId = new Label("matchId", "No match at the moment");
 			this.gameId.setOutputMarkupId(true);
 		}
 
-		this.gameIdParent = new WebMarkupContainer("gameIdParent");
+		this.gameIdParent = new WebMarkupContainer("matchIdParent");
 		this.gameIdParent.setOutputMarkupId(true);
 		this.gameIdParent.add(this.gameId);
 		this.add(this.gameIdParent);
@@ -444,23 +444,23 @@ public class HomePage extends TestReportPage
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
 
-		this.createGameWindow = new ModalWindow("createGameWindow");
-		this.add(this.createGameWindow = this.generateCreateGameModalWindow("createGameLink",
+		this.createGameWindow = new ModalWindow("createMatchWindow");
+		this.add(this.createGameWindow = this.generateCreateGameModalWindow("createMatchLink",
 				this.player, this.createGameWindow));
 		this.add(this.createGameWindow = this.generateCreateGameModalWindow(
-				"createGameLinkResponsive", this.player, this.createGameWindow));
+				"createMatchLinkResponsive", this.player, this.createGameWindow));
 
-		this.joinGameWindow = new ModalWindow("joinGameWindow");
-		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinGameLink",
+		this.joinGameWindow = new ModalWindow("joinMatchWindow");
+		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinMatchLink",
 				this.player, this.joinGameWindow));
-		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinGameLinkResponsive",
+		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinMatchLinkResponsive",
 				this.player, this.joinGameWindow));
 
-		this.joinGameWithoutIdWindow = new ModalWindow("joinGameWithoutIdWindow");
+		this.joinGameWithoutIdWindow = new ModalWindow("joinMatchWithoutIdWindow");
 		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
-				"joinGameWithoutIdLink", this.player, this.joinGameWithoutIdWindow));
+				"joinMatchWithoutIdLink", this.player, this.joinGameWithoutIdWindow));
 		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
-				"joinGameWithoutIdLinkResponsive", this.player, this.joinGameWithoutIdWindow));
+				"joinMatchWithoutIdLinkResponsive", this.player, this.joinGameWithoutIdWindow));
 
 		this.generatePlayCardLink();
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkDesktop"));
@@ -691,7 +691,7 @@ public class HomePage extends TestReportPage
 			public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("end match");
-				target.appendJavaScript("var r = confirm('Are you sure that you want to end this game?'); if (r==true) { window.location = window.location + '?endMatch=true'; }; ");
+				target.appendJavaScript("var r = confirm('Are you sure that you want to end this match?'); if (r==true) { window.location = window.location + '?endMatch=true'; }; ");
 			}
 		});
 	}
@@ -1087,7 +1087,7 @@ public class HomePage extends TestReportPage
 		this.dataBoxParent.add(this.dataBox);
 
 		this.add(this.dataBoxParent);
-		HomePage.LOGGER.info("building DataBox with gameId= " + _gameId);
+		HomePage.LOGGER.info("building DataBox with matchId= " + _gameId);
 	}
 
 	private void buildHandCards()
@@ -1657,7 +1657,7 @@ public class HomePage extends TestReportPage
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(550);
-		window.setTitle("Create a game");
+		window.setTitle("Create a match");
 
 		window.setContent(new CreateGameModalWindow(window, window.getContentId(), _player, this));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
@@ -1689,7 +1689,7 @@ public class HomePage extends TestReportPage
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(430);
-		window.setTitle("Join a game");
+		window.setTitle("Join a match");
 
 		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,
 				this.dataBoxParent, this));
@@ -1722,7 +1722,7 @@ public class HomePage extends TestReportPage
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(500);
-		window.setTitle("Join a game without ID");
+		window.setTitle("Join a match without ID");
 
 		window.setContent(new JoinGameWithoutIdModalWindow(window, window.getContentId(), _player,
 				this.dataBoxParent, this));
@@ -2294,7 +2294,7 @@ public class HomePage extends TestReportPage
 			case END_GAME_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '"
 						+ event.getPlayerName()
-						+ "', text : 'has put an end to the game', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
+						+ "', text : 'has put an end to the match', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 				break;
 
 			case IN_RESPONSE_ACTION :
@@ -2587,7 +2587,7 @@ public class HomePage extends TestReportPage
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 		this.countCardsWindow.setTitle(event.getRequestingPlayerName()
-				+ " asks the number of cards by zone for each player of game #" + event.getGameId()
+				+ " asks the number of cards by zone for each player of this game for match #" + event.getGameId()
 				+ ": ");
 		this.countCardsWindow.setContent(new CountCardsModalWindow(this.countCardsWindow
 				.getContentId(), event.getGameId()));

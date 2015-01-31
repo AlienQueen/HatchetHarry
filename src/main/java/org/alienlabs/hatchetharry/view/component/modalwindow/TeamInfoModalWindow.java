@@ -31,12 +31,10 @@ public class TeamInfoModalWindow extends Panel
 				"Founder: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
 		final Label lead = new Label("lead", new Model<>(
 				"Lead developer: Zala \"AlienQueen\" Goupil (goupilpierre@gmail.com)"));
-		final Label dev1 = new Label("dev1", new Model<>(
-				"Developer: Florian Benedetto (florian.benedetto@gmail.com)"));
 		final Label webdesign = new Label("webdesign", new Model<>(
 				"Web design: Millicent Billette (millicent.billette@gmail.com)"));
 		final Label gfx = new Label("gfx", new Model<>(
-				"GFX: Marie-Antoinette Navarro (mariea33@gmail.com)"));
+                "GFX: Marie-Antoinette Navarro (zalmareddp@gmail.com)"));
 		final Label tester1 = new Label("tester1", new Model<>(
 				"Tester: Jean Leherle (jean.ravnica@hotmail.fr)"));
 		final Label tester2 = new Label("tester2", new Model<>(
@@ -53,7 +51,7 @@ public class TeamInfoModalWindow extends Panel
 			}
 		};
 
-		form.add(founder, lead, dev1, webdesign, gfx, tester1, tester2, submit);
+		form.add(founder, lead, webdesign, gfx, tester1, tester2, submit);
 		this.add(img1, form);
 	}
 

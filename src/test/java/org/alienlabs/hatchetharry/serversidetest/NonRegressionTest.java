@@ -269,11 +269,11 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertEquals(60, player.getDeck().getCards().size());
 
 		// Join game
-		SpringContextLoaderBase.tester.assertComponent("joinGameLink", AjaxLink.class);
-		SpringContextLoaderBase.tester.clickLink("joinGameLink", true);
+		SpringContextLoaderBase.tester.assertComponent("joinMatchLink", AjaxLink.class);
+		SpringContextLoaderBase.tester.clickLink("joinMatchLink", true);
 
 		final FormTester joinGameForm = SpringContextLoaderBase.tester
-				.newFormTester("joinGameWindow:content:form");
+				.newFormTester("joinMatchWindow:content:form");
 		joinGameForm.setValue("name", "Zala");
 		joinGameForm.setValue("sideInput", "1");
 		joinGameForm.setValue("deckParent:decks", "1");
@@ -294,16 +294,16 @@ public class NonRegressionTest extends SpringContextLoaderBase
 				.getAllDecksFromDeckArchives().size());
 
 		this.startAGameAndPlayACard();
-		tester.assertComponent("joinGameLink", AjaxLink.class);
-		tester.clickLink("joinGameLink", true);
+		tester.assertComponent("joinMatchLink", AjaxLink.class);
+		tester.clickLink("joinMatchLink", true);
 
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
-		SpringContextLoaderBase.tester.assertComponent("joinGameLink", AjaxLink.class);
-		SpringContextLoaderBase.tester.clickLink("joinGameLink", true);
+		SpringContextLoaderBase.tester.assertComponent("joinMatchLink", AjaxLink.class);
+		SpringContextLoaderBase.tester.clickLink("joinMatchLink", true);
 		final TextField<String> nameTextField = (TextField<String>)SpringContextLoaderBase.tester
-				.getComponentFromLastRenderedPage("joinGameWindow:content:form:name");
+				.getComponentFromLastRenderedPage("joinMatchWindow:content:form:name");
 		Assert.assertNotNull(nameTextField);
 
 		final AjaxFormComponentUpdatingBehavior nameUpdateBehavior = nameTextField.getBehaviors(
@@ -311,7 +311,7 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		Assert.assertNotNull(nameUpdateBehavior);
 
 		DropDownChoice<Deck> choices = (DropDownChoice<Deck>)SpringContextLoaderBase.tester
-				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
+				.getComponentFromLastRenderedPage("joinMatchWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
 
 		// Run
@@ -321,11 +321,11 @@ public class NonRegressionTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
-		SpringContextLoaderBase.tester.assertComponent("joinGameLink", AjaxLink.class);
-		SpringContextLoaderBase.tester.clickLink("joinGameLink", true);
+		SpringContextLoaderBase.tester.assertComponent("joinMatchLink", AjaxLink.class);
+		SpringContextLoaderBase.tester.clickLink("joinMatchLink", true);
 
 		choices = (DropDownChoice<Deck>)SpringContextLoaderBase.tester
-				.getComponentFromLastRenderedPage("joinGameWindow:content:form:deckParent:decks");
+				.getComponentFromLastRenderedPage("joinMatchWindow:content:form:deckParent:decks");
 		Assert.assertEquals(3, choices.getChoices().size());
 		Assert.assertEquals(3, SpringContextLoaderBase.persistenceService
 				.getAllDecksFromDeckArchives().size());

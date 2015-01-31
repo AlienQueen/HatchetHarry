@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "We ignore the exception since it's a duplicate key from DB due to the fact that the same console log is persisted for each player in the game. But we only want it once in DB.")
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "We ignore the exception since it's a duplicate key from DB due to the fact that the same console log is persisted for each player in the match. But we only want it once in DB.")
 @SuppressWarnings("PMD.EmptyCatchBlock")
 public abstract class ConsoleLogStrategy implements Serializable
 {
@@ -23,7 +23,7 @@ public abstract class ConsoleLogStrategy implements Serializable
 	private final Date date = new Date();
 	private String message;
 
-	@SpringBean
+    @SpringBean
 	private transient PersistenceService persistenceService;
 
 	ConsoleLogStrategy()

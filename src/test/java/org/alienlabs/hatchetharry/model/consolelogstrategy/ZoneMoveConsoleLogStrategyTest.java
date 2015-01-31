@@ -20,18 +20,18 @@ public class ZoneMoveConsoleLogStrategyTest extends SpringContextLoaderBase
 	@Test
 	public void testZoneMoveConsoleLogStrategy()
 	{
-		SpringContextLoaderBase.tester.assertComponent("createGameLink", AjaxLink.class);
-		SpringContextLoaderBase.tester.clickLink("createGameLink", true);
+		SpringContextLoaderBase.tester.assertComponent("createMatchLink", AjaxLink.class);
+		SpringContextLoaderBase.tester.clickLink("createMatchLink", true);
 
 		final FormTester createGameForm = SpringContextLoaderBase.tester
-				.newFormTester("createGameWindow:content:form");
+				.newFormTester("createMatchWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "1");
 		createGameForm.setValue("deckParent:decks", "1");
 		createGameForm.setValue("formats", "1");
 		createGameForm.setValue("numberOfPlayers", "2");
 
-		SpringContextLoaderBase.tester.executeAjaxEvent("createGameWindow:content:form:submit",
+		SpringContextLoaderBase.tester.executeAjaxEvent("createMatchWindow:content:form:submit",
 				"onclick");
 
 		final PlayCardFromHandBehavior behavior = getFirstPlayCardFromHandBehavior();

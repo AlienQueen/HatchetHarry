@@ -89,11 +89,11 @@ public class SpringContextLoaderBase
 				paramValue)));
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
-		SpringContextLoaderBase.tester.assertComponent("createGameLink", AjaxLink.class);
-		SpringContextLoaderBase.tester.clickLink("createGameLink", true);
+		SpringContextLoaderBase.tester.assertComponent("createMatchLink", AjaxLink.class);
+		SpringContextLoaderBase.tester.clickLink("createMatchLink", true);
 
 		final FormTester createGameForm = SpringContextLoaderBase.tester
-				.newFormTester("createGameWindow:content:form");
+				.newFormTester("createMatchWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "1");
 		createGameForm.setValue("deckParent:decks", "1");
@@ -102,7 +102,7 @@ public class SpringContextLoaderBase
 
 		if ((pageParameters.length > 0) && ("ajaxSubmit".equals(pageParameters[0])))
 		{
-			SpringContextLoaderBase.tester.executeAjaxEvent("createGameWindow:content:form:submit",
+			SpringContextLoaderBase.tester.executeAjaxEvent("createMatchWindow:content:form:submit",
 					"onclick");
 		}
 		else

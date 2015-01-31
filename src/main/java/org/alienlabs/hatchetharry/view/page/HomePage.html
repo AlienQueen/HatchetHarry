@@ -37,16 +37,16 @@
                     preferences</a></li>
             </ul>
         </li>
-        <li class='myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Game&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+        <li class='myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Match&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
             <ul>
                 <li><a wicket:id="loginLink" class="myfont"><img src="/image/login.png" alt="Log in"/>&nbsp;&nbsp;Log in</a>
                 </li>
-                <li><a wicket:id="createGameLink" class="myfont"><img src="/image/create game.png" alt="create"/>&nbsp;&nbsp;Create
-                    a game</a></li>
-                <li><a wicket:id="joinGameLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join
-                    a game with ID</a></li>
-                <li><a wicket:id="joinGameWithoutIdLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join
-                    a game without id</a></li>
+                <li><a wicket:id="createMatchLink" class="myfont"><img src="/image/create game.png" alt="create"/>&nbsp;&nbsp;Create
+                    a match</a></li>
+                <li><a wicket:id="joinMatchLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join
+                    a match with ID</a></li>
+                <li><a wicket:id="joinMatchWithoutIdLink" class="myfont"><img src="/image/join game.png" alt="join"/>&nbsp;&nbsp;Join
+                    a match without id</a></li>
                 <li><a wicket:id="mulliganLink" class="myfont"><img src="/image/mulligan.png" alt="join"/>&nbsp;&nbsp;Mulligan</a>
                 </li>
                 <li><a wicket:id="importDeckLink" class="myfont"><img src="/image/import deck.png" alt="import"/>&nbsp;&nbsp;Import
@@ -57,8 +57,8 @@
                 <li><a wicket:id="conferenceOpener" class="myfont"><img src="/image/conference.png"
                                                                         alt="Video-conference"/>&nbsp;&nbsp;Open
                     video-conference</a></li>
-                <li class='last'><a wicket:id="endMatchLink" class="myfont"><img src="/image/end.png" alt="End game"/>&nbsp;&nbsp;End
-                    game</a></li>
+                <li class='last'><a wicket:id="endMatchLink" class="myfont"><img src="/image/end.png" alt="End match"/>&nbsp;&nbsp;End
+                    match</a></li>
             </ul>
         </li>
         <li class='last myfont'><a class="shift-bottom"><span
@@ -110,7 +110,7 @@
 <h4><strong>
     <span wicket:id="usernameParent"><span wicket:id="username" class="myfont login"></span></span>
     <br/>
-    <span wicket:id="gameIdParent"><span wicket:id="gameId" class="myfont login"></span></span>
+    <span wicket:id="matchIdParent"><span wicket:id="matchId" class="myfont login"></span></span>
     </strong>
 </h4>
 <br/><br/><br/><br/><br/>
@@ -129,9 +129,9 @@
           <br/><br/>
           <ul>
               <li><a wicket:id="loginLinkResponsive" class="myfont">* Log in&nbsp;&nbsp;</a></li>
-              <li><a wicket:id="createGameLinkResponsive" class="myfont">* Create a game&nbsp;&nbsp;</a></li>
-              <li><a wicket:id="joinGameLinkResponsive" class="myfont">* Join a game with ID&nbsp;&nbsp;</a></li>
-              <li><a wicket:id="joinGameWithoutIdLinkResponsive" class="myfont">* Join a game without ID&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="createMatchLinkResponsive" class="myfont">* Create a match&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="joinMatchLinkResponsive" class="myfont">* Join a match with ID&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="joinMatchWithoutIdLinkResponsive" class="myfont">* Join a match without ID&nbsp;&nbsp;</a></li>
               <li><a wicket:id="mulliganLinkResponsive" class="myfont">* Mulligan&nbsp;&nbsp;</a></li>
               <li><a wicket:id="importDeckLinkResponsive" class="myfont">* Import a deck&nbsp;&nbsp;</a></li>
               <li><a wicket:id="hideAllTooltipsLinkResponsive" class="myfont">* Hide all tooltips&nbsp;&nbsp;</a></li>
@@ -227,9 +227,9 @@
 
 <div wicket:id="aboutWindow"></div>
 <div wicket:id="teamInfoWindow"></div>
-<div wicket:id="createGameWindow"></div>
-<div wicket:id="joinGameWindow"></div>
-<div wicket:id="joinGameWithoutIdWindow"></div>
+<div wicket:id="createMatchWindow"></div>
+<div wicket:id="joinMatchWindow"></div>
+<div wicket:id="joinMatchWithoutIdWindow"></div>
 <div wicket:id="mulliganWindow"></div>
 <div wicket:id="askMulliganWindow"></div>
 <div wicket:id="importDeckDialog"></div>

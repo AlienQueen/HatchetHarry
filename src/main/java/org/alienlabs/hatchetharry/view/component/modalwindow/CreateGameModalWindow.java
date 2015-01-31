@@ -123,7 +123,7 @@ public class CreateGameModalWindow extends Panel
 		this.deckParent.add(this.decks);
 
 		this.game = this.player.getGame();
-		final Label beforeGameId = new Label("beforeGameId", "The id of this game is: ");
+		final Label beforeGameId = new Label("beforeGameId", "The id of this match is: ");
 
 		final Label gameId = new Label("gameId", this.game.getId());
 		gameId.setOutputMarkupId(true).setMarkupId("gameId");

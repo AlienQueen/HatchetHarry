@@ -100,13 +100,13 @@ public class JoinGameModalWindow extends Panel
 		this.deckParent.add(this.decks);
 
 		final Label gameIdLabel = new Label("gameIdLabel",
-				"Please provide the game id given by your opponent: ");
+                "Please provide the match id given by your opponent: ");
 		final Model<Long> gameId = new Model<>(null);
 		this.gameIdInput = new TextField<>("gameIdInput", gameId);
 		this.gameIdInput.setRequired(true).setOutputMarkupId(true).setMarkupId("gameIdInput");
 
 		this.feedback = new FeedbackPanel("feedback");
-		this.feedback.setOutputMarkupId(true);
+        this.feedback.setOutputMarkupId(true);
 
 		final IndicatingAjaxButton submit = new IndicatingAjaxButton("submit", form)
 		{

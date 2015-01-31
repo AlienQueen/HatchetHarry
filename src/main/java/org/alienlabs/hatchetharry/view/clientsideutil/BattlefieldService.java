@@ -211,6 +211,7 @@ public class BattlefieldService
 		buil.append("}, 175); ");
 
 		target.appendJavaScript(buil.toString());
+		target.appendJavaScript(REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
 	public static void updateHand(final AjaxRequestTarget target)

@@ -36,7 +36,7 @@ public class GameConsoleLogStrategy extends ConsoleLogStrategy
 			action = "joined ";
 		}
 
-		final String message = this.player + " has " + action + "game #" + this.gameId.longValue();
+		final String message = this.player + " has " + action + "match #" + this.gameId.longValue();
 		super.logMessage(target, message, null, this.gameId);
 	}
 

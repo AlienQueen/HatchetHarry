@@ -126,7 +126,7 @@ public class HomePageTest extends SpringContextLoaderBase
 		boolean containsText = false;
 		for (final TagTester tt : tagTester)
 		{
-			if (((null != tt.getMarkup()) && tt.getMarkup().contains("Game")))
+			if (((null != tt.getMarkup()) && tt.getMarkup().contains("Match")))
 			{
 				containsText = true;
 				break;
@@ -219,8 +219,8 @@ public class HomePageTest extends SpringContextLoaderBase
 
 		HomePageTest.testModalWindow("aboutWindow", "aboutLink");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLink");
-		HomePageTest.testModalWindow("createGameWindow", "createGameLink");
-		HomePageTest.testModalWindow("joinGameWindow", "joinGameLink");
+		HomePageTest.testModalWindow("createMatchWindow", "createMatchLink");
+		HomePageTest.testModalWindow("joinMatchWindow", "joinMatchLink");
 		HomePageTest.testModalWindow("createTokenWindow", "createTokenLink");
 	}
 
@@ -233,8 +233,8 @@ public class HomePageTest extends SpringContextLoaderBase
 
 		HomePageTest.testModalWindow("aboutWindow", "aboutLinkResponsive");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLinkResponsive");
-		HomePageTest.testModalWindow("createGameWindow", "createGameLinkResponsive");
-		HomePageTest.testModalWindow("joinGameWindow", "joinGameLinkResponsive");
+		HomePageTest.testModalWindow("createMatchWindow", "createMatchLinkResponsive");
+		HomePageTest.testModalWindow("joinMatchWindow", "joinMatchLinkResponsive");
 		HomePageTest.testModalWindow("createTokenWindow", "createTokenLinkResponsive");
 	}
 
