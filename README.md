@@ -52,17 +52,19 @@ for the username & password.
 
 Some technical tips & tricks can be found in the README file.
 
+### Learning how to play
+
 You'll find the official "Getting started rules" here:
 
-    - http://media.wizards.com/2014/docs/EN_M15_QckStrtBklt_LR_Crop.pdf
+    - [Getting started](http://media.wizards.com/2014/docs/EN_M15_QckStrtBklt_LR_Crop.pdf).
 
 For the reckless people out there, you'll find the official, comprehensive rules as of January 23, 2015 here:
 
-    - http://media.wizards.com/2015/docs/MagicCompRules_20150123.pdf
+    - [Comprehensive rules](http://media.wizards.com/2015/docs/MagicCompRules_20150123.pdf).
 
 Last but not least, this (translated) "Anatomy of a Magic Card" could be useful:
 
-    - http://archive.wizards.com/Magic/magazine/article.aspx?x=mtgcom/academy/2
+    - [Anatomy of a Magic Card](http://archive.wizards.com/Magic/magazine/article.aspx?x=mtgcom/academy/2).
 
 Have a lot of fun!
 
