@@ -52,7 +52,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class HatchetHarryApplication extends WebApplication
 		implements
 			Serializable,
-			ResourceRegistrationListener
+        ResourceRegistrationListener
 {
 	// Map of playerId and Atmosphere UUID
 	private static final Map<Long, String> COMET_RESOURCES = new HashMap<>();
