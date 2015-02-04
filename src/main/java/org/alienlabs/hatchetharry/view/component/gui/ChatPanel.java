@@ -48,6 +48,7 @@ import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.atmosphere.Subscribe;
+import org.apache.wicket.core.util.string.JavaScriptUtils;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -98,8 +99,8 @@ public class ChatPanel extends Panel
 			{
 				ChatPanel.LOGGER.info("submit");
 
-				final String _user = _form.get("user").getDefaultModelObjectAsString();
-				final String _message = _form.get("message").getDefaultModelObjectAsString();
+				final String _user = JavaScriptUtils.escapeQuotes(_form.get("user").getDefaultModelObjectAsString()).toString();
+				final String _message = JavaScriptUtils.escapeQuotes(_form.get("message").getDefaultModelObjectAsString()).toString();
 				ChatPanel.LOGGER.info("user: " + _user + ", message: " + _message);
 
 				final Long gameId = ChatPanel.this.persistenceService

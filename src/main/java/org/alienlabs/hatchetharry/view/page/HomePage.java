@@ -37,59 +37,14 @@
  */
 package org.alienlabs.hatchetharry.view.page;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ch.qos.mistletoe.wicket.TestReportPage;
+import com.aplombee.QuickView;
+import com.google.common.io.Files;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
-import org.alienlabs.hatchetharry.model.CardZone;
-import org.alienlabs.hatchetharry.model.Deck;
-import org.alienlabs.hatchetharry.model.Game;
-import org.alienlabs.hatchetharry.model.MagicCard;
-import org.alienlabs.hatchetharry.model.Player;
-import org.alienlabs.hatchetharry.model.PlayerAndCard;
-import org.alienlabs.hatchetharry.model.Side;
-import org.alienlabs.hatchetharry.model.User;
-import org.alienlabs.hatchetharry.model.channel.AddSideCometChannel;
-import org.alienlabs.hatchetharry.model.channel.AddSidesFromOtherBrowsersCometChannel;
-import org.alienlabs.hatchetharry.model.channel.ArrowDrawCometChannel;
-import org.alienlabs.hatchetharry.model.channel.AskMulliganCometChannel;
-import org.alienlabs.hatchetharry.model.channel.CardRotateCometChannel;
-import org.alienlabs.hatchetharry.model.channel.CardZoneMoveCometChannel;
-import org.alienlabs.hatchetharry.model.channel.CardZoneMoveNotifier;
-import org.alienlabs.hatchetharry.model.channel.ConsoleLogCometChannel;
-import org.alienlabs.hatchetharry.model.channel.CountCardsCometChannel;
-import org.alienlabs.hatchetharry.model.channel.DestroyTokenCometChannel;
-import org.alienlabs.hatchetharry.model.channel.JoinGameNotificationCometChannel;
-import org.alienlabs.hatchetharry.model.channel.MoveSideCometChannel;
-import org.alienlabs.hatchetharry.model.channel.NotifierAction;
-import org.alienlabs.hatchetharry.model.channel.NotifierCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PlayCardFromGraveyardCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PlayCardFromHandCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PlayTopLibraryCardCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutToExileFromBattlefieldCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutToGraveyardFromBattlefieldCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutToHandFromBattlefieldCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutTokenOnBattlefieldCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToGraveyardCometChannel;
-import org.alienlabs.hatchetharry.model.channel.PutTopLibraryCardToHandCometChannel;
-import org.alienlabs.hatchetharry.model.channel.ReorderCardCometChannel;
-import org.alienlabs.hatchetharry.model.channel.RevealHandCometChannel;
-import org.alienlabs.hatchetharry.model.channel.RevealTopLibraryCardCometChannel;
-import org.alienlabs.hatchetharry.model.channel.StopRevealingHandCometChannel;
-import org.alienlabs.hatchetharry.model.channel.SwitchDrawModeCometChannel;
-import org.alienlabs.hatchetharry.model.channel.UntapAllCometChannel;
-import org.alienlabs.hatchetharry.model.channel.UpdateDataBoxCometChannel;
+import org.alienlabs.hatchetharry.model.*;
+import org.alienlabs.hatchetharry.model.channel.*;
 import org.alienlabs.hatchetharry.model.consolelogstrategy.AbstractConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.consolelogstrategy.ConsoleLogStrategy;
 import org.alienlabs.hatchetharry.model.consolelogstrategy.ConsoleLogType;
@@ -99,32 +54,8 @@ import org.alienlabs.hatchetharry.view.clientsideutil.BattlefieldService;
 import org.alienlabs.hatchetharry.view.clientsideutil.EventBusPostService;
 import org.alienlabs.hatchetharry.view.component.card.CardPanel;
 import org.alienlabs.hatchetharry.view.component.card.RedrawArrowsBehavior;
-import org.alienlabs.hatchetharry.view.component.gui.ChatPanel;
-import org.alienlabs.hatchetharry.view.component.gui.ClockPanel;
-import org.alienlabs.hatchetharry.view.component.gui.ConferencePanel;
-import org.alienlabs.hatchetharry.view.component.gui.DataBox;
-import org.alienlabs.hatchetharry.view.component.gui.ExileComponent;
-import org.alienlabs.hatchetharry.view.component.gui.ExternalImage;
-import org.alienlabs.hatchetharry.view.component.gui.FacebookLoginBehavior;
-import org.alienlabs.hatchetharry.view.component.gui.GameNotifierBehavior;
-import org.alienlabs.hatchetharry.view.component.gui.GraveyardComponent;
-import org.alienlabs.hatchetharry.view.component.gui.HandComponent;
-import org.alienlabs.hatchetharry.view.component.gui.ImportDeckDialog;
-import org.alienlabs.hatchetharry.view.component.gui.MessageRedisplayBehavior;
-import org.alienlabs.hatchetharry.view.component.gui.ReorderCardInBattlefieldBehavior;
-import org.alienlabs.hatchetharry.view.component.gui.SidePlaceholderPanel;
-import org.alienlabs.hatchetharry.view.component.modalwindow.AboutModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.AskMulliganModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.CountCardsModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.CreateGameModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.CreateTokenModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.JoinGameModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.JoinGameWithoutIdModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.LoginModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.MulliganModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.RevealTopLibraryCardModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.TeamInfoModalWindow;
-import org.alienlabs.hatchetharry.view.component.modalwindow.UserPreferencesModalWindow;
+import org.alienlabs.hatchetharry.view.component.gui.*;
+import org.alienlabs.hatchetharry.view.component.modalwindow.*;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromGraveyardBehavior;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
@@ -155,12 +86,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.wicketstuff.facebook.FacebookSdk;
 
-import ch.qos.mistletoe.wicket.TestReportPage;
-
-import com.aplombee.QuickView;
-import com.google.common.io.Files;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.*;
 
 /**
  * HatchetHarry one and only WebPage
@@ -169,8 +99,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Zala Goupil
  */
 @SuppressFBWarnings(value = { "SE_INNER_CLASS", "SIC_INNER_SHOULD_BE_STATIC_ANON",
-		"PREDICTABLE_RANDOM" }, justification = "SE_INNER_CLASS + SIC_INNER_SHOULD_BE_STATIC_ANON: In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. PREDICTABLE_RANDOM: SecureRandom is awfully slow and we don't need strong RNG")
-public class HomePage extends TestReportPage
+		"PREDICTABLE_RANDOM" }, justification = "SE_INNER_CLASS + SIC_INNER_SHOULD_BE_STATIC_ANON: In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. PREDICTABLE_RANDOM: SecureRandom is awfully slow and we don't need strong RNG") public class HomePage
+		extends TestReportPage
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
@@ -197,10 +127,8 @@ public class HomePage extends TestReportPage
 	private final ModalWindow mulliganWindow;
 	private final ModalWindow askMulliganWindow;
 
-	@SpringBean
-	PersistenceService persistenceService;
-	@SpringBean
-	private DataGenerator dataGenerator;
+	@SpringBean PersistenceService persistenceService;
+	@SpringBean private DataGenerator dataGenerator;
 
 	private ModalWindow teamInfoWindow;
 	private ModalWindow aboutWindow;
@@ -247,8 +175,8 @@ public class HomePage extends TestReportPage
 	private Label username;
 	private Label gameId;
 
-	@SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
-	public HomePage(final PageParameters pp) throws Exception
+	@SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!") public HomePage(
+			final PageParameters pp) throws Exception
 	{
 		this.session = HatchetHarrySession.get();
 
@@ -261,26 +189,26 @@ public class HomePage extends TestReportPage
 			HomePage.LOGGER.info("restart match for player: " + this.session.getPlayer().getId()
 					+ " & match: " + this.session.getGameId());
 
-			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-					ConsoleLogType.GAME, null, null, null, null,
-					this.session.getPlayer().getName(), null, null, null, Boolean.FALSE,
-					this.session.getGameId());
+			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+					.chooseStrategy(ConsoleLogType.GAME, null, null, null, null,
+							this.session.getPlayer().getName(), null, null, null, Boolean.FALSE,
+							this.session.getGameId());
 			final NotifierCometChannel ncc = new NotifierCometChannel(
 					NotifierAction.END_GAME_ACTION, null, null, this.session.getPlayer().getName(),
 					null, null, null, "");
 
 			final List<BigInteger> allPlayersInGameExceptMe = this.persistenceService
-					.giveAllPlayersFromGameExceptMe(this.session.getGameId(), this.session
-							.getPlayer().getId());
-			EventBusPostService.post(allPlayersInGameExceptMe, new ConsoleLogCometChannel(logger),
-					ncc);
+					.giveAllPlayersFromGameExceptMe(this.session.getGameId(),
+							this.session.getPlayer().getId());
+			EventBusPostService
+					.post(allPlayersInGameExceptMe, new ConsoleLogCometChannel(logger), ncc);
 
 			request.getSession(false).invalidate();
 			throw new RestartResponseException(HomePage.class);
 		}
 
-		if ((pp != null) && (pp.get("displayTooltips") != null)
-				&& ("true".equals(pp.get("displayTooltips").toString())))
+		if ((pp != null) && (pp.get("displayTooltips") != null) && ("true"
+				.equals(pp.get("displayTooltips").toString())))
 		{
 			this.session.setDisplayTooltips(Boolean.TRUE);
 		}
@@ -299,7 +227,7 @@ public class HomePage extends TestReportPage
 		}
 		else
 		{
-            this.gameId = new Label("matchId", "No match at the moment");
+			this.gameId = new Label("matchId", "No match at the moment");
 			this.gameId.setOutputMarkupId(true);
 		}
 
@@ -358,8 +286,8 @@ public class HomePage extends TestReportPage
 		this.sideParent = new WebMarkupContainer("sideParent");
 		this.sideParent.setOutputMarkupId(true);
 
-		this.allPlayerSidesInGame = this.persistenceService.getAllPlayersOfGame(this.session
-				.getGameId().longValue());
+		this.allPlayerSidesInGame = this.persistenceService
+				.getAllPlayersOfGame(this.session.getGameId().longValue());
 		final ListDataProvider<Player> data = new ListDataProvider<>(this.allPlayerSidesInGame);
 
 		this.allSidesInGame = this.populateSides(data);
@@ -438,29 +366,34 @@ public class HomePage extends TestReportPage
 		this.askMulliganWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.askMulliganWindow);
 
-		this.teamInfoWindow = this.generateTeamInfoLink("teamInfoLinkResponsive",
-				this.teamInfoWindow);
+		this.teamInfoWindow = this
+				.generateTeamInfoLink("teamInfoLinkResponsive", this.teamInfoWindow);
 
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
 
 		this.createGameWindow = new ModalWindow("createMatchWindow");
-		this.add(this.createGameWindow = this.generateCreateGameModalWindow("createMatchLink",
-				this.player, this.createGameWindow));
-		this.add(this.createGameWindow = this.generateCreateGameModalWindow(
-				"createMatchLinkResponsive", this.player, this.createGameWindow));
+		this.add(this.createGameWindow = this
+				.generateCreateGameModalWindow("createMatchLink", this.player,
+						this.createGameWindow));
+		this.add(this.createGameWindow = this
+				.generateCreateGameModalWindow("createMatchLinkResponsive", this.player,
+						this.createGameWindow));
 
 		this.joinGameWindow = new ModalWindow("joinMatchWindow");
-		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinMatchLink",
-				this.player, this.joinGameWindow));
-		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinMatchLinkResponsive",
-				this.player, this.joinGameWindow));
+		this.add(this.joinGameWindow = this
+				.generateJoinGameModalWindow("joinMatchLink", this.player, this.joinGameWindow));
+		this.add(this.joinGameWindow = this
+				.generateJoinGameModalWindow("joinMatchLinkResponsive", this.player,
+						this.joinGameWindow));
 
 		this.joinGameWithoutIdWindow = new ModalWindow("joinMatchWithoutIdWindow");
-		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
-				"joinMatchWithoutIdLink", this.player, this.joinGameWithoutIdWindow));
-		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
-				"joinMatchWithoutIdLinkResponsive", this.player, this.joinGameWithoutIdWindow));
+		this.add(this.joinGameWithoutIdWindow = this
+				.generateJoinGameWithoutIdModalWindow("joinMatchWithoutIdLink", this.player,
+						this.joinGameWithoutIdWindow));
+		this.add(this.joinGameWithoutIdWindow = this
+				.generateJoinGameWithoutIdModalWindow("joinMatchWithoutIdLinkResponsive",
+						this.player, this.joinGameWithoutIdWindow));
 
 		this.generatePlayCardLink();
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkDesktop"));
@@ -598,8 +531,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript(BattlefieldService.HIDE_ALL_TOOLTIPS);
 				target.appendJavaScript(BattlefieldService.HIDE_MENUS);
@@ -614,8 +546,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#conference').dialog('open');");
@@ -628,16 +559,17 @@ public class HomePage extends TestReportPage
 
 					if (null != user)
 					{
-						target.appendJavaScript("jQuery('#txtDisplayName').val('" + user.getLogin()
-								+ "');");
-						target.appendJavaScript("jQuery('#txtPrivateIdentity').val('"
-								+ user.getPrivateIdentity() + "');");
-						target.appendJavaScript("jQuery('#txtPublicIdentity').val('"
-								+ user.getIdentity() + "');");
-						target.appendJavaScript("jQuery('#txtPassword').val('" + user.getPassword()
-								+ "');");
-						target.appendJavaScript("jQuery('#txtRealm').val('" + user.getRealm()
-								+ "');");
+						target.appendJavaScript(
+								"jQuery('#txtDisplayName').val('" + user.getLogin() + "');");
+						target.appendJavaScript(
+								"jQuery('#txtPrivateIdentity').val('" + user.getPrivateIdentity()
+										+ "');");
+						target.appendJavaScript(
+								"jQuery('#txtPublicIdentity').val('" + user.getIdentity() + "');");
+						target.appendJavaScript(
+								"jQuery('#txtPassword').val('" + user.getPassword() + "');");
+						target.appendJavaScript(
+								"jQuery('#txtRealm').val('" + user.getRealm() + "');");
 					}
 				}
 			}
@@ -651,31 +583,32 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGameExceptMe = HomePage.this.persistenceService
-						.giveAllPlayersFromGameExceptMe(_gameId, HomePage.this.session.getPlayer()
-								.getId());
+						.giveAllPlayersFromGameExceptMe(_gameId,
+								HomePage.this.session.getPlayer().getId());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.REVEAL_HAND, null, null, HomePage.this.session.getPlayer()
-								.getName(), "", "", null, "");
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.REVEAL_HAND, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, Boolean.FALSE, _gameId);
+						NotifierAction.REVEAL_HAND, null, null,
+						HomePage.this.session.getPlayer().getName(), "", "", null, "");
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.REVEAL_HAND, null, null, null, null,
+								HomePage.this.session.getPlayer().getName(), null, null, null,
+								Boolean.FALSE, _gameId);
 				final RevealHandCometChannel rhcc = new RevealHandCometChannel(_gameId,
-						HomePage.this.session.getPlayer().getId(), HomePage.this.session
-								.getPlayer().getDeck().getDeckId());
-				EventBusPostService.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(
-						logger), rhcc);
+						HomePage.this.session.getPlayer().getId(),
+						HomePage.this.session.getPlayer().getDeck().getDeckId());
+				EventBusPostService
+						.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(logger),
+								rhcc);
 
 				final List<BigInteger> playerToWhomToSend = new ArrayList<>();
-				playerToWhomToSend.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()
-						.longValue()));
-				EventBusPostService.post(playerToWhomToSend, ncc,
-						new ConsoleLogCometChannel(logger));
+				playerToWhomToSend.add(BigInteger
+						.valueOf(HomePage.this.session.getPlayer().getId().longValue()));
+				EventBusPostService
+						.post(playerToWhomToSend, ncc, new ConsoleLogCometChannel(logger));
 			}
 
 		});
@@ -687,11 +620,11 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("end match");
-				target.appendJavaScript("var r = confirm('Are you sure that you want to end this match?'); if (r==true) { window.location = window.location + '?endMatch=true'; }; ");
+				target.appendJavaScript(
+						"var r = confirm('Are you sure that you want to end this match?'); if (r==true) { window.location = window.location + '?endMatch=true'; }; ");
 			}
 		});
 	}
@@ -702,9 +635,8 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("boxing")
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@SuppressWarnings("boxing") @Override public void onClick(
+					final AjaxRequestTarget target)
 			{
 				final Player _player = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId());
@@ -717,7 +649,7 @@ public class HomePage extends TestReportPage
 				}
 				else
 				{
-                    BattlefieldService.updateHand(target);
+					BattlefieldService.updateHand(target);
 
 				}
 
@@ -727,18 +659,17 @@ public class HomePage extends TestReportPage
 			}
 		};
 
-        this.add(showHandLink);
+		this.add(showHandLink);
 
 		final AjaxLink<Void> drawModeLink = new AjaxLink<Void>("drawModeLink")
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			@SuppressWarnings("boxing")
-			public void onClick(final AjaxRequestTarget target)
+			@Override @SuppressWarnings("boxing") public void onClick(
+					final AjaxRequestTarget target)
 			{
-				final Game g = HomePage.this.persistenceService.getGame(HomePage.this.session
-						.getGameId());
+				final Game g = HomePage.this.persistenceService
+						.getGame(HomePage.this.session.getGameId());
 				g.setDrawMode(!g.isDrawMode());
 				HomePage.this.persistenceService.updateGame(g);
 
@@ -749,8 +680,8 @@ public class HomePage extends TestReportPage
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(HomePage.this.session.getGameId());
-				EventBusPostService.post(allPlayersInGame, new SwitchDrawModeCometChannel(g
-						.isDrawMode().booleanValue()));
+				EventBusPostService.post(allPlayersInGame,
+						new SwitchDrawModeCometChannel(g.isDrawMode().booleanValue()));
 			}
 
 			@Override
@@ -778,8 +709,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				final Player _player = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId());
@@ -834,8 +764,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				final Player _player = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId());
@@ -848,8 +777,9 @@ public class HomePage extends TestReportPage
 				}
 				else
 				{
-					BattlefieldService.updateExile(target, _player.getGame().getId(),
-							_player.getId(), _player.getDeck().getDeckId());
+					BattlefieldService
+							.updateExile(target, _player.getGame().getId(), _player.getId(),
+									_player.getDeck().getDeckId());
 
 				}
 
@@ -867,8 +797,7 @@ public class HomePage extends TestReportPage
 			}
 
 			// TODE:remove me
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
+			@Override protected void onComponentTag(final ComponentTag tag)
 			{
 				super.onComponentTag(tag);
 
@@ -897,20 +826,19 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				final Player me = HomePage.this.session.getPlayer();
 				final Long _gameId = HomePage.this.persistenceService
 						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.END_OF_TURN, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, Boolean.FALSE,
-						HomePage.this.session.getGameId());
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.END_OF_TURN, null, null, null, null,
+								HomePage.this.session.getPlayer().getName(), null, null, null,
+								Boolean.FALSE, HomePage.this.session.getGameId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, "");
+						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(),
+						me.getSide().getSideName(), null, null, "");
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
@@ -935,11 +863,10 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
-				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
-						.getGameId());
+				final Game game = HomePage.this.persistenceService
+						.getGame(HomePage.this.session.getGameId());
 
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
@@ -969,11 +896,10 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
-				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
-						.getGameId());
+				final Game game = HomePage.this.persistenceService
+						.getGame(HomePage.this.session.getGameId());
 
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
@@ -1001,8 +927,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
@@ -1010,8 +935,8 @@ public class HomePage extends TestReportPage
 
 				final List<MagicCard> allCards = HomePage.this.persistenceService
 						.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(_gameId,
-								HomePage.this.session.getPlayer().getId(), HomePage.this.session
-										.getPlayer().getDeck().getDeckId());
+								HomePage.this.session.getPlayer().getId(),
+								HomePage.this.session.getPlayer().getDeck().getDeckId());
 				for (int i = 0; i < allCards.size(); i++)
 				{
 					final MagicCard mc = allCards.get(i);
@@ -1030,13 +955,14 @@ public class HomePage extends TestReportPage
 					}
 				}
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.TAP_UNTAP, null, null, null, null, HomePage.this.session
-								.getPlayer().getName(), null, null, null, Boolean.FALSE, _gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.TAP_UNTAP, null, null, null, null,
+								HomePage.this.session.getPlayer().getName(), null, null, null,
+								Boolean.FALSE, _gameId);
 				final UntapAllCometChannel uacc = new UntapAllCometChannel(_gameId,
-						HomePage.this.session.getPlayer().getId(), HomePage.this.session
-								.getPlayer().getDeck().getDeckId(), HomePage.this.session
-								.getPlayer().getName(), allCards);
+						HomePage.this.session.getPlayer().getId(),
+						HomePage.this.session.getPlayer().getDeck().getDeckId(),
+						HomePage.this.session.getPlayer().getName(), allCards);
 				EventBusPostService
 						.post(allPlayersInGame, uacc, new ConsoleLogCometChannel(logger));
 			}
@@ -1059,11 +985,11 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("untap and draw");
-				target.appendJavaScript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 250);");
+				target.appendJavaScript(
+						"jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 250);");
 			}
 
 		};
@@ -1134,8 +1060,8 @@ public class HomePage extends TestReportPage
 
 		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
 		p.setDeck(this.deck);
-		final List<MagicCard> mc = this.persistenceService.getAllCardsFromDeck(this.deck
-				.getDeckArchive().getDeckName());
+		final List<MagicCard> mc = this.persistenceService
+				.getAllCardsFromDeck(this.deck.getDeckArchive().getDeckName());
 
 		for (final MagicCard card : mc)
 		{
@@ -1188,24 +1114,24 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("clicked on declare combat");
-				HomePage.this.session.setCombatInProgress(!HomePage.this.session
-						.isCombatInProgress().booleanValue());
+				HomePage.this.session.setCombatInProgress(
+						!HomePage.this.session.isCombatInProgress().booleanValue());
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null, HomePage.this.session
-								.getPlayer().getName(), "", "",
+						NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null,
+						HomePage.this.session.getPlayer().getName(), "", "",
 						HomePage.this.session.isCombatInProgress(), "");
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.COMBAT, null, null, HomePage.this.session
-								.isCombatInProgress(), null, HomePage.this.session.getPlayer()
-								.getName(), null, null, null, Boolean.FALSE, _gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.COMBAT, null, null,
+								HomePage.this.session.isCombatInProgress(), null,
+								HomePage.this.session.getPlayer().getName(), null, null, null,
+								Boolean.FALSE, _gameId);
 
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
@@ -1224,15 +1150,14 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				Long _gameId = HomePage.this.session.getPlayer().getGame().getId();
 				Long deckId = HomePage.this.session.getPlayer().getDeck().getDeckId();
 
 				final List<MagicCard> cards = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(_gameId, HomePage.this.session
-								.getPlayer().getId(), deckId);
+						.getAllCardsInLibraryForDeckAndPlayer(_gameId,
+								HomePage.this.session.getPlayer().getId(), deckId);
 
 				if ((cards != null) && (!cards.isEmpty()))
 				{
@@ -1248,8 +1173,8 @@ public class HomePage extends TestReportPage
 							.getAllCardsInHandForAGameAndADeck(_gameId, deckId);
 					if (!allCardsInHand.isEmpty())
 					{
-						card.setZoneOrder(allCardsInHand.get(allCardsInHand.size() - 1)
-								.getZoneOrder() + 1L);
+						card.setZoneOrder(
+								allCardsInHand.get(allCardsInHand.size() - 1).getZoneOrder() + 1L);
 					}
 
 					HomePage.this.persistenceService.updateCard(card);
@@ -1265,27 +1190,28 @@ public class HomePage extends TestReportPage
 							.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
 					final Deck d = me.getDeck();
-					final List<MagicCard> _hand = d
-							.reorderMagicCards(HomePage.this.persistenceService
+					final List<MagicCard> _hand = d.reorderMagicCards(
+							HomePage.this.persistenceService
 									.getAllCardsInHandForAGameAndADeck(__gameId, d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(_hand);
-					final List<MagicCard> library = d
-							.reorderMagicCards(HomePage.this.persistenceService
+					final List<MagicCard> library = d.reorderMagicCards(
+							HomePage.this.persistenceService
 									.getAllCardsInLibraryForDeckAndPlayer(__gameId, me.getId(),
 											d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(library);
 
-					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-							ConsoleLogType.DRAW_CARD, null, null, null, null, HomePage.this.session
-									.getPlayer().getName(), null, null, null, null, __gameId);
+					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+							.chooseStrategy(ConsoleLogType.DRAW_CARD, null, null, null, null,
+									HomePage.this.session.getPlayer().getName(), null, null, null,
+									null, __gameId);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
-									.getSide().getSideName(), null, null, "");
+							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(),
+							me.getSide().getSideName(), null, null, "");
 
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 							.giveAllPlayersFromGame(__gameId);
-					EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(
-							logger));
+					EventBusPostService
+							.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 				}
 				else
 				{
@@ -1294,8 +1220,7 @@ public class HomePage extends TestReportPage
 				}
 			}
 
-			@Override
-			protected void onComponentTag(final ComponentTag tag)
+			@Override protected void onComponentTag(final ComponentTag tag)
 			{
 				super.onComponentTag(tag);
 
@@ -1330,117 +1255,158 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void renderHead(final Component component, final IHeaderResponse response)
+			@Override public void renderHead(final Component component,
+					final IHeaderResponse response)
 			{
 				super.renderHead(component, response);
 
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery/jquery.atmosphere.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery/jquery.wicketatmosphere.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.core.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.widget.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.mouse.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.touch-punch.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.droppable.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.draggable.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.ui.position-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery.ui.dialog-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/offset.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/jquery.easing.1.3.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/jquery.cookie.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/pageguide.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/menubar/jMenu.jquery.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/dock/jquery.jqdock.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/conference/SIPml-api.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/conference/webrtc4all.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/qunitTests/codeUnderTest.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/qunitTests/HomePageTests.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/jquery-easing-compatibility.1.2.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/coda-slider.1.1.1.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/coda-sliderGraveyard.1.1.1.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/gallery/coda-sliderExile.1.1.1.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery.jsPlumb-1.5.3-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/tour/bootstrap-tour-standalone.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/contextmenu/jquery.popmenu.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/jquery/jquery.atmosphere.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/jquery/jquery.wicketatmosphere.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.ui.core.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.ui.widget.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.ui.mouse.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.ui.touch-punch.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.ui.droppable.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.ui.draggable.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.ui.position-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/jquery.ui.dialog-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/offset.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/tour/jquery.easing.1.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/tour/jquery.cookie.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "script/tour/pageguide.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/menubar/jMenu.jquery.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/dock/jquery.jqdock.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/qunitTests/qUnit-1.11.0-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/conference/SIPml-api.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/conference/webrtc4all.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/qunitTests/codeUnderTest.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/qunitTests/HomePageTests.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/gallery/jquery-easing-compatibility.1.2.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/gallery/coda-slider.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/gallery/coda-sliderGraveyard.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/gallery/coda-sliderExile.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/draggableHandle/jquery.hammer.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/jquery.jsPlumb-1.5.3-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/tour/bootstrap-tour-standalone.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/contextmenu/jquery.popmenu.min.js")));
 
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/jMenu.jquery.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/layout.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/pageguide.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/galleryStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/jquery.gritter.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/fixed4all.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/fixed4ie.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/prettyPhoto.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/toolbarStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/demo-style.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/mobile.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/blue_gradient_table.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/tipsy.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/jquery-ui dialog.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/qunit-1.12.0.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/bootstrap-tour-standalone.min.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/myStyle.css")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "stylesheet/cards.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/jMenu.jquery.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/layout.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/pageguide.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/galleryStyle.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/jquery.gritter.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/fixed4all.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/fixed4ie.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/prettyPhoto.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/toolbarStyle.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/demo-style.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/mobile.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/blue_gradient_table.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/tipsy.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/jquery-ui dialog.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/qunit-1.12.0.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"stylesheet/bootstrap-tour-standalone.min.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/myStyle.css")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "stylesheet/cards.css")));
 
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/notifier/jquery.gritter.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/viewportSize-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/jquery.tipsy.js")));
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/google-analytics.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/toolbar/jquery.prettyPhoto.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/notifier/jquery.gritter.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/viewportSize-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class, "script/jquery.tipsy.js")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/google-analytics.js")));
 			}
 		});
 		this.add(c);
@@ -1449,11 +1415,11 @@ public class HomePage extends TestReportPage
 	private void buildHandMarkup()
 	{
 		final Component galleryToUpdate;
-		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
-				this.session.getPlayer().getId()).isHandDisplayed();
-		galleryToUpdate = isHandDisplayed.booleanValue()
-				? new HandComponent("gallery")
-				: new WebMarkupContainer("gallery");
+		final Boolean isHandDisplayed = this.persistenceService
+				.getPlayer(this.session.getPlayer().getId()).isHandDisplayed();
+		galleryToUpdate = isHandDisplayed.booleanValue() ?
+				new HandComponent("gallery") :
+				new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.add(galleryToUpdate);
@@ -1462,11 +1428,12 @@ public class HomePage extends TestReportPage
 	private void buildGraveyardMarkup()
 	{
 		final Component graveyardToUpdate;
-		final Boolean isGraveyardDisplayed = this.persistenceService.getPlayer(
-				this.session.getPlayer().getId()).isGraveyardDisplayed();
-		graveyardToUpdate = ((isGraveyardDisplayed != null) && isGraveyardDisplayed.booleanValue())
-				? new GraveyardComponent("graveyard")
-				: new WebMarkupContainer("graveyard");
+		final Boolean isGraveyardDisplayed = this.persistenceService
+				.getPlayer(this.session.getPlayer().getId()).isGraveyardDisplayed();
+		graveyardToUpdate = ((isGraveyardDisplayed != null) && isGraveyardDisplayed
+				.booleanValue()) ?
+				new GraveyardComponent("graveyard") :
+				new WebMarkupContainer("graveyard");
 
 		graveyardToUpdate.setOutputMarkupId(true);
 		this.graveyardParent.add(graveyardToUpdate);
@@ -1475,11 +1442,11 @@ public class HomePage extends TestReportPage
 	private void buildExileMarkup()
 	{
 		final Component exileToUpdate;
-		final Boolean isExileDisplayed = this.persistenceService.getPlayer(
-				this.session.getPlayer().getId()).isExileDisplayed();
-		exileToUpdate = ((isExileDisplayed != null) && isExileDisplayed.booleanValue())
-				? new ExileComponent("exile")
-				: new WebMarkupContainer("exile");
+		final Boolean isExileDisplayed = this.persistenceService
+				.getPlayer(this.session.getPlayer().getId()).isExileDisplayed();
+		exileToUpdate = ((isExileDisplayed != null) && isExileDisplayed.booleanValue()) ?
+				new ExileComponent("exile") :
+				new WebMarkupContainer("exile");
 
 		exileToUpdate.setOutputMarkupId(true);
 		this.exileParent.add(exileToUpdate);
@@ -1491,11 +1458,11 @@ public class HomePage extends TestReportPage
 		if (this.session.isPlayerCreated().booleanValue())
 		{
 			this.player = this.session.getPlayer();
-			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId()
-					.longValue());
+			this.deck = this.persistenceService
+					.getDeck(this.player.getDeck().getDeckId().longValue());
 
-			if ((this.deck == null) || (this.deck.getCards() == null)
-					|| (this.deck.getCards().isEmpty()))
+			if ((this.deck == null) || (this.deck.getCards() == null) || (this.deck.getCards()
+					.isEmpty()))
 			{
 				this.deck = this.persistenceService
 						.getDeckByDeckArchiveName("aggro-combo Red / Black");
@@ -1504,8 +1471,8 @@ public class HomePage extends TestReportPage
 
 			final ArrayList<MagicCard> _cards = new ArrayList<>();
 
-			for (final MagicCard mc : this.persistenceService.getAllCardsFromDeck(this.deck
-					.getDeckArchive().getDeckName()))
+			for (final MagicCard mc : this.persistenceService
+					.getAllCardsFromDeck(this.deck.getDeckArchive().getDeckName()))
 			{
 				mc.setGameId(this.session.getGameId());
 				mc.setDeck(this.deck);
@@ -1579,8 +1546,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 8140325977385015896L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -1608,8 +1574,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 8140325977385015896L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -1637,8 +1602,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 8140325977385015896L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -1667,8 +1631,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget _target)
+			@Override public void onClick(final AjaxRequestTarget _target)
 			{
 				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -1691,8 +1654,9 @@ public class HomePage extends TestReportPage
 		window.setInitialHeight(430);
 		window.setTitle("Join a match");
 
-		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,
-				this.dataBoxParent, this));
+		window.setContent(
+				new JoinGameModalWindow(window, window.getContentId(), _player, this.dataBoxParent,
+						this));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
@@ -1700,8 +1664,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget _target)
+			@Override public void onClick(final AjaxRequestTarget _target)
 			{
 				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -1733,8 +1696,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget _target)
+			@Override public void onClick(final AjaxRequestTarget _target)
 			{
 				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -1756,8 +1718,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#importDeck').dialog('open');");
@@ -1776,13 +1737,12 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClose(final AjaxRequestTarget target)
+			@Override public void onClose(final AjaxRequestTarget target)
 			{
 				if (HomePage.this.session.getTopCardIndex() > 0L)
 				{
-					HomePage.this.session.setTopCardIndex(Long.valueOf(HomePage.this.session
-							.getTopCardIndex() - 1L));
+					HomePage.this.session.setTopCardIndex(
+							Long.valueOf(HomePage.this.session.getTopCardIndex() - 1L));
 				}
 
 			}
@@ -1791,8 +1751,9 @@ public class HomePage extends TestReportPage
 		window.setInitialHeight(510);
 
 		final List<MagicCard> allCardsInLibrary = this.persistenceService
-				.getAllCardsInLibraryForDeckAndPlayer(this.session.getGameId(), this.session
-						.getPlayer().getId(), this.session.getPlayer().getDeck().getDeckId());
+				.getAllCardsInLibraryForDeckAndPlayer(this.session.getGameId(),
+						this.session.getPlayer().getId(),
+						this.session.getPlayer().getDeck().getDeckId());
 		final MagicCard firstCard;
 
 		if (allCardsInLibrary.isEmpty())
@@ -1804,8 +1765,8 @@ public class HomePage extends TestReportPage
 			firstCard = allCardsInLibrary.get(this.session.getTopCardIndex().intValue());
 		}
 
-		window.setContent(new RevealTopLibraryCardModalWindow(window.getContentId(), window,
-				firstCard));
+		window.setContent(
+				new RevealTopLibraryCardModalWindow(window.getContentId(), window, firstCard));
 
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
@@ -1818,27 +1779,26 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("boxing")
-			@SuppressFBWarnings({ "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN" })
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@SuppressWarnings("boxing") @SuppressFBWarnings({ "PATH_TRAVERSAL_IN",
+					"PATH_TRAVERSAL_IN" }) @Override public void onClick(
+					final AjaxRequestTarget target)
 			{
 				final List<MagicCard> _allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
-								HomePage.this.session.getPlayer().getId(), HomePage.this.session
-										.getPlayer().getDeck().getDeckId());
+								HomePage.this.session.getPlayer().getId(),
+								HomePage.this.session.getPlayer().getDeck().getDeckId());
 				if (_allCardsInLibrary.isEmpty())
 				{
 					return;
 				}
 
-				final MagicCard _firstCard = _allCardsInLibrary.get(HomePage.this.session
-						.getTopCardIndex().intValue());
+				final MagicCard _firstCard = _allCardsInLibrary
+						.get(HomePage.this.session.getTopCardIndex().intValue());
 				final String topCardName = _firstCard.getBigImageFilename();
 
-				final String cardPath = ResourceBundle.getBundle(
-						HatchetHarryApplication.class.getCanonicalName()).getString(
-						"SharedResourceFolder");
+				final String cardPath = ResourceBundle
+						.getBundle(HatchetHarryApplication.class.getCanonicalName())
+						.getString("SharedResourceFolder");
 				final String cardPathAndName = cardPath.replace("/cards", "") + topCardName;
 				final File from = new File(cardPathAndName);
 				final File to = new File(cardPath + "topLibraryCard.jpg");
@@ -1849,8 +1809,9 @@ public class HomePage extends TestReportPage
 				}
 				catch (final IOException e)
 				{
-					HomePage.LOGGER.error("could not copy from: " + cardPathAndName + " to: "
-							+ cardPath + "topLibraryCard.jpg", e);
+					HomePage.LOGGER
+							.error("could not copy from: " + cardPathAndName + " to: " + cardPath
+									+ "topLibraryCard.jpg", e);
 				}
 
 				final Long _gameId = HomePage.this.persistenceService
@@ -1858,10 +1819,11 @@ public class HomePage extends TestReportPage
 				final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
 						HomePage.this.session.getPlayer().getName(), _firstCard,
 						HomePage.this.session.getTopCardIndex());
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
-						_firstCard.getTitle(), HomePage.this.session.getPlayer().getName(), null,
-						HomePage.this.session.getTopCardIndex() + 1L, null, Boolean.FALSE, _gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
+								_firstCard.getTitle(), HomePage.this.session.getPlayer().getName(),
+								null, HomePage.this.session.getTopCardIndex() + 1L, null,
+								Boolean.FALSE, _gameId);
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
 
@@ -1893,8 +1855,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -1912,7 +1873,8 @@ public class HomePage extends TestReportPage
 		window.setInitialWidth(740);
 		window.setInitialHeight(550);
 
-		window.setContent(new CountCardsModalWindow(window.getContentId(), this.session.getGameId()));
+		window.setContent(
+				new CountCardsModalWindow(window.getContentId(), this.session.getGameId()));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		window.setOutputMarkupId(true);
@@ -1922,8 +1884,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 
@@ -1947,8 +1908,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 
@@ -1967,9 +1927,9 @@ public class HomePage extends TestReportPage
 					return;
 				}
 
-				@SuppressWarnings("boxing")
-				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
-						.random() * allCardsInHand)).intValue() : 0);
+				@SuppressWarnings("boxing") final int randomCardIndex = (allCardsInHand != 1 ?
+						((Double)Math.floor(Math.random() * allCardsInHand)).intValue() :
+						0);
 				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
 						.getAllCardsInHandForAGameAndADeck(_gameId, playerWhoDiscardsDeckId);
 				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
@@ -1995,9 +1955,10 @@ public class HomePage extends TestReportPage
 						NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
 						playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
 						chosenCard.getTitle(), null, "");
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
-						playerWhoDiscards.getName(), null, null, null, Boolean.FALSE, _gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.DISCARD_AT_RANDOM, null, null, null,
+								chosenCard.getTitle(), playerWhoDiscards.getName(), null, null,
+								null, Boolean.FALSE, _gameId);
 
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
@@ -2020,8 +1981,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean onCloseButtonClicked(final AjaxRequestTarget target)
+			@Override public boolean onCloseButtonClicked(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("authenticateUserWithFacebook();");
 				return true;
@@ -2033,8 +1993,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
@@ -2060,8 +2019,7 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				window.setContent(new UserPreferencesModalWindow(window.getContentId(), window));
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
@@ -2080,15 +2038,14 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.INSERT_DIVISION, null, null, null, null,
-						HomePage.this.session.getPlayer().getName(), null, null, null, null,
-						_gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.INSERT_DIVISION, null, null, null, null,
+								HomePage.this.session.getPlayer().getName(), null, null, null, null,
+								_gameId);
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
@@ -2106,27 +2063,26 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target)
+			@Override public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
 						.giveAllPlayersFromGame(_gameId);
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-						ConsoleLogType.SHUFFLE_LIBRARY, null, null, null, null,
-						HomePage.this.session.getPlayer().getName(), null, null, null, null,
-						_gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
+						.chooseStrategy(ConsoleLogType.SHUFFLE_LIBRARY, null, null, null, null,
+								HomePage.this.session.getPlayer().getName(), null, null, null, null,
+								_gameId);
 
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(), me
-								.getSide().getSideName(), null, null, "");
+						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(),
+						me.getSide().getSideName(), null, null, "");
 
 				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
 						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
-								HomePage.this.session.getPlayer().getId(), HomePage.this.session
-										.getPlayer().getDeck().getDeckId());
+								HomePage.this.session.getPlayer().getId(),
+								HomePage.this.session.getPlayer().getDeck().getDeckId());
 				Collections.shuffle(allCardsInLibrary);
 				Collections.shuffle(allCardsInLibrary);
 				Collections.shuffle(allCardsInLibrary);
@@ -2145,239 +2101,212 @@ public class HomePage extends TestReportPage
 		this.add(insertDivisionLink);
 	}
 
-	@Subscribe
-	public void updateTime(final AjaxRequestTarget target, final Date event)
+	@Subscribe public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
-		target.prependJavaScript("if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clockLabel').innerHTML = '"
-				+ event.toString() + "'; document.getElementById('chat').scrollTop = chatPos; }");
+		target.prependJavaScript(
+				"if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clockLabel').innerHTML = '"
+						+ event.toString()
+						+ "'; document.getElementById('chat').scrollTop = chatPos; }");
 	}
 
-	@Subscribe
-	public void displayNotification(final AjaxRequestTarget target, final NotifierCometChannel event)
+	@Subscribe public void displayNotification(final AjaxRequestTarget target,
+			final NotifierCometChannel event)
 	{
 		switch (event.getAction())
 		{
-			case DRAW_CARD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
+			case DRAW_CARD_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has drawn a card!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case END_OF_TURN_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
+			case END_OF_TURN_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				HomePage.this.session.setPlayerEndingHerTurn(event.getPlayerName());
 				break;
 
-			case PLAY_CARD_FROM_HAND_ACTION :
+			case PLAY_CARD_FROM_HAND_ACTION:
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has played '" + event.getCardName()
 						+ "'!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PLAY_CARD_FROM_GRAVEYARD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has played '"
-						+ event.getCardName()
+			case PLAY_CARD_FROM_GRAVEYARD_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has played '" + event.getCardName()
 						+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_GRAVEYARD_FROM_BATTLEFIELD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put '"
-						+ event.getCardName()
-						+ "' to "
-						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
+			case PUT_CARD_TO_GRAVEYARD_FROM_BATTLEFIELD_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has put '" + event.getCardName() + "' to " + (event
+						.getTargetPlayerName().equals(event.getPlayerName()) ?
+						"his (her)" :
+						event.getTargetPlayerName() + "'s")
 						+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put '"
-						+ event.getCardName()
-						+ "' to "
-						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
+			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has put '" + event.getCardName() + "' to " + (event
+						.getTargetPlayerName().equals(event.getPlayerName()) ?
+						"his (her)" :
+						event.getTargetPlayerName() + "'s")
 						+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put '"
-						+ event.getCardName()
-						+ "' to "
-						+ (event.getTargetPlayerName().equals(event.getPlayerName())
-								? "his (her)"
-								: event.getTargetPlayerName() + "'s")
+			case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has put '" + event.getCardName() + "' to " + (event
+						.getTargetPlayerName().equals(event.getPlayerName()) ?
+						"his (her)" :
+						event.getTargetPlayerName() + "'s")
 						+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case COMBAT_IN_PROGRESS_ACTION :
+			case COMBAT_IN_PROGRESS_ACTION:
 				if (Boolean.FALSE.equals(event.isCombatInProgress()))
 				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '"
-							+ event.getPlayerName()
+					target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 							+ "', text : 'has finished combat', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				else
 				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '"
-							+ event.getPlayerName()
+					target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 							+ "', text : 'is declaring combat!', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				break;
 
-			case PLAY_TOP_LIBRARY_CARD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has played the top card of "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "library, which is: "
-						+ event.getCardName()
+			case PLAY_TOP_LIBRARY_CARD_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has played the top card of " + (event.getPlayerName()
+						.equals(event.getTargetPlayerName()) ?
+						"his (her) " :
+						event.getTargetPlayerName() + "'s ") + "library, which is: " + event
+						.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put the top card of "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
-						+ "library in "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
-						+ event.getCardName()
+			case PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has put the top card of " + (event.getPlayerName()
+						.equals(event.getTargetPlayerName()) ?
+						"his (her) " :
+						event.getTargetPlayerName() + "'s ") + "library in " + (event
+						.getPlayerName().equals(event.getTargetPlayerName()) ?
+						"his (her) " :
+						event.getTargetPlayerName() + "'s ") + "hand, and it is: " + event
+						.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : \"has put the top card of "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ")
-						+ "library in "
-						+ (event.getPlayerName().equals(event.getTargetPlayerName())
-								? "his (her) "
-								: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
-						+ event.getCardName()
+			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : \"has put the top card of " + (event.getPlayerName()
+						.equals(event.getTargetPlayerName()) ?
+						"his (her) " :
+						event.getTargetPlayerName() + "'s ") + "library in " + (event
+						.getPlayerName().equals(event.getTargetPlayerName()) ?
+						"his (her) " :
+						event.getTargetPlayerName() + "'s ") + "graveyard, and it is: " + event
+						.getCardName()
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOKEN_ON_BATTLEFIELD_ACTION :
+			case PUT_TOKEN_ON_BATTLEFIELD_ACTION:
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has put a " + event.getCardName()
 						+ " token on the battlefield"
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case DESTROY_TOKEN_ACTION :
+			case DESTROY_TOKEN_ACTION:
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : \"has destroyed a " + event.getCardName() + " token"
 						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case SHUFFLE_LIBRARY_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
+			case SHUFFLE_LIBRARY_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : 'has shuffled his (her) library', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case END_GAME_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
+			case END_GAME_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : 'has put an end to the match', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 				break;
 
-			case IN_RESPONSE_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
+			case IN_RESPONSE_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : 'has an action to play in response', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 				break;
 
-			case FINE_FOR_ME_ACTION :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
+			case FINE_FOR_ME_ACTION:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : 'said : \"Fine for me!\"', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case REVEAL_HAND :
+			case REVEAL_HAND:
 				if ("".equals(event.getTargetPlayerName()))
 				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '"
-							+ event.getPlayerName()
+					target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 							+ "', text : 'reveals his (her) hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				else
 				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '"
-							+ event.getTargetPlayerName() + "', text : \" stops looking at "
-							+ event.getPlayerName()
-							+ "'s hand\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+					target.appendJavaScript(
+							"jQuery.gritter.add({ title : '" + event.getTargetPlayerName()
+									+ "', text : \" stops looking at " + event.getPlayerName()
+									+ "'s hand\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				break;
 
-			case DISCARD_AT_RANDOM :
+			case DISCARD_AT_RANDOM:
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : 'discards a card from his (her) hand at random, and it is : "
 						+ event.getCardName()
 						+ "', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case ASK_FOR_MULLIGAN :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : 'asks for a mulligan. He (she) would like to draw "
-						+ event.getGameId()
+			case ASK_FOR_MULLIGAN:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : 'asks for a mulligan. He (she) would like to draw " + event
+						.getGameId()
 						+ " card(s). Do you agree?', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case OK_FOR_MULLIGAN :
+			case OK_FOR_MULLIGAN:
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : 'agrees for mulligan. " + event.getTargetPlayerName()
 						+ " can draw " + event.getGameId()
 						+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case DONE_MULLIGAN :
+			case DONE_MULLIGAN:
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
 						+ "', text : 'has done mulligan. He (she) has drawn " + event.getGameId()
 						+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case OK_FOR_MULLIGAN_BUT_ONE_LESS :
+			case OK_FOR_MULLIGAN_BUT_ONE_LESS:
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : 'agrees for mulligan with one card less. "
-						+ event.getTargetPlayerName() + " can draw " + event.getGameId()
+						+ "', text : 'agrees for mulligan with one card less. " + event
+						.getTargetPlayerName() + " can draw " + event.getGameId()
 						+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case REFUSE_MULLIGAN :
-				target.appendJavaScript("jQuery.gritter.add({ title : '"
-						+ event.getPlayerName()
-						+ "', text : 'disagrees for "
-						+ event.getTargetPlayerName()
+			case REFUSE_MULLIGAN:
+				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+						+ "', text : 'disagrees for " + event.getTargetPlayerName()
 						+ " to do mulligan.', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			// TODO: split this notifier action and the one of
 			// card counters
-			default :
+			default:
 				throw new IllegalArgumentException(
 						"can not treat this case in HomePage#displayNotification()");
 		}
 	}
 
-	@Subscribe
-	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
+	@Subscribe public void untapAll(final AjaxRequestTarget target,
+			final UntapAllCometChannel event)
 	{
 		final StringBuilder buil = new StringBuilder();
 
@@ -2393,19 +2322,18 @@ public class HomePage extends TestReportPage
 	}
 
 	/**
-	 * @param event
-	 *            not used, since Comet channels are managed by
-	 *            JoinGameModalWindow
+	 * @param event not used, since Comet channels are managed by
+	 *              JoinGameModalWindow
 	 */
-	@Subscribe
-	public void displayJoinGameMessage(final AjaxRequestTarget target,
+	@Subscribe public void displayJoinGameMessage(final AjaxRequestTarget target,
 			final JoinGameNotificationCometChannel event)
 	{
-		target.appendJavaScript("jQuery.gritter.add({ title : 'A player joined in!', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''});");
+		target.appendJavaScript(
+				"jQuery.gritter.add({ title : 'A player joined in!', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
-	@Subscribe
-	public void updateDataBox(final AjaxRequestTarget target, final UpdateDataBoxCometChannel event)
+	@Subscribe public void updateDataBox(final AjaxRequestTarget target,
+			final UpdateDataBoxCometChannel event)
 	{
 		final DataBox db = new DataBox("dataBox", event.getGameId().longValue());
 		this.getDataBoxParent().addOrReplace(db);
@@ -2413,22 +2341,20 @@ public class HomePage extends TestReportPage
 		target.add(this.getDataBoxParent());
 	}
 
-	@Subscribe
-	public void removeCardFromBattlefield(final AjaxRequestTarget target,
+	@Subscribe public void removeCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToGraveyardFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
 		{
-			BattlefieldService.updateGraveyard(target, event.getGameId(),
-					event.getTargetPlayerId(), event.getDeckId());
+			BattlefieldService.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
+					event.getDeckId());
 		}
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getMagicCard(), false);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe
-	public void exileCardFromBattlefield(final AjaxRequestTarget target,
+	@Subscribe public void exileCardFromBattlefield(final AjaxRequestTarget target,
 			final PutToExileFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
@@ -2442,8 +2368,8 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe
-	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
+	@Subscribe public void rotateCard(final AjaxRequestTarget target,
+			final CardRotateCometChannel event)
 	{
 		final MagicCard mc = event.getMc();
 		mc.setTapped(event.isTapped());
@@ -2464,8 +2390,7 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(buil.toString());
 	}
 
-	@Subscribe
-	public void putToHandFromBattlefield(final AjaxRequestTarget target,
+	@Subscribe public void putToHandFromBattlefield(final AjaxRequestTarget target,
 			final PutToHandFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
@@ -2477,8 +2402,7 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe
-	public void playCardFromHand(final AjaxRequestTarget target,
+	@Subscribe public void playCardFromHand(final AjaxRequestTarget target,
 			final PlayCardFromHandCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
@@ -2495,19 +2419,19 @@ public class HomePage extends TestReportPage
 		}
 
 		me.add(new DisplayNoneBehavior());
-		target.prependJavaScript("notify|jQuery('#" + me.getMarkupId() + "').fadeOut(500, notify);");
+		target.prependJavaScript(
+				"notify|jQuery('#" + me.getMarkupId() + "').fadeOut(500, notify);");
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), mc, true);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 		target.appendJavaScript("jQuery('#" + me.getMarkupId()
-				+ "').fadeIn(500); jQuery('#cardInBattlefieldContextMenu"
-				+ mc.getUuidObject().toString().replace("-", "_")
+				+ "').fadeIn(500); jQuery('#cardInBattlefieldContextMenu" + mc.getUuidObject()
+				.toString().replace("-", "_")
 				+ "').popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); ");
 	}
 
-	@Subscribe
-	public void playTopLibraryCard(final AjaxRequestTarget target,
+	@Subscribe public void playTopLibraryCard(final AjaxRequestTarget target,
 			final PlayTopLibraryCardCometChannel event)
 	{
 		final MagicCard mc = event.getCard();
@@ -2516,8 +2440,7 @@ public class HomePage extends TestReportPage
 				event.getGameId(), mc, true);
 	}
 
-	@Subscribe
-	public void putTokenOnBattlefield(final AjaxRequestTarget target,
+	@Subscribe public void putTokenOnBattlefield(final AjaxRequestTarget target,
 			final PutTokenOnBattlefieldCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
@@ -2528,8 +2451,7 @@ public class HomePage extends TestReportPage
 				event.getGameId(), mc, true);
 	}
 
-	@Subscribe
-	public void putTopLibraryCardToHand(final AjaxRequestTarget target,
+	@Subscribe public void putTopLibraryCardToHand(final AjaxRequestTarget target,
 			final PutTopLibraryCardToHandCometChannel event)
 	{
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
@@ -2541,8 +2463,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
-	@Subscribe
-	public void putTopLibraryCardToGraveyard(final AjaxRequestTarget target,
+	@Subscribe public void putTopLibraryCardToGraveyard(final AjaxRequestTarget target,
 			final PutTopLibraryCardToGraveyardCometChannel event)
 	{
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
@@ -2555,8 +2476,7 @@ public class HomePage extends TestReportPage
 		}
 	}
 
-	@Subscribe
-	public void playCardFromGraveyard(final AjaxRequestTarget target,
+	@Subscribe public void playCardFromGraveyard(final AjaxRequestTarget target,
 			final PlayCardFromGraveyardCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
@@ -2564,45 +2484,47 @@ public class HomePage extends TestReportPage
 				event.getGameId(), mc, true);
 	}
 
-	@Subscribe
-	public void revealTopLibraryCard(final AjaxRequestTarget target,
+	@Subscribe public void revealTopLibraryCard(final AjaxRequestTarget target,
 			final RevealTopLibraryCardCometChannel event)
 	{
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
-		this.revealTopLibraryCardWindow.setTitle("This is the top card #" + (event.getIndex() + 1L)
-				+ " of " + event.getPlayerName() + "'s library: ");
-		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
-				this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow,
-				event.getCard()));
+		this.revealTopLibraryCardWindow.setTitle(
+				"This is the top card #" + (event.getIndex() + 1L) + " of " + event.getPlayerName()
+						+ "'s library: ");
+		this.revealTopLibraryCardWindow.setContent(
+				new RevealTopLibraryCardModalWindow(this.revealTopLibraryCardWindow.getContentId(),
+						this.revealTopLibraryCardWindow, event.getCard()));
 
 		this.allOpenRevealTopLibraryCardWindows.add(this.revealTopLibraryCardWindow);
 		this.revealTopLibraryCardWindow.show(target);
 	}
 
-	@Subscribe
-	public void countCards(final AjaxRequestTarget target, final CountCardsCometChannel event)
+	@Subscribe public void countCards(final AjaxRequestTarget target,
+			final CountCardsCometChannel event)
 	{
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 		this.countCardsWindow.setTitle(event.getRequestingPlayerName()
-				+ " asks the number of cards by zone for each player of this game for match #" + event.getGameId()
-				+ ": ");
-		this.countCardsWindow.setContent(new CountCardsModalWindow(this.countCardsWindow
-				.getContentId(), event.getGameId()));
+				+ " asks the number of cards by zone for each player of this game for match #"
+				+ event.getGameId() + ": ");
+		this.countCardsWindow.setContent(
+				new CountCardsModalWindow(this.countCardsWindow.getContentId(), event.getGameId()));
 		this.countCardsWindow.show(target);
 	}
 
-	@Subscribe
-	public void cardZoneChange(final AjaxRequestTarget target, final CardZoneMoveCometChannel event)
+	@Subscribe public void cardZoneChange(final AjaxRequestTarget target,
+			final CardZoneMoveCometChannel event)
 	{
 		final MagicCard mc = event.getCard();
 		final Deck d = event.getDeck();
-		final boolean isCurrentPlayerSameThanTargetedPlayer = event.getTargetPlayerId().longValue() == HatchetHarrySession
-				.get().getPlayer().getId().longValue();
-		final boolean isCurrentPlayerSameThanRequestingPlayer = event.getRequestingPlayerId()
-				.longValue() == this.session.getPlayer().getId().longValue();
+		final boolean isCurrentPlayerSameThanTargetedPlayer =
+				event.getTargetPlayerId().longValue() == HatchetHarrySession.get().getPlayer()
+						.getId().longValue();
+		final boolean isCurrentPlayerSameThanRequestingPlayer =
+				event.getRequestingPlayerId().longValue() == this.session.getPlayer().getId()
+						.longValue();
 
 		if (!event.getTargetZone().equals(CardZone.LIBRARY))
 		{
@@ -2620,71 +2542,77 @@ public class HomePage extends TestReportPage
 		// TODO: other cases
 		switch (event.getTargetZone())
 		{
-			case BATTLEFIELD :
+			case BATTLEFIELD:
 				mc.setX(event.getSide().getX());
 				mc.setY(event.getSide().getY());
 				this.persistenceService.updateCard(mc);
-				BattlefieldService.updateCardsAndRestoreStateInBattlefield(target,
-						this.persistenceService, event.getGameId(), mc, true);
+				BattlefieldService
+						.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
+								event.getGameId(), mc, true);
 				break;
-			case HAND :
+			case HAND:
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
 					BattlefieldService.updateHand(target, event.getTargetPlayerId());
 				}
 				break;
-			case GRAVEYARD :
+			case GRAVEYARD:
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					BattlefieldService.updateGraveyard(target, event.getGameId(),
-							event.getTargetPlayerId(), d.getDeckId());
+					BattlefieldService
+							.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
+									d.getDeckId());
 					hasAlreadyDisplayedGraveyard = true;
 				}
 				break;
-			case EXILE :
+			case EXILE:
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					BattlefieldService.updateExile(target, event.getGameId(),
-							event.getTargetPlayerId(), d.getDeckId());
+					BattlefieldService
+							.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
+									d.getDeckId());
 					hasAlreadyDisplayedExile = true;
 				}
 				break;
-			case LIBRARY :
+			case LIBRARY:
 				break;
-			default :
+			default:
 				throw new UnsupportedOperationException();
 		}
 
 		// TODO: other cases
 		switch (event.getSourceZone())
 		{
-			case HAND :
+			case HAND:
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
 					BattlefieldService.updateHand(target, d.getDeckId());
 				}
 				if (event.isReveal() && isCurrentPlayerSameThanRequestingPlayer)
 				{
-					BattlefieldService.revealHand(target, event.getGameId(),
-							event.getTargetPlayerId(), d.getDeckId());
+					BattlefieldService
+							.revealHand(target, event.getGameId(), event.getTargetPlayerId(),
+									d.getDeckId());
 				}
 				break;
-			case GRAVEYARD :
+			case GRAVEYARD:
 				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedGraveyard)
 				{
-					BattlefieldService.updateGraveyard(target, event.getGameId(),
-							event.getTargetPlayerId(), d.getDeckId());
+					BattlefieldService
+							.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
+									d.getDeckId());
 				}
 				break;
-			case EXILE :
+			case EXILE:
 				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedExile)
 				{
-					BattlefieldService.updateExile(target, event.getGameId(),
-							event.getTargetPlayerId(), d.getDeckId());
+					BattlefieldService
+							.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
+									d.getDeckId());
 				}
 				break;
 			// $CASES-OMITTED$
-			default :
+			default:
 				throw new UnsupportedOperationException();
 		}
 
@@ -2693,40 +2621,36 @@ public class HomePage extends TestReportPage
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe
-	public void cardZoneChangeNotify(final AjaxRequestTarget target,
+	@Subscribe public void cardZoneChangeNotify(final AjaxRequestTarget target,
 			final CardZoneMoveNotifier event)
 	{
 		if (event.getTargetZone().equals(CardZone.LIBRARY))
 		{
 			return;
 		}
-		target.appendJavaScript("jQuery.gritter.add({ title : '"
-				+ event.getRequestingPlayer()
-				+ "', text : \"has moved "
-				+ (event.getOwnerPlayer().equals(event.getRequestingPlayer()) ? "his (her)" : event
-						.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle()
-				+ " from " + event.getSourceZone() + " to " + event.getTargetZone()
+		target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getRequestingPlayer()
+				+ "', text : \"has moved " + (event.getOwnerPlayer()
+				.equals(event.getRequestingPlayer()) ? "his (her)" : event.getOwnerPlayer() + "'s")
+				+ " card: " + event.getCard().getTitle() + " from " + event.getSourceZone() + " to "
+				+ event.getTargetZone()
 				+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
-	@Subscribe
-	public void destroyToken(final AjaxRequestTarget target, final DestroyTokenCometChannel event)
+	@Subscribe public void destroyToken(final AjaxRequestTarget target,
+			final DestroyTokenCometChannel event)
 	{
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), event.getCard(), false);
 	}
 
-	@Subscribe
-	public void addSide(final AjaxRequestTarget target, final AddSideCometChannel event)
+	@Subscribe public void addSide(final AjaxRequestTarget target, final AddSideCometChannel event)
 	{
 		HomePage.LOGGER.info("addSide");
 		this.allPlayerSidesInGame.add(event.getPlayer());
 		this.allSidesInGame.addNewItems(event.getPlayer());
 	}
 
-	@Subscribe
-	public void addSideFromOtherBrowsers(final AjaxRequestTarget target,
+	@Subscribe public void addSideFromOtherBrowsers(final AjaxRequestTarget target,
 			final AddSidesFromOtherBrowsersCometChannel event)
 	{
 		HomePage.LOGGER.info("addSideFromOtherBrowsers");
@@ -2741,63 +2665,54 @@ public class HomePage extends TestReportPage
 
 	}
 
-	@Subscribe
-	public void moveSide(final AjaxRequestTarget target, final MoveSideCometChannel event)
+	@Subscribe public void moveSide(final AjaxRequestTarget target,
+			final MoveSideCometChannel event)
 	{
-		target.appendJavaScript("jQuery('#sidePlaceholder"
-				+ event.getUuid().toString().replace("-", "_") + "').css({top: '"
-				+ event.getSideY() + "px', left: '" + event.getSideX()
-				+ "px', position:'absolute'}); ");
+		target.appendJavaScript(
+				"jQuery('#sidePlaceholder" + event.getUuid().toString().replace("-", "_")
+						+ "').css({top: '" + event.getSideY() + "px', left: '" + event.getSideX()
+						+ "px', position:'absolute'}); ");
 	}
 
-	@Subscribe
-	public void displayArrow(final AjaxRequestTarget target, final ArrowDrawCometChannel event)
+	@Subscribe public void displayArrow(final AjaxRequestTarget target,
+			final ArrowDrawCometChannel event)
 	{
 		HomePage.LOGGER.info("Source: " + event.getSource() + ", target: " + event.getTarget());
 		if (!event.getSource().equals(event.getTarget()))
 		{
-			target.appendJavaScript("window.setTimeout(function() { jQuery('._jsPlumb_endpoint_full').remove(); "
-					+ "arrows.push({ 'source' : "
-					+ "jQuery('#"
-					+ event.getSource()
-					+ "').parent().parent().parent() "
-					+ ", 'target' : "
-					+ "jQuery('#"
-					+ event.getTarget()
-					+ "').parent().parent().parent() "
-					+ " }); "
-					+ "	jsPlumb.connect({ source: jQuery('#"
-					+ event.getSource()
-					+ "').parent().parent().parent(),"
-					+ "                  target: jQuery('#"
-					+ event.getTarget()
-					+ "').parent().parent().parent(),"
-					+ "                  connector:['Bezier', { curviness:70 }], overlays : [['Label', {location:0.7, id:'label',"
-					+ "                    events:{     }}]]}); }, 1000); ");
+			target.appendJavaScript(
+					"window.setTimeout(function() { jQuery('._jsPlumb_endpoint_full').remove(); "
+							+ "arrows.push({ 'source' : " + "jQuery('#" + event.getSource()
+							+ "').parent().parent().parent() " + ", 'target' : " + "jQuery('#"
+							+ event.getTarget() + "').parent().parent().parent() " + " }); "
+							+ "	jsPlumb.connect({ source: jQuery('#" + event.getSource()
+							+ "').parent().parent().parent(),"
+							+ "                  target: jQuery('#" + event.getTarget()
+							+ "').parent().parent().parent(),"
+							+ "                  connector:['Bezier', { curviness:70 }], overlays : [['Label', {location:0.7, id:'label',"
+							+ "                    events:{     }}]]}); }, 750); ");
 		}
 	}
 
-	@Subscribe
-	public void switchDrawMode(final AjaxRequestTarget target,
+	@Subscribe public void switchDrawMode(final AjaxRequestTarget target,
 			final SwitchDrawModeCometChannel event)
 	{
 		if (event.isDrawMode())
 		{
-			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			target.appendJavaScript(
+					"jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 			target.appendJavaScript("arrows = new Array(); drawMode = true; ");
 
-			target.appendJavaScript("cardAlreadySelected = false; "
-					+ "var plumbSource, plumbTarget; "
-					+ "dontZoom= true; "
-					+ "jQuery('span.battlefieldCardsForSide1, span.battlefieldCardsForSide2').click(function (event) { "
-					+ "if (cardAlreadySelected) { "
-					+ "	cardAlreadySelected = false; "
-					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
-					+ "} else { "
-					+ "	cardAlreadySelected = true; "
-					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-					+ "}});");
+			target.appendJavaScript(
+					"cardAlreadySelected = false; " + "var plumbSource, plumbTarget; "
+							+ "dontZoom= true; "
+							+ "jQuery('span.battlefieldCardsForSide1, span.battlefieldCardsForSide2').click(function (event) { "
+							+ "if (cardAlreadySelected) { " + "	cardAlreadySelected = false; "
+							+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+							+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
+							+ "} else { " + "	cardAlreadySelected = true; "
+							+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+							+ "}});");
 
 			final ExternalImage img = new ExternalImage("drawModeOn", "image/draw_mode_on.png");
 			this.getDrawModeParent().addOrReplace(img);
@@ -2806,11 +2721,13 @@ public class HomePage extends TestReportPage
 		}
 		else
 		{
-			target.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode OFF', text : \"You are now in normal mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			target.appendJavaScript(
+					"jQuery.gritter.add({ title : 'Draw mode OFF', text : \"You are now in normal mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 
 			final StringBuilder buil = new StringBuilder();
 			buil.append("arrows = new Array(); drawMode = false; dontZoom = false; ");
-			buil.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
+			buil.append(
+					"jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
 			target.appendJavaScript(buil.toString());
 
@@ -2821,41 +2738,39 @@ public class HomePage extends TestReportPage
 
 	}
 
-	@Subscribe
-	public void logToConsole(final AjaxRequestTarget target, final ConsoleLogCometChannel event)
+	@Subscribe public void logToConsole(final AjaxRequestTarget target,
+			final ConsoleLogCometChannel event)
 	{
 		event.getLogger().logToConsole(target);
 	}
 
-	@Subscribe
-	public void hideHand(final AjaxRequestTarget target, final StopRevealingHandCometChannel event)
+	@Subscribe public void hideHand(final AjaxRequestTarget target,
+			final StopRevealingHandCometChannel event)
 	{
 		BattlefieldService.hideHand(target);
 	}
 
-	@Subscribe
-	public void revealHand(final AjaxRequestTarget target, final RevealHandCometChannel event)
+	@Subscribe public void revealHand(final AjaxRequestTarget target,
+			final RevealHandCometChannel event)
 	{
 		BattlefieldService.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
 	}
 
-	@Subscribe
-	public void askMulligan(final AjaxRequestTarget target, final AskMulliganCometChannel event)
+	@Subscribe public void askMulligan(final AjaxRequestTarget target,
+			final AskMulliganCometChannel event)
 	{
 		HomePage.LOGGER.info("askMulligan");
 		this.askMulliganWindow.setTitle(event.getPlayer() + " asks for mulligan");
-		this.askMulliganWindow
-				.setContent(new AskMulliganModalWindow(this.askMulliganWindow,
-						this.askMulliganWindow.getContentId(), event.getPlayer(), event
-								.getNumberOfCards()));
+		this.askMulliganWindow.setContent(new AskMulliganModalWindow(this.askMulliganWindow,
+				this.askMulliganWindow.getContentId(), event.getPlayer(),
+				event.getNumberOfCards()));
 
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 		this.askMulliganWindow.show(target);
 	}
 
-	@Subscribe
-	public void reorderCardsInBattlefield(final AjaxRequestTarget target,
+	@Subscribe public void reorderCardsInBattlefield(final AjaxRequestTarget target,
 			final ReorderCardCometChannel event)
 	{
 		HomePage.LOGGER.info("reorderCardsInBattlefield");
@@ -2864,8 +2779,9 @@ public class HomePage extends TestReportPage
 				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(event.getGameId(),
 						event.getPlayerId(), event.getDeckId());
 
-		HomePage.LOGGER.info("requesting side: " + event.getPlayerSide() + ", this side: "
-				+ this.session.getPlayer().getSide().getSideName());
+		HomePage.LOGGER
+				.info("requesting side: " + event.getPlayerSide() + ", this side: " + this.session
+						.getPlayer().getSide().getSideName());
 
 		Component me;
 
@@ -2875,8 +2791,8 @@ public class HomePage extends TestReportPage
 					.generateCardListViewForSide1(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
 			me = this.parentPlaceholder;
 			me.add(new DisplayNoneBehavior());
-			target.prependJavaScript("notify|jQuery('#" + me.getMarkupId()
-					+ "').fadeOut(500, notify);");
+			target.prependJavaScript(
+					"notify|jQuery('#" + me.getMarkupId() + "').fadeOut(250, notify);");
 			target.add(listViewForSide1);
 		}
 		else
@@ -2885,21 +2801,19 @@ public class HomePage extends TestReportPage
 					.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
 			me = this.opponentParentPlaceholder;
 			me.add(new DisplayNoneBehavior());
-			target.prependJavaScript("notify|jQuery('#" + me.getMarkupId()
-					+ "').fadeOut(500, notify);");
+			target.prependJavaScript(
+					"notify|jQuery('#" + me.getMarkupId() + "').fadeOut(250, notify);");
 			target.add(listViewForSide2);
 		}
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
 				event.getGameId(), null, false);
 
-		target.appendJavaScript("jQuery('#"
-				+ me.getMarkupId()
-				+ "').fadeIn(500); jQuery('.cardInBattlefieldContextMenu').each(function(index, value) { jQuery(this).popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); }); ");
+		target.appendJavaScript("jQuery('#" + me.getMarkupId()
+				+ "').fadeIn(250); jQuery('.cardInBattlefieldContextMenu').each(function(index, value) { jQuery(this).popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); }); ");
 	}
 
-	@Override
-	protected void configureResponse(final WebResponse response)
+	@Override protected void configureResponse(final WebResponse response)
 	{
 		if (this.session != null)
 		{
@@ -2919,8 +2833,9 @@ public class HomePage extends TestReportPage
 		// to manage a state recovery
 		final Player player1 = this.persistenceService.getPlayer(this.session.getPlayer().getId());
 		final Boolean isHandDisplayed = player1.isHandDisplayed();
-		final Component galleryToUpdate = isHandDisplayed.booleanValue() ? new HandComponent(
-				"gallery") : new WebMarkupContainer("gallery");
+		final Component galleryToUpdate = isHandDisplayed.booleanValue() ?
+				new HandComponent("gallery") :
+				new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.addOrReplace(galleryToUpdate);
@@ -2932,8 +2847,8 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void renderHead(final Component component, final IHeaderResponse response)
+			@Override public void renderHead(final Component component,
+					final IHeaderResponse response)
 			{
 				super.renderHead(component, response);
 				HomePage.this.restoreStateOfAllCardsInBattlefield(response);
@@ -2956,8 +2871,8 @@ public class HomePage extends TestReportPage
 				HomePage.LOGGER.info("%%% mc.getToken(): " + mc.getToken());
 
 				js.append("var card = jQuery(\"#menutoggleButton" + mc.getUuid() + "\"); "
-						+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
-						+ mc.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY() + "px\");\n");
+						+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + mc
+						.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY() + "px\");\n");
 
 				final String uuidValidForJs = mc.getUuid().replace("-", "_");
 				if (mc.isTapped())
@@ -2966,8 +2881,8 @@ public class HomePage extends TestReportPage
 							+ "').parents('.cardContainer').addClass('tapped'); ");
 				}
 
-				if (((mc.getToken() == null) && mc.getCounters().isEmpty())
-						|| ((mc.getToken() != null) && mc.getToken().getCounters().isEmpty()))
+				if (((mc.getToken() == null) && mc.getCounters().isEmpty()) || (
+						(mc.getToken() != null) && mc.getToken().getCounters().isEmpty()))
 				{
 					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " hidden");
 					js.append("jQuery('#bullet" + uuidValidForJs + "').hide(); ");
@@ -2991,14 +2906,12 @@ public class HomePage extends TestReportPage
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 	}
 
-	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
+	@Required public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
 	}
 
-	@Required
-	public void setDataGenerator(final DataGenerator _dataGenerator)
+	@Required public void setDataGenerator(final DataGenerator _dataGenerator)
 	{
 		this.dataGenerator = _dataGenerator;
 	}
@@ -3073,13 +2986,12 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populate(final Item<MagicCard> item)
+			@Override protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
-				final CardPanel cp = new CardPanel("cardPanel",
-						new Model<>(new PlayerAndCard(HomePage.this.persistenceService.getPlayer(mc
-								.getDeck().getPlayerId()), mc)));
+				final CardPanel cp = new CardPanel("cardPanel", new Model<>(new PlayerAndCard(
+						HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId()),
+						mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3117,21 +3029,20 @@ public class HomePage extends TestReportPage
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populate(final Item<MagicCard> item)
+			@Override protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
 
 				if (HomePage.this.player.getGame() == null)
 				{
-					HomePage.this.player.setGame(HomePage.this.persistenceService
-							.getGame(HomePage.this.getAllMagicCardsInBattlefieldForSide2().get(0)
+					HomePage.this.player.setGame(HomePage.this.persistenceService.getGame(
+							HomePage.this.getAllMagicCardsInBattlefieldForSide2().get(0)
 									.getGameId()));
 				}
 
-				final CardPanel cp = new CardPanel("cardPanel",
-						new Model<>(new PlayerAndCard(HomePage.this.persistenceService.getPlayer(mc
-								.getDeck().getPlayerId()), mc)));
+				final CardPanel cp = new CardPanel("cardPanel", new Model<>(new PlayerAndCard(
+						HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId()),
+						mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3171,21 +3082,21 @@ public class HomePage extends TestReportPage
 		return this.sideParent;
 	}
 
-	@SuppressWarnings("static-method")
-	private QuickView<Player> populateSides(final ListDataProvider<Player> data)
+	@SuppressWarnings("static-method") private QuickView<Player> populateSides(
+			final ListDataProvider<Player> data)
 	{
 		return new QuickView<Player>("sides", data)
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populate(final Item<Player> item)
+			@Override protected void populate(final Item<Player> item)
 			{
 				try
 				{
 					final UUID uuid = UUID.fromString(item.getModelObject().getSideUuid());
-					item.add(new SidePlaceholderPanel("side", item.getModelObject().getSide()
-							.getSideName(), HomePage.this, uuid, item.getModelObject()));
+					item.add(new SidePlaceholderPanel("side",
+							item.getModelObject().getSide().getSideName(), HomePage.this, uuid,
+							item.getModelObject()));
 				}
 				catch (final NullPointerException e)
 				{
@@ -3246,8 +3157,7 @@ public class HomePage extends TestReportPage
 			super("style", Model.of("display: none"));
 		}
 
-		@Override
-		public boolean isTemporary(Component component)
+		@Override public boolean isTemporary(Component component)
 		{
 			return true;
 		}

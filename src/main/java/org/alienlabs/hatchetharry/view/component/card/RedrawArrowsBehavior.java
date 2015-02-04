@@ -1,9 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.service.PersistenceService;
@@ -21,13 +17,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
 public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedrawArrowsBehavior.class);
 	private final Long gameId;
-	@SpringBean
-	private PersistenceService persistenceService;
+	@SpringBean private PersistenceService persistenceService;
 
 	public RedrawArrowsBehavior(final Long _gameId)
 	{
@@ -35,14 +34,12 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		Injector.get().inject(this);
 	}
 
-	@Override
-	protected void respond(final AjaxRequestTarget target)
+	@Override protected void respond(final AjaxRequestTarget target)
 	{
 		// TODO have this work again
 	}
 
-	@Override
-	public void renderHead(final Component component, final IHeaderResponse response)
+	@Override public void renderHead(final Component component, final IHeaderResponse response)
 	{
 		super.renderHead(component, response);
 
@@ -53,35 +50,28 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		final StringBuilder content = new StringBuilder(
 				"var redraw = function() { arrow = new Array(); ");
 
-		final Boolean drawMode = this.persistenceService.getGame(
-				HatchetHarrySession.get().getGameId()).isDrawMode();
+		final Boolean drawMode = this.persistenceService
+				.getGame(HatchetHarrySession.get().getGameId()).isDrawMode();
 		content.append("drawMode = " + drawMode.booleanValue() + "; ");
 		RedrawArrowsBehavior.LOGGER.info("drawMode: " + drawMode.booleanValue());
 
 		if (drawMode.booleanValue())
 		{
-			content.append("jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
+			content.append(
+					"jQuery('._jsPlumb_connector').remove(); ");
 
 			for (final Arrow arrow : allArrows)
 			{
-				content.append("var e0 = jsPlumb.addEndpoint(");
-				content.append("jQuery('#" + arrow.getSource() + "').parent().parent().parent() ");
-				content.append(" ); ");
-				content.append("var e1 = jsPlumb.addEndpoint(");
-				content.append("jQuery('#" + arrow.getTarget() + "').parent().parent().parent() ");
-				content.append("); ");
-				content.append(" arrows.push({ 'source' : ");
-				content.append("jQuery('#" + arrow.getSource() + "').parent().parent().parent() ");
-				content.append(", 'target' : ");
-				content.append("jQuery('#" + arrow.getTarget() + "').parent().parent().parent() ");
-				content.append(" }); ");
-				content.append("	jsPlumb.connect({ source:e0, target:e1, connector:['Bezier', { curviness:70 }], overlays : [ ");
-				content.append("					['Label', {location:0.7, id:'label', events:{ ");
+				content.append("	jsPlumb.connect({ source: jQuery('#" + arrow.getSource()
+						+ "').parent().parent().parent(), target: jQuery('#" + arrow.getTarget()
+						+ "').parent().parent().parent(), connector:['Bezier', { curviness:70 }], overlays : [ ");
+				content.append(
+						"					['Label', {location:0.7, id:'label', events:{ ");
 				content.append("							} }]] }); ");
 			}
 		}
 		content.append("}; ");
-		content.append("window.setTimeout(redraw, 1500); ");
+		content.append("window.setTimeout(redraw, 750); ");
 		variables.put("content", content.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
@@ -95,13 +85,12 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		}
 		catch (final IOException e)
 		{
-			RedrawArrowsBehavior.LOGGER.error(
-					"unable to close template in RedrawArrowsBehavior#renderHead()!", e);
+			RedrawArrowsBehavior.LOGGER
+					.error("unable to close template in RedrawArrowsBehavior#renderHead()!", e);
 		}
 	}
 
-	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
+	@Required public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
 	}
