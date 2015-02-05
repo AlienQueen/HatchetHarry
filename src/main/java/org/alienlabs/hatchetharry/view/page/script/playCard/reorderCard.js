@@ -23,7 +23,7 @@ window.setTimeout(function() {
 				}
 		});
 
-	jQuery('.maximize').click(function() {
+	jQuery('.maximize').unbind('click').click(function() {
 		var me = $(this).prevAll('.magicCard');
 		if (me.hasClass('details')) {
 			me.css('z-index', '');

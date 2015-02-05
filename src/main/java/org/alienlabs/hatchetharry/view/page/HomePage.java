@@ -1339,7 +1339,7 @@ import java.util.*;
 								"script/draggableHandle/jquery.hammer.min.js")));
 				response.render(JavaScriptHeaderItem.forReference(
 						new PackageResourceReference(HomePage.class,
-								"script/jquery.jsPlumb-1.5.3-min.js")));
+								"script/arrowDraw/dom.jsPlumb-1.7.2-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(
 						new PackageResourceReference(HomePage.class,
 								"script/tour/bootstrap-tour-standalone.min.js")));

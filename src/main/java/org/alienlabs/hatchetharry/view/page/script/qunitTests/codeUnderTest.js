@@ -1,6 +1,6 @@
 // The dock
 jQuery(function () {
-	var dockOptions = { align: 'top' };
+    var dockOptions = {align: 'top'};
     jQuery('#dock').jqDock(dockOptions);
 });
 
@@ -59,14 +59,14 @@ jQuery(function () {
 
 // The tooltips
 jQuery(function () {
-    	window.setTimeout(function() {
-    		jQuery('[title]').tipsy({gravity: 's'});
-			jQuery('.consoleCard[title]').tipsy({html: true, gravity: 'n'});
-			jQuery('.consoleCard[original-title]').tipsy({html: true, gravity: 'n'});
-			jQuery(".consoleCard").click(function() {
-				return false;
-			});
-    	}, 1000);
+    window.setTimeout(function () {
+        jQuery('[title]').tipsy({gravity: 's'});
+        jQuery('.consoleCard[title]').tipsy({html: true, gravity: 'n'});
+        jQuery('.consoleCard[original-title]').tipsy({html: true, gravity: 'n'});
+        jQuery(".consoleCard").click(function () {
+            return false;
+        });
+    }, 1000);
 });
 
 // For cards drag + hand, graveyard & exile drop
@@ -149,8 +149,16 @@ jQuery(function () {
 //Visio-conference
 jQuery(function () {
     window.setTimeout(function () {
-        jQuery('#conference').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window }, title: 'HatchetHarry video-conference' });
-        jQuery('#importDeck').dialog({ autoOpen: false, position: { my: 'center', at: 'center', of: window }, title: 'HatchetHarry deck import' });
+        jQuery('#conference').dialog({
+            autoOpen: false,
+            position: {my: 'center', at: 'center', of: window},
+            title: 'HatchetHarry video-conference'
+        });
+        jQuery('#importDeck').dialog({
+            autoOpen: false,
+            position: {my: 'center', at: 'center', of: window},
+            title: 'HatchetHarry deck import'
+        });
         jQuery('#closeImportDeck').click(function () {
             jQuery('#importDeck').dialog('close');
         });
@@ -280,7 +288,8 @@ jQuery(function () {
                 trigger: 'manual',
                 content: "Have fun!"
             }
-        ]});
+        ]
+    });
 
     // Initialize the tour
     tour.init();
@@ -299,57 +308,59 @@ var uncloak = function () {
     jQuery('body').removeClass("cloak");
 };
 
-var responsiveCards = function() {
-	var cardBitmapSize = 310;
-	var screenHeight = jQuery(window).height();
-	var screenReservedHeight = (7+15)/100; // 7% and 15 % from cards.css #allCardsParent
-	var marginSize = 20;
-	var numberOfCardsLine = 3;
-	var availableLineHeight =  Math.floor( ( screenHeight*(1-screenReservedHeight) / numberOfCardsLine ) - marginSize );
-	var cardMaxSize = Math.min(availableLineHeight, cardBitmapSize);
-	var css = '.cardContainer, .magicCard {max-height:'+cardMaxSize+'px;max-width:'+cardMaxSize+'px;}';
-	domSingleton('style', 'responsiveCards',css);
+var responsiveCards = function () {
+    var cardBitmapSize = 310;
+    var screenHeight = jQuery(window).height();
+    var screenReservedHeight = (7 + 15) / 100; // 7% and 15 % from cards.css #allCardsParent
+    var marginSize = 20;
+    var numberOfCardsLine = 3;
+    var availableLineHeight = Math.floor(( screenHeight * (1 - screenReservedHeight) / numberOfCardsLine ) - marginSize);
+    var cardMaxSize = Math.min(availableLineHeight, cardBitmapSize);
+    var css = '.cardContainer, .magicCard {max-height:' + cardMaxSize + 'px;max-width:' + cardMaxSize + 'px;}';
+    domSingleton('style', 'responsiveCards', css);
 };
-function domSingleton(tag,id,content){
-	if(jQuery('#'+id).length>0) {
-		jQuery('#'+id).html(content);
-	}
-	else {
-		jQuery('body').append('<'+tag+' id="'+id+'">'+content+'</'+tag+'>');
-	}
+function domSingleton(tag, id, content) {
+    if (jQuery('#' + id).length > 0) {
+        jQuery('#' + id).html(content);
+    }
+    else {
+        jQuery('body').append('<' + tag + ' id="' + id + '">' + content + '</' + tag + '>');
+    }
 }
 jQuery(window).on('load resize', responsiveCards);
 
 jQuery(function () {
-		jQuery('.scroller').click(function() {
-			scroller = jQuery(this)
-			if (scroller.hasClass('up')){
-				scroller.removeClass('up');
-				scroller.attr('href', '#');
-			} else {
-				scroller.addClass('up');
-				scroller.attr('href', '#dataScreen');
-			}
-		});        
+    jQuery('.scroller').click(function () {
+        scroller = jQuery(this)
+        if (scroller.hasClass('up')) {
+            scroller.removeClass('up');
+            scroller.attr('href', '#');
+        } else {
+            scroller.addClass('up');
+            scroller.attr('href', '#dataScreen');
+        }
+    });
 });
 
 jQuery(function () {
-    jQuery('.maximize').click(function() {
-        var me = $(this).prevAll('.magicCard');
-        if (me.hasClass('details')) {
-            me.css('z-index', '');
-        } else {
-            me.css('z-index', ++zIndex);
-        };
-        $(this).parents('.cardContainer').toggleClass('details');
-    });
     window.setTimeout(function () {
-        jQuery('.gallery .magicCard').unbind('click').click(function() {
+        jQuery('.maximize').unbind('click').click(function () {
+            var me = $(this).prevAll('.magicCard');
+            if (me.hasClass('details')) {
+                me.css('z-index', '');
+            } else {
+                me.css('z-index', ++zIndex);
+            }
+            ;
+            $(this).parents('.cardContainer').toggleClass('details');
+        });
+        jQuery('.gallery .magicCard').unbind('click').click(function () {
             if ($(this).hasClass('details')) {
                 $(this).css('z-index', '');
             } else {
                 $(this).css('z-index', ++zIndex);
-            };
+            }
+            ;
 
             $(this).parents('.cardContainer').toggleClass('details');
         });

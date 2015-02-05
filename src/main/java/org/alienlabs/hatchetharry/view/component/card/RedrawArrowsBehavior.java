@@ -1,6 +1,5 @@
 package org.alienlabs.hatchetharry.view.component.card;
 
-import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.Arrow;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -36,7 +35,7 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 
 	@Override protected void respond(final AjaxRequestTarget target)
 	{
-		// TODO have this work again
+		// No need to respond to Ajax here
 	}
 
 	@Override public void renderHead(final Component component, final IHeaderResponse response)
@@ -44,41 +43,28 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		super.renderHead(component, response);
 
 		final HashMap<String, Object> variables = new HashMap<>();
-		variables.put("arrowDrawUrl", this.getCallbackUrl());
-
 		final List<Arrow> allArrows = this.persistenceService.loadAllArrowsForAGame(this.gameId);
 		final StringBuilder content = new StringBuilder(
-				"var redraw = function() { arrow = new Array(); ");
+				"var redraw = function() { jQuery('._jsPlumb_connector').remove(); ");
 
-		final Boolean drawMode = this.persistenceService
-				.getGame(HatchetHarrySession.get().getGameId()).isDrawMode();
-		content.append("drawMode = " + drawMode.booleanValue() + "; ");
-		RedrawArrowsBehavior.LOGGER.info("drawMode: " + drawMode.booleanValue());
-
-		if (drawMode.booleanValue())
+		for (final Arrow arrow : allArrows)
 		{
-			content.append(
-					"jQuery('._jsPlumb_connector').remove(); ");
-
-			for (final Arrow arrow : allArrows)
-			{
-				content.append("	jsPlumb.connect({ source: jQuery('#" + arrow.getSource()
-						+ "').parent().parent().parent(), target: jQuery('#" + arrow.getTarget()
-						+ "').parent().parent().parent(), connector:['Bezier', { curviness:70 }], overlays : [ ");
-				content.append(
-						"					['Label', {location:0.7, id:'label', events:{ ");
-				content.append("							} }]] }); ");
-			}
+			content.append("jsPlumb.connect({ source: jQuery('#" + arrow.getSource()
+					+ "').parent().parent().parent(), target: jQuery('#" + arrow.getTarget()
+					+ "').parent().parent().parent(), connector:['Bezier', { curviness:70 }], overlays : [ ");
+			content.append("					['Label', {location:0.7, id:'label', events:{ ");
+			content.append("							} }]] }); ");
 		}
+
 		content.append("}; ");
-		content.append("window.setTimeout(redraw, 750); ");
+		content.append("window.setTimeout(redraw, 1250); ");
 		variables.put("content", content.toString());
 
 		final TextTemplate template = new PackageTextTemplate(HomePage.class,
 				"script/arrowDraw/redrawArrows.js");
 		template.interpolate(variables);
 
-		response.render(JavaScriptHeaderItem.forScript(template.asString(), null));
+		response.render(JavaScriptHeaderItem.forScript(template.asString(), "redrawArrows"));
 		try
 		{
 			template.close();

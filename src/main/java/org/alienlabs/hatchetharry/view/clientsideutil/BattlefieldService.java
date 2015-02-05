@@ -144,13 +144,13 @@ public class BattlefieldService
 				BattlefieldService.LOGGER
 						.info("source: " + arrow.getSource() + ", target: " + arrow.getTarget());
 
-				buil.append("jsPlumb.connect({ source: jQuery('#" + arrow.getSource()
-						+ "').parent().parent().parent(), target: jQuery('#" + arrow.getTarget()
-						+ "').parent().parent().parent(), connector:['Bezier', { curviness:70 }] , overlays : [['Label', {location:0.7, id:'label',"
-						+ " events:{ } } ] ] } ); ");
+				buil.append("jsPlumb.connect({source:jQuery('#" + arrow.getSource()
+						+ "').parent().parent().parent(),target:jQuery('#" + arrow.getTarget()
+						+ "').parent().parent().parent(),connector:['Bezier',{curviness:70}],overlays:[['Label',{location:0.7,id:'label',"
+						+ "events:{}}]]}); ");
 			}
 
-			buil.append("}, 1250); ");
+			buil.append("}, 500); ");
 		}
 
 		final List<MagicCard> allCards = persistenceService

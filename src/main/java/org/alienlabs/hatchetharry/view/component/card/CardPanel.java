@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = { "SE_INNER_CLASS",
-		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket")
-public class CardPanel extends Panel
+		"SIC_INNER_SHOULD_BE_STATIC_ANON" }, justification = "In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket") public class CardPanel
+		extends Panel
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(CardPanel.class);
@@ -40,8 +40,7 @@ public class CardPanel extends Panel
 	private final PutToExileFromBattlefieldBehavior putToExileFromBattlefieldBehavior;
 	private final DestroyTokenBehavior destroyTokenBehavior;
 
-	@SpringBean
-	private PersistenceService persistenceService;
+	@SpringBean private PersistenceService persistenceService;
 	private final IModel<PlayerAndCard> playerAndCard;
 
 	public CardPanel(final String id, final IModel<PlayerAndCard> _playerAndCard)
@@ -56,19 +55,21 @@ public class CardPanel extends Panel
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void renderHead(final Component component, final IHeaderResponse response)
+			@Override public void renderHead(final Component component,
+					final IHeaderResponse response)
 			{
 				super.renderHead(component, response);
-				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/contextmenu/jquery.contextMenu.js")));
-				response.render(CssHeaderItem.forReference(new PackageResourceReference(
-						HomePage.class, "script/contextmenu/jquery.contextMenu.css")));
+				response.render(JavaScriptHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/contextmenu/jquery.contextMenu.js")));
+				response.render(CssHeaderItem.forReference(
+						new PackageResourceReference(HomePage.class,
+								"script/contextmenu/jquery.contextMenu.css")));
 			}
 		});
 
-		final MagicCard myCard = this.persistenceService.getCardFromUuid(this.playerAndCard
-				.getObject().getCard().getUuidObject());
+		final MagicCard myCard = this.persistenceService
+				.getCardFromUuid(this.playerAndCard.getObject().getCard().getUuidObject());
 
 		final WebMarkupContainer cardHandle = new WebMarkupContainer("cardHandle");
 		cardHandle.setOutputMarkupId(true);
@@ -96,20 +97,19 @@ public class CardPanel extends Panel
 				this.playerAndCard.getObject().getCard().getUuidObject());
 		menutoggleButton.add(this.putToExileFromBattlefieldBehavior);
 
-		this.destroyTokenBehavior = new DestroyTokenBehavior(this.playerAndCard.getObject()
-				.getCard().getUuidObject());
+		this.destroyTokenBehavior = new DestroyTokenBehavior(
+				this.playerAndCard.getObject().getCard().getUuidObject());
 		menutoggleButton.add(this.destroyTokenBehavior);
 
-		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(this.playerAndCard
-				.getObject().getCard().getUuidObject());
+		final CardRotateBehavior cardRotateBehavior = new CardRotateBehavior(
+				this.playerAndCard.getObject().getCard().getUuidObject());
 
-		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(this.playerAndCard
-				.getObject().getCard().getUuidObject(), myCard, this.playerAndCard.getObject()
-				.getPlayer());
+		final DrawModeBehavior drawModeBehavior = new DrawModeBehavior(
+				this.playerAndCard.getObject().getPlayer());
 		menutoggleButton.add(cardRotateBehavior, drawModeBehavior);
 
-		final ArrowDrawBehavior arrowDrawBehavior = new ArrowDrawBehavior("cardHandle"
-				+ uuidValidForJs);
+		final ArrowDrawBehavior arrowDrawBehavior = new ArrowDrawBehavior(
+				"cardHandle" + uuidValidForJs);
 		menutoggleButton.add(arrowDrawBehavior);
 
 		CardPanel.LOGGER.info("uuid: " + this.playerAndCard.getObject().getCard().getUuidObject());
@@ -117,8 +117,8 @@ public class CardPanel extends Panel
 		final WebMarkupContainer bullet = new WebMarkupContainer("bullet");
 		bullet.setOutputMarkupId(true).setMarkupId("bullet" + uuidValidForJs);
 
-		final ExternalImage cardImage = new ExternalImage("cardImage", this.playerAndCard
-				.getObject().getCard().getBigImageFilename());
+		final ExternalImage cardImage = new ExternalImage("cardImage",
+				this.playerAndCard.getObject().getCard().getBigImageFilename());
 		cardImage.setOutputMarkupId(true);
 
 		final ExternalImage cardRotate = new ExternalImage("cardRotate", "/image/rightArrow.png");
@@ -129,13 +129,13 @@ public class CardPanel extends Panel
 
 		if (null != this.playerAndCard.getObject().getPlayer())
 		{
-			if ("infrared".equals(this.playerAndCard.getObject().getPlayer().getSide()
-					.getSideName()))
+			if ("infrared"
+					.equals(this.playerAndCard.getObject().getPlayer().getSide().getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid red;"));
 			}
-			else if ("ultraviolet".equals(this.playerAndCard.getObject().getPlayer().getSide()
-					.getSideName()))
+			else if ("ultraviolet"
+					.equals(this.playerAndCard.getObject().getPlayer().getSide().getSideName()))
 			{
 				cardImage.add(new AttributeModifier("style", "border: 1px solid purple;"));
 			}
@@ -171,8 +171,8 @@ public class CardPanel extends Panel
 
 		if (HatchetHarrySession.get().isDisplayTooltips().booleanValue())
 		{
-			this.add(new MagicCardTooltipPanel("tooltip", myCard.getUuidObject(), myCard
-					.getBigImageFilename(), myCard.getOwnerSide(), myCard));
+			this.add(new MagicCardTooltipPanel("tooltip", myCard.getUuidObject(),
+					myCard.getBigImageFilename(), myCard.getOwnerSide(), myCard));
 		}
 		else
 		{
@@ -200,8 +200,7 @@ public class CardPanel extends Panel
 		return this.putToExileFromBattlefieldBehavior;
 	}
 
-	@Required
-	public void setPersistenceService(final PersistenceService _persistenceService)
+	@Required public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
 	}
