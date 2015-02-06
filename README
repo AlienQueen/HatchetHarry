@@ -70,3 +70,7 @@ To log the current page in a WicketTester test, do:
 On first run, please drop all tables from schema "hh". Then let it do the magic. Not used in the tests, no need to drop hhTest.
 
 To produce a SQL migration file: mysqldiff (MySQL official distro).
+
+- To launch PIT:
+
+    +  mvn org.pitest:pitest-maven:mutationCoverage

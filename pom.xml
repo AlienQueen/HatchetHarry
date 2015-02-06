@@ -1,4 +1,5 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.alienlabs.hatchetharry</groupId>
@@ -7,8 +8,10 @@
     <version>0.24.0-SNAPSHOT</version>
     <name>hatchetharry</name>
     <description>HatchetHarry is a Magic: The Gathering playing webapp.
-        It is free software licensed under the terms of the GNU Affero General Public License, version 3.
-        You are free to modify any part of its source code (client-side or server-side), provided that the changes keep
+        It is free software licensed under the terms of the GNU Affero General Public License,
+        version 3.
+        You are free to modify any part of its source code (client-side or server-side), provided
+        that the changes keep
         this license.
     </description>
     <inceptionYear>2011</inceptionYear>
@@ -199,10 +202,10 @@
             <version>2.2.5</version>
         </dependency>
         <dependency>
-		    <groupId>org.flywaydb</groupId>
-		    <artifactId>flyway-core</artifactId>
-		    <version>3.1</version>
-		</dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>3.1</version>
+        </dependency>
         <dependency>
             <groupId>org.wicketstuff</groupId>
             <artifactId>wicketstuff-annotation</artifactId>
@@ -258,17 +261,17 @@
             <artifactId>antlr</artifactId>
             <version>2.7.6</version>
         </dependency>
-         <dependency>
-             <groupId>org.atmosphere</groupId>
-             <artifactId>atmosphere-runtime</artifactId>
-             <version>${atmosphere.version}</version>
-             <exclusions>
-                 <exclusion>
-                     <groupId>org.atmosphere</groupId>
-                     <artifactId>atmosphere-compat-tomcat7</artifactId>
-                 </exclusion>
-             </exclusions>
-         </dependency>
+        <dependency>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-runtime</artifactId>
+            <version>${atmosphere.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.atmosphere</groupId>
+                    <artifactId>atmosphere-compat-tomcat7</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-servlet_3.0_spec</artifactId>
@@ -304,11 +307,11 @@
             <artifactId>hibernate-ehcache</artifactId>
             <version>${hibernate.version}</version>
             <exclusions>
-				<exclusion>
-					<artifactId>ehcache-core</artifactId>
-					<groupId>net.sf.ehcache</groupId>
-				</exclusion>
-			</exclusions>
+                <exclusion>
+                    <artifactId>ehcache-core</artifactId>
+                    <groupId>net.sf.ehcache</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -366,11 +369,11 @@
             <artifactId>wicket-atmosphere</artifactId>
             <version>${wicket-atmosphere.version}</version>
             <exclusions>
-				<exclusion>
-					<artifactId>javassist</artifactId>
-					<groupId>javassist</groupId>
-				</exclusion>
-			</exclusions>
+                <exclusion>
+                    <artifactId>javassist</artifactId>
+                    <groupId>javassist</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -402,10 +405,10 @@
                     <artifactId>commons-lang</artifactId>
                     <groupId>commons-lang</groupId>
                 </exclusion>
-				<exclusion>
-					<artifactId>ehcache-core</artifactId>
-					<groupId>net.sf.ehcache</groupId>
-				</exclusion>
+                <exclusion>
+                    <artifactId>ehcache-core</artifactId>
+                    <groupId>net.sf.ehcache</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -524,6 +527,23 @@
         </testResources>
         <plugins>
             <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>LATEST</version>
+                <configuration>
+                    <targetClasses>
+                        <param>org.alienlabs.hatchetharry.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>org.alienlabs.hatchetharry.LaunchAllServerSideTests</param>
+                    </targetTests>
+                    <jvmArgs>
+                        <value>-Xms64m</value>
+                        <value>-Xmx12288m</value>
+                    </jvmArgs>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>selenium-maven-plugin</artifactId>
                 <version>2.3</version>
@@ -582,7 +602,8 @@
                 <version>${jetty.version}</version>
                 <configuration>
                     <connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                        <connector
+                                implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
                             <port>8088</port>
                             <maxIdleTime>3600</maxIdleTime>
                         </connector>
@@ -711,21 +732,6 @@
                         <version>5.0.3</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <version>1.1.2</version>
-                <configuration>
-                    <targetClasses>
-                        <param>org.alienlabs.hatchetharry*</param>
-                    </targetClasses>
-                    <targetTests>
-                        <param>org.alienlabs.hatchetharry.LaunchAllServerSideTests</param>
-                    </targetTests>
-                    <timeoutConstant>60000</timeoutConstant>
-                    <timeoutFactor>2.0</timeoutFactor>
-                </configuration>
             </plugin>
         </plugins>
     </build>
