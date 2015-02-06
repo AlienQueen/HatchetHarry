@@ -541,6 +541,8 @@
                         <value>-Xms64m</value>
                         <value>-Xmx12288m</value>
                     </jvmArgs>
+                    <timeoutConstant>180000</timeoutConstant>
+                    <timeoutFactor>2.0</timeoutFactor>
                 </configuration>
             </plugin>
             <plugin>
