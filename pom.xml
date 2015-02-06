@@ -46,7 +46,7 @@
         <wicket.version>6.18.0</wicket.version>
         <wicketstuff.version>6.18.0</wicketstuff.version>
         <wicket-atmosphere.version>0.20</wicket-atmosphere.version>
-        <atmosphere.version>2.1.9</atmosphere.version>
+        <atmosphere.version>2.1.10</atmosphere.version>
         <atmosphere-compat.version>2.0.1</atmosphere-compat.version>
         <jquery.atmosphere.version>2.1.6</jquery.atmosphere.version>
         <quickview.version>6.0-SNAPSHOT</quickview.version>

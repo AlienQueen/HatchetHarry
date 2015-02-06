@@ -500,7 +500,7 @@ import java.util.*;
 		this.add(this.usernameParent);
 	}
 
-	private final void generateCardPanels()
+	private void generateCardPanels()
 	{
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
 				.getAllCardsInBattlefieldForAGame(this.session.getGameId());
@@ -937,10 +937,8 @@ import java.util.*;
 						.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(_gameId,
 								HomePage.this.session.getPlayer().getId(),
 								HomePage.this.session.getPlayer().getDeck().getDeckId());
-				for (int i = 0; i < allCards.size(); i++)
+				for (final MagicCard mc : allCards)
 				{
-					final MagicCard mc = allCards.get(i);
-
 					if (null != mc)
 					{
 						mc.setTapped(false);
@@ -2657,10 +2655,10 @@ import java.util.*;
 
 		final List<Player> opponents = event.getOpponents();
 
-		for (int i = 0; i < opponents.size(); i++)
+		for (final Player opponent : opponents)
 		{
-			this.allPlayerSidesInGame.add(opponents.get(i));
-			this.allSidesInGame.addNewItems(opponents.get(i));
+			this.allPlayerSidesInGame.add(opponent);
+			this.allSidesInGame.addNewItems(opponent);
 		}
 
 	}
@@ -2682,9 +2680,8 @@ import java.util.*;
 		{
 			target.appendJavaScript(
 					"window.setTimeout(function() { jQuery('._jsPlumb_endpoint_full').remove(); "
-							+ "arrows.push({ 'source' : " + "jQuery('#" + event.getSource()
-							+ "').parent().parent().parent() " + ", 'target' : " + "jQuery('#"
-							+ event.getTarget() + "').parent().parent().parent() " + " }); "
+							+ "window.arrows.push({ 'source': jQuery('#" + event.getSource()
+							+ "'), 'target': " + "jQuery('#" + event.getTarget() + "') }); "
 							+ "	jsPlumb.connect({ source: jQuery('#" + event.getSource()
 							+ "').parent().parent().parent(),"
 							+ "                  target: jQuery('#" + event.getTarget()
@@ -2707,7 +2704,7 @@ import java.util.*;
 					"cardAlreadySelected = false; " + "var plumbSource, plumbTarget; "
 							+ "dontZoom= true; "
 							+ "jQuery('span.battlefieldCardsForSide1, span.battlefieldCardsForSide2').click(function (event) { "
-							+ "if (cardAlreadySelected) { " + "	cardAlreadySelected = false; "
+							+ "if (cardAlreadySelected) { cardAlreadySelected = false; "
 							+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
 							+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
 							+ "} else { " + "	cardAlreadySelected = true; "
@@ -2724,12 +2721,8 @@ import java.util.*;
 			target.appendJavaScript(
 					"jQuery.gritter.add({ title : 'Draw mode OFF', text : \"You are now in normal mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 
-			final StringBuilder buil = new StringBuilder();
-			buil.append("arrows = new Array(); drawMode = false; dontZoom = false; ");
-			buil.append(
-					"jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
-
-			target.appendJavaScript(buil.toString());
+			target.appendJavaScript(
+					"arrows = new Array(); drawMode = false; dontZoom = false; jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
 			final WebMarkupContainer img = new WebMarkupContainer("drawModeOn");
 			this.getDrawModeParent().addOrReplace(img.setVisible(false));
@@ -2826,7 +2819,7 @@ import java.util.*;
 		super.configureResponse(response);
 	}
 
-	private final void restoreBattlefieldState()
+	private void restoreBattlefieldState()
 	{
 		// Sessions must be cleaned up between server restarts, as it's too much
 		// difficult

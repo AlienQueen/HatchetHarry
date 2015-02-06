@@ -39,8 +39,7 @@ public class BattlefieldService
 			final boolean added)
 	{
 		BattlefieldService.updateCardsInBattlefield(target, persistenceService, mc, added);
-		BattlefieldService
-				.restoreStateOfCardsInBattlefield(target, persistenceService, mc, added, gameId);
+		BattlefieldService.restoreStateOfCardsInBattlefield(target, persistenceService, gameId);
 	}
 
 	private static void updateCardsInBattlefield(final AjaxRequestTarget target,
@@ -126,8 +125,7 @@ public class BattlefieldService
 	}
 
 	private static void restoreStateOfCardsInBattlefield(final AjaxRequestTarget target,
-			final PersistenceService persistenceService, final MagicCard mc, final boolean added,
-			final Long gameId)
+			final PersistenceService persistenceService, final Long gameId)
 	{
 		final Boolean drawMode = persistenceService.getGame(gameId).isDrawMode();
 		final StringBuilder buil = new StringBuilder();
@@ -136,7 +134,7 @@ public class BattlefieldService
 		{
 			buil.append("window.setTimeout(function() { ");
 
-			buil.append("jQuery('._jsPlumb_connector').remove(); ");
+			buil.append("jQuery('._jsPlumb_connector').remove(); window.arrows = new Array(); ");
 
 			final List<Arrow> allArrows = persistenceService.loadAllArrowsForAGame(gameId);
 			for (final Arrow arrow : allArrows)
@@ -144,6 +142,8 @@ public class BattlefieldService
 				BattlefieldService.LOGGER
 						.info("source: " + arrow.getSource() + ", target: " + arrow.getTarget());
 
+				buil.append("window.arrows.push({ 'source' : jQuery('#" + arrow.getSource()
+						+ "'), 'target' : jQuery('#" + arrow.getTarget() + "') }); ");
 				buil.append("jsPlumb.connect({source:jQuery('#" + arrow.getSource()
 						+ "').parent().parent().parent(),target:jQuery('#" + arrow.getTarget()
 						+ "').parent().parent().parent(),connector:['Bezier',{curviness:70}],overlays:[['Label',{location:0.7,id:'label',"

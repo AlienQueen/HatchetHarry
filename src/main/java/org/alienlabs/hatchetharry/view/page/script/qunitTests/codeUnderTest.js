@@ -309,6 +309,7 @@ var uncloak = function () {
 };
 
 var responsiveCards = function () {
+    // Adapt cards size to new browser dimensions
     var cardBitmapSize = 310;
     var screenHeight = jQuery(window).height();
     var screenReservedHeight = (7 + 15) / 100; // 7% and 15 % from cards.css #allCardsParent
@@ -318,15 +319,39 @@ var responsiveCards = function () {
     var cardMaxSize = Math.min(availableLineHeight, cardBitmapSize);
     var css = '.cardContainer, .magicCard {max-height:' + cardMaxSize + 'px;max-width:' + cardMaxSize + 'px;}';
     domSingleton('style', 'responsiveCards', css);
+
+    // Redraw arrows
+    if ((typeof window.arrows != 'undefined') && (window.arrows.length > 0)) {
+        jQuery('._jsPlumb_connector').remove();
+
+        window.setTimeout(function () {
+            for (var i = 0; i < window.arrows.length; i++) {
+                source = window.arrows[i]['source'];
+                target = window.arrows[i]['target'];
+                console.log("### " + source.attr('id'));
+                jsPlumb.connect({
+                    source: jQuery('#' + source.attr('id')
+                    ).children(0).children(0),
+                    target: jQuery('#' + target.attr('id')
+                    ).children(0).children(0),
+                    connector: ['Bezier', {curviness: 70}],
+                    overlays: [['Label', {location: 0.7, id: 'label', events: {}}]]
+                });
+            }
+        }, 750);
+    }
+
+    function domSingleton(tag, id, content) {
+        if (jQuery('#' + id).length > 0) {
+            jQuery('#' + id).html(content);
+        }
+        else {
+            jQuery('body').append('<' + tag + ' id="' + id + '">' + content + '</' + tag + '>');
+        }
+
+    }
 };
-function domSingleton(tag, id, content) {
-    if (jQuery('#' + id).length > 0) {
-        jQuery('#' + id).html(content);
-    }
-    else {
-        jQuery('body').append('<' + tag + ' id="' + id + '">' + content + '</' + tag + '>');
-    }
-}
+
 jQuery(window).on('load resize', responsiveCards);
 
 jQuery(function () {

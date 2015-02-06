@@ -45,10 +45,12 @@ public class RedrawArrowsBehavior extends AbstractDefaultAjaxBehavior
 		final HashMap<String, Object> variables = new HashMap<>();
 		final List<Arrow> allArrows = this.persistenceService.loadAllArrowsForAGame(this.gameId);
 		final StringBuilder content = new StringBuilder(
-				"var redraw = function() { jQuery('._jsPlumb_connector').remove(); ");
+				"var redraw = function() { jQuery('._jsPlumb_connector').remove(); window.arrows = new Array(); ");
 
 		for (final Arrow arrow : allArrows)
 		{
+			content.append("window.arrows.push({ 'source' : jQuery('#" + arrow.getSource()
+					+ "'), 'target' : jQuery('#" + arrow.getTarget() + "') }); ");
 			content.append("jsPlumb.connect({ source: jQuery('#" + arrow.getSource()
 					+ "').parent().parent().parent(), target: jQuery('#" + arrow.getTarget()
 					+ "').parent().parent().parent(), connector:['Bezier', { curviness:70 }], overlays : [ ");
