@@ -14,11 +14,10 @@ import static org.junit.Assert.assertTrue;
  * Created by nostromo on 19/01/15.
  */
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
-		"classpath:applicationContextTest.xml" })
-public class ZoneMoveConsoleLogStrategyTest extends SpringContextLoaderBase
+		"classpath:applicationContextTest.xml" }) public class ZoneMoveConsoleLogStrategyTest
+		extends SpringContextLoaderBase
 {
-	@Test
-	public void testZoneMoveConsoleLogStrategy()
+	@Test public void testZoneMoveConsoleLogStrategy()
 	{
 		SpringContextLoaderBase.tester.assertComponent("createMatchLink", AjaxLink.class);
 		SpringContextLoaderBase.tester.clickLink("createMatchLink", true);
@@ -31,8 +30,8 @@ public class ZoneMoveConsoleLogStrategyTest extends SpringContextLoaderBase
 		createGameForm.setValue("formats", "1");
 		createGameForm.setValue("numberOfPlayers", "2");
 
-		SpringContextLoaderBase.tester.executeAjaxEvent("createMatchWindow:content:form:submit",
-				"onclick");
+		SpringContextLoaderBase.tester
+				.executeAjaxEvent("createMatchWindow:content:form:submit", "onclick");
 
 		final PlayCardFromHandBehavior behavior = getFirstPlayCardFromHandBehavior();
 		SpringContextLoaderBase.tester.getRequest().setParameter("card",
@@ -40,8 +39,8 @@ public class ZoneMoveConsoleLogStrategyTest extends SpringContextLoaderBase
 		SpringContextLoaderBase.tester.executeBehavior(behavior);
 
 		String message = behavior.getLogger().getMessage();
-		assertTrue(message
-				.contains("Zala has put <a class='consoleCard' style='color: white;' href='#' title='<img src=\\\"cards/"));
+		assertTrue(message.contains(
+				"Zala has put <a class='consoleCard' style='color: white;' href='#' title='<img src=\\\"cards/"));
 		assertTrue(message.contains(".jpg\\\"></img>'>"));
 		assertTrue(message.contains("</a> from Hand to Battlefield"));
 	}

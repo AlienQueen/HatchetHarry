@@ -44,12 +44,10 @@
     </prerequisites>
     <properties>
         <wicket.version>6.19.0</wicket.version>
-        <wicketstuff.version>6.18.0</wicketstuff.version>
+        <wicketstuff.version>6.19.0</wicketstuff.version>
         <wicket-atmosphere.version>0.20</wicket-atmosphere.version>
-        <atmosphere.version>2.2.2</atmosphere.version>
-        <atmosphere-compat.version>2.0.1</atmosphere-compat.version>
-        <jquery.atmosphere.version>2.2.3</jquery.atmosphere.version>
-        <atmosphere.javascript.version>2.2.3</atmosphere.javascript.version>
+        <atmosphere.version>2.1.10</atmosphere.version>
+        <atmosphere.javascript.version>2.1.6</atmosphere.javascript.version>
         <quickview.version>6.0-SNAPSHOT</quickview.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <hibernate.version>4.3.7.Final</hibernate.version>
@@ -276,12 +274,18 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>atmosphere-javascript</artifactId>
-            <version>2.2.3</version>
+            <version>${atmosphere.javascript.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery-atmosphere</artifactId>
             <version>${atmosphere.javascript.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>jquery</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
