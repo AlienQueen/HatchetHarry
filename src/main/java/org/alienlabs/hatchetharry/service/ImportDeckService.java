@@ -62,10 +62,37 @@ public class ImportDeckService implements Serializable
 				break;
 			}
 
-			final String numberOfItemsAsString = line.split(" ")[0];
-			final int numberOfItems = Integer.parseInt(numberOfItemsAsString);
-			final int indexOfSpace = line.indexOf(' ');
-			final String cardName = line.substring(indexOfSpace + 1, line.length());
+			final int numberOfItems = Integer.parseInt(line.split("\\s+")[0]);
+            String cardName = "";
+
+            // There's a tab
+            if (line.indexOf('\t') != -1)
+			{
+                // And no space
+                if (line.indexOf(' ') == -1)
+				{
+                    cardName = line.split("\\s+")[1];
+                }
+                // And a space after the tab
+                else if (line.indexOf('\t') < line.indexOf(' '))
+				{
+                    cardName = line.substring(line.indexOf('\t') + 1);
+                }
+                // And a space before the tab
+                else
+				{
+                    cardName = line.substring(line.indexOf(' ') + 1);
+                }
+			}
+			// There's no tab
+            else
+			{
+                // And a space
+                if (line.indexOf(' ') != -1)
+				{
+                    cardName = line.substring(line.indexOf(' ') + 1);
+                }
+            }
 
 			ImportDeckService.LOGGER.info(numberOfItems + " x " + cardName);
 

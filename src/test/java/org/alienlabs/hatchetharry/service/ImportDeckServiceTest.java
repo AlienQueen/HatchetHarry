@@ -26,7 +26,7 @@ public class ImportDeckServiceTest extends SpringContextLoaderBase
 		final ImportDeckService importDeckService = this.context.getBean(ImportDeckService.class);
 
 		final boolean auraBantAlreadyExists = (null != persistenceService
-				.getDeckArchiveByName("Aura Bant"));
+				.getDeckArchiveByName("Cursed pit"));
 
 		final int initialNumberOfDeckArchives = persistenceService.countDeckArchives();
 		final int initialNumberOfDecks = persistenceService.countDecks();
@@ -34,21 +34,21 @@ public class ImportDeckServiceTest extends SpringContextLoaderBase
 		final int initialNumberOfMagicCards = persistenceService.countMagicCards();
 
 		final File deck = new File(ResourceBundle.getBundle(DataGenerator.class.getCanonicalName())
-				.getString("AuraBantDeck"));
+				.getString("cursedPitDeck"));
 		final byte[] content = new byte[475];
 
 		final FileInputStream fis = new FileInputStream(deck);
 		if (fis.read(content) == -1)
 		{
 			fis.close();
-			Assert.fail("Aura Bant.txt seems to be empty");
+			Assert.fail("Cursed pit.txt seems to be empty");
 		}
 		fis.close();
 
 		final String deckContent = new String(content, "UTF-8");
 
 		// Run
-		importDeckService.importDeck(deckContent, "Aura Bant", true);
+		importDeckService.importDeck(deckContent, "Cursed pit", true);
 
 		// Verify
 		final int finalNumberOfDeckArchives = persistenceService.countDeckArchives();
