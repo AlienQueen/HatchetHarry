@@ -1,7 +1,5 @@
 package org.alienlabs.hatchetharry.serversidetest.util;
 
-import java.util.List;
-
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
@@ -9,16 +7,23 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.atmosphere.tester.AtmosphereTester;
 import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.atmosphere.cpr.AtmosphereConfig;
+import org.atmosphere.cpr.AtmosphereFramework;
+import org.atmosphere.cpr.BroadcasterConfig;
+import org.atmosphere.util.SimpleBroadcaster;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,34 +33,38 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml",
-"classpath:applicationContextTest.xml" })
-public class SpringContextLoaderBase
+import java.util.List;
+
+@RunWith(SpringJUnit4ClassRunner.class) @ContextConfiguration(locations = {
+		"classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" }) public class SpringContextLoaderBase
 {
 	protected static AtmosphereTester waTester;
 	protected static transient WicketTester tester;
 	private static HatchetHarryApplication webApp;
 	protected static PersistenceService persistenceService;
 
-	@Autowired
-	protected ApplicationContext context;
+	@Autowired protected ApplicationContext context;
 
-	@Before
-	public void setUp() throws Exception
+	@Before public void setUp() throws Exception
 	{
 		webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void init()
+			@Override public void init()
 			{
-				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, SpringContextLoaderBase.this.context,
+				this.getComponentInstantiationListeners()
+						.add(new SpringComponentInjector(this, SpringContextLoaderBase.this.context,
 								true));
 
-				this.eventBus = new EventBus(this);
+				SimpleBroadcaster broadcaster = new SimpleBroadcaster();
+				AtmosphereFramework framework = new AtmosphereFramework();
+				framework.atmosphereFactory();
+				AtmosphereConfig config = new AtmosphereConfig(framework);
+				broadcaster.initialize("b", config);
+				broadcaster.setBroadcasterConfig(new BroadcasterConfig(null, config, "/*"));
+				this.eventBus = new EventBus(this, broadcaster);
 				this.eventBus.addRegistrationListener(this);
 				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
 				this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.INFO);
@@ -63,20 +72,25 @@ public class SpringContextLoaderBase
 				this.getMarkupSettings().setStripWicketTags(false);
 				this.getDebugSettings().setOutputComponentPath(true);
 			}
+
+
+			@Override public Session newSession(final Request request, final Response response)
+			{
+				return new HatchetHarrySession(request);
+			}
 		};
 
 		// start and render the test page
 		tester = new WicketTester(webApp);
+		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
 		persistenceService = this.context.getBean(PersistenceService.class);
 		Assert.assertNotNull(persistenceService);
-		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
 	}
 
-	@After
-	public void tearDown()
+	@After public void tearDown()
 	{
-		webApp.newSession(tester.getRequestCycle().getRequest(), tester.getRequestCycle()
-				.getResponse());
+		webApp.newSession(tester.getRequestCycle().getRequest(),
+				tester.getRequestCycle().getResponse());
 		persistenceService.resetDb();
 	}
 
@@ -85,8 +99,8 @@ public class SpringContextLoaderBase
 		// Create game
 		final String paramName = pageParameters.length > 1 ? pageParameters[0] : "";
 		final String paramValue = pageParameters.length > 1 ? pageParameters[1] : "";
-		SpringContextLoaderBase.tester.startPage(new HomePage(new PageParameters().add(paramName,
-				paramValue)));
+		SpringContextLoaderBase.tester
+				.startPage(new HomePage(new PageParameters().add(paramName, paramValue)));
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
 		SpringContextLoaderBase.tester.assertComponent("createMatchLink", AjaxLink.class);
@@ -102,8 +116,8 @@ public class SpringContextLoaderBase
 
 		if ((pageParameters.length > 0) && ("ajaxSubmit".equals(pageParameters[0])))
 		{
-			SpringContextLoaderBase.tester.executeAjaxEvent("createMatchWindow:content:form:submit",
-					"onclick");
+			SpringContextLoaderBase.tester
+					.executeAjaxEvent("createMatchWindow:content:form:submit", "onclick");
 		}
 		else
 		{
@@ -114,8 +128,8 @@ public class SpringContextLoaderBase
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
-		Player p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId().longValue()).get(0);
+		Player p = SpringContextLoaderBase.persistenceService
+				.getAllPlayersOfGame(HatchetHarrySession.get().getGameId().longValue()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 		// For the moment, we should have no card in the battlefield
@@ -130,15 +144,16 @@ public class SpringContextLoaderBase
 		SpringContextLoaderBase.tester.executeBehavior(pcfhb);
 
 		// One card on the battlefield, 6 in the hand
-		Assert.assertEquals(1, SpringContextLoaderBase.persistenceService
-				.getAllCardsInBattlefieldForAGame(gameId).size());
+		Assert.assertEquals(1,
+				SpringContextLoaderBase.persistenceService.getAllCardsInBattlefieldForAGame(gameId)
+						.size());
 		Assert.assertEquals(6, SpringContextLoaderBase.persistenceService
 				.getAllCardsInHandForAGameAndADeck(gameId, p.getDeck().getDeckId()).size());
 
 		// We still should not have more cards that the number of cards in the
 		// deck
-		p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
-				HatchetHarrySession.get().getGameId().longValue()).get(0);
+		p = SpringContextLoaderBase.persistenceService
+				.getAllPlayersOfGame(HatchetHarrySession.get().getGameId().longValue()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 
