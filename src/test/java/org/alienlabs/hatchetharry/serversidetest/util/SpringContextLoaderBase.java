@@ -7,22 +7,17 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
-import org.apache.wicket.Session;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.atmosphere.tester.AtmosphereTester;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Response;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.atmosphere.cpr.AtmosphereConfig;
-import org.atmosphere.cpr.AtmosphereFramework;
-import org.atmosphere.cpr.BroadcasterConfig;
+import org.atmosphere.cpr.*;
 import org.atmosphere.util.SimpleBroadcaster;
 import org.junit.After;
 import org.junit.Assert;
@@ -60,10 +55,16 @@ import java.util.List;
 
 				SimpleBroadcaster broadcaster = new SimpleBroadcaster();
 				AtmosphereFramework framework = new AtmosphereFramework();
-				framework.atmosphereFactory();
 				AtmosphereConfig config = new AtmosphereConfig(framework);
-				broadcaster.initialize("b", config);
-				broadcaster.setBroadcasterConfig(new BroadcasterConfig(null, config, "/*"));
+				BroadcasterFactory broadcasterFactory = new MyTesterBroadcasterFactory(config,
+						broadcaster);
+				AtmosphereResourceFactory resourceFactory = new AtmosphereResourceFactory(
+						broadcasterFactory);
+				//				resourceFactory.registerUuidForFindCandidate(this.getHomePage());
+				framework.atmosphereFactory();
+				broadcaster.initialize("wicket-atmosphere-tester", config);
+				broadcaster.setBroadcasterConfig(
+						new BroadcasterConfig(null, config, "wicket-atmosphere-tester"));
 				this.eventBus = new EventBus(this, broadcaster);
 				this.eventBus.addRegistrationListener(this);
 				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
@@ -71,12 +72,6 @@ import java.util.List;
 
 				this.getMarkupSettings().setStripWicketTags(false);
 				this.getDebugSettings().setOutputComponentPath(true);
-			}
-
-
-			@Override public Session newSession(final Request request, final Response response)
-			{
-				return new HatchetHarrySession(request);
 			}
 		};
 
@@ -167,5 +162,27 @@ import java.util.List;
 				.get(0);
 		Assert.assertNotNull(b);
 		return b;
+	}
+}
+
+class MyTesterBroadcasterFactory extends DefaultBroadcasterFactory
+{
+	private final SimpleBroadcaster singleBroadcaster;
+
+	MyTesterBroadcasterFactory(AtmosphereConfig c, SimpleBroadcaster broadcaster)
+	{
+		super(SimpleBroadcaster.class,
+				BroadcasterLifeCyclePolicy.ATMOSPHERE_RESOURCE_POLICY.NEVER.name(), c);
+
+		this.singleBroadcaster = broadcaster;
+
+		// expose myself as BroadcasterFactory.getDefault();
+		factory = this;
+	}
+
+	@SuppressWarnings("unchecked") @Override public <T extends Broadcaster> T lookup(Class<T> c,
+			Object id, boolean createIfNull, boolean unique)
+	{
+		return (T)singleBroadcaster;
 	}
 }

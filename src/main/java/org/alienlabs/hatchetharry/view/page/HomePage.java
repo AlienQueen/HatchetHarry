@@ -2734,6 +2734,7 @@ import java.util.*;
 	@Subscribe public void logToConsole(final AjaxRequestTarget target,
 			final ConsoleLogCometChannel event)
 	{
+		System.out.println("&&&&&&&&&&&&");
 		event.getLogger().logToConsole(target);
 	}
 

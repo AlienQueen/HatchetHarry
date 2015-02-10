@@ -1,6 +1,7 @@
 package org.alienlabs.hatchetharry.view.clientsideutil;
 
 import org.alienlabs.hatchetharry.HatchetHarryApplication;
+import org.apache.wicket.atmosphere.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +31,10 @@ public class EventBusPostService
 
 				for (final Object message : messages)
 				{
+					System.out.println("### " + message);
 					try
 					{
-						HatchetHarryApplication.get().getEventBus().post(message, pageUuid);
+						EventBus.get().post(message, pageUuid);
 					}
 					catch (final Exception e1)
 					{
@@ -49,7 +51,7 @@ public class EventBusPostService
 
 						try
 						{
-							HatchetHarryApplication.get().getEventBus().post(message, pageUuid);
+							EventBus.get().post(message, pageUuid);
 						}
 						catch (final Exception e3)
 						{
