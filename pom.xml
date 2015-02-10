@@ -45,7 +45,7 @@
     <properties>
         <wicket.version>6.19.0</wicket.version>
         <wicketstuff.version>6.19.0</wicketstuff.version>
-        <wicket-atmosphere.version>0.22</wicket-atmosphere.version>
+        <wicket-atmosphere.version>0.22-SNAPSHOT</wicket-atmosphere.version>
         <atmosphere.version>2.2.2</atmosphere.version>
         <atmosphere.javascript.version>2.2.3</atmosphere.javascript.version>
         <quickview.version>6.0-SNAPSHOT</quickview.version>

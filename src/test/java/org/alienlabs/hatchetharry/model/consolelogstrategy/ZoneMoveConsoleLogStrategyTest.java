@@ -38,15 +38,6 @@ import static org.junit.Assert.assertTrue;
 				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		SpringContextLoaderBase.tester.executeBehavior(behavior);
 
-		try
-		{
-			Thread.sleep(5000);
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-
 		String message = behavior.getLogger().getMessage();
 		assertTrue(message.contains(
 				"Zala has put <a class='consoleCard' style='color: white;' href='#' title='<img src=\\\"cards/"));

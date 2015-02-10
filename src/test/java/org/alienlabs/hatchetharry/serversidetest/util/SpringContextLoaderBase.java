@@ -7,13 +7,26 @@ import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
+import org.apache.wicket.Application;
+import org.apache.wicket.DefaultPageManagerProvider;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.atmosphere.AtmosphereBehavior;
 import org.apache.wicket.atmosphere.EventBus;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.atmosphere.tester.AtmosphereTester;
 import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.page.*;
+import org.apache.wicket.pageStore.DefaultPageStore;
+import org.apache.wicket.pageStore.IDataStore;
+import org.apache.wicket.pageStore.IPageStore;
+import org.apache.wicket.pageStore.memory.HttpSessionDataStore;
+import org.apache.wicket.pageStore.memory.PageNumberEvictionStrategy;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.serialize.java.JavaSerializer;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
@@ -38,6 +51,9 @@ import java.util.List;
 	protected static transient WicketTester tester;
 	private static HatchetHarryApplication webApp;
 	protected static PersistenceService persistenceService;
+	protected AtmosphereResourceFactory resourceFactory;
+	protected AtmosphereConfig config;
+	protected DefaultPageManagerProvider pageManagerProvider;
 
 	@Autowired protected ApplicationContext context;
 
@@ -55,12 +71,11 @@ import java.util.List;
 
 				SimpleBroadcaster broadcaster = new SimpleBroadcaster();
 				AtmosphereFramework framework = new AtmosphereFramework();
-				AtmosphereConfig config = new AtmosphereConfig(framework);
+				SpringContextLoaderBase.this.config = new AtmosphereConfig(framework);
 				BroadcasterFactory broadcasterFactory = new MyTesterBroadcasterFactory(config,
 						broadcaster);
-				AtmosphereResourceFactory resourceFactory = new AtmosphereResourceFactory(
+				SpringContextLoaderBase.this.resourceFactory = new AtmosphereResourceFactory(
 						broadcasterFactory);
-				//				resourceFactory.registerUuidForFindCandidate(this.getHomePage());
 				framework.atmosphereFactory();
 				broadcaster.initialize("wicket-atmosphere-tester", config);
 				broadcaster.setBroadcasterConfig(
@@ -72,12 +87,36 @@ import java.util.List;
 
 				this.getMarkupSettings().setStripWicketTags(false);
 				this.getDebugSettings().setOutputComponentPath(true);
+
+				/*pageManagerProvider = new DefaultPageManagerProvider(this)
+				{
+					@Override public IPageManager get(IPageManagerContext _context)
+					{
+						IDataStore dataStore = new HttpSessionDataStore(_context,
+								new PageNumberEvictionStrategy(10));
+						IPageStore pageStore = new DefaultPageStore(new JavaSerializer(getName()),
+								dataStore, getStoreSettings().getInmemoryCacheSize());
+						return new PageStoreManager(application.getName(), pageStore, _context);
+					}
+				};
+				setPageManagerProvider(pageManagerProvider);*/
 			}
 		};
 
 		// start and render the test page
 		tester = new WicketTester(webApp);
-		waTester = new AtmosphereTester(tester, new HomePage(new PageParameters()));
+		HomePage homePage = new HomePage(new PageParameters());
+		waTester = new AtmosphereTester(tester, homePage);
+
+		EventBus.get().getBroadcaster().getBroadcasterConfig().getAtmosphereConfig()
+				.resourcesFactory().registerUuidForFindCandidate(
+				EventBus.get().getBroadcaster().getBroadcasterConfig().getAtmosphereConfig()
+						.resourcesFactory()
+						.create(this.config, AtmosphereBehavior.getUUID(homePage)));
+		tester.startPage(homePage);
+		webApp.getPageManagerProvider().get(new DefaultPageManagerContext()).touchPage(homePage);
+		HatchetHarrySession.get().getPageManager().touchPage(homePage);
+
 		persistenceService = this.context.getBean(PersistenceService.class);
 		Assert.assertNotNull(persistenceService);
 	}
