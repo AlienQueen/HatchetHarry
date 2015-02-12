@@ -69,7 +69,7 @@ import java.util.List;
 						.add(new SpringComponentInjector(this, SpringContextLoaderBase.this.context,
 								true));
 
-				SimpleBroadcaster broadcaster = new SimpleBroadcaster();
+				/*SimpleBroadcaster broadcaster = new SimpleBroadcaster();
 				AtmosphereFramework framework = new AtmosphereFramework();
 				SpringContextLoaderBase.this.config = new AtmosphereConfig(framework);
 				BroadcasterFactory broadcasterFactory = new MyTesterBroadcasterFactory(config,
@@ -80,7 +80,8 @@ import java.util.List;
 				broadcaster.initialize("wicket-atmosphere-tester", config);
 				broadcaster.setBroadcasterConfig(
 						new BroadcasterConfig(null, config, "wicket-atmosphere-tester"));
-				this.eventBus = new EventBus(this, broadcaster);
+				this.eventBus = new EventBus(this, broadcaster);*/
+				this.eventBus = new EventBus(this);
 				this.eventBus.addRegistrationListener(this);
 				this.eventBus.getParameters().setTransport(AtmosphereTransport.WEBSOCKET);
 				this.eventBus.getParameters().setLogLevel(AtmosphereLogLevel.INFO);
@@ -108,14 +109,17 @@ import java.util.List;
 		HomePage homePage = new HomePage(new PageParameters());
 		waTester = new AtmosphereTester(tester, homePage);
 
-		EventBus.get().getBroadcaster().getBroadcasterConfig().getAtmosphereConfig()
-				.resourcesFactory().registerUuidForFindCandidate(
-				EventBus.get().getBroadcaster().getBroadcasterConfig().getAtmosphereConfig()
-						.resourcesFactory()
-						.create(this.config, AtmosphereBehavior.getUUID(homePage)));
-		tester.startPage(homePage);
-		webApp.getPageManagerProvider().get(new DefaultPageManagerContext()).touchPage(homePage);
-		HatchetHarrySession.get().getPageManager().touchPage(homePage);
+		/*
+		 * EventBus.get().getBroadcaster().getBroadcasterConfig().
+		 * getAtmosphereConfig()
+		 * .resourcesFactory().registerUuidForFindCandidate(
+		 * EventBus.get().getBroadcaster
+		 * ().getBroadcasterConfig().getAtmosphereConfig() .resourcesFactory()
+		 * .create(this.config, AtmosphereBehavior.getUUID(homePage)));
+		 * tester.startPage(homePage); webApp.getPageManagerProvider().get(new
+		 * DefaultPageManagerContext()).touchPage(homePage);
+		 * HatchetHarrySession.get().getPageManager().touchPage(homePage);
+		 */
 
 		persistenceService = this.context.getBean(PersistenceService.class);
 		Assert.assertNotNull(persistenceService);
