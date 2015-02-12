@@ -75,7 +75,7 @@
         </init-param>
         <init-param>
             <param-name>org.atmosphere.websocket.WebSocketProtocol</param-name>
-            <param-value>org.atmosphere.websocket.protocol.StreamingHttpProtocol</param-value>
+            <param-value>org.atmosphere.websocket.protocol.EchoProtocol</param-value>
         </init-param>
         <init-param>
             <param-name>org.atmosphere.cpr.broadcaster.shareableThreadPool</param-name>
