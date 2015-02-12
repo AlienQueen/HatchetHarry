@@ -44,7 +44,8 @@
 
     <filter-mapping>
         <filter-name>opensessioninview</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/app/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
         <async-supported>true</async-supported>
     </filter-mapping>
 
