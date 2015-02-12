@@ -71,6 +71,14 @@
             <param-value>org.alienlabs.hatchetharry.HatchetHarryApplication</param-value>
         </init-param>
         <init-param>
+            <param-name>org.atmosphere.useWebSocket</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useNative</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
             <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
             <param-value>30000</param-value>
         </init-param>
@@ -99,6 +107,14 @@
             <param-value>org.alienlabs.hatchetharry.clientsidetest.AllMistletoeTests</param-value>
         </init-param>
         <init-param>
+            <param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
+            <param-value>org.apache.wicket.atmosphere.TrackMessageSizeFilter</param-value>
+        </init-param>
+        <init-param>
+		   	<param-name>org.atmosphere.cpr.BroadcasterCache.strategy</param-name>
+   			<param-value>beforeFilter</param-value>
+		</init-param>
+        <init-param>
             <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
             <param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
         </init-param>
@@ -107,16 +123,12 @@
             <param-value>true</param-value>
         </init-param>
         <init-param>
-        	<param-name>org.atmosphere.cpr.removeSessionTimeout</param-name>
-        	<param-value>false</param-value>
-        </init-param>
-        <init-param>
             <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
             <param-value>org.atmosphere.util.SimpleBroadcaster</param-value>
         </init-param>
         <init-param>
-            <param-name>org.atmosphere.cpr.AtmosphereInterceptor</param-name>
-            <param-value>org.atmosphere.client.TrackMessageSizeInterceptor</param-value>
+            <param-name>org.atmosphere.useWebSocketAndServlet3</param-name>
+            <param-value>true</param-value>
         </init-param>
         <init-param>
         	<param-name>org.atmosphere.client.TrackMessageSizeInterceptor.delimiter</param-name>
@@ -145,5 +157,9 @@
 
     <session-config>
         <session-timeout>45</session-timeout>
+        <cookie-config>
+        	<http-only>false</http-only>
+        	<max-age>30000</max-age>
+    	</cookie-config>
     </session-config>
 </web-app>
