@@ -21,7 +21,8 @@ import org.slf4j.LoggerFactory;
 public class CardInBattlefieldContextMenu extends Panel
 {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = LoggerFactory.getLogger(CardInBattlefieldContextMenu.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(CardInBattlefieldContextMenu.class);
 
 	public CardInBattlefieldContextMenu(final String id, final Model<MagicCard> mc)
 	{
@@ -43,20 +44,18 @@ public class CardInBattlefieldContextMenu extends Panel
 		final WebMarkupContainer putToExile = new WebMarkupContainer("putToExile");
 		putToExile.setOutputMarkupId(true).setMarkupId("putToExile" + uuidAsString);
 
-		final WebMarkupContainer destroyToken = new WebMarkupContainer("destroyToken");
-		destroyToken.setOutputMarkupId(true).setMarkupId("destroyToken" + uuidAsString);
 
-		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile, destroyToken);
+		cardInBattlefieldContextMenu.add(putToHand, putToGraveyard, putToExile);
 
 		if (mc.getObject().getToken() != null)
 		{
 			putToHand.setVisible(false);
 			putToGraveyard.setVisible(false);
 			putToExile.setVisible(false);
-		}
-		else
-		{
-			destroyToken.setVisible(false);
+
+			final WebMarkupContainer destroyToken = new WebMarkupContainer("destroyToken");
+			destroyToken.setOutputMarkupId(true).setMarkupId("destroyToken" + uuidAsString);
+			cardInBattlefieldContextMenu.add(destroyToken);
 		}
 
 		this.add(new CardInBattlefieldContextMenuHeaderBehavior(uuidAsString));
