@@ -10,6 +10,7 @@ import org.apache.wicket.atmosphere.ResourceRegistrationListener;
 import org.apache.wicket.atmosphere.config.AtmosphereLogLevel;
 import org.apache.wicket.atmosphere.config.AtmosphereTransport;
 import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
+import org.apache.wicket.core.request.handler.ComponentNotFoundException;
 import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
 import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -19,6 +20,10 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
+import org.apache.wicket.request.cycle.IRequestCycleListener;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.handler.EmptyRequestHandler;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
@@ -117,6 +122,21 @@ public class HatchetHarryApplication extends WebApplication
 			}
 		};
 		scheduler.scheduleWithFixedDelay(beeper, 5, 2, TimeUnit.SECONDS);
+
+		getRequestCycleListeners().add(new AbstractRequestCycleListener()
+		{
+			@Override
+			public IRequestHandler onException(RequestCycle cycle, Exception ex)
+			{
+				if (ex instanceof ComponentNotFoundException)
+				{
+					HatchetHarryApplication.LOGGER.error("Catched ComponentNotFoundException!", ex);
+					return new EmptyRequestHandler();
+				}
+
+				return null;
+			}
+		});
 
 		this.getRootRequestMapperAsCompound().add(new NoVersionMapper(HomePage.class));
 
