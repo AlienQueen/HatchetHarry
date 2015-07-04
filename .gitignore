@@ -32,4 +32,5 @@ overlays
 projectFilesBackup
 .settings
 src/main/webapp/web
+web
 logs/
