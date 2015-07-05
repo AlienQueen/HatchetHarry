@@ -5,6 +5,7 @@ import org.alienlabs.hatchetharry.serversidetest.util.SpringContextLoaderBase;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.util.tester.FormTester;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -17,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 		"classpath:applicationContextTest.xml" }) public class ZoneMoveConsoleLogStrategyTest
 		extends SpringContextLoaderBase
 {
+	@Ignore("wicket-atmosphere is not as testable as what we'd love, for the moment")
 	@Test public void testZoneMoveConsoleLogStrategy()
 	{
 		SpringContextLoaderBase.tester.assertComponent("createMatchLink", AjaxLink.class);

@@ -883,9 +883,10 @@ public class PersistenceService implements Serializable {
 		final Session session = this.magicCardDao.getSession();
 
 		final Query query = session
-				.createQuery("select m from MagicCard m where m.gameId = :gameId and m.zone = :zone");
+				.createQuery("from MagicCard m where m.gameId = :gameId and m.zone = :zone");
 		query.setLong("gameId", gameId.longValue());
 		query.setParameter("zone", CardZone.GRAVEYARD);
+		query.setCacheable(true);
 
 		try {
 			return query.list();

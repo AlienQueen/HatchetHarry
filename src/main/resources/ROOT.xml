@@ -1,4 +1,4 @@
-<Context docBase="/home/nostromo/hatchetharry/target/ROOT/"
+<Context docBase="/home/nostromo/Documents/programmation/hatchetharry/target/ROOT/"
          privileged="false" antiResourceLocking="false" antiJARLocking="false" crossContext="true" reloadable="true"
          cachingAllowed="false">
 </Context>

@@ -120,9 +120,9 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 			default :
 				throw new UnsupportedOperationException();
 		}
-		this.persistenceService.mergePlayer(ownerPlayer);
-
+		this.persistenceService.updatePlayer(ownerPlayer);
 		final String ownerPlayerName = ownerPlayer.getName();
+		card.setZone(this.targetZone);
 
 		switch (this.targetZone)
 		{
@@ -137,15 +137,12 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 				this.persistenceService.updateCard(card);
 
 				ownerPlayer.setHandDisplayed(Boolean.TRUE);
-				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case GRAVEYARD :
 				ownerPlayer.setGraveyardDisplayed(Boolean.TRUE);
-				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case EXILE :
 				ownerPlayer.setExileDisplayed(Boolean.TRUE);
-				this.persistenceService.mergePlayer(ownerPlayer);
 				break;
 			case BATTLEFIELD :
 				break;
@@ -154,6 +151,9 @@ public class PutToZoneBehavior extends AbstractDefaultAjaxBehavior
 			default :
 				throw new UnsupportedOperationException();
 		}
+
+		this.persistenceService.updatePlayer(ownerPlayer);
+		this.persistenceService.updateCard(card);
 
 		final CardZoneMoveCometChannel czmcc = new CardZoneMoveCometChannel(this.sourceZone,
 				this.targetZone, card, HatchetHarrySession.get().getPlayer().getId(), card

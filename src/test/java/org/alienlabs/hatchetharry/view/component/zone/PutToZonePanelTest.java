@@ -112,7 +112,7 @@ public class PutToZonePanelTest extends SpringContextLoaderBase
 		Assert.assertNotNull(ptzb);
 		SpringContextLoaderBase.tester.getRequest().setParameter(
 				"card",
-				((PlayerAndCard)cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
+				((PlayerAndCard) cardToHandle.getDefaultModelObject()).getCard().getUuidObject()
 						.toString());
 		SpringContextLoaderBase.tester.getRequest().setParameter("targetZone", "Graveyard");
 		SpringContextLoaderBase.tester.executeBehavior(ptzb);

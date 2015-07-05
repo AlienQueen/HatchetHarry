@@ -43,10 +43,10 @@
         <maven>3.0.1</maven>
     </prerequisites>
     <properties>
-        <wicket.version>6.19.0</wicket.version>
-        <wicketstuff.version>6.19.0</wicketstuff.version>
-        <wicket-atmosphere.version>0.22</wicket-atmosphere.version>
-        <atmosphere.version>2.2.5</atmosphere.version>
+        <wicket.version>6.20.0</wicket.version>
+        <wicketstuff.version>6.20.0</wicketstuff.version>
+        <wicket-atmosphere.version>0.23</wicket-atmosphere.version>
+        <atmosphere.version>2.2.2</atmosphere.version>
         <atmosphere-compat.version>2.0.1</atmosphere-compat.version>
         <jquery.atmosphere.version>2.2.3</jquery.atmosphere.version>
         <quickview.version>6.0-SNAPSHOT</quickview.version>
