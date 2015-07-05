@@ -219,6 +219,7 @@ public class HomePageTest extends SpringContextLoaderBase
 
 		HomePageTest.testModalWindow("aboutWindow", "aboutLink");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLink");
+		HomePageTest.testModalWindow("feedbackWindow", "feedbackLink");
 		HomePageTest.testModalWindow("createMatchWindow", "createMatchLink");
 		HomePageTest.testModalWindow("joinMatchWindow", "joinMatchLink");
 		HomePageTest.testModalWindow("createTokenWindow", "createTokenLink");
@@ -233,6 +234,7 @@ public class HomePageTest extends SpringContextLoaderBase
 
 		HomePageTest.testModalWindow("aboutWindow", "aboutLinkResponsive");
 		HomePageTest.testModalWindow("teamInfoWindow", "teamInfoLinkResponsive");
+		HomePageTest.testModalWindow("feedbackWindow", "feedbackLinkResponsive");
 		HomePageTest.testModalWindow("createMatchWindow", "createMatchLinkResponsive");
 		HomePageTest.testModalWindow("joinMatchWindow", "joinMatchLinkResponsive");
 		HomePageTest.testModalWindow("createTokenWindow", "createTokenLinkResponsive");

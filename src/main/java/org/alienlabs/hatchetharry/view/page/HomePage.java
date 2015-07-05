@@ -131,9 +131,8 @@ import java.util.*;
 	@SpringBean private DataGenerator dataGenerator;
 
 	private ModalWindow teamInfoWindow;
+	private ModalWindow feedbackWindow;
 	private ModalWindow aboutWindow;
-	ModalWindow teamInfoWindowResponsive;
-	ModalWindow aboutWindowResponsive;
 	private ModalWindow createGameWindow;
 	private ModalWindow joinGameWindow;
 	private ModalWindow joinGameWithoutIdWindow;
@@ -149,9 +148,6 @@ import java.util.*;
 	WebMarkupContainer playCardLink;
 	// TODO remove this
 	WebMarkupContainer playCardParent;
-	WebMarkupContainer playCardFromGraveyardLink;
-	WebMarkupContainer thumbsPlaceholder;
-	WebMarkupContainer graveyardThumbsPlaceholder;
 	private WebMarkupContainer endTurnPlaceholder;
 	private WebMarkupContainer inResponsePlaceholder;
 	private WebMarkupContainer fineForMePlaceholder;
@@ -347,7 +343,9 @@ import java.util.*;
 		this.aboutWindow = new ModalWindow("aboutWindow");
 		this.aboutWindow = this.generateAboutLink("aboutLink", this.aboutWindow);
 		this.teamInfoWindow = new ModalWindow("teamInfoWindow");
+		this.feedbackWindow = new ModalWindow("feedbackWindow");
 		this.teamInfoWindow = this.generateTeamInfoLink("teamInfoLink", this.teamInfoWindow);
+		this.feedbackWindow = this.generateFeedbackLink("feedbackLink", this.feedbackWindow);
 
 		/*
 		 * Links from the drop-down menu, which appears when the width of the
@@ -368,6 +366,8 @@ import java.util.*;
 
 		this.teamInfoWindow = this
 				.generateTeamInfoLink("teamInfoLinkResponsive", this.teamInfoWindow);
+		this.feedbackWindow = this
+				.generateFeedbackLink("feedbackLinkResponsive", this.feedbackWindow);
 
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
@@ -1598,7 +1598,7 @@ import java.util.*;
 
 		final AjaxLink<Void> teamInfoLink = new AjaxLink<Void>(id)
 		{
-			private static final long serialVersionUID = 8140325977385015896L;
+			private static final long serialVersionUID = 1L;
 
 			@Override public void onClick(final AjaxRequestTarget target)
 			{
@@ -1611,6 +1611,34 @@ import java.util.*;
 		teamInfoLink.setOutputMarkupId(true);
 		window.setOutputMarkupId(true);
 		this.add(teamInfoLink);
+		return window;
+	}
+
+	private ModalWindow generateFeedbackLink(final String id, final ModalWindow window)
+	{
+		window.setInitialWidth(700);
+		window.setInitialHeight(150);
+		window.setTitle("Give us some feedback");
+		window.setContent(new FeedbackModalWindow(window.getContentId()));
+		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
+		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+		this.add(window);
+
+		final AjaxLink<Void> feedbackLink = new AjaxLink<Void>(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override public void onClick(final AjaxRequestTarget target)
+			{
+				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
+				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
+				window.show(target);
+			}
+		};
+
+		feedbackLink.setOutputMarkupId(true);
+		window.setOutputMarkupId(true);
+		this.add(feedbackLink);
 		return window;
 	}
 
