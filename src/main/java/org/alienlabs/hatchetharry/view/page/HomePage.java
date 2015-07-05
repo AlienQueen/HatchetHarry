@@ -145,7 +145,6 @@ import java.util.*;
 	Player player;
 	private Deck deck;
 	List<MagicCard> hand;
-	WebMarkupContainer playCardLink;
 	// TODO remove this
 	WebMarkupContainer playCardParent;
 	private WebMarkupContainer endTurnPlaceholder;
@@ -395,7 +394,6 @@ import java.util.*;
 				.generateJoinGameWithoutIdModalWindow("joinMatchWithoutIdLinkResponsive",
 						this.player, this.joinGameWithoutIdWindow));
 
-		this.generatePlayCardLink();
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkDesktop"));
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkResponsive"));
 		this.generateCardPanels();
@@ -474,11 +472,11 @@ import java.util.*;
 
 		if (this.session.getPlayer().getGame().isDrawMode().booleanValue())
 		{
-			this.drawModeParent.add(new ExternalImage("drawModeOn", "image/draw_mode_on.png"));
+			this.drawModeParent.add(new ExternalImage("drawModeOn", "image/draw_mode_on.png").setOutputMarkupId(true).setMarkupId("drawMode"));
 		}
 		else
 		{
-			this.drawModeParent.add(new WebMarkupContainer("drawModeOn").setVisible(false));
+			this.drawModeParent.add(new WebMarkupContainer("drawModeOn").setOutputMarkupId(true).setMarkupId("drawMode"));
 		}
 
 		this.add(this.drawModeParent);
@@ -1078,15 +1076,6 @@ import java.util.*;
 		this.player = p;
 	}
 
-	private void generatePlayCardLink()
-	{
-		this.playCardLink = new WebMarkupContainer("playCardLink");
-		this.playCardLink.setMarkupId("playCardLink0");
-		this.playCardLink.setOutputMarkupId(true);
-
-		this.add(this.playCardLink);
-	}
-
 	private WebMarkupContainer generatePlayCardFromGraveyardLink(final String id)
 	{
 		HomePage.LOGGER.info("Generating playCardFromGraveyard link");
@@ -1249,13 +1238,12 @@ import java.util.*;
 	private void addHeadResources()
 	{
 		final WebMarkupContainer c = new WebMarkupContainer("headResources");
-		c.add(new Behavior()
-		{
+		c.add(new Behavior() {
 			private static final long serialVersionUID = 1L;
 
-			@Override public void renderHead(final Component component,
-					final IHeaderResponse response)
-			{
+			@Override
+			public void renderHead(final Component component,
+								   final IHeaderResponse response) {
 				super.renderHead(component, response);
 
 				response.render(JavaScriptHeaderItem.forReference(
@@ -1340,7 +1328,7 @@ import java.util.*;
 								"script/arrowDraw/dom.jsPlumb-1.7.2-min.js")));
 				response.render(JavaScriptHeaderItem.forReference(
 						new PackageResourceReference(HomePage.class,
-								"script/tour/bootstrap-tour-standalone.min.js")));
+								"script/tour/bootstrap-tour-standalone.js")));
 				response.render(JavaScriptHeaderItem.forReference(
 						new PackageResourceReference(HomePage.class,
 								"script/contextmenu/jquery.popmenu.min.js")));
@@ -2740,6 +2728,7 @@ import java.util.*;
 							+ "}});");
 
 			final ExternalImage img = new ExternalImage("drawModeOn", "image/draw_mode_on.png");
+			img.setOutputMarkupId(true).setMarkupId("drawMode");
 			this.getDrawModeParent().addOrReplace(img);
 			target.add(this.getDrawModeParent());
 			target.appendJavaScript("jQuery('[title]').tipsy({gravity: 's'}); ");
@@ -2753,7 +2742,8 @@ import java.util.*;
 					"arrows = new Array(); drawMode = false; dontZoom = false; jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
 			final WebMarkupContainer img = new WebMarkupContainer("drawModeOn");
-			this.getDrawModeParent().addOrReplace(img.setVisible(false));
+			img.setOutputMarkupId(true).setMarkupId("drawMode");
+			this.getDrawModeParent().addOrReplace(img);
 			target.add(this.getDrawModeParent());
 		}
 

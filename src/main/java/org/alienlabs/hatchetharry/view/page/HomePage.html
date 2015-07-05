@@ -25,7 +25,7 @@
 <!-- The main (desktop) menu bar -->
   <span id='cssmenu'>
 	<ul>
-        <li class='active myfont'><a class="shift-bottom"><img src="/image/logoh1.gif" alt="HH" width="20px;"/></a>
+        <li class='active myfont' id="firstmenuoption"><a class="shift-bottom"><img src="/image/logoh1.gif" alt="HH" width="20px;"/></a>
             <ul>
                 <li><a><img src="/image/logoh2.gif" alt="HH" width="64px;"/></a></li>
                 <br/>
@@ -38,7 +38,7 @@
                     preferences</a></li>
             </ul>
         </li>
-        <li class='myfont'><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Match&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+        <li class='myfont' id="secondmenuoption"><a class="shift-bottom"><span class='has-sub'>&nbsp;&nbsp;Match&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
             <ul>
                 <li><a wicket:id="loginLink" class="myfont"><img src="/image/login.png" alt="Log in"/>&nbsp;&nbsp;Log in</a>
                 </li>
@@ -92,7 +92,7 @@
         </li>
     </ul>
   </span>
-  <a href="#dataScreen" title="Scroll up & down" class="scroller"></a>
+  <a href="#dataScreen" title="Scroll up & down" id="scroller" class="scroller"></a>
 
 <h3>
     <strong class="myfont shift-right">Welcome to HatchetHarry
@@ -201,8 +201,8 @@
                 <img src="/image/palette.png" alt="Switch draw mode" title="Switch draw mode"/>
             </a>
         </div>
-	    <span wicket:id="drawModeParent" class="drawModeParent">
-			<img wicket:id="drawModeOn" title="Draw mode is ON" width="48" height="48"/>
+	    <span wicket:id="drawModeParent" class="drawModeParent" id="drawModeParent">
+			<img wicket:id="drawModeOn" id="drawMode" title="Draw mode is ON" width="48" height="48"/>
 		</span>
   	</span>
 <br/><br/>
@@ -363,28 +363,18 @@
                 </a>
             </li>
 
-            <li>
-                <img src="image/playCard.png" id="tour3"></img>
-                <a wicket:id="playCardLink" style="cursor: pointer; color: white; position: relative; top: -9px;"
-                   title="Play the card currently shown in your hand">
-                    Play
-                    <img id="playCardIndicator" src="image/indicator.gif"
-                         style="position: absolute; float: right; top: 7px; left:39px;"></img>
-                </a>
-            </li>
-
             <li wicket:id="combatPlaceholder">
                 <a wicket:id="combatLink" id="combatlink" style="cursor: pointer; color: white;"
                    title="Start and end combat phase"><img src="image/battle.png"></img> Combat</a>
             </li>
 
-            <li wicket:id="inResponsePlaceholder">
+            <li wicket:id="inResponsePlaceholder" id="inResponsePlaceholder">
                 <a wicket:id="inResponseLink" style="cursor: pointer; color: white;"
                    title="Play an action in response to another one"><img src="image/endOfTurnAction.png"></img> In
                     response</a>
             </li>
 
-            <li wicket:id="fineForMePlaceholder">
+            <li wicket:id="fineForMePlaceholder" id="fineForMePlaceholder">
                 <a wicket:id="fineForMeLink" style="cursor: pointer; color: white;" title="Fine for me"><img
                         src="image/acceptEndOfTurn.png"></img> Fine</a>
             </li>

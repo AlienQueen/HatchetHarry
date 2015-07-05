@@ -191,43 +191,92 @@ jQuery(function () {
     var tour = new Tour({
         steps: [
             {
-                element: "#tour1",
-                title: "Drawing cards",
-                placement: "top",
-                trigger: 'manual',
-                content: "When you've joined a game, you'll be able to draw cards, thanks to the button in this toolbar."
+                element: "#cssmenu",
+                title: "Menubar",
+                placement: "bottom",
+                trigger: "manual",
+                content: "This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu entries."
             },
             {
-                element: "#tour2",
-                title: "Untap all",
+                element: "#secondmenuoption",
+                title: "Menubar",
+                placement: "bottom",
+                trigger: "manual",
+                content: "In this menubar, the most important options are to create a match and to join it, using the \"match\" menu."
+            },
+            {
+                element: "#secondmenuoption",
+                title: "Menubar",
+                placement: "bottom",
+                trigger: "manual",
+                content: "To join a match, you're supposed to agree with your opponent in order to get the match ID."
+            },
+            {
+                element: "#secondmenuoption",
+                title: "Menubar",
+                placement: "bottom",
+                trigger: "manual",
+                content: "HatchetHarry is a Single-Page Webapp: you'll have to refresh the page only at the end of a match."
+            },
+            {
+                element: "#firstmenuoption",
+                title: "Menubar",
+                placement: "bottom",
+                trigger: 'manual',
+                content: "NEW: there's an option in the HH menu to give us developers some feedback."
+            },
+            {
+                element: "#galleryParent",
+                title: "Hand",
+                placement: "top",
+                trigger: 'manual',
+                content: "These cards with a dice on their right are your hand: you're the only one who can see them."
+            },
+            {
+                element: "#galleryParent",
+                title: "Hand",
+                placement: "top",
+                trigger: 'manual',
+                content: "You can play cards in your hand using the dice icon and the opponent will see them on the battlefield."
+            },
+            {
+                element: "#allCardsParent",
+                title: "Battlefield",
+                placement: "left",
+                trigger: 'manual',
+                content: "Each opponent sees his permanents on the battlefield, above his hand and under his own opponent's cards."
+            },
+            {
+                element: "#tour_3",
+                title: "Toolbar",
+                placement: "top",
+                trigger: 'manual',
+                content: "When you've joined a match, you'll be able to draw cards, thanks to the button in this toolbar."
+            },
+            {
+                element: "#untapAllPlaceholder",
+                title: "Toolbar",
                 placement: "top",
                 trigger: 'manual',
                 content: "You can untap all your permanents at once using the toolbar button."
             },
             {
-                element: "#tour3",
-                title: "Play cards",
+                element: "#inResponsePlaceholder",
+                title: "Toolbar",
                 placement: "top",
                 trigger: 'manual',
-                content: "You can play cards and the opponent will see them on the battlefield."
+                content: "When you have something to play in response to an action, it's handy to click on this button."
             },
             {
-                element: "#cssmenu",
-                title: "Menu bar",
-                placement: "bottom",
+                element: "#fineForMePlaceholder",
+                title: "Toolbar",
+                placement: "top",
                 trigger: 'manual',
-                content: "This is the menubar, where you'll find most of the options of HatchetHarry, logically grouped into menu entries."
-            },
-            {
-                element: "#page-wrap",
-                title: "Your hand",
-                placement: "right",
-                trigger: 'manual',
-                content: "This is your hand. You can browse the cards in it and play one of them."
+                content: "When you're OK, you can click on this \"Fine for me!\" button."
             },
             {
                 element: "#tour_10",
-                title: "The dock",
+                title: "Dock",
                 placement: "top",
                 trigger: 'manual',
                 content: "This is the dock. You can show the different zones of Magic using its icons."
@@ -253,40 +302,82 @@ jQuery(function () {
                 trigger: 'manual',
                 content: "Browse through the exiled cards using this button."
             },
-            {
+            /*{
                 element: "#tour_13",
                 title: "Hide all",
                 placement: "top",
                 trigger: 'manual',
                 content: "Hide every zone of the game except the battlefield using this button. Only the permanents remain, so that you can have a vista of the game. If you click here again, the previously displayed zones will be restored, at the same place."
-            },
-            {
+            },*/
+            /*{
                 element: "#tour_14",
                 title: "The library",
                 placement: "top",
                 trigger: 'manual',
                 content: "Browse through your library using this button. Your opponent will be notified of this action. Beware: you're supposed to play fair! Don't forget the rules of the game."
+            },*/
+            {
+                element: "#drawMode",
+                title: "Draw mode",
+                placement: "top right",
+                trigger: "manual",
+                content: "Click here to switch on and off the draw mode for the match. When it's on, you can connect couple of battlefield cards by clicking on the source, then the target and so on."
+            },
+            {
+                element: "#drawMode",
+                title: "Draw mode",
+                placement: "top right",
+                trigger: "manual",
+                content: "This is pretty useful during a combat. When an opponent switches the draw mode off, all arrows are lost."
             },
             {
                 element: "#chat",
-                title: "The chat",
-                placement: "bottom",
+                title: "Chat",
+                placement: "top",
                 trigger: 'manual',
-                content: "This is a chat. Its behavior is standard and you DON'T need to refresh your browser in order to receive new messages."
+                content: "This is a chat. Its behavior is standard and you DON'T need to refresh your browser in order to receive new messages. You're supposed to have created and joined a match to chat with your opponent"
+            },
+            {
+                element: "#console",
+                title: "Action history",
+                placement: "top",
+                trigger: "manual",
+                content: "This is the action history, a.k.a. the console: every action is logged here with the time of the action. The goal is to prevent cheating by being able to reconstruct the match."
+            },
+            {
+                element: "#console",
+                title: "Action history",
+                placement: "top",
+                trigger: "manual",
+                content: "Under the \"Zone\" menu option, there is an \"insert division in history\" entry which is useful, for example, to tell your opponent you'll be right back and prevent cheating from any side."
             },
             {
                 element: "#dataBoxParent",
-                title: "The Databox",
+                title: "Databox",
                 placement: "bottom",
-                trigger: 'manual',
-                content: "This is what we call the Databox: it gives the life point totals of all players of the game. If you click on one of these numbers, you can set it up directly. And you can use the 'plus' and 'minus' buttons."
+                trigger: "manual",
+                content: "This is what we call the Databox: it gives the life point totals of all players of the match. If you click on one of these numbers, you can set it up directly. And you can use the 'plus' and 'minus' buttons."
+            },
+            {
+                element: "#scroller",
+                title: "Scroller",
+                placement: "right",
+                trigger: "manual",
+                content: "This green scroller is useful when you want to navigate up and down in order to browse through the chat / action history / databox and the battlefield."
+            },
+            {
+                element: "#clock",
+                title: "Clock",
+                placement: "top right",
+                trigger: "manual",
+                content: "By the way: all times in HH are managed by the server, which means that in this clock and in the action history, everyone has the same times."
             },
             {
                 element: "#tour_1",
-                title: "You're done!",
+                title: " ",
                 placement: "bottom",
-                trigger: 'manual',
-                content: "Have fun!"
+                trigger: "manual",
+                content: "Have a lot of fun!"
             }
         ]
     });
