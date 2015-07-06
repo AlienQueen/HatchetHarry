@@ -301,8 +301,8 @@ import java.util.*;
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.24.0 (release Battlefield),");
-		final Label message2 = new Label("message2", "built on Monday, 19th of January 2015.");
+		final Label message1 = new Label("message1", "version 0.25.0 (release Lou-Ann),");
+		final Label message2 = new Label("message2", "built on Monday, 6th of July 2015.");
 		this.add(message1, message2);
 
 		// Comet clock channel
