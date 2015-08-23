@@ -19,6 +19,7 @@
 
     + annotate the PersistenceService method with  @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     + retrieve the object from its parent, remove the objet from its parent (nullify it if needed) and do saveOrUpdate(merge(blah)) on the retrieved object
+    + or try and put the annotation CascadeType.PERSIST on the association (http://stackoverflow.com/questions/22392410/hibernate-an-entity-copy-eventxxx-was-already-assigned-to-a-different-entity)
 
 - For functional tests:
 

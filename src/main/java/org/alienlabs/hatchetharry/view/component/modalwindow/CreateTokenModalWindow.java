@@ -125,13 +125,12 @@ public class CreateTokenModalWindow extends Panel
 				card.setY(card.getY() == -1L ? player.getSide().getY() : card.getY());
 				card.setDeck(deck);
 				card.getDeck().setPlayerId(player.getId());
-				deck.getCards().add(card);
 
 				token.setCapabilities(CreateTokenModalWindow.this.capabilitiesModel.getObject());
 				token.setCreatureTypes(CreateTokenModalWindow.this.creatureTypesModel.getObject());
 				token.setPlayer(player);
 
-				CreateTokenModalWindow.this.persistenceService.saveTokenAndDeck(card);
+				CreateTokenModalWindow.this.persistenceService.saveTokenAndDeck(card, token);
 
 				final PutTokenOnBattlefieldCometChannel ptobcc = new PutTokenOnBattlefieldCometChannel(
 						gameId, card, player.getSide());

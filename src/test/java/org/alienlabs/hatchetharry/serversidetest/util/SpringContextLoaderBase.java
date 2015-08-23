@@ -43,9 +43,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class) @ContextConfiguration(locations = {
-		"classpath:applicationContext.xml",
-		"classpath:applicationContextTest.xml" }) public class SpringContextLoaderBase
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:applicationContext.xml",
+		"classpath:applicationContextTest.xml" })
+public class SpringContextLoaderBase
 {
 	protected static AtmosphereTester waTester;
 	protected static transient WicketTester tester;
@@ -55,22 +56,24 @@ import java.util.List;
 	protected AtmosphereConfig config;
 	protected DefaultPageManagerProvider pageManagerProvider;
 
-	@Autowired protected ApplicationContext context;
+	@Autowired
+	protected ApplicationContext context;
 
-	@Before public void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
 		webApp = new HatchetHarryApplication()
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void init()
+			@Override
+			public void init()
 			{
-				this.getComponentInstantiationListeners()
-						.add(new SpringComponentInjector(this, SpringContextLoaderBase.this.context,
-								true));
+				this.getComponentInstantiationListeners().add(
+					new SpringComponentInjector(this, SpringContextLoaderBase.this.context, true));
 
 				this.getMarkupSettings().setStripWicketTags(false);
-				this.getDebugSettings().setOutputComponentPath(true);
+				this.getDebugSettings().setComponentPathAttributeName("wicket");
 			}
 		};
 
@@ -83,10 +86,11 @@ import java.util.List;
 		Assert.assertNotNull(persistenceService);
 	}
 
-	@After public void tearDown()
+	@After
+	public void tearDown()
 	{
-		webApp.newSession(tester.getRequestCycle().getRequest(),
-				tester.getRequestCycle().getResponse());
+		webApp.newSession(tester.getRequestCycle().getRequest(), tester.getRequestCycle()
+			.getResponse());
 		persistenceService.resetDb();
 	}
 
@@ -95,15 +99,24 @@ import java.util.List;
 		// Create game
 		final String paramName = pageParameters.length > 1 ? pageParameters[0] : "";
 		final String paramValue = pageParameters.length > 1 ? pageParameters[1] : "";
-		SpringContextLoaderBase.tester
-				.startPage(new HomePage(new PageParameters().add(paramName, paramValue)));
+
+		PageParameters pp = new PageParameters();
+		if ((!"".equals(paramName)) && (!"".equals(paramValue)))
+		{
+			pp.add(paramName, paramValue);
+			SpringContextLoaderBase.tester.startPage(new HomePage(pp));
+		}
+		else
+		{
+			SpringContextLoaderBase.tester.startPage(new HomePage(pp));
+		}
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
 		SpringContextLoaderBase.tester.assertComponent("createMatchLink", AjaxLink.class);
 		SpringContextLoaderBase.tester.clickLink("createMatchLink", true);
 
 		final FormTester createGameForm = SpringContextLoaderBase.tester
-				.newFormTester("createMatchWindow:content:form");
+			.newFormTester("createMatchWindow:content:form");
 		createGameForm.setValue("name", "Zala");
 		createGameForm.setValue("sideInput", "1");
 		createGameForm.setValue("deckParent:decks", "1");
@@ -112,8 +125,8 @@ import java.util.List;
 
 		if ((pageParameters.length > 0) && ("ajaxSubmit".equals(pageParameters[0])))
 		{
-			SpringContextLoaderBase.tester
-					.executeAjaxEvent("createMatchWindow:content:form:submit", "onclick");
+			SpringContextLoaderBase.tester.executeAjaxEvent(
+				"createMatchWindow:content:form:submit", "onclick");
 		}
 		else
 		{
@@ -124,32 +137,31 @@ import java.util.List;
 		SpringContextLoaderBase.tester.startPage(HomePage.class);
 		SpringContextLoaderBase.tester.assertRenderedPage(HomePage.class);
 
-		Player p = SpringContextLoaderBase.persistenceService
-				.getAllPlayersOfGame(HatchetHarrySession.get().getGameId().longValue()).get(0);
+		Player p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
+			HatchetHarrySession.get().getGameId().longValue()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 
 		// For the moment, we should have no card in the battlefield
 		final Long gameId = HatchetHarrySession.get().getGameId();
 		final List<MagicCard> allCardsInBattlefield = SpringContextLoaderBase.persistenceService
-				.getAllCardsInBattlefieldForAGame(gameId);
+			.getAllCardsInBattlefieldForAGame(gameId);
 		Assert.assertEquals(0, allCardsInBattlefield.size());
 
 		// Play a card
 		SpringContextLoaderBase.tester.getRequest().setParameter("card",
-				HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
+			HatchetHarrySession.get().getFirstCardsInHand().get(0).getUuid());
 		SpringContextLoaderBase.tester.executeBehavior(pcfhb);
 
 		// One card on the battlefield, 6 in the hand
-		Assert.assertEquals(1,
-				SpringContextLoaderBase.persistenceService.getAllCardsInBattlefieldForAGame(gameId)
-						.size());
+		Assert.assertEquals(1, SpringContextLoaderBase.persistenceService
+			.getAllCardsInBattlefieldForAGame(gameId).size());
 		Assert.assertEquals(6, SpringContextLoaderBase.persistenceService
-				.getAllCardsInHandForAGameAndADeck(gameId, p.getDeck().getDeckId()).size());
+			.getAllCardsInHandForAGameAndADeck(gameId, p.getDeck().getDeckId()).size());
 
 		// We still should not have more cards that the number of cards in the
 		// deck
-		p = SpringContextLoaderBase.persistenceService
-				.getAllPlayersOfGame(HatchetHarrySession.get().getGameId().longValue()).get(0);
+		p = SpringContextLoaderBase.persistenceService.getAllPlayersOfGame(
+			HatchetHarrySession.get().getGameId().longValue()).get(0);
 		Assert.assertEquals(60, p.getDeck().getCards().size());
 	}
 
@@ -158,9 +170,9 @@ import java.util.List;
 	{
 		tester.assertComponent("galleryParent:gallery:handCards:0", ListItem.class);
 		final ListItem<MagicCard> playCardLink = (ListItem<MagicCard>)tester
-				.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
+			.getComponentFromLastRenderedPage("galleryParent:gallery:handCards:0");
 		final PlayCardFromHandBehavior b = (PlayCardFromHandBehavior)playCardLink.getBehaviors()
-				.get(0);
+			.get(0);
 		Assert.assertNotNull(b);
 		return b;
 	}
@@ -172,8 +184,8 @@ class MyTesterBroadcasterFactory extends DefaultBroadcasterFactory
 
 	MyTesterBroadcasterFactory(AtmosphereConfig c, SimpleBroadcaster broadcaster)
 	{
-		super(SimpleBroadcaster.class,
-				BroadcasterLifeCyclePolicy.ATMOSPHERE_RESOURCE_POLICY.NEVER.name(), c);
+		super(SimpleBroadcaster.class, BroadcasterLifeCyclePolicy.ATMOSPHERE_RESOURCE_POLICY.NEVER
+			.name(), c);
 
 		this.singleBroadcaster = broadcaster;
 
@@ -181,8 +193,10 @@ class MyTesterBroadcasterFactory extends DefaultBroadcasterFactory
 		factory = this;
 	}
 
-	@SuppressWarnings("unchecked") @Override public <T extends Broadcaster> T lookup(Class<T> c,
-			Object id, boolean createIfNull, boolean unique)
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Broadcaster> T lookup(Class<T> c, Object id, boolean createIfNull,
+		boolean unique)
 	{
 		return (T)singleBroadcaster;
 	}

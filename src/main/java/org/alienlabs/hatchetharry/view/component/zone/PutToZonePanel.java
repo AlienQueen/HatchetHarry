@@ -64,7 +64,7 @@ public class PutToZonePanel extends Panel
 				"moveToZoneSubmit" + this.sourceZone
 						+ (this.isReveal ? this.player.getId().toString() : ""));
 
-		final IModel<List<? extends CardZone>> zonesModel = Model.ofList(allZones);
+		final IModel<List<CardZone>> zonesModel = Model.ofList(allZones);
 		this.targetZoneInput = new DropDownChoice<>("targetZoneInput",
 				Model.of(defaultZone), zonesModel);
 		this.targetZoneInput.setOutputMarkupId(true).setMarkupId(

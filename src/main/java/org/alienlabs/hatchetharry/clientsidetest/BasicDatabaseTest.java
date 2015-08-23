@@ -29,7 +29,7 @@ public class BasicDatabaseTest implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	static final ClassPathXmlApplicationContext CLASS_PATH_XML_APPLICATION_CONTEXT = new ClassPathXmlApplicationContext(
-			new String[] { "applicationContext.xml" });
+		new String[] { "applicationContext.xml" });
 
 	private static transient WicketTester tester;
 	private static HatchetHarryApplication webApp;
@@ -65,7 +65,7 @@ public class BasicDatabaseTest implements Serializable
 			{
 				BasicDatabaseTest.context = BasicDatabaseTest.CLASS_PATH_XML_APPLICATION_CONTEXT;
 				this.getComponentInstantiationListeners().add(
-						new SpringComponentInjector(this, BasicDatabaseTest.context, true));
+					new SpringComponentInjector(this, BasicDatabaseTest.context, true));
 			}
 		};
 

@@ -38,14 +38,14 @@ public class GameService
 	}
 
 	public static void joinGame(final PersistenceService persistenceService,
-			final ModalWindow _modal, final AjaxRequestTarget target, final Long gameId,
-			final Deck deck, final String side, final String playerName, final HomePage hp)
+		final ModalWindow _modal, final AjaxRequestTarget target, final Long gameId,
+		final Deck deck, final String side, final String playerName, final HomePage hp)
 	{
 		final Game game = persistenceService.getGame(gameId);
 		if (null == game)
 		{
 			target.appendJavaScript("alert('The selected match (id= " + gameId.toString()
-					+ ") does not exist!');");
+				+ ") does not exist!');");
 			return;
 		}
 
@@ -80,19 +80,19 @@ public class GameService
 		persistenceService.saveDeck(_deck);
 
 		final List<CollectibleCard> allCollectibleCardsInDeckArchive = persistenceService
-				.giveAllCollectibleCardsInDeckArchive(_deck.getDeckArchive());
+			.giveAllCollectibleCardsInDeckArchive(_deck.getDeckArchive());
 		LOGGER.info("deck.getDeckArchive().getDeckArchiveId(): "
-				+ _deck.getDeckArchive().getDeckArchiveId());
+			+ _deck.getDeckArchive().getDeckArchiveId());
 		LOGGER.info("allCollectibleCardsInDeckArchive.size(): "
-				+ allCollectibleCardsInDeckArchive.size());
+			+ allCollectibleCardsInDeckArchive.size());
 
 		final List<MagicCard> allMagicCards = new ArrayList<>();
 
 		for (final CollectibleCard cc : allCollectibleCardsInDeckArchive)
 		{
 			final MagicCard card = new MagicCard("cards/" + cc.getTitle() + "_small.jpg", "cards/"
-					+ cc.getTitle() + ".jpg", "cards/" + cc.getTitle() + "Thumb.jpg",
-					cc.getTitle(), "", side, null, Integer.valueOf(0));
+				+ cc.getTitle() + ".jpg", "cards/" + cc.getTitle() + "Thumb.jpg", cc.getTitle(),
+				"", side, null, Integer.valueOf(0));
 			card.setGameId(gameId);
 			card.setDeck(_deck);
 			card.setUuidObject(UUID.randomUUID());
@@ -102,7 +102,7 @@ public class GameService
 		_deck.setCards(_deck.reorderMagicCards(_deck.shuffleLibrary(allMagicCards)));
 
 		LOGGER.info("deck.cards().size(): " + _deck.getCards().size() + ", deckId: "
-				+ deck.getDeckId());
+			+ deck.getDeckId());
 
 		final ArrayList<MagicCard> firstCards = new ArrayList<>();
 
@@ -115,18 +115,20 @@ public class GameService
 
 		persistenceService.updateDeck(_deck);
 		LOGGER.info("_deck.cards().size(): " + _deck.getCards().size() + ", deckId: "
-				+ _deck.getDeckId());
+			+ _deck.getDeckId());
 
 		HatchetHarrySession.get().setFirstCardsInHand(firstCards);
 		player.setGame(game);
+		player.setDeck(_deck);
 		player.getSide().setSideName(side);
 		player.setName(playerName);
+		persistenceService.updatePlayer(player);
 
-		persistenceService.mergePlayer(player);
+		player.setDeck(_deck);
 		session.setPlayer(player);
 
 		LOGGER.info("_deck.cards().size(): " + _deck.getCards().size() + ", deckId: "
-				+ _deck.getDeckId());
+			+ _deck.getDeckId());
 
 		HatchetHarrySession.get().getAllMagicCardsInBattleField().clear();
 		final Set<Player> players = game.getPlayers();
@@ -139,7 +141,7 @@ public class GameService
 		}
 
 		final StringBuilder buil = new StringBuilder(
-				"jQuery.gritter.add({title : \"You have requested to join a match\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
+			"jQuery.gritter.add({title : \"You have requested to join a match\", text : \"You can start playing right now!\", image : 'image/logoh2.gif', sticky : false, time : ''}); ");
 		LOGGER.info("close!");
 
 		final int posX = ("infrared".equals(side)) ? 300 : 900;
@@ -161,15 +163,15 @@ public class GameService
 
 		final Long _gameId = game.getId();
 		final JoinGameNotificationCometChannel jgncc = new JoinGameNotificationCometChannel(
-				player.getName(), _gameId);
+			player.getName(), _gameId);
 
 		final List<BigInteger> allPlayersInGameExceptMe = persistenceService
-				.giveAllPlayersFromGameExceptMe(_gameId, player.getId());
+			.giveAllPlayersFromGameExceptMe(_gameId, player.getId());
 
 		final UpdateDataBoxCometChannel udbcc = new UpdateDataBoxCometChannel(_gameId);
 
 		final List<BigInteger> allPlayersInGame = persistenceService
-				.giveAllPlayersFromGame(_gameId);
+			.giveAllPlayersFromGame(_gameId);
 
 		persistenceService.updateSide(s);
 		player.setSideUuid(s.getUuid());
@@ -177,8 +179,8 @@ public class GameService
 
 		final AddSideCometChannel ascc = new AddSideCometChannel(player);
 		final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
-				ConsoleLogType.GAME, null, null, Boolean.FALSE, null, HatchetHarrySession.get()
-						.getPlayer().getName(), null, _gameId, null, null, _gameId);
+			ConsoleLogType.GAME, null, null, Boolean.FALSE, null, HatchetHarrySession.get()
+				.getPlayer().getName(), null, _gameId, null, null, _gameId);
 
 		// post the DataBox update message to all players in the game,
 		// except me
@@ -188,9 +190,9 @@ public class GameService
 
 		// In order to display the opponents' sides
 		final List<Player> giveAllPlayersFromGameExceptMeAsPlayers = persistenceService
-				.giveAllPlayersFromGameExceptMeAsPlayers(_gameId, player.getId());
+			.giveAllPlayersFromGameExceptMeAsPlayers(_gameId, player.getId());
 		final AddSidesFromOtherBrowsersCometChannel asfobcc = new AddSidesFromOtherBrowsersCometChannel(
-				player, giveAllPlayersFromGameExceptMeAsPlayers);
+			player, giveAllPlayersFromGameExceptMeAsPlayers);
 		EventBusPostService.post(allPlayersInGame, asfobcc);
 
 		session.resetCardsInGraveyard();
@@ -201,6 +203,6 @@ public class GameService
 		}
 
 		target.appendJavaScript("document.getElementById('userName').value = '" + player.getName()
-				+ "'; ");
+			+ "'; ");
 	}
 }

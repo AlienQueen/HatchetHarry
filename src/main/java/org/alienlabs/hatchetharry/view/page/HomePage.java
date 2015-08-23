@@ -99,8 +99,11 @@ import java.util.*;
  * @author Zala Goupil
  */
 @SuppressFBWarnings(value = { "SE_INNER_CLASS", "SIC_INNER_SHOULD_BE_STATIC_ANON",
-		"PREDICTABLE_RANDOM" }, justification = "SE_INNER_CLASS + SIC_INNER_SHOULD_BE_STATIC_ANON: In Wicket, serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. This is no bad practice in Wicket. PREDICTABLE_RANDOM: SecureRandom is awfully slow and we don't need strong RNG") public class HomePage
-		extends TestReportPage
+		"PREDICTABLE_RANDOM" }, justification = "SE_INNER_CLASS + SIC_INNER_SHOULD_BE_STATIC_ANON: In Wicket, "
+	+ "serializable inner classes are common. And as the parent Page is serialized as well, this is no concern. "
+	+ "This is no bad practice in Wicket. "
+	+ "PREDICTABLE_RANDOM: SecureRandom is awfully slow and we don't need strong RNG")
+public class HomePage extends TestReportPage
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomePage.class);
@@ -127,8 +130,10 @@ import java.util.*;
 	private final ModalWindow mulliganWindow;
 	private final ModalWindow askMulliganWindow;
 
-	@SpringBean PersistenceService persistenceService;
-	@SpringBean private DataGenerator dataGenerator;
+	@SpringBean
+	PersistenceService persistenceService;
+	@SpringBean
+	private DataGenerator dataGenerator;
 
 	private ModalWindow teamInfoWindow;
 	private ModalWindow feedbackWindow;
@@ -170,8 +175,8 @@ import java.util.*;
 	private Label username;
 	private Label gameId;
 
-	@SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!") public HomePage(
-			final PageParameters pp) throws Exception
+	@SuppressFBWarnings(value = "EC_UNRELATED_TYPES", justification = "If we put 'test'.equals(pp.get('test').toString()) it breaks everything!")
+	public HomePage(final PageParameters pp) throws Exception
 	{
 		this.session = HatchetHarrySession.get();
 
@@ -182,28 +187,27 @@ import java.util.*;
 		if ((req != null) && req.contains("endMatch=true"))
 		{
 			HomePage.LOGGER.info("restart match for player: " + this.session.getPlayer().getId()
-					+ " & match: " + this.session.getGameId());
+				+ " & match: " + this.session.getGameId());
 
-			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-					.chooseStrategy(ConsoleLogType.GAME, null, null, null, null,
-							this.session.getPlayer().getName(), null, null, null, Boolean.FALSE,
-							this.session.getGameId());
+			final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+				ConsoleLogType.GAME, null, null, null, null, this.session.getPlayer().getName(),
+				null, null, null, Boolean.FALSE, this.session.getGameId());
 			final NotifierCometChannel ncc = new NotifierCometChannel(
-					NotifierAction.END_GAME_ACTION, null, null, this.session.getPlayer().getName(),
-					null, null, null, "");
+				NotifierAction.END_GAME_ACTION, null, null, this.session.getPlayer().getName(),
+				null, null, null, "");
 
 			final List<BigInteger> allPlayersInGameExceptMe = this.persistenceService
-					.giveAllPlayersFromGameExceptMe(this.session.getGameId(),
-							this.session.getPlayer().getId());
-			EventBusPostService
-					.post(allPlayersInGameExceptMe, new ConsoleLogCometChannel(logger), ncc);
+				.giveAllPlayersFromGameExceptMe(this.session.getGameId(), this.session.getPlayer()
+					.getId());
+			EventBusPostService.post(allPlayersInGameExceptMe, new ConsoleLogCometChannel(logger),
+				ncc);
 
 			request.getSession(false).invalidate();
 			throw new RestartResponseException(HomePage.class);
 		}
 
-		if ((pp != null) && (pp.get("displayTooltips") != null) && ("true"
-				.equals(pp.get("displayTooltips").toString())))
+		if ((pp != null) && (pp.get("displayTooltips") != null)
+			&& ("true".equals(pp.get("displayTooltips").toString())))
 		{
 			this.session.setDisplayTooltips(Boolean.TRUE);
 		}
@@ -281,8 +285,8 @@ import java.util.*;
 		this.sideParent = new WebMarkupContainer("sideParent");
 		this.sideParent.setOutputMarkupId(true);
 
-		this.allPlayerSidesInGame = this.persistenceService
-				.getAllPlayersOfGame(this.session.getGameId().longValue());
+		this.allPlayerSidesInGame = this.persistenceService.getAllPlayersOfGame(this.session
+			.getGameId().longValue());
 		final ListDataProvider<Player> data = new ListDataProvider<>(this.allPlayerSidesInGame);
 
 		this.allSidesInGame = this.populateSides(data);
@@ -301,8 +305,8 @@ import java.util.*;
 		this.add(this.exileParent);
 
 		// Welcome message
-		final Label message1 = new Label("message1", "version 0.25.0 (release Lou-Ann),");
-		final Label message2 = new Label("message2", "built on Monday, 6th of July 2015.");
+		final Label message1 = new Label("message1", "version 0.26.0 (release Lou-Ann),");
+		final Label message2 = new Label("message2", "built on Wednesday, 19th of August 2015.");
 		this.add(message1, message2);
 
 		// Comet clock channel
@@ -316,7 +320,7 @@ import java.util.*;
 		this.secondSidePlaceholderParent.setOutputMarkupId(true);
 		this.secondSidePlaceholderParent.setMarkupId("secondSidePlaceholderParent");
 		final WebMarkupContainer secondSidePlaceholder = new WebMarkupContainer(
-				"secondSidePlaceholder");
+			"secondSidePlaceholder");
 		secondSidePlaceholder.setOutputMarkupId(true);
 		secondSidePlaceholder.setMarkupId("secondSidePlaceholder");
 		this.secondSidePlaceholderParent.add(secondSidePlaceholder);
@@ -325,7 +329,7 @@ import java.util.*;
 		this.firstSidePlaceholderParent.setOutputMarkupId(true);
 		this.firstSidePlaceholderParent.setMarkupId("firstSidePlaceholderParent");
 		final WebMarkupContainer firstSidePlaceholder = new WebMarkupContainer(
-				"firstSidePlaceholder");
+			"firstSidePlaceholder");
 		firstSidePlaceholder.setOutputMarkupId(true);
 		this.firstSidePlaceholderParent.add(firstSidePlaceholder);
 
@@ -339,60 +343,55 @@ import java.util.*;
 		this.buildDock();
 
 		// Links from the menubar
-		this.aboutWindow = new ModalWindow("aboutWindow");
+		this.aboutWindow = new NoUnloadConfirmationModalWindow("aboutWindow");
 		this.aboutWindow = this.generateAboutLink("aboutLink", this.aboutWindow);
-		this.teamInfoWindow = new ModalWindow("teamInfoWindow");
-		this.feedbackWindow = new ModalWindow("feedbackWindow");
+		this.teamInfoWindow = new NoUnloadConfirmationModalWindow("teamInfoWindow");
+		this.feedbackWindow = new NoUnloadConfirmationModalWindow("feedbackWindow");
 		this.teamInfoWindow = this.generateTeamInfoLink("teamInfoLink", this.teamInfoWindow);
 		this.feedbackWindow = this.generateFeedbackLink("feedbackLink", this.feedbackWindow);
 
 		/*
-		 * Links from the drop-down menu, which appears when the width of the
-		 * view port is < than its height. (AKA a little bit of responsive Web
-		 * design)
+		 * Links from the drop-down menu, which appears when the width of the view port is < than
+		 * its height. (AKA a little bit of responsive Web design)
 		 */
 		this.aboutWindow = this.generateAboutLink("aboutLinkResponsive", this.aboutWindow);
 
-		this.mulliganWindow = new ModalWindow("mulliganWindow");
+		this.mulliganWindow = new NoUnloadConfirmationModalWindow("mulliganWindow");
 		this.generateMulliganLink("mulliganLink", this.mulliganWindow);
 		this.generateMulliganLink("mulliganLinkResponsive", this.mulliganWindow);
-		this.askMulliganWindow = new ModalWindow("askMulliganWindow");
+		this.askMulliganWindow = new NoUnloadConfirmationModalWindow("askMulliganWindow");
 		this.askMulliganWindow.setInitialWidth(500);
 		this.askMulliganWindow.setInitialHeight(100);
 		this.askMulliganWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		this.askMulliganWindow.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		this.add(this.askMulliganWindow);
 
-		this.teamInfoWindow = this
-				.generateTeamInfoLink("teamInfoLinkResponsive", this.teamInfoWindow);
-		this.feedbackWindow = this
-				.generateFeedbackLink("feedbackLinkResponsive", this.feedbackWindow);
+		this.teamInfoWindow = this.generateTeamInfoLink("teamInfoLinkResponsive",
+			this.teamInfoWindow);
+		this.feedbackWindow = this.generateFeedbackLink("feedbackLinkResponsive",
+			this.feedbackWindow);
 
 		final GameNotifierBehavior notif = new GameNotifierBehavior(this);
 		this.add(notif);
 
-		this.createGameWindow = new ModalWindow("createMatchWindow");
-		this.add(this.createGameWindow = this
-				.generateCreateGameModalWindow("createMatchLink", this.player,
-						this.createGameWindow));
-		this.add(this.createGameWindow = this
-				.generateCreateGameModalWindow("createMatchLinkResponsive", this.player,
-						this.createGameWindow));
+		this.createGameWindow = new NoUnloadConfirmationModalWindow("createMatchWindow");
+		this.add(this.createGameWindow = this.generateCreateGameModalWindow("createMatchLink",
+			this.player, this.createGameWindow));
+		this.add(this.createGameWindow = this.generateCreateGameModalWindow(
+			"createMatchLinkResponsive", this.player, this.createGameWindow));
 
-		this.joinGameWindow = new ModalWindow("joinMatchWindow");
-		this.add(this.joinGameWindow = this
-				.generateJoinGameModalWindow("joinMatchLink", this.player, this.joinGameWindow));
-		this.add(this.joinGameWindow = this
-				.generateJoinGameModalWindow("joinMatchLinkResponsive", this.player,
-						this.joinGameWindow));
+		this.joinGameWindow = new NoUnloadConfirmationModalWindow("joinMatchWindow");
+		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinMatchLink",
+			this.player, this.joinGameWindow));
+		this.add(this.joinGameWindow = this.generateJoinGameModalWindow("joinMatchLinkResponsive",
+			this.player, this.joinGameWindow));
 
-		this.joinGameWithoutIdWindow = new ModalWindow("joinMatchWithoutIdWindow");
-		this.add(this.joinGameWithoutIdWindow = this
-				.generateJoinGameWithoutIdModalWindow("joinMatchWithoutIdLink", this.player,
-						this.joinGameWithoutIdWindow));
-		this.add(this.joinGameWithoutIdWindow = this
-				.generateJoinGameWithoutIdModalWindow("joinMatchWithoutIdLinkResponsive",
-						this.player, this.joinGameWithoutIdWindow));
+		this.joinGameWithoutIdWindow = new NoUnloadConfirmationModalWindow(
+			"joinMatchWithoutIdWindow");
+		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
+			"joinMatchWithoutIdLink", this.player, this.joinGameWithoutIdWindow));
+		this.add(this.joinGameWithoutIdWindow = this.generateJoinGameWithoutIdModalWindow(
+			"joinMatchWithoutIdLinkResponsive", this.player, this.joinGameWithoutIdWindow));
 
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkDesktop"));
 		this.add(this.generatePlayCardFromGraveyardLink("playCardFromGraveyardLinkResponsive"));
@@ -419,15 +418,15 @@ import java.util.*;
 
 		this.allOpenRevealTopLibraryCardWindows = new ArrayList<>();
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLink",
-				"revealTopLibraryCardWindow");
+			"revealTopLibraryCardWindow");
 		this.generateRevealTopLibraryCardLink("revealTopLibraryCardLinkResponsive",
-				"revealTopLibraryCardWindowResponsive");
+			"revealTopLibraryCardWindowResponsive");
 
-		this.createTokenWindow = new ModalWindow("createTokenWindow");
+		this.createTokenWindow = new NoUnloadConfirmationModalWindow("createTokenWindow");
 		this.generateCreateTokenLink("createTokenLink", this.createTokenWindow);
 		this.generateCreateTokenLink("createTokenLinkResponsive", this.createTokenWindow);
 
-		this.countCardsWindow = new ModalWindow("countCardsWindow");
+		this.countCardsWindow = new NoUnloadConfirmationModalWindow("countCardsWindow");
 		this.generateCountCardsLink("countCardsLink", this.countCardsWindow);
 		this.generateCountCardsLink("countCardsLinkResponsive", this.countCardsWindow);
 		this.generateDiscardAtRandomLink("discardAtRandomLink");
@@ -437,13 +436,13 @@ import java.util.*;
 		this.generateShuffleLibraryLink("shuffleLibraryLink");
 		this.generateShuffleLibraryLink("shuffleLibraryLinkResponsive");
 
-		this.loginWindow = new ModalWindow("loginWindow");
+		this.loginWindow = new NoUnloadConfirmationModalWindow("loginWindow");
 		this.generateLoginLink("loginLink", this.loginWindow);
 		this.generateLoginLink("loginLinkResponsive", this.loginWindow);
 		final FacebookLoginBehavior flb = new FacebookLoginBehavior();
 		this.add(flb);
 
-		this.preferencesWindow = new ModalWindow("preferencesWindow");
+		this.preferencesWindow = new NoUnloadConfirmationModalWindow("preferencesWindow");
 		this.generatePreferencesLink("preferencesLink", this.preferencesWindow);
 		this.generatePreferencesLink("preferencesLinkResponsive", this.preferencesWindow);
 
@@ -472,11 +471,13 @@ import java.util.*;
 
 		if (this.session.getPlayer().getGame().isDrawMode().booleanValue())
 		{
-			this.drawModeParent.add(new ExternalImage("drawModeOn", "image/draw_mode_on.png").setOutputMarkupId(true).setMarkupId("drawMode"));
+			this.drawModeParent.add(new ExternalImage("drawModeOn", "image/draw_mode_on.png")
+				.setOutputMarkupId(true).setMarkupId("drawMode"));
 		}
 		else
 		{
-			this.drawModeParent.add(new WebMarkupContainer("drawModeOn").setOutputMarkupId(true).setMarkupId("drawMode"));
+			this.drawModeParent.add(new WebMarkupContainer("drawModeOn").setOutputMarkupId(true)
+				.setMarkupId("drawMode"));
 		}
 
 		this.add(this.drawModeParent);
@@ -501,7 +502,7 @@ import java.util.*;
 	private void generateCardPanels()
 	{
 		final List<MagicCard> allCardsInBattlefield = this.persistenceService
-				.getAllCardsInBattlefieldForAGame(this.session.getGameId());
+			.getAllCardsInBattlefieldForAGame(this.session.getGameId());
 		LOGGER.info("allCardsInBattlefield.size(): " + allCardsInBattlefield.size());
 		final List<MagicCard> allCardsInBattlefieldForPlayer1 = new ArrayList<>();
 		final List<MagicCard> allCardsInBattlefieldForPlayer2 = new ArrayList<>();
@@ -509,7 +510,7 @@ import java.util.*;
 		for (final MagicCard mc : allCardsInBattlefield)
 		{
 			if (mc.getDeck().getDeckId().longValue() == this.session.getPlayer().getDeck()
-					.getDeckId().longValue())
+				.getDeckId().longValue())
 			{
 				allCardsInBattlefieldForPlayer1.add(mc);
 			}
@@ -529,7 +530,8 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript(BattlefieldService.HIDE_ALL_TOOLTIPS);
 				target.appendJavaScript(BattlefieldService.HIDE_MENUS);
@@ -544,7 +546,8 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#conference').dialog('open');");
@@ -552,22 +555,21 @@ import java.util.*;
 				if (null != HomePage.this.session.getUsername())
 				{
 					final User user = HomePage.this.persistenceService
-							.getUser(HomePage.this.session.getUsername());
+						.getUser(HomePage.this.session.getUsername());
 					HomePage.LOGGER.info("###user: " + user);
 
 					if (null != user)
 					{
-						target.appendJavaScript(
-								"jQuery('#txtDisplayName').val('" + user.getLogin() + "');");
-						target.appendJavaScript(
-								"jQuery('#txtPrivateIdentity').val('" + user.getPrivateIdentity()
-										+ "');");
-						target.appendJavaScript(
-								"jQuery('#txtPublicIdentity').val('" + user.getIdentity() + "');");
-						target.appendJavaScript(
-								"jQuery('#txtPassword').val('" + user.getPassword() + "');");
-						target.appendJavaScript(
-								"jQuery('#txtRealm').val('" + user.getRealm() + "');");
+						target.appendJavaScript("jQuery('#txtDisplayName').val('" + user.getLogin()
+							+ "');");
+						target.appendJavaScript("jQuery('#txtPrivateIdentity').val('"
+							+ user.getPrivateIdentity() + "');");
+						target.appendJavaScript("jQuery('#txtPublicIdentity').val('"
+							+ user.getIdentity() + "');");
+						target.appendJavaScript("jQuery('#txtPassword').val('" + user.getPassword()
+							+ "');");
+						target.appendJavaScript("jQuery('#txtRealm').val('" + user.getRealm()
+							+ "');");
 					}
 				}
 			}
@@ -581,32 +583,31 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGameExceptMe = HomePage.this.persistenceService
-						.giveAllPlayersFromGameExceptMe(_gameId,
-								HomePage.this.session.getPlayer().getId());
+					.giveAllPlayersFromGameExceptMe(_gameId, HomePage.this.session.getPlayer()
+						.getId());
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.REVEAL_HAND, null, null,
-						HomePage.this.session.getPlayer().getName(), "", "", null, "");
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.REVEAL_HAND, null, null, null, null,
-								HomePage.this.session.getPlayer().getName(), null, null, null,
-								Boolean.FALSE, _gameId);
+					NotifierAction.REVEAL_HAND, null, null, HomePage.this.session.getPlayer()
+						.getName(), "", "", null, "");
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.REVEAL_HAND, null, null, null, null, HomePage.this.session
+						.getPlayer().getName(), null, null, null, Boolean.FALSE, _gameId);
 				final RevealHandCometChannel rhcc = new RevealHandCometChannel(_gameId,
-						HomePage.this.session.getPlayer().getId(),
-						HomePage.this.session.getPlayer().getDeck().getDeckId());
-				EventBusPostService
-						.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(logger),
-								rhcc);
+					HomePage.this.session.getPlayer().getId(), HomePage.this.session.getPlayer()
+						.getDeck().getDeckId());
+				EventBusPostService.post(allPlayersInGameExceptMe, ncc, new ConsoleLogCometChannel(
+					logger), rhcc);
 
 				final List<BigInteger> playerToWhomToSend = new ArrayList<>();
-				playerToWhomToSend.add(BigInteger
-						.valueOf(HomePage.this.session.getPlayer().getId().longValue()));
-				EventBusPostService
-						.post(playerToWhomToSend, ncc, new ConsoleLogCometChannel(logger));
+				playerToWhomToSend.add(BigInteger.valueOf(HomePage.this.session.getPlayer().getId()
+					.longValue()));
+				EventBusPostService.post(playerToWhomToSend, ncc,
+					new ConsoleLogCometChannel(logger));
 			}
 
 		});
@@ -618,11 +619,12 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("end match");
-				target.appendJavaScript(
-						"var r = confirm('Are you sure that you want to end this match?'); if (r==true) { window.location = window.location + '?endMatch=true'; }; ");
+				target
+					.appendJavaScript("var r = confirm('Are you sure that you want to end this match?'); if (r==true) { window.location = window.location + '?endMatch=true'; }; ");
 			}
 		});
 	}
@@ -633,11 +635,12 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("boxing") @Override public void onClick(
-					final AjaxRequestTarget target)
+			@SuppressWarnings("boxing")
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Player _player = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId());
+					.getPlayer(HomePage.this.session.getPlayer().getId());
 				final Boolean isHandDisplayed = _player.isHandDisplayed();
 
 				if (isHandDisplayed)
@@ -663,11 +666,12 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override @SuppressWarnings("boxing") public void onClick(
-					final AjaxRequestTarget target)
+			@Override
+			@SuppressWarnings("boxing")
+			public void onClick(final AjaxRequestTarget target)
 			{
-				final Game g = HomePage.this.persistenceService
-						.getGame(HomePage.this.session.getGameId());
+				final Game g = HomePage.this.persistenceService.getGame(HomePage.this.session
+					.getGameId());
 				g.setDrawMode(!g.isDrawMode());
 				HomePage.this.persistenceService.updateGame(g);
 
@@ -677,9 +681,9 @@ import java.util.*;
 				}
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(HomePage.this.session.getGameId());
-				EventBusPostService.post(allPlayersInGame,
-						new SwitchDrawModeCometChannel(g.isDrawMode().booleanValue()));
+					.giveAllPlayersFromGame(HomePage.this.session.getGameId());
+				EventBusPostService.post(allPlayersInGame, new SwitchDrawModeCometChannel(g
+					.isDrawMode().booleanValue()));
 			}
 
 			@Override
@@ -689,7 +693,7 @@ import java.util.*;
 				super.onComponentTag(tag);
 
 				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
-						|| "area".equalsIgnoreCase(tag.getName()))
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "#");
 				}
@@ -707,10 +711,11 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Player _player = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId());
+					.getPlayer(HomePage.this.session.getPlayer().getId());
 				final Boolean isGraveyardDisplayed = _player.isGraveyardDisplayed();
 
 				if ((isGraveyardDisplayed != null) && isGraveyardDisplayed.booleanValue())
@@ -744,7 +749,7 @@ import java.util.*;
 				super.onComponentTag(tag);
 
 				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
-						|| "area".equalsIgnoreCase(tag.getName()))
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "#");
 				}
@@ -762,10 +767,11 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Player _player = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId());
+					.getPlayer(HomePage.this.session.getPlayer().getId());
 				final Boolean isExileDisplayed = _player.isExileDisplayed();
 
 				if ((isExileDisplayed != null) && isExileDisplayed.booleanValue())
@@ -775,9 +781,8 @@ import java.util.*;
 				}
 				else
 				{
-					BattlefieldService
-							.updateExile(target, _player.getGame().getId(), _player.getId(),
-									_player.getDeck().getDeckId());
+					BattlefieldService.updateExile(target, _player.getGame().getId(),
+						_player.getId(), _player.getDeck().getDeckId());
 
 				}
 
@@ -795,12 +800,13 @@ import java.util.*;
 			}
 
 			// TODE:remove me
-			@Override protected void onComponentTag(final ComponentTag tag)
+			@Override
+			protected void onComponentTag(final ComponentTag tag)
 			{
 				super.onComponentTag(tag);
 
 				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
-						|| "area".equalsIgnoreCase(tag.getName()))
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "#");
 				}
@@ -824,21 +830,22 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Player me = HomePage.this.session.getPlayer();
 				final Long _gameId = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+					.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.END_OF_TURN, null, null, null, null,
-								HomePage.this.session.getPlayer().getName(), null, null, null,
-								Boolean.FALSE, HomePage.this.session.getGameId());
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.END_OF_TURN, null, null, null, null, HomePage.this.session
+						.getPlayer().getName(), null, null, null, Boolean.FALSE,
+					HomePage.this.session.getGameId());
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(),
-						me.getSide().getSideName(), null, null, "");
+					NotifierAction.END_OF_TURN_ACTION, null, me.getId(), me.getName(), me.getSide()
+						.getSideName(), null, null, "");
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 
 				HomePage.this.session.setCombatInProgress(false);
@@ -861,18 +868,19 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
-				final Game game = HomePage.this.persistenceService
-						.getGame(HomePage.this.session.getGameId());
+				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
+					.getGameId());
 
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.IN_RESPONSE_ACTION, null, null, me.getName(), null, null,
-						null, "");
+					NotifierAction.IN_RESPONSE_ACTION, null, null, me.getName(), null, null, null,
+					"");
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(game.getId());
+					.giveAllPlayersFromGame(game.getId());
 				EventBusPostService.post(allPlayersInGame, ncc);
 
 			}
@@ -894,18 +902,19 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
-				final Game game = HomePage.this.persistenceService
-						.getGame(HomePage.this.session.getGameId());
+				final Game game = HomePage.this.persistenceService.getGame(HomePage.this.session
+					.getGameId());
 
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.FINE_FOR_ME_ACTION, null, null, me.getName(), null, null,
-						null, "");
+					NotifierAction.FINE_FOR_ME_ACTION, null, null, me.getName(), null, null, null,
+					"");
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(game.getId());
+					.giveAllPlayersFromGame(game.getId());
 				EventBusPostService.post(allPlayersInGame, ncc);
 			}
 		};
@@ -925,16 +934,17 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 
 				final List<MagicCard> allCards = HomePage.this.persistenceService
-						.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(_gameId,
-								HomePage.this.session.getPlayer().getId(),
-								HomePage.this.session.getPlayer().getDeck().getDeckId());
+					.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(_gameId,
+						HomePage.this.session.getPlayer().getId(), HomePage.this.session
+							.getPlayer().getDeck().getDeckId());
 				for (final MagicCard mc : allCards)
 				{
 					if (null != mc)
@@ -951,16 +961,15 @@ import java.util.*;
 					}
 				}
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.TAP_UNTAP, null, null, null, null,
-								HomePage.this.session.getPlayer().getName(), null, null, null,
-								Boolean.FALSE, _gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.TAP_UNTAP, null, null, null, null, HomePage.this.session
+						.getPlayer().getName(), null, null, null, Boolean.FALSE, _gameId);
 				final UntapAllCometChannel uacc = new UntapAllCometChannel(_gameId,
-						HomePage.this.session.getPlayer().getId(),
-						HomePage.this.session.getPlayer().getDeck().getDeckId(),
-						HomePage.this.session.getPlayer().getName(), allCards);
+					HomePage.this.session.getPlayer().getId(), HomePage.this.session.getPlayer()
+						.getDeck().getDeckId(), HomePage.this.session.getPlayer().getName(),
+					allCards);
 				EventBusPostService
-						.post(allPlayersInGame, uacc, new ConsoleLogCometChannel(logger));
+					.post(allPlayersInGame, uacc, new ConsoleLogCometChannel(logger));
 			}
 
 		};
@@ -981,11 +990,12 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("untap and draw");
-				target.appendJavaScript(
-						"jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 250);");
+				target
+					.appendJavaScript("jQuery('#untapAllLink').click(); setTimeout(\"jQuery('#drawCardLink').click();\", 250);");
 			}
 
 		};
@@ -1056,8 +1066,8 @@ import java.util.*;
 
 		this.deck = this.persistenceService.getDeckByDeckArchiveName("aggro-combo Red / Black");
 		p.setDeck(this.deck);
-		final List<MagicCard> mc = this.persistenceService
-				.getAllCardsFromDeck(this.deck.getDeckArchive().getDeckName());
+		final List<MagicCard> mc = this.persistenceService.getAllCardsFromDeck(this.deck
+			.getDeckArchive().getDeckName());
 
 		for (final MagicCard card : mc)
 		{
@@ -1085,7 +1095,7 @@ import java.util.*;
 		_playCardFromGraveyardLink.setOutputMarkupId(true);
 
 		final PlayCardFromGraveyardBehavior _playCardFromGraveyardBehavior = new PlayCardFromGraveyardBehavior(
-				this.session.getPlayer().getSide().getSideName());
+			this.session.getPlayer().getSide().getSideName());
 		_playCardFromGraveyardLink.add(_playCardFromGraveyardBehavior);
 
 		return _playCardFromGraveyardLink;
@@ -1101,24 +1111,24 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				HomePage.LOGGER.info("clicked on declare combat");
-				HomePage.this.session.setCombatInProgress(
-						!HomePage.this.session.isCombatInProgress().booleanValue());
+				HomePage.this.session.setCombatInProgress(!HomePage.this.session
+					.isCombatInProgress().booleanValue());
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null,
-						HomePage.this.session.getPlayer().getName(), "", "",
-						HomePage.this.session.isCombatInProgress(), "");
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.COMBAT, null, null,
-								HomePage.this.session.isCombatInProgress(), null,
-								HomePage.this.session.getPlayer().getName(), null, null, null,
-								Boolean.FALSE, _gameId);
+					NotifierAction.COMBAT_IN_PROGRESS_ACTION, null, null, HomePage.this.session
+						.getPlayer().getName(), "", "", HomePage.this.session.isCombatInProgress(),
+					"");
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.COMBAT, null, null, HomePage.this.session.isCombatInProgress(),
+					null, HomePage.this.session.getPlayer().getName(), null, null, null,
+					Boolean.FALSE, _gameId);
 
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
@@ -1137,14 +1147,15 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				Long _gameId = HomePage.this.session.getPlayer().getGame().getId();
 				Long deckId = HomePage.this.session.getPlayer().getDeck().getDeckId();
 
 				final List<MagicCard> cards = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(_gameId,
-								HomePage.this.session.getPlayer().getId(), deckId);
+					.getAllCardsInLibraryForDeckAndPlayer(_gameId, HomePage.this.session
+						.getPlayer().getId(), deckId);
 
 				if ((cards != null) && (!cards.isEmpty()))
 				{
@@ -1157,11 +1168,11 @@ import java.util.*;
 					card.setZone(CardZone.HAND);
 
 					List<MagicCard> allCardsInHand = HomePage.this.persistenceService
-							.getAllCardsInHandForAGameAndADeck(_gameId, deckId);
+						.getAllCardsInHandForAGameAndADeck(_gameId, deckId);
 					if (!allCardsInHand.isEmpty())
 					{
-						card.setZoneOrder(
-								allCardsInHand.get(allCardsInHand.size() - 1).getZoneOrder() + 1L);
+						card.setZoneOrder(allCardsInHand.get(allCardsInHand.size() - 1)
+							.getZoneOrder() + 1L);
 					}
 
 					HomePage.this.persistenceService.updateCard(card);
@@ -1174,45 +1185,45 @@ import java.util.*;
 
 					final Player me = HomePage.this.session.getPlayer();
 					final Long __gameId = HomePage.this.persistenceService
-							.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 
 					final Deck d = me.getDeck();
-					final List<MagicCard> _hand = d.reorderMagicCards(
-							HomePage.this.persistenceService
-									.getAllCardsInHandForAGameAndADeck(__gameId, d.getDeckId()));
+					final List<MagicCard> _hand = d
+						.reorderMagicCards(HomePage.this.persistenceService
+							.getAllCardsInHandForAGameAndADeck(__gameId, d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(_hand);
-					final List<MagicCard> library = d.reorderMagicCards(
-							HomePage.this.persistenceService
-									.getAllCardsInLibraryForDeckAndPlayer(__gameId, me.getId(),
-											d.getDeckId()));
+					final List<MagicCard> library = d
+						.reorderMagicCards(HomePage.this.persistenceService
+							.getAllCardsInLibraryForDeckAndPlayer(__gameId, me.getId(),
+								d.getDeckId()));
 					HomePage.this.persistenceService.saveOrUpdateAllMagicCards(library);
 
-					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-							.chooseStrategy(ConsoleLogType.DRAW_CARD, null, null, null, null,
-									HomePage.this.session.getPlayer().getName(), null, null, null,
-									null, __gameId);
+					final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+						ConsoleLogType.DRAW_CARD, null, null, null, null, HomePage.this.session
+							.getPlayer().getName(), null, null, null, null, __gameId);
 					final NotifierCometChannel ncc = new NotifierCometChannel(
-							NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(),
-							me.getSide().getSideName(), null, null, "");
+						NotifierAction.DRAW_CARD_ACTION, null, me.getId(), me.getName(), me
+							.getSide().getSideName(), null, null, "");
 
 					final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-							.giveAllPlayersFromGame(__gameId);
-					EventBusPostService
-							.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
+						.giveAllPlayersFromGame(__gameId);
+					EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(
+						logger));
 				}
 				else
 				{
 					throw new RuntimeException(
-							"You've lost since you have no more card to draw. All your base are belong to us!");
+						"You've lost since you have no more card to draw. All your base are belong to us!");
 				}
 			}
 
-			@Override protected void onComponentTag(final ComponentTag tag)
+			@Override
+			protected void onComponentTag(final ComponentTag tag)
 			{
 				super.onComponentTag(tag);
 
 				if ("a".equalsIgnoreCase(tag.getName()) || "link".equalsIgnoreCase(tag.getName())
-						|| "area".equalsIgnoreCase(tag.getName()))
+					|| "area".equalsIgnoreCase(tag.getName()))
 				{
 					tag.put("href", "");
 				}
@@ -1238,161 +1249,129 @@ import java.util.*;
 	private void addHeadResources()
 	{
 		final WebMarkupContainer c = new WebMarkupContainer("headResources");
-		c.add(new Behavior() {
+		c.add(new Behavior()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void renderHead(final Component component,
-								   final IHeaderResponse response) {
+			public void renderHead(final Component component, final IHeaderResponse response)
+			{
 				super.renderHead(component, response);
 
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/jquery/jquery.atmosphere.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/jquery/jquery.wicketatmosphere.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.ui.core.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.ui.widget.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.ui.mouse.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.ui.touch-punch.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.ui.droppable.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.ui.draggable.min-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.ui.position-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/jquery.ui.dialog-1.9.2.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/offset.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/tour/jquery.easing.1.3.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/tour/jquery.cookie.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "script/tour/pageguide.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/menubar/jMenu.jquery.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/dock/jquery.jqdock.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/qunitTests/qUnit-1.11.0-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/conference/SIPml-api.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/conference/webrtc4all.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/qunitTests/codeUnderTest.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/qunitTests/HomePageTests.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/gallery/jquery-easing-compatibility.1.2.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/gallery/coda-slider.1.1.1.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/gallery/coda-sliderGraveyard.1.1.1.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/gallery/coda-sliderExile.1.1.1.pack.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/draggableHandle/jquery.hammer.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/arrowDraw/dom.jsPlumb-1.7.2-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/tour/bootstrap-tour-standalone.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/contextmenu/jquery.popmenu.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(HatchetHarryApplication.get()
+					.getJavaScriptLibrarySettings().getJQueryReference()));
+				response.render(JavaScriptHeaderItem.forReference(HatchetHarryApplication.get()
+					.getJavaScriptLibrarySettings().getWicketEventReference()));
+				response.render(JavaScriptHeaderItem.forReference(HatchetHarryApplication.get()
+					.getJavaScriptLibrarySettings().getWicketAjaxReference()));
+				/*
+				 * response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+				 * HomePage.class, "script/jquery/jquery.atmosphere.js")));
+				 */
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/jquery/jquery.wicketatmosphere.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.ui.core.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.ui.widget.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.ui.mouse.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.ui.touch-punch.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.ui.droppable.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.ui.draggable.min-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.ui.position-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/jquery.ui.dialog-1.9.2.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/offset.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/tour/jquery.easing.1.3.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/tour/jquery.cookie.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/tour/pageguide.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/menubar/jMenu.jquery.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/dock/jquery.jqdock.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/qunitTests/qUnit-1.11.0-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/conference/SIPml-api.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/conference/webrtc4all.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/qunitTests/codeUnderTest.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/qunitTests/HomePageTests.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/gallery/jquery-easing-compatibility.1.2.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/gallery/coda-slider.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/gallery/coda-sliderGraveyard.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/gallery/coda-sliderExile.1.1.1.pack.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/draggableHandle/jquery.hammer.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/arrowDraw/dom.jsPlumb-1.7.2-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/tour/bootstrap-tour-standalone.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/contextmenu/jquery.popmenu.min.js")));
 
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/jMenu.jquery.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/layout.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/pageguide.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/galleryStyle.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/jquery.gritter.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/fixed4all.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/fixed4ie.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/prettyPhoto.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/toolbarStyle.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/demo-style.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/mobile.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/blue_gradient_table.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/tipsy.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/jquery-ui dialog.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/qunit-1.12.0.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"stylesheet/bootstrap-tour-standalone.min.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/myStyle.css")));
-				response.render(CssHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "stylesheet/cards.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/jMenu.jquery.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/layout.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/pageguide.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/galleryStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/jquery.gritter.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/fixed4all.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/fixed4ie.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/prettyPhoto.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/toolbarStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/demo-style.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/mobile.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/blue_gradient_table.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/tipsy.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/jquery-ui dialog.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/qunit-1.12.0.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/bootstrap-tour-standalone.min.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/myStyle.css")));
+				response.render(CssHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "stylesheet/cards.css")));
 
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/toolbar/jquery.prettyPhoto.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/notifier/jquery.gritter.min.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/viewportSize-min.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class, "script/jquery.tipsy.js")));
-				response.render(JavaScriptHeaderItem.forReference(
-						new PackageResourceReference(HomePage.class,
-								"script/google-analytics.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/toolbar/jquery.prettyPhoto.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/notifier/jquery.gritter.min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/viewportSize-min.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/jquery.tipsy.js")));
+				response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+					HomePage.class, "script/google-analytics.js")));
 			}
 		});
 		this.add(c);
@@ -1401,11 +1380,11 @@ import java.util.*;
 	private void buildHandMarkup()
 	{
 		final Component galleryToUpdate;
-		final Boolean isHandDisplayed = this.persistenceService
-				.getPlayer(this.session.getPlayer().getId()).isHandDisplayed();
-		galleryToUpdate = isHandDisplayed.booleanValue() ?
-				new HandComponent("gallery") :
-				new WebMarkupContainer("gallery");
+		final Boolean isHandDisplayed = this.persistenceService.getPlayer(
+			this.session.getPlayer().getId()).isHandDisplayed();
+		galleryToUpdate = isHandDisplayed.booleanValue()
+			? new HandComponent("gallery")
+			: new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.add(galleryToUpdate);
@@ -1414,12 +1393,11 @@ import java.util.*;
 	private void buildGraveyardMarkup()
 	{
 		final Component graveyardToUpdate;
-		final Boolean isGraveyardDisplayed = this.persistenceService
-				.getPlayer(this.session.getPlayer().getId()).isGraveyardDisplayed();
-		graveyardToUpdate = ((isGraveyardDisplayed != null) && isGraveyardDisplayed
-				.booleanValue()) ?
-				new GraveyardComponent("graveyard") :
-				new WebMarkupContainer("graveyard");
+		final Boolean isGraveyardDisplayed = this.persistenceService.getPlayer(
+			this.session.getPlayer().getId()).isGraveyardDisplayed();
+		graveyardToUpdate = ((isGraveyardDisplayed != null) && isGraveyardDisplayed.booleanValue())
+			? new GraveyardComponent("graveyard")
+			: new WebMarkupContainer("graveyard");
 
 		graveyardToUpdate.setOutputMarkupId(true);
 		this.graveyardParent.add(graveyardToUpdate);
@@ -1428,11 +1406,11 @@ import java.util.*;
 	private void buildExileMarkup()
 	{
 		final Component exileToUpdate;
-		final Boolean isExileDisplayed = this.persistenceService
-				.getPlayer(this.session.getPlayer().getId()).isExileDisplayed();
-		exileToUpdate = ((isExileDisplayed != null) && isExileDisplayed.booleanValue()) ?
-				new ExileComponent("exile") :
-				new WebMarkupContainer("exile");
+		final Boolean isExileDisplayed = this.persistenceService.getPlayer(
+			this.session.getPlayer().getId()).isExileDisplayed();
+		exileToUpdate = ((isExileDisplayed != null) && isExileDisplayed.booleanValue())
+			? new ExileComponent("exile")
+			: new WebMarkupContainer("exile");
 
 		exileToUpdate.setOutputMarkupId(true);
 		this.exileParent.add(exileToUpdate);
@@ -1444,21 +1422,21 @@ import java.util.*;
 		if (this.session.isPlayerCreated().booleanValue())
 		{
 			this.player = this.session.getPlayer();
-			this.deck = this.persistenceService
-					.getDeck(this.player.getDeck().getDeckId().longValue());
+			this.deck = this.persistenceService.getDeck(this.player.getDeck().getDeckId()
+				.longValue());
 
-			if ((this.deck == null) || (this.deck.getCards() == null) || (this.deck.getCards()
-					.isEmpty()))
+			if ((this.deck == null) || (this.deck.getCards() == null)
+				|| (this.deck.getCards().isEmpty()))
 			{
 				this.deck = this.persistenceService
-						.getDeckByDeckArchiveName("aggro-combo Red / Black");
+					.getDeckByDeckArchiveName("aggro-combo Red / Black");
 				this.player.setDeck(this.deck);
 			}
 
 			final ArrayList<MagicCard> _cards = new ArrayList<>();
 
-			for (final MagicCard mc : this.persistenceService
-					.getAllCardsFromDeck(this.deck.getDeckArchive().getDeckName()))
+			for (final MagicCard mc : this.persistenceService.getAllCardsFromDeck(this.deck
+				.getDeckArchive().getDeckName()))
 			{
 				mc.setGameId(this.session.getGameId());
 				mc.setDeck(this.deck);
@@ -1532,10 +1510,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 8140325977385015896L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
 		};
@@ -1560,10 +1538,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 8140325977385015896L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
 		};
@@ -1588,10 +1566,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
 		};
@@ -1616,10 +1594,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(target);
 			}
 		};
@@ -1631,7 +1609,7 @@ import java.util.*;
 	}
 
 	private ModalWindow generateCreateGameModalWindow(final String id, final Player _player,
-			final ModalWindow window)
+		final ModalWindow window)
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(550);
@@ -1645,10 +1623,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget _target)
+			@Override
+			public void onClick(final AjaxRequestTarget _target)
 			{
 				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
 		};
@@ -1662,15 +1640,14 @@ import java.util.*;
 	}
 
 	private ModalWindow generateJoinGameModalWindow(final String id, final Player _player,
-			final ModalWindow window)
+		final ModalWindow window)
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(430);
 		window.setTitle("Join a match");
 
-		window.setContent(
-				new JoinGameModalWindow(window, window.getContentId(), _player, this.dataBoxParent,
-						this));
+		window.setContent(new JoinGameModalWindow(window, window.getContentId(), _player,
+			this.dataBoxParent, this));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
@@ -1678,10 +1655,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget _target)
+			@Override
+			public void onClick(final AjaxRequestTarget _target)
 			{
 				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
 		};
@@ -1695,14 +1672,14 @@ import java.util.*;
 	}
 
 	private ModalWindow generateJoinGameWithoutIdModalWindow(final String id, final Player _player,
-			final ModalWindow window)
+		final ModalWindow window)
 	{
 		window.setInitialWidth(475);
 		window.setInitialHeight(500);
 		window.setTitle("Join a match without ID");
 
 		window.setContent(new JoinGameWithoutIdModalWindow(window, window.getContentId(), _player,
-				this.dataBoxParent, this));
+			this.dataBoxParent, this));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 
@@ -1710,10 +1687,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget _target)
+			@Override
+			public void onClick(final AjaxRequestTarget _target)
 			{
 				_target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				_target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				window.show(_target);
 			}
 		};
@@ -1732,7 +1709,8 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 				target.appendJavaScript("jQuery('#importDeck').dialog('open');");
@@ -1746,17 +1724,18 @@ import java.util.*;
 
 	private void generateRevealTopLibraryCardLink(final String id, final String idModalWindow)
 	{
-		final ModalWindow window = new ModalWindow(idModalWindow);
+		final ModalWindow window = new NoUnloadConfirmationModalWindow(idModalWindow);
 		window.setWindowClosedCallback(new WindowClosedCallback()
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClose(final AjaxRequestTarget target)
+			@Override
+			public void onClose(final AjaxRequestTarget target)
 			{
 				if (HomePage.this.session.getTopCardIndex() > 0L)
 				{
-					HomePage.this.session.setTopCardIndex(
-							Long.valueOf(HomePage.this.session.getTopCardIndex() - 1L));
+					HomePage.this.session.setTopCardIndex(Long.valueOf(HomePage.this.session
+						.getTopCardIndex() - 1L));
 				}
 
 			}
@@ -1765,9 +1744,8 @@ import java.util.*;
 		window.setInitialHeight(510);
 
 		final List<MagicCard> allCardsInLibrary = this.persistenceService
-				.getAllCardsInLibraryForDeckAndPlayer(this.session.getGameId(),
-						this.session.getPlayer().getId(),
-						this.session.getPlayer().getDeck().getDeckId());
+			.getAllCardsInLibraryForDeckAndPlayer(this.session.getGameId(), this.session
+				.getPlayer().getId(), this.session.getPlayer().getDeck().getDeckId());
 		final MagicCard firstCard;
 
 		if (allCardsInLibrary.isEmpty())
@@ -1779,8 +1757,8 @@ import java.util.*;
 			firstCard = allCardsInLibrary.get(this.session.getTopCardIndex().intValue());
 		}
 
-		window.setContent(
-				new RevealTopLibraryCardModalWindow(window.getContentId(), window, firstCard));
+		window.setContent(new RevealTopLibraryCardModalWindow(window.getContentId(), window,
+			firstCard));
 
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
@@ -1793,26 +1771,27 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("boxing") @SuppressFBWarnings({ "PATH_TRAVERSAL_IN",
-					"PATH_TRAVERSAL_IN" }) @Override public void onClick(
-					final AjaxRequestTarget target)
+			@SuppressWarnings("boxing")
+			@SuppressFBWarnings({ "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN" })
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final List<MagicCard> _allCardsInLibrary = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
-								HomePage.this.session.getPlayer().getId(),
-								HomePage.this.session.getPlayer().getDeck().getDeckId());
+					.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
+						HomePage.this.session.getPlayer().getId(), HomePage.this.session
+							.getPlayer().getDeck().getDeckId());
 				if (_allCardsInLibrary.isEmpty())
 				{
 					return;
 				}
 
-				final MagicCard _firstCard = _allCardsInLibrary
-						.get(HomePage.this.session.getTopCardIndex().intValue());
+				final MagicCard _firstCard = _allCardsInLibrary.get(HomePage.this.session
+					.getTopCardIndex().intValue());
 				final String topCardName = _firstCard.getBigImageFilename();
 
-				final String cardPath = ResourceBundle
-						.getBundle(HatchetHarryApplication.class.getCanonicalName())
-						.getString("SharedResourceFolder");
+				final String cardPath = ResourceBundle.getBundle(
+					HatchetHarryApplication.class.getCanonicalName()).getString(
+					"SharedResourceFolder");
 				final String cardPathAndName = cardPath.replace("/cards", "") + topCardName;
 				final File from = new File(cardPathAndName);
 				final File to = new File(cardPath + "topLibraryCard.jpg");
@@ -1823,26 +1802,24 @@ import java.util.*;
 				}
 				catch (final IOException e)
 				{
-					HomePage.LOGGER
-							.error("could not copy from: " + cardPathAndName + " to: " + cardPath
-									+ "topLibraryCard.jpg", e);
+					HomePage.LOGGER.error("could not copy from: " + cardPathAndName + " to: "
+						+ cardPath + "topLibraryCard.jpg", e);
 				}
 
 				final Long _gameId = HomePage.this.persistenceService
-						.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
+					.getPlayer(HomePage.this.session.getPlayer().getId()).getGame().getId();
 				final RevealTopLibraryCardCometChannel chan = new RevealTopLibraryCardCometChannel(
-						HomePage.this.session.getPlayer().getName(), _firstCard,
-						HomePage.this.session.getTopCardIndex());
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
-								_firstCard.getTitle(), HomePage.this.session.getPlayer().getName(),
-								null, HomePage.this.session.getTopCardIndex() + 1L, null,
-								Boolean.FALSE, _gameId);
+					HomePage.this.session.getPlayer().getName(), _firstCard,
+					HomePage.this.session.getTopCardIndex());
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.REVEAL_TOP_CARD_OF_LIBRARY, null, null, null,
+					_firstCard.getTitle(), HomePage.this.session.getPlayer().getName(), null,
+					HomePage.this.session.getTopCardIndex() + 1L, null, Boolean.FALSE, _gameId);
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 
 				EventBusPostService
-						.post(allPlayersInGame, chan, new ConsoleLogCometChannel(logger));
+					.post(allPlayersInGame, chan, new ConsoleLogCometChannel(logger));
 			}
 		};
 
@@ -1856,7 +1833,7 @@ import java.util.*;
 		window.setInitialHeight(510);
 
 		final CreateTokenModalWindow createTokenModalWindow = new CreateTokenModalWindow(
-				window.getContentId(), window);
+			window.getContentId(), window);
 		window.setContent(createTokenModalWindow);
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
@@ -1869,11 +1846,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
-
 				HomePage.this.createTokenWindow.show(target);
 			}
 		};
@@ -1887,8 +1863,8 @@ import java.util.*;
 		window.setInitialWidth(740);
 		window.setInitialHeight(550);
 
-		window.setContent(
-				new CountCardsModalWindow(window.getContentId(), this.session.getGameId()));
+		window
+			.setContent(new CountCardsModalWindow(window.getContentId(), this.session.getGameId()));
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		window.setOutputMarkupId(true);
@@ -1898,16 +1874,17 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 
 				final Long _gameId = HomePage.this.session.getGameId();
 				final CountCardsCometChannel cccc = new CountCardsCometChannel(_gameId,
-						HomePage.this.session.getPlayer().getName());
+					HomePage.this.session.getPlayer().getName());
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 				EventBusPostService.post(allPlayersInGame, cccc);
 			}
 		};
@@ -1922,37 +1899,38 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
 
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 
 				final Player playerWhoDiscards = HomePage.this.session.getPlayer();
 				final Long playerWhoDiscardsDeckId = playerWhoDiscards.getDeck().getDeckId();
 				final int allCardsInHand = HomePage.this.persistenceService
-						.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.HAND, _gameId,
-								playerWhoDiscardsDeckId).intValue();
+					.getNumberOfCardsInACertainZoneForAGameAndADeck(CardZone.HAND, _gameId,
+						playerWhoDiscardsDeckId).intValue();
 
 				if (allCardsInHand == 0)
 				{
 					return;
 				}
 
-				@SuppressWarnings("boxing") final int randomCardIndex = (allCardsInHand != 1 ?
-						((Double)Math.floor(Math.random() * allCardsInHand)).intValue() :
-						0);
+				@SuppressWarnings("boxing")
+				final int randomCardIndex = (allCardsInHand != 1 ? ((Double)Math.floor(Math
+					.random() * allCardsInHand)).intValue() : 0);
 				final List<MagicCard> allCardsInHandForAGameAndAPlayer = HomePage.this.persistenceService
-						.getAllCardsInHandForAGameAndADeck(_gameId, playerWhoDiscardsDeckId);
+					.getAllCardsInHandForAGameAndADeck(_gameId, playerWhoDiscardsDeckId);
 				final MagicCard chosenCard = allCardsInHandForAGameAndAPlayer
-						.remove(randomCardIndex);
+					.remove(randomCardIndex);
 
 				chosenCard.setZone(CardZone.GRAVEYARD);
 				HomePage.this.persistenceService.updateCardWithoutMerge(chosenCard);
 				HomePage.this.persistenceService
-						.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
+					.updateAllMagicCards(allCardsInHandForAGameAndAPlayer);
 
 				playerWhoDiscards.setHandDisplayed(Boolean.TRUE);
 				playerWhoDiscards.setGraveyardDisplayed(Boolean.TRUE);
@@ -1966,13 +1944,12 @@ import java.util.*;
 				BattlefieldService.updateGraveyard(target);
 
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
-						playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
-						chosenCard.getTitle(), null, "");
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.DISCARD_AT_RANDOM, null, null, null,
-								chosenCard.getTitle(), playerWhoDiscards.getName(), null, null,
-								null, Boolean.FALSE, _gameId);
+					NotifierAction.DISCARD_AT_RANDOM, null, playerWhoDiscards.getId(),
+					playerWhoDiscards.getName(), playerWhoDiscards.getSide().getSideName(),
+					chosenCard.getTitle(), null, "");
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.DISCARD_AT_RANDOM, null, null, null, chosenCard.getTitle(),
+					playerWhoDiscards.getName(), null, null, null, Boolean.FALSE, _gameId);
 
 				EventBusPostService.post(allPlayersInGame, ncc, new ConsoleLogCometChannel(logger));
 			}
@@ -1991,11 +1968,12 @@ import java.util.*;
 		window.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 		window.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
 		window.setOutputMarkupId(true);
-		window.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
+		window.setCloseButtonCallback(new NoUnloadConfirmationModalWindow.CloseButtonCallback()
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public boolean onCloseButtonClicked(final AjaxRequestTarget target)
+			@Override
+			public boolean onCloseButtonClicked(final AjaxRequestTarget target)
 			{
 				target.appendJavaScript("authenticateUserWithFacebook();");
 				return true;
@@ -2007,10 +1985,10 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.loginWindow.show(target);
 			}
 		};
@@ -2033,11 +2011,11 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				window.setContent(new UserPreferencesModalWindow(window.getContentId(), window));
 				target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-				target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 				HomePage.this.preferencesWindow.show(target);
 			}
 		};
@@ -2052,17 +2030,17 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.INSERT_DIVISION, null, null, null, null,
-								HomePage.this.session.getPlayer().getName(), null, null, null, null,
-								_gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.INSERT_DIVISION, null, null, null, null, HomePage.this.session
+						.getPlayer().getName(), null, null, null, null, _gameId);
 
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 				EventBusPostService.post(allPlayersInGame, new ConsoleLogCometChannel(logger));
 			}
 		};
@@ -2077,26 +2055,26 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void onClick(final AjaxRequestTarget target)
+			@Override
+			public void onClick(final AjaxRequestTarget target)
 			{
 				final Long _gameId = HomePage.this.session.getGameId();
 				final List<BigInteger> allPlayersInGame = HomePage.this.persistenceService
-						.giveAllPlayersFromGame(_gameId);
+					.giveAllPlayersFromGame(_gameId);
 
-				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy
-						.chooseStrategy(ConsoleLogType.SHUFFLE_LIBRARY, null, null, null, null,
-								HomePage.this.session.getPlayer().getName(), null, null, null, null,
-								_gameId);
+				final ConsoleLogStrategy logger = AbstractConsoleLogStrategy.chooseStrategy(
+					ConsoleLogType.SHUFFLE_LIBRARY, null, null, null, null, HomePage.this.session
+						.getPlayer().getName(), null, null, null, null, _gameId);
 
 				final Player me = HomePage.this.session.getPlayer();
 				final NotifierCometChannel ncc = new NotifierCometChannel(
-						NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(),
-						me.getSide().getSideName(), null, null, "");
+					NotifierAction.SHUFFLE_LIBRARY_ACTION, null, me.getId(), me.getName(), me
+						.getSide().getSideName(), null, null, "");
 
 				final List<MagicCard> allCardsInLibrary = HomePage.this.persistenceService
-						.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
-								HomePage.this.session.getPlayer().getId(),
-								HomePage.this.session.getPlayer().getDeck().getDeckId());
+					.getAllCardsInLibraryForDeckAndPlayer(HomePage.this.session.getGameId(),
+						HomePage.this.session.getPlayer().getId(), HomePage.this.session
+							.getPlayer().getDeck().getDeckId());
 				Collections.shuffle(allCardsInLibrary);
 				Collections.shuffle(allCardsInLibrary);
 				Collections.shuffle(allCardsInLibrary);
@@ -2115,212 +2093,253 @@ import java.util.*;
 		this.add(insertDivisionLink);
 	}
 
-	@Subscribe public void updateTime(final AjaxRequestTarget target, final Date event)
+	@Subscribe
+	public void updateTime(final AjaxRequestTarget target, final Date event)
 	{
-		target.prependJavaScript(
-				"if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clockLabel').innerHTML = '"
-						+ event.toString()
-						+ "'; document.getElementById('chat').scrollTop = chatPos; }");
+		target
+			.prependJavaScript("if (document.activeElement.tagName !== 'INPUT') { var chatPos = document.getElementById('chat').scrollTop; document.getElementById('clockLabel').innerHTML = '"
+				+ event.toString() + "'; document.getElementById('chat').scrollTop = chatPos; }");
 	}
 
-	@Subscribe public void displayNotification(final AjaxRequestTarget target,
-			final NotifierCometChannel event)
+	@Subscribe
+	public void displayNotification(final AjaxRequestTarget target, final NotifierCometChannel event)
 	{
 		switch (event.getAction())
 		{
-			case DRAW_CARD_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+			case DRAW_CARD_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
 						+ "', text : \"has drawn a card!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case END_OF_TURN_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+			case END_OF_TURN_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
 						+ "', text : \"has declared the end of his (her) turn!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 				HomePage.this.session.setPlayerEndingHerTurn(event.getPlayerName());
 				break;
 
-			case PLAY_CARD_FROM_HAND_ACTION:
+			case PLAY_CARD_FROM_HAND_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has played '" + event.getCardName()
-						+ "'!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+					+ "', text : \"has played '" + event.getCardName()
+					+ "'!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PLAY_CARD_FROM_GRAVEYARD_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has played '" + event.getCardName()
+			case PLAY_CARD_FROM_GRAVEYARD_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has played '"
+						+ event.getCardName()
 						+ "' from graveyard!\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_GRAVEYARD_FROM_BATTLEFIELD_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has put '" + event.getCardName() + "' to " + (event
-						.getTargetPlayerName().equals(event.getPlayerName()) ?
-						"his (her)" :
-						event.getTargetPlayerName() + "'s")
-						+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			case PUT_CARD_TO_GRAVEYARD_FROM_BATTLEFIELD_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put '"
+					+ event.getCardName()
+					+ "' to "
+					+ (event.getTargetPlayerName().equals(event.getPlayerName())
+						? "his (her)"
+						: event.getTargetPlayerName() + "'s")
+					+ " graveyard\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has put '" + event.getCardName() + "' to " + (event
-						.getTargetPlayerName().equals(event.getPlayerName()) ?
-						"his (her)" :
-						event.getTargetPlayerName() + "'s")
+			case PUT_CARD_TO_HAND_FROM_BATTLEFIELD_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has put '"
+						+ event.getCardName()
+						+ "' to "
+						+ (event.getTargetPlayerName().equals(event.getPlayerName())
+							? "his (her)"
+							: event.getTargetPlayerName() + "'s")
 						+ " hand from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has put '" + event.getCardName() + "' to " + (event
-						.getTargetPlayerName().equals(event.getPlayerName()) ?
-						"his (her)" :
-						event.getTargetPlayerName() + "'s")
+			case PUT_CARD_TO_EXILE_FROM_BATTLEFIELD_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : \"has put '"
+						+ event.getCardName()
+						+ "' to "
+						+ (event.getTargetPlayerName().equals(event.getPlayerName())
+							? "his (her)"
+							: event.getTargetPlayerName() + "'s")
 						+ " exile from the battlefield\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case COMBAT_IN_PROGRESS_ACTION:
+			case COMBAT_IN_PROGRESS_ACTION :
 				if (Boolean.FALSE.equals(event.isCombatInProgress()))
 				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+					target
+						.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getPlayerName()
 							+ "', text : 'has finished combat', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				else
 				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+					target
+						.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getPlayerName()
 							+ "', text : 'is declaring combat!', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				break;
 
-			case PLAY_TOP_LIBRARY_CARD_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has played the top card of " + (event.getPlayerName()
-						.equals(event.getTargetPlayerName()) ?
-						"his (her) " :
-						event.getTargetPlayerName() + "'s ") + "library, which is: " + event
-						.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			case PLAY_TOP_LIBRARY_CARD_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has played the top card of "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ") + "library, which is: "
+					+ event.getCardName()
+					+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has put the top card of " + (event.getPlayerName()
-						.equals(event.getTargetPlayerName()) ?
-						"his (her) " :
-						event.getTargetPlayerName() + "'s ") + "library in " + (event
-						.getPlayerName().equals(event.getTargetPlayerName()) ?
-						"his (her) " :
-						event.getTargetPlayerName() + "'s ") + "hand, and it is: " + event
-						.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			case PUT_TOP_LIBRARY_CARD_TO_HAND_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put the top card of "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ")
+					+ "library in "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ") + "hand, and it is: "
+					+ event.getCardName()
+					+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has put the top card of " + (event.getPlayerName()
-						.equals(event.getTargetPlayerName()) ?
-						"his (her) " :
-						event.getTargetPlayerName() + "'s ") + "library in " + (event
-						.getPlayerName().equals(event.getTargetPlayerName()) ?
-						"his (her) " :
-						event.getTargetPlayerName() + "'s ") + "graveyard, and it is: " + event
-						.getCardName()
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+			case PUT_TOP_LIBRARY_CARD_TO_GRAVEYARD_ACTION :
+				target.appendJavaScript("jQuery.gritter.add({ title : '"
+					+ event.getPlayerName()
+					+ "', text : \"has put the top card of "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ")
+					+ "library in "
+					+ (event.getPlayerName().equals(event.getTargetPlayerName())
+						? "his (her) "
+						: event.getTargetPlayerName() + "'s ") + "graveyard, and it is: "
+					+ event.getCardName()
+					+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case PUT_TOKEN_ON_BATTLEFIELD_ACTION:
+			case PUT_TOKEN_ON_BATTLEFIELD_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has put a " + event.getCardName()
-						+ " token on the battlefield"
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+					+ "', text : \"has put a " + event.getCardName() + " token on the battlefield"
+					+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
-			case DESTROY_TOKEN_ACTION:
+			case DESTROY_TOKEN_ACTION :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : \"has destroyed a " + event.getCardName() + " token"
-						+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+					+ "', text : \"has destroyed a " + event.getCardName() + " token"
+					+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case SHUFFLE_LIBRARY_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+			case SHUFFLE_LIBRARY_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
 						+ "', text : 'has shuffled his (her) library', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case END_GAME_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+			case END_GAME_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
 						+ "', text : 'has put an end to the match', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 				break;
 
-			case IN_RESPONSE_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+			case IN_RESPONSE_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
 						+ "', text : 'has an action to play in response', image : 'image/logoh2.gif', sticky : false, time : '', class_name: 'gritter-light'});");
 				break;
 
-			case FINE_FOR_ME_ACTION:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+			case FINE_FOR_ME_ACTION :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
 						+ "', text : 'said : \"Fine for me!\"', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case REVEAL_HAND:
+			case REVEAL_HAND :
 				if ("".equals(event.getTargetPlayerName()))
 				{
-					target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
+					target
+						.appendJavaScript("jQuery.gritter.add({ title : '"
+							+ event.getPlayerName()
 							+ "', text : 'reveals his (her) hand', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				else
 				{
-					target.appendJavaScript(
-							"jQuery.gritter.add({ title : '" + event.getTargetPlayerName()
-									+ "', text : \" stops looking at " + event.getPlayerName()
-									+ "'s hand\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+					target.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getTargetPlayerName() + "', text : \" stops looking at "
+						+ event.getPlayerName()
+						+ "'s hand\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 				}
 				break;
 
-			case DISCARD_AT_RANDOM:
+			case DISCARD_AT_RANDOM :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : 'discards a card from his (her) hand at random, and it is : "
-						+ event.getCardName()
-						+ "', image : 'image/logoh2.gif', sticky : false, time : ''});");
+					+ "', text : 'discards a card from his (her) hand at random, and it is : "
+					+ event.getCardName()
+					+ "', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case ASK_FOR_MULLIGAN:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : 'asks for a mulligan. He (she) would like to draw " + event
-						.getGameId()
+			case ASK_FOR_MULLIGAN :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'asks for a mulligan. He (she) would like to draw "
+						+ event.getGameId()
 						+ " card(s). Do you agree?', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case OK_FOR_MULLIGAN:
+			case OK_FOR_MULLIGAN :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : 'agrees for mulligan. " + event.getTargetPlayerName()
-						+ " can draw " + event.getGameId()
-						+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
+					+ "', text : 'agrees for mulligan. " + event.getTargetPlayerName()
+					+ " can draw " + event.getGameId()
+					+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case DONE_MULLIGAN:
+			case DONE_MULLIGAN :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : 'has done mulligan. He (she) has drawn " + event.getGameId()
-						+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
+					+ "', text : 'has done mulligan. He (she) has drawn " + event.getGameId()
+					+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case OK_FOR_MULLIGAN_BUT_ONE_LESS:
+			case OK_FOR_MULLIGAN_BUT_ONE_LESS :
 				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : 'agrees for mulligan with one card less. " + event
-						.getTargetPlayerName() + " can draw " + event.getGameId()
-						+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
+					+ "', text : 'agrees for mulligan with one card less. "
+					+ event.getTargetPlayerName() + " can draw " + event.getGameId()
+					+ " card(s).', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
-			case REFUSE_MULLIGAN:
-				target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getPlayerName()
-						+ "', text : 'disagrees for " + event.getTargetPlayerName()
+			case REFUSE_MULLIGAN :
+				target
+					.appendJavaScript("jQuery.gritter.add({ title : '"
+						+ event.getPlayerName()
+						+ "', text : 'disagrees for "
+						+ event.getTargetPlayerName()
 						+ " to do mulligan.', image : 'image/logoh2.gif', sticky : false, time : ''});");
 				break;
 
 			// TODO: split this notifier action and the one of
 			// card counters
-			default:
+			default :
 				throw new IllegalArgumentException(
-						"can not treat this case in HomePage#displayNotification()");
+					"can not treat this case in HomePage#displayNotification()");
 		}
 	}
 
-	@Subscribe public void untapAll(final AjaxRequestTarget target,
-			final UntapAllCometChannel event)
+	@Subscribe
+	public void untapAll(final AjaxRequestTarget target, final UntapAllCometChannel event)
 	{
 		final StringBuilder buil = new StringBuilder();
 
@@ -2328,7 +2347,7 @@ import java.util.*;
 		{
 			final MagicCard mc = event.getCardsToUntap().get(i);
 			buil.append("jQuery('#card" + mc.getUuid().replace("-", "_")
-					+ "').parents('.cardContainer').removeClass('tapped'); ");
+				+ "').parents('.cardContainer').removeClass('tapped'); ");
 			mc.setTapped(false);
 			this.persistenceService.updateCard(mc);
 		}
@@ -2336,18 +2355,19 @@ import java.util.*;
 	}
 
 	/**
-	 * @param event not used, since Comet channels are managed by
-	 *              JoinGameModalWindow
+	 * @param event
+	 *            not used, since Comet channels are managed by JoinGameModalWindow
 	 */
-	@Subscribe public void displayJoinGameMessage(final AjaxRequestTarget target,
-			final JoinGameNotificationCometChannel event)
+	@Subscribe
+	public void displayJoinGameMessage(final AjaxRequestTarget target,
+		final JoinGameNotificationCometChannel event)
 	{
-		target.appendJavaScript(
-				"jQuery.gritter.add({ title : 'A player joined in!', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''});");
+		target
+			.appendJavaScript("jQuery.gritter.add({ title : 'A player joined in!', text : 'Ready to play?', image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
-	@Subscribe public void updateDataBox(final AjaxRequestTarget target,
-			final UpdateDataBoxCometChannel event)
+	@Subscribe
+	public void updateDataBox(final AjaxRequestTarget target, final UpdateDataBoxCometChannel event)
 	{
 		final DataBox db = new DataBox("dataBox", event.getGameId().longValue());
 		this.getDataBoxParent().addOrReplace(db);
@@ -2355,35 +2375,37 @@ import java.util.*;
 		target.add(this.getDataBoxParent());
 	}
 
-	@Subscribe public void removeCardFromBattlefield(final AjaxRequestTarget target,
-			final PutToGraveyardFromBattlefieldCometChannel event)
+	@Subscribe
+	public void removeCardFromBattlefield(final AjaxRequestTarget target,
+		final PutToGraveyardFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
 		{
-			BattlefieldService.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
-					event.getDeckId());
+			BattlefieldService.updateGraveyard(target, event.getGameId(),
+				event.getTargetPlayerId(), event.getDeckId());
 		}
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), event.getMagicCard(), false);
+			event.getGameId(), event.getMagicCard(), false);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe public void exileCardFromBattlefield(final AjaxRequestTarget target,
-			final PutToExileFromBattlefieldCometChannel event)
+	@Subscribe
+	public void exileCardFromBattlefield(final AjaxRequestTarget target,
+		final PutToExileFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
 		{
 			BattlefieldService.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
-					event.getDeckId());
+				event.getDeckId());
 		}
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), event.getMagicCard(), false);
+			event.getGameId(), event.getMagicCard(), false);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe public void rotateCard(final AjaxRequestTarget target,
-			final CardRotateCometChannel event)
+	@Subscribe
+	public void rotateCard(final AjaxRequestTarget target, final CardRotateCometChannel event)
 	{
 		final MagicCard mc = event.getMc();
 		mc.setTapped(event.isTapped());
@@ -2404,20 +2426,22 @@ import java.util.*;
 		target.appendJavaScript(buil.toString());
 	}
 
-	@Subscribe public void putToHandFromBattlefield(final AjaxRequestTarget target,
-			final PutToHandFromBattlefieldCometChannel event)
+	@Subscribe
+	public void putToHandFromBattlefield(final AjaxRequestTarget target,
+		final PutToHandFromBattlefieldCometChannel event)
 	{
 		if (event.isShouldUpdateZone())
 		{
 			BattlefieldService.updateHand(target, event.getTargetPlayerId());
 		}
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), event.getMagicCard(), false);
+			event.getGameId(), event.getMagicCard(), false);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe public void playCardFromHand(final AjaxRequestTarget target,
-			final PlayCardFromHandCometChannel event)
+	@Subscribe
+	public void playCardFromHand(final AjaxRequestTarget target,
+		final PlayCardFromHandCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
 
@@ -2433,40 +2457,43 @@ import java.util.*;
 		}
 
 		me.add(new DisplayNoneBehavior());
-		target.prependJavaScript(
-				"notify|jQuery('#" + me.getMarkupId() + "').fadeOut(500, notify);");
+		target
+			.prependJavaScript("notify|jQuery('#" + me.getMarkupId() + "').fadeOut(500, notify);");
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), mc, true);
+			event.getGameId(), mc, true);
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 		target.appendJavaScript("jQuery('#" + me.getMarkupId()
-				+ "').fadeIn(500); jQuery('#cardInBattlefieldContextMenu" + mc.getUuidObject()
-				.toString().replace("-", "_")
-				+ "').popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); ");
+			+ "').fadeIn(500); jQuery('#cardInBattlefieldContextMenu"
+			+ mc.getUuidObject().toString().replace("-", "_")
+			+ "').popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); ");
 	}
 
-	@Subscribe public void playTopLibraryCard(final AjaxRequestTarget target,
-			final PlayTopLibraryCardCometChannel event)
+	@Subscribe
+	public void playTopLibraryCard(final AjaxRequestTarget target,
+		final PlayTopLibraryCardCometChannel event)
 	{
 		final MagicCard mc = event.getCard();
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), mc, true);
+			event.getGameId(), mc, true);
 	}
 
-	@Subscribe public void putTokenOnBattlefield(final AjaxRequestTarget target,
-			final PutTokenOnBattlefieldCometChannel event)
+	@Subscribe
+	public void putTokenOnBattlefield(final AjaxRequestTarget target,
+		final PutTokenOnBattlefieldCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
 		mc.setX(event.getSide().getX());
 		mc.setY(event.getSide().getY());
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), mc, true);
+			event.getGameId(), mc, true);
 	}
 
-	@Subscribe public void putTopLibraryCardToHand(final AjaxRequestTarget target,
-			final PutTopLibraryCardToHandCometChannel event)
+	@Subscribe
+	public void putTopLibraryCardToHand(final AjaxRequestTarget target,
+		final PutTopLibraryCardToHandCometChannel event)
 	{
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
 		{
@@ -2477,8 +2504,9 @@ import java.util.*;
 		}
 	}
 
-	@Subscribe public void putTopLibraryCardToGraveyard(final AjaxRequestTarget target,
-			final PutTopLibraryCardToGraveyardCometChannel event)
+	@Subscribe
+	public void putTopLibraryCardToGraveyard(final AjaxRequestTarget target,
+		final PutTopLibraryCardToGraveyardCometChannel event)
 	{
 		if (event.getPlayerId().longValue() == this.session.getPlayer().getId().longValue())
 		{
@@ -2486,59 +2514,56 @@ import java.util.*;
 			p.setGraveyardDisplayed(Boolean.TRUE);
 			this.persistenceService.mergePlayer(p);
 			BattlefieldService.updateGraveyard(target, event.getGameId(), event.getPlayerId(),
-					event.getDeckId());
+				event.getDeckId());
 		}
 	}
 
-	@Subscribe public void playCardFromGraveyard(final AjaxRequestTarget target,
-			final PlayCardFromGraveyardCometChannel event)
+	@Subscribe
+	public void playCardFromGraveyard(final AjaxRequestTarget target,
+		final PlayCardFromGraveyardCometChannel event)
 	{
 		final MagicCard mc = event.getMagicCard();
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), mc, true);
+			event.getGameId(), mc, true);
 	}
 
-	@Subscribe public void revealTopLibraryCard(final AjaxRequestTarget target,
-			final RevealTopLibraryCardCometChannel event)
+	@Subscribe
+	public void revealTopLibraryCard(final AjaxRequestTarget target,
+		final RevealTopLibraryCardCometChannel event)
 	{
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 
-		this.revealTopLibraryCardWindow.setTitle(
-				"This is the top card #" + (event.getIndex() + 1L) + " of " + event.getPlayerName()
-						+ "'s library: ");
-		this.revealTopLibraryCardWindow.setContent(
-				new RevealTopLibraryCardModalWindow(this.revealTopLibraryCardWindow.getContentId(),
-						this.revealTopLibraryCardWindow, event.getCard()));
+		this.revealTopLibraryCardWindow.setTitle("This is the top card #" + (event.getIndex() + 1L)
+			+ " of " + event.getPlayerName() + "'s library: ");
+		this.revealTopLibraryCardWindow.setContent(new RevealTopLibraryCardModalWindow(
+			this.revealTopLibraryCardWindow.getContentId(), this.revealTopLibraryCardWindow, event
+				.getCard()));
 
 		this.allOpenRevealTopLibraryCardWindows.add(this.revealTopLibraryCardWindow);
 		this.revealTopLibraryCardWindow.show(target);
 	}
 
-	@Subscribe public void countCards(final AjaxRequestTarget target,
-			final CountCardsCometChannel event)
+	@Subscribe
+	public void countCards(final AjaxRequestTarget target, final CountCardsCometChannel event)
 	{
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 		this.countCardsWindow.setTitle(event.getRequestingPlayerName()
-				+ " asks the number of cards by zone for each player of this game for match #"
-				+ event.getGameId() + ": ");
-		this.countCardsWindow.setContent(
-				new CountCardsModalWindow(this.countCardsWindow.getContentId(), event.getGameId()));
+			+ " asks the number of cards by zone for each player of this game for match #"
+			+ event.getGameId() + ": ");
+		this.countCardsWindow.setContent(new CountCardsModalWindow(this.countCardsWindow
+			.getContentId(), event.getGameId()));
 		this.countCardsWindow.show(target);
 	}
 
-	@Subscribe public void cardZoneChange(final AjaxRequestTarget target,
-			final CardZoneMoveCometChannel event)
+	@Subscribe
+	public void cardZoneChange(final AjaxRequestTarget target, final CardZoneMoveCometChannel event)
 	{
 		final MagicCard mc = event.getCard();
 		final Deck d = event.getDeck();
-		final boolean isCurrentPlayerSameThanTargetedPlayer =
-				event.getTargetPlayerId().longValue() == HatchetHarrySession.get().getPlayer()
-						.getId().longValue();
-		final boolean isCurrentPlayerSameThanRequestingPlayer =
-				event.getRequestingPlayerId().longValue() == this.session.getPlayer().getId()
-						.longValue();
+		final boolean isCurrentPlayerSameThanTargetedPlayer = event.getTargetPlayerId().longValue() == HatchetHarrySession
+			.get().getPlayer().getId().longValue();
+		final boolean isCurrentPlayerSameThanRequestingPlayer = event.getRequestingPlayerId()
+			.longValue() == this.session.getPlayer().getId().longValue();
 
 		if (!event.getTargetZone().equals(CardZone.LIBRARY))
 		{
@@ -2556,116 +2581,114 @@ import java.util.*;
 		// TODO: other cases
 		switch (event.getTargetZone())
 		{
-			case BATTLEFIELD:
+			case BATTLEFIELD :
 				mc.setX(event.getSide().getX());
 				mc.setY(event.getSide().getY());
 				this.persistenceService.updateCard(mc);
-				BattlefieldService
-						.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-								event.getGameId(), mc, true);
+				BattlefieldService.updateCardsAndRestoreStateInBattlefield(target,
+					this.persistenceService, event.getGameId(), mc, true);
 				break;
-			case HAND:
+			case HAND :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
 					BattlefieldService.updateHand(target, event.getTargetPlayerId());
 				}
 				break;
-			case GRAVEYARD:
+			case GRAVEYARD :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					BattlefieldService
-							.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
-									d.getDeckId());
+					BattlefieldService.updateGraveyard(target, event.getGameId(),
+						event.getTargetPlayerId(), d.getDeckId());
 					hasAlreadyDisplayedGraveyard = true;
 				}
 				break;
-			case EXILE:
+			case EXILE :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
-					BattlefieldService
-							.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
-									d.getDeckId());
+					BattlefieldService.updateExile(target, event.getGameId(),
+						event.getTargetPlayerId(), d.getDeckId());
 					hasAlreadyDisplayedExile = true;
 				}
 				break;
-			case LIBRARY:
+			case LIBRARY :
 				break;
-			default:
+			default :
 				throw new UnsupportedOperationException();
 		}
 
 		// TODO: other cases
 		switch (event.getSourceZone())
 		{
-			case HAND:
+			case HAND :
 				if (isCurrentPlayerSameThanTargetedPlayer)
 				{
 					BattlefieldService.updateHand(target, d.getDeckId());
 				}
 				if (event.isReveal() && isCurrentPlayerSameThanRequestingPlayer)
 				{
-					BattlefieldService
-							.revealHand(target, event.getGameId(), event.getTargetPlayerId(),
-									d.getDeckId());
+					BattlefieldService.revealHand(target, event.getGameId(),
+						event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
-			case GRAVEYARD:
+			case GRAVEYARD :
 				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedGraveyard)
 				{
-					BattlefieldService
-							.updateGraveyard(target, event.getGameId(), event.getTargetPlayerId(),
-									d.getDeckId());
+					BattlefieldService.updateGraveyard(target, event.getGameId(),
+						event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
-			case EXILE:
+			case EXILE :
 				if (isCurrentPlayerSameThanRequestingPlayer && !hasAlreadyDisplayedExile)
 				{
-					BattlefieldService
-							.updateExile(target, event.getGameId(), event.getTargetPlayerId(),
-									d.getDeckId());
+					BattlefieldService.updateExile(target, event.getGameId(),
+						event.getTargetPlayerId(), d.getDeckId());
 				}
 				break;
 			// $CASES-OMITTED$
-			default:
+			default :
 				throw new UnsupportedOperationException();
 		}
 
 		target.appendJavaScript("jQuery('#putToZoneIndicator" + event.getSourceZone().toString()
-				+ "').css('display', 'none');");
+			+ "').css('display', 'none');");
 		target.appendJavaScript(BattlefieldService.REACTIVATE_BATTLEFIELD_JAVASCRIPT);
 	}
 
-	@Subscribe public void cardZoneChangeNotify(final AjaxRequestTarget target,
-			final CardZoneMoveNotifier event)
+	@Subscribe
+	public void cardZoneChangeNotify(final AjaxRequestTarget target,
+		final CardZoneMoveNotifier event)
 	{
 		if (event.getTargetZone().equals(CardZone.LIBRARY))
 		{
 			return;
 		}
-		target.appendJavaScript("jQuery.gritter.add({ title : '" + event.getRequestingPlayer()
-				+ "', text : \"has moved " + (event.getOwnerPlayer()
-				.equals(event.getRequestingPlayer()) ? "his (her)" : event.getOwnerPlayer() + "'s")
-				+ " card: " + event.getCard().getTitle() + " from " + event.getSourceZone() + " to "
-				+ event.getTargetZone()
-				+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
+		target.appendJavaScript("jQuery.gritter.add({ title : '"
+			+ event.getRequestingPlayer()
+			+ "', text : \"has moved "
+			+ (event.getOwnerPlayer().equals(event.getRequestingPlayer()) ? "his (her)" : event
+				.getOwnerPlayer() + "'s") + " card: " + event.getCard().getTitle() + " from "
+			+ event.getSourceZone() + " to " + event.getTargetZone()
+			+ "\", image : 'image/logoh2.gif', sticky : false, time : ''});");
 	}
 
-	@Subscribe public void destroyToken(final AjaxRequestTarget target,
-			final DestroyTokenCometChannel event)
+	@Subscribe
+	public void destroyToken(final AjaxRequestTarget target, final DestroyTokenCometChannel event)
 	{
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), event.getCard(), false);
+			event.getGameId(), event.getCard(), false);
 	}
 
-	@Subscribe public void addSide(final AjaxRequestTarget target, final AddSideCometChannel event)
+	@Subscribe
+	public void addSide(final AjaxRequestTarget target, final AddSideCometChannel event)
 	{
 		HomePage.LOGGER.info("addSide");
 		this.allPlayerSidesInGame.add(event.getPlayer());
 		this.allSidesInGame.addNewItems(event.getPlayer());
 	}
 
-	@Subscribe public void addSideFromOtherBrowsers(final AjaxRequestTarget target,
-			final AddSidesFromOtherBrowsersCometChannel event)
+	@Subscribe
+	public void addSideFromOtherBrowsers(final AjaxRequestTarget target,
+		final AddSidesFromOtherBrowsersCometChannel event)
 	{
 		HomePage.LOGGER.info("addSideFromOtherBrowsers");
 
@@ -2679,53 +2702,61 @@ import java.util.*;
 
 	}
 
-	@Subscribe public void moveSide(final AjaxRequestTarget target,
-			final MoveSideCometChannel event)
+	@Subscribe
+	public void moveSide(final AjaxRequestTarget target, final MoveSideCometChannel event)
 	{
-		target.appendJavaScript(
-				"jQuery('#sidePlaceholder" + event.getUuid().toString().replace("-", "_")
-						+ "').css({top: '" + event.getSideY() + "px', left: '" + event.getSideX()
-						+ "px', position:'absolute'}); ");
+		target.appendJavaScript("jQuery('#sidePlaceholder"
+			+ event.getUuid().toString().replace("-", "_") + "').css({top: '" + event.getSideY()
+			+ "px', left: '" + event.getSideX() + "px', position:'absolute'}); ");
 	}
 
-	@Subscribe public void displayArrow(final AjaxRequestTarget target,
-			final ArrowDrawCometChannel event)
+	@Subscribe
+	public void displayArrow(final AjaxRequestTarget target, final ArrowDrawCometChannel event)
 	{
 		HomePage.LOGGER.info("Source: " + event.getSource() + ", target: " + event.getTarget());
 		if (!event.getSource().equals(event.getTarget()))
 		{
-			target.appendJavaScript(
-					"window.setTimeout(function() { jQuery('._jsPlumb_endpoint_full').remove(); "
-							+ "window.arrows.push({ 'source': jQuery('#" + event.getSource()
-							+ "'), 'target': " + "jQuery('#" + event.getTarget() + "') }); "
-							+ "	jsPlumb.connect({ source: jQuery('#" + event.getSource()
-							+ "').parent().parent().parent(),"
-							+ "                  target: jQuery('#" + event.getTarget()
-							+ "').parent().parent().parent(),"
-							+ "                  connector:['Bezier', { curviness:70 }], overlays : [['Label', {location:0.7, id:'label',"
-							+ "                    events:{     }}]]}); }, 750); ");
+			target
+				.appendJavaScript("window.setTimeout(function() { jQuery('._jsPlumb_endpoint_full').remove(); "
+					+ "window.arrows.push({ 'source': jQuery('#"
+					+ event.getSource()
+					+ "'), 'target': "
+					+ "jQuery('#"
+					+ event.getTarget()
+					+ "') }); "
+					+ "	jsPlumb.connect({ source: jQuery('#"
+					+ event.getSource()
+					+ "').parent().parent().parent(),"
+					+ "                  target: jQuery('#"
+					+ event.getTarget()
+					+ "').parent().parent().parent(),"
+					+ "                  connector:['Bezier', { curviness:70 }], overlays : [['Label', {location:0.7, id:'label',"
+					+ "                    events:{     }}]]}); }, 750); ");
 		}
 	}
 
-	@Subscribe public void switchDrawMode(final AjaxRequestTarget target,
-			final SwitchDrawModeCometChannel event)
+	@Subscribe
+	public void switchDrawMode(final AjaxRequestTarget target,
+		final SwitchDrawModeCometChannel event)
 	{
 		if (event.isDrawMode())
 		{
-			target.appendJavaScript(
-					"jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			target
+				.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode ON', text : \"You are now in draw mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 			target.appendJavaScript("arrows = new Array(); drawMode = true; ");
 
-			target.appendJavaScript(
-					"cardAlreadySelected = false; " + "var plumbSource, plumbTarget; "
-							+ "dontZoom= true; "
-							+ "jQuery('span.battlefieldCardsForSide1, span.battlefieldCardsForSide2').click(function (event) { "
-							+ "if (cardAlreadySelected) { cardAlreadySelected = false; "
-							+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-							+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
-							+ "} else { " + "	cardAlreadySelected = true; "
-							+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
-							+ "}});");
+			target
+				.appendJavaScript("cardAlreadySelected = false; "
+					+ "var plumbSource, plumbTarget; "
+					+ "dontZoom= true; "
+					+ "jQuery('span.battlefieldCardsForSide1, span.battlefieldCardsForSide2').click(function (event) { "
+					+ "if (cardAlreadySelected) { cardAlreadySelected = false; "
+					+ "	plumbTarget = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+					+ " Wicket.Ajax.get({ 'u' : jQuery('#' + plumbTarget).data('arrowDrawUrl') + '&source=' + plumbSource + '&target=' + plumbTarget}); "
+					+ "} else { "
+					+ "	cardAlreadySelected = true; "
+					+ "	plumbSource = jQuery('#' + event.target.id).parent().parent().parent().parent().attr('id'); "
+					+ "}});");
 
 			final ExternalImage img = new ExternalImage("drawModeOn", "image/draw_mode_on.png");
 			img.setOutputMarkupId(true).setMarkupId("drawMode");
@@ -2735,11 +2766,11 @@ import java.util.*;
 		}
 		else
 		{
-			target.appendJavaScript(
-					"jQuery.gritter.add({ title : 'Draw mode OFF', text : \"You are now in normal mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
+			target
+				.appendJavaScript("jQuery.gritter.add({ title : 'Draw mode OFF', text : \"You are now in normal mode!\" , image : 'image/logoh2.gif', sticky : false, time : ''});");
 
-			target.appendJavaScript(
-					"arrows = new Array(); drawMode = false; dontZoom = false; jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
+			target
+				.appendJavaScript("arrows = new Array(); drawMode = false; dontZoom = false; jQuery('._jsPlumb_connector').remove(); jQuery('._jsPlumb_overlay').remove(); jQuery('._jsPlumb_endpoint').remove(); ");
 
 			final WebMarkupContainer img = new WebMarkupContainer("drawModeOn");
 			img.setOutputMarkupId(true).setMarkupId("drawMode");
@@ -2749,83 +2780,84 @@ import java.util.*;
 
 	}
 
-	@Subscribe public void logToConsole(final AjaxRequestTarget target,
-			final ConsoleLogCometChannel event)
+	@Subscribe
+	public void logToConsole(final AjaxRequestTarget target, final ConsoleLogCometChannel event)
 	{
 		System.out.println("&&&&&&&&&&&&");
 		event.getLogger().logToConsole(target);
 	}
 
-	@Subscribe public void hideHand(final AjaxRequestTarget target,
-			final StopRevealingHandCometChannel event)
+	@Subscribe
+	public void hideHand(final AjaxRequestTarget target, final StopRevealingHandCometChannel event)
 	{
 		BattlefieldService.hideHand(target);
 	}
 
-	@Subscribe public void revealHand(final AjaxRequestTarget target,
-			final RevealHandCometChannel event)
+	@Subscribe
+	public void revealHand(final AjaxRequestTarget target, final RevealHandCometChannel event)
 	{
 		BattlefieldService.revealHand(target, event.getGame(), event.getPlayer(), event.getDeck());
 	}
 
-	@Subscribe public void askMulligan(final AjaxRequestTarget target,
-			final AskMulliganCometChannel event)
+	@Subscribe
+	public void askMulligan(final AjaxRequestTarget target, final AskMulliganCometChannel event)
 	{
 		HomePage.LOGGER.info("askMulligan");
 		this.askMulliganWindow.setTitle(event.getPlayer() + " asks for mulligan");
 		this.askMulliganWindow.setContent(new AskMulliganModalWindow(this.askMulliganWindow,
-				this.askMulliganWindow.getContentId(), event.getPlayer(),
-				event.getNumberOfCards()));
+			this.askMulliganWindow.getContentId(), event.getPlayer(), event.getNumberOfCards()));
 
 		target.prependJavaScript(BattlefieldService.HIDE_MENUS);
-		target.appendJavaScript("Wicket.Window.unloadConfirmation = false;");
 		this.askMulliganWindow.show(target);
 	}
 
-	@Subscribe public void reorderCardsInBattlefield(final AjaxRequestTarget target,
-			final ReorderCardCometChannel event)
+	@Subscribe
+	public void reorderCardsInBattlefield(final AjaxRequestTarget target,
+		final ReorderCardCometChannel event)
 	{
 		HomePage.LOGGER.info("reorderCardsInBattlefield");
 
 		final List<MagicCard> allCardsAndTokensInBattlefieldForAGameAndAPlayer = this.persistenceService
-				.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(event.getGameId(),
-						event.getPlayerId(), event.getDeckId());
+			.getAllCardsAndTokensInBattlefieldForAGameAndAPlayer(event.getGameId(),
+				event.getPlayerId(), event.getDeckId());
 
-		HomePage.LOGGER
-				.info("requesting side: " + event.getPlayerSide() + ", this side: " + this.session
-						.getPlayer().getSide().getSideName());
+		HomePage.LOGGER.info("requesting side: " + event.getPlayerSide() + ", this side: "
+			+ this.session.getPlayer().getSide().getSideName());
 
 		Component me;
 
 		if (event.getPlayerSide().equals(this.session.getPlayer().getSide().getSideName()))
 		{
 			final WebMarkupContainer listViewForSide1 = this
-					.generateCardListViewForSide1(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
+				.generateCardListViewForSide1(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
 			me = this.parentPlaceholder;
 			me.add(new DisplayNoneBehavior());
-			target.prependJavaScript(
-					"notify|jQuery('#" + me.getMarkupId() + "').fadeOut(250, notify);");
+			target.prependJavaScript("notify|jQuery('#" + me.getMarkupId()
+				+ "').fadeOut(250, notify);");
 			target.add(listViewForSide1);
 		}
 		else
 		{
 			final WebMarkupContainer listViewForSide2 = this
-					.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
+				.generateCardListViewForSide2(allCardsAndTokensInBattlefieldForAGameAndAPlayer);
 			me = this.opponentParentPlaceholder;
 			me.add(new DisplayNoneBehavior());
-			target.prependJavaScript(
-					"notify|jQuery('#" + me.getMarkupId() + "').fadeOut(250, notify);");
+			target.prependJavaScript("notify|jQuery('#" + me.getMarkupId()
+				+ "').fadeOut(250, notify);");
 			target.add(listViewForSide2);
 		}
 
 		BattlefieldService.updateCardsAndRestoreStateInBattlefield(target, this.persistenceService,
-				event.getGameId(), null, false);
+			event.getGameId(), null, false);
 
-		target.appendJavaScript("jQuery('#" + me.getMarkupId()
+		target
+			.appendJavaScript("jQuery('#"
+				+ me.getMarkupId()
 				+ "').fadeIn(250); jQuery('.cardInBattlefieldContextMenu').each(function(index, value) { jQuery(this).popmenu({ 'background': 'black', 'focusColor': '#BBBBBB' }); }); ");
 	}
 
-	@Override protected void configureResponse(final WebResponse response)
+	@Override
+	protected void configureResponse(final WebResponse response)
 	{
 		if (this.session != null)
 		{
@@ -2845,9 +2877,8 @@ import java.util.*;
 		// to manage a state recovery
 		final Player player1 = this.persistenceService.getPlayer(this.session.getPlayer().getId());
 		final Boolean isHandDisplayed = player1.isHandDisplayed();
-		final Component galleryToUpdate = isHandDisplayed.booleanValue() ?
-				new HandComponent("gallery") :
-				new WebMarkupContainer("gallery");
+		final Component galleryToUpdate = isHandDisplayed.booleanValue() ? new HandComponent(
+			"gallery") : new WebMarkupContainer("gallery");
 
 		galleryToUpdate.setOutputMarkupId(true);
 		this.galleryParent.addOrReplace(galleryToUpdate);
@@ -2859,8 +2890,8 @@ import java.util.*;
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override public void renderHead(final Component component,
-					final IHeaderResponse response)
+			@Override
+			public void renderHead(final Component component, final IHeaderResponse response)
 			{
 				super.renderHead(component, response);
 				HomePage.this.restoreStateOfAllCardsInBattlefield(response);
@@ -2873,7 +2904,7 @@ import java.util.*;
 	{
 		final StringBuilder js = new StringBuilder("window.setTimeout(function() { ");
 		final List<MagicCard> allCards = this.persistenceService
-				.getAllCardsInBattlefieldForAGame(this.session.getGameId());
+			.getAllCardsInBattlefieldForAGame(this.session.getGameId());
 
 		for (final MagicCard mc : allCards)
 		{
@@ -2883,18 +2914,18 @@ import java.util.*;
 				HomePage.LOGGER.info("%%% mc.getToken(): " + mc.getToken());
 
 				js.append("var card = jQuery(\"#menutoggleButton" + mc.getUuid() + "\"); "
-						+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \"" + mc
-						.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY() + "px\");\n");
+					+ "card.css(\"position\", \"absolute\"); " + "card.css(\"left\", \""
+					+ mc.getX() + "px\");" + "card.css(\"top\", \"" + mc.getY() + "px\");\n");
 
 				final String uuidValidForJs = mc.getUuid().replace("-", "_");
 				if (mc.isTapped())
 				{
 					js.append("jQuery('#card" + uuidValidForJs
-							+ "').parents('.cardContainer').addClass('tapped'); ");
+						+ "').parents('.cardContainer').addClass('tapped'); ");
 				}
 
-				if (((mc.getToken() == null) && mc.getCounters().isEmpty()) || (
-						(mc.getToken() != null) && mc.getToken().getCounters().isEmpty()))
+				if (((mc.getToken() == null) && mc.getCounters().isEmpty())
+					|| ((mc.getToken() != null) && mc.getToken().getCounters().isEmpty()))
 				{
 					HomePage.LOGGER.info("### bullet id=" + uuidValidForJs + " hidden");
 					js.append("jQuery('#bullet" + uuidValidForJs + "').hide(); ");
@@ -2918,12 +2949,14 @@ import java.util.*;
 		response.render(JavaScriptHeaderItem.forScript(js.toString(), null));
 	}
 
-	@Required public void setPersistenceService(final PersistenceService _persistenceService)
+	@Required
+	public void setPersistenceService(final PersistenceService _persistenceService)
 	{
 		this.persistenceService = _persistenceService;
 	}
 
-	@Required public void setDataGenerator(final DataGenerator _dataGenerator)
+	@Required
+	public void setDataGenerator(final DataGenerator _dataGenerator)
 	{
 		this.dataGenerator = _dataGenerator;
 	}
@@ -2979,7 +3012,7 @@ import java.util.*;
 	}
 
 	public WebMarkupContainer generateCardListViewForSide1(
-			final List<MagicCard> _allMagicCardsInBattlefieldForSide1)
+		final List<MagicCard> _allMagicCardsInBattlefieldForSide1)
 	{
 		if (null == _allMagicCardsInBattlefieldForSide1)
 		{
@@ -2992,18 +3025,18 @@ import java.util.*;
 
 		Collections.sort(this.allMagicCardsInBattlefieldForSide1);
 		final ListDataProvider<MagicCard> data = new ListDataProvider<>(
-				this.allMagicCardsInBattlefieldForSide1);
+			this.allMagicCardsInBattlefieldForSide1);
 
 		this.allCardsInBattlefieldForSide1 = new QuickView<MagicCard>("magicCardsForSide1", data)
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override protected void populate(final Item<MagicCard> item)
+			@Override
+			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
 				final CardPanel cp = new CardPanel("cardPanel", new Model<>(new PlayerAndCard(
-						HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId()),
-						mc)));
+					HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId()), mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3022,7 +3055,7 @@ import java.util.*;
 	}
 
 	WebMarkupContainer generateCardListViewForSide2(
-			final List<MagicCard> _allMagicCardsInBattlefieldForSide2)
+		final List<MagicCard> _allMagicCardsInBattlefieldForSide2)
 	{
 		if (null == _allMagicCardsInBattlefieldForSide2)
 		{
@@ -3035,26 +3068,26 @@ import java.util.*;
 
 		Collections.sort(this.allMagicCardsInBattlefieldForSide2);
 		final ListDataProvider<MagicCard> data = new ListDataProvider<>(
-				this.allMagicCardsInBattlefieldForSide2);
+			this.allMagicCardsInBattlefieldForSide2);
 
 		this.allCardsInBattlefieldForSide2 = new QuickView<MagicCard>("magicCardsForSide2", data)
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override protected void populate(final Item<MagicCard> item)
+			@Override
+			protected void populate(final Item<MagicCard> item)
 			{
 				final MagicCard mc = item.getModelObject();
 
 				if (HomePage.this.player.getGame() == null)
 				{
-					HomePage.this.player.setGame(HomePage.this.persistenceService.getGame(
-							HomePage.this.getAllMagicCardsInBattlefieldForSide2().get(0)
-									.getGameId()));
+					HomePage.this.player.setGame(HomePage.this.persistenceService
+						.getGame(HomePage.this.getAllMagicCardsInBattlefieldForSide2().get(0)
+							.getGameId()));
 				}
 
 				final CardPanel cp = new CardPanel("cardPanel", new Model<>(new PlayerAndCard(
-						HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId()),
-						mc)));
+					HomePage.this.persistenceService.getPlayer(mc.getDeck().getPlayerId()), mc)));
 				cp.setOutputMarkupId(true);
 				item.add(cp);
 
@@ -3094,21 +3127,21 @@ import java.util.*;
 		return this.sideParent;
 	}
 
-	@SuppressWarnings("static-method") private QuickView<Player> populateSides(
-			final ListDataProvider<Player> data)
+	@SuppressWarnings("static-method")
+	private QuickView<Player> populateSides(final ListDataProvider<Player> data)
 	{
 		return new QuickView<Player>("sides", data)
 		{
 			private static final long serialVersionUID = 1L;
 
-			@Override protected void populate(final Item<Player> item)
+			@Override
+			protected void populate(final Item<Player> item)
 			{
 				try
 				{
 					final UUID uuid = UUID.fromString(item.getModelObject().getSideUuid());
-					item.add(new SidePlaceholderPanel("side",
-							item.getModelObject().getSide().getSideName(), HomePage.this, uuid,
-							item.getModelObject()));
+					item.add(new SidePlaceholderPanel("side", item.getModelObject().getSide()
+						.getSideName(), HomePage.this, uuid, item.getModelObject()));
 				}
 				catch (final NullPointerException e)
 				{
@@ -3169,7 +3202,8 @@ import java.util.*;
 			super("style", Model.of("display: none"));
 		}
 
-		@Override public boolean isTemporary(Component component)
+		@Override
+		public boolean isTemporary(Component component)
 		{
 			return true;
 		}

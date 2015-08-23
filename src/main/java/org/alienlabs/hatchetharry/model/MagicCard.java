@@ -63,7 +63,7 @@ public class MagicCard implements SlideshowImage, Serializable, Comparable<Magic
 	private String uuid;
 	@Column
 	private Long gameId;
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Deck.class)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, targetEntity = Deck.class)
 	@JoinColumn(name = "card_deck")
 	private Deck deck;
 	@Column

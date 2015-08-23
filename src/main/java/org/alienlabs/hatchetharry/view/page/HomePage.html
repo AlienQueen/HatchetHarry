@@ -25,7 +25,8 @@
 <!-- The main (desktop) menu bar -->
   <span id='cssmenu'>
 	<ul>
-        <li class='active myfont' id="firstmenuoption"><a class="shift-bottom"><img src="/image/logoh1.gif" alt="HH" width="20px;"/></a>
+        <li class='active myfont' id="firstmenuoption"><a class="shift-bottom"><img src="/image/logoh1.gif" alt="HH"
+                                                                                    width="20px;"/></a>
             <ul>
                 <li><a><img src="/image/logoh2.gif" alt="HH" width="64px;"/></a></li>
                 <br/>
@@ -33,7 +34,8 @@
                     HatchetHarry</a></li>
                 <li><a wicket:id="teamInfoLink" class="myfont"><img src="/image/team info.png" alt="team info"/>&nbsp;&nbsp;HatchetHarry
                     team info</a></li>
-                <li><a wicket:id="feedbackLink" class="myfont"><img src="/image/feedback.png" alt="feedback"/>&nbsp;&nbsp;Feedback</a></li>
+                <li><a wicket:id="feedbackLink" class="myfont"><img src="/image/feedback.png" alt="feedback"/>&nbsp;&nbsp;Feedback</a>
+                </li>
                 <li><a wicket:id="preferencesLink" class="myfont"><img src="/image/preferences.png" alt="preferences"/>&nbsp;&nbsp;User
                     preferences</a></li>
             </ul>
@@ -92,7 +94,7 @@
         </li>
     </ul>
   </span>
-  <a href="#dataScreen" title="Scroll up & down" id="scroller" class="scroller"></a>
+<a href="#dataScreen" title="Scroll up & down" id="scroller" class="scroller"></a>
 
 <h3>
     <strong class="myfont shift-right">Welcome to HatchetHarry
@@ -112,7 +114,7 @@
     <span wicket:id="usernameParent"><span wicket:id="username" class="myfont login"></span></span>
     <br/>
     <span wicket:id="matchIdParent"><span wicket:id="matchId" class="myfont login"></span></span>
-    </strong>
+</strong>
 </h4>
 <br/><br/><br/><br/><br/>
 <!-- The mobile drop down menu -->
@@ -133,7 +135,8 @@
               <li><a wicket:id="loginLinkResponsive" class="myfont">* Log in&nbsp;&nbsp;</a></li>
               <li><a wicket:id="createMatchLinkResponsive" class="myfont">* Create a match&nbsp;&nbsp;</a></li>
               <li><a wicket:id="joinMatchLinkResponsive" class="myfont">* Join a match with ID&nbsp;&nbsp;</a></li>
-              <li><a wicket:id="joinMatchWithoutIdLinkResponsive" class="myfont">* Join a match without ID&nbsp;&nbsp;</a></li>
+              <li><a wicket:id="joinMatchWithoutIdLinkResponsive" class="myfont">* Join a match without
+                  ID&nbsp;&nbsp;</a></li>
               <li><a wicket:id="mulliganLinkResponsive" class="myfont">* Mulligan&nbsp;&nbsp;</a></li>
               <li><a wicket:id="importDeckLinkResponsive" class="myfont">* Import a deck&nbsp;&nbsp;</a></li>
               <li><a wicket:id="hideAllTooltipsLinkResponsive" class="myfont">* Hide all tooltips&nbsp;&nbsp;</a></li>
@@ -179,7 +182,7 @@
 	</span>
 
 <!-- dock -->
-	<div id="dataScreen"></div>
+<div id="dataScreen"></div>
 	<span id="tour_dock" class="dock">
 		<div id="dock">
             <a wicket:id="handLink" id="tour_10">
@@ -261,20 +264,21 @@
 
 <span wicket:id="firstSidePlaceholderParent"><span wicket:id="firstSidePlaceholder"></span></span>
 <br/><br/>
+
 <div id="allCardsParent">
     <ul wicket:id="opponentParentPlaceholder" class="battlefieldCardsForSide2 cards">
-	    <li wicket:id="magicCardsForSide2" class="cardContainer">
+        <li wicket:id="magicCardsForSide2" class="cardContainer">
 	        <span wicket:id="cardPanel" class="battlefieldCardContainer">
 	        </span>
-	    </li>
-	</ul>
+        </li>
+    </ul>
 
-	<ul wicket:id="parentPlaceholder" class="battlefieldCardsForSide1 cards">
-	    <li wicket:id="magicCardsForSide1" class="cardContainer">
+    <ul wicket:id="parentPlaceholder" class="battlefieldCardsForSide1 cards">
+        <li wicket:id="magicCardsForSide1" class="cardContainer">
 	        <span wicket:id="cardPanel" class="battlefieldCardContainer">
 	        </span>
-	    </li>
-	</ul>
+        </li>
+    </ul>
 	
 	<span wicket:id="galleryParent" id="#">
 		<span wicket:id="gallery" class="gallery"></span>
@@ -301,13 +305,13 @@
 		<div id="qunit-fixture">test markup, will be hidden</div>
 
 		<br/>
-		<div wicket:id="parent">
+		<!--<div wicket:id="parent">-->
             <span wicket:id="feedback"></span>
 
-            <form wicket:id="runFormMistletoe">
+            <form wicket:id="runForm">
                 <span class="myfont">Name of Mistletoe suite or test to run: </span>
                 <input wicket:id="testClassName" type="text" size="70" class="myfont"></input>
-                <input wicket:id="runMistletoe" type="submit" value="Run" id="runMistletoe" class="myfont"></input>
+                <input type="submit" value="Run" id="runMistletoe" class="myfont"></input>
             </form>
             <div style="width:40em; min-width:40em;">
                 <table wicket:id="summary">
@@ -325,7 +329,7 @@
             </div>
 
             <div wicket:id="node" class="testReport"></div>
-        </div>
+        <!--</div>-->
     </span>
 
 <br/><br/><br/><br/><br/>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.alienlabs.hatchetharry.HatchetHarrySession;
 import org.alienlabs.hatchetharry.model.MagicCard;
+import org.alienlabs.hatchetharry.model.Player;
 import org.alienlabs.hatchetharry.service.PersistenceService;
 import org.alienlabs.hatchetharry.view.component.zone.PlayCardFromHandBehavior;
 import org.alienlabs.hatchetharry.view.page.HomePage;
@@ -58,13 +59,13 @@ public class HandComponent extends Panel
 				super.renderHead(component, response);
 
 				final TextTemplate sortableTemplate = new PackageTextTemplate(HomePage.class,
-						"script/gallery/sortable.js");
+					"script/gallery/sortable.js");
 				final TextTemplate handInBattlefieldTemplate = new PackageTextTemplate(
-						HomePage.class, "script/gallery/handInBattlefield.js");
+					HomePage.class, "script/gallery/handInBattlefield.js");
 
 				response.render(JavaScriptHeaderItem.forScript(sortableTemplate.asString(), null));
 				response.render(JavaScriptHeaderItem.forScript(
-						handInBattlefieldTemplate.asString(), null));
+					handInBattlefieldTemplate.asString(), null));
 				try
 				{
 					sortableTemplate.close();
@@ -72,7 +73,7 @@ public class HandComponent extends Panel
 				catch (final IOException e)
 				{
 					HandComponent.LOGGER.error(
-							"unable to close sortableTemplate in HandComponent#renderHead()!", e);
+						"unable to close sortableTemplate in HandComponent#renderHead()!", e);
 				}
 				try
 				{
@@ -80,18 +81,20 @@ public class HandComponent extends Panel
 				}
 				catch (final IOException e)
 				{
-					HandComponent.LOGGER
-							.error("unable to close handInBattlefieldTemplate in HandComponent#renderHead()!",
-									e);
+					HandComponent.LOGGER.error(
+						"unable to close handInBattlefieldTemplate in HandComponent#renderHead()!",
+						e);
 				}
 			}
 		});
 
-		Long gameId = HatchetHarrySession.get().getPlayer().getGame().getId();
-		Long deckId = HatchetHarrySession.get().getPlayer().getDeck().getDeckId();
+		final Player p = this.persistenceService.getPlayer(HatchetHarrySession.get().getPlayer()
+			.getId());
+		Long gameId = p.getGame().getId();
+		Long deckId = p.getDeck().getDeckId();
 
 		this.allCardsInHand = this.persistenceService.getAllCardsInHandForAGameAndADeck(gameId,
-				deckId);
+			deckId);
 		HandComponent.LOGGER.info("### allCardsInHand: " + this.allCardsInHand.size());
 
 		this.allCards = new ListView<MagicCard>("handCards", this.allCardsInHand)
@@ -105,7 +108,7 @@ public class HandComponent extends Panel
 				final MagicCard card = item.getModelObject();
 
 				final ExternalImage handImagePlaceholder = new ExternalImage(
-						"handImagePlaceholder", card.getBigImageFilename());
+					"handImagePlaceholder", card.getBigImageFilename());
 				final String uuid = card.getUuid().replace("-", "_");
 				handImagePlaceholder.setMarkupId("placeholder" + uuid);
 				handImagePlaceholder.setOutputMarkupId(true);
